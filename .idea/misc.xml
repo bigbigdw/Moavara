@@ -3,7 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/activity_main.xml" value="0.55" />
+        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Search/layout/activity_search.xml" value="0.32864583333333336" />
+        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/drawable/shape_outline_gray.xml" value="0.43703703703703706" />
+        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/activity_main.xml" value="0.13322091062394603" />
+        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_search.xml" value="0.2505399568034557" />
+        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/menu/bottom_nav_menu.xml" value="0.36574074074074076" />
+        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.34427083333333336" />
       </map>
     </option>
   </component>
