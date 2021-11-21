@@ -1,5 +1,7 @@
 package com.example.takealook.Search
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -27,8 +29,9 @@ class FragmentSearch : Fragment() {
 
         etext_search!!.setOnEditorActionListener { _, actionId, _ ->
             return@setOnEditorActionListener when (actionId) {
-                EditorInfo.IME_ACTION_SEND -> {
-                    Log.d("@@@@","!!!!")
+                EditorInfo.IME_ACTION_SEARCH -> {
+                    val intent = Intent(requireContext().applicationContext, ActivitySearch::class.java)
+                    startActivity(intent)
                     true
                 }
                 else -> false

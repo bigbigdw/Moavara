@@ -1,45 +1,70 @@
 package com.example.takealook.Search
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.view.MenuItem
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager.widget.ViewPager
 import com.example.takealook.R
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.example.takealook.databinding.ActivitySearchBinding
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.tabs.TabLayout
 
 class ActivitySearch : AppCompatActivity() {
+
+    var tabNum = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_search)
+        val activitySearchBinding = ActivitySearchBinding.inflate(layoutInflater)
+        setContentView(activitySearchBinding.root)
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-
-        val navView = findViewById<BottomNavigationView>(R.id.nav_view)
-
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_home, R.id.navigation_search, R.id.navigation_notifications
-            )
+        val sectionsPagerAdapter = SectionsPagerAdapter(
+            this, supportFragmentManager
         )
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+
+        val viewPager = activitySearchBinding.viewPager
+        viewPager.adapter = sectionsPagerAdapter
+
+        val fragmentNewTab: TabLayout = activitySearchBinding.postTab
+        fragmentNewTab.setupWithViewPager(viewPager)
+
+        val intent = intent
+
+        if (intent != null) {
+            tabNum = intent.getIntExtra("TabNum",0)
+            viewPager.currentItem = tabNum
+        }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            finish()
-            return true
+    class SectionsPagerAdapter(private val mContext: Context?, fm: FragmentManager?) :
+        FragmentPagerAdapter(
+            fm!!
+        ) {
+        private val tabTitles = intArrayOf(
+            R.string.search_tab1,
+            R.string.app_name,
+            R.string.app_name,
+        )
+
+        override fun getItem(position: Int): Fragment {
+            return FragmentSearchTab.newInstance(position + 1)
         }
-        return super.onOptionsItemSelected(item)
+
+        override fun getPageTitle(position: Int): CharSequence? {
+            return mContext!!.resources.getString(tabTitles[position])
+        }
+
+        override fun getCount(): Int {
+            return tabTitles.size
+        }
     }
+
 }

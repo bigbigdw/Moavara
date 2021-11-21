@@ -8,4 +8,11 @@
     <string name="Search_Text1">검색할 작품을 입력해주세요</string>
     <string name="Search_Text2">더 자세한 검색을 하고 싶으면 아래 버튼을 눌러주세요!</string>
     <string name="Search_Text3">상세 검색</string>
+
+    <string name="search_tab1">조아라</string>
+
+    <string name="TODO"></string>
+    <string name="blank">작품이 없습니다</string>
+    <string name="loading">로딩중...</string>
+
 </resources>
