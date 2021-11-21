@@ -6,7 +6,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitSearch {
-    fun getSearchResultJoara(
+    fun getSearchJoara(
+        page: Int?,
         query: String?,
         collection: String?,
         search: String?,
@@ -24,8 +25,9 @@ object RetrofitSearch {
         return Retrofit.Builder()
             .baseUrl(HELPER.API)
             .addConverterFactory(GsonConverterFactory.create()).build()
-            .create(ServiceJoara::class.java)
+            .create(ServiceSearchJoara::class.java)
             .getRetrofit(
+                page,
                 query,
                 collection,
                 search,

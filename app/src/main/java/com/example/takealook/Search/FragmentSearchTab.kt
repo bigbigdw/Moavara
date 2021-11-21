@@ -60,7 +60,14 @@ class FragmentSearchTab : Fragment() {
         tabviewmodel!!.text.observe(viewLifecycleOwner, { tabNum: String? ->
             when (tabNum) {
                 "TAB1" -> {
-                    SearchJoara(page)
+                    searchJoara(page)
+
+                    adapter!!.setOnItemClickListener(object : AdapterBookSearch.OnItemClickListener {
+                        override fun onItemClick(v: View?, position: Int, value: String?) {
+                            val item: BookListData? = adapter!!.getItem(position)
+                            Log.d("@@@@","HIHI")
+                        }
+                    })
                 }
                 "TAB2" -> {
                     Log.d("@@@@-@", tabNum);
@@ -71,14 +78,16 @@ class FragmentSearchTab : Fragment() {
             }
         })
 
+        recyclerView!!.addOnScrollListener(recyclerViewScroll)
+
         return root
     }
 
-    fun SearchJoara(page: Int?) {
+    fun searchJoara(page: Int?) {
         Log.d("@@@@-!", "!!!!");
 
-        RetrofitSearch.getSearchResultJoara(
-            "사랑", "", "", "", "", "", "", "", "", "", "", "30|25|25|15|15|15|0.5",
+        RetrofitSearch.getSearchJoara(
+            page,"사랑", "", "", "", "", "", "", "", "", "", "", "30|25|25|15|15|15|0.5",
             "1",
         )!!.enqueue(object : Callback<JoaraSearchResult?> {
             override fun onResponse(
@@ -151,6 +160,17 @@ class FragmentSearchTab : Fragment() {
                 Log.d("onFailure", "실패")
             }
         })
+    }
+
+    private var recyclerViewScroll: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            if(!recyclerView.canScrollVertically(1)) {
+                cover!!.visibility = View.VISIBLE
+                page++
+                searchJoara(page)
+            }
+        }
     }
 
     companion object {
