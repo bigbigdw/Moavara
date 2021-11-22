@@ -2,7 +2,8 @@ package com.example.takealook.ETC
 
 interface HELPER {
     companion object {
-        const val API = "https://api.joara.com";
+        const val API_JOARA = "https://api.joara.com";
+        const val API_KAKAO = "https://api2-page.kakao.com";
         //        const val API = "https://api-dev1.joara.com:7443"
         const val API_KEY = "mw_8ba234e7801ba288554ca07ae44c7"
         const val VER = "2.6.3"

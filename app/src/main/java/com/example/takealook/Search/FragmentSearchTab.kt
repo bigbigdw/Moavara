@@ -22,7 +22,7 @@ import java.util.ArrayList
 
 class FragmentSearchTab : Fragment() {
     private var adapter: AdapterBookSearch? = null
-    private val items = ArrayList<BookListData?>()
+    private val searchItems = ArrayList<BookListData?>()
     var linearLayoutManager: LinearLayoutManager? = null
     var recyclerView: RecyclerView? = null
     var btnSearchDtail: AppCompatButton? = null
@@ -33,6 +33,7 @@ class FragmentSearchTab : Fragment() {
     var blank: LinearLayout? = null
 
     private var tabviewmodel: TabViewModel? = null
+    var searchType: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +54,7 @@ class FragmentSearchTab : Fragment() {
         val root = inflater.inflate(R.layout.fragment_searchtab, container, false)
         recyclerView = root.findViewById(R.id.rview_Search)
         btnSearchDtail = root.findViewById(R.id.Btn_SearchDetail)
-        adapter = AdapterBookSearch(requireContext(), items)
+        adapter = AdapterBookSearch(requireContext(), searchItems)
         linearLayoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
 
         wrap = root.findViewById(R.id.TabWrap)
@@ -64,16 +65,23 @@ class FragmentSearchTab : Fragment() {
             when (tabNum) {
                 "TAB1" -> {
                     searchJoara(page)
-
+                    searchType = "조아라"
                     adapter!!.setOnItemClickListener(object : AdapterBookSearch.OnItemClickListener {
                         override fun onItemClick(v: View?, position: Int, value: String?) {
                             val item: BookListData? = adapter!!.getItem(position)
-                            Log.d("@@@@","HIHI")
+                            Log.d("@@@@","조아라")
                         }
                     })
                 }
                 "TAB2" -> {
-                    Log.d("@@@@-@", tabNum);
+                    searchKakao(page-1)
+                    searchType = "카카오"
+                    adapter!!.setOnItemClickListener(object : AdapterBookSearch.OnItemClickListener {
+                        override fun onItemClick(v: View?, position: Int, value: String?) {
+                            val item: BookListData? = adapter!!.getItem(position)
+                            Log.d("@@@@","카카오")
+                        }
+                    })
                 }
                 "TAB3" -> {
                     Log.d("@@@@-#", tabNum);
@@ -135,7 +143,7 @@ class FragmentSearchTab : Fragment() {
                                 val bookCode = books[i].bookCode
                                 val categoryKoName = books[i].categoryKoName
 
-                                items.add(
+                                searchItems.add(
                                     BookListData(
                                         writerName,
                                         subject,
@@ -170,13 +178,81 @@ class FragmentSearchTab : Fragment() {
         })
     }
 
+    fun searchKakao(page: Int?) {
+        RetrofitSearch.postSearchKakao(
+            page,"사랑",11)!!.enqueue(object : Callback<SearchResultKakao?> {
+            override fun onResponse(
+                call: Call<SearchResultKakao?>,
+                response: Response<SearchResultKakao?>
+            ) {
+
+                if (response.isSuccessful) {
+                    cover!!.visibility = View.GONE
+                    blank!!.visibility = View.GONE
+
+                    response.body()?.let { it ->
+
+                        val results = it.results
+
+                        if (results != null) {
+                            for (i in results.indices) {
+                                val items = results[i].items
+
+                                    for (j in items!!.indices) {
+                                        val author = items[j].author
+                                        val image_url = "https://dn-img-page.kakao.com/download/resource?kid=" + items[j].image_url
+                                        val publisher_name = items[j].publisher_name
+                                        val sub_category = items[j].sub_category
+                                        val title = items[j].title
+
+                                        searchItems.add(
+                                            BookListData(
+                                                author,
+                                                title,
+                                                image_url,
+                                                "isAdult",
+                                                "isFinish",
+                                                "isPremium",
+                                                "isNobless",
+                                                publisher_name,
+                                                "isFavorite",
+                                                "cntPageRead",
+                                                "cntRecom",
+                                                "cntFavorite",
+                                                "bookCode",
+                                                sub_category,
+                                            )
+                                        )
+                                    }
+                                }
+                            }
+                    }
+                    adapter!!.notifyDataSetChanged()
+                    if (page == 0) {
+                        recyclerView!!.layoutManager = linearLayoutManager
+                        recyclerView!!.adapter = adapter
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<SearchResultKakao?>, t: Throwable) {
+                Log.d("onFailure", "실패")
+            }
+        })
+    }
+
     private var recyclerViewScroll: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
             if(!recyclerView.canScrollVertically(1)) {
                 cover!!.visibility = View.VISIBLE
                 page++
-                searchJoara(page)
+
+                if(searchType.equals("조아라")){
+                    searchJoara(page)
+                } else if(searchType.equals("카카오")){
+                    searchKakao(page-1)
+                }
             }
         }
     }

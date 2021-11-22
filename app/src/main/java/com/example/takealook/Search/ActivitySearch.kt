@@ -50,7 +50,7 @@ class ActivitySearch : AppCompatActivity() {
         ) {
         private val tabTitles = intArrayOf(
             R.string.search_tab1,
-            R.string.app_name,
+            R.string.search_tab2,
             R.string.app_name,
         )
 
