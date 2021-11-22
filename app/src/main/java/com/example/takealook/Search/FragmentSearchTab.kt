@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +25,7 @@ class FragmentSearchTab : Fragment() {
     private val items = ArrayList<BookListData?>()
     var linearLayoutManager: LinearLayoutManager? = null
     var recyclerView: RecyclerView? = null
+    var btnSearchDtail: AppCompatButton? = null
     var page = 1
 
     var wrap: LinearLayout? = null
@@ -50,6 +52,7 @@ class FragmentSearchTab : Fragment() {
 
         val root = inflater.inflate(R.layout.fragment_searchtab, container, false)
         recyclerView = root.findViewById(R.id.rview_Search)
+        btnSearchDtail = root.findViewById(R.id.Btn_SearchDetail)
         adapter = AdapterBookSearch(requireContext(), items)
         linearLayoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
 
@@ -79,6 +82,11 @@ class FragmentSearchTab : Fragment() {
         })
 
         recyclerView!!.addOnScrollListener(recyclerViewScroll)
+
+        btnSearchDtail!!.setOnClickListener{
+            val searchBottomPicker = BottomSheetDialogProcess(requireContext())
+            fragmentManager?.let { searchBottomPicker.show(it, null) }
+        }
 
         return root
     }
