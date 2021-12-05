@@ -1,4 +1,4 @@
-package com.example.takealook
+package com.example.takealook.Main
 
 import android.os.Bundle
 import android.view.MenuItem
@@ -9,9 +9,9 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.example.takealook.databinding.ActivityMainBinding
+import com.example.takealook.R
 
-class MainActivity : AppCompatActivity() {
+class ActivityMain : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
