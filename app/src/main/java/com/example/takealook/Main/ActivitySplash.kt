@@ -19,11 +19,11 @@ class ActivitySplash : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-//        startLoading()
+        startLoading()
 
-        Thread {
-            test()
-        }.start()
+//        Thread {
+//            test()
+//        }.start()
     }
 
     @Throws(IOException::class)

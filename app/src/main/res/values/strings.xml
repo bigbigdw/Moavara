@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">떼껄룩</string>
     <string name="Title_Search">검색</string>
+    <string name="Title_Best">베스트</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
 

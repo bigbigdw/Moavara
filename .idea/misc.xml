@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Best/layout/item_booklist_best.xml" value="0.2969230769230769" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/ETC/layout/activity_splash.xml" value="0.11666666666666667" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/ETC/layout/ddd.xml" value="0.13518518518518519" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/ETC/layout/loading.xml" value="0.13518518518518519" />
@@ -14,9 +15,10 @@
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/drawable/shape_outline_gray.xml" value="0.43703703703703706" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/activity_main.xml" value="0.13322091062394603" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/blank.xml" value="0.2064814814814815" />
+        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_best.xml" value="0.2969230769230769" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_search.xml" value="0.2505399568034557" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_test.xml" value="0.15925925925925927" />
-        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/menu/bottom_nav_menu.xml" value="0.36574074074074076" />
+        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/menu/bottom_nav_menu.xml" value="0.35106382978723405" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.34427083333333336" />
       </map>
     </option>
