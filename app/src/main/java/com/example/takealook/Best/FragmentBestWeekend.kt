@@ -14,6 +14,16 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.ArrayList
+import com.example.takealook.DataBase.DBHelper
+
+import android.database.sqlite.SQLiteDatabase
+import android.content.ContentValues
+
+
+
+
+
+
 
 class FragmentBestWeekend : Fragment() {
 
@@ -30,6 +40,14 @@ class FragmentBestWeekend : Fragment() {
         root = inflater.inflate(R.layout.fragment_best_weekend, container, false)
 
         recyclerView = root.findViewById(R.id.rview_Best)
+
+        val helper = DBHelper(context, "newdb.db", null, 1)
+        val db: SQLiteDatabase = helper.writableDatabase
+        helper.onCreate(db)
+
+        val values = ContentValues()
+        values.put("txt", "HelloAlpaca")
+        db.insert("mytable", null, values)
 
         adapterToday = AdapterBestToday(requireContext(), items)
 
