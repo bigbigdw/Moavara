@@ -18,20 +18,23 @@ class BookListData(
     var categoryKoName: String?
 )
 
-class BookListDataBest(
+class BookListDataBestToday(
     var writer: String ? = null,
     var title: String ? = null,
     var bookImg: String ? = null,
-    var isAdult: String ? = null,
-    var isFinish: String ? = null,
-    var isPremium: String ? = null,
-    var isNobless: String ? = null,
     var intro: String ? = null,
-    var isFav: String ? = null,
     var bookCode: String ? = null,
-    var bookCategory: String ? = null,
     var cntChapter: String ? = null,
     var cntPageRead: String ? = null,
     var cntFavorite: String ? = null,
     var cntRecom: String ? = null,
+    var number: Int ? = null,
+)
+
+class BookListDataBestWeekend(
+    var first: BookListDataBestToday ? = null,
+    var second: BookListDataBestToday ? = null,
+    var third: BookListDataBestToday ? = null,
+    var fourth: BookListDataBestToday ? = null,
+    var fifth: BookListDataBestToday ? = null,
 )

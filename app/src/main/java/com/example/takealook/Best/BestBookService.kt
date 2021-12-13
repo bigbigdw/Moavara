@@ -11,7 +11,6 @@ import retrofit2.http.Query
 interface BookListBestService {
     @GET(API.BEST_BOOK_JOA + HELPER.ETC)
     fun getRetrofit(
-        @Query("token") token: String?,
         @Query("best") best: String?,
         @Query("store") store: String?,
         @Query("category") category: String?,

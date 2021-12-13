@@ -158,7 +158,7 @@ class FragmentSearchTab : Fragment() {
                                         cntRecom,
                                         cntFavorite,
                                         bookCode,
-                                        categoryKoName,
+                                        categoryKoName
                                     )
                                 )
                             }

@@ -1,8 +1,6 @@
 package com.example.takealook.Search
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +13,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class BottomSheetDialogProcess( private val mContext: Context) :
     BottomSheetDialogFragment() {
-
 
     private var tviewTitle: TextView? = null
     private var tviewBody: TextView? = null
@@ -33,7 +30,7 @@ class BottomSheetDialogProcess( private val mContext: Context) :
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val v: View = inflater.inflate(R.layout.bottomsheet_process, container, false)
+        val v: View = inflater.inflate(R.layout.bottomdialog_process, container, false)
 
         focused = mContext.getSharedPreferences("PROCESS", AppCompatActivity.MODE_PRIVATE).getString("FOCUS", "")
 

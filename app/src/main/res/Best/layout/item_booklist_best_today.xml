@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llayout_Wrap"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="0dp"
+    android:layout_marginEnd="0dp"
+    android:layout_marginBottom="8dp"
+    android:orientation="horizontal"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <ImageView
+        android:id="@+id/ivew_bookImg"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:adjustViewBounds="true"
+        android:background="@drawable/shape_book_best_day_cover"
+        android:contentDescription="@string/TODO"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/likeit_3" />
+
+
+    <LinearLayout
+        android:id="@+id/BestWrap"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="0dp"
+        android:background="@drawable/shape_book_best_day_text"
+        android:gravity="start|center_vertical"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tview_Num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="12dp"
+                android:textColor="#F6F6F8"
+                android:textSize="24dp"
+                android:textStyle="bold"
+                tools:text="1" />
+
+            <TextView
+                android:id="@+id/tview_Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:layout_weight="1"
+                android:breakStrategy="high_quality"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="#F6F6F8"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                tools:text="Common_BookTitle" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

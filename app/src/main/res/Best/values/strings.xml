@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="Best_Today">오늘의 베스트</string>
+    <string name="Best_Weekend">금주의 베스트</string>
+    <string name="Best_Month">이번달 베스트</string>
+    <string name="Best_Joara1">조회수 : </string>
+    <string name="Best_Joara2">선호작 등록수: </string>
+    <string name="Best_Joara3">작품 추천수 : </string>
+    <string name="Best_BottomDialogBtn">작품 보러가기</string>
+
+    <string name="Best_Weekend1">1주차</string>
+    <string name="Best_Weekend2">2주차</string>
+    <string name="Best_Weekend3">3주차</string>
+    <string name="Best_Weekend4">4주차</string>
+    <string name="Best_Weekend5">5주차</string>
+
+</resources>
