@@ -1,5 +1,7 @@
 package com.example.takealook.Joara
 
+import com.example.takealook.DataBase.JoaraBest
+
 
 class BookListData(
     var writer: String?,
@@ -32,9 +34,5 @@ class BookListDataBestToday(
 )
 
 class BookListDataBestWeekend(
-    var first: BookListDataBestToday ? = null,
-    var second: BookListDataBestToday ? = null,
-    var third: BookListDataBestToday ? = null,
-    var fourth: BookListDataBestToday ? = null,
-    var fifth: BookListDataBestToday ? = null,
+    var item: ArrayList<BookListDataBestToday?>? = null,
 )

@@ -14,27 +14,19 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
 import java.io.IOException
+import java.time.DayOfWeek
+import java.util.*
 
 
 private lateinit var db: DataBaseJoara
+var dayOfMonth = 0
 
 class ActivitySplash : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-
-        // 싱글톤 패턴을 사용하지 않은 경우
-        db = Room.databaseBuilder(
-            applicationContext,
-            DataBaseJoara::class.java,
-            "user-database"
-        ).allowMainThreadQueries() // 그냥 강제로 실행
-            .build()
-
-        addUser()
-
-//        startLoading()
+        startLoading()
 
 //        Thread {
 //            test()
@@ -69,6 +61,15 @@ class ActivitySplash : Activity() {
     private fun startLoading() {
         Handler(Looper.myLooper()!!).postDelayed(
             {
+                val calendar: Calendar = Calendar.getInstance()
+
+//                for (i in 0..30) {
+//                    dayOfMonth = calendar.get(Calendar.DAY_OF_WEEK)
+//                    calendar.add(Calendar.DATE, 1) //1일 더하기
+//                    Log.d("CalendarTest", "dayOfMonth = $dayOfMonth")
+//                }
+
+
                 val novelIntent = Intent(this, ActivityMain::class.java)
                 novelIntent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                 startActivityIfNeeded(novelIntent, 0)
@@ -78,7 +79,7 @@ class ActivitySplash : Activity() {
         )
     }
 
-    private fun addUser() {
+    private fun addJoaraBestDB() {
         var writer = "NAME"
         var title = "AGE"
         var bookImg = "PHONE"
@@ -90,6 +91,9 @@ class ActivitySplash : Activity() {
         var cntRecom = "PHONE"
         var number = 1
 
+
         db.bestDao().insert(JoaraBest(writer, title, bookImg, intro, bookCode, cntChapter, cntPageRead, cntFavorite, cntRecom, number))
     }
+
+
 }

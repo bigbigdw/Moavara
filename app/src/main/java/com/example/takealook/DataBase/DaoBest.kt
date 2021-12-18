@@ -19,7 +19,61 @@ interface BestDao {
     @Query("SELECT * FROM JoaraBest")
     fun getAll(): List<JoaraBest>
 
+    @Query("SELECT * FROM JoaraBest WHERE day = 1")
+    fun getSun(): List<JoaraBest>
+
+    @Query("SELECT * FROM JoaraBest WHERE day = 2")
+    fun getMon(): List<JoaraBest>
+
+    @Query("SELECT * FROM JoaraBest WHERE day = 3")
+    fun getTue(): List<JoaraBest>
+
+    @Query("SELECT * FROM JoaraBest WHERE day = 4")
+    fun getWed(): List<JoaraBest>
+
+    @Query("SELECT * FROM JoaraBest WHERE day = 5")
+    fun getThu(): List<JoaraBest>
+
+    @Query("SELECT * FROM JoaraBest WHERE day = 6")
+    fun getFri(): List<JoaraBest>
+
+    @Query("SELECT * FROM JoaraBest WHERE day = 7")
+    fun getSat(): List<JoaraBest>
+
+    @Query("SELECT * FROM JoaraBest WHERE week = 1")
+    fun getMonthFirst(): List<JoaraBest>
+
+    @Query("SELECT * FROM JoaraBest WHERE week = 2")
+    fun getMonthSecond(): List<JoaraBest>
+
+    @Query("SELECT * FROM JoaraBest WHERE week = 3")
+    fun getMonthThird(): List<JoaraBest>
+
+    @Query("SELECT * FROM JoaraBest WHERE week = 4")
+    fun getMonthFourth(): List<JoaraBest>
+
+    @Query("SELECT * FROM JoaraBest WHERE week = 5")
+    fun getMonthFifth(): List<JoaraBest>
+
+    @Query("SELECT * FROM JoaraBest WHERE point = 5")
+    fun getFirst(): List<JoaraBest>
+
+    @Query("SELECT * FROM JoaraBest WHERE point = 4")
+    fun getSecond(): List<JoaraBest>
+
+    @Query("SELECT * FROM JoaraBest WHERE point = 3")
+    fun getThird(): List<JoaraBest>
+
+    @Query("SELECT * FROM JoaraBest WHERE point = 2")
+    fun getFourth(): List<JoaraBest>
+
+    @Query("SELECT * FROM JoaraBest WHERE point = 1")
+    fun getFifth(): List<JoaraBest>
+
+
     @Insert
     fun insert(user: JoaraBest)
 
+    @Delete
+    fun delete(user: JoaraBest)
 }

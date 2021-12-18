@@ -24,6 +24,9 @@ data class JoaraBest (
     var cntFavorite: String ? = null,
     var cntRecom: String ? = null,
     var number: Int ? = null,
+    var day: Int ? = null,
+    var week: Int ? = null,
+    var point: Int ? = null,
 ){
     @PrimaryKey(autoGenerate = true) var id: Int = 0
 }

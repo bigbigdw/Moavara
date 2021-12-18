@@ -5,15 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.takealook.Joara.BookListDataBestToday
 import com.example.takealook.R
 import java.util.ArrayList
 
-class AdapterBestToday(private val mContext: Context, items: List<BookListDataBestToday?>?) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+class AdapterBestWeekendSub(private val mContext: Context, items: List<BookListDataBestToday?>?) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var holder: ArrayList<BookListDataBestToday?>? = items as ArrayList<BookListDataBestToday?>?
 
     interface OnItemClickListener {
@@ -27,7 +27,7 @@ class AdapterBestToday(private val mContext: Context, items: List<BookListDataBe
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_booklist_best_today, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_booklist_best_weekend_sub, parent, false)
         return MainBookViewHolder(view)
     }
 
@@ -38,11 +38,7 @@ class AdapterBestToday(private val mContext: Context, items: List<BookListDataBe
 
             Glide.with(holder.itemView.context)
                 .load(item!!.bookImg)
-                .circleCrop()
                 .into(holder.image)
-
-            holder.title.text = this.holder!![position]!!.title
-            holder.number.text = this.holder!![position]!!.number.toString()
 
         }
     }
@@ -53,14 +49,12 @@ class AdapterBestToday(private val mContext: Context, items: List<BookListDataBe
 
     inner class MainBookViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        var image: ImageView = itemView.findViewById(R.id.ivew_bookImg)
-        var title: TextView = itemView.findViewById(R.id.tview_Title)
-        var number: TextView = itemView.findViewById(R.id.tview_Num)
-        var llayoutWrap: LinearLayout = itemView.findViewById(R.id.llayout_Wrap)
+        var image: ImageView = itemView.findViewById(R.id.iview_BookImg)
+        var cviewWrap: CardView = itemView.findViewById(R.id.cview_Wrap)
 
         init {
 
-            llayoutWrap.setOnClickListener { v: View? ->
+            cviewWrap.setOnClickListener { v: View? ->
                 val pos = adapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
                     listener!!.onItemClick(v, pos)

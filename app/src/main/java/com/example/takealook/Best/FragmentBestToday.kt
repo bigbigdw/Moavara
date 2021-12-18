@@ -8,20 +8,29 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
+import com.example.takealook.DataBase.DataBaseJoara
+import com.example.takealook.DataBase.JoaraBest
 import com.example.takealook.Joara.BookListDataBestToday
 import com.example.takealook.R
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.ArrayList
+import java.util.*
 
 class FragmentBestToday : Fragment() {
+    private lateinit var db: DataBaseJoara
 
     private var adapterToday: AdapterBestToday? = null
     private val items = ArrayList<BookListDataBestToday?>()
     var recyclerView: RecyclerView? = null
 
     lateinit var root: View
+
+    var day = 0
+    var week = 0
+    var date = 0
+    var monthly = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,6 +43,23 @@ class FragmentBestToday : Fragment() {
         adapterToday = AdapterBestToday(requireContext(), items)
 
         getBookListBest(recyclerView)
+
+        day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
+        week = Calendar.getInstance().get(Calendar.DAY_OF_WEEK_IN_MONTH)
+        date = Calendar.getInstance().get(Calendar.DATE)
+        monthly = Calendar.getInstance().get(Calendar.MONTH)
+
+        Log.d("@@@@", "day = $day")
+        Log.d("@@@@", "week = $week")
+        Log.d("@@@@", "date = $date")
+        Log.d("@@@@", "monthly = $monthly")
+
+        db = Room.databaseBuilder(
+            requireContext(),
+            DataBaseJoara::class.java,
+            "user-database"
+        ).allowMainThreadQueries()
+            .build()
 
         return root
     }
@@ -66,6 +92,10 @@ class FragmentBestToday : Fragment() {
                             val cntPageRead = books[i].cntPageRead
                             val cntFavorite = books[i].cntFavorite
                             val cntRecom = books[i].cntRecom
+
+//                            if(i < 10){
+//                                db.bestDao().insert(JoaraBest(writerName, subject, bookImg, intro, bookCode, cntChapter, cntPageRead, cntFavorite, cntRecom, i + 1, 7, 1, 10 - i))
+//                            }
 
                             items!!.add(
                                     BookListDataBestToday(

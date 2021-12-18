@@ -1,7 +1,6 @@
 package com.example.takealook.Best
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,25 +9,31 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.takealook.Joara.BookListDataBestToday
 import com.example.takealook.R
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.util.ArrayList
-import com.example.takealook.DataBase.DBHelper
 
-import android.database.sqlite.SQLiteDatabase
-import android.content.ContentValues
-
-
-
-
-
+import androidx.room.Room
+import com.example.takealook.DataBase.DataBaseJoara
+import com.example.takealook.Joara.BookListDataBestWeekend
 
 
 class FragmentBestWeekend : Fragment() {
 
-    private var adapterToday: AdapterBestToday? = null
-    private val items = ArrayList<BookListDataBestToday?>()
+
+    private lateinit var db: DataBaseJoara
+
+    private var adapterWeek: AdapterBestWeekend? = null
+    private val weekitems = ArrayList<BookListDataBestToday?>()
+
+    private val items = ArrayList<ArrayList<BookListDataBestToday?>?>()
+
+    private val itemsMon = ArrayList<BookListDataBestToday?>()
+    private val itemsTue = ArrayList<BookListDataBestToday?>()
+    private val itemsWed = ArrayList<BookListDataBestToday?>()
+    private val itemsThur = ArrayList<BookListDataBestToday?>()
+    private val itemsFri = ArrayList<BookListDataBestToday?>()
+    private val itemsSat = ArrayList<BookListDataBestToday?>()
+    private val itemsSun = ArrayList<BookListDataBestToday?>()
+
     var recyclerView: RecyclerView? = null
 
     lateinit var root: View
@@ -41,84 +46,166 @@ class FragmentBestWeekend : Fragment() {
 
         recyclerView = root.findViewById(R.id.rview_Best)
 
-        val helper = DBHelper(context, "newdb.db", null, 1)
-        val db: SQLiteDatabase = helper.writableDatabase
-        helper.onCreate(db)
+        adapterWeek = AdapterBestWeekend(requireContext(), items)
 
-        val values = ContentValues()
-        values.put("txt", "HelloAlpaca")
-        db.insert("mytable", null, values)
+        db = Room.databaseBuilder(
+            requireContext(),
+            DataBaseJoara::class.java,
+            "user-database"
+        ).allowMainThreadQueries()
+            .build()
 
-        adapterToday = AdapterBestToday(requireContext(), items)
+        val linearLayoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-        getBookListBest(recyclerView)
+        val mon = db.bestDao().getMon()
+        val tue = db.bestDao().getTue()
+        val wed = db.bestDao().getWed()
+        val thur = db.bestDao().getThu()
+        val fri = db.bestDao().getFri()
+        val sat = db.bestDao().getSat()
+        val sun = db.bestDao().getSun()
+
+        for (i in mon.indices) {
+            itemsMon.add(
+                BookListDataBestToday(
+                    mon[i].writer,
+                    mon[i].title,
+                    mon[i].bookImg,
+                    mon[i].intro,
+                    mon[i].bookCode,
+                    mon[i].cntChapter,
+                    mon[i].cntPageRead,
+                    mon[i].cntFavorite,
+                    mon[i].cntRecom,
+                    i + 1
+                )
+            )
+        }
+
+        items.add(itemsMon)
+
+        for (i in tue.indices) {
+            itemsTue.add(
+                BookListDataBestToday(
+                    tue[i].writer,
+                    tue[i].title,
+                    tue[i].bookImg,
+                    tue[i].intro,
+                    tue[i].bookCode,
+                    tue[i].cntChapter,
+                    tue[i].cntPageRead,
+                    tue[i].cntFavorite,
+                    tue[i].cntRecom,
+                    i + 1
+                )
+            )
+        }
+
+        items.add(itemsTue)
+
+        for (i in wed.indices) {
+            itemsWed.add(
+                BookListDataBestToday(
+                    wed[i].writer,
+                    wed[i].title,
+                    wed[i].bookImg,
+                    wed[i].intro,
+                    wed[i].bookCode,
+                    wed[i].cntChapter,
+                    wed[i].cntPageRead,
+                    wed[i].cntFavorite,
+                    wed[i].cntRecom,
+                    i + 1
+                )
+            )
+        }
+
+        items.add(itemsWed)
+
+        for (i in thur.indices) {
+            itemsThur.add(
+                BookListDataBestToday(
+                    thur[i].writer,
+                    thur[i].title,
+                    thur[i].bookImg,
+                    thur[i].intro,
+                    thur[i].bookCode,
+                    thur[i].cntChapter,
+                    thur[i].cntPageRead,
+                    thur[i].cntFavorite,
+                    thur[i].cntRecom,
+                    i + 1
+                )
+            )
+        }
+
+        items.add(itemsThur)
+
+        for (i in fri.indices) {
+            itemsFri.add(
+                BookListDataBestToday(
+                    fri[i].writer,
+                    fri[i].title,
+                    fri[i].bookImg,
+                    fri[i].intro,
+                    fri[i].bookCode,
+                    fri[i].cntChapter,
+                    fri[i].cntPageRead,
+                    fri[i].cntFavorite,
+                    fri[i].cntRecom,
+                    i + 1
+                )
+            )
+        }
+
+        items.add(itemsFri)
+
+        for (i in sat.indices) {
+            itemsSat.add(
+                BookListDataBestToday(
+                    sat[i].writer,
+                    sat[i].title,
+                    sat[i].bookImg,
+                    sat[i].intro,
+                    sat[i].bookCode,
+                    sat[i].cntChapter,
+                    sat[i].cntPageRead,
+                    sat[i].cntFavorite,
+                    sat[i].cntRecom,
+                    i + 1
+                )
+            )
+        }
+
+        items.add(itemsSat)
+
+        for (i in sun.indices) {
+            itemsSun.add(
+                BookListDataBestToday(
+                    sun[i].writer,
+                    sun[i].title,
+                    sun[i].bookImg,
+                    sun[i].intro,
+                    sun[i].bookCode,
+                    sun[i].cntChapter,
+                    sun[i].cntPageRead,
+                    sun[i].cntFavorite,
+                    sun[i].cntRecom,
+                    i + 1
+                )
+            )
+        }
+
+        items.add(itemsSun)
+
+        recyclerView!!.layoutManager = linearLayoutManager
+        recyclerView!!.adapter = adapterWeek
+        adapterWeek!!.notifyDataSetChanged()
+
 
         return root
     }
 
-    private fun getBookListBest(recyclerView: RecyclerView?) {
-        val linearLayoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        val call: Call<BookListBestResult?>? = RetrofitBookList.getBookBest( "today", "", "0")
-
-
-        call!!.enqueue(object : Callback<BookListBestResult?> {
-            override fun onResponse(
-                call: Call<BookListBestResult?>,
-                response: Response<BookListBestResult?>
-            ) {
-
-                if (response.isSuccessful) {
-                    response.body()?.let { it ->
-                        val books = it.books
-
-                        for (i in books!!.indices) {
-
-                            val writerName = books[i].writerName
-                            val subject = books[i].subject
-                            val bookImg = books[i].bookImg
-                            val isAdult = books[i].isAdult
-                            val isFinish = books[i].isFinish
-                            val isPremium = books[i].isPremium
-                            val isNobless = books[i].isNobless
-                            val intro = books[i].intro
-                            val isFavorite = books[i].isFavorite
-
-                            items!!.add(
-                                BookListDataBestToday(
-                                    writerName,
-                                    subject,
-                                    bookImg,
-                                    isAdult,
-                                    isFinish,
-                                    isPremium,
-                                    isNobless,
-                                    intro,
-                                    isFavorite,
-                                    i + 1
-                                )
-                            )
-                        }
-                    }
-                    recyclerView!!.layoutManager = linearLayoutManager
-                    recyclerView.adapter = adapterToday
-                    adapterToday!!.notifyDataSetChanged()
-                }
-            }
-
-            override fun onFailure(call: Call<BookListBestResult?>, t: Throwable) {
-                Log.d("onFailure", "실패")
-            }
-        })
-
-        adapterToday!!.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
-            override fun onItemClick(v: View?, position: Int) {
-                val item: BookListDataBestToday? = adapterToday!!.getItem(position)
-
-                val mBottomDialogBest = BottomDialogBest(requireContext(), item)
-                fragmentManager?.let { mBottomDialogBest.show(it, null) }
-            }
-        })
-    }
 }
