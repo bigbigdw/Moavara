@@ -6,6 +6,9 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import androidx.room.Room
+import com.example.takealook.DataBase.User
+import com.example.takealook.DataBase.UserDatabase
 import com.example.takealook.Joara.BookListData
 import com.example.takealook.R
 import org.jsoup.Jsoup
@@ -15,11 +18,27 @@ import org.jsoup.select.Elements
 import java.io.IOException
 
 
+private lateinit var db: UserDatabase
+
 class ActivitySplash : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-        startLoading()
+
+
+        // 싱글톤 패턴을 사용하지 않은 경우
+        db = Room.databaseBuilder(
+            applicationContext,
+            UserDatabase::class.java,
+            "user-database"
+        ).allowMainThreadQueries() // 그냥 강제로 실행
+            .build()
+
+        addUser()
+        refreshUserList()
+
+
+//        startLoading()
 
 //        Thread {
 //            test()
@@ -61,5 +80,24 @@ class ActivitySplash : Activity() {
             },
             1000
         )
+    }
+
+    private fun addUser() {
+        var name = "NAME"
+        var age = "AGE"
+        var phone = "PHONE"
+
+        db.userDao().insert(User(name, age, phone))
+    }
+
+    private fun refreshUserList() {
+        var userList = "유저 리스트\n"
+
+        val users = db.userDao().getAll()
+
+        for (user in users) {
+            userList += "이름: ${user.name}, 나이: ${user.age}, 번호: ${user.phone}\n"
+        }
+
     }
 }

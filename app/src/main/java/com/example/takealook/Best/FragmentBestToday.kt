@@ -60,24 +60,24 @@ class FragmentBestToday : Fragment() {
                             val writerName = books[i].writerName
                             val subject = books[i].subject
                             val bookImg = books[i].bookImg
-                            val isAdult = books[i].isAdult
-                            val isFinish = books[i].isFinish
-                            val isPremium = books[i].isPremium
-                            val isNobless = books[i].isNobless
                             val intro = books[i].intro
-                            val isFavorite = books[i].isFavorite
+                            val bookCode = books[i].bookCode
+                            val cntChapter = books[i].cntChapter
+                            val cntPageRead = books[i].cntPageRead
+                            val cntFavorite = books[i].cntFavorite
+                            val cntRecom = books[i].cntRecom
 
                             items!!.add(
                                     BookListDataBestToday(
                                         writerName,
                                         subject,
                                         bookImg,
-                                        isAdult,
-                                        isFinish,
-                                        isPremium,
-                                        isNobless,
                                         intro,
-                                        isFavorite,
+                                        bookCode,
+                                        cntChapter,
+                                        cntPageRead,
+                                        cntFavorite,
+                                        cntRecom,
                                         i + 1
                                     )
                                 )
