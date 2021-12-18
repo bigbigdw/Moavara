@@ -3,11 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/llayout_Wrap"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginStart="0dp"
-    android:layout_marginEnd="0dp"
-    android:layout_marginBottom="8dp"
     android:orientation="horizontal"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
@@ -15,24 +12,30 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tview_week"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="0dp"
-            android:layout_marginEnd="8dp"
-            android:text="월"
+            android:layout_gravity="center_horizontal"
             android:textColor="#FDFDFD"
             android:textSize="20dp"
             android:textStyle="bold" />
 
+        <ImageView
+            android:id="@+id/iview_Cover"
+            android:layout_width="91dp"
+            android:layout_height="91dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/TODO"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/likeit_3" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rview_BestWeek"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

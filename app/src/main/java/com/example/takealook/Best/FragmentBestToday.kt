@@ -61,6 +61,8 @@ class FragmentBestToday : Fragment() {
         ).allowMainThreadQueries()
             .build()
 
+        db.bestDao().deleteWeek(day)
+
         return root
     }
 
@@ -93,9 +95,9 @@ class FragmentBestToday : Fragment() {
                             val cntFavorite = books[i].cntFavorite
                             val cntRecom = books[i].cntRecom
 
-//                            if(i < 10){
-//                                db.bestDao().insert(JoaraBest(writerName, subject, bookImg, intro, bookCode, cntChapter, cntPageRead, cntFavorite, cntRecom, i + 1, 7, 1, 10 - i))
-//                            }
+                            if(i < 10){
+                                db.bestDao().insert(JoaraBest(writerName, subject, bookImg, intro, bookCode, cntChapter, cntPageRead, cntFavorite, cntRecom, i + 1, day, 1, 10 - i))
+                            }
 
                             items!!.add(
                                     BookListDataBestToday(

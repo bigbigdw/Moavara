@@ -16,6 +16,10 @@ interface UserDao {
 
 @Dao
 interface BestDao {
+
+    @Query("DELETE FROM JoaraBest WHERE day = :day")
+    fun deleteWeek(day: Int)
+
     @Query("SELECT * FROM JoaraBest")
     fun getAll(): List<JoaraBest>
 
