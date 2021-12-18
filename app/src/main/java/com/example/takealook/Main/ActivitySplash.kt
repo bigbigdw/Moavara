@@ -7,18 +7,16 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import androidx.room.Room
-import com.example.takealook.DataBase.User
-import com.example.takealook.DataBase.UserDatabase
-import com.example.takealook.Joara.BookListData
+import com.example.takealook.DataBase.DataBaseJoara
+import com.example.takealook.DataBase.JoaraBest
 import com.example.takealook.R
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 import java.io.IOException
 
 
-private lateinit var db: UserDatabase
+private lateinit var db: DataBaseJoara
 
 class ActivitySplash : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,14 +27,12 @@ class ActivitySplash : Activity() {
         // 싱글톤 패턴을 사용하지 않은 경우
         db = Room.databaseBuilder(
             applicationContext,
-            UserDatabase::class.java,
+            DataBaseJoara::class.java,
             "user-database"
         ).allowMainThreadQueries() // 그냥 강제로 실행
             .build()
 
         addUser()
-        refreshUserList()
-
 
 //        startLoading()
 
@@ -83,21 +79,17 @@ class ActivitySplash : Activity() {
     }
 
     private fun addUser() {
-        var name = "NAME"
-        var age = "AGE"
-        var phone = "PHONE"
+        var writer = "NAME"
+        var title = "AGE"
+        var bookImg = "PHONE"
+        var intro = "NAME"
+        var bookCode = "AGE"
+        var cntChapter = "PHONE"
+        var cntPageRead = "NAME"
+        var cntFavorite = "AGE"
+        var cntRecom = "PHONE"
+        var number = 1
 
-        db.userDao().insert(User(name, age, phone))
-    }
-
-    private fun refreshUserList() {
-        var userList = "유저 리스트\n"
-
-        val users = db.userDao().getAll()
-
-        for (user in users) {
-            userList += "이름: ${user.name}, 나이: ${user.age}, 번호: ${user.phone}\n"
-        }
-
+        db.bestDao().insert(JoaraBest(writer, title, bookImg, intro, bookCode, cntChapter, cntPageRead, cntFavorite, cntRecom, number))
     }
 }

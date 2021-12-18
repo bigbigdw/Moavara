@@ -9,3 +9,8 @@ import androidx.room.RoomDatabase
 abstract class UserDatabase: RoomDatabase() {
     abstract fun userDao(): UserDao
 }
+
+@Database(entities = [JoaraBest::class], version = 1)
+abstract class DataBaseJoara: RoomDatabase() {
+    abstract fun bestDao(): BestDao
+}
