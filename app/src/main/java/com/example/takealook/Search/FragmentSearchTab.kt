@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.takealook.Joara.*
 import com.example.takealook.R
 import com.example.takealook.Util.TabViewModel
 import retrofit2.Call

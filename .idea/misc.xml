@@ -31,10 +31,17 @@
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/item_booklist_best_weekend_sub.xml" value="0.32864583333333336" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/menu/bottom_nav_menu.xml" value="0.35106382978723405" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.34427083333333336" />
+        <entry key="app/src/main/res/ETC/layout/activity_intro.xml" value="0.1" />
+        <entry key="app/src/main/res/Search/layout/activity_search.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_best_today.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_best_weekend.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_event.xml" value="0.1" />
+        <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.1" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

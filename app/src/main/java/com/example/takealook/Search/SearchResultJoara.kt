@@ -1,4 +1,4 @@
-package com.example.takealook.Joara
+package com.example.takealook.Search
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName

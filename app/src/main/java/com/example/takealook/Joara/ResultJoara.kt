@@ -1,21 +1,48 @@
-package com.example.takealook.Best
+package com.example.takealook.Joara
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-//북 리스트 C
-class BookListBestResult {
+//조아라 이밴트 결과
+class JoaraEventResult {
+    @SerializedName("banner")
+    @Expose
+    val banner: List<JoaraEventValue>? = null
+
+}
+
+//조아라 이밴트 결과 상세
+class JoaraEventValue {
+    @SerializedName("idx")
+    @Expose
+    var idx: String? = null
+
+    @SerializedName("imgfile")
+    @Expose
+    var imgfile: String? = null
+
+    @SerializedName("is_banner_cnt")
+    @Expose
+    var is_banner_cnt: String? = null
+
+    @SerializedName("joaralink")
+    @Expose
+    var joaralink: String? = null
+}
+
+//조아라 베스트
+class JoaraBestListResult {
     @SerializedName("books")
     @Expose
-    val books: List<BookListBestValue>? = null
+    val bookLists: List<JoaraBestListValue>? = null
 
     @SerializedName("total_cnt")
     @Expose
     var totalCnt: String? = null
 }
 
-//작품 상세
-class BookListBestValue {
+//조아라 베스트
+class JoaraBestListValue {
     @SerializedName("writer_name")
     @Expose
     var writerName: String? = null

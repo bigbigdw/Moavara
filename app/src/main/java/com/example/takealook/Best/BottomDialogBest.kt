@@ -12,7 +12,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.bumptech.glide.Glide
-import com.example.takealook.Joara.BookListDataBestToday
+import com.example.takealook.Search.BookListDataBestToday
 import com.example.takealook.R
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 

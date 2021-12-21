@@ -1,4 +1,4 @@
-package com.example.takealook.Joara
+package com.example.takealook.Search
 
 import com.example.takealook.ETC.HELPER
 import retrofit2.Call

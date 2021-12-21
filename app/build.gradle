@@ -36,7 +36,7 @@ android {
     sourceSets {
         main {
             res {
-                srcDirs 'src\\main\\res', 'src\\main\\res\\Search', 'src\\main\\res\\ETC', 'src\\main\\res\\Best'
+                srcDirs 'src\\main\\res', 'src\\main\\res\\Search', 'src\\main\\res\\ETC', 'src\\main\\res\\Best', 'src/main/res', 'src/main/res/Event'
             }
             assets {
                 srcDirs 'src\\main\\assets', 'src\\main\\assets\\Best'

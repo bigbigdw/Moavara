@@ -1,6 +1,4 @@
-package com.example.takealook.Joara
-
-import com.example.takealook.DataBase.JoaraBest
+package com.example.takealook.Search
 
 
 class BookListData(

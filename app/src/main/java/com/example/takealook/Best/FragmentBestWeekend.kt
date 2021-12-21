@@ -7,13 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.takealook.Joara.BookListDataBestToday
+import com.example.takealook.Search.BookListDataBestToday
 import com.example.takealook.R
 import java.util.ArrayList
 
 import androidx.room.Room
 import com.example.takealook.DataBase.DataBaseJoara
-import com.example.takealook.Joara.BookListDataBestWeekend
 
 
 class FragmentBestWeekend : Fragment() {

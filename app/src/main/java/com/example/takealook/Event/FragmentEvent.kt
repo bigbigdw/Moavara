@@ -1,4 +1,4 @@
-package com.example.takealook.Best
+package com.example.takealook.Event
 
 import android.os.Bundle
 import android.util.Log
@@ -9,23 +9,26 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
+import com.example.takealook.Best.AdapterBestToday
+import com.example.takealook.Best.BottomDialogBest
 import com.example.takealook.DataBase.DataBaseJoara
 import com.example.takealook.DataBase.JoaraBest
 import com.example.takealook.Joara.JoaraBestListResult
 import com.example.takealook.Joara.RetrofitJoara
-import com.example.takealook.Search.BookListDataBestToday
 import com.example.takealook.R
+import com.example.takealook.Search.BookListDataBestToday
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
 
-class FragmentBestToday : Fragment() {
+class FragmentEvent : Fragment() {
     private lateinit var db: DataBaseJoara
 
     private var adapterToday: AdapterBestToday? = null
     private val items = ArrayList<BookListDataBestToday?>()
-    var recyclerView: RecyclerView? = null
+    var recyclerViewLeft: RecyclerView? = null
+    var recyclerViewRight: RecyclerView? = null
 
     lateinit var root: View
 
@@ -38,13 +41,14 @@ class FragmentBestToday : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        root = inflater.inflate(R.layout.fragment_best_today, container, false)
+        root = inflater.inflate(R.layout.fragment_event, container, false)
 
-        recyclerView = root.findViewById(R.id.rview_Best)
+        recyclerViewLeft = root.findViewById(R.id.rview_Left)
+        recyclerViewRight = root.findViewById(R.id.rview_Right)
 
         adapterToday = AdapterBestToday(requireContext(), items)
 
-        getBookListBest(recyclerView)
+        getBookListBest(recyclerViewLeft)
 
         day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
         week = Calendar.getInstance().get(Calendar.DAY_OF_WEEK_IN_MONTH)
@@ -101,19 +105,19 @@ class FragmentBestToday : Fragment() {
                             }
 
                             items!!.add(
-                                    BookListDataBestToday(
-                                        writerName,
-                                        subject,
-                                        bookImg,
-                                        intro,
-                                        bookCode,
-                                        cntChapter,
-                                        cntPageRead,
-                                        cntFavorite,
-                                        cntRecom,
-                                        i + 1
-                                    )
+                                BookListDataBestToday(
+                                    writerName,
+                                    subject,
+                                    bookImg,
+                                    intro,
+                                    bookCode,
+                                    cntChapter,
+                                    cntPageRead,
+                                    cntFavorite,
+                                    cntRecom,
+                                    i + 1
                                 )
+                            )
                         }
                     }
                     recyclerView!!.layoutManager = linearLayoutManager

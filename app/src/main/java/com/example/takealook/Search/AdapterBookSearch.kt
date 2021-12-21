@@ -1,4 +1,4 @@
-package com.example.takealook.Joara
+package com.example.takealook.Search
 
 import android.content.Context
 import android.view.LayoutInflater
