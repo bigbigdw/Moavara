@@ -18,6 +18,7 @@ import com.example.takealook.R
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
 import java.util.*
 
 class FragmentBestToday : Fragment() {
@@ -32,7 +33,10 @@ class FragmentBestToday : Fragment() {
     var day = 0
     var week = 0
     var date = 0
-    var monthly = 0
+    var month = 0
+    var mNow: Long = 0
+    var mDate: Date? = null
+    var mFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,12 +53,14 @@ class FragmentBestToday : Fragment() {
         day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
         week = Calendar.getInstance().get(Calendar.DAY_OF_WEEK_IN_MONTH)
         date = Calendar.getInstance().get(Calendar.DATE)
-        monthly = Calendar.getInstance().get(Calendar.MONTH)
+        month = Calendar.getInstance().get(Calendar.MONTH)
 
+        Log.d("@@@@", "locale = " + requireContext().resources.configuration.locales.get(0))
+        Log.d("@@@@", "time = " + mFormat.format(Date(System.currentTimeMillis())))
         Log.d("@@@@", "day = $day")
         Log.d("@@@@", "week = $week")
         Log.d("@@@@", "date = $date")
-        Log.d("@@@@", "monthly = $monthly")
+        Log.d("@@@@", "monthly = $month")
 
         db = Room.databaseBuilder(
             requireContext(),
@@ -72,7 +78,7 @@ class FragmentBestToday : Fragment() {
         val linearLayoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        val call: Call<JoaraBestListResult?>? = RetrofitJoara.getJoaraBookBest( "today", "", "0")
+        val call: Call<JoaraBestListResult?>? = RetrofitJoara.getJoaraBookBest("today", "", "0")
 
         call!!.enqueue(object : Callback<JoaraBestListResult?> {
             override fun onResponse(
@@ -96,12 +102,9 @@ class FragmentBestToday : Fragment() {
                             val cntFavorite = books[i].cntFavorite
                             val cntRecom = books[i].cntRecom
 
-                            if(i < 10){
-                                db.bestDao().insert(JoaraBest(writerName, subject, bookImg, intro, bookCode, cntChapter, cntPageRead, cntFavorite, cntRecom, i + 1, day, 1, 10 - i))
-                            }
-
-                            items!!.add(
-                                    BookListDataBestToday(
+                            if (i < 10) {
+                                db.bestDao().insert(
+                                    JoaraBest(
                                         writerName,
                                         subject,
                                         bookImg,
@@ -111,9 +114,30 @@ class FragmentBestToday : Fragment() {
                                         cntPageRead,
                                         cntFavorite,
                                         cntRecom,
-                                        i + 1
+                                        i + 1,
+                                        day,
+                                        week,
+                                        date,
+                                        month,
+                                        10 - i
                                     )
                                 )
+                            }
+
+                            items!!.add(
+                                BookListDataBestToday(
+                                    writerName,
+                                    subject,
+                                    bookImg,
+                                    intro,
+                                    bookCode,
+                                    cntChapter,
+                                    cntPageRead,
+                                    cntFavorite,
+                                    cntRecom,
+                                    i + 1
+                                )
+                            )
                         }
                     }
                     recyclerView!!.layoutManager = linearLayoutManager

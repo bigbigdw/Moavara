@@ -39,7 +39,6 @@ class AdapterEvent(items: List<EventData?>?) :
 
             Glide.with(holder.itemView.context)
                 .load(item!!.imgfile)
-                .circleCrop()
                 .into(holder.image)
 
 

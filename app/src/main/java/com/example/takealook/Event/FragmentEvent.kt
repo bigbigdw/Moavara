@@ -53,6 +53,8 @@ class FragmentEvent : Fragment() {
     private fun getEvent(recyclerViewLeft: RecyclerView?, recyclerViewRight: RecyclerView?) {
         val linearLayoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        val linearLayoutManager2 =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         val call: Call<JoaraEventResult?>? = RetrofitJoara.getJoaraEvent( "0", "app_home_top_banner", "0")
 
@@ -68,12 +70,14 @@ class FragmentEvent : Fragment() {
 
                         for (i in banner!!.indices) {
 
+                            Log.d("@@@@","!!!!")
+
                             val idx = banner[i].idx
                             val imgfile = banner[i].imgfile
                             val is_banner_cnt = banner[i].is_banner_cnt
                             val joaralink = banner[i].joaralink
 
-                            if(i%2 == 1){
+                            if(i%2 != 1){
                                 itemsLeft!!.add(
                                     EventData(
                                         idx,
@@ -98,8 +102,8 @@ class FragmentEvent : Fragment() {
                     recyclerViewLeft.adapter = adapterLeft
                     adapterLeft!!.notifyDataSetChanged()
 
-                    recyclerViewRight!!.layoutManager = linearLayoutManager
-                    recyclerViewRight.adapter = adapterLeft
+                    recyclerViewRight!!.layoutManager = linearLayoutManager2
+                    recyclerViewRight.adapter = adapterRight
                     adapterRight!!.notifyDataSetChanged()
                 }
             }

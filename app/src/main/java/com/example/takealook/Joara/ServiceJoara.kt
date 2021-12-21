@@ -8,7 +8,7 @@ import retrofit2.http.Query
 
 //조아라 이벤트
 interface JoaraEventService {
-    @GET(API.BEST_BOOK_JOA + HELPER.ETC)
+    @GET(API.EVENT_JOA + HELPER.ETC)
     fun getRetrofit(
         @Query("page") page: String?,
         @Query("banner_type") banner_type: String?,

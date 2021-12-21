@@ -14,10 +14,9 @@
 
     <ImageView
         android:id="@+id/ivew_eventImg"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:background="@drawable/shape_book_best_day_cover"
         android:contentDescription="@string/TODO"
         android:scaleType="fitXY"
         app:srcCompat="@drawable/likeit_3" />

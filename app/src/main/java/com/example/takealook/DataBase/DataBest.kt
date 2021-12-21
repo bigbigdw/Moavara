@@ -27,6 +27,8 @@ data class JoaraBest (
     var day: Int ? = null,
     var week: Int ? = null,
     var point: Int ? = null,
+    var date: Int ? = null,
+    var month: Int ? = null,
 ){
     @PrimaryKey(autoGenerate = true) var id: Int = 0
 }
