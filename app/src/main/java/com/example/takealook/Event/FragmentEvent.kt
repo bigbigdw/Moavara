@@ -12,30 +12,26 @@ import androidx.room.Room
 import com.example.takealook.Best.AdapterBestToday
 import com.example.takealook.Best.BottomDialogBest
 import com.example.takealook.DataBase.DataBaseJoara
-import com.example.takealook.DataBase.JoaraBest
-import com.example.takealook.Joara.JoaraBestListResult
+import com.example.takealook.Joara.JoaraEventResult
 import com.example.takealook.Joara.RetrofitJoara
 import com.example.takealook.R
 import com.example.takealook.Search.BookListDataBestToday
+import com.example.takealook.Search.EventData
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
 
 class FragmentEvent : Fragment() {
-    private lateinit var db: DataBaseJoara
 
-    private var adapterToday: AdapterBestToday? = null
-    private val items = ArrayList<BookListDataBestToday?>()
+    private var adapterLeft: AdapterEvent? = null
+    private var adapterRight: AdapterEvent? = null
+    private val itemsLeft = ArrayList<EventData?>()
+    private val itemsRight = ArrayList<EventData?>()
     var recyclerViewLeft: RecyclerView? = null
     var recyclerViewRight: RecyclerView? = null
 
     lateinit var root: View
-
-    var day = 0
-    var week = 0
-    var date = 0
-    var monthly = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,97 +42,88 @@ class FragmentEvent : Fragment() {
         recyclerViewLeft = root.findViewById(R.id.rview_Left)
         recyclerViewRight = root.findViewById(R.id.rview_Right)
 
-        adapterToday = AdapterBestToday(requireContext(), items)
+        adapterLeft = AdapterEvent(itemsLeft)
+        adapterRight = AdapterEvent(itemsRight)
 
-        getBookListBest(recyclerViewLeft)
-
-        day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
-        week = Calendar.getInstance().get(Calendar.DAY_OF_WEEK_IN_MONTH)
-        date = Calendar.getInstance().get(Calendar.DATE)
-        monthly = Calendar.getInstance().get(Calendar.MONTH)
-
-        Log.d("@@@@", "day = $day")
-        Log.d("@@@@", "week = $week")
-        Log.d("@@@@", "date = $date")
-        Log.d("@@@@", "monthly = $monthly")
-
-        db = Room.databaseBuilder(
-            requireContext(),
-            DataBaseJoara::class.java,
-            "user-database"
-        ).allowMainThreadQueries()
-            .build()
-
-        db.bestDao().deleteWeek(day)
+        getEvent(recyclerViewLeft, recyclerViewRight)
 
         return root
     }
 
-    private fun getBookListBest(recyclerView: RecyclerView?) {
+    private fun getEvent(recyclerViewLeft: RecyclerView?, recyclerViewRight: RecyclerView?) {
         val linearLayoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        val call: Call<JoaraBestListResult?>? = RetrofitJoara.getJoaraBookBest( "today", "", "0")
+        val call: Call<JoaraEventResult?>? = RetrofitJoara.getJoaraEvent( "0", "app_home_top_banner", "0")
 
-        call!!.enqueue(object : Callback<JoaraBestListResult?> {
+        call!!.enqueue(object : Callback<JoaraEventResult?> {
             override fun onResponse(
-                call: Call<JoaraBestListResult?>,
-                response: Response<JoaraBestListResult?>
+                call: Call<JoaraEventResult?>,
+                response: Response<JoaraEventResult?>
             ) {
 
                 if (response.isSuccessful) {
                     response.body()?.let { it ->
-                        val books = it.bookLists
+                        val banner = it.banner
 
-                        for (i in books!!.indices) {
+                        for (i in banner!!.indices) {
 
-                            val writerName = books[i].writerName
-                            val subject = books[i].subject
-                            val bookImg = books[i].bookImg
-                            val intro = books[i].intro
-                            val bookCode = books[i].bookCode
-                            val cntChapter = books[i].cntChapter
-                            val cntPageRead = books[i].cntPageRead
-                            val cntFavorite = books[i].cntFavorite
-                            val cntRecom = books[i].cntRecom
+                            val idx = banner[i].idx
+                            val imgfile = banner[i].imgfile
+                            val is_banner_cnt = banner[i].is_banner_cnt
+                            val joaralink = banner[i].joaralink
 
-                            if(i < 10){
-                                db.bestDao().insert(JoaraBest(writerName, subject, bookImg, intro, bookCode, cntChapter, cntPageRead, cntFavorite, cntRecom, i + 1, day, 1, 10 - i))
-                            }
-
-                            items!!.add(
-                                BookListDataBestToday(
-                                    writerName,
-                                    subject,
-                                    bookImg,
-                                    intro,
-                                    bookCode,
-                                    cntChapter,
-                                    cntPageRead,
-                                    cntFavorite,
-                                    cntRecom,
-                                    i + 1
+                            if(i%2 == 1){
+                                itemsLeft!!.add(
+                                    EventData(
+                                        idx,
+                                        imgfile,
+                                        is_banner_cnt,
+                                        joaralink
+                                    )
                                 )
-                            )
+                            } else {
+                                itemsRight!!.add(
+                                    EventData(
+                                        idx,
+                                        imgfile,
+                                        is_banner_cnt,
+                                        joaralink
+                                    )
+                                )
+                            }
                         }
                     }
-                    recyclerView!!.layoutManager = linearLayoutManager
-                    recyclerView.adapter = adapterToday
-                    adapterToday!!.notifyDataSetChanged()
+                    recyclerViewLeft!!.layoutManager = linearLayoutManager
+                    recyclerViewLeft.adapter = adapterLeft
+                    adapterLeft!!.notifyDataSetChanged()
+
+                    recyclerViewRight!!.layoutManager = linearLayoutManager
+                    recyclerViewRight.adapter = adapterLeft
+                    adapterRight!!.notifyDataSetChanged()
                 }
             }
 
-            override fun onFailure(call: Call<JoaraBestListResult?>, t: Throwable) {
+            override fun onFailure(call: Call<JoaraEventResult?>, t: Throwable) {
                 Log.d("onFailure", "실패")
             }
         })
 
-        adapterToday!!.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
+        adapterLeft!!.setOnItemClickListener(object : AdapterEvent.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
-                val item: BookListDataBestToday? = adapterToday!!.getItem(position)
+                val item: EventData? = adapterLeft!!.getItem(position)
 
-                val mBottomDialogBest = BottomDialogBest(requireContext(), item)
-                fragmentManager?.let { mBottomDialogBest.show(it, null) }
+//                val mBottomDialogBest = BottomDialogBest(requireContext(), item)
+//                fragmentManager?.let { mBottomDialogBest.show(it, null) }
+            }
+        })
+
+        adapterRight!!.setOnItemClickListener(object : AdapterEvent.OnItemClickListener {
+            override fun onItemClick(v: View?, position: Int) {
+                val item: EventData? = adapterRight!!.getItem(position)
+
+//                val mBottomDialogBest = BottomDialogBest(requireContext(), item)
+//                fragmentManager?.let { mBottomDialogBest.show(it, null) }
             }
         })
     }

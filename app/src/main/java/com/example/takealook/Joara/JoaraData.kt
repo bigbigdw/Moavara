@@ -31,6 +31,9 @@ class BookListDataBestToday(
     var number: Int ? = null,
 )
 
-class BookListDataBestWeekend(
-    var item: ArrayList<BookListDataBestToday?>? = null,
+class EventData(
+    var idx: String ? = null,
+    var imgfile: String ? = null,
+    var is_banner_cnt: String ? = null,
+    var joaralink: String ? = null
 )
