@@ -28,6 +28,13 @@
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/booktest" />
 
+            <LinearLayout
+                android:id="@+id/llayout_Cover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#B3000000"
+                android:orientation="vertical"></LinearLayout>
+
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>

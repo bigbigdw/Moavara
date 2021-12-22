@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="Btn_Today">투데이</string>
+    <string name="Btn_Weekend">주간</string>
+    <string name="Btn_Month">월간</string>
+
     <string name="Best_Today">오늘의 베스트</string>
     <string name="Best_Weekend">금주의 베스트</string>
     <string name="Best_Month">이번달 베스트</string>

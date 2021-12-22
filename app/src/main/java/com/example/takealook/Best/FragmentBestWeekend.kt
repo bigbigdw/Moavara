@@ -1,6 +1,7 @@
 package com.example.takealook.Best
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,6 +35,7 @@ class FragmentBestWeekend : Fragment() {
     private val itemsSun = ArrayList<BookListDataBestToday?>()
 
     var recyclerView: RecyclerView? = null
+
 
     lateinit var root: View
 
@@ -77,7 +79,8 @@ class FragmentBestWeekend : Fragment() {
                     mon[i].cntPageRead,
                     mon[i].cntFavorite,
                     mon[i].cntRecom,
-                    i + 1
+                    i + 1,
+                    false
                 )
             )
         }
@@ -96,7 +99,8 @@ class FragmentBestWeekend : Fragment() {
                     tue[i].cntPageRead,
                     tue[i].cntFavorite,
                     tue[i].cntRecom,
-                    i + 1
+                    i + 1,
+                    false
                 )
             )
         }
@@ -115,7 +119,8 @@ class FragmentBestWeekend : Fragment() {
                     wed[i].cntPageRead,
                     wed[i].cntFavorite,
                     wed[i].cntRecom,
-                    i + 1
+                    i + 1,
+                    false
                 )
             )
         }
@@ -134,7 +139,8 @@ class FragmentBestWeekend : Fragment() {
                     thur[i].cntPageRead,
                     thur[i].cntFavorite,
                     thur[i].cntRecom,
-                    i + 1
+                    i + 1,
+                    false
                 )
             )
         }
@@ -153,7 +159,8 @@ class FragmentBestWeekend : Fragment() {
                     fri[i].cntPageRead,
                     fri[i].cntFavorite,
                     fri[i].cntRecom,
-                    i + 1
+                    i + 1,
+                    false
                 )
             )
         }
@@ -172,7 +179,8 @@ class FragmentBestWeekend : Fragment() {
                     sat[i].cntPageRead,
                     sat[i].cntFavorite,
                     sat[i].cntRecom,
-                    i + 1
+                    i + 1,
+                    false
                 )
             )
         }
@@ -191,7 +199,8 @@ class FragmentBestWeekend : Fragment() {
                     sun[i].cntPageRead,
                     sun[i].cntFavorite,
                     sun[i].cntRecom,
-                    i + 1
+                    i + 1,
+                    false
                 )
             )
         }
@@ -202,9 +211,22 @@ class FragmentBestWeekend : Fragment() {
         recyclerView!!.adapter = adapterWeek
         adapterWeek!!.notifyDataSetChanged()
 
+        adapterWeek!!.setOnItemClickListener(object : AdapterBestWeekend.OnItemClickListener {
+            override fun onItemClick(v: View?, position: Int) {
+                val item: ArrayList<BookListDataBestToday?>? = adapterWeek!!.getItem(position)
+
+                if (item != null) {
+                    for (i in item) {
+                        Log.d("####","HIHI")
+                    }
+                }
+            }
+        })
 
         return root
     }
+
+
 
 
 }

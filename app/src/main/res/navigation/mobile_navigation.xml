@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/Fragment_Best"
-        android:name="com.example.takealook.Best.FragmentBestToday"
+        android:name="com.example.takealook.Best.FragmentBest"
         android:label=""
-        tools:layout="@layout/fragment_best_today" />
+        tools:layout="@layout/fragment_best" />
 
     <fragment
         android:id="@+id/navigation_search"

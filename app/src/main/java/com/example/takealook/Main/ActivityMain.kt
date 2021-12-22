@@ -13,6 +13,8 @@ import com.example.takealook.R
 
 class ActivityMain : AppCompatActivity() {
 
+    var bookcode = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -41,5 +43,13 @@ class ActivityMain : AppCompatActivity() {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    fun setBookCode(bookcode: String) {
+        this.bookcode = bookcode
+    }
+
+    fun getBookCode(): String? {
+        return bookcode
     }
 }

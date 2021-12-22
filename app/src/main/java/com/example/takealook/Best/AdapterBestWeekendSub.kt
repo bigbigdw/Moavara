@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -13,8 +14,8 @@ import com.example.takealook.R
 import java.util.ArrayList
 
 
-class AdapterBestWeekendSub(private val mContext: Context, items: List<BookListDataBestToday?>?) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var holder: ArrayList<BookListDataBestToday?>? = items as ArrayList<BookListDataBestToday?>?
+class AdapterBestWeekendSub(private val mContext: Context, items: ArrayList<BookListDataBestToday?>?) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private var item: ArrayList<BookListDataBestToday?>? = items
 
     interface OnItemClickListener {
         fun onItemClick(v: View?, position: Int)
@@ -28,29 +29,36 @@ class AdapterBestWeekendSub(private val mContext: Context, items: List<BookListD
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_booklist_best_weekend_sub, parent, false)
-        return MainBookViewHolder(view)
+        return ViewHolderBestWeekend(view)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is MainBookViewHolder) {
+        if (holder is ViewHolderBestWeekend) {
 
-            val item = this.holder!![position]
+            val item = this.item!![position]
 
             Glide.with(holder.itemView.context)
                 .load(item!!.bookImg)
                 .into(holder.image)
 
+            if(item.isVisible!!){
+                holder.llayoutCover.visibility = View.GONE
+            } else {
+
+            }
+
         }
     }
 
     override fun getItemCount(): Int {
-        return if (holder == null) 0 else holder!!.size
+        return item!!.size
     }
 
-    inner class MainBookViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolderBestWeekend internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         var image: ImageView = itemView.findViewById(R.id.iview_BookImg)
         var cviewWrap: CardView = itemView.findViewById(R.id.cview_Wrap)
+        var llayoutCover: LinearLayout = itemView.findViewById(R.id.llayout_Cover)
 
         init {
 
@@ -67,7 +75,7 @@ class AdapterBestWeekendSub(private val mContext: Context, items: List<BookListD
     }
 
     fun getItem(position: Int): BookListDataBestToday? {
-        return holder!![position]
+        return item!![position]
     }
 
 }

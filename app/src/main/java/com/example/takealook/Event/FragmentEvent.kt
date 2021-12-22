@@ -8,14 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
-import com.example.takealook.Best.AdapterBestToday
-import com.example.takealook.Best.BottomDialogBest
-import com.example.takealook.DataBase.DataBaseJoara
 import com.example.takealook.Joara.JoaraEventResult
 import com.example.takealook.Joara.RetrofitJoara
 import com.example.takealook.R
-import com.example.takealook.Search.BookListDataBestToday
 import com.example.takealook.Search.EventData
 import retrofit2.Call
 import retrofit2.Callback
