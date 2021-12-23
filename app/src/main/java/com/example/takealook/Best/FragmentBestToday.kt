@@ -69,7 +69,7 @@ class FragmentBestToday : Fragment() {
         ).allowMainThreadQueries()
             .build()
 
-//        db.bestDao().deleteWeek(day)
+        db.bestDao().deleteWeek(day)
 
         return root
     }

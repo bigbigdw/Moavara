@@ -67,7 +67,7 @@ class FragmentBestWeekend : Fragment() {
         val sat = db.bestDao().getSat()
         val sun = db.bestDao().getSun()
 
-        for (i in mon.indices) {
+        for (i in 0..9) {
             itemsMon.add(
                 BookListDataBestToday(
                     mon[i].writer,
@@ -87,7 +87,7 @@ class FragmentBestWeekend : Fragment() {
 
         items.add(itemsMon)
 
-        for (i in tue.indices) {
+        for (i in 0..9) {
             itemsTue.add(
                 BookListDataBestToday(
                     tue[i].writer,
@@ -107,7 +107,7 @@ class FragmentBestWeekend : Fragment() {
 
         items.add(itemsTue)
 
-        for (i in wed.indices) {
+        for (i in 0..9) {
             itemsWed.add(
                 BookListDataBestToday(
                     wed[i].writer,
@@ -127,7 +127,7 @@ class FragmentBestWeekend : Fragment() {
 
         items.add(itemsWed)
 
-        for (i in thur.indices) {
+        for (i in 0..9) {
             itemsThur.add(
                 BookListDataBestToday(
                     thur[i].writer,
@@ -167,7 +167,7 @@ class FragmentBestWeekend : Fragment() {
 
         items.add(itemsFri)
 
-        for (i in sat.indices) {
+        for (i in 0..9) {
             itemsSat.add(
                 BookListDataBestToday(
                     sat[i].writer,
@@ -187,7 +187,7 @@ class FragmentBestWeekend : Fragment() {
 
         items.add(itemsSat)
 
-        for (i in sun.indices) {
+        for (i in 0..9) {
             itemsSun.add(
                 BookListDataBestToday(
                     sun[i].writer,
