@@ -77,8 +77,8 @@ interface BestDao {
     @Query("SELECT * FROM JoaraBest WHERE point = 10")
     fun getBest(): List<JoaraBest>
 
-    @Query("SELECT * FROM JoaraBest WHERE day = :bookCode UPDATE day = 1")
-    fun findBook(bookCode: String)
+//    @Query("SELECT * FROM JoaraBest WHERE day = :bookCode UPDATE day = 1")
+//    fun findBook(bookCode: String)
 
     @Insert
     fun insert(user: JoaraBest)

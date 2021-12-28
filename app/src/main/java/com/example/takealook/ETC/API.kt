@@ -5,5 +5,9 @@ interface API {
         const val BEST_BOOK_JOA = "v1/best/book.joa"
         const val EVENT_JOA = "v1/banner/home_banner.joa"
 
+        const val USER_TOKEN_CHECK_JOA = "v1/user/token_check.joa"
+        const val USER_AUTH_JOA = "v1/user/auth.joa"
+        const val USER_DEAUTH_JOA = "v1/user/deauth.joa"
+        const val INFO_INDEX_JOA = "api/info/index.joa"
     }
 }

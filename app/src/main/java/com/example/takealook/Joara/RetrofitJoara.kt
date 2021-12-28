@@ -1,5 +1,7 @@
 package com.example.takealook.Joara
 
+import android.content.Context
+import androidx.appcompat.app.AppCompatActivity
 import com.example.takealook.ETC.HELPER
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -29,5 +31,49 @@ object RetrofitJoara {
                 store,
                 category
             )
+    }
+
+    fun postLogin(idCheck : String?, pwCheck: String?, mContext: Context?): Call<LoginResult?>? {
+
+        val call = Retrofit.Builder()
+            .baseUrl(HELPER.API_JOARA)
+            .addConverterFactory(GsonConverterFactory.create()).build()
+            .create(LoginService::class.java)
+            .postRetrofit(
+                idCheck,
+                pwCheck,
+                HELPER.API_KEY,
+                HELPER.VER,
+                HELPER.DEVICE,
+                HELPER.DEVICE_ID,
+                HELPER.DEVICE_TOKEN
+            )
+        return call
+    }
+
+    fun onClickLogout(token: String?, mContext: Context?): Call<LogoutResult?>? {
+
+        return Retrofit.Builder()
+            .baseUrl(HELPER.API_JOARA)
+            .addConverterFactory(GsonConverterFactory.create()).build()
+            .create(LogoutService::class.java)
+            .getRetrofit(
+                "22%2C2",
+                token,
+                HELPER.API_KEY,
+                HELPER.VER,
+                HELPER.DEVICE,
+                HELPER.DEVICE_ID,
+                HELPER.DEVICE_TOKEN
+            )
+    }
+
+    fun loginCheck(token: String?, mContext: Context?): Call<CheckTokenResult?>? {
+
+        return Retrofit.Builder()
+            .baseUrl(HELPER.API_JOARA)
+            .addConverterFactory(GsonConverterFactory.create()).build()
+            .create(CheckTokenService::class.java)
+            .getRetrofit(token)
     }
 }

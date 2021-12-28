@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="drawer_id_example">소고기냠냠</string>
+    <string name="drawer_points_1">이용권</string>
+    <string name="drawer_points_ex">10,000</string>
+    <string name="drawer_points_jang">장</string>
+    <string name="drawer_points_2">딱지</string>
+    <string name="drawer_points_3">마나</string>
+    <string name="drawer_points_M">M</string>
+    <string name="drawer_points_4">후원 쿠폰</string>
+    <string name="drawer_points_5">원고료 쿠폰</string>
+
+    <string name="Main_NotLogined">로그인이 필요합니다</string>
+
+</resources>

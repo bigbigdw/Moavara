@@ -70,7 +70,7 @@ class ActivitySplash : Activity() {
 //                }
 
 
-                val novelIntent = Intent(this, ActivityIntro::class.java)
+                val novelIntent = Intent(this, ActivityLogin::class.java)
                 novelIntent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                 startActivityIfNeeded(novelIntent, 0)
                 finish()
