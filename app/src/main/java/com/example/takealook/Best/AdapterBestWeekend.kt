@@ -45,9 +45,9 @@ class AdapterBestWeekend(
             val items = item!![position]
             val adapterWeek: AdapterBestWeekendSub?
 
+            val weekitems = ArrayList<BookListDataBestToday?>()
 
-
-            adapterWeek = AdapterBestWeekendSub(mContext, items)
+            adapterWeek = AdapterBestWeekendSub(mContext, weekitems)
 
             when (position) {
                 0 -> {
@@ -77,7 +77,7 @@ class AdapterBestWeekend(
                 LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
 
             for (i in items!!.indices) {
-                items.add(
+                weekitems.add(
                     BookListDataBestToday(
                         items[i]!!.writer,
                         items[i]!!.title,

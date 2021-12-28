@@ -22,7 +22,6 @@ class FragmentBestWeekend : Fragment() {
     private lateinit var db: DataBaseJoara
 
     private var adapterWeek: AdapterBestWeekend? = null
-    private val weekitems = ArrayList<BookListDataBestToday?>()
 
     private val items = ArrayList<ArrayList<BookListDataBestToday?>?>()
 

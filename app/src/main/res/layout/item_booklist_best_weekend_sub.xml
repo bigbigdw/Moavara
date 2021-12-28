@@ -34,7 +34,7 @@
                 android:layout_height="match_parent"
                 android:background="#B3000000"
                 android:orientation="vertical"
-                tools:visibility="gone"></LinearLayout>
+                tools:visibility="visible"></LinearLayout>
 
         </RelativeLayout>
 

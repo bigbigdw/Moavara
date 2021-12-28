@@ -10,7 +10,7 @@ abstract class UserDatabase: RoomDatabase() {
     abstract fun userDao(): UserDao
 }
 
-@Database(entities = [JoaraBest::class], version = 1)
+@Database(entities = [JoaraBest::class], version = 2)
 abstract class DataBaseJoara: RoomDatabase() {
     abstract fun bestDao(): BestDao
 }

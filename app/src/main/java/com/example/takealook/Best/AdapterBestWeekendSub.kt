@@ -41,12 +41,13 @@ class AdapterBestWeekendSub(private val mContext: Context, items: ArrayList<Book
                 .load(item!!.bookImg)
                 .into(holder.image)
 
-//            if(item.isVisible!!){
-//                holder.llayoutCover.visibility = View.GONE
-//            } else {
-//                holder.llayoutCover.visibility = View.VISIBLE
-//            }
-            holder.llayoutCover.visibility = View.GONE
+            if(item.isVisible!!){
+                holder.llayoutCover.visibility = View.GONE
+            } else {
+                holder.llayoutCover.visibility = View.VISIBLE
+            }
+
+//            holder.llayoutCover.visibility = View.GONE
         }
     }
 
