@@ -19,470 +19,481 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
+            <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="match_parent">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="월"
-                    android:textAlignment="center"
-                    android:textColor="#FAFAF9"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" >
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="월"
-                    android:textAlignment="center"
-                    android:textColor="#FAFAF9"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="월"
-                    android:textAlignment="center"
-                    android:textColor="#FAFAF9"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="월"
-                    android:textAlignment="center"
-                    android:textColor="#FAFAF9"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="월"
-                    android:textAlignment="center"
-                    android:textColor="#FAFAF9"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="월"
-                    android:textAlignment="center"
-                    android:textColor="#FAFAF9"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="월"
-                    android:textAlignment="center"
-                    android:textColor="#FAFAF9"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
 
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
+                    </LinearLayout>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
-            </LinearLayout>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
+                    </LinearLayout>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
-            </LinearLayout>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
+                    </LinearLayout>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rview_Best"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:visibility="gone">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
+                    </androidx.recyclerview.widget.RecyclerView>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="월"
+                            android:textAlignment="center"
+                            android:textColor="#FAFAF9"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="월"
+                            android:textAlignment="center"
+                            android:textColor="#FAFAF9"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="월"
+                            android:textAlignment="center"
+                            android:textColor="#FAFAF9"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
-            </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="월"
+                            android:textAlignment="center"
+                            android:textColor="#FAFAF9"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="월"
+                            android:textAlignment="center"
+                            android:textColor="#FAFAF9"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="월"
+                            android:textAlignment="center"
+                            android:textColor="#FAFAF9"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="월"
+                            android:textAlignment="center"
+                            android:textColor="#FAFAF9"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
-            </LinearLayout>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
+                    </LinearLayout>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@drawable/booktest" />
-            </LinearLayout>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rview_Best"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:visibility="gone">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
 
-            </androidx.recyclerview.widget.RecyclerView>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/shape_book_best_day_cover"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
+                    </LinearLayout>
+                </LinearLayout>
+            </HorizontalScrollView>
+
 
         </LinearLayout>
 

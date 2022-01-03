@@ -14,14 +14,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.takealook.Main.ActivityMain
 import com.example.takealook.Search.BookListDataBestToday
 import com.example.takealook.R
+import com.example.takealook.Search.BookListDataBestWeekend
 import java.util.ArrayList
 
 class AdapterBestWeekend(
     private val mContext: Context, items:
-    ArrayList<ArrayList<BookListDataBestToday?>?>,
+    ArrayList<BookListDataBestWeekend?>,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var item: ArrayList<ArrayList<BookListDataBestToday?>?> = items
+    var item: ArrayList<BookListDataBestWeekend?> = items
 
     interface OnItemClickListener {
         fun onItemClick(v: View?, position: Int)
@@ -43,71 +44,6 @@ class AdapterBestWeekend(
         if (holder is HolderBestWeekend) {
 
             val items = item!![position]
-            val adapterWeek: AdapterBestWeekendSub?
-
-            val weekitems = ArrayList<BookListDataBestToday?>()
-
-            adapterWeek = AdapterBestWeekendSub(mContext, weekitems)
-
-            when (position) {
-                0 -> {
-                    holder.week.text = "월"
-                }
-                1 -> {
-                    holder.week.text = "화"
-                }
-                2 -> {
-                    holder.week.text = "수"
-                }
-                3 -> {
-                    holder.week.text = "목"
-                }
-                4 -> {
-                    holder.week.text = "금"
-                }
-                5 -> {
-                    holder.week.text = "토"
-                }
-                6 -> {
-                    holder.week.text = "일"
-                }
-            }
-
-            val linearLayoutManager =
-                LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
-
-            for (i in items!!.indices) {
-                weekitems.add(
-                    BookListDataBestToday(
-                        items[i]!!.writer,
-                        items[i]!!.title,
-                        items[i]!!.bookImg,
-                        items[i]!!.intro,
-                        items[i]!!.bookCode,
-                        items[i]!!.cntChapter,
-                        items[i]!!.cntPageRead,
-                        items[i]!!.cntFavorite,
-                        items[i]!!.cntRecom,
-                        i + 1,
-                        false
-                    )
-                )
-                holder.iview_Cover.visibility = View.GONE
-            }
-
-            holder.rview_BestWeek.layoutManager = linearLayoutManager
-            holder.rview_BestWeek.adapter = adapterWeek
-            adapterWeek!!.notifyDataSetChanged()
-
-            adapterWeek!!.setOnItemClickListener(object : AdapterBestWeekendSub.OnItemClickListener {
-                override fun onItemClick(v: View?, position: Int) {
-                    val item: BookListDataBestToday? = adapterWeek!!.getItem(position)
-
-                    item!!.isVisible = true
-
-                    adapterWeek!!.notifyDataSetChanged()
-                }
-            })
 
         }
     }
@@ -125,7 +61,7 @@ class AdapterBestWeekend(
 
     }
 
-    fun getItem(position: Int): ArrayList<BookListDataBestToday?>? {
+    fun getItem(position: Int): BookListDataBestWeekend? {
         return item[position]
     }
 

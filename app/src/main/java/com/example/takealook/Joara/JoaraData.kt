@@ -32,6 +32,16 @@ class BookListDataBestToday(
     var isVisible: Boolean ? = false,
 )
 
+class BookListDataBestWeekend(
+    var mon: BookListDataBestToday ? = null,
+    var tue: BookListDataBestToday ? = null,
+    var wed: BookListDataBestToday ? = null,
+    var thur: BookListDataBestToday ? = null,
+    var fri: BookListDataBestToday ? = null,
+    var sat: BookListDataBestToday ? = null,
+    var sun: BookListDataBestToday ? = null,
+)
+
 class EventData(
     var idx: String ? = null,
     var imgfile: String ? = null,

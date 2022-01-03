@@ -20,6 +20,9 @@ interface BestDao {
     @Query("DELETE FROM JoaraBest WHERE day = :day")
     fun deleteWeek(day: Int)
 
+    @Query("SELECT * FROM JoaraBest WHERE day = :day")
+    fun selectWeek(day: Int): List<JoaraBest>
+
     @Query("SELECT * FROM JoaraBest")
     fun getAll(): List<JoaraBest>
 
