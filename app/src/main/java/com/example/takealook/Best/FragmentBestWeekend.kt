@@ -26,14 +26,6 @@ class FragmentBestWeekend : Fragment() {
 
     private val itemWeek = ArrayList<BookListDataBestWeekend?>()
 
-    private val itemsMon = ArrayList<BookListDataBestToday?>()
-    private val itemsTue = ArrayList<BookListDataBestToday?>()
-    private val itemsWed = ArrayList<BookListDataBestToday?>()
-    private val itemsThur = ArrayList<BookListDataBestToday?>()
-    private val itemsFri = ArrayList<BookListDataBestToday?>()
-    private val itemsSat = ArrayList<BookListDataBestToday?>()
-    private val itemsSun = ArrayList<BookListDataBestToday?>()
-
     var recyclerView: RecyclerView? = null
 
 
@@ -59,7 +51,7 @@ class FragmentBestWeekend : Fragment() {
             .build()
 
         val linearLayoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         val mon = db.bestDao().getMon()
         val tue = db.bestDao().getTue()
@@ -69,104 +61,123 @@ class FragmentBestWeekend : Fragment() {
         val sat = db.bestDao().getSat()
         val sun = db.bestDao().getSun()
 
-        val weekend = db.bestDao().getAll()
+        val today = db.bestDao().selectWeek(Calendar.getInstance().get(Calendar.DAY_OF_WEEK))
 
         Log.d("!!!!", db.bestDao().selectWeek(day).toString())
 
-        for (i in weekend.indices){
+        for(i in tue.indices){
+            Log.d("!!!!", tue[i].title!!)
+        }
+
+        for (i in today.indices){
+
             itemWeek.add(
                 BookListDataBestWeekend(
-                    BookListDataBestToday(
-                        mon[i].writer,
-                        mon[i].title,
-                        mon[i].bookImg,
-                        mon[i].intro,
-                        mon[i].bookCode,
-                        mon[i].cntChapter,
-                        mon[i].cntPageRead,
-                        mon[i].cntFavorite,
-                        mon[i].cntRecom,
-                        i + 1,
-                        false
-                    ),
-                    BookListDataBestToday(
-                        tue[i].writer,
-                        tue[i].title,
-                        tue[i].bookImg,
-                        tue[i].intro,
-                        tue[i].bookCode,
-                        tue[i].cntChapter,
-                        tue[i].cntPageRead,
-                        tue[i].cntFavorite,
-                        tue[i].cntRecom,
-                        i + 1,
-                        false
-                    ),
-                    BookListDataBestToday(
-                        wed[i].writer,
-                        wed[i].title,
-                        wed[i].bookImg,
-                        wed[i].intro,
-                        wed[i].bookCode,
-                        wed[i].cntChapter,
-                        wed[i].cntPageRead,
-                        wed[i].cntFavorite,
-                        wed[i].cntRecom,
-                        i + 1,
-                        false
-                    ),
-                    BookListDataBestToday(
-                        thur[i].writer,
-                        thur[i].title,
-                        thur[i].bookImg,
-                        thur[i].intro,
-                        thur[i].bookCode,
-                        thur[i].cntChapter,
-                        thur[i].cntPageRead,
-                        thur[i].cntFavorite,
-                        thur[i].cntRecom,
-                        i + 1,
-                        false
-                    ),
-                    BookListDataBestToday(
-                        fri[i].writer,
-                        fri[i].title,
-                        fri[i].bookImg,
-                        fri[i].intro,
-                        fri[i].bookCode,
-                        fri[i].cntChapter,
-                        fri[i].cntPageRead,
-                        fri[i].cntFavorite,
-                        fri[i].cntRecom,
-                        i + 1,
-                        false
-                    ),
-                    BookListDataBestToday(
-                        sat[i].writer,
-                        sat[i].title,
-                        sat[i].bookImg,
-                        sat[i].intro,
-                        sat[i].bookCode,
-                        sat[i].cntChapter,
-                        sat[i].cntPageRead,
-                        sat[i].cntFavorite,
-                        sat[i].cntRecom,
-                        i + 1,
-                        false
-                    ),
-                    BookListDataBestToday(
-                        sun[i].writer,
-                        sun[i].title,
-                        sun[i].bookImg,
-                        sun[i].intro,
-                        sun[i].bookCode,
-                        sun[i].cntChapter,
-                        sun[i].cntPageRead,
-                        sun[i].cntFavorite,
-                        sun[i].cntRecom,
-                        i + 1,
-                        false
-                    )
+                    if(mon.isNotEmpty()){
+                        BookListDataBestToday(
+                            mon[i].writer,
+                            mon[i].title,
+                            mon[i].bookImg,
+                            mon[i].intro,
+                            mon[i].bookCode,
+                            mon[i].cntChapter,
+                            mon[i].cntPageRead,
+                            mon[i].cntFavorite,
+                            mon[i].cntRecom,
+                            i + 1,
+                            false
+                        )
+                    } else null,
+                    if(tue.isNotEmpty()){
+                        BookListDataBestToday(
+                            tue[i].writer,
+                            tue[i].title,
+                            tue[i].bookImg,
+                            tue[i].intro,
+                            tue[i].bookCode,
+                            tue[i].cntChapter,
+                            tue[i].cntPageRead,
+                            tue[i].cntFavorite,
+                            tue[i].cntRecom,
+                            i + 1,
+                            false
+                        )
+                    } else null,
+                    if(wed.isNotEmpty()){
+                        BookListDataBestToday(
+                            wed[i].writer,
+                            wed[i].title,
+                            wed[i].bookImg,
+                            wed[i].intro,
+                            wed[i].bookCode,
+                            wed[i].cntChapter,
+                            wed[i].cntPageRead,
+                            wed[i].cntFavorite,
+                            wed[i].cntRecom,
+                            i + 1,
+                            false
+                        )
+                    } else null,
+                    if(thur.isNotEmpty()){
+                        BookListDataBestToday(
+                            thur[i].writer,
+                            thur[i].title,
+                            thur[i].bookImg,
+                            thur[i].intro,
+                            thur[i].bookCode,
+                            thur[i].cntChapter,
+                            thur[i].cntPageRead,
+                            thur[i].cntFavorite,
+                            thur[i].cntRecom,
+                            i + 1,
+                            false
+                        )
+                    } else null,
+                    if(fri.isNotEmpty()){
+                        BookListDataBestToday(
+                            fri[i].writer,
+                            fri[i].title,
+                            fri[i].bookImg,
+                            fri[i].intro,
+                            fri[i].bookCode,
+                            fri[i].cntChapter,
+                            fri[i].cntPageRead,
+                            fri[i].cntFavorite,
+                            fri[i].cntRecom,
+                            i + 1,
+                            false
+                        )
+                    } else null,
+                    if(sat.isNotEmpty()){
+                        BookListDataBestToday(
+                            sat[i].writer,
+                            sat[i].title,
+                            sat[i].bookImg,
+                            sat[i].intro,
+                            sat[i].bookCode,
+                            sat[i].cntChapter,
+                            sat[i].cntPageRead,
+                            sat[i].cntFavorite,
+                            sat[i].cntRecom,
+                            i + 1,
+                            false
+                        )
+                    } else null,
+                    if(sun.isNotEmpty()){
+                        BookListDataBestToday(
+                            sun[i].writer,
+                            sun[i].title,
+                            sun[i].bookImg,
+                            sun[i].intro,
+                            sun[i].bookCode,
+                            sun[i].cntChapter,
+                            sun[i].cntPageRead,
+                            sun[i].cntFavorite,
+                            sun[i].cntRecom,
+                            i + 1,
+                            false
+                        )
+                    } else null,
                 )
             )
         }
