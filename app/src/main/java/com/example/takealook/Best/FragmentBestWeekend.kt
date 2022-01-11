@@ -186,17 +186,33 @@ class FragmentBestWeekend : Fragment() {
         recyclerView!!.adapter = adapterWeek
         adapterWeek!!.notifyDataSetChanged()
 
-//        adapterWeek!!.setOnItemClickListener(object : AdapterBestWeekend.OnItemClickListener {
-//            override fun onItemClick(v: View?, position: Int) {
-//                val item: ArrayList<BookListDataBestToday?>? = adapterWeek!!.getItem(position)
-//
-//                if (item != null) {
-//                    for (i in item) {
-//                        Log.d("####","HIHI")
-//                    }
-//                }
-//            }
-//        })
+        adapterWeek!!.setOnItemClickListener(object : AdapterBestWeekend.OnItemClickListener {
+            override fun onItemClick(v: View?, position: Int) {
+                val item: BookListDataBestWeekend? = adapterWeek!!.getItem(position)
+
+                Log.d("####", "position = $position")
+
+                if(item!!.mon != null){
+                    Log.d("####", "mon" + item.mon!!.bookCode.toString())
+                } else if (item.tue != null){
+                    Log.d("####", "tue" + item.tue!!.bookCode.toString())
+                }else if (item.wed != null){
+                    Log.d("####", "wed" + item.wed!!.bookCode.toString())
+                }else if (item.thur != null){
+                    Log.d("####", "thur" + item.thur!!.bookCode.toString())
+                }else if (item.fri != null){
+                    Log.d("####", "fri" + item.fri!!.bookCode.toString())
+                }else if (item.sat != null){
+                    Log.d("####", "sat" + item.sat!!.bookCode.toString())
+                }else if (item.sun != null){
+                    Log.d("####", "sun" + item.sun!!.bookCode.toString())
+                }
+
+                Log.d("@@@@-1", item.toString())
+                Log.d("@@@@-2", position.toString())
+
+            }
+        })
 
         return root
     }

@@ -26,6 +26,7 @@ class AdapterBestWeekend(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var item: ArrayList<BookListDataBestWeekend?> = items
+    var selected : String? = null
 
     interface OnItemClickListener {
         fun onItemClick(v: View?, position: Int)
@@ -127,10 +128,71 @@ class AdapterBestWeekend(
         var iviewBookImg7: ImageView = itemView.findViewById(R.id.iview_BookImg7)
         var llayoutCover7: LinearLayout = itemView.findViewById(R.id.llayout_Cover7)
 
+        init {
+
+            cvieWrap1.setOnClickListener { v: View? ->
+                val pos = adapterPosition
+                if (pos != RecyclerView.NO_POSITION) {
+                    listener!!.onItemClick(v, pos)
+                    Log.d("####-!!!!", "mon = $pos")
+                }
+            }
+
+            cvieWrap2.setOnClickListener { v: View? ->
+                val pos = adapterPosition
+                if (pos != RecyclerView.NO_POSITION) {
+                    listener!!.onItemClick(v, pos)
+                    Log.d("####-!!!!", "tue = $pos")
+                }
+            }
+
+            cvieWrap3.setOnClickListener { v: View? ->
+                val pos = adapterPosition
+                if (pos != RecyclerView.NO_POSITION) {
+                    listener!!.onItemClick(v, pos)
+                    Log.d("####-!!!!", "wed = $pos")
+                }
+            }
+
+            cvieWrap4.setOnClickListener { v: View? ->
+                val pos = adapterPosition
+                if (pos != RecyclerView.NO_POSITION) {
+                    listener!!.onItemClick(v, pos)
+                    Log.d("####-!!!!", "thur = $pos")
+                }
+            }
+
+            cvieWrap5.setOnClickListener { v: View? ->
+                val pos = adapterPosition
+                if (pos != RecyclerView.NO_POSITION) {
+                    listener!!.onItemClick(v, pos)
+                    Log.d("####-!!!!", "fri = $pos")
+                }
+            }
+
+            cvieWrap6.setOnClickListener { v: View? ->
+                val pos = adapterPosition
+                if (pos != RecyclerView.NO_POSITION) {
+                    listener!!.onItemClick(v, pos)
+                    Log.d("####-!!!!", "sat = $pos")
+                }
+            }
+
+            cvieWrap7.setOnClickListener { v: View? ->
+                val pos = adapterPosition
+                if (pos != RecyclerView.NO_POSITION) {
+                    listener!!.onItemClick(v, pos)
+                    Log.d("####-!!!!", "sun = $pos")
+
+                }
+            }
+
+        }
+
     }
 
     fun getItem(position: Int): BookListDataBestWeekend? {
-        return item[position]
+        return item!![position]
     }
 
 }
