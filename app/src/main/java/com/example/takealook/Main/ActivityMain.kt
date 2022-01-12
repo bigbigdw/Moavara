@@ -29,6 +29,7 @@ import com.example.takealook.Joara.CheckTokenResult
 import com.example.takealook.Joara.LogoutResult
 import com.example.takealook.Joara.RetrofitJoara
 import com.example.takealook.R
+import com.example.takealook.Util.DialogText
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationView
 import retrofit2.Call
@@ -53,6 +54,7 @@ class ActivityMain : AppCompatActivity() {
     var navHeaderView: View? = null
     var drawer: DrawerLayout? = null
     private var mContext: Context? = null
+    private var dialogText: DialogText? = null
 
     val MenuList: MutableList<String> = ArrayList()
     val MenuListPosition: MutableList<String> = ArrayList()
@@ -97,6 +99,28 @@ class ActivityMain : AppCompatActivity() {
     }
 
     fun setLayout() {
+
+        if (getSharedPreferences("LOGIN", MODE_PRIVATE).getString("TOKEN", "") != "") {
+
+            val btnLeftListener = View.OnClickListener {
+                dialogText!!.dismiss()
+            }
+            val btnRightListener = View.OnClickListener { dialogText!!.dismiss() }
+
+            dialogText = DialogText(
+                this,
+                btnLeftListener,
+                btnRightListener,
+                "안녕하세요 회원님!\n" +
+                        "회원님의 원활한 앱 사용을 위해\n" +
+                        "최초 로그인 시 안내를 드리고 있습니다.\n" +
+                        "해당 안내는 왼쪽 햄버거 버튼을 누르신 후\n" +
+                        "메뉴에 있는 앱 가이드 버튼을 누르시면\n" +
+                        "다시 만날 수 있습니다!"
+            )
+            dialogText!!.show()
+
+        }
 
         drawerLogout!!.setOnClickListener { v: View? ->
             Toast.makeText(applicationContext, "로그인 페이지로 이동합니다.", Toast.LENGTH_SHORT).show()

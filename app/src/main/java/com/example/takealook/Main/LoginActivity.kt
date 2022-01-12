@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.takealook.Joara.LoginResult
 import com.example.takealook.Joara.RetrofitJoara
 import com.example.takealook.R
+import com.example.takealook.Util.DialogText
 import com.google.android.material.textfield.TextInputLayout
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,6 +30,7 @@ class ActivityLogin : AppCompatActivity() {
     var registerBtn: Button? = null
     var token: String? = null
     var loginFailMsg = "로그인에 실패하였습니다"
+    private var dialogText: DialogText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,7 +86,7 @@ class ActivityLogin : AppCompatActivity() {
             val idCheck = Objects.requireNonNull(idtext!!.editText)?.text.toString()
             val pwCheck = Objects.requireNonNull(pwtext!!.editText)?.text.toString()
 
-            RetrofitJoara.postLogin(idCheck,pwCheck, this)!!.enqueue(object :
+            RetrofitJoara.postLogin(idCheck, pwCheck, this)!!.enqueue(object :
                 Callback<LoginResult?> {
                 override fun onResponse(
                     call: Call<LoginResult?>,
@@ -106,8 +108,12 @@ class ActivityLogin : AppCompatActivity() {
                             val profile = it.user?.profile
                             val grade = it.user?.grade
 
-                            if(status.equals("1")){
-                                Toast.makeText(applicationContext,"환영합니다!" + " " + nickname + "님!", Toast.LENGTH_SHORT).show()
+                            if (status.equals("1")) {
+                                Toast.makeText(
+                                    applicationContext,
+                                    "환영합니다!" + " " + nickname + "님!",
+                                    Toast.LENGTH_SHORT
+                                ).show()
 
                                 savePreferences("TOKEN", token!!)
                                 savePreferences("NICKNAME", nickname!!)
@@ -121,13 +127,14 @@ class ActivityLogin : AppCompatActivity() {
                                 savePreferences("PROFILEIMG", profile!!)
                                 savePreferences("GRADE", grade!!)
 
-                                val intent = Intent(applicationContext, ActivityMain::class.java)
+                                val intent = Intent(applicationContext, ActivityGuide::class.java)
                                 intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                                 startActivityIfNeeded(intent, 0)
                                 finish()
 
                             } else {
-                                Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT)
+                                    .show()
                             }
                         }
                     } else {
@@ -151,9 +158,26 @@ class ActivityLogin : AppCompatActivity() {
         }
 
         registerBtn!!.setOnClickListener {
-            Toast.makeText(applicationContext, "비회원으로 입장합니다.", Toast.LENGTH_SHORT).show()
-            val intent = Intent(applicationContext, ActivityIntro::class.java)
-            startActivity(intent)
+            savePreferences("TOKEN", "")
+            val btnLeftListener = View.OnClickListener {
+                Toast.makeText(applicationContext, "비회원으로 입장합니다.", Toast.LENGTH_SHORT).show()
+                val intent = Intent(applicationContext, ActivityBookSetting::class.java)
+                startActivity(intent)
+                dialogText!!.dismiss()
+
+            }
+            val btnRightListener = View.OnClickListener { dialogText!!.dismiss() }
+
+            dialogText = DialogText(
+                this,
+                btnLeftListener,
+                btnRightListener,
+                "비회원을 선택하셨습니다.\n" +
+                        "정보는 저장되지 않으며\n" +
+                        "일부 서비스가 제한될 수 있습니다.\n" +
+                        "(19금 열람 제한)"
+            )
+            dialogText!!.show()
         }
 
     }

@@ -33,13 +33,13 @@ class BookListDataBestToday(
 )
 
 class BookListDataBestWeekend(
+    var sun: BookListDataBestToday ? = null,
     var mon: BookListDataBestToday ? = null,
     var tue: BookListDataBestToday ? = null,
     var wed: BookListDataBestToday ? = null,
     var thur: BookListDataBestToday ? = null,
     var fri: BookListDataBestToday ? = null,
     var sat: BookListDataBestToday ? = null,
-    var sun: BookListDataBestToday ? = null,
 )
 
 class EventData(

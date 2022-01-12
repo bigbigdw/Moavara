@@ -21,15 +21,16 @@ import com.example.takealook.Search.BookListDataBestWeekend
 import java.util.ArrayList
 
 class AdapterBestWeekend(
-    private val mContext: Context, items:
+    private val mContext: Context,
+    items:
     ArrayList<BookListDataBestWeekend?>,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var item: ArrayList<BookListDataBestWeekend?> = items
-    var selected : String? = null
+    var selected: String? = ""
 
     interface OnItemClickListener {
-        fun onItemClick(v: View?, position: Int)
+        fun onItemClick(v: View?, position: Int, value: String?)
     }
 
     private var listener: OnItemClickListener? = null
@@ -49,47 +50,91 @@ class AdapterBestWeekend(
 
             val items = item[position]
 
-            if(items!!.mon != null){
-                Glide.with(holder.itemView.context)
-                    .load(items.mon!!.bookImg)
-                    .into(holder.iviewBookImg1)
-            }
-
-            if(items.tue != null){
-                Glide.with(holder.itemView.context)
-                    .load(items.tue!!.bookImg)
-                    .into(holder.iviewBookImg2)
-            }
-
-            if(items.wed != null){
-                Glide.with(holder.itemView.context)
-                    .load(items.wed!!.bookImg)
-                    .into(holder.iviewBookImg3)
-            }
-
-            if(items.thur != null){
-                Glide.with(holder.itemView.context)
-                    .load(items.thur!!.bookImg)
-                    .into(holder.iviewBookImg1)
-            }
-
-            if(items!!.fri != null){
-                Glide.with(holder.itemView.context)
-                    .load(items.fri!!.bookImg)
-                    .into(holder.iviewBookImg1)
-            }
-
-            if(items.sat != null){
-                Glide.with(holder.itemView.context)
-                    .load(items.sat!!.bookImg)
-                    .into(holder.iviewBookImg1)
-            }
-
-            if(items.sun != null){
+            if (items!!.sun != null) {
                 Glide.with(holder.itemView.context)
                     .load(items.sun!!.bookImg)
                     .into(holder.iviewBookImg1)
+
+                if (selected != "" && getSelectedBook() != items.sun!!.bookCode) {
+                    holder.llayoutCover1.visibility = View.VISIBLE
+                } else {
+                    holder.llayoutCover1.visibility = View.GONE
+                }
             }
+
+            if (items.mon != null) {
+                Glide.with(holder.itemView.context)
+                    .load(items.mon!!.bookImg)
+                    .into(holder.iviewBookImg2)
+
+                if (selected != "" && getSelectedBook() != items.mon!!.bookCode) {
+                    holder.llayoutCover2.visibility = View.VISIBLE
+                } else {
+                    holder.llayoutCover2.visibility = View.GONE
+                }
+
+            }
+
+            if (items.tue != null) {
+                Glide.with(holder.itemView.context)
+                    .load(items.tue!!.bookImg)
+                    .into(holder.iviewBookImg3)
+
+                if (selected != "" && getSelectedBook() != items.tue!!.bookCode) {
+                    holder.llayoutCover3.visibility = View.VISIBLE
+                } else {
+                    holder.llayoutCover3.visibility = View.GONE
+                }
+            }
+
+            if (items.wed != null) {
+                Glide.with(holder.itemView.context)
+                    .load(items.wed!!.bookImg)
+                    .into(holder.iviewBookImg4)
+
+                if (selected != "" && getSelectedBook() != items.wed!!.bookCode) {
+                    holder.llayoutCover4.visibility = View.VISIBLE
+                } else {
+                    holder.llayoutCover4.visibility = View.GONE
+                }
+            }
+
+            if (items.thur != null) {
+                Glide.with(holder.itemView.context)
+                    .load(items.thur!!.bookImg)
+                    .into(holder.iviewBookImg5)
+
+                if (selected != "" && getSelectedBook() != items.thur!!.bookCode) {
+                    holder.llayoutCover5.visibility = View.VISIBLE
+                } else {
+                    holder.llayoutCover5.visibility = View.GONE
+                }
+            }
+
+            if (items.fri != null) {
+                Glide.with(holder.itemView.context)
+                    .load(items.fri!!.bookImg)
+                    .into(holder.iviewBookImg6)
+
+                if (selected != "" && getSelectedBook() != items.fri!!.bookCode) {
+                    holder.llayoutCover6.visibility = View.VISIBLE
+                } else {
+                    holder.llayoutCover6.visibility = View.GONE
+                }
+            }
+
+            if (items.sat != null) {
+                Glide.with(holder.itemView.context)
+                    .load(items.sat!!.bookImg)
+                    .into(holder.iviewBookImg7)
+
+                if (selected != "" && getSelectedBook() != items.sat!!.bookCode) {
+                    holder.llayoutCover7.visibility = View.VISIBLE
+                } else {
+                    holder.llayoutCover7.visibility = View.GONE
+                }
+            }
+
         }
     }
 
@@ -133,57 +178,49 @@ class AdapterBestWeekend(
             cvieWrap1.setOnClickListener { v: View? ->
                 val pos = adapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
-                    listener!!.onItemClick(v, pos)
-                    Log.d("####-!!!!", "mon = $pos")
+                    listener!!.onItemClick(v, pos, "sun")
                 }
             }
 
             cvieWrap2.setOnClickListener { v: View? ->
                 val pos = adapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
-                    listener!!.onItemClick(v, pos)
-                    Log.d("####-!!!!", "tue = $pos")
+                    listener!!.onItemClick(v, pos, "mon")
                 }
             }
 
             cvieWrap3.setOnClickListener { v: View? ->
                 val pos = adapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
-                    listener!!.onItemClick(v, pos)
-                    Log.d("####-!!!!", "wed = $pos")
+                    listener!!.onItemClick(v, pos, "tue")
                 }
             }
 
             cvieWrap4.setOnClickListener { v: View? ->
                 val pos = adapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
-                    listener!!.onItemClick(v, pos)
-                    Log.d("####-!!!!", "thur = $pos")
+                    listener!!.onItemClick(v, pos, "wed")
                 }
             }
 
             cvieWrap5.setOnClickListener { v: View? ->
                 val pos = adapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
-                    listener!!.onItemClick(v, pos)
-                    Log.d("####-!!!!", "fri = $pos")
+                    listener!!.onItemClick(v, pos, "thur")
                 }
             }
 
             cvieWrap6.setOnClickListener { v: View? ->
                 val pos = adapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
-                    listener!!.onItemClick(v, pos)
-                    Log.d("####-!!!!", "sat = $pos")
+                    listener!!.onItemClick(v, pos, "fri")
                 }
             }
 
             cvieWrap7.setOnClickListener { v: View? ->
                 val pos = adapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
-                    listener!!.onItemClick(v, pos)
-                    Log.d("####-!!!!", "sun = $pos")
-
+                    listener!!.onItemClick(v, pos, "sat")
                 }
             }
 
@@ -193,6 +230,16 @@ class AdapterBestWeekend(
 
     fun getItem(position: Int): BookListDataBestWeekend? {
         return item!![position]
+    }
+
+
+    fun setSelectedBook(bookcode: String) {
+        selected = bookcode
+    }
+
+
+    fun getSelectedBook(): String? {
+        return selected
     }
 
 }

@@ -34,14 +34,12 @@ class FragmentBestWeekend : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         root = inflater.inflate(R.layout.fragment_best_weekend, container, false)
 
         recyclerView = root.findViewById(R.id.rview_Best)
 
         adapterWeek = AdapterBestWeekend(requireContext(), itemWeek)
-
-        val day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
 
         db = Room.databaseBuilder(
             requireContext(),
@@ -63,16 +61,25 @@ class FragmentBestWeekend : Fragment() {
 
         val today = db.bestDao().selectWeek(Calendar.getInstance().get(Calendar.DAY_OF_WEEK))
 
-        Log.d("!!!!", db.bestDao().selectWeek(day).toString())
-
-        for(i in tue.indices){
-            Log.d("!!!!", tue[i].title!!)
-        }
-
         for (i in today.indices){
 
             itemWeek.add(
                 BookListDataBestWeekend(
+                    if(sun.isNotEmpty()){
+                        BookListDataBestToday(
+                            sun[i].writer,
+                            sun[i].title,
+                            sun[i].bookImg,
+                            sun[i].intro,
+                            sun[i].bookCode,
+                            sun[i].cntChapter,
+                            sun[i].cntPageRead,
+                            sun[i].cntFavorite,
+                            sun[i].cntRecom,
+                            i + 1,
+                            false
+                        )
+                    } else null,
                     if(mon.isNotEmpty()){
                         BookListDataBestToday(
                             mon[i].writer,
@@ -163,21 +170,6 @@ class FragmentBestWeekend : Fragment() {
                             false
                         )
                     } else null,
-                    if(sun.isNotEmpty()){
-                        BookListDataBestToday(
-                            sun[i].writer,
-                            sun[i].title,
-                            sun[i].bookImg,
-                            sun[i].intro,
-                            sun[i].bookCode,
-                            sun[i].cntChapter,
-                            sun[i].cntPageRead,
-                            sun[i].cntFavorite,
-                            sun[i].cntRecom,
-                            i + 1,
-                            false
-                        )
-                    } else null,
                 )
             )
         }
@@ -187,29 +179,78 @@ class FragmentBestWeekend : Fragment() {
         adapterWeek!!.notifyDataSetChanged()
 
         adapterWeek!!.setOnItemClickListener(object : AdapterBestWeekend.OnItemClickListener {
-            override fun onItemClick(v: View?, position: Int) {
+            override fun onItemClick(v: View?, position: Int, value: String?) {
                 val item: BookListDataBestWeekend? = adapterWeek!!.getItem(position)
 
-                Log.d("####", "position = $position")
+                 if (item!!.sun != null && value.equals("sun")){
 
-                if(item!!.mon != null){
-                    Log.d("####", "mon" + item.mon!!.bookCode.toString())
-                } else if (item.tue != null){
-                    Log.d("####", "tue" + item.tue!!.bookCode.toString())
-                }else if (item.wed != null){
-                    Log.d("####", "wed" + item.wed!!.bookCode.toString())
-                }else if (item.thur != null){
-                    Log.d("####", "thur" + item.thur!!.bookCode.toString())
-                }else if (item.fri != null){
-                    Log.d("####", "fri" + item.fri!!.bookCode.toString())
-                }else if (item.sat != null){
-                    Log.d("####", "sat" + item.sat!!.bookCode.toString())
-                }else if (item.sun != null){
-                    Log.d("####", "sun" + item.sun!!.bookCode.toString())
+                     if(adapterWeek!!.getSelectedBook() == item.sun!!.bookCode.toString()){
+                         val mBottomDialogBest = BottomDialogBest(requireContext(), item.sun)
+                         fragmentManager?.let { mBottomDialogBest.show(it, null) }
+                         adapterWeek!!.setSelectedBook("")
+                     } else {
+                         adapterWeek!!.setSelectedBook(item.sun!!.bookCode.toString())
+                     }
+                } else if(item.mon != null && value.equals("mon")){
+
+                     if(adapterWeek!!.getSelectedBook() == item.mon!!.bookCode.toString()){
+                         val mBottomDialogBest = BottomDialogBest(requireContext(), item.mon)
+                         fragmentManager?.let { mBottomDialogBest.show(it, null) }
+                         adapterWeek!!.setSelectedBook("")
+                     } else {
+                         adapterWeek!!.setSelectedBook(item.mon!!.bookCode.toString())
+                     }
+
+                } else if (item.tue != null && value.equals("tue")){
+
+                     if(adapterWeek!!.getSelectedBook() == item.tue!!.bookCode.toString()){
+                         val mBottomDialogBest = BottomDialogBest(requireContext(), item.tue)
+                         fragmentManager?.let { mBottomDialogBest.show(it, null) }
+                         adapterWeek!!.setSelectedBook("")
+                     } else {
+                         adapterWeek!!.setSelectedBook(item.tue!!.bookCode.toString())
+                     }
+
+                }else if (item.wed != null && value.equals("wed")){
+
+                    if(adapterWeek!!.getSelectedBook() == item.wed!!.bookCode.toString()){
+                        val mBottomDialogBest = BottomDialogBest(requireContext(), item.wed)
+                        fragmentManager?.let { mBottomDialogBest.show(it, null) }
+                    } else {
+                        adapterWeek!!.setSelectedBook(item.wed!!.bookCode.toString())
+                    }
+
+                }else if (item.thur != null && value.equals("thur")){
+
+                    if(adapterWeek!!.getSelectedBook() == item.thur!!.bookCode.toString()){
+                        val mBottomDialogBest = BottomDialogBest(requireContext(), item.thur)
+                        fragmentManager?.let { mBottomDialogBest.show(it, null) }
+                        adapterWeek!!.setSelectedBook("")
+                    } else {
+                        adapterWeek!!.setSelectedBook(item.thur!!.bookCode.toString())
+                    }
+
+                }else if (item.fri != null && value.equals("fri")){
+
+                     if(adapterWeek!!.getSelectedBook() == item.fri!!.bookCode.toString()){
+                         val mBottomDialogBest = BottomDialogBest(requireContext(), item.fri)
+                         fragmentManager?.let { mBottomDialogBest.show(it, null) }
+                     } else {
+                         adapterWeek!!.setSelectedBook(item.fri!!.bookCode.toString())
+                     }
+
+                }else if (item.sat != null && value.equals("sat")){
+
+                     if(adapterWeek!!.getSelectedBook() == item.fri!!.bookCode.toString()){
+                         val mBottomDialogBest = BottomDialogBest(requireContext(), item.fri)
+                         fragmentManager?.let { mBottomDialogBest.show(it, null) }
+                     } else {
+                         adapterWeek!!.setSelectedBook(item.fri!!.bookCode.toString())
+                     }
+
                 }
 
-                Log.d("@@@@-1", item.toString())
-                Log.d("@@@@-2", position.toString())
+                adapterWeek!!.notifyDataSetChanged()
 
             }
         })
