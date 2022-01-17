@@ -26,14 +26,13 @@ class ActivitySplash : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        startLoading()
+//        startLoading()
 
-//        Thread {
-//            test()
-//        }.start()
+        Thread {
+            test()
+        }.start()
     }
 
-    @Throws(IOException::class)
     private fun test() {
 //        Log.d("@@@@","@@@@")
 //        val doc: Document = Jsoup.connect("https://en.wikipedia.org/").get()
@@ -44,14 +43,23 @@ class ActivitySplash : Activity() {
 //        }
 
         Log.d("@@@@","!!!!")
-        val doc2: Document = Jsoup.connect("https://ridibooks.com/romance-serial/").get()
+        val doc2: Document = Jsoup.connect("https://ridibooks.com/bestsellers/romance_serial?order=daily").post()
         log(doc2.title())
-        val keywordRidi: Elements = doc2.select("div ul li a")
+        val keywordRidi: Elements = doc2.select(".book_thumbnail a")
         for (i in keywordRidi) {
-            if(i.absUrl("href").contains("keyword")){
-                log("%s\n\t%s", i.text(), i.absUrl("href"))
-            }
+            log("%s\n\t%s", i.text(), i.absUrl("href"))
         }
+
+        val keywordRidi2: Elements = doc2.select(".book_thumbnail .thumbnail_image .thumbnail")
+        val keywordRidi3: Elements = doc2.select("div .title_link")
+        for (i in keywordRidi2) {
+            log("%s\n\t%s", i.text(), i.absUrl("data-src"))
+        }
+
+        for (i in keywordRidi3) {
+            log("%s\n\t%s", i.text(), i.absUrl("href"))
+        }
+
     }
 
     private fun log(msg: String, vararg vals: String) {
@@ -61,15 +69,6 @@ class ActivitySplash : Activity() {
     private fun startLoading() {
         Handler(Looper.myLooper()!!).postDelayed(
             {
-                val calendar: Calendar = Calendar.getInstance()
-
-//                for (i in 0..30) {
-//                    dayOfMonth = calendar.get(Calendar.DAY_OF_WEEK)
-//                    calendar.add(Calendar.DATE, 1) //1일 더하기
-//                    Log.d("CalendarTest", "dayOfMonth = $dayOfMonth")
-//                }
-
-
                 val novelIntent = Intent(this, ActivityLogin::class.java)
                 novelIntent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                 startActivityIfNeeded(novelIntent, 0)
