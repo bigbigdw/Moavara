@@ -6,16 +6,13 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import androidx.room.Room
 import com.example.takealook.DataBase.DataBaseJoara
 import com.example.takealook.DataBase.JoaraBest
 import com.example.takealook.R
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
-import java.io.IOException
-import java.time.DayOfWeek
-import java.util.*
 
 
 private lateinit var db: DataBaseJoara
@@ -34,30 +31,20 @@ class ActivitySplash : Activity() {
     }
 
     private fun test() {
-//        Log.d("@@@@","@@@@")
-//        val doc: Document = Jsoup.connect("https://en.wikipedia.org/").get()
-//        log(doc.title())
-//        val newsHeadlines: Elements = doc.select("#mp-itn b a")
-//        for (headline in newsHeadlines) {
-//            log("%s\n\t%s", headline.attr("title"), headline.absUrl("href"))
-//        }
 
         Log.d("@@@@","!!!!")
         val doc2: Document = Jsoup.connect("https://ridibooks.com/bestsellers/romance_serial?order=daily").post()
         log(doc2.title())
-        val keywordRidi: Elements = doc2.select(".book_thumbnail a")
-        for (i in keywordRidi) {
-            log("%s\n\t%s", i.text(), i.absUrl("href"))
-        }
+        val ridiKeyword: Elements = doc2.select(".book_thumbnail_wrapper")
 
-        val keywordRidi2: Elements = doc2.select(".book_thumbnail .thumbnail_image .thumbnail")
-        val keywordRidi3: Elements = doc2.select("div .title_link")
-        for (i in keywordRidi2) {
-            log("%s\n\t%s", i.text(), i.absUrl("data-src"))
-        }
-
-        for (i in keywordRidi3) {
-            log("%s\n\t%s", i.text(), i.absUrl("href"))
+        for (i in ridiKeyword.indices) {
+            Log.d("!!!!", "Link = " + ridiKeyword.select("a")[i].absUrl("href"))
+            Log.d("!!!!", "Img = " + ridiKeyword.select(".thumbnail_image .thumbnail")[i].absUrl("data-src"))
+            Log.d("!!!!", "Title = " + doc2.select("div .title_link")[i].text())
+            Log.d("!!!!", "Writer = " + doc2.select("div .author_detail_link")[i].text())
+            Log.d("!!!!", "Score = " + doc2.select("span .StarRate_Score")[i].text())
+            Log.d("!!!!", "Read = " + doc2.select("span .StarRate_ParticipantCount")[i].text())
+            Log.d("!!!!", "Count = " + doc2.select(".count_num")[i].text())
         }
 
     }
