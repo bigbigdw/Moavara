@@ -17,75 +17,81 @@ interface UserDao {
 @Dao
 interface BestDao {
 
-    @Query("DELETE FROM JoaraBest WHERE day = :day")
+    @Query("DELETE FROM DataBest WHERE day = :day")
     fun deleteWeek(day: Int)
 
-    @Query("SELECT * FROM JoaraBest WHERE day = :day")
-    fun selectWeek(day: Int): List<JoaraBest>
+    @Query("SELECT * FROM DataBest WHERE day = :day AND type = :type")
+    fun selectWeek(day: Int, type : String): List<DataBest>
 
-    @Query("SELECT * FROM JoaraBest")
-    fun getAll(): List<JoaraBest>
+    @Query("SELECT * FROM DataBest WHERE day = :day")
+    fun selectWeekTotal(day: Int): List<DataBest>
 
-    @Query("SELECT * FROM JoaraBest WHERE day = 1")
-    fun getSun(): List<JoaraBest>
+    @Query("SELECT * FROM DataBest")
+    fun getAllTotal(): List<DataBest>
 
-    @Query("SELECT * FROM JoaraBest WHERE day = 2")
-    fun getMon(): List<JoaraBest>
+    @Query("SELECT * FROM DataBest WHERE type = :type")
+    fun getAll(type: String): List<DataBest>
 
-    @Query("SELECT * FROM JoaraBest WHERE day = 3")
-    fun getTue(): List<JoaraBest>
+    @Query("SELECT * FROM DataBest WHERE day = 1")
+    fun getSun(): List<DataBest>
 
-    @Query("SELECT * FROM JoaraBest WHERE day = 4")
-    fun getWed(): List<JoaraBest>
+    @Query("SELECT * FROM DataBest WHERE day = 2")
+    fun getMon(): List<DataBest>
 
-    @Query("SELECT * FROM JoaraBest WHERE day = 5")
-    fun getThu(): List<JoaraBest>
+    @Query("SELECT * FROM DataBest WHERE day = 3")
+    fun getTue(): List<DataBest>
 
-    @Query("SELECT * FROM JoaraBest WHERE day = 6")
-    fun getFri(): List<JoaraBest>
+    @Query("SELECT * FROM DataBest WHERE day = 4")
+    fun getWed(): List<DataBest>
 
-    @Query("SELECT * FROM JoaraBest WHERE day = 7")
-    fun getSat(): List<JoaraBest>
+    @Query("SELECT * FROM DataBest WHERE day = 5")
+    fun getThu(): List<DataBest>
 
-    @Query("SELECT * FROM JoaraBest WHERE week = 1")
-    fun getMonthFirst(): List<JoaraBest>
+    @Query("SELECT * FROM DataBest WHERE day = 6")
+    fun getFri(): List<DataBest>
 
-    @Query("SELECT * FROM JoaraBest WHERE week = 2")
-    fun getMonthSecond(): List<JoaraBest>
+    @Query("SELECT * FROM DataBest WHERE day = 7")
+    fun getSat(): List<DataBest>
 
-    @Query("SELECT * FROM JoaraBest WHERE week = 3")
-    fun getMonthThird(): List<JoaraBest>
+    @Query("SELECT * FROM DataBest WHERE week = 1")
+    fun getMonthFirst(): List<DataBest>
 
-    @Query("SELECT * FROM JoaraBest WHERE week = 4")
-    fun getMonthFourth(): List<JoaraBest>
+    @Query("SELECT * FROM DataBest WHERE week = 2")
+    fun getMonthSecond(): List<DataBest>
 
-    @Query("SELECT * FROM JoaraBest WHERE week = 5")
-    fun getMonthFifth(): List<JoaraBest>
+    @Query("SELECT * FROM DataBest WHERE week = 3")
+    fun getMonthThird(): List<DataBest>
 
-    @Query("SELECT * FROM JoaraBest WHERE point = 5")
-    fun getFirst(): List<JoaraBest>
+    @Query("SELECT * FROM DataBest WHERE week = 4")
+    fun getMonthFourth(): List<DataBest>
 
-    @Query("SELECT * FROM JoaraBest WHERE point = 4")
-    fun getSecond(): List<JoaraBest>
+    @Query("SELECT * FROM DataBest WHERE week = 5")
+    fun getMonthFifth(): List<DataBest>
 
-    @Query("SELECT * FROM JoaraBest WHERE point = 3")
-    fun getThird(): List<JoaraBest>
+    @Query("SELECT * FROM DataBest WHERE point = 5")
+    fun getFirst(): List<DataBest>
 
-    @Query("SELECT * FROM JoaraBest WHERE point = 2")
-    fun getFourth(): List<JoaraBest>
+    @Query("SELECT * FROM DataBest WHERE point = 4")
+    fun getSecond(): List<DataBest>
 
-    @Query("SELECT * FROM JoaraBest WHERE point = 1")
-    fun getFifth(): List<JoaraBest>
+    @Query("SELECT * FROM DataBest WHERE point = 3")
+    fun getThird(): List<DataBest>
 
-    @Query("SELECT * FROM JoaraBest WHERE point = 10")
-    fun getBest(): List<JoaraBest>
+    @Query("SELECT * FROM DataBest WHERE point = 2")
+    fun getFourth(): List<DataBest>
+
+    @Query("SELECT * FROM DataBest WHERE point = 1")
+    fun getFifth(): List<DataBest>
+
+    @Query("SELECT * FROM DataBest WHERE point = 10")
+    fun getBest(): List<DataBest>
 
 //    @Query("SELECT * FROM JoaraBest WHERE day = :bookCode UPDATE day = 1")
 //    fun findBook(bookCode: String)
 
     @Insert
-    fun insert(user: JoaraBest)
+    fun insert(user: DataBest)
 
     @Delete
-    fun delete(user: JoaraBest)
+    fun delete(user: DataBest)
 }

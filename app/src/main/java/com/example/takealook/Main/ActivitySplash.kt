@@ -6,16 +6,17 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import com.example.takealook.DataBase.DataBaseJoara
-import com.example.takealook.DataBase.JoaraBest
+import androidx.room.Room
+import com.example.takealook.DataBase.DataBaseBest
+import com.example.takealook.DataBase.DataBest
 import com.example.takealook.R
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
+import java.util.*
 
 
-private lateinit var db: DataBaseJoara
+private lateinit var db: DataBaseBest
 var dayOfMonth = 0
 
 class ActivitySplash : Activity() {
@@ -23,28 +24,69 @@ class ActivitySplash : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-//        startLoading()
+        db = Room.databaseBuilder(
+            this,
+            DataBaseBest::class.java,
+            "user-database"
+        ).allowMainThreadQueries()
+            .build()
+
+        if (db.bestDao().selectWeekTotal(Calendar.getInstance().get(Calendar.DAY_OF_WEEK)) != null) {
+            db.bestDao().deleteWeek(Calendar.getInstance().get(Calendar.DAY_OF_WEEK))
+        }
+
+
 
         Thread {
             test()
         }.start()
+
+        startLoading()
+
     }
 
     private fun test() {
 
-        Log.d("@@@@","!!!!")
-        val doc2: Document = Jsoup.connect("https://ridibooks.com/bestsellers/romance_serial?order=daily").post()
-        log(doc2.title())
-        val ridiKeyword: Elements = doc2.select(".book_thumbnail_wrapper")
+        Log.d("@@@@", "!!!!")
+        val doc: Document =
+            Jsoup.connect("https://ridibooks.com/bestsellers/romance_serial?order=daily").post()
+        val ridiKeyword: Elements = doc.select(".book_thumbnail_wrapper")
 
         for (i in ridiKeyword.indices) {
-            Log.d("!!!!", "Link = " + ridiKeyword.select("a")[i].absUrl("href"))
-            Log.d("!!!!", "Img = " + ridiKeyword.select(".thumbnail_image .thumbnail")[i].absUrl("data-src"))
-            Log.d("!!!!", "Title = " + doc2.select("div .title_link")[i].text())
-            Log.d("!!!!", "Writer = " + doc2.select("div .author_detail_link")[i].text())
-            Log.d("!!!!", "Score = " + doc2.select("span .StarRate_Score")[i].text())
-            Log.d("!!!!", "Read = " + doc2.select("span .StarRate_ParticipantCount")[i].text())
-            Log.d("!!!!", "Count = " + doc2.select(".count_num")[i].text())
+            if (i < 20) {
+
+                val writerName = doc.select("div .author_detail_link")[i].text()
+                val subject = doc.select("div .title_link")[i].text()
+                val bookImg =
+                    ridiKeyword.select(".thumbnail_image .thumbnail")[i].absUrl("data-src")
+                val intro = ""
+                val bookCode = ridiKeyword.select("a")[i].absUrl("href")
+                val cntChapter = doc.select(".count_num")[i].text()
+                val cntPageRead = doc.select("span .StarRate_ParticipantCount")[i].text()
+                val cntFavorite = ""
+                val cntRecom = doc.select("span .StarRate_Score")[i].text()
+
+                db.bestDao().insert(
+                    DataBest(
+                        writerName,
+                        subject,
+                        bookImg,
+                        intro,
+                        bookCode,
+                        cntChapter,
+                        cntPageRead,
+                        cntFavorite,
+                        cntRecom,
+                        i + 1,
+                        Calendar.getInstance().get(Calendar.DAY_OF_WEEK),
+                        Calendar.getInstance().get(Calendar.DAY_OF_WEEK_IN_MONTH),
+                        Calendar.getInstance().get(Calendar.DATE),
+                        Calendar.getInstance().get(Calendar.MONTH),
+                        10 - i,
+                        "Ridi"
+                    )
+                )
+            }
         }
 
     }
@@ -78,7 +120,20 @@ class ActivitySplash : Activity() {
         var number = 1
 
 
-        db.bestDao().insert(JoaraBest(writer, title, bookImg, intro, bookCode, cntChapter, cntPageRead, cntFavorite, cntRecom, number))
+        db.bestDao().insert(
+            DataBest(
+                writer,
+                title,
+                bookImg,
+                intro,
+                bookCode,
+                cntChapter,
+                cntPageRead,
+                cntFavorite,
+                cntRecom,
+                number
+            )
+        )
     }
 
 

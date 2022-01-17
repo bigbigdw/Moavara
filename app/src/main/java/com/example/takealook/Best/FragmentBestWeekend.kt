@@ -12,7 +12,7 @@ import com.example.takealook.Search.BookListDataBestToday
 import com.example.takealook.R
 
 import androidx.room.Room
-import com.example.takealook.DataBase.DataBaseJoara
+import com.example.takealook.DataBase.DataBaseBest
 import com.example.takealook.Search.BookListDataBestWeekend
 import java.util.*
 
@@ -20,7 +20,7 @@ import java.util.*
 class FragmentBestWeekend : Fragment() {
 
 
-    private lateinit var db: DataBaseJoara
+    private lateinit var db: DataBaseBest
 
     private var adapterWeek: AdapterBestWeekend? = null
 
@@ -43,7 +43,7 @@ class FragmentBestWeekend : Fragment() {
 
         db = Room.databaseBuilder(
             requireContext(),
-            DataBaseJoara::class.java,
+            DataBaseBest::class.java,
             "user-database"
         ).allowMainThreadQueries()
             .build()
@@ -59,7 +59,7 @@ class FragmentBestWeekend : Fragment() {
         val sat = db.bestDao().getSat()
         val sun = db.bestDao().getSun()
 
-        val today = db.bestDao().selectWeek(Calendar.getInstance().get(Calendar.DAY_OF_WEEK))
+        val today = db.bestDao().selectWeek(Calendar.getInstance().get(Calendar.DAY_OF_WEEK), "Joara")
 
         for (i in today.indices){
 

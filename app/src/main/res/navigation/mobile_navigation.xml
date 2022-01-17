@@ -27,11 +27,11 @@
         android:id="@+id/Fragment_Best1"
         android:name="com.example.takealook.Best.FragmentBestWeekend"
         android:label=""
-        tools:layout="@layout/fragment_best_today" />
+        tools:layout="@layout/fragment_best_today_tab" />
 
     <fragment
         android:id="@+id/Fragment_Best2"
         android:name="com.example.takealook.Best.FragmentBestMonth"
         android:label=""
-        tools:layout="@layout/fragment_best_today" />
+        tools:layout="@layout/fragment_best_today_tab" />
 </navigation>
