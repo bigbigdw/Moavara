@@ -15,7 +15,7 @@ interface KaKaoBestService {
         @Query("page") page: String?,
         @Query("day") day: String?,
         @Query("bm") bm: String?,
-    ): Call<JoaraBestListResult?>?
+    ): Call<BestResultKakao?>?
 }
 
 interface ServiceSearchKakao {

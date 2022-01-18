@@ -21,7 +21,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class FragmentBestTodayRidi : Fragment() {
+class FragmentBestTodayJsoup : Fragment() {
     private lateinit var db: DataBaseBest
 
     private var adapterToday: AdapterBestToday? = null

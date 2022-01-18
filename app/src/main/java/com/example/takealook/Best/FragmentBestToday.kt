@@ -4,12 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import androidx.navigation.fragment.NavHostFragment
 import androidx.viewpager.widget.ViewPager
 import com.example.takealook.R
 import com.google.android.material.tabs.TabLayout
@@ -37,9 +35,9 @@ class FragmentBestToday : Fragment() {
         val adapter = ViewPagerAdapter(
             childFragmentManager
         )
-        adapter.addFragment(FragmentBestTodayJoara("Joara"), "조아라")
-        adapter.addFragment(FragmentBestTodayRidi(), "리디북스")
-        adapter.addFragment(FragmentBestTodayJoara("Kakao"), "카카오페이지")
+        adapter.addFragment(FragmentBestTodayApi("Joara"), "조아라")
+        adapter.addFragment(FragmentBestTodayJsoup(), "리디북스")
+        adapter.addFragment(FragmentBestTodayApi("Kakao"), "카카오페이지")
         viewPager!!.adapter = adapter
     }
 

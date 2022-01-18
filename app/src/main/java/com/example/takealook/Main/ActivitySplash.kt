@@ -41,7 +41,7 @@ class ActivitySplash : Activity() {
             test()
         }.start()
 
-//        startLoading()
+        startLoading()
 
     }
 

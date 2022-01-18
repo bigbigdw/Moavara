@@ -39,3 +39,48 @@ class KakaoBookItem {
     @Expose
     var title: String? = null
 }
+
+//베스트 결과
+class BestResultKakao {
+    @SerializedName("list")
+    @Expose
+    val list: List<KakaoBestBookResult>? = null
+}
+
+class KakaoBestBookResult {
+    @SerializedName("author")
+    @Expose
+    var author: String? = null
+
+    @SerializedName("description")
+    @Expose
+    var description: String? = null
+
+    @SerializedName("title")
+    @Expose
+    var title: String? = null
+
+    @SerializedName("like_count")
+    @Expose
+    var like_count: String? = null
+
+    @SerializedName("rating")
+    @Expose
+    var rating: String? = null
+
+    @SerializedName("series_id")
+    @Expose
+    var series_id: String? = null
+
+    @SerializedName("read_count")
+    @Expose
+    var read_count: String? = null
+
+    @SerializedName("promotion_rate")
+    @Expose
+    var promotion_rate: String? = null
+
+    @SerializedName("image")
+    @Expose
+    var image: String? = null
+}

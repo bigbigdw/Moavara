@@ -13,6 +13,8 @@ import com.example.takealook.DataBase.DataBaseBest
 import com.example.takealook.DataBase.DataBest
 import com.example.takealook.Joara.JoaraBestListResult
 import com.example.takealook.Joara.RetrofitJoara
+import com.example.takealook.KaKao.BestResultKakao
+import com.example.takealook.KaKao.RetrofitKaKao
 import com.example.takealook.Search.BookListDataBestToday
 import com.example.takealook.R
 import retrofit2.Call
@@ -21,7 +23,7 @@ import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 
-class FragmentBestTodayJoara(tabType : String) : Fragment() {
+class FragmentBestTodayApi(private val tabType : String) : Fragment() {
     private lateinit var db: DataBaseBest
 
     private var adapterToday: AdapterBestToday? = null
@@ -49,7 +51,13 @@ class FragmentBestTodayJoara(tabType : String) : Fragment() {
 
         adapterToday = AdapterBestToday(requireContext(), items)
 
-        getBookListBest(recyclerView)
+        if(tabType == "Joara"){
+            getBookListBestJoara(recyclerView)
+        }
+
+        if(tabType == "Kakao"){
+            getBookListBestKakao(recyclerView)
+        }
 
         day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
         week = Calendar.getInstance().get(Calendar.DAY_OF_WEEK_IN_MONTH)
@@ -77,7 +85,7 @@ class FragmentBestTodayJoara(tabType : String) : Fragment() {
         return root
     }
 
-    private fun getBookListBest(recyclerView: RecyclerView?) {
+    private fun getBookListBestJoara(recyclerView: RecyclerView?) {
         val linearLayoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
@@ -123,7 +131,7 @@ class FragmentBestTodayJoara(tabType : String) : Fragment() {
                                         date,
                                         month,
                                         10 - i,
-                                        "Joara"
+                                        "Kakao"
                                     )
                                 )
                             }
@@ -152,6 +160,95 @@ class FragmentBestTodayJoara(tabType : String) : Fragment() {
             }
 
             override fun onFailure(call: Call<JoaraBestListResult?>, t: Throwable) {
+                Log.d("onFailure", "실패")
+            }
+        })
+
+        adapterToday!!.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
+            override fun onItemClick(v: View?, position: Int) {
+                val item: BookListDataBestToday? = adapterToday!!.getItem(position)
+
+                val mBottomDialogBest = BottomDialogBest(requireContext(), item)
+                fragmentManager?.let { mBottomDialogBest.show(it, null) }
+            }
+        })
+    }
+
+    private fun getBookListBestKakao(recyclerView: RecyclerView?) {
+        val linearLayoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+        val call: Call<BestResultKakao?>? = RetrofitKaKao.getBestKakao("11", "0", "0", "2", "A")
+
+        call!!.enqueue(object : Callback<BestResultKakao?> {
+            override fun onResponse(
+                call: Call<BestResultKakao?>,
+                response: Response<BestResultKakao?>
+            ) {
+
+                if (response.isSuccessful) {
+                    response.body()?.let { it ->
+                        val list = it.list
+
+                        for (i in list!!.indices) {
+
+                            val writerName = list[i].author
+                            val subject = list[i].title
+                            val bookImg = "https://dn-img-page.kakao.com/download/resource?kid=" + list[i].image
+                            val intro = list[i].description
+                            val bookCode = list[i].series_id
+                            val cntChapter = list[i].promotion_rate
+                            val cntPageRead = list[i].read_count
+                            val cntFavorite = list[i].like_count
+                            val cntRecom = list[i].rating
+
+                            if (i < 10) {
+                                db.bestDao().insert(
+                                    DataBest(
+                                        writerName,
+                                        subject,
+                                        bookImg,
+                                        intro,
+                                        bookCode,
+                                        cntChapter,
+                                        cntPageRead,
+                                        cntFavorite,
+                                        cntRecom,
+                                        i + 1,
+                                        day,
+                                        week,
+                                        date,
+                                        month,
+                                        10 - i,
+                                        "Kakao"
+                                    )
+                                )
+                            }
+
+                            items!!.add(
+                                BookListDataBestToday(
+                                    writerName,
+                                    subject,
+                                    bookImg,
+                                    intro,
+                                    bookCode,
+                                    cntChapter,
+                                    cntPageRead,
+                                    cntFavorite,
+                                    cntRecom,
+                                    i + 1,
+                                    false
+                                )
+                            )
+                        }
+                    }
+                    recyclerView!!.layoutManager = linearLayoutManager
+                    recyclerView.adapter = adapterToday
+                    adapterToday!!.notifyDataSetChanged()
+                }
+            }
+
+            override fun onFailure(call: Call<BestResultKakao?>, t: Throwable) {
                 Log.d("onFailure", "실패")
             }
         })
