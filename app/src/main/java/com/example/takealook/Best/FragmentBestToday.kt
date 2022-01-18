@@ -37,9 +37,9 @@ class FragmentBestToday : Fragment() {
         val adapter = ViewPagerAdapter(
             childFragmentManager
         )
-        adapter.addFragment(FragmentBestTodayJoara(), "조아라")
+        adapter.addFragment(FragmentBestTodayJoara("Joara"), "조아라")
         adapter.addFragment(FragmentBestTodayRidi(), "리디북스")
-        adapter.addFragment(FragmentBestTodayJoara(), "쪼아라")
+        adapter.addFragment(FragmentBestTodayJoara("Kakao"), "카카오페이지")
         viewPager!!.adapter = adapter
     }
 

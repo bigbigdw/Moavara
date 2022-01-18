@@ -21,7 +21,7 @@ import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 
-class FragmentBestTodayJoara(type : String?) : Fragment() {
+class FragmentBestTodayJoara(tabType : String) : Fragment() {
     private lateinit var db: DataBaseBest
 
     private var adapterToday: AdapterBestToday? = null
@@ -29,6 +29,7 @@ class FragmentBestTodayJoara(type : String?) : Fragment() {
     var recyclerView: RecyclerView? = null
 
     lateinit var root: View
+    lateinit var type: String
 
     var day = 0
     var week = 0
