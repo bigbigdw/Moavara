@@ -11,6 +11,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.takealook.Joara.JoaraSearchResult
+import com.example.takealook.Joara.RetrofitJoara
+import com.example.takealook.KaKao.RetrofitKaKao
+import com.example.takealook.KaKao.SearchResultKakao
 import com.example.takealook.R
 import com.example.takealook.Util.TabViewModel
 import retrofit2.Call
@@ -101,7 +105,7 @@ class FragmentSearchTab : Fragment() {
     fun searchJoara(page: Int?) {
         Log.d("@@@@-!", "!!!!");
 
-        RetrofitSearch.getSearchJoara(
+        RetrofitJoara.getSearchJoara(
             page,"사랑", "", "", "", "", "", "", "", "", "", "", "30|25|25|15|15|15|0.5",
             "1",
         )!!.enqueue(object : Callback<JoaraSearchResult?> {
@@ -178,7 +182,7 @@ class FragmentSearchTab : Fragment() {
     }
 
     fun searchKakao(page: Int?) {
-        RetrofitSearch.postSearchKakao(
+        RetrofitKaKao.postSearchKakao(
             page,"사랑",11)!!.enqueue(object : Callback<SearchResultKakao?> {
             override fun onResponse(
                 call: Call<SearchResultKakao?>,

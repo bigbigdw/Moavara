@@ -21,7 +21,7 @@ import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 
-class FragmentBestTodayJoara : Fragment() {
+class FragmentBestTodayJoara(type : String?) : Fragment() {
     private lateinit var db: DataBaseBest
 
     private var adapterToday: AdapterBestToday? = null

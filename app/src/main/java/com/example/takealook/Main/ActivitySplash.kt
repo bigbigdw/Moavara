@@ -41,13 +41,18 @@ class ActivitySplash : Activity() {
             test()
         }.start()
 
-        startLoading()
+//        startLoading()
 
     }
 
     private fun test() {
 
-        Log.d("@@@@", "!!!!")
+        getRidiBest()
+
+    }
+
+    private fun getRidiBest() {
+
         val doc: Document =
             Jsoup.connect("https://ridibooks.com/bestsellers/romance_serial?order=daily").post()
         val ridiKeyword: Elements = doc.select(".book_thumbnail_wrapper")
@@ -91,9 +96,6 @@ class ActivitySplash : Activity() {
 
     }
 
-    private fun log(msg: String, vararg vals: String) {
-        println(String.format(msg, *vals))
-    }
 
     private fun startLoading() {
         Handler(Looper.myLooper()!!).postDelayed(
