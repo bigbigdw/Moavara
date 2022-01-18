@@ -32,26 +32,26 @@ interface BestDao {
     @Query("SELECT * FROM DataBest WHERE type = :type")
     fun getAll(type: String): List<DataBest>
 
-    @Query("SELECT * FROM DataBest WHERE day = 1")
-    fun getSun(): List<DataBest>
+    @Query("SELECT * FROM DataBest WHERE day = 1 AND type = :type")
+    fun getSun(type: String): List<DataBest>
 
-    @Query("SELECT * FROM DataBest WHERE day = 2")
-    fun getMon(): List<DataBest>
+    @Query("SELECT * FROM DataBest WHERE day = 2 AND type = :type")
+    fun getMon(type: String): List<DataBest>
 
-    @Query("SELECT * FROM DataBest WHERE day = 3")
-    fun getTue(): List<DataBest>
+    @Query("SELECT * FROM DataBest WHERE day = 3 AND type = :type")
+    fun getTue(type: String): List<DataBest>
 
-    @Query("SELECT * FROM DataBest WHERE day = 4")
-    fun getWed(): List<DataBest>
+    @Query("SELECT * FROM DataBest WHERE day = 4 AND type = :type")
+    fun getWed(type: String): List<DataBest>
 
-    @Query("SELECT * FROM DataBest WHERE day = 5")
-    fun getThu(): List<DataBest>
+    @Query("SELECT * FROM DataBest WHERE day = 5 AND type = :type")
+    fun getThu(type: String): List<DataBest>
 
-    @Query("SELECT * FROM DataBest WHERE day = 6")
-    fun getFri(): List<DataBest>
+    @Query("SELECT * FROM DataBest WHERE day = 6 AND type = :type")
+    fun getFri(type: String): List<DataBest>
 
-    @Query("SELECT * FROM DataBest WHERE day = 7")
-    fun getSat(): List<DataBest>
+    @Query("SELECT * FROM DataBest WHERE day = 7 AND type = :type")
+    fun getSat(type: String): List<DataBest>
 
     @Query("SELECT * FROM DataBest WHERE week = 1")
     fun getMonthFirst(): List<DataBest>

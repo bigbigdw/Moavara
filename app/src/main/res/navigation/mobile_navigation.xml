@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/Fragment_Best1"
-        android:name="com.example.takealook.Best.FragmentBestWeekend"
+        android:name="com.example.takealook.Best.FragmentBestWeekendTab"
         android:label=""
         tools:layout="@layout/fragment_best_today_tab" />
 

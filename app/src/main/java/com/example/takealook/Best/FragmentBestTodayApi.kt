@@ -131,7 +131,7 @@ class FragmentBestTodayApi(private val tabType : String) : Fragment() {
                                         date,
                                         month,
                                         10 - i,
-                                        "Kakao"
+                                        "Joara"
                                     )
                                 )
                             }
