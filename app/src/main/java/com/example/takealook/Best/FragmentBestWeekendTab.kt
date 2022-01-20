@@ -65,7 +65,7 @@ class FragmentBestWeekendTab(private val tabType : String) : Fragment() {
 
             itemWeek.add(
                 BookListDataBestWeekend(
-                    if(sun.isNotEmpty()){
+                    if(sun.isNotEmpty() && sun[i].number!! >= 0){
                         BookListDataBestToday(
                             sun[i].writer,
                             sun[i].title,
@@ -80,7 +80,7 @@ class FragmentBestWeekendTab(private val tabType : String) : Fragment() {
                             false
                         )
                     } else null,
-                    if(mon.isNotEmpty()){
+                    if(mon.isNotEmpty() && mon[i].number!! >= 0){
                         BookListDataBestToday(
                             mon[i].writer,
                             mon[i].title,
@@ -95,7 +95,7 @@ class FragmentBestWeekendTab(private val tabType : String) : Fragment() {
                             false
                         )
                     } else null,
-                    if(tue.isNotEmpty()){
+                    if(tue.isNotEmpty() && tue[i].number!! > 0){
                         BookListDataBestToday(
                             tue[i].writer,
                             tue[i].title,
@@ -110,7 +110,7 @@ class FragmentBestWeekendTab(private val tabType : String) : Fragment() {
                             false
                         )
                     } else null,
-                    if(wed.isNotEmpty()){
+                    if(wed.isNotEmpty() && wed[i].number!! > 0){
                         BookListDataBestToday(
                             wed[i].writer,
                             wed[i].title,
@@ -125,7 +125,7 @@ class FragmentBestWeekendTab(private val tabType : String) : Fragment() {
                             false
                         )
                     } else null,
-                    if(thur.isNotEmpty()){
+                    if(thur.isNotEmpty() && thur[i].number!! > 0){
                         BookListDataBestToday(
                             thur[i].writer,
                             thur[i].title,
@@ -140,7 +140,7 @@ class FragmentBestWeekendTab(private val tabType : String) : Fragment() {
                             false
                         )
                     } else null,
-                    if(fri.isNotEmpty()){
+                    if(fri.isNotEmpty() && fri[i].number!! > 0){
                         BookListDataBestToday(
                             fri[i].writer,
                             fri[i].title,
@@ -155,7 +155,7 @@ class FragmentBestWeekendTab(private val tabType : String) : Fragment() {
                             false
                         )
                     } else null,
-                    if(sat.isNotEmpty()){
+                    if(sat.isNotEmpty() && sat[i].number!! > 0){
                         BookListDataBestToday(
                             sat[i].writer,
                             sat[i].title,
