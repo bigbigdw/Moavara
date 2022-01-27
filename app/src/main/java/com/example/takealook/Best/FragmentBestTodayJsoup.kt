@@ -21,7 +21,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class FragmentBestTodayJsoup : Fragment() {
+class FragmentBestTodayJsoup(private val tabType : String) : Fragment() {
     private lateinit var db: DataBaseBest
 
     private var adapterToday: AdapterBestToday? = null
@@ -57,8 +57,6 @@ class FragmentBestTodayJsoup : Fragment() {
         ).allowMainThreadQueries()
             .build()
 
-        today = db.bestDao().selectWeek(Calendar.getInstance().get(Calendar.DAY_OF_WEEK), "Ridi")
-
         day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
         week = Calendar.getInstance().get(Calendar.DAY_OF_WEEK_IN_MONTH)
         date = Calendar.getInstance().get(Calendar.DATE)
@@ -71,12 +69,20 @@ class FragmentBestTodayJsoup : Fragment() {
         Log.d("@@@@", "date = $date")
         Log.d("@@@@", "monthly = $month")
 
-        getBookListBest(recyclerView)
+
+        if(tabType == "Ridi"){
+            getBookListBest(recyclerView, db.bestDao().selectWeek(Calendar.getInstance().get(Calendar.DAY_OF_WEEK), "Ridi"))
+        }
+
+        if(tabType == "OneStore"){
+            getBookListBest(recyclerView, db.bestDao().selectWeek(Calendar.getInstance().get(Calendar.DAY_OF_WEEK), "OneStore"))
+        }
+
 
         return root
     }
 
-    private fun getBookListBest(recyclerView: RecyclerView?) {
+    private fun getBookListBest(recyclerView: RecyclerView?, today :  List<DataBest>?) {
 
         for (i in today!!.indices) {
 

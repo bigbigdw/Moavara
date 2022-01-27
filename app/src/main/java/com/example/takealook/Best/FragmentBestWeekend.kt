@@ -37,6 +37,7 @@ class FragmentBestWeekend : Fragment() {
         adapter.addFragment(FragmentBestWeekendTab("Joara"), "조아라")
         adapter.addFragment(FragmentBestWeekendTab("Ridi"), "리디북스")
         adapter.addFragment(FragmentBestWeekendTab("Kakao"), "카카오페이지")
+        adapter.addFragment(FragmentBestWeekendTab("OneStore"), "카카오페이지")
         viewPager!!.adapter = adapter
     }
 

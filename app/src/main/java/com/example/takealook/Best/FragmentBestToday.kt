@@ -36,8 +36,9 @@ class FragmentBestToday : Fragment() {
             childFragmentManager
         )
         adapter.addFragment(FragmentBestTodayApi("Joara"), "조아라")
-        adapter.addFragment(FragmentBestTodayJsoup(), "리디북스")
+        adapter.addFragment(FragmentBestTodayJsoup("Ridi"), "리디북스")
         adapter.addFragment(FragmentBestTodayApi("Kakao"), "카카오페이지")
+        adapter.addFragment(FragmentBestTodayJsoup("OneStore"), "원스토어")
         viewPager!!.adapter = adapter
     }
 
