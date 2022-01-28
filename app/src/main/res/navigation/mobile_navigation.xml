@@ -7,31 +7,31 @@
 
     <fragment
         android:id="@+id/Fragment_Best"
-        android:name="com.example.takealook.Best.FragmentBest"
+        android:name="com.example.moavara.Best.FragmentBest"
         android:label=""
         tools:layout="@layout/fragment_best" />
 
     <fragment
         android:id="@+id/navigation_search"
-        android:name="com.example.takealook.Search.FragmentSearch"
+        android:name="com.example.moavara.Search.FragmentSearch"
         android:label=""
         tools:layout="@layout/fragment_search" />
 
     <fragment
         android:id="@+id/Fragment_Event"
-        android:name="com.example.takealook.Event.FragmentEvent"
+        android:name="com.example.moavara.Event.FragmentEvent"
         android:label=""
         tools:layout="@layout/fragment_event" />
 
     <fragment
         android:id="@+id/Fragment_Best1"
-        android:name="com.example.takealook.Best.FragmentBestWeekendTab"
+        android:name="com.example.moavara.Best.FragmentBestWeekendTab"
         android:label=""
         tools:layout="@layout/fragment_best_today_tab" />
 
     <fragment
         android:id="@+id/Fragment_Best2"
-        android:name="com.example.takealook.Best.FragmentBestMonth"
+        android:name="com.example.moavara.Best.FragmentBestMonth"
         android:label=""
         tools:layout="@layout/fragment_best_today_tab" />
 </navigation>

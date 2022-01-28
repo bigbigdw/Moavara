@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.takealook">
+    package="com.example.moavara">
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:allowBackup="true"
@@ -10,35 +10,35 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TakeALook.NoActionBar">
         <activity
-            android:name=".Main.ActivityMain"
+            android:name="com.example.moavara.Main.ActivityMain"
             android:exported="true"
             android:label="@string/app_name">
 
         </activity>
 
         <activity
-            android:name=".Search.ActivitySearch"
+            android:name="com.example.moavara.Search.ActivitySearch"
             android:exported="true">
         </activity>
 
         <activity
-            android:name=".Main.ActivityIntro"
+            android:name="com.example.moavara.Main.ActivityIntro"
             android:exported="true">
         </activity>
 
         <activity
-            android:name=".Main.ActivityLogin"
+            android:name="com.example.moavara.Main.ActivityLogin"
             android:exported="true">
         </activity>
 
         <activity
-            android:name=".Main.ActivityBookSetting"
+            android:name="com.example.moavara.Main.ActivityBookSetting"
             android:label=""
             android:exported="true">
         </activity>
 
         <activity
-            android:name=".Main.ActivityGuide"
+            android:name="com.example.moavara.Main.ActivityGuide"
             android:label=""
             android:exported="true"
             android:theme="@style/Theme.TakeALook.NoActionBar"
@@ -46,7 +46,7 @@
         </activity>
 
         <activity
-            android:name=".Main.ActivitySplash"
+            android:name="com.example.moavara.Main.ActivitySplash"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
