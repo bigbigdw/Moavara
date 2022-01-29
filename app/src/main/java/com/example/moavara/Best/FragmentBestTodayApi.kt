@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
+import com.example.moavara.DataBase.DBDate
 import com.example.moavara.DataBase.DataBaseBest
 import com.example.moavara.DataBase.DataBest
 import com.example.moavara.Joara.JoaraBestListResult
@@ -17,6 +18,7 @@ import com.example.moavara.KaKao.BestResultKakao
 import com.example.moavara.KaKao.RetrofitKaKao
 import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.R
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import retrofit2.Call
 import retrofit2.Callback
@@ -24,8 +26,8 @@ import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 
-class FragmentBestTodayApi(private val tabType : String) : Fragment() {
-    private lateinit var db: DataBaseBest
+class FragmentBestTodayApi(private val tabType: String, private var bestRef: DatabaseReference) :
+    Fragment() {
 
     private var adapterToday: AdapterBestToday? = null
     private val items = ArrayList<BookListDataBestToday?>()
@@ -34,59 +36,27 @@ class FragmentBestTodayApi(private val tabType : String) : Fragment() {
     lateinit var root: View
     lateinit var type: String
 
-    var day = 0
-    var week = 0
-    var date = 0
-    var month = 0
-    var mNow: Long = 0
-    var mDate: Date? = null
-    var mFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
-
-    val mRootRef = FirebaseDatabase.getInstance().reference
-    var conditionRef = mRootRef.child("best").child(tabType)
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         root = inflater.inflate(R.layout.fragment_best_today_tab, container, false)
 
         recyclerView = root.findViewById(R.id.rview_Best)
 
         adapterToday = AdapterBestToday(requireContext(), items)
 
-        if(tabType == "Joara"){
+        if (tabType == "Joara") {
             getBookListBestJoara(recyclerView)
         }
 
-        if(tabType == "Kakao"){
+        if (tabType == "Kakao") {
             getBookListBestKakao(recyclerView)
         }
 
-        day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
-        week = Calendar.getInstance().get(Calendar.DAY_OF_WEEK_IN_MONTH)
-        date = Calendar.getInstance().get(Calendar.DATE)
-        month = Calendar.getInstance().get(Calendar.MONTH)
-
-        Log.d("@@@@", "locale = " + requireContext().resources.configuration.locales.get(0))
-        Log.d("@@@@", "time = " + mFormat.format(Date(System.currentTimeMillis())))
-        Log.d("@@@@", "day = $day")
-        Log.d("@@@@", "week = $week")
-        Log.d("@@@@", "date = $date")
-        Log.d("@@@@", "monthly = $month")
-
-        conditionRef = conditionRef.child(week.toString()).child(day.toString())
-
-        db = Room.databaseBuilder(
-            requireContext(),
-            DataBaseBest::class.java,
-            "user-database"
-        ).allowMainThreadQueries()
-            .build()
-
-//        if(db.bestDao().getAllTotal() != null){
-//            db.bestDao().deleteWeek(day)
-//        }
+        bestRef =
+            bestRef.child(tabType).child(DBDate.Week().toString()).child(DBDate.Day().toString())
 
         return root
     }
@@ -119,49 +89,7 @@ class FragmentBestTodayApi(private val tabType : String) : Fragment() {
                             val cntFavorite = books[i].cntFavorite
                             val cntRecom = books[i].cntRecom
 
-                            if (i < 10) {
-                                db.bestDao().insert(
-                                    DataBest(
-                                        writerName,
-                                        subject,
-                                        bookImg,
-                                        intro,
-                                        bookCode,
-                                        cntChapter,
-                                        cntPageRead,
-                                        cntFavorite,
-                                        cntRecom,
-                                        i + 1,
-                                        day,
-                                        week,
-                                        date,
-                                        month,
-                                        10 - i,
-                                        "Joara"
-                                    )
-                                )
-
-                                conditionRef.child(i.toString()).setValue(                                    DataBest(
-                                    writerName,
-                                    subject,
-                                    bookImg,
-                                    intro,
-                                    bookCode,
-                                    cntChapter,
-                                    cntPageRead,
-                                    cntFavorite,
-                                    cntRecom,
-                                    i + 1,
-                                    day,
-                                    week,
-                                    date,
-                                    month,
-                                    10 - i,
-                                    "Joara"
-                                ))
-                            }
-
-                            items!!.add(
+                            bestRef.child(i.toString()).setValue(
                                 BookListDataBestToday(
                                     writerName,
                                     subject,
@@ -172,8 +100,22 @@ class FragmentBestTodayApi(private val tabType : String) : Fragment() {
                                     cntPageRead,
                                     cntFavorite,
                                     cntRecom,
-                                    i + 1,
-                                    false
+                                    i + 1
+                                )
+                            )
+
+                            items.add(
+                                BookListDataBestToday(
+                                    writerName,
+                                    subject,
+                                    bookImg,
+                                    intro,
+                                    bookCode,
+                                    cntChapter,
+                                    cntPageRead,
+                                    cntFavorite,
+                                    cntRecom,
+                                    i + 1
                                 )
                             )
                         }
@@ -219,7 +161,8 @@ class FragmentBestTodayApi(private val tabType : String) : Fragment() {
 
                             val writerName = list[i].author
                             val subject = list[i].title
-                            val bookImg = "https://dn-img-page.kakao.com/download/resource?kid=" + list[i].image
+                            val bookImg =
+                                "https://dn-img-page.kakao.com/download/resource?kid=" + list[i].image
                             val intro = list[i].description
                             val bookCode = list[i].series_id
                             val cntChapter = list[i].promotion_rate
@@ -227,30 +170,7 @@ class FragmentBestTodayApi(private val tabType : String) : Fragment() {
                             val cntFavorite = list[i].like_count
                             val cntRecom = list[i].rating
 
-                            if (i < 10) {
-                                db.bestDao().insert(
-                                    DataBest(
-                                        writerName,
-                                        subject,
-                                        bookImg,
-                                        intro,
-                                        bookCode,
-                                        cntChapter,
-                                        cntPageRead,
-                                        cntFavorite,
-                                        cntRecom,
-                                        i + 1,
-                                        day,
-                                        week,
-                                        date,
-                                        month,
-                                        10 - i,
-                                        "Kakao"
-                                    )
-                                )
-                            }
-
-                            items!!.add(
+                            bestRef.child(i.toString()).setValue(
                                 BookListDataBestToday(
                                     writerName,
                                     subject,
@@ -261,8 +181,23 @@ class FragmentBestTodayApi(private val tabType : String) : Fragment() {
                                     cntPageRead,
                                     cntFavorite,
                                     cntRecom,
-                                    i + 1,
-                                    false
+                                    i + 1
+                                )
+                            )
+
+
+                            items.add(
+                                BookListDataBestToday(
+                                    writerName,
+                                    subject,
+                                    bookImg,
+                                    intro,
+                                    bookCode,
+                                    cntChapter,
+                                    cntPageRead,
+                                    cntFavorite,
+                                    cntRecom,
+                                    i + 1
                                 )
                             )
                         }

@@ -75,8 +75,7 @@ class FragmentBestWeekendTab(private val tabType : String) : Fragment() {
                             sun[i].cntPageRead,
                             sun[i].cntFavorite,
                             sun[i].cntRecom,
-                            i + 1,
-                            false
+                            i + 1
                         )
                     } else null,
                     if(mon.isNotEmpty() && mon[i].number!! >= 0){
@@ -90,8 +89,7 @@ class FragmentBestWeekendTab(private val tabType : String) : Fragment() {
                             mon[i].cntPageRead,
                             mon[i].cntFavorite,
                             mon[i].cntRecom,
-                            i + 1,
-                            false
+                            i + 1
                         )
                     } else null,
                     if(tue.isNotEmpty() && tue[i].number!! > 0){
@@ -105,8 +103,7 @@ class FragmentBestWeekendTab(private val tabType : String) : Fragment() {
                             tue[i].cntPageRead,
                             tue[i].cntFavorite,
                             tue[i].cntRecom,
-                            i + 1,
-                            false
+                            i + 1
                         )
                     } else null,
                     if(wed.isNotEmpty() && wed[i].number!! > 0){
@@ -120,8 +117,7 @@ class FragmentBestWeekendTab(private val tabType : String) : Fragment() {
                             wed[i].cntPageRead,
                             wed[i].cntFavorite,
                             wed[i].cntRecom,
-                            i + 1,
-                            false
+                            i + 1
                         )
                     } else null,
                     if(thur.isNotEmpty() && thur[i].number!! > 0){
@@ -135,8 +131,7 @@ class FragmentBestWeekendTab(private val tabType : String) : Fragment() {
                             thur[i].cntPageRead,
                             thur[i].cntFavorite,
                             thur[i].cntRecom,
-                            i + 1,
-                            false
+                            i + 1
                         )
                     } else null,
                     if(fri.isNotEmpty() && fri[i].number!! > 0){
@@ -150,8 +145,7 @@ class FragmentBestWeekendTab(private val tabType : String) : Fragment() {
                             fri[i].cntPageRead,
                             fri[i].cntFavorite,
                             fri[i].cntRecom,
-                            i + 1,
-                            false
+                            i + 1
                         )
                     } else null,
                     if(sat.isNotEmpty() && sat[i].number!! > 0){
@@ -165,8 +159,7 @@ class FragmentBestWeekendTab(private val tabType : String) : Fragment() {
                             sat[i].cntPageRead,
                             sat[i].cntFavorite,
                             sat[i].cntRecom,
-                            i + 1,
-                            false
+                            i + 1
                         )
                     } else null,
                 )

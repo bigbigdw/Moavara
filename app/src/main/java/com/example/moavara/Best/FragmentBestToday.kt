@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -14,14 +15,14 @@ import com.google.android.material.tabs.TabLayout
 import com.google.firebase.database.FirebaseDatabase
 
 
-class FragmentBestToday : Fragment() {
-    private var toolbar: Toolbar? = null
+class FragmentBestToday() : Fragment() {
     private var tabLayout: TabLayout? = null
     private var viewPager: ViewPager? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val root: View = inflater.inflate(R.layout.fragment_best_today, container, false)
         viewPager = root.findViewById(R.id.view_pager)
         setupViewPager(viewPager)
@@ -35,10 +36,14 @@ class FragmentBestToday : Fragment() {
         val adapter = ViewPagerAdapter(
             childFragmentManager
         )
-        adapter.addFragment(FragmentBestTodayApi("Joara"), "조아라")
-        adapter.addFragment(FragmentBestTodayJsoup("Ridi"), "리디북스")
-        adapter.addFragment(FragmentBestTodayApi("Kakao"), "카카오페이지")
-        adapter.addFragment(FragmentBestTodayJsoup("OneStore"), "원스토어")
+
+        val mRootRef = FirebaseDatabase.getInstance().reference
+        val bestRef = mRootRef.child("best")
+
+        adapter.addFragment(FragmentBestTodayApi("Joara", bestRef), "조아라")
+        adapter.addFragment(FragmentBestTodayJsoup("Ridi", bestRef), "리디북스")
+        adapter.addFragment(FragmentBestTodayApi("Kakao", bestRef), "카카오페이지")
+        adapter.addFragment(FragmentBestTodayJsoup("OneStore", bestRef), "원스토어")
         viewPager!!.adapter = adapter
     }
 

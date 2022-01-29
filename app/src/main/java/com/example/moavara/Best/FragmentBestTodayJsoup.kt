@@ -1,5 +1,6 @@
 package com.example.moavara.Best
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,108 +9,81 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
-import com.example.moavara.DataBase.DataBaseBest
-import com.example.moavara.DataBase.DataBest
-
+import com.example.moavara.DataBase.DBDate
 import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
-import java.text.SimpleDateFormat
+import com.google.firebase.database.*
 import java.util.*
 
 
-class FragmentBestTodayJsoup(private val tabType : String) : Fragment() {
-    private lateinit var db: DataBaseBest
+class FragmentBestTodayJsoup(private val tabType : String, private var bestRef: DatabaseReference) : Fragment() {
 
     private var adapterToday: AdapterBestToday? = null
-    private var today :  List<DataBest>? = null
     var recyclerView: RecyclerView? = null
 
     private val items = ArrayList<BookListDataBestToday?>()
 
     lateinit var root: View
 
-    var day = 0
-    var week = 0
-    var date = 0
-    var month = 0
-    var mNow: Long = 0
-    var mDate: Date? = null
-    var mFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
+
+    override fun onResume() {
+        super.onResume()
+        getBookListBest(recyclerView)
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         root = inflater.inflate(R.layout.fragment_best_today_tab, container, false)
 
         recyclerView = root.findViewById(R.id.rview_Best)
-
         adapterToday = AdapterBestToday(requireContext(), items)
-
-        db = Room.databaseBuilder(
-            requireContext(),
-            DataBaseBest::class.java,
-            "user-database"
-        ).allowMainThreadQueries()
-            .build()
-
-        day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
-        week = Calendar.getInstance().get(Calendar.DAY_OF_WEEK_IN_MONTH)
-        date = Calendar.getInstance().get(Calendar.DATE)
-        month = Calendar.getInstance().get(Calendar.MONTH)
-
-        Log.d("@@@@", "locale = " + requireContext().resources.configuration.locales.get(0))
-        Log.d("@@@@", "time = " + mFormat.format(Date(System.currentTimeMillis())))
-        Log.d("@@@@", "day = $day")
-        Log.d("@@@@", "week = $week")
-        Log.d("@@@@", "date = $date")
-        Log.d("@@@@", "monthly = $month")
-
-
-        if(tabType == "Ridi"){
-            getBookListBest(recyclerView, db.bestDao().selectWeek(Calendar.getInstance().get(Calendar.DAY_OF_WEEK), "Ridi"))
-        }
-
-        if(tabType == "OneStore"){
-            getBookListBest(recyclerView, db.bestDao().selectWeek(Calendar.getInstance().get(Calendar.DAY_OF_WEEK), "OneStore"))
-        }
-
 
         return root
     }
 
-    private fun getBookListBest(recyclerView: RecyclerView?, today :  List<DataBest>?) {
+    private fun getBookListBest(recyclerView: RecyclerView?) {
+        bestRef = bestRef.child(tabType).child(DBDate.Week().toString()).child(DBDate.Day().toString())
+        bestRef.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (postSnapshot in dataSnapshot.children) {
 
-        for (i in today!!.indices) {
+                        val group: BookListDataBestToday? = postSnapshot.getValue(BookListDataBestToday::class.java)
 
-                val writerName = today!![i].writer
-                val subject = today!![i].title
-                val bookImg = today!![i].bookImg
-                val intro = ""
-                val bookCode = today!![i].bookCode
-                val cntChapter = today!![i].cntChapter
-                val cntPageRead = today!![i].cntPageRead
-                val cntFavorite = ""
-                val cntRecom = today!![i].cntRecom
+                        val writerName = group!!.writer
+                        val subject = group.title
+                        val bookImg = group.bookImg
+                        val intro = group.cntFavorite
+                        val bookCode = group.bookCode
+                        val cntChapter = group.cntChapter
+                        val cntPageRead = group.cntPageRead
+                        val cntFavorite = group.cntFavorite
+                        val cntRecom = group.cntRecom
+                        val number = group.number
 
-                items!!.add(
-                    BookListDataBestToday(
-                        writerName,
-                        subject,
-                        bookImg,
-                        intro,
-                        bookCode,
-                        cntChapter,
-                        cntPageRead,
-                        cntFavorite,
-                        cntRecom,
-                        i + 1,
-                        false
-                    )
-                )
+                        items.add(
+                            BookListDataBestToday(
+                                writerName,
+                                subject,
+                                bookImg,
+                                intro,
+                                bookCode,
+                                cntChapter,
+                                cntPageRead,
+                                cntFavorite,
+                                cntRecom,
+                                number,
+                            )
+                        )
+                    }
+                }
 
-        }
+                override fun onCancelled(databaseError: DatabaseError) {
+                    //Log.e("MainActivity", String.valueOf(databaseError.toException())); // 에러문 출력
+                }
+            })
 
         recyclerView!!.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapterToday
@@ -124,4 +98,6 @@ class FragmentBestTodayJsoup(private val tabType : String) : Fragment() {
             }
         })
     }
+
+
 }

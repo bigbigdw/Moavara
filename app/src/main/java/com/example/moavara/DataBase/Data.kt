@@ -29,7 +29,6 @@ class BookListDataBestToday(
     var cntFavorite: String ? = null,
     var cntRecom: String ? = null,
     var number: Int ? = null,
-    var isVisible: Boolean ? = false,
 )
 
 class BookListDataBestWeekend(

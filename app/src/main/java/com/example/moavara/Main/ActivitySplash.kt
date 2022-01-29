@@ -7,9 +7,12 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import androidx.room.Room
+import com.example.moavara.DataBase.DBDate
 import com.example.moavara.DataBase.DataBaseBest
 import com.example.moavara.DataBase.DataBest
 import com.example.moavara.R
+import com.example.moavara.Search.BookListDataBestToday
+import com.google.firebase.database.FirebaseDatabase
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
@@ -17,7 +20,8 @@ import java.util.*
 
 
 private lateinit var db: DataBaseBest
-var dayOfMonth = 0
+val mRootRef = FirebaseDatabase.getInstance().reference
+
 
 class ActivitySplash : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,8 +38,6 @@ class ActivitySplash : Activity() {
         if (db.bestDao().selectWeekTotal(Calendar.getInstance().get(Calendar.DAY_OF_WEEK)) != null) {
             db.bestDao().deleteWeek(Calendar.getInstance().get(Calendar.DAY_OF_WEEK))
         }
-
-
 
         Thread {
             test()
@@ -58,7 +60,11 @@ class ActivitySplash : Activity() {
             Jsoup.connect("https://ridibooks.com/bestsellers/romance_serial?order=daily").post()
         val ridiKeyword: Elements = doc.select(".book_thumbnail_wrapper")
 
+        var bestRef = mRootRef.child("best")
+        bestRef = bestRef.child("Ridi").child(DBDate.Week().toString()).child(DBDate.Day().toString())
+
         for (i in ridiKeyword.indices) {
+
             if (i < 20) {
 
                 val writerName = doc.select("div .author_detail_link")[i].text()
@@ -72,8 +78,8 @@ class ActivitySplash : Activity() {
                 val cntFavorite = ""
                 val cntRecom = doc.select("span .StarRate_Score")[i].text()
 
-                db.bestDao().insert(
-                    DataBest(
+                bestRef.child(i.toString()).setValue(
+                    BookListDataBestToday(
                         writerName,
                         subject,
                         bookImg,
@@ -83,13 +89,7 @@ class ActivitySplash : Activity() {
                         cntPageRead,
                         cntFavorite,
                         cntRecom,
-                        i + 1,
-                        Calendar.getInstance().get(Calendar.DAY_OF_WEEK),
-                        Calendar.getInstance().get(Calendar.DAY_OF_WEEK_IN_MONTH),
-                        Calendar.getInstance().get(Calendar.DATE),
-                        Calendar.getInstance().get(Calendar.MONTH),
-                        10 - i,
-                        "Ridi"
+                        i + 1
                     )
                 )
             }
@@ -103,7 +103,11 @@ class ActivitySplash : Activity() {
             Jsoup.connect("https://onestory.co.kr/display/card/CRD0059596?title=%EC%9D%B4%EA%B1%B4%20%EC%82%AC%EC%95%BC%ED%95%B4!%20%EC%9C%A0%EB%A3%8C%20%EA%B5%AC%EB%A7%A4%EC%9C%A8%20BEST%20%EB%A1%9C%EB%A7%A8%EC%8A%A4").get()
         val ridiKeyword: Elements = doc.select(".ItemRendererInner")
 
+        var bestRef = mRootRef.child("best")
+        bestRef = bestRef.child("OneStore").child(DBDate.Week().toString()).child(DBDate.Day().toString())
+
         for (i in ridiKeyword.indices) {
+
             if (i < 20) {
 
                 Log.d("!!!!", doc.select(".tItemRendererTextPublisher")[i].text())
@@ -118,8 +122,9 @@ class ActivitySplash : Activity() {
                 val cntFavorite = doc.select(".ItemRendererTextAvgScore")[i].text()
                 val cntRecom = doc.select(".ItemRendererTextAvgScore")[i].text()
 
-                db.bestDao().insert(
-                    DataBest(
+
+                bestRef.child(i.toString()).setValue(
+                    BookListDataBestToday(
                         writerName,
                         subject,
                         bookImg,
@@ -129,13 +134,7 @@ class ActivitySplash : Activity() {
                         cntPageRead,
                         cntFavorite,
                         cntRecom,
-                        i + 1,
-                        Calendar.getInstance().get(Calendar.DAY_OF_WEEK),
-                        Calendar.getInstance().get(Calendar.DAY_OF_WEEK_IN_MONTH),
-                        Calendar.getInstance().get(Calendar.DATE),
-                        Calendar.getInstance().get(Calendar.MONTH),
-                        10 - i,
-                        "OneStore"
+                        i + 1
                     )
                 )
             }
@@ -155,35 +154,4 @@ class ActivitySplash : Activity() {
             1000
         )
     }
-
-    private fun addJoaraBestDB() {
-        var writer = "NAME"
-        var title = "AGE"
-        var bookImg = "PHONE"
-        var intro = "NAME"
-        var bookCode = "AGE"
-        var cntChapter = "PHONE"
-        var cntPageRead = "NAME"
-        var cntFavorite = "AGE"
-        var cntRecom = "PHONE"
-        var number = 1
-
-
-        db.bestDao().insert(
-            DataBest(
-                writer,
-                title,
-                bookImg,
-                intro,
-                bookCode,
-                cntChapter,
-                cntPageRead,
-                cntFavorite,
-                cntRecom,
-                number
-            )
-        )
-    }
-
-
 }
