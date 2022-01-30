@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.example.moavara.R
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.database.FirebaseDatabase
 import java.util.ArrayList
 
 class FragmentBestMonth : Fragment() {
@@ -34,6 +35,7 @@ class FragmentBestMonth : Fragment() {
         val adapter = ViewPagerAdapter(
             childFragmentManager
         )
+
         adapter.addFragment(FragmentBestWeekendTab("Joara"), "조아라")
         adapter.addFragment(FragmentBestWeekendTab("Ridi"), "리디북스")
         adapter.addFragment(FragmentBestWeekendTab("Kakao"), "카카오페이지")

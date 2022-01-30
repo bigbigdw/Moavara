@@ -56,29 +56,18 @@ class FragmentBestTodayJsoup(private val tabType: String, private var bestRef: D
                     val group: BookListDataBestToday? =
                         postSnapshot.getValue(BookListDataBestToday::class.java)
 
-                    val writerName = group!!.writer
-                    val subject = group.title
-                    val bookImg = group.bookImg
-                    val intro = group.cntFavorite
-                    val bookCode = group.bookCode
-                    val cntChapter = group.cntChapter
-                    val cntPageRead = group.cntPageRead
-                    val cntFavorite = group.cntFavorite
-                    val cntRecom = group.cntRecom
-                    val number = group.number
-
                     items.add(
                         BookListDataBestToday(
-                            writerName,
-                            subject,
-                            bookImg,
-                            intro,
-                            bookCode,
-                            cntChapter,
-                            cntPageRead,
-                            cntFavorite,
-                            cntRecom,
-                            number,
+                            group!!.writer,
+                            group.title,
+                            group.bookImg,
+                            group.intro,
+                            group.bookCode,
+                            group.cntChapter,
+                            group.cntPageRead,
+                            group.cntFavorite,
+                            group.cntRecom,
+                            group.number,
                         )
                     )
                     adapterToday!!.notifyDataSetChanged()
@@ -86,7 +75,6 @@ class FragmentBestTodayJsoup(private val tabType: String, private var bestRef: D
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                //Log.e("MainActivity", String.valueOf(databaseError.toException())); // 에러문 출력
             }
         })
 
