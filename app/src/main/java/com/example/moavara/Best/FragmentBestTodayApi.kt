@@ -45,7 +45,7 @@ class FragmentBestTodayApi(private val tabType: String, private var bestRef: Dat
 
         recyclerView = root.findViewById(R.id.rview_Best)
 
-        adapterToday = AdapterBestToday(requireContext(), items)
+        adapterToday = AdapterBestToday(items)
 
         if (tabType == "Joara") {
             getBookListBestJoara(recyclerView)

@@ -13,7 +13,7 @@ import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.R
 import java.util.ArrayList
 
-class AdapterBestToday(private val mContext: Context, items: List<BookListDataBestToday?>?) :
+class AdapterBestToday(items: List<BookListDataBestToday?>?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var holder: ArrayList<BookListDataBestToday?>? = items as ArrayList<BookListDataBestToday?>?
 
