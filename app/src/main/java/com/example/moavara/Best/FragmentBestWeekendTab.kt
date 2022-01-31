@@ -43,7 +43,10 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
         val mRootRef = FirebaseDatabase.getInstance().reference
         val week = mRootRef.child("best").child(tabType).child(DBDate.Week().toString())
 
-        getBestToday(week)
+        for(bookNum in 0..9){
+            getBestToday(week, bookNum)
+        }
+
 
         recyclerView!!.layoutManager = linearLayoutManager
         recyclerView!!.adapter = adapterWeek
@@ -129,7 +132,7 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
         return root
     }
 
-    private fun getBestToday(bestRef: DatabaseReference) {
+    private fun getBestToday(bestRef: DatabaseReference, bookNum :  Int) {
 
             bestRef.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -138,24 +141,17 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
                     val s1 = gson.toJson(dataSnapshot.value)
 
                     val json: JSONObject?
-
                     json = JSONObject(s1)
-
-                    if(json.has("3")){
-                        Log.d("####", "1")
-                    } else {
-                        Log.d("####", "1")
-                    }
 
                     itemWeek.add(
                         BookListDataBestWeekend(
-                            getBookListDataBestToday(json.getJSONArray("1")),
-                            getBookListDataBestToday(json.getJSONArray("2")),
-                            getBookListDataBestToday(json.getJSONArray("3")),
-                            getBookListDataBestToday(json.getJSONArray("4")),
-                            getBookListDataBestToday(json.getJSONArray("5")),
-                            getBookListDataBestToday(json.getJSONArray("6")),
-                            getBookListDataBestToday(json.getJSONArray("7")),
+                            if(json.has("1")){getBookListDataBestToday(json.getJSONArray("1").getJSONObject(bookNum))} else null,
+                            if(json.has("2")){getBookListDataBestToday(json.getJSONArray("2").getJSONObject(bookNum))} else null,
+                            if(json.has("3")){getBookListDataBestToday(json.getJSONArray("3").getJSONObject(bookNum))} else null,
+                            if(json.has("4")){getBookListDataBestToday(json.getJSONArray("4").getJSONObject(bookNum))} else null,
+                            if(json.has("5")){getBookListDataBestToday(json.getJSONArray("5").getJSONObject(bookNum))} else null,
+                            if(json.has("6")){getBookListDataBestToday(json.getJSONArray("6").getJSONObject(bookNum))} else null,
+                            if(json.has("7")){getBookListDataBestToday(json.getJSONArray("7").getJSONObject(bookNum))} else null,
                         )
                     )
                     adapterWeek!!.notifyDataSetChanged()
@@ -168,32 +164,28 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
 
     }
 
-    fun getBookListDataBestToday(json : JSONArray?) : BookListDataBestToday? {
+    fun getBookListDataBestToday(json : JSONObject?) : BookListDataBestToday? {
 
-        var items : BookListDataBestToday? = null
+        val items: BookListDataBestToday?
 
         if(json != null){
-            for (i in 0 until json.length()) {
-                val jo = json.getJSONObject(i)
-
-                items = BookListDataBestToday(
-                    jo.getString("writer"),
-                    jo.getString("title"),
-                    jo.getString("bookImg"),
-                    jo.getString("intro"),
-                    jo.getString("bookCode"),
-                    jo.getString("cntChapter"),
-                    jo.getString("cntPageRead"),
-                    jo.getString("cntFavorite"),
-                    jo.getString("cntRecom"),
-                    jo.getInt("number"),
-                )
-            }
+            items = BookListDataBestToday(
+                json.getString("writer"),
+                json.getString("title"),
+                json.getString("bookImg"),
+                json.getString("intro"),
+                json.getString("bookCode"),
+                json.getString("cntChapter"),
+                json.getString("cntPageRead"),
+                json.getString("cntFavorite"),
+                json.getString("cntRecom"),
+                json.getInt("number"),
+            )
         } else {
             items = null
         }
 
-
+        Log.d("$%$%", json!!.getString("bookImg"))
         return items
     }
 }
