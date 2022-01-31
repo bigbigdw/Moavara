@@ -166,16 +166,17 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
 
         if(json != null){
             items = BookListDataBestToday(
-                json.getString("writer"),
-                json.getString("title"),
-                json.getString("bookImg"),
-                json.getString("intro"),
-                json.getString("bookCode"),
-                json.getString("cntChapter"),
-                json.getString("cntPageRead"),
-                json.getString("cntFavorite"),
-                json.getString("cntRecom"),
+                if(json.has("writer")){json.getString("writer")} else "",
+                if(json.has("title")){json.getString("title")} else "",
+                if(json.has("bookImg")){json.getString("bookImg")} else "",
+                if(json.has("intro")){json.getString("intro")} else "",
+                if(json.has("bookCode")){json.getString("bookCode")} else "",
+                if(json.has("cntChapter")){json.getString("cntChapter")} else "",
+                if(json.has("cntPageRead")){json.getString("cntPageRead")} else "",
+                if(json.has("cntFavorite")){json.getString("cntFavorite")} else "",
+                if(json.has("cntRecom")){json.getString("cntRecom")} else "",
                 json.getInt("number"),
+                json.getString("date")
             )
         } else {
             items = null

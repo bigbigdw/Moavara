@@ -20,8 +20,8 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cview_Wrap1"
-                android:layout_width="91dp"
-                android:layout_height="132dp"
+                android:layout_width="71dp"
+                android:layout_height="103dp"
                 android:layout_margin="4dp"
                 app:cardCornerRadius="6dp">
 
@@ -52,8 +52,8 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cview_Wrap2"
-                android:layout_width="91dp"
-                android:layout_height="132dp"
+                android:layout_width="71dp"
+                android:layout_height="103dp"
                 android:layout_margin="4dp"
                 app:cardCornerRadius="6dp">
 
@@ -84,8 +84,8 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cview_Wrap3"
-                android:layout_width="91dp"
-                android:layout_height="132dp"
+                android:layout_width="71dp"
+                android:layout_height="103dp"
                 android:layout_margin="4dp"
                 app:cardCornerRadius="6dp">
 
@@ -116,8 +116,8 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cview_Wrap4"
-                android:layout_width="91dp"
-                android:layout_height="132dp"
+                android:layout_width="71dp"
+                android:layout_height="103dp"
                 android:layout_margin="4dp"
                 app:cardCornerRadius="6dp">
 
@@ -148,8 +148,8 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cview_Wrap5"
-                android:layout_width="91dp"
-                android:layout_height="132dp"
+                android:layout_width="71dp"
+                android:layout_height="103dp"
                 android:layout_margin="4dp"
                 app:cardCornerRadius="6dp">
 
@@ -180,8 +180,8 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cview_Wrap6"
-                android:layout_width="91dp"
-                android:layout_height="132dp"
+                android:layout_width="71dp"
+                android:layout_height="103dp"
                 android:layout_margin="4dp"
                 app:cardCornerRadius="6dp">
 
@@ -212,8 +212,8 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cview_Wrap7"
-                android:layout_width="91dp"
-                android:layout_height="132dp"
+                android:layout_width="71dp"
+                android:layout_height="103dp"
                 android:layout_margin="4dp"
                 app:cardCornerRadius="6dp">
 

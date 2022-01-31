@@ -1,6 +1,7 @@
 package com.example.moavara.Best
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,11 +14,14 @@ import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Search.BookListDataBestWeekend
 import com.google.firebase.database.*
 import com.google.gson.Gson
+import org.json.JSONArray
 import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.util.*
 
 class FragmentBestMonthTab(private val tabType: String) : Fragment() {
 
-    private var adapterWeek: AdapterBestWeekend? = null
+    private var adapterWeek: AdapterBestMonth? = null
     private val itemWeek = ArrayList<BookListDataBestWeekend?>()
     var recyclerView: RecyclerView? = null
 
@@ -27,16 +31,20 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        root = inflater.inflate(R.layout.fragment_best_weekend, container, false)
+        root = inflater.inflate(R.layout.fragment_best_month, container, false)
+
+        val currentTime: Date = Calendar.getInstance().time
+        val format = SimpleDateFormat("MM-dd")
+        Log.d("!!!!", format.format(currentTime))
 
         recyclerView = root.findViewById(R.id.rview_Best)
-        adapterWeek = AdapterBestWeekend(requireContext(), itemWeek)
+        adapterWeek = AdapterBestMonth(requireContext(), itemWeek)
 
         val linearLayoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         val mRootRef = FirebaseDatabase.getInstance().reference
-        val week = mRootRef.child("best").child(tabType).child(DBDate.Week().toString())
+        val week = mRootRef.child("best").child(tabType).child("week")
 
         for(bookNum in 0..9){
             getBestToday(week, bookNum)
@@ -46,8 +54,7 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
         recyclerView!!.layoutManager = linearLayoutManager
         recyclerView!!.adapter = adapterWeek
 
-
-        adapterWeek!!.setOnItemClickListener(object : AdapterBestWeekend.OnItemClickListener {
+        adapterWeek!!.setOnItemClickListener(object : AdapterBestMonth.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int, value: String?) {
                 val item: BookListDataBestWeekend? = adapterWeek!!.getItem(position)
 
@@ -127,7 +134,7 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
         return root
     }
 
-    private fun getBestToday(bestRef: DatabaseReference, bookNum :  Int) {
+    private fun getBestToday(bestRef: DatabaseReference, num : Int) {
 
         bestRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -135,18 +142,17 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
                 val gson = Gson()
                 val s1 = gson.toJson(dataSnapshot.value)
 
-                val json: JSONObject?
-                json = JSONObject(s1)
+                val jsonObject = JSONArray(s1).getJSONObject(num)
 
                 itemWeek.add(
                     BookListDataBestWeekend(
-                        if(json.has("1")){getBookListDataBestToday(json.getJSONArray("1").getJSONObject(bookNum))} else null,
-                        if(json.has("2")){getBookListDataBestToday(json.getJSONArray("2").getJSONObject(bookNum))} else null,
-                        if(json.has("3")){getBookListDataBestToday(json.getJSONArray("3").getJSONObject(bookNum))} else null,
-                        if(json.has("4")){getBookListDataBestToday(json.getJSONArray("4").getJSONObject(bookNum))} else null,
-                        if(json.has("5")){getBookListDataBestToday(json.getJSONArray("5").getJSONObject(bookNum))} else null,
-                        if(json.has("6")){getBookListDataBestToday(json.getJSONArray("6").getJSONObject(bookNum))} else null,
-                        if(json.has("7")){getBookListDataBestToday(json.getJSONArray("7").getJSONObject(bookNum))} else null,
+                        if(jsonObject.has("1")){getBookListDataBestToday(jsonObject.getJSONObject("1"))} else null,
+                        if(jsonObject.has("2")){getBookListDataBestToday(jsonObject.getJSONObject("2"))} else null,
+                        if(jsonObject.has("3")){getBookListDataBestToday(jsonObject.getJSONObject("3"))} else null,
+                        if(jsonObject.has("4")){getBookListDataBestToday(jsonObject.getJSONObject("4"))} else null,
+                        if(jsonObject.has("5")){getBookListDataBestToday(jsonObject.getJSONObject("5"))} else null,
+                        if(jsonObject.has("6")){getBookListDataBestToday(jsonObject.getJSONObject("6"))} else null,
+                        if(jsonObject.has("7")){getBookListDataBestToday(jsonObject.getJSONObject("7"))} else null,
                     )
                 )
                 adapterWeek!!.notifyDataSetChanged()
@@ -165,16 +171,17 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
 
         if(json != null){
             items = BookListDataBestToday(
-                json.getString("writer"),
-                json.getString("title"),
-                json.getString("bookImg"),
-                json.getString("intro"),
-                json.getString("bookCode"),
-                json.getString("cntChapter"),
-                json.getString("cntPageRead"),
-                json.getString("cntFavorite"),
-                json.getString("cntRecom"),
+                if(json.has("writer")){json.getString("writer")} else "",
+                if(json.has("title")){json.getString("title")} else "",
+                if(json.has("bookImg")){json.getString("bookImg")} else "",
+                if(json.has("intro")){json.getString("intro")} else "",
+                if(json.has("bookCode")){json.getString("bookCode")} else "",
+                if(json.has("cntChapter")){json.getString("cntChapter")} else "",
+                if(json.has("cntPageRead")){json.getString("cntPageRead")} else "",
+                if(json.has("cntFavorite")){json.getString("cntFavorite")} else "",
+                if(json.has("cntRecom")){json.getString("cntRecom")} else "",
                 json.getInt("number"),
+                json.getString("date")
             )
         } else {
             items = null

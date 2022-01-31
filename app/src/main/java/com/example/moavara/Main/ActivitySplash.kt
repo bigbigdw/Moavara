@@ -66,7 +66,7 @@ class ActivitySplash : Activity() {
                 val cntFavorite = ""
                 val cntRecom = doc.select("span .StarRate_Score")[i].text()
 
-                bestRef.child("today").child(DBDate.Day().toString()).child(i.toString()).setValue(
+                bestRef.child("today").child(DBDate.Day()).child(i.toString()).setValue(
                     BookListDataBestToday(
                         writerName,
                         subject,
@@ -82,7 +82,7 @@ class ActivitySplash : Activity() {
                 )
 
                 if(i < 10){
-                    bestRef.child("week").child(i.toString()).child(DBDate.Day().toString()).setValue(
+                    bestRef.child("week").child(i.toString()).child(DBDate.Day()).setValue(
                         BookListDataBestToday(
                             writerName,
                             subject,
@@ -93,13 +93,14 @@ class ActivitySplash : Activity() {
                             cntPageRead,
                             cntFavorite,
                             cntRecom,
-                            i + 1
+                            i + 1,
+                            DBDate.Date()
                         )
                     )
                 }
 
                 if(i == 0){
-                    bestRef.child("month").child(DBDate.Week().toString()).child(DBDate.Day().toString()).setValue(
+                    bestRef.child("month").child(DBDate.Week().toString()).child(DBDate.Day()).setValue(
                         BookListDataBestToday(
                             writerName,
                             subject,
@@ -110,7 +111,8 @@ class ActivitySplash : Activity() {
                             cntPageRead,
                             cntFavorite,
                             cntRecom,
-                            i + 1
+                            i + 1,
+                            DBDate.Date()
                         )
                     )
                 }
@@ -140,7 +142,7 @@ class ActivitySplash : Activity() {
                 val cntFavorite = doc.select(".ItemRendererTextAvgScore")[i].text()
                 val cntRecom = doc.select(".ItemRendererTextAvgScore")[i].text()
 
-                bestRef.child("today").child(DBDate.Day().toString()).child(i.toString()).setValue(
+                bestRef.child("today").child(DBDate.Day()).child(i.toString()).setValue(
                     BookListDataBestToday(
                         writerName,
                         subject,
@@ -151,12 +153,13 @@ class ActivitySplash : Activity() {
                         cntPageRead,
                         cntFavorite,
                         cntRecom,
-                        i + 1
+                        i + 1,
+                        DBDate.Date()
                     )
                 )
 
             if(i < 10){
-                bestRef.child("week").child(i.toString()).child(DBDate.Day().toString()).setValue(
+                bestRef.child("week").child(i.toString()).child(DBDate.Day()).setValue(
                     BookListDataBestToday(
                         writerName,
                         subject,
@@ -167,7 +170,8 @@ class ActivitySplash : Activity() {
                         cntPageRead,
                         cntFavorite,
                         cntRecom,
-                        i + 1
+                        i + 1,
+                        DBDate.Date()
                     )
                 )
             }
@@ -184,7 +188,8 @@ class ActivitySplash : Activity() {
                         cntPageRead,
                         cntFavorite,
                         cntRecom,
-                        i + 1
+                        i + 1,
+                        DBDate.Date()
                     )
                 )
             }
