@@ -43,7 +43,7 @@ class FragmentBestTodayJsoup(private val tabType: String, private var bestRef: D
 
     private fun getBookListBest(recyclerView: RecyclerView?) {
         bestRef =
-            bestRef.child(tabType).child(DBDate.Week().toString()).child(DBDate.Day().toString())
+            bestRef.child(tabType).child("today").child(DBDate.Day().toString())
 
         recyclerView!!.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

@@ -1,6 +1,7 @@
 package com.example.moavara.Best
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Search.BookListDataBestWeekend
 import com.google.firebase.database.*
 import com.google.gson.Gson
+import org.json.JSONArray
 import org.json.JSONObject
 
 
@@ -28,7 +30,7 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        root = inflater.inflate(R.layout.fragment_best_month, container, false)
+        root = inflater.inflate(R.layout.fragment_best_weekend, container, false)
 
         recyclerView = root.findViewById(R.id.rview_Best)
         adapterWeek = AdapterBestWeekend(requireContext(), itemWeek)
@@ -37,11 +39,12 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         val mRootRef = FirebaseDatabase.getInstance().reference
-        val week = mRootRef.child("best").child(tabType).child(DBDate.Week().toString())
+        val week = mRootRef.child("best").child(tabType).child("week")
 
         for(bookNum in 0..9){
             getBestToday(week, bookNum)
         }
+
 
         recyclerView!!.layoutManager = linearLayoutManager
         recyclerView!!.adapter = adapterWeek
@@ -126,7 +129,7 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
         return root
     }
 
-    private fun getBestToday(bestRef: DatabaseReference, bookNum :  Int) {
+    private fun getBestToday(bestRef: DatabaseReference, num : Int) {
 
             bestRef.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -134,18 +137,17 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
                     val gson = Gson()
                     val s1 = gson.toJson(dataSnapshot.value)
 
-                    val json: JSONObject?
-                    json = JSONObject(s1)
+                    val jsonObject = JSONArray(s1).getJSONObject(num)
 
                     itemWeek.add(
                         BookListDataBestWeekend(
-                            if(json.has("1")){getBookListDataBestToday(json.getJSONArray("1").getJSONObject(bookNum))} else null,
-                            if(json.has("2")){getBookListDataBestToday(json.getJSONArray("2").getJSONObject(bookNum))} else null,
-                            if(json.has("3")){getBookListDataBestToday(json.getJSONArray("3").getJSONObject(bookNum))} else null,
-                            if(json.has("4")){getBookListDataBestToday(json.getJSONArray("4").getJSONObject(bookNum))} else null,
-                            if(json.has("5")){getBookListDataBestToday(json.getJSONArray("5").getJSONObject(bookNum))} else null,
-                            if(json.has("6")){getBookListDataBestToday(json.getJSONArray("6").getJSONObject(bookNum))} else null,
-                            if(json.has("7")){getBookListDataBestToday(json.getJSONArray("7").getJSONObject(bookNum))} else null,
+                            if(jsonObject.has("1")){getBookListDataBestToday(jsonObject.getJSONObject("1"))} else null,
+                            if(jsonObject.has("2")){getBookListDataBestToday(jsonObject.getJSONObject("2"))} else null,
+                            if(jsonObject.has("3")){getBookListDataBestToday(jsonObject.getJSONObject("3"))} else null,
+                            if(jsonObject.has("4")){getBookListDataBestToday(jsonObject.getJSONObject("4"))} else null,
+                            if(jsonObject.has("5")){getBookListDataBestToday(jsonObject.getJSONObject("5"))} else null,
+                            if(jsonObject.has("6")){getBookListDataBestToday(jsonObject.getJSONObject("6"))} else null,
+                            if(jsonObject.has("7")){getBookListDataBestToday(jsonObject.getJSONObject("7"))} else null,
                         )
                     )
                     adapterWeek!!.notifyDataSetChanged()

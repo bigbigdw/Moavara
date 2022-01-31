@@ -137,6 +137,21 @@ class FragmentBestTodayApi(private val tabType: String, private var bestRef: Dat
                                 )
                             }
 
+                            bestRef.child("month").child(DBDate.Week().toString()).child(DBDate.Day().toString()).child("day").child(i.toString()).setValue(
+                                BookListDataBestToday(
+                                    writerName,
+                                    subject,
+                                    bookImg,
+                                    intro,
+                                    bookCode,
+                                    cntChapter,
+                                    cntPageRead,
+                                    cntFavorite,
+                                    cntRecom,
+                                    i + 1
+                                )
+                            )
+
                             items.add(
                                 BookListDataBestToday(
                                     writerName,
@@ -251,6 +266,21 @@ class FragmentBestTodayApi(private val tabType: String, private var bestRef: Dat
                                     )
                                 )
                             }
+
+                            bestRef.child("month").child(DBDate.Week().toString()).child(DBDate.Day().toString()).child("day").setValue(
+                                BookListDataBestToday(
+                                    writerName,
+                                    subject,
+                                    bookImg,
+                                    intro,
+                                    bookCode,
+                                    cntChapter,
+                                    cntPageRead,
+                                    cntFavorite,
+                                    cntRecom,
+                                    i + 1
+                                )
+                            )
 
                             items.add(
                                 BookListDataBestToday(
