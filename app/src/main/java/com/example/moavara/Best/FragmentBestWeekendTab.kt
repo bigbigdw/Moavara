@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moavara.DataBase.DBDate
 import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Search.BookListDataBestWeekend
@@ -41,9 +40,7 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
         val mRootRef = FirebaseDatabase.getInstance().reference
         val week = mRootRef.child("best").child(tabType).child("week")
 
-        for(bookNum in 0..9){
-            getBestToday(week, bookNum)
-        }
+        getBestToday(week, 0)
 
 
         recyclerView!!.layoutManager = linearLayoutManager
@@ -129,52 +126,177 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
         return root
     }
 
-    private fun getBestToday(bestRef: DatabaseReference, num : Int) {
+    private fun getBestToday(bestRef: DatabaseReference, num: Int) {
 
-            bestRef.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
+        bestRef.addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
+                Log.d("MainActivity", "ChildEventListener - onChildAdded : " + dataSnapshot.value)
 
-                    val gson = Gson()
-                    val s1 = gson.toJson(dataSnapshot.value)
+                val gson = Gson()
+                val s1 = gson.toJson(dataSnapshot.value)
 
-                    val jsonObject = JSONArray(s1).getJSONObject(num)
+                Log.d("!!!!-0", dataSnapshot.value.toString())
 
-                    itemWeek.add(
-                        BookListDataBestWeekend(
-                            if(jsonObject.has("1")){getBookListDataBestToday(jsonObject.getJSONObject("1"))} else null,
-                            if(jsonObject.has("2")){getBookListDataBestToday(jsonObject.getJSONObject("2"))} else null,
-                            if(jsonObject.has("3")){getBookListDataBestToday(jsonObject.getJSONObject("3"))} else null,
-                            if(jsonObject.has("4")){getBookListDataBestToday(jsonObject.getJSONObject("4"))} else null,
-                            if(jsonObject.has("5")){getBookListDataBestToday(jsonObject.getJSONObject("5"))} else null,
-                            if(jsonObject.has("6")){getBookListDataBestToday(jsonObject.getJSONObject("6"))} else null,
-                            if(jsonObject.has("7")){getBookListDataBestToday(jsonObject.getJSONObject("7"))} else null,
-                        )
+//                val group: BookListDataBestToday? = dataSnapshot.getValue(BookListDataBestToday::class.java)
+//
+//                Log.d("!!!!", group.toString())
+//                Log.d("!!!!-5", group!!.title.toString())
+
+                val group: BookListDataBestWeekend? = dataSnapshot.getValue(BookListDataBestWeekend::class.java)
+
+
+                itemWeek.add(
+                    BookListDataBestWeekend(
+                        group!!.sun,
+                        group.mon,
+                        group.tue,
+                        group.wed,
+                        group.thur,
+                        group.fri,
+                        group.sun,
                     )
-                    adapterWeek!!.notifyDataSetChanged()
+                )
+                adapterWeek!!.notifyDataSetChanged()
 
-                }
 
-                override fun onCancelled(databaseError: DatabaseError) {
-                }
-            })
+//                if (s1.startsWith("[")) {
+//                    Log.d("!!!!-0", s1.toString())
+//                    Log.d("!!!!-1", JSONArray(s1)[1].toString())
+//                    Log.d("!!!!-2", num.toString())
+//
+//                    itemWeek.add(
+//                        BookListDataBestWeekend(
+//                            if (JSONArray(s1)[0] != null) {
+//                                getBookListDataBestToday(JSONObject(JSONArray(s1)[0].toString()))
+//                            } else null,
+//                            if (JSONArray(s1)[1] != null) {
+//                                getBookListDataBestToday(JSONObject(JSONArray(s1)[1].toString()))
+//                            } else null,
+//                            if (JSONArray(s1)[2] != null) {
+//                                getBookListDataBestToday(JSONObject(JSONArray(s1)[2].toString()))
+//                            } else null,
+//                            if (JSONArray(s1)[3] != null) {
+//                                getBookListDataBestToday(JSONObject(JSONArray(s1)[3].toString()))
+//                            } else null,
+//                            if (JSONArray(s1)[4] != null) {
+//                                getBookListDataBestToday(JSONObject(JSONArray(s1)[4].toString()))
+//                            } else null,
+//                            if (JSONArray(s1)[5] != null) {
+//                                getBookListDataBestToday(JSONObject(JSONArray(s1)[5].toString()))
+//                            } else null,
+//                            if (JSONArray(s1)[6] != null) {
+//                                getBookListDataBestToday(JSONObject(JSONArray(s1)[6].toString()))
+//                            } else null,
+//                        )
+//                    )
+//                    adapterWeek!!.notifyDataSetChanged()
+//                } else {
+//                    Log.d("!!!!-3", s1.toString())
+//                    Log.d("!!!!-4", num.toString())
+//                }
+            }
+
+            override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
+                Log.d("MainActivity", "ChildEventListener - onChildChanged : $s")
+            }
+
+            override fun onChildRemoved(dataSnapshot: DataSnapshot) {
+                Log.d("MainActivity", "ChildEventListener - onChildRemoved : " + dataSnapshot.key)
+            }
+
+            override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {
+                Log.d("MainActivity", "ChildEventListener - onChildMoved$s")
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.d("MainActivity", "ChildEventListener - onCancelled" + databaseError.message)
+            }
+        })
+
+//        bestRef.addListenerForSingleValueEvent(object : ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot) {
+//
+//                val gson = Gson()
+//                val s1 = gson.toJson(dataSnapshot.value)
+//
+//                if (s1.startsWith("[")) {
+//                    Log.d("!!!!-1", JSONArray(s1)[1].toString())
+//                    Log.d("!!!!-2", num.toString())
+//                } else {
+//                    Log.d("!!!!-3", s1.toString())
+//                    Log.d("!!!!-4", num.toString())
+//                }
+//
+//                val jsonObject = JSONArray(s1).getJSONObject(num)
+//
+//                itemWeek.add(
+//                    BookListDataBestWeekend(
+//                        if (jsonObject.has("1")) {
+//                            getBookListDataBestToday(jsonObject.getJSONObject("1"))
+//                        } else null,
+//                        if (jsonObject.has("2")) {
+//                            getBookListDataBestToday(jsonObject.getJSONObject("2"))
+//                        } else null,
+//                        if (jsonObject.has("3")) {
+//                            getBookListDataBestToday(jsonObject.getJSONObject("3"))
+//                        } else null,
+//                        if (jsonObject.has("4")) {
+//                            getBookListDataBestToday(jsonObject.getJSONObject("4"))
+//                        } else null,
+//                        if (jsonObject.has("5")) {
+//                            getBookListDataBestToday(jsonObject.getJSONObject("5"))
+//                        } else null,
+//                        if (jsonObject.has("6")) {
+//                            getBookListDataBestToday(jsonObject.getJSONObject("6"))
+//                        } else null,
+//                        if (jsonObject.has("7")) {
+//                            getBookListDataBestToday(jsonObject.getJSONObject("7"))
+//                        } else null,
+//                    )
+//                )
+//                adapterWeek!!.notifyDataSetChanged()
+//
+//            }
+//
+//            override fun onCancelled(databaseError: DatabaseError) {
+//            }
+//        })
 
     }
 
-    fun getBookListDataBestToday(json : JSONObject?) : BookListDataBestToday? {
+    fun getBookListDataBestToday(json: JSONObject?): BookListDataBestToday? {
 
         val items: BookListDataBestToday?
 
-        if(json != null){
+        if (json != null) {
             items = BookListDataBestToday(
-                if(json.has("writer")){json.getString("writer")} else "",
-                if(json.has("title")){json.getString("title")} else "",
-                if(json.has("bookImg")){json.getString("bookImg")} else "",
-                if(json.has("intro")){json.getString("intro")} else "",
-                if(json.has("bookCode")){json.getString("bookCode")} else "",
-                if(json.has("cntChapter")){json.getString("cntChapter")} else "",
-                if(json.has("cntPageRead")){json.getString("cntPageRead")} else "",
-                if(json.has("cntFavorite")){json.getString("cntFavorite")} else "",
-                if(json.has("cntRecom")){json.getString("cntRecom")} else "",
+                if (json.has("writer")) {
+                    json.getString("writer")
+                } else "",
+                if (json.has("title")) {
+                    json.getString("title")
+                } else "",
+                if (json.has("bookImg")) {
+                    json.getString("bookImg")
+                } else "",
+                if (json.has("intro")) {
+                    json.getString("intro")
+                } else "",
+                if (json.has("bookCode")) {
+                    json.getString("bookCode")
+                } else "",
+                if (json.has("cntChapter")) {
+                    json.getString("cntChapter")
+                } else "",
+                if (json.has("cntPageRead")) {
+                    json.getString("cntPageRead")
+                } else "",
+                if (json.has("cntFavorite")) {
+                    json.getString("cntFavorite")
+                } else "",
+                if (json.has("cntRecom")) {
+                    json.getString("cntRecom")
+                } else "",
                 json.getInt("number"),
                 json.getString("date")
             )

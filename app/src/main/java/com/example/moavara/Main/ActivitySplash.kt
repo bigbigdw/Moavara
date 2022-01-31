@@ -12,6 +12,7 @@ import com.example.moavara.DataBase.DataBaseBest
 import com.example.moavara.DataBase.DataBest
 import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
+import com.example.moavara.Search.BookListDataBestWeekend
 import com.google.firebase.database.FirebaseDatabase
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -77,30 +78,52 @@ class ActivitySplash : Activity() {
                         cntPageRead,
                         cntFavorite,
                         cntRecom,
-                        i + 1
+                        i + 1,
+                        DBDate.Date()
                     )
                 )
 
-                if(i < 10){
-                    bestRef.child("week").child(i.toString()).child(DBDate.Day()).setValue(
-                        BookListDataBestToday(
-                            writerName,
-                            subject,
-                            bookImg,
-                            intro,
-                            bookCode,
-                            cntChapter,
-                            cntPageRead,
-                            cntFavorite,
-                            cntRecom,
-                            i + 1,
-                            DBDate.Date()
+                if (i < 10) {
+                    bestRef.child("week").child(i.toString()).child(DBDate.DayString())
+                        .setValue(
+                            BookListDataBestToday(
+                                writerName,
+                                subject,
+                                bookImg,
+                                intro,
+                                bookCode,
+                                cntChapter,
+                                cntPageRead,
+                                cntFavorite,
+                                cntRecom,
+                                i + 1,
+                                DBDate.Date()
+                            )
                         )
-                    )
+
                 }
 
                 if(i == 0){
-                    bestRef.child("month").child(DBDate.Week().toString()).child(DBDate.Day()).setValue(
+                    bestRef.child("month").child(DBDate.Week())
+                        .child(DBDate.DayString()).child("day").setValue(
+                            BookListDataBestToday(
+                                writerName,
+                                subject,
+                                bookImg,
+                                intro,
+                                bookCode,
+                                cntChapter,
+                                cntPageRead,
+                                cntFavorite,
+                                cntRecom,
+                                i + 1,
+                                DBDate.Date()
+                            )
+                        )
+                }
+
+                bestRef.child("month").child(DBDate.Week())
+                    .child(DBDate.DayString()).setValue(
                         BookListDataBestToday(
                             writerName,
                             subject,
@@ -115,7 +138,6 @@ class ActivitySplash : Activity() {
                             DBDate.Date()
                         )
                     )
-                }
             }
         }
 
@@ -124,7 +146,8 @@ class ActivitySplash : Activity() {
     private fun getOneStoreBest() {
 
         val doc: Document =
-            Jsoup.connect("https://onestory.co.kr/display/card/CRD0059596?title=%EC%9D%B4%EA%B1%B4%20%EC%82%AC%EC%95%BC%ED%95%B4!%20%EC%9C%A0%EB%A3%8C%20%EA%B5%AC%EB%A7%A4%EC%9C%A8%20BEST%20%EB%A1%9C%EB%A7%A8%EC%8A%A4").get()
+            Jsoup.connect("https://onestory.co.kr/display/card/CRD0059596?title=%EC%9D%B4%EA%B1%B4%20%EC%82%AC%EC%95%BC%ED%95%B4!%20%EC%9C%A0%EB%A3%8C%20%EA%B5%AC%EB%A7%A4%EC%9C%A8%20BEST%20%EB%A1%9C%EB%A7%A8%EC%8A%A4")
+                .get()
         val ridiKeyword: Elements = doc.select(".ItemRendererInner")
 
         var bestRef = mRootRef.child("best")
@@ -132,52 +155,73 @@ class ActivitySplash : Activity() {
 
         for (i in ridiKeyword.indices) {
 
-                val writerName = doc.select("div .ItemRendererTextArtist")[i].text()
-                val subject = doc.select("div .ItemRendererTextTitle")[i].text()
-                val bookImg = doc.select(".ThumbnailInner img")[i].absUrl("src")
-                val intro = doc.select(".tItemRendererTextPublisher")[i].text()
-                val bookCode = ""
-                val cntChapter = doc.select(".tItemRendererTextSeries")[i].text()
-                val cntPageRead = doc.select(".ItemRendererTextComment span span")[i].text()
-                val cntFavorite = doc.select(".ItemRendererTextAvgScore")[i].text()
-                val cntRecom = doc.select(".ItemRendererTextAvgScore")[i].text()
+            val writerName = doc.select("div .ItemRendererTextArtist")[i].text()
+            val subject = doc.select("div .ItemRendererTextTitle")[i].text()
+            val bookImg = doc.select(".ThumbnailInner img")[i].absUrl("src")
+            val intro = doc.select(".tItemRendererTextPublisher")[i].text()
+            val bookCode = ""
+            val cntChapter = doc.select(".tItemRendererTextSeries")[i].text()
+            val cntPageRead = doc.select(".ItemRendererTextComment span span")[i].text()
+            val cntFavorite = doc.select(".ItemRendererTextAvgScore")[i].text()
+            val cntRecom = doc.select(".ItemRendererTextAvgScore")[i].text()
 
-                bestRef.child("today").child(DBDate.Day()).child(i.toString()).setValue(
-                    BookListDataBestToday(
-                        writerName,
-                        subject,
-                        bookImg,
-                        intro,
-                        bookCode,
-                        cntChapter,
-                        cntPageRead,
-                        cntFavorite,
-                        cntRecom,
-                        i + 1,
-                        DBDate.Date()
-                    )
+            bestRef.child("today").child(DBDate.Day()).child(i.toString()).setValue(
+                BookListDataBestToday(
+                    writerName,
+                    subject,
+                    bookImg,
+                    intro,
+                    bookCode,
+                    cntChapter,
+                    cntPageRead,
+                    cntFavorite,
+                    cntRecom,
+                    i + 1,
+                    DBDate.Date()
                 )
+            )
 
-            if(i < 10){
-                bestRef.child("week").child(i.toString()).child(DBDate.Day()).setValue(
-                    BookListDataBestToday(
-                        writerName,
-                        subject,
-                        bookImg,
-                        intro,
-                        bookCode,
-                        cntChapter,
-                        cntPageRead,
-                        cntFavorite,
-                        cntRecom,
-                        i + 1,
-                        DBDate.Date()
+            if (i < 10) {
+                bestRef.child("week").child(i.toString()).child(DBDate.DayString())
+                    .setValue(
+                        BookListDataBestToday(
+                            writerName,
+                            subject,
+                            bookImg,
+                            intro,
+                            bookCode,
+                            cntChapter,
+                            cntPageRead,
+                            cntFavorite,
+                            cntRecom,
+                            i + 1,
+                            DBDate.Date()
+                        )
                     )
-                )
+
             }
 
             if(i == 0){
-                bestRef.child("month").child(DBDate.Week().toString()).child("0").setValue(
+                bestRef.child("month").child(DBDate.Week())
+                    .child(DBDate.DayString()).child("day").setValue(
+                        BookListDataBestToday(
+                            writerName,
+                            subject,
+                            bookImg,
+                            intro,
+                            bookCode,
+                            cntChapter,
+                            cntPageRead,
+                            cntFavorite,
+                            cntRecom,
+                            i + 1,
+                            DBDate.Date()
+                        )
+                    )
+            }
+
+            bestRef.child("month").child(DBDate.Week())
+                .child(DBDate.DayString()).child("day").setValue(
                     BookListDataBestToday(
                         writerName,
                         subject,
@@ -192,7 +236,6 @@ class ActivitySplash : Activity() {
                         DBDate.Date()
                     )
                 )
-            }
         }
 
     }

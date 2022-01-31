@@ -8,22 +8,19 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
 import com.example.moavara.DataBase.DBDate
-import com.example.moavara.DataBase.DataBaseBest
-import com.example.moavara.DataBase.DataBest
 import com.example.moavara.Joara.JoaraBestListResult
 import com.example.moavara.Joara.RetrofitJoara
 import com.example.moavara.KaKao.BestResultKakao
 import com.example.moavara.KaKao.RetrofitKaKao
-import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.R
+import com.example.moavara.Search.BookListDataBestToday
+import com.example.moavara.Search.BookListDataBestWeekend
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.text.SimpleDateFormat
+import java.net.URLEncoder
 import java.util.*
 
 class FragmentBestTodayApi(private val tabType: String, private var bestRef: DatabaseReference) :
@@ -54,6 +51,8 @@ class FragmentBestTodayApi(private val tabType: String, private var bestRef: Dat
         if (tabType == "Kakao") {
             getBookListBestKakao(recyclerView)
         }
+
+        Log.d("@@@@", DBDate.DayString())
 
         bestRef = bestRef.child(tabType)
 
@@ -104,26 +103,47 @@ class FragmentBestTodayApi(private val tabType: String, private var bestRef: Dat
                                 )
                             )
 
-                            if(i < 10){
-                                bestRef.child("week").child(i.toString()).child(DBDate.Day()).setValue(
-                                    BookListDataBestToday(
-                                        writerName,
-                                        subject,
-                                        bookImg,
-                                        intro,
-                                        bookCode,
-                                        cntChapter,
-                                        cntPageRead,
-                                        cntFavorite,
-                                        cntRecom,
-                                        i + 1,
-                                        DBDate.Date()
-                                    )
-                                )
+                            if (i < 10) {
+                                    bestRef.child("week").child(i.toString()).child(DBDate.DayString())
+                                        .setValue(
+                                            BookListDataBestToday(
+                                                writerName,
+                                                subject,
+                                                bookImg,
+                                                intro,
+                                                bookCode,
+                                                cntChapter,
+                                                cntPageRead,
+                                                cntFavorite,
+                                                cntRecom,
+                                                i + 1,
+                                                DBDate.Date()
+                                            )
+                                        )
+
                             }
 
                             if(i == 0){
-                                bestRef.child("month").child(DBDate.Week().toString()).child(DBDate.Day()).setValue(
+                                bestRef.child("month").child(DBDate.Week())
+                                    .child(DBDate.DayString()).child("day").setValue(
+                                        BookListDataBestToday(
+                                            writerName,
+                                            subject,
+                                            bookImg,
+                                            intro,
+                                            bookCode,
+                                            cntChapter,
+                                            cntPageRead,
+                                            cntFavorite,
+                                            cntRecom,
+                                            i + 1,
+                                            DBDate.Date()
+                                        )
+                                    )
+                            }
+
+                            bestRef.child("month").child(DBDate.Week())
+                                .child(DBDate.DayString()).setValue(
                                     BookListDataBestToday(
                                         writerName,
                                         subject,
@@ -138,23 +158,6 @@ class FragmentBestTodayApi(private val tabType: String, private var bestRef: Dat
                                         DBDate.Date()
                                     )
                                 )
-                            }
-
-                            bestRef.child("month").child(DBDate.Week().toString()).child(DBDate.Day()).child("day").child(i.toString()).setValue(
-                                BookListDataBestToday(
-                                    writerName,
-                                    subject,
-                                    bookImg,
-                                    intro,
-                                    bookCode,
-                                    cntChapter,
-                                    cntPageRead,
-                                    cntFavorite,
-                                    cntRecom,
-                                    i + 1,
-                                    DBDate.Date()
-                                )
-                            )
 
                             items.add(
                                 BookListDataBestToday(
@@ -239,43 +242,47 @@ class FragmentBestTodayApi(private val tabType: String, private var bestRef: Dat
                                 )
                             )
 
-                            if(i < 10){
-                                bestRef.child("week").child(i.toString()).child(DBDate.Day()).setValue(
-                                    BookListDataBestToday(
-                                        writerName,
-                                        subject,
-                                        bookImg,
-                                        intro,
-                                        bookCode,
-                                        cntChapter,
-                                        cntPageRead,
-                                        cntFavorite,
-                                        cntRecom,
-                                        i + 1,
-                                        DBDate.Date()
+                            if (i < 10) {
+                                bestRef.child("week").child(i.toString()).child(DBDate.DayString())
+                                    .setValue(
+                                        BookListDataBestToday(
+                                            writerName,
+                                            subject,
+                                            bookImg,
+                                            intro,
+                                            bookCode,
+                                            cntChapter,
+                                            cntPageRead,
+                                            cntFavorite,
+                                            cntRecom,
+                                            i + 1,
+                                            DBDate.Date()
+                                        )
                                     )
-                                )
+
                             }
 
                             if(i == 0){
-                                bestRef.child("month").child(DBDate.Week().toString()).child(DBDate.Day()).setValue(
-                                    BookListDataBestToday(
-                                        writerName,
-                                        subject,
-                                        bookImg,
-                                        intro,
-                                        bookCode,
-                                        cntChapter,
-                                        cntPageRead,
-                                        cntFavorite,
-                                        cntRecom,
-                                        i + 1,
-                                        DBDate.Date()
+                                bestRef.child("month").child(DBDate.Week())
+                                    .child(DBDate.DayString()).child("day").setValue(
+                                        BookListDataBestToday(
+                                            writerName,
+                                            subject,
+                                            bookImg,
+                                            intro,
+                                            bookCode,
+                                            cntChapter,
+                                            cntPageRead,
+                                            cntFavorite,
+                                            cntRecom,
+                                            i + 1,
+                                            DBDate.Date()
+                                        )
                                     )
-                                )
                             }
 
-                            bestRef.child("month").child(DBDate.Week().toString()).child(DBDate.Day()).child("day").setValue(
+                            bestRef.child("month").child(DBDate.Week())
+                                .child(DBDate.DayString()).setValue(
                                 BookListDataBestToday(
                                     writerName,
                                     subject,

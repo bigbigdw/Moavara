@@ -42,6 +42,16 @@ class BookListDataBestWeekend(
     var sat: BookListDataBestToday ? = null,
 )
 
+class BookListDataBestWeekend2(
+    var `1`: BookListDataBestToday ? = null,
+    var `2`: BookListDataBestToday ? = null,
+    var `3`: BookListDataBestToday ? = null,
+    var `4`: BookListDataBestToday ? = null,
+    var `5`: BookListDataBestToday ? = null,
+    var `6`: BookListDataBestToday ? = null,
+    var `7`: BookListDataBestToday ? = null,
+)
+
 class EventData(
     var idx: String ? = null,
     var imgfile: String ? = null,
