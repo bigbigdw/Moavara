@@ -15,8 +15,7 @@ import com.google.firebase.database.*
 import com.google.gson.Gson
 import org.json.JSONObject
 
-
-class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
+class FragmentBestMonthTab(private val tabType: String) : Fragment() {
 
     private var adapterWeek: AdapterBestWeekend? = null
     private val itemWeek = ArrayList<BookListDataBestWeekend?>()
@@ -28,7 +27,7 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        root = inflater.inflate(R.layout.fragment_best_month, container, false)
+        root = inflater.inflate(R.layout.fragment_best_weekend, container, false)
 
         recyclerView = root.findViewById(R.id.rview_Best)
         adapterWeek = AdapterBestWeekend(requireContext(), itemWeek)
@@ -43,8 +42,10 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
             getBestToday(week, bookNum)
         }
 
+
         recyclerView!!.layoutManager = linearLayoutManager
         recyclerView!!.adapter = adapterWeek
+
 
         adapterWeek!!.setOnItemClickListener(object : AdapterBestWeekend.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int, value: String?) {
@@ -128,33 +129,33 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
 
     private fun getBestToday(bestRef: DatabaseReference, bookNum :  Int) {
 
-            bestRef.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
+        bestRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                    val gson = Gson()
-                    val s1 = gson.toJson(dataSnapshot.value)
+                val gson = Gson()
+                val s1 = gson.toJson(dataSnapshot.value)
 
-                    val json: JSONObject?
-                    json = JSONObject(s1)
+                val json: JSONObject?
+                json = JSONObject(s1)
 
-                    itemWeek.add(
-                        BookListDataBestWeekend(
-                            if(json.has("1")){getBookListDataBestToday(json.getJSONArray("1").getJSONObject(bookNum))} else null,
-                            if(json.has("2")){getBookListDataBestToday(json.getJSONArray("2").getJSONObject(bookNum))} else null,
-                            if(json.has("3")){getBookListDataBestToday(json.getJSONArray("3").getJSONObject(bookNum))} else null,
-                            if(json.has("4")){getBookListDataBestToday(json.getJSONArray("4").getJSONObject(bookNum))} else null,
-                            if(json.has("5")){getBookListDataBestToday(json.getJSONArray("5").getJSONObject(bookNum))} else null,
-                            if(json.has("6")){getBookListDataBestToday(json.getJSONArray("6").getJSONObject(bookNum))} else null,
-                            if(json.has("7")){getBookListDataBestToday(json.getJSONArray("7").getJSONObject(bookNum))} else null,
-                        )
+                itemWeek.add(
+                    BookListDataBestWeekend(
+                        if(json.has("1")){getBookListDataBestToday(json.getJSONArray("1").getJSONObject(bookNum))} else null,
+                        if(json.has("2")){getBookListDataBestToday(json.getJSONArray("2").getJSONObject(bookNum))} else null,
+                        if(json.has("3")){getBookListDataBestToday(json.getJSONArray("3").getJSONObject(bookNum))} else null,
+                        if(json.has("4")){getBookListDataBestToday(json.getJSONArray("4").getJSONObject(bookNum))} else null,
+                        if(json.has("5")){getBookListDataBestToday(json.getJSONArray("5").getJSONObject(bookNum))} else null,
+                        if(json.has("6")){getBookListDataBestToday(json.getJSONArray("6").getJSONObject(bookNum))} else null,
+                        if(json.has("7")){getBookListDataBestToday(json.getJSONArray("7").getJSONObject(bookNum))} else null,
                     )
-                    adapterWeek!!.notifyDataSetChanged()
+                )
+                adapterWeek!!.notifyDataSetChanged()
 
-                }
+            }
 
-                override fun onCancelled(databaseError: DatabaseError) {
-                }
-            })
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        })
 
     }
 

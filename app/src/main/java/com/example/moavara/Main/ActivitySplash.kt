@@ -19,7 +19,6 @@ import org.jsoup.select.Elements
 import java.util.*
 
 
-private lateinit var db: DataBaseBest
 val mRootRef = FirebaseDatabase.getInstance().reference
 
 
@@ -27,17 +26,6 @@ class ActivitySplash : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-
-        db = Room.databaseBuilder(
-            this,
-            DataBaseBest::class.java,
-            "user-database"
-        ).allowMainThreadQueries()
-            .build()
-
-        if (db.bestDao().selectWeekTotal(Calendar.getInstance().get(Calendar.DAY_OF_WEEK)) != null) {
-            db.bestDao().deleteWeek(Calendar.getInstance().get(Calendar.DAY_OF_WEEK))
-        }
 
         Thread {
             test()
@@ -61,7 +49,7 @@ class ActivitySplash : Activity() {
         val ridiKeyword: Elements = doc.select(".book_thumbnail_wrapper")
 
         var bestRef = mRootRef.child("best")
-        bestRef = bestRef.child("Ridi").child(DBDate.Week().toString()).child(DBDate.Day().toString())
+        bestRef = bestRef.child("Ridi")
 
         for (i in ridiKeyword.indices) {
 
@@ -78,7 +66,97 @@ class ActivitySplash : Activity() {
                 val cntFavorite = ""
                 val cntRecom = doc.select("span .StarRate_Score")[i].text()
 
-                bestRef.child(i.toString()).setValue(
+                bestRef.child("today").child(DBDate.Day().toString()).child(i.toString()).setValue(
+                    BookListDataBestToday(
+                        writerName,
+                        subject,
+                        bookImg,
+                        intro,
+                        bookCode,
+                        cntChapter,
+                        cntPageRead,
+                        cntFavorite,
+                        cntRecom,
+                        i + 1
+                    )
+                )
+
+                if(i < 10){
+                    bestRef.child("week").child(i.toString()).child(DBDate.Day().toString()).setValue(
+                        BookListDataBestToday(
+                            writerName,
+                            subject,
+                            bookImg,
+                            intro,
+                            bookCode,
+                            cntChapter,
+                            cntPageRead,
+                            cntFavorite,
+                            cntRecom,
+                            i + 1
+                        )
+                    )
+                }
+
+                if(i == 0){
+                    bestRef.child("month").child(DBDate.Week().toString()).child(DBDate.Day().toString()).setValue(
+                        BookListDataBestToday(
+                            writerName,
+                            subject,
+                            bookImg,
+                            intro,
+                            bookCode,
+                            cntChapter,
+                            cntPageRead,
+                            cntFavorite,
+                            cntRecom,
+                            i + 1
+                        )
+                    )
+                }
+            }
+        }
+
+    }
+
+    private fun getOneStoreBest() {
+
+        val doc: Document =
+            Jsoup.connect("https://onestory.co.kr/display/card/CRD0059596?title=%EC%9D%B4%EA%B1%B4%20%EC%82%AC%EC%95%BC%ED%95%B4!%20%EC%9C%A0%EB%A3%8C%20%EA%B5%AC%EB%A7%A4%EC%9C%A8%20BEST%20%EB%A1%9C%EB%A7%A8%EC%8A%A4").get()
+        val ridiKeyword: Elements = doc.select(".ItemRendererInner")
+
+        var bestRef = mRootRef.child("best")
+        bestRef = bestRef.child("OneStore")
+
+        for (i in ridiKeyword.indices) {
+
+                val writerName = doc.select("div .ItemRendererTextArtist")[i].text()
+                val subject = doc.select("div .ItemRendererTextTitle")[i].text()
+                val bookImg = doc.select(".ThumbnailInner img")[i].absUrl("src")
+                val intro = doc.select(".tItemRendererTextPublisher")[i].text()
+                val bookCode = ""
+                val cntChapter = doc.select(".tItemRendererTextSeries")[i].text()
+                val cntPageRead = doc.select(".ItemRendererTextComment span span")[i].text()
+                val cntFavorite = doc.select(".ItemRendererTextAvgScore")[i].text()
+                val cntRecom = doc.select(".ItemRendererTextAvgScore")[i].text()
+
+                bestRef.child("today").child(DBDate.Day().toString()).child(i.toString()).setValue(
+                    BookListDataBestToday(
+                        writerName,
+                        subject,
+                        bookImg,
+                        intro,
+                        bookCode,
+                        cntChapter,
+                        cntPageRead,
+                        cntFavorite,
+                        cntRecom,
+                        i + 1
+                    )
+                )
+
+            if(i < 10){
+                bestRef.child("week").child(i.toString()).child(DBDate.Day().toString()).setValue(
                     BookListDataBestToday(
                         writerName,
                         subject,
@@ -93,37 +171,9 @@ class ActivitySplash : Activity() {
                     )
                 )
             }
-        }
 
-    }
-
-    private fun getOneStoreBest() {
-
-        val doc: Document =
-            Jsoup.connect("https://onestory.co.kr/display/card/CRD0059596?title=%EC%9D%B4%EA%B1%B4%20%EC%82%AC%EC%95%BC%ED%95%B4!%20%EC%9C%A0%EB%A3%8C%20%EA%B5%AC%EB%A7%A4%EC%9C%A8%20BEST%20%EB%A1%9C%EB%A7%A8%EC%8A%A4").get()
-        val ridiKeyword: Elements = doc.select(".ItemRendererInner")
-
-        var bestRef = mRootRef.child("best")
-        bestRef = bestRef.child("OneStore").child(DBDate.Week().toString()).child(DBDate.Day().toString())
-
-        for (i in ridiKeyword.indices) {
-
-            if (i < 20) {
-
-                Log.d("!!!!", doc.select(".tItemRendererTextPublisher")[i].text())
-
-                val writerName = doc.select("div .ItemRendererTextArtist")[i].text()
-                val subject = doc.select("div .ItemRendererTextTitle")[i].text()
-                val bookImg = doc.select(".ThumbnailInner img")[i].absUrl("src")
-                val intro = doc.select(".tItemRendererTextPublisher")[i].text()
-                val bookCode = ""
-                val cntChapter = doc.select(".tItemRendererTextSeries")[i].text()
-                val cntPageRead = doc.select(".ItemRendererTextComment span span")[i].text()
-                val cntFavorite = doc.select(".ItemRendererTextAvgScore")[i].text()
-                val cntRecom = doc.select(".ItemRendererTextAvgScore")[i].text()
-
-
-                bestRef.child(i.toString()).setValue(
+            if(i == 0){
+                bestRef.child("month").child(DBDate.Week().toString()).child("0").setValue(
                     BookListDataBestToday(
                         writerName,
                         subject,
