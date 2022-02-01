@@ -104,28 +104,28 @@ class FragmentBestTodayApi(private val tabType: String, private var bestRef: Dat
                             )
 
                             if (i < 10) {
-                                    bestRef.child("week").child(i.toString()).child(DBDate.DayString())
-                                        .setValue(
-                                            BookListDataBestToday(
-                                                writerName,
-                                                subject,
-                                                bookImg,
-                                                intro,
-                                                bookCode,
-                                                cntChapter,
-                                                cntPageRead,
-                                                cntFavorite,
-                                                cntRecom,
-                                                i + 1,
-                                                DBDate.Date()
-                                            )
+                                bestRef.child("week").child(i.toString()).child(DBDate.DayString())
+                                    .setValue(
+                                        BookListDataBestToday(
+                                            writerName,
+                                            subject,
+                                            bookImg,
+                                            intro,
+                                            bookCode,
+                                            cntChapter,
+                                            cntPageRead,
+                                            cntFavorite,
+                                            cntRecom,
+                                            i + 1,
+                                            DBDate.Date()
                                         )
+                                    )
 
                             }
 
-                            if(i == 0){
+                            if (i == 0) {
                                 bestRef.child("month").child(DBDate.Week())
-                                    .child(DBDate.DayString()).child("day").setValue(
+                                    .child(DBDate.DayString()).setValue(
                                         BookListDataBestToday(
                                             writerName,
                                             subject,
@@ -143,7 +143,7 @@ class FragmentBestTodayApi(private val tabType: String, private var bestRef: Dat
                             }
 
                             bestRef.child("month").child(DBDate.Week())
-                                .child(DBDate.DayString()).setValue(
+                                .child(DBDate.DayString()).child("day").child(i.toString()).setValue(
                                     BookListDataBestToday(
                                         writerName,
                                         subject,
@@ -262,7 +262,7 @@ class FragmentBestTodayApi(private val tabType: String, private var bestRef: Dat
 
                             }
 
-                            if(i == 0){
+                            if (i == 0) {
                                 bestRef.child("month").child(DBDate.Week())
                                     .child(DBDate.DayString()).child("day").setValue(
                                         BookListDataBestToday(
@@ -283,20 +283,20 @@ class FragmentBestTodayApi(private val tabType: String, private var bestRef: Dat
 
                             bestRef.child("month").child(DBDate.Week())
                                 .child(DBDate.DayString()).setValue(
-                                BookListDataBestToday(
-                                    writerName,
-                                    subject,
-                                    bookImg,
-                                    intro,
-                                    bookCode,
-                                    cntChapter,
-                                    cntPageRead,
-                                    cntFavorite,
-                                    cntRecom,
-                                    i + 1,
-                                    DBDate.Date()
+                                    BookListDataBestToday(
+                                        writerName,
+                                        subject,
+                                        bookImg,
+                                        intro,
+                                        bookCode,
+                                        cntChapter,
+                                        cntPageRead,
+                                        cntFavorite,
+                                        cntRecom,
+                                        i + 1,
+                                        DBDate.Date()
+                                    )
                                 )
-                            )
 
                             items.add(
                                 BookListDataBestToday(
