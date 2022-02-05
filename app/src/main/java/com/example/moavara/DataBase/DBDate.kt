@@ -7,6 +7,10 @@ import java.util.*
 
 object DBDate {
 
+    fun DayInt() : Int {
+        return Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
+    }
+
     fun Day() : String {
         return Calendar.getInstance().get(Calendar.DAY_OF_WEEK).toString()
     }

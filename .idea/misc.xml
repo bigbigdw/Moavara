@@ -35,12 +35,16 @@
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/blank.xml" value="0.2064814814814815" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/dialog_text.xml" value="0.18" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_best.xml" value="0.25" />
-        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_best_month.xml" value="0.24054982817869416" />
+        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_best_month.xml" value="0.1687116564417178" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_best_today.xml" value="0.18" />
-        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_best_weekend.xml" value="0.3380281690140845" />
+        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_best_today_tab.xml" value="0.1" />
+        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_best_weekend.xml" value="0.1" />
+        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_best_weekend_2.xml" value="0.1" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_event.xml" value="0.1648148148148148" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_search.xml" value="0.2505399568034557" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_test.xml" value="0.15925925925925927" />
+        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/item_booklist_best_month.xml" value="0.1" />
+        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/item_booklist_best_weekend_2.xml" value="0.25" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/item_booklist_best_weekend_sub.xml" value="0.32864583333333336" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/menu/bottom_main_menu.xml" value="0.37135416666666665" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/menu/bottom_nav_menu.xml" value="0.35106382978723405" />

@@ -43,8 +43,8 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
         val mRootRef = FirebaseDatabase.getInstance().reference
         val week = mRootRef.child("best").child(tabType).child("month")
 
+        itemWeek.clear()
         getBestToday(week)
-
 
 
         recyclerView!!.layoutManager = linearLayoutManager
@@ -150,7 +150,7 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
                         group.wed,
                         group.thur,
                         group.fri,
-                        group.sun,
+                        group.sat,
                     )
                 )
                 adapterWeek!!.notifyDataSetChanged()

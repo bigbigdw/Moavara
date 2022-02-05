@@ -21,6 +21,7 @@ class AdapterBestWeekend(
 
     var item: ArrayList<BookListDataBestWeekend?> = items
     var selected: String? = ""
+    var num: Int? = 0
 
     interface OnItemClickListener {
         fun onItemClick(v: View?, position: Int, value: String?)
@@ -225,11 +226,13 @@ class AdapterBestWeekend(
         return item!![position]
     }
 
+    fun setPoint(point: Int) {
+        num = point
+    }
 
     fun setSelectedBook(bookcode: String) {
         selected = bookcode
     }
-
 
     fun getSelectedBook(): String? {
         return selected

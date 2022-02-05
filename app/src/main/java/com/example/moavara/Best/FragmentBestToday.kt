@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
@@ -40,10 +38,10 @@ class FragmentBestToday() : Fragment() {
         val mRootRef = FirebaseDatabase.getInstance().reference
         val bestRef = mRootRef.child("best")
 
-        adapter.addFragment(FragmentBestTodayApi("Joara", bestRef), "조아라")
-        adapter.addFragment(FragmentBestTodayJsoup("Ridi", bestRef), "리디북스")
-        adapter.addFragment(FragmentBestTodayApi("Kakao", bestRef), "카카오페이지")
-        adapter.addFragment(FragmentBestTodayJsoup("OneStore", bestRef), "원스토어")
+        adapter.addFragment(FragmentBestTodayTab("Joara", bestRef), "조아라")
+        adapter.addFragment(FragmentBestTodayTab("Ridi", bestRef), "리디북스")
+        adapter.addFragment(FragmentBestTodayTab("Kakao", bestRef), "카카오페이지")
+        adapter.addFragment(FragmentBestTodayTab("OneStore", bestRef), "원스토어")
         viewPager!!.adapter = adapter
     }
 

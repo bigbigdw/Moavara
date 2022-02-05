@@ -103,7 +103,6 @@ class FragmentSearchTab : Fragment() {
     }
 
     fun searchJoara(page: Int?) {
-        Log.d("@@@@-!", "!!!!");
 
         RetrofitJoara.getSearchJoara(
             page,"사랑", "", "", "", "", "", "", "", "", "", "", "30|25|25|15|15|15|0.5",

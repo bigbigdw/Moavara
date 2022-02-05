@@ -16,7 +16,7 @@ import com.google.firebase.database.*
 import java.util.*
 
 
-class FragmentBestTodayJsoup(private val tabType: String, private var bestRef: DatabaseReference) :
+class FragmentBestTodayTab(private val tabType: String, private var bestRef: DatabaseReference) :
     Fragment() {
 
     private var adapterToday: AdapterBestToday? = null

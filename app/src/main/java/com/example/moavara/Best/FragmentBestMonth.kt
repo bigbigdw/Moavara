@@ -39,7 +39,7 @@ class FragmentBestMonth : Fragment() {
         adapter.addFragment(FragmentBestMonthTab("Joara"), "조아라")
         adapter.addFragment(FragmentBestMonthTab("Ridi"), "리디북스")
         adapter.addFragment(FragmentBestMonthTab("Kakao"), "카카오페이지")
-        adapter.addFragment(FragmentBestMonthTab("OneStore"), "카카오페이지")
+        adapter.addFragment(FragmentBestMonthTab("OneStore"), "원스토어")
         viewPager!!.adapter = adapter
     }
 

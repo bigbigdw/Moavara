@@ -14,13 +14,12 @@ import com.google.android.material.tabs.TabLayout
 import java.util.ArrayList
 
 class FragmentBestWeekend : Fragment() {
-    private var toolbar: Toolbar? = null
     private var tabLayout: TabLayout? = null
     private var viewPager: ViewPager? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val root: View = inflater.inflate(R.layout.fragment_best_today, container, false)
         viewPager = root.findViewById(R.id.view_pager)
         setupViewPager(viewPager)
@@ -37,7 +36,7 @@ class FragmentBestWeekend : Fragment() {
         adapter.addFragment(FragmentBestWeekendTab("Joara"), "조아라")
         adapter.addFragment(FragmentBestWeekendTab("Ridi"), "리디북스")
         adapter.addFragment(FragmentBestWeekendTab("Kakao"), "카카오페이지")
-        adapter.addFragment(FragmentBestWeekendTab("OneStore"), "카카오페이지")
+        adapter.addFragment(FragmentBestWeekendTab("OneStore"), "원스토어")
         viewPager!!.adapter = adapter
     }
 

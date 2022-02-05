@@ -65,8 +65,6 @@ class FragmentEvent : Fragment() {
 
                         for (i in banner!!.indices) {
 
-                            Log.d("@@@@","!!!!")
-
                             val idx = banner[i].idx
                             val imgfile = banner[i].imgfile
                             val is_banner_cnt = banner[i].is_banner_cnt
