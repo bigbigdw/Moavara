@@ -1,13 +1,17 @@
 package com.example.moavara.Best
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.moavara.DataBase.DBDate
+import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Search.BookListDataBestWeekend
@@ -25,6 +29,7 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
     private val items = java.util.ArrayList<BookListDataBestToday?>()
 
     lateinit var root: View
+    var exception = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,7 +53,12 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
         recyclerViewToday = root.findViewById(R.id.rview_BestToday)
         adapterToday = AdapterBestToday(items)
 
-        getBookListBest(weeklist, recyclerViewToday)
+//        getBestWeekList(weeklist, recyclerViewToday)
+        if(tabType == "Joara"){
+            test()
+//            test2()
+        }
+
 
         recyclerView!!.layoutManager = linearLayoutManager
         recyclerView!!.adapter = adapterWeek
@@ -67,9 +77,9 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
 
                 val group: BookListDataBestWeekend? = dataSnapshot.getValue(BookListDataBestWeekend::class.java)
 
-                if(group!!.tue!!.bookCode == "1104753"){
-                    Log.d("!!!!", group!!.tue!!.number.toString())
-                }
+//                if(group!!.tue!!.bookCode == "1104753"){
+//                    Log.d("!!!!", group!!.tue!!.number.toString())
+//                }
 
                 itemWeek.add(
                     BookListDataBestWeekend(
@@ -178,11 +188,13 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
 
     }
 
-    private fun getBookListBest(bestRef: DatabaseReference , recyclerView: RecyclerView?) {
+    private fun getBestWeekList(bestRef: DatabaseReference, recyclerView: RecyclerView?) {
 
         recyclerView!!.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapterToday
+
+        var num = 0
 
         bestRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -202,10 +214,11 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
                             group.cntPageRead,
                             group.cntFavorite,
                             group.cntRecom,
-                            group.number,
+                            postSnapshot.key!!.toInt(),
                         )
                     )
                     adapterToday!!.notifyDataSetChanged()
+                    num++
                 }
             }
 
@@ -221,6 +234,48 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
                 fragmentManager?.let { mBottomDialogBest.show(it, null) }
             }
         })
+    }
+
+    private fun test() {
+
+    }
+
+    private fun test2() {
+        val test = mRootRef.child("best").child(tabType).child("today").child("7")
+        val week = mRootRef.child("best").child(tabType).child("week list")
+        var num = 0
+
+
+        test.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+
+                    val group: BookListDataBestToday? =
+                        postSnapshot.getValue(BookListDataBestToday::class.java)
+
+                    week.child((((7 - 1) * 20 ) + num).toString()).setValue(
+                        BookListDataBestToday(
+                            group!!.writer,
+                            group.title,
+                            group.bookImg,
+                            group.intro,
+                            group.bookCode,
+                            group.cntChapter,
+                            group.cntPageRead,
+                            group.cntFavorite,
+                            group.cntRecom,
+                            group.number,
+                            DBDate.Date()
+                        )
+                    )
+                    num++
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        })
+
     }
 
 }

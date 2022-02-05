@@ -208,7 +208,7 @@ class ActivitySplash : Activity() {
             val cntFavorite = doc.select(".ItemRendererTextAvgScore")[i].text()
             val cntRecom = doc.select(".ItemRendererTextAvgScore")[i].text()
 
-            bestRef.child("week list").child((((DBDate.DayInt() - 1) * 20 ) + i).toString()).setValue(
+            bestRef.child("week list").child((((DBDate.DayInt() - 1) * 14 ) + i).toString()).setValue(
                 BookListDataBestToday(
                     writerName,
                     subject,
@@ -345,7 +345,7 @@ class ActivitySplash : Activity() {
                             val cntFavorite = list[i].like_count
                             val cntRecom = list[i].rating
 
-                            bestRef.child("week list").child((((DBDate.DayInt() - 1) * 20 ) + i).toString()).setValue(
+                            bestRef.child("week list").child((((DBDate.DayInt() - 1) * 29 ) + i).toString()).setValue(
                                 BookListDataBestToday(
                                     writerName,
                                     subject,
@@ -471,6 +471,22 @@ class ActivitySplash : Activity() {
                             val cntRecom = books[i].cntRecom
 
                             bestRef.child("week list").child((((DBDate.DayInt() - 1) * 20 ) + i).toString()).setValue(
+                                BookListDataBestToday(
+                                    writerName,
+                                    subject,
+                                    bookImg,
+                                    intro,
+                                    bookCode,
+                                    cntChapter,
+                                    cntPageRead,
+                                    cntFavorite,
+                                    cntRecom,
+                                    i + 1,
+                                    DBDate.Date()
+                                )
+                            )
+
+                            bestRef.child("today").child(DBDate.Day()).child(i.toString()).setValue(
                                 BookListDataBestToday(
                                     writerName,
                                     subject,

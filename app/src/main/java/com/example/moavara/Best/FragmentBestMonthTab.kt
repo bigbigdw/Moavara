@@ -138,10 +138,6 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
                 val group: BookListDataBestWeekend? =
                     dataSnapshot.getValue(BookListDataBestWeekend::class.java)
 
-//                if (group!!.tue!!.bookCode == "1104753") {
-//                    Log.d("!!!!", group!!.tue!!.number.toString())
-//                }
-
                 itemWeek.add(
                     BookListDataBestWeekend(
                         group!!.sun,
