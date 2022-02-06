@@ -53,11 +53,7 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
         recyclerViewToday = root.findViewById(R.id.rview_BestToday)
         adapterToday = AdapterBestToday(items)
 
-//        getBestWeekList(weeklist, recyclerViewToday)
-        if(tabType == "Joara"){
-            test()
-//            test2()
-        }
+        getBestWeekList(weeklist, recyclerViewToday)
 
 
         recyclerView!!.layoutManager = linearLayoutManager
@@ -76,10 +72,6 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
             override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
 
                 val group: BookListDataBestWeekend? = dataSnapshot.getValue(BookListDataBestWeekend::class.java)
-
-//                if(group!!.tue!!.bookCode == "1104753"){
-//                    Log.d("!!!!", group!!.tue!!.number.toString())
-//                }
 
                 itemWeek.add(
                     BookListDataBestWeekend(
@@ -234,48 +226,6 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
                 fragmentManager?.let { mBottomDialogBest.show(it, null) }
             }
         })
-    }
-
-    private fun test() {
-
-    }
-
-    private fun test2() {
-        val test = mRootRef.child("best").child(tabType).child("today").child("7")
-        val week = mRootRef.child("best").child(tabType).child("week list")
-        var num = 0
-
-
-        test.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (postSnapshot in dataSnapshot.children) {
-
-                    val group: BookListDataBestToday? =
-                        postSnapshot.getValue(BookListDataBestToday::class.java)
-
-                    week.child((((7 - 1) * 20 ) + num).toString()).setValue(
-                        BookListDataBestToday(
-                            group!!.writer,
-                            group.title,
-                            group.bookImg,
-                            group.intro,
-                            group.bookCode,
-                            group.cntChapter,
-                            group.cntPageRead,
-                            group.cntFavorite,
-                            group.cntRecom,
-                            group.number,
-                            DBDate.Date()
-                        )
-                    )
-                    num++
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-            }
-        })
-
     }
 
 }
