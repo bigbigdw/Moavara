@@ -8,15 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moavara.DataBase.DBDate
 import com.example.moavara.R
-import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Search.BookListDataBestWeekend
 import com.google.firebase.database.*
-import com.google.gson.Gson
-import org.json.JSONArray
-import org.json.JSONObject
-import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -137,6 +131,10 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
 
                 val group: BookListDataBestWeekend? =
                     dataSnapshot.getValue(BookListDataBestWeekend::class.java)
+
+//                if (group!!.tue!!.bookCode == "1104753") {
+//                    Log.d("!!!!", group!!.tue!!.number.toString())
+//                }
 
                 itemWeek.add(
                     BookListDataBestWeekend(

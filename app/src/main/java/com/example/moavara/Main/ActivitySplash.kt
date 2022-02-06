@@ -208,7 +208,7 @@ class ActivitySplash : Activity() {
             val cntFavorite = doc.select(".ItemRendererTextAvgScore")[i].text()
             val cntRecom = doc.select(".ItemRendererTextAvgScore")[i].text()
 
-            bestRef.child("week list").child((((DBDate.DayInt() - 1) * 14 ) + i).toString()).setValue(
+            bestRef.child("week list").child((((DBDate.DayInt() - 1) * 20 ) + i).toString()).setValue(
                 BookListDataBestToday(
                     writerName,
                     subject,

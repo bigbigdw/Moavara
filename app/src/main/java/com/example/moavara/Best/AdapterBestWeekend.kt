@@ -226,10 +226,6 @@ class AdapterBestWeekend(
         return item!![position]
     }
 
-    fun setPoint(point: Int) {
-        num = point
-    }
-
     fun setSelectedBook(bookcode: String) {
         selected = bookcode
     }
