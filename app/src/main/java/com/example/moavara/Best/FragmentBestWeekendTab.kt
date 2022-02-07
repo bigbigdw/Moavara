@@ -16,6 +16,9 @@ import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Search.BookListDataBestWeekend
 import com.google.firebase.database.*
+import java.util.*
+import kotlin.Comparator
+import kotlin.collections.ArrayList
 
 
 class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
@@ -56,7 +59,7 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
         val weeklist = mRootRef.child("best").child(tabType).child("week list")
 
         itemWeek.clear()
-//        getBestToday(week)
+        getBestToday(week)
 
         recyclerViewToday = root.findViewById(R.id.rview_BestToday)
         adapterToday = AdapterBestToday(items)
@@ -234,12 +237,10 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
             }
         }
 
-        val cmpAsc: Comparator<String?> = object : Comparator<String?> {
-            override fun compare(o1: String?, o2: String?): Int {
-                return o1!!.compareTo(o2!!)
-            }
+        val cmpAsc: Comparator<BookListDataBestToday?> =
+            Comparator { o1, o2 -> o2!!.number!!.compareTo(o1!!.number!!) }
 
-        }
+        Collections.sort(items, cmpAsc)
 
         adapterToday!!.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
