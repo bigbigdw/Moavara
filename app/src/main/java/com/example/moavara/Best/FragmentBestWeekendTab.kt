@@ -1,6 +1,5 @@
 package com.example.moavara.Best
 
-import android.R.attr.data
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,9 +16,6 @@ import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Search.BookListDataBestWeekend
 import com.google.firebase.database.*
-import java.util.*
-import kotlin.Comparator
-import kotlin.collections.ArrayList
 
 
 class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
@@ -236,7 +232,12 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
                     adapterToday!!.notifyDataSetChanged()
                 }
             }
+        }
 
+        val cmpAsc: Comparator<String?> = object : Comparator<String?> {
+            override fun compare(o1: String?, o2: String?): Int {
+                return o1!!.compareTo(o2!!)
+            }
 
         }
 
