@@ -16,12 +16,7 @@ data class DataBest (
     var cntFavorite: String ? = null,
     var cntRecom: String ? = null,
     var number: Int ? = null,
-    var day: Int ? = null,
-    var week: Int ? = null,
-    var date: Int ? = null,
-    var month: Int ? = null,
-    var point: Int ? = null,
-    var type: String ? = null,
+    var date: String ? = null,
 ){
     @PrimaryKey(autoGenerate = true) var id: Int = 0
 }

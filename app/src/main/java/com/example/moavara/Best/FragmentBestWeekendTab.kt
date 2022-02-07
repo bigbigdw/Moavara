@@ -1,16 +1,16 @@
 package com.example.moavara.Best
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
 import com.example.moavara.DataBase.DBDate
+import com.example.moavara.DataBase.DataBaseBest
+import com.example.moavara.DataBase.DataBest
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
@@ -23,6 +23,7 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
     private var adapterWeek: AdapterBestWeekend? = null
     private val itemWeek = ArrayList<BookListDataBestWeekend?>()
     var recyclerView: RecyclerView? = null
+    private lateinit var db: DataBaseBest
 
     private var adapterToday: AdapterBestToday? = null
     var recyclerViewToday: RecyclerView? = null
@@ -40,6 +41,13 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
         recyclerView = root.findViewById(R.id.rview_Best)
         adapterWeek = AdapterBestWeekend(requireContext(), itemWeek)
 
+        db = Room.databaseBuilder(
+            requireContext(),
+            DataBaseBest::class.java,
+            "user-database"
+        ).allowMainThreadQueries()
+            .build()
+
         val linearLayoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
@@ -48,13 +56,12 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
         val weeklist = mRootRef.child("best").child(tabType).child("week list")
 
         itemWeek.clear()
-        getBestToday(week)
+//        getBestToday(week)
 
         recyclerViewToday = root.findViewById(R.id.rview_BestToday)
         adapterToday = AdapterBestToday(items)
 
-        getBestWeekList(weeklist, recyclerViewToday)
-
+        getBestWeekList(db.bestDao().getAll(), recyclerViewToday)
 
         recyclerView!!.layoutManager = linearLayoutManager
         recyclerView!!.adapter = adapterWeek
@@ -180,43 +187,59 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
 
     }
 
-    private fun getBestWeekList(bestRef: DatabaseReference, recyclerView: RecyclerView?) {
+    private fun getBestWeekList(bestRef: List<DataBest>?, recyclerView: RecyclerView?) {
 
         recyclerView!!.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapterToday
 
-        var num = 0
 
-        bestRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (postSnapshot in dataSnapshot.children) {
+        for(i in bestRef!!.indices){
 
-                    val group: BookListDataBestToday? =
-                        postSnapshot.getValue(BookListDataBestToday::class.java)
+            if(i < 1){
+                items.add(
+                    BookListDataBestToday(
+                        bestRef[i].writer,
+                        bestRef[i].title,
+                        bestRef[i].bookImg,
+                        bestRef[i].intro,
+                        bestRef[i].bookCode,
+                        bestRef[i].cntChapter,
+                        bestRef[i].cntPageRead,
+                        bestRef[i].cntFavorite,
+                        bestRef[i].cntRecom,
+                        bestRef[i].number,
+                    )
+                )
+                adapterToday!!.notifyDataSetChanged()
+            } else {
 
+                if(bestRef[i - 1].title != bestRef[i].title){
                     items.add(
                         BookListDataBestToday(
-                            group!!.writer,
-                            group.title,
-                            group.bookImg,
-                            group.intro,
-                            group.bookCode,
-                            group.cntChapter,
-                            group.cntPageRead,
-                            group.cntFavorite,
-                            group.cntRecom,
-                            postSnapshot.key!!.toInt(),
+                            bestRef[i].writer,
+                            bestRef[i].title,
+                            bestRef[i].bookImg,
+                            bestRef[i].intro,
+                            bestRef[i].bookCode,
+                            bestRef[i].cntChapter,
+                            bestRef[i].cntPageRead,
+                            bestRef[i].cntFavorite,
+                            bestRef[i].cntRecom,
+                            bestRef[i - 1].number?.plus(bestRef[i].number!!),
                         )
                     )
                     adapterToday!!.notifyDataSetChanged()
-                    num++
                 }
             }
+        }
 
-            override fun onCancelled(databaseError: DatabaseError) {
+        val cmpAsc: Comparator<String?> = object : Comparator<String?> {
+            override fun compare(o1: String?, o2: String?): Int {
+                return o1!!.compareTo(o2!!)
             }
-        })
+
+        }
 
         adapterToday!!.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {

@@ -22,7 +22,10 @@ import com.example.moavara.KaKao.RetrofitKaKao
 import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Search.BookListDataBestWeekend
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
@@ -33,12 +36,14 @@ import java.util.*
 
 
 val mRootRef = FirebaseDatabase.getInstance().reference
-
+private lateinit var db: DataBaseBest
 
 class ActivitySplash : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+
+        db = Room.databaseBuilder( this, DataBaseBest::class.java, "user-database").allowMainThreadQueries().build()
 
         Thread {
             test()
@@ -567,6 +572,45 @@ class ActivitySplash : Activity() {
                 Log.d("onFailure", "실패")
             }
         })
+
+        val week = mRootRef.child("best").child("Joara").child("week list")
+        var num = 1
+
+        db.bestDao().initAll()
+
+        week.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+
+                    val group: BookListDataBestToday? =
+                        postSnapshot.getValue(BookListDataBestToday::class.java)
+
+                    db.bestDao().insert(
+                        DataBest(
+                            group!!.writer,
+                            group.title,
+                            group.bookImg,
+                            group.intro,
+                            group.bookCode,
+                            group.cntChapter,
+                            group.cntPageRead,
+                            group.cntFavorite,
+                            group.cntRecom,
+                            group.number,
+                            DBDate.Date()
+                        )
+                    )
+
+                    num += 1
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        })
+
+
+
     }
 
 
