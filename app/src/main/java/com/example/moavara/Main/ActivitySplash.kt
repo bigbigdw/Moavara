@@ -187,7 +187,8 @@ class ActivitySplash : Activity() {
                         )
                     )
 
-            if(dbMonth.bestDaoMonth().getAllTypes("Ridi") != null){
+
+            if(dbMonth.bestDaoMonth().getAllTypes("Ridi").toString() != "[]"){
                 dbMonth.bestDaoMonth().initTypes("Ridi")
             } else {
                 bestRef.child("month list").child((i).toString()).addValueEventListener(object : ValueEventListener {
@@ -391,36 +392,40 @@ class ActivitySplash : Activity() {
                     )
                 )
 
-//                bestRef.child("month list").child((i + 1).toString()).addValueEventListener(object : ValueEventListener {
-//                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                        for (postSnapshot in dataSnapshot.children) {
-//
-//                            val group: BookListDataBestToday? =
-//                                postSnapshot.getValue(BookListDataBestToday::class.java)
-//
-//                            dbMonth.bestDaoMonth().insert(
-//                                DataBestMonth(
-//                                    group!!.writer,
-//                                    group.title,
-//                                    group.bookImg,
-//                                    group.intro,
-//                                    group.bookCode,
-//                                    group.cntChapter,
-//                                    group.cntPageRead,
-//                                    group.cntFavorite,
-//                                    group.cntRecom,
-//                                    group.number,
-//                                    DBDate.Date(),
-//                                    "OneStore",
-//                                    i.toString(),
-//                                )
-//                            )
-//                        }
-//                    }
-//
-//                    override fun onCancelled(databaseError: DatabaseError) {
-//                    }
-//                })
+            if(dbMonth.bestDaoMonth().getAllTypes("OneStore").toString() != "[]"){
+                dbMonth.bestDaoMonth().initTypes("OneStore")
+            } else {
+                bestRef.child("month list").child((i).toString()).addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        for (postSnapshot in dataSnapshot.children) {
+
+                            val group: BookListDataBestToday? =
+                                postSnapshot.getValue(BookListDataBestToday::class.java)
+
+                            dbMonth.bestDaoMonth().insert(
+                                DataBestMonth(
+                                    group!!.writer,
+                                    group.title,
+                                    group.bookImg,
+                                    group.intro,
+                                    group.bookCode,
+                                    group.cntChapter,
+                                    group.cntPageRead,
+                                    group.cntFavorite,
+                                    group.cntRecom,
+                                    group.number,
+                                    DBDate.Date(),
+                                    "OneStore",
+                                    i.toString(),
+                                )
+                            )
+                        }
+                    }
+
+                    override fun onCancelled(databaseError: DatabaseError) {
+                    }
+                })
+            }
 
         }
 
@@ -580,36 +585,40 @@ class ActivitySplash : Activity() {
                                     )
                                 )
 
-//                                bestRef.child("month list").child((i + 1).toString()).addValueEventListener(object : ValueEventListener {
-//                                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                                        for (postSnapshot in dataSnapshot.children) {
-//
-//                                            val group: BookListDataBestToday? =
-//                                                postSnapshot.getValue(BookListDataBestToday::class.java)
-//
-//                                            dbMonth.bestDaoMonth().insert(
-//                                                DataBestMonth(
-//                                                    group!!.writer,
-//                                                    group.title,
-//                                                    group.bookImg,
-//                                                    group.intro,
-//                                                    group.bookCode,
-//                                                    group.cntChapter,
-//                                                    group.cntPageRead,
-//                                                    group.cntFavorite,
-//                                                    group.cntRecom,
-//                                                    group.number,
-//                                                    DBDate.Date(),
-//                                                    "Kakao",
-//                                                    DBDate.Week(),
-//                                                )
-//                                            )
-//                                        }
-//                                    }
-//
-//                                    override fun onCancelled(databaseError: DatabaseError) {
-//                                    }
-//                                })
+                            if(dbMonth.bestDaoMonth().getAllTypes("Kakao").toString() != "[]"){
+                                dbMonth.bestDaoMonth().initTypes("Kakao")
+                            } else {
+                                bestRef.child("month list").child((i).toString()).addValueEventListener(object : ValueEventListener {
+                                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                        for (postSnapshot in dataSnapshot.children) {
+
+                                            val group: BookListDataBestToday? =
+                                                postSnapshot.getValue(BookListDataBestToday::class.java)
+
+                                            dbMonth.bestDaoMonth().insert(
+                                                DataBestMonth(
+                                                    group!!.writer,
+                                                    group.title,
+                                                    group.bookImg,
+                                                    group.intro,
+                                                    group.bookCode,
+                                                    group.cntChapter,
+                                                    group.cntPageRead,
+                                                    group.cntFavorite,
+                                                    group.cntRecom,
+                                                    group.number,
+                                                    DBDate.Date(),
+                                                    "Kakao",
+                                                    i.toString(),
+                                                )
+                                            )
+                                        }
+                                    }
+
+                                    override fun onCancelled(databaseError: DatabaseError) {
+                                    }
+                                })
+                            }
 
 
                         }
@@ -775,36 +784,41 @@ class ActivitySplash : Activity() {
                                     )
                                 )
 
-//                                bestRef.child("month list").child((i + 1).toString()).addValueEventListener(object : ValueEventListener {
-//                                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                                        for (postSnapshot in dataSnapshot.children) {
-//
-//                                            val group: BookListDataBestToday? =
-//                                                postSnapshot.getValue(BookListDataBestToday::class.java)
-//
-//                                            dbMonth.bestDaoMonth().insert(
-//                                                DataBestMonth(
-//                                                    group!!.writer,
-//                                                    group.title,
-//                                                    group.bookImg,
-//                                                    group.intro,
-//                                                    group.bookCode,
-//                                                    group.cntChapter,
-//                                                    group.cntPageRead,
-//                                                    group.cntFavorite,
-//                                                    group.cntRecom,
-//                                                    group.number,
-//                                                    DBDate.Date(),
-//                                                    "Joara",
-//                                                    i.toString(),
-//                                                )
-//                                            )
-//                                        }
-//                                    }
-//
-//                                    override fun onCancelled(databaseError: DatabaseError) {
-//                                    }
-//                                })
+
+                            if(dbMonth.bestDaoMonth().getAllTypes("Joara").toString() != "[]"){
+                                dbMonth.bestDaoMonth().initTypes("Joara")
+                            } else {
+                                bestRef.child("month list").child((i).toString()).addValueEventListener(object : ValueEventListener {
+                                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                        for (postSnapshot in dataSnapshot.children) {
+
+                                            val group: BookListDataBestToday? =
+                                                postSnapshot.getValue(BookListDataBestToday::class.java)
+
+                                            dbMonth.bestDaoMonth().insert(
+                                                DataBestMonth(
+                                                    group!!.writer,
+                                                    group.title,
+                                                    group.bookImg,
+                                                    group.intro,
+                                                    group.bookCode,
+                                                    group.cntChapter,
+                                                    group.cntPageRead,
+                                                    group.cntFavorite,
+                                                    group.cntRecom,
+                                                    group.number,
+                                                    DBDate.Date(),
+                                                    "Joara",
+                                                    i.toString(),
+                                                )
+                                            )
+                                        }
+                                    }
+
+                                    override fun onCancelled(databaseError: DatabaseError) {
+                                    }
+                                })
+                            }
 
                         }
                     }

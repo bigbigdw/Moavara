@@ -15,6 +15,15 @@ object DBDate {
         return Calendar.getInstance().get(Calendar.DAY_OF_WEEK).toString()
     }
 
+    fun Yestaerday() : String {
+
+        return if(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 1){
+            "7"
+        } else {
+            (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) -1).toString()
+        }
+    }
+
     fun DayString() : String {
 
         val day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK).toString()

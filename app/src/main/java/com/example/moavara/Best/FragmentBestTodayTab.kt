@@ -23,6 +23,7 @@ class FragmentBestTodayTab(private val tabType: String, private var bestRef: Dat
     var recyclerView: RecyclerView? = null
 
     private val items = ArrayList<BookListDataBestToday?>()
+    private val itemsYesterday = ArrayList<BookListDataBestToday?>()
 
     lateinit var root: View
 
@@ -42,12 +43,42 @@ class FragmentBestTodayTab(private val tabType: String, private var bestRef: Dat
     }
 
     private fun getBookListBest(recyclerView: RecyclerView?) {
-        bestRef =
-            bestRef.child(tabType).child("today").child(DBDate.Day())
+        bestRef = bestRef.child(tabType).child("today").child(DBDate.Day())
+
+        val yesterdayRef = bestRef.child(tabType).child("today").child(DBDate.Yestaerday())
 
         recyclerView!!.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapterToday
+
+        yesterdayRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+
+                    val group: BookListDataBestToday? =
+                        postSnapshot.getValue(BookListDataBestToday::class.java)
+
+                    itemsYesterday.add(
+                        BookListDataBestToday(
+                            group!!.writer,
+                            group.title,
+                            group.bookImg,
+                            group.intro,
+                            group.bookCode,
+                            group.cntChapter,
+                            group.cntPageRead,
+                            group.cntFavorite,
+                            group.cntRecom,
+                            group.number,
+                        )
+                    )
+                    adapterToday!!.notifyDataSetChanged()
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        })
 
         bestRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {

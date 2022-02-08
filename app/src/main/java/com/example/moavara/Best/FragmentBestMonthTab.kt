@@ -113,8 +113,6 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
                         override fun onCancelled(databaseError: DatabaseError) {
                         }
                     })
-
-                Log.d("@@@@", value!! + position)
             }
         })
 
@@ -129,7 +127,7 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
 
     private fun getMonthList(){
 
-        val monthList = dbMonth.bestDaoMonth().getAllTypes(tabType)
+        val monthList = dbMonth.bestDaoMonth().getAllFirst(tabType)
 
         recyclerViewMonth!!.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

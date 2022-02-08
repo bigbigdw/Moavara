@@ -20,6 +20,12 @@ interface BestDaoMonth {
     @Query("SELECT * FROM DataBestMonth WHERE type = :type")
     fun getAllTypes(type: String): List<DataBestMonth>
 
+    @Query("SELECT * FROM DataBestMonth WHERE type = :type LIMIT 5")
+    fun getAllFirst(type: String): List<DataBestMonth>
+
+    @Query("SELECT * FROM DataBestMonth WHERE type = :type AND week = :week LIMIT 5")
+    fun getAllFirstList(type: String, week: String): List<DataBestMonth>
+
     @Insert
     fun insert(user: DataBestMonth)
 

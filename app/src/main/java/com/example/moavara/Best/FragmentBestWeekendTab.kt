@@ -25,7 +25,6 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
     private val itemWeek = ArrayList<BookListDataBestWeekend?>()
     var recyclerView: RecyclerView? = null
     private lateinit var db: DataBaseBestWeek
-    private lateinit var dbMonth: DataBaseBestMonth
 
     private var adapterToday: AdapterBestToday? = null
     var recyclerViewToday: RecyclerView? = null
@@ -48,13 +47,6 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
             requireContext(),
             DataBaseBestWeek::class.java,
             "user-database"
-        ).allowMainThreadQueries()
-            .build()
-
-        dbMonth = Room.databaseBuilder(
-            requireContext(),
-            DataBaseBestMonth::class.java,
-            "user-databaseM"
         ).allowMainThreadQueries()
             .build()
 
@@ -242,15 +234,11 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
 
         Collections.sort(items, cmpAsc)
 
-        if(dbMonth.bestDaoMonth().getAllTypes(tabType) != null){
-            dbMonth.bestDaoMonth().initTypes(tabType)
-        }
-
         if(DBDate.Day() != "6"){
             for(i in items.indices){
                 if(i < 10){
                     monthList.child(DBDate.Week()).child(i.toString()).setValue(
-                        BookListDataBestToday(
+                        DataBestMonth(
                             items[i]!!.writer,
                             items[i]!!.title,
                             items[i]!!.bookImg,
@@ -261,27 +249,11 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
                             items[i]!!.cntFavorite,
                             items[i]!!.cntRecom,
                             items[i]!!.number,
-                            DBDate.Date()
+                            DBDate.Date(),
+                            tabType,
+                            DBDate.Week(),
                         )
                     )
-
-//                    dbMonth.bestDaoMonth().insert(
-//                        DataBestMonth(
-//                            items[i]!!.writer,
-//                            items[i]!!.title,
-//                            items[i]!!.bookImg,
-//                            items[i]!!.intro,
-//                            items[i]!!.bookCode,
-//                            items[i]!!.cntChapter,
-//                            items[i]!!.cntPageRead,
-//                            items[i]!!.cntFavorite,
-//                            items[i]!!.cntRecom,
-//                            items[i]!!.number,
-//                            DBDate.Date(),
-//                            tabType,
-//                            DBDate.Week(),
-//                        )
-//                    )
                 }
             }
         }
