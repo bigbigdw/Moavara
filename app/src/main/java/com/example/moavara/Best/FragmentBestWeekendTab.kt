@@ -265,23 +265,23 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
                         )
                     )
 
-                    dbMonth.bestDaoMonth().insert(
-                        DataBestMonth(
-                            items[i]!!.writer,
-                            items[i]!!.title,
-                            items[i]!!.bookImg,
-                            items[i]!!.intro,
-                            items[i]!!.bookCode,
-                            items[i]!!.cntChapter,
-                            items[i]!!.cntPageRead,
-                            items[i]!!.cntFavorite,
-                            items[i]!!.cntRecom,
-                            items[i]!!.number,
-                            DBDate.Date(),
-                            tabType,
-                            DBDate.Week(),
-                        )
-                    )
+//                    dbMonth.bestDaoMonth().insert(
+//                        DataBestMonth(
+//                            items[i]!!.writer,
+//                            items[i]!!.title,
+//                            items[i]!!.bookImg,
+//                            items[i]!!.intro,
+//                            items[i]!!.bookCode,
+//                            items[i]!!.cntChapter,
+//                            items[i]!!.cntPageRead,
+//                            items[i]!!.cntFavorite,
+//                            items[i]!!.cntRecom,
+//                            items[i]!!.number,
+//                            DBDate.Date(),
+//                            tabType,
+//                            DBDate.Week(),
+//                        )
+//                    )
                 }
             }
         }

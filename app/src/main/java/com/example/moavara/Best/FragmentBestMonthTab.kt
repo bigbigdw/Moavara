@@ -114,9 +114,7 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
                         }
                     })
 
-
                 Log.d("@@@@", value!! + position)
-
             }
         })
 
