@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,11 +23,16 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
     private var adapterWeek: AdapterBestMonth? = null
     private var adapterMonthList: AdapterBestToday? = null
     private val itemWeek = ArrayList<BookListDataBestWeekend?>()
+
     private val itemMonthList = ArrayList<BookListDataBestToday?>()
     var recyclerView: RecyclerView? = null
     private lateinit var dbMonth: DataBaseBestMonth
-
     var recyclerViewMonth: RecyclerView? = null
+
+    private val itemMonthListDetail = ArrayList<BookListDataBestToday?>()
+    var recyclerViewMonthDetail: RecyclerView? = null
+    var llayoutMonthDetail: LinearLayout? = null
+    private var adapterMonthListDetail: AdapterBestToday? = null
 
     lateinit var root: View
 
@@ -42,6 +48,10 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
         recyclerViewMonth = root.findViewById(R.id.rview_BestMonth)
         adapterMonthList = AdapterBestToday(itemMonthList)
 
+        llayoutMonthDetail = root.findViewById(R.id.llayoutMonthDetail)
+        recyclerViewMonthDetail = root.findViewById(R.id.rview_BestMonthDetail)
+        adapterMonthListDetail = AdapterBestToday(itemMonthListDetail)
+
         dbMonth = Room.databaseBuilder(
             requireContext(),
             DataBaseBestMonth::class.java,
@@ -51,6 +61,7 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
 
         val mRootRef = FirebaseDatabase.getInstance().reference
         val week = mRootRef.child("best").child(tabType).child("month")
+        val monthList = mRootRef.child("best").child(tabType).child("month")
 
         itemWeek.clear()
         getBestToday(week)
@@ -61,80 +72,59 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
 
         adapterWeek!!.setOnItemClickListener(object : AdapterBestMonth.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int, value: String?) {
+
+                itemMonthListDetail.clear()
+
                 val item: BookListDataBestWeekend? = adapterWeek!!.getItem(position)
 
-                if (item!!.sun != null && value.equals("sun")) {
+                recyclerViewMonthDetail!!.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                recyclerViewMonthDetail!!.adapter = adapterMonthListDetail
 
-                    if (adapterWeek!!.getSelectedBook() == item.sun!!.bookCode.toString()) {
-                        val mBottomDialogBest = BottomDialogBest(requireContext(), item.sun)
-                        fragmentManager?.let { mBottomDialogBest.show(it, null) }
-                        adapterWeek!!.setSelectedBook("")
-                    } else {
-                        adapterWeek!!.setSelectedBook(item.sun!!.bookCode.toString())
-                    }
-                } else if (item.mon != null && value.equals("mon")) {
-
-                    if (adapterWeek!!.getSelectedBook() == item.mon!!.bookCode.toString()) {
-                        val mBottomDialogBest = BottomDialogBest(requireContext(), item.mon)
-                        fragmentManager?.let { mBottomDialogBest.show(it, null) }
-                        adapterWeek!!.setSelectedBook("")
-                    } else {
-                        adapterWeek!!.setSelectedBook(item.mon!!.bookCode.toString())
-                    }
-
-                } else if (item.tue != null && value.equals("tue")) {
-
-                    if (adapterWeek!!.getSelectedBook() == item.tue!!.bookCode.toString()) {
-                        val mBottomDialogBest = BottomDialogBest(requireContext(), item.tue)
-                        fragmentManager?.let { mBottomDialogBest.show(it, null) }
-                        adapterWeek!!.setSelectedBook("")
-                    } else {
-                        adapterWeek!!.setSelectedBook(item.tue!!.bookCode.toString())
-                    }
-
-                } else if (item.wed != null && value.equals("wed")) {
-
-                    if (adapterWeek!!.getSelectedBook() == item.wed!!.bookCode.toString()) {
-                        val mBottomDialogBest = BottomDialogBest(requireContext(), item.wed)
-                        fragmentManager?.let { mBottomDialogBest.show(it, null) }
-                    } else {
-                        adapterWeek!!.setSelectedBook(item.wed!!.bookCode.toString())
-                    }
-
-                } else if (item.thur != null && value.equals("thur")) {
-
-                    if (adapterWeek!!.getSelectedBook() == item.thur!!.bookCode.toString()) {
-                        val mBottomDialogBest = BottomDialogBest(requireContext(), item.thur)
-                        fragmentManager?.let { mBottomDialogBest.show(it, null) }
-                        adapterWeek!!.setSelectedBook("")
-                    } else {
-                        adapterWeek!!.setSelectedBook(item.thur!!.bookCode.toString())
-                    }
-
-                } else if (item.fri != null && value.equals("fri")) {
-
-                    if (adapterWeek!!.getSelectedBook() == item.fri!!.bookCode.toString()) {
-                        val mBottomDialogBest = BottomDialogBest(requireContext(), item.fri)
-                        fragmentManager?.let { mBottomDialogBest.show(it, null) }
-                    } else {
-                        adapterWeek!!.setSelectedBook(item.fri!!.bookCode.toString())
-                    }
-
-                } else if (item.sat != null && value.equals("sat")) {
-
-                    if (adapterWeek!!.getSelectedBook() == item.fri!!.bookCode.toString()) {
-                        val mBottomDialogBest = BottomDialogBest(requireContext(), item.fri)
-                        fragmentManager?.let { mBottomDialogBest.show(it, null) }
-                    } else {
-                        adapterWeek!!.setSelectedBook(item.fri!!.bookCode.toString())
-                    }
-
+                if(llayoutMonthDetail!!.visibility == View.GONE){
+                    llayoutMonthDetail!!.visibility = View.VISIBLE
                 }
+                    monthList.child((position + 1).toString()).child(value!!).child("day").addValueEventListener(object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            for (postSnapshot in dataSnapshot.children) {
 
-                adapterWeek!!.notifyDataSetChanged()
+                                val group: BookListDataBestToday? =
+                                    postSnapshot.getValue(BookListDataBestToday::class.java)
+
+                                Log.d("!!!!", group!!.title.toString())
+
+                                itemMonthListDetail.add(
+                                    BookListDataBestToday(
+                                        group!!.writer,
+                                        group.title,
+                                        group.bookImg,
+                                        group.intro,
+                                        group.bookCode,
+                                        group.cntChapter,
+                                        group.cntPageRead,
+                                        group.cntFavorite,
+                                        group.cntRecom,
+                                        group.number,
+                                    )
+                                )
+                                adapterMonthListDetail!!.notifyDataSetChanged()
+                            }
+                        }
+
+                        override fun onCancelled(databaseError: DatabaseError) {
+                        }
+                    })
+
+
+                Log.d("@@@@", value!! + position)
 
             }
         })
+
+        adapterMonthList!!.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
+            override fun onItemClick(v: View?, position: Int) {
+                val item: BookListDataBestToday? = adapterMonthList!!.getItem(position)
+
+            }})
 
         return root
     }
@@ -174,10 +164,6 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
                 val group: BookListDataBestWeekend? =
                     dataSnapshot.getValue(BookListDataBestWeekend::class.java)
 
-//                if (group!!.tue!!.bookCode == "1104753") {
-//                    Log.d("!!!!", group!!.tue!!.number.toString())
-//                }
-
                 itemWeek.add(
                     BookListDataBestWeekend(
                         group!!.sun,
@@ -190,20 +176,12 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
                     )
                 )
                 adapterWeek!!.notifyDataSetChanged()
-
             }
 
-            override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
-            }
-
-            override fun onChildRemoved(dataSnapshot: DataSnapshot) {
-            }
-
-            override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-            }
+            override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {}
+            override fun onChildRemoved(dataSnapshot: DataSnapshot) {}
+            override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {}
+            override fun onCancelled(databaseError: DatabaseError) {}
         })
 
     }

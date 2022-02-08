@@ -33,7 +33,7 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
 
     lateinit var root: View
     var exception = ""
-    val monthList = mRootRef.child("best").child(tabType).child("month list")
+    private val monthList = mRootRef.child("best").child(tabType).child("month list")
 
     override fun onCreateView(
         inflater: LayoutInflater,

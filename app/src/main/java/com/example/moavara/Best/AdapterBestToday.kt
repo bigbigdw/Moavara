@@ -37,8 +37,6 @@ class AdapterBestToday(items: List<BookListDataBestToday?>?) :
 
             val item = this.holder!![position]
 
-            Log.d("@@@@", item!!.title.toString())
-
             Glide.with(holder.itemView.context)
                 .load(item!!.bookImg)
                 .circleCrop()
