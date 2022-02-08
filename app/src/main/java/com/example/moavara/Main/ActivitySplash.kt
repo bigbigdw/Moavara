@@ -6,22 +6,16 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
-import com.example.moavara.Best.AdapterBestToday
-import com.example.moavara.Best.BottomDialogBest
 import com.example.moavara.DataBase.DBDate
-import com.example.moavara.DataBase.DataBaseBest
-import com.example.moavara.DataBase.DataBest
+import com.example.moavara.DataBase.DataBaseBestWeek
+import com.example.moavara.DataBase.DataBestWeek
 import com.example.moavara.Joara.JoaraBestListResult
 import com.example.moavara.Joara.RetrofitJoara
 import com.example.moavara.KaKao.BestResultKakao
 import com.example.moavara.KaKao.RetrofitKaKao
 import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
-import com.example.moavara.Search.BookListDataBestWeekend
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -32,18 +26,17 @@ import org.jsoup.select.Elements
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
 
 
 val mRootRef = FirebaseDatabase.getInstance().reference
-private lateinit var db: DataBaseBest
+private lateinit var db: DataBaseBestWeek
 
 class ActivitySplash : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        db = Room.databaseBuilder( this, DataBaseBest::class.java, "user-database").allowMainThreadQueries().build()
+        db = Room.databaseBuilder( this, DataBaseBestWeek::class.java, "user-database").allowMainThreadQueries().build()
 
         Thread {
             test()
@@ -184,10 +177,47 @@ class ActivitySplash : Activity() {
                             cntFavorite,
                             cntRecom,
                             i + 1,
-                            DBDate.Date()
+                            DBDate.Date(),
                         )
                     )
             }
+
+        val week = mRootRef.child("best").child("Ridi").child("week list")
+        var num = 1
+
+        db.bestDao().initAll()
+
+        week.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+
+                    val group: BookListDataBestToday? =
+                        postSnapshot.getValue(BookListDataBestToday::class.java)
+
+                    db.bestDao().insert(
+                        DataBestWeek(
+                            group!!.writer,
+                            group.title,
+                            group.bookImg,
+                            group.intro,
+                            group.bookCode,
+                            group.cntChapter,
+                            group.cntPageRead,
+                            group.cntFavorite,
+                            group.cntRecom,
+                            group.number,
+                            DBDate.Date(),
+                            "Ridi"
+                        )
+                    )
+
+                    num += 1
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        })
 
     }
 
@@ -319,6 +349,44 @@ class ActivitySplash : Activity() {
                     )
                 )
         }
+
+
+        val week = mRootRef.child("best").child("OneStore").child("week list")
+        var num = 1
+
+        db.bestDao().initAll()
+
+        week.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+
+                    val group: BookListDataBestToday? =
+                        postSnapshot.getValue(BookListDataBestToday::class.java)
+
+                    db.bestDao().insert(
+                        DataBestWeek(
+                            group!!.writer,
+                            group.title,
+                            group.bookImg,
+                            group.intro,
+                            group.bookCode,
+                            group.cntChapter,
+                            group.cntPageRead,
+                            group.cntFavorite,
+                            group.cntRecom,
+                            group.number,
+                            DBDate.Date(),
+                            "OneStore"
+                        )
+                    )
+
+                    num += 1
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        })
     }
 
     private fun getBookListBestKakao() {
@@ -444,6 +512,43 @@ class ActivitySplash : Activity() {
 
             override fun onFailure(call: Call<BestResultKakao?>, t: Throwable) {
                 Log.d("onFailure", "실패")
+            }
+        })
+
+        val week = mRootRef.child("best").child("Kakao").child("week list")
+        var num = 1
+
+        db.bestDao().initAll()
+
+        week.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+
+                    val group: BookListDataBestToday? =
+                        postSnapshot.getValue(BookListDataBestToday::class.java)
+
+                    db.bestDao().insert(
+                        DataBestWeek(
+                            group!!.writer,
+                            group.title,
+                            group.bookImg,
+                            group.intro,
+                            group.bookCode,
+                            group.cntChapter,
+                            group.cntPageRead,
+                            group.cntFavorite,
+                            group.cntRecom,
+                            group.number,
+                            DBDate.Date(),
+                            "Kakao"
+                        )
+                    )
+
+                    num += 1
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
             }
         })
 
@@ -586,7 +691,7 @@ class ActivitySplash : Activity() {
                         postSnapshot.getValue(BookListDataBestToday::class.java)
 
                     db.bestDao().insert(
-                        DataBest(
+                        DataBestWeek(
                             group!!.writer,
                             group.title,
                             group.bookImg,
@@ -597,7 +702,8 @@ class ActivitySplash : Activity() {
                             group.cntFavorite,
                             group.cntRecom,
                             group.number,
-                            DBDate.Date()
+                            DBDate.Date(),
+                            "Joara"
                         )
                     )
 

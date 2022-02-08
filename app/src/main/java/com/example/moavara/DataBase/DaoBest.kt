@@ -8,14 +8,14 @@ import androidx.room.Query
 @Dao
 interface BestDao {
 
-    @Query("SELECT * FROM DataBest ORDER BY title ASC")
-    fun getAll(): List<DataBest>
+    @Query("SELECT * FROM DataBestWeek WHERE type = :type ORDER BY title ASC")
+    fun getAll(type: String): List<DataBestWeek>
 
-    @Query("DELETE FROM DataBest")
+    @Query("DELETE FROM DataBestWeek")
     fun initAll()
 
-    @Query("SELECT writer, title, bookImg, intro, bookCode, cntChapter, cntPageRead, cntFavorite, cntRecom, SUM(number), date, id FROM DataBest GROUP BY writer, title, bookImg, intro, bookCode, cntChapter, cntPageRead, cntFavorite, cntRecom, date, id")
-    fun test(): List<DataBest>
+    @Query("SELECT writer, title, bookImg, intro, bookCode, cntChapter, cntPageRead, cntFavorite, cntRecom, SUM(number), date, id FROM DataBestWeek GROUP BY writer, title, bookImg, intro, bookCode, cntChapter, cntPageRead, cntFavorite, cntRecom, date, id")
+    fun test(): List<DataBestWeek>
 
 //    @Query("SELECT DISTINCT title FROM DataBest")
 //    fun getAlll(): List<DataBest>
@@ -93,8 +93,8 @@ interface BestDao {
 //    fun findBook(bookCode: String)
 
     @Insert
-    fun insert(user: DataBest)
+    fun insert(user: DataBestWeek)
 
     @Delete
-    fun delete(user: DataBest)
+    fun delete(user: DataBestWeek)
 }

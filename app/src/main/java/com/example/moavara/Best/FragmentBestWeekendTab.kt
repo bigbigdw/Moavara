@@ -8,10 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
-import com.example.moavara.DataBase.DBDate
-import com.example.moavara.DataBase.DataBaseBest
-import com.example.moavara.DataBase.DataBest
-import com.example.moavara.Main.mRootRef
+import com.example.moavara.DataBase.DataBaseBestWeek
+import com.example.moavara.DataBase.DataBestWeek
 import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Search.BookListDataBestWeekend
@@ -26,7 +24,7 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
     private var adapterWeek: AdapterBestWeekend? = null
     private val itemWeek = ArrayList<BookListDataBestWeekend?>()
     var recyclerView: RecyclerView? = null
-    private lateinit var db: DataBaseBest
+    private lateinit var db: DataBaseBestWeek
 
     private var adapterToday: AdapterBestToday? = null
     var recyclerViewToday: RecyclerView? = null
@@ -46,7 +44,7 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
 
         db = Room.databaseBuilder(
             requireContext(),
-            DataBaseBest::class.java,
+            DataBaseBestWeek::class.java,
             "user-database"
         ).allowMainThreadQueries()
             .build()
@@ -64,7 +62,7 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
         recyclerViewToday = root.findViewById(R.id.rview_BestToday)
         adapterToday = AdapterBestToday(items)
 
-        getBestWeekList(db.bestDao().getAll(), recyclerViewToday)
+        getBestWeekList(db.bestDao().getAll(tabType), recyclerViewToday)
 
         recyclerView!!.layoutManager = linearLayoutManager
         recyclerView!!.adapter = adapterWeek
@@ -190,7 +188,7 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
 
     }
 
-    private fun getBestWeekList(bestRef: List<DataBest>?, recyclerView: RecyclerView?) {
+    private fun getBestWeekList(bestRef: List<DataBestWeek>?, recyclerView: RecyclerView?) {
 
         recyclerView!!.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -238,7 +236,7 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
         }
 
         val cmpAsc: Comparator<BookListDataBestToday?> =
-            Comparator { o1, o2 -> o2!!.number!!.compareTo(o1!!.number!!) }
+            Comparator { o1, o2 -> o1!!.number!!.compareTo(o2!!.number!!) }
 
         Collections.sort(items, cmpAsc)
 
