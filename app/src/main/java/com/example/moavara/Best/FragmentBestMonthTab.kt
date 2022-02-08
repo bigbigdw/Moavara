@@ -8,7 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
+import com.example.moavara.DataBase.DataBaseBestMonth
 import com.example.moavara.R
+import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Search.BookListDataBestWeekend
 import com.google.firebase.database.*
 import java.util.*
@@ -17,8 +20,13 @@ import java.util.*
 class FragmentBestMonthTab(private val tabType: String) : Fragment() {
 
     private var adapterWeek: AdapterBestMonth? = null
+    private var adapterMonthList: AdapterBestToday? = null
     private val itemWeek = ArrayList<BookListDataBestWeekend?>()
+    private val itemMonthList = ArrayList<BookListDataBestToday?>()
     var recyclerView: RecyclerView? = null
+    private lateinit var dbMonth: DataBaseBestMonth
+
+    var recyclerViewMonth: RecyclerView? = null
 
     lateinit var root: View
 
@@ -31,17 +39,24 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
         recyclerView = root.findViewById(R.id.rview_Best)
         adapterWeek = AdapterBestMonth(requireContext(), itemWeek)
 
-        val linearLayoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recyclerViewMonth = root.findViewById(R.id.rview_BestMonth)
+        adapterMonthList = AdapterBestToday(itemMonthList)
+
+        dbMonth = Room.databaseBuilder(
+            requireContext(),
+            DataBaseBestMonth::class.java,
+            "user-databaseM"
+        ).allowMainThreadQueries()
+            .build()
 
         val mRootRef = FirebaseDatabase.getInstance().reference
         val week = mRootRef.child("best").child(tabType).child("month")
 
         itemWeek.clear()
         getBestToday(week)
+        getMonthList()
 
-
-        recyclerView!!.layoutManager = linearLayoutManager
+        recyclerView!!.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView!!.adapter = adapterWeek
 
         adapterWeek!!.setOnItemClickListener(object : AdapterBestMonth.OnItemClickListener {
@@ -122,6 +137,33 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
         })
 
         return root
+    }
+
+    private fun getMonthList(){
+
+        val monthList = dbMonth.bestDaoMonth().getAllTypes(tabType)
+
+        recyclerViewMonth!!.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recyclerViewMonth!!.adapter = adapterMonthList
+
+        for(i in monthList.indices){
+            itemMonthList.add(
+                BookListDataBestToday(
+                    monthList[i].writer,
+                    monthList[i].title,
+                    monthList[i].bookImg,
+                    monthList[i].intro,
+                    monthList[i].bookCode,
+                    monthList[i].cntChapter,
+                    monthList[i].cntPageRead,
+                    monthList[i].cntFavorite,
+                    monthList[i].cntRecom,
+                    monthList[i].number,
+                )
+            )
+            adapterMonthList!!.notifyDataSetChanged()
+        }
     }
 
     private fun getBestToday(bestRef: DatabaseReference) {

@@ -15,9 +15,17 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rview_BestMonth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
             <HorizontalScrollView
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:visibility="visible">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -27,9 +35,9 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:orientation="horizontal"
                         android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
-                        android:orientation="horizontal">
+                        android:paddingEnd="16dp">
 
                         <TextView
                             android:layout_width="71dp"
@@ -47,9 +55,9 @@
                             android:layout_width="71dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginEnd="4dp"
                             android:text="월"
-                            android:layout_marginStart="4dp"
-                            android:layout_marginEnd="4dp"
                             android:textAlignment="center"
                             android:textColor="#FDFDFD"
                             android:textSize="20dp"
@@ -59,9 +67,9 @@
                             android:layout_width="71dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginEnd="4dp"
                             android:text="화"
-                            android:layout_marginStart="4dp"
-                            android:layout_marginEnd="4dp"
                             android:textAlignment="center"
                             android:textColor="#FDFDFD"
                             android:textSize="20dp"
@@ -71,9 +79,9 @@
                             android:layout_width="71dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginEnd="4dp"
                             android:text="수"
-                            android:layout_marginStart="4dp"
-                            android:layout_marginEnd="4dp"
                             android:textAlignment="center"
                             android:textColor="#FDFDFD"
                             android:textSize="20dp"
@@ -83,9 +91,9 @@
                             android:layout_width="71dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginEnd="4dp"
                             android:text="목"
-                            android:layout_marginStart="4dp"
-                            android:layout_marginEnd="4dp"
                             android:textAlignment="center"
                             android:textColor="#FDFDFD"
                             android:textSize="20dp"
@@ -95,9 +103,9 @@
                             android:layout_width="71dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginEnd="4dp"
                             android:text="금"
-                            android:layout_marginStart="4dp"
-                            android:layout_marginEnd="4dp"
                             android:textAlignment="center"
                             android:textColor="#FDFDFD"
                             android:textSize="20dp"
@@ -107,9 +115,9 @@
                             android:layout_width="71dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:text="토"
                             android:layout_marginStart="4dp"
                             android:layout_marginEnd="4dp"
+                            android:text="토"
                             android:textAlignment="center"
                             android:textColor="#FDFDFD"
                             android:textSize="20dp"
@@ -121,7 +129,7 @@
                         android:id="@+id/rview_Best"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="16dp"/>
+                        android:padding="16dp" />
 
                 </LinearLayout>
             </HorizontalScrollView>
@@ -129,7 +137,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rview_BestToday"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="visible">
 
             </androidx.recyclerview.widget.RecyclerView>
 

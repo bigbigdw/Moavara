@@ -7,3 +7,8 @@ import androidx.room.RoomDatabase
 abstract class DataBaseBestWeek: RoomDatabase() {
     abstract fun bestDao(): BestDao
 }
+
+@Database(entities = [DataBestMonth::class], version = 3)
+abstract class DataBaseBestMonth: RoomDatabase() {
+    abstract fun bestDaoMonth(): BestDaoMonth
+}

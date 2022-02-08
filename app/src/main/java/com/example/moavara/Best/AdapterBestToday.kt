@@ -1,5 +1,6 @@
 package com.example.moavara.Best
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,6 +36,8 @@ class AdapterBestToday(items: List<BookListDataBestToday?>?) :
         if (holder is MainBookViewHolder) {
 
             val item = this.holder!![position]
+
+            Log.d("@@@@", item!!.title.toString())
 
             Glide.with(holder.itemView.context)
                 .load(item!!.bookImg)

@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
-import com.example.moavara.DataBase.DataBaseBestWeek
-import com.example.moavara.DataBase.DataBestWeek
+import com.example.moavara.DataBase.*
+import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Search.BookListDataBestWeekend
@@ -25,13 +25,15 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
     private val itemWeek = ArrayList<BookListDataBestWeekend?>()
     var recyclerView: RecyclerView? = null
     private lateinit var db: DataBaseBestWeek
+    private lateinit var dbMonth: DataBaseBestMonth
 
     private var adapterToday: AdapterBestToday? = null
     var recyclerViewToday: RecyclerView? = null
-    private val items = java.util.ArrayList<BookListDataBestToday?>()
+    private val items = ArrayList<BookListDataBestToday?>()
 
     lateinit var root: View
     var exception = ""
+    val monthList = mRootRef.child("best").child(tabType).child("month list")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,12 +51,19 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
         ).allowMainThreadQueries()
             .build()
 
+        dbMonth = Room.databaseBuilder(
+            requireContext(),
+            DataBaseBestMonth::class.java,
+            "user-databaseM"
+        ).allowMainThreadQueries()
+            .build()
+
         val linearLayoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         val mRootRef = FirebaseDatabase.getInstance().reference
         val week = mRootRef.child("best").child(tabType).child("week")
-        val weeklist = mRootRef.child("best").child(tabType).child("week list")
+
 
         itemWeek.clear()
         getBestToday(week)
@@ -96,17 +105,10 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
 
             }
 
-            override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
-            }
-
-            override fun onChildRemoved(dataSnapshot: DataSnapshot) {
-            }
-
-            override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-            }
+            override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {}
+            override fun onChildRemoved(dataSnapshot: DataSnapshot) {}
+            override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {}
+            override fun onCancelled(databaseError: DatabaseError) {}
         })
 
         adapterWeek!!.setOnItemClickListener(object : AdapterBestWeekend.OnItemClickListener {
@@ -239,6 +241,50 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
             Comparator { o1, o2 -> o1!!.number!!.compareTo(o2!!.number!!) }
 
         Collections.sort(items, cmpAsc)
+
+        if(dbMonth.bestDaoMonth().getAllTypes(tabType) != null){
+            dbMonth.bestDaoMonth().initTypes(tabType)
+        }
+
+        if(DBDate.Day() != "6"){
+            for(i in items.indices){
+                if(i < 10){
+                    monthList.child(DBDate.Week()).child(i.toString()).setValue(
+                        BookListDataBestToday(
+                            items[i]!!.writer,
+                            items[i]!!.title,
+                            items[i]!!.bookImg,
+                            items[i]!!.intro,
+                            items[i]!!.bookCode,
+                            items[i]!!.cntChapter,
+                            items[i]!!.cntPageRead,
+                            items[i]!!.cntFavorite,
+                            items[i]!!.cntRecom,
+                            items[i]!!.number,
+                            DBDate.Date()
+                        )
+                    )
+
+                    dbMonth.bestDaoMonth().insert(
+                        DataBestMonth(
+                            items[i]!!.writer,
+                            items[i]!!.title,
+                            items[i]!!.bookImg,
+                            items[i]!!.intro,
+                            items[i]!!.bookCode,
+                            items[i]!!.cntChapter,
+                            items[i]!!.cntPageRead,
+                            items[i]!!.cntFavorite,
+                            items[i]!!.cntRecom,
+                            items[i]!!.number,
+                            DBDate.Date(),
+                            tabType,
+                            DBDate.Week(),
+                        )
+                    )
+                }
+            }
+        }
 
         adapterToday!!.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
