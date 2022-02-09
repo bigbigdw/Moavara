@@ -15,7 +15,7 @@ object DBDate {
         return Calendar.getInstance().get(Calendar.DAY_OF_WEEK).toString()
     }
 
-    fun Yestaerday() : String {
+    fun Yesterday() : String {
 
         return if(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 1){
             "7"

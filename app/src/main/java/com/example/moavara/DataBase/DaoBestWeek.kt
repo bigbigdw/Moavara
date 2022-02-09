@@ -8,6 +8,9 @@ import androidx.room.Query
 @Dao
 interface BestDao {
 
+    @Query("SELECT number FROM DataBestWeek WHERE type = :type AND title = :title GROUP BY type")
+    fun findName(type: String, title: String): Int
+
     @Query("SELECT * FROM DataBestWeek WHERE type = :type ORDER BY title ASC")
     fun getAll(type: String): List<DataBestWeek>
 

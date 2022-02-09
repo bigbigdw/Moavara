@@ -30,6 +30,7 @@ class BookListDataBestToday(
     var cntRecom: String ? = null,
     var number: Int ? = null,
     var date: String ? = null,
+    var status: String ? = null,
 )
 
 class BookListDataBestWeekend(

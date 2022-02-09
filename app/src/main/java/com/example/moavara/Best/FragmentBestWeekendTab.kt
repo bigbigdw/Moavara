@@ -204,6 +204,8 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
                         bestRef[i].cntFavorite,
                         bestRef[i].cntRecom,
                         bestRef[i].number,
+                        bestRef[i].date,
+                        ""
                     )
                 )
                 adapterToday!!.notifyDataSetChanged()
@@ -222,6 +224,8 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
                             bestRef[i].cntFavorite,
                             bestRef[i].cntRecom,
                             bestRef[i - 1].number?.plus(bestRef[i].number!!),
+                            bestRef[i].date,
+                            ""
                         )
                     )
                     adapterToday!!.notifyDataSetChanged()

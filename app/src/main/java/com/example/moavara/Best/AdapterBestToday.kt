@@ -1,5 +1,6 @@
 package com.example.moavara.Best
 
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -42,8 +43,24 @@ class AdapterBestToday(items: List<BookListDataBestToday?>?) :
                 .circleCrop()
                 .into(holder.image)
 
+            holder.index.text = (position + 1).toString()
             holder.title.text = this.holder!![position]!!.title
             holder.number.text = this.holder!![position]!!.number.toString()
+
+            when {
+                item.status.equals("UP") -> {
+                    holder.number.text =  "+" + this.holder!![position]!!.number.toString()
+                    holder.number.setTextColor(Color.parseColor("#02A247"));
+                }
+                item.status.equals("DOWN") -> {
+                    holder.number.text = "-" + this.holder!![position]!!.number.toString()
+                    holder.number.setTextColor(Color.parseColor("#FF2C00"));
+                }
+                else -> {
+                    holder.number.text = "-"
+                    holder.number.setTextColor(Color.parseColor("#eeeeee"));
+                }
+            }
 
         }
     }
@@ -57,6 +74,7 @@ class AdapterBestToday(items: List<BookListDataBestToday?>?) :
 
         var image: ImageView = itemView.findViewById(R.id.ivew_bookImg)
         var title: TextView = itemView.findViewById(R.id.tview_Title)
+        var index: TextView = itemView.findViewById(R.id.tview_Index)
         var number: TextView = itemView.findViewById(R.id.tview_Num)
         var llayoutWrap: LinearLayout = itemView.findViewById(R.id.llayout_Wrap)
 

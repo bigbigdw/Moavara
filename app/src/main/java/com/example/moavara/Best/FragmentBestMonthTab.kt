@@ -104,6 +104,8 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
                                         group.cntFavorite,
                                         group.cntRecom,
                                         group.number,
+                                        group.date,
+                                        "",
                                     )
                                 )
                                 adapterMonthListDetail!!.notifyDataSetChanged()
@@ -146,6 +148,8 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
                     monthList[i].cntFavorite,
                     monthList[i].cntRecom,
                     monthList[i].number,
+                    monthList[i].date,
+                    ""
                 )
             )
             adapterMonthList!!.notifyDataSetChanged()

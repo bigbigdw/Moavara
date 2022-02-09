@@ -28,6 +28,7 @@ import retrofit2.Response
 
 val mRootRef = FirebaseDatabase.getInstance().reference
 private lateinit var db: DataBaseBestWeek
+private lateinit var dbYesterday: DataBaseBestWeek
 private lateinit var dbMonth: DataBaseBestMonth
 
 class ActivitySplash : Activity() {
@@ -35,7 +36,10 @@ class ActivitySplash : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        db = Room.databaseBuilder( this, DataBaseBestWeek::class.java, "user-database").allowMainThreadQueries().build()
+        db = Room.databaseBuilder(this, DataBaseBestWeek::class.java, "user-database")
+            .allowMainThreadQueries().build()
+        dbYesterday = Room.databaseBuilder(this, DataBaseBestWeek::class.java, "best-yesterday")
+            .allowMainThreadQueries().build()
 
         dbMonth = Room.databaseBuilder(
             this,
@@ -70,34 +74,19 @@ class ActivitySplash : Activity() {
 
         for (i in ridiKeyword.indices) {
 
-                val writerName = doc.select("div .author_detail_link")[i].text()
-                val subject = doc.select("div .title_link")[i].text()
-                val bookImg =
-                    ridiKeyword.select(".thumbnail_image .thumbnail")[i].absUrl("data-src")
-                val intro = ""
-                val bookCode = ridiKeyword.select("a")[i].absUrl("href")
-                val cntChapter = doc.select(".count_num")[i].text()
-                val cntPageRead = doc.select("span .StarRate_ParticipantCount")[i].text()
-                val cntFavorite = ""
-                val cntRecom = doc.select("span .StarRate_Score")[i].text()
+            val writerName = doc.select("div .author_detail_link")[i].text()
+            val subject = doc.select("div .title_link")[i].text()
+            val bookImg =
+                ridiKeyword.select(".thumbnail_image .thumbnail")[i].absUrl("data-src")
+            val intro = ""
+            val bookCode = ridiKeyword.select("a")[i].absUrl("href")
+            val cntChapter = doc.select(".count_num")[i].text()
+            val cntPageRead = doc.select("span .StarRate_ParticipantCount")[i].text()
+            val cntFavorite = ""
+            val cntRecom = doc.select("span .StarRate_Score")[i].text()
 
-            bestRef.child("week list").child((((DBDate.DayInt() - 1) * 20 ) + i).toString()).setValue(
-                BookListDataBestToday(
-                    writerName,
-                    subject,
-                    bookImg,
-                    intro,
-                    bookCode,
-                    cntChapter,
-                    cntPageRead,
-                    cntFavorite,
-                    cntRecom,
-                    i + 1,
-                    DBDate.Date()
-                )
-            )
-
-                bestRef.child("today").child(DBDate.Day()).child(i.toString()).setValue(
+            bestRef.child("week list").child((((DBDate.DayInt() - 1) * 20) + i).toString())
+                .setValue(
                     BookListDataBestToday(
                         writerName,
                         subject,
@@ -109,51 +98,31 @@ class ActivitySplash : Activity() {
                         cntFavorite,
                         cntRecom,
                         i + 1,
-                        DBDate.Date()
+                        DBDate.Date(),
+                        ""
                     )
                 )
 
-                if (i < 10) {
-                    bestRef.child("week").child(i.toString()).child(DBDate.DayString())
-                        .setValue(
-                            BookListDataBestToday(
-                                writerName,
-                                subject,
-                                bookImg,
-                                intro,
-                                bookCode,
-                                cntChapter,
-                                cntPageRead,
-                                cntFavorite,
-                                cntRecom,
-                                i + 1,
-                                DBDate.Date()
-                            )
-                        )
+            bestRef.child("today").child(DBDate.Day()).child(i.toString()).setValue(
+                BookListDataBestToday(
+                    writerName,
+                    subject,
+                    bookImg,
+                    intro,
+                    bookCode,
+                    cntChapter,
+                    cntPageRead,
+                    cntFavorite,
+                    cntRecom,
+                    i + 1,
+                    DBDate.Date(),
+                    ""
+                )
+            )
 
-                }
-
-                if (i == 0) {
-                    bestRef.child("month").child(DBDate.Week())
-                        .child(DBDate.DayString()).setValue(
-                            BookListDataBestToday(
-                                writerName,
-                                subject,
-                                bookImg,
-                                intro,
-                                bookCode,
-                                cntChapter,
-                                cntPageRead,
-                                cntFavorite,
-                                cntRecom,
-                                i + 1,
-                                DBDate.Date()
-                            )
-                        )
-                }
-
-                bestRef.child("month").child(DBDate.Week())
-                    .child(DBDate.DayString()).child("day").child(i.toString()).setValue(
+            if (i < 10) {
+                bestRef.child("week").child(i.toString()).child(DBDate.DayString())
+                    .setValue(
                         BookListDataBestToday(
                             writerName,
                             subject,
@@ -165,11 +134,14 @@ class ActivitySplash : Activity() {
                             cntFavorite,
                             cntRecom,
                             i + 1,
-                            DBDate.Date()
+                            DBDate.Date(),
+                            ""
                         )
                     )
 
+            }
 
+            if (i == 0) {
                 bestRef.child("month").child(DBDate.Week())
                     .child(DBDate.DayString()).setValue(
                         BookListDataBestToday(
@@ -184,52 +156,93 @@ class ActivitySplash : Activity() {
                             cntRecom,
                             i + 1,
                             DBDate.Date(),
+                            ""
                         )
                     )
+            }
+
+            bestRef.child("month").child(DBDate.Week())
+                .child(DBDate.DayString()).child("day").child(i.toString()).setValue(
+                    BookListDataBestToday(
+                        writerName,
+                        subject,
+                        bookImg,
+                        intro,
+                        bookCode,
+                        cntChapter,
+                        cntPageRead,
+                        cntFavorite,
+                        cntRecom,
+                        i + 1,
+                        DBDate.Date(),
+                        ""
+                    )
+                )
 
 
-            if(dbMonth.bestDaoMonth().getAllTypes("Ridi").toString() != "[]"){
+            bestRef.child("month").child(DBDate.Week())
+                .child(DBDate.DayString()).setValue(
+                    BookListDataBestToday(
+                        writerName,
+                        subject,
+                        bookImg,
+                        intro,
+                        bookCode,
+                        cntChapter,
+                        cntPageRead,
+                        cntFavorite,
+                        cntRecom,
+                        i + 1,
+                        DBDate.Date(),
+                        ""
+                    )
+                )
+
+
+            if (dbMonth.bestDaoMonth().getAllTypes("Ridi").toString() != "[]") {
                 dbMonth.bestDaoMonth().initTypes("Ridi")
             } else {
-                bestRef.child("month list").child((i).toString()).addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        for (postSnapshot in dataSnapshot.children) {
+                bestRef.child("month list").child((i).toString())
+                    .addValueEventListener(object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            for (postSnapshot in dataSnapshot.children) {
 
-                            val group: BookListDataBestToday? =
-                                postSnapshot.getValue(BookListDataBestToday::class.java)
+                                val group: BookListDataBestToday? =
+                                    postSnapshot.getValue(BookListDataBestToday::class.java)
 
-                            dbMonth.bestDaoMonth().insert(
-                                DataBestMonth(
-                                    group!!.writer,
-                                    group.title,
-                                    group.bookImg,
-                                    group.intro,
-                                    group.bookCode,
-                                    group.cntChapter,
-                                    group.cntPageRead,
-                                    group.cntFavorite,
-                                    group.cntRecom,
-                                    group.number,
-                                    DBDate.Date(),
-                                    "Ridi",
-                                    i.toString(),
+                                dbMonth.bestDaoMonth().insert(
+                                    DataBestMonth(
+                                        group!!.writer,
+                                        group.title,
+                                        group.bookImg,
+                                        group.intro,
+                                        group.bookCode,
+                                        group.cntChapter,
+                                        group.cntPageRead,
+                                        group.cntFavorite,
+                                        group.cntRecom,
+                                        group.number,
+                                        DBDate.Date(),
+                                        "Ridi",
+                                        i.toString(),
+                                    )
                                 )
-                            )
+                            }
                         }
-                    }
 
-                    override fun onCancelled(databaseError: DatabaseError) {
-                    }
-                })
+                        override fun onCancelled(databaseError: DatabaseError) {
+                        }
+                    })
             }
 
 
-            }
+        }
 
         val week = mRootRef.child("best").child("Ridi").child("week list")
         var num = 1
 
         db.bestDao().initAll()
+        dbYesterday.bestDao().initAll()
 
         week.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -263,6 +276,38 @@ class ActivitySplash : Activity() {
             }
         })
 
+        val yesterdayRef = bestRef.child("today").child(DBDate.Yesterday())
+
+        yesterdayRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+
+                    val group: BookListDataBestToday? =
+                        postSnapshot.getValue(BookListDataBestToday::class.java)
+
+                    dbYesterday.bestDao().insert(
+                        DataBestWeek(
+                            group!!.writer,
+                            group.title,
+                            group.bookImg,
+                            group.intro,
+                            group.bookCode,
+                            group.cntChapter,
+                            group.cntPageRead,
+                            group.cntFavorite,
+                            group.cntRecom,
+                            group.number,
+                            DBDate.Date(),
+                            "Ridi"
+                        )
+                    )
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        })
+
     }
 
     private fun getOneStoreBest() {
@@ -286,21 +331,23 @@ class ActivitySplash : Activity() {
             val cntFavorite = doc.select(".ItemRendererTextAvgScore")[i].text()
             val cntRecom = doc.select(".ItemRendererTextAvgScore")[i].text()
 
-            bestRef.child("week list").child((((DBDate.DayInt() - 1) * 20 ) + i).toString()).setValue(
-                BookListDataBestToday(
-                    writerName,
-                    subject,
-                    bookImg,
-                    intro,
-                    bookCode,
-                    cntChapter,
-                    cntPageRead,
-                    cntFavorite,
-                    cntRecom,
-                    i + 1,
-                    DBDate.Date()
+            bestRef.child("week list").child((((DBDate.DayInt() - 1) * 20) + i).toString())
+                .setValue(
+                    BookListDataBestToday(
+                        writerName,
+                        subject,
+                        bookImg,
+                        intro,
+                        bookCode,
+                        cntChapter,
+                        cntPageRead,
+                        cntFavorite,
+                        cntRecom,
+                        i + 1,
+                        DBDate.Date(),
+                        ""
+                    )
                 )
-            )
 
             bestRef.child("today").child(DBDate.Day()).child(i.toString()).setValue(
                 BookListDataBestToday(
@@ -314,7 +361,8 @@ class ActivitySplash : Activity() {
                     cntFavorite,
                     cntRecom,
                     i + 1,
-                    DBDate.Date()
+                    DBDate.Date(),
+                    ""
                 )
             )
 
@@ -332,7 +380,8 @@ class ActivitySplash : Activity() {
                             cntFavorite,
                             cntRecom,
                             i + 1,
-                            DBDate.Date()
+                            DBDate.Date(),
+                            ""
                         )
                     )
 
@@ -352,7 +401,8 @@ class ActivitySplash : Activity() {
                             cntFavorite,
                             cntRecom,
                             i + 1,
-                            DBDate.Date()
+                            DBDate.Date(),
+                            ""
                         )
                     )
             }
@@ -370,7 +420,8 @@ class ActivitySplash : Activity() {
                         cntFavorite,
                         cntRecom,
                         i + 1,
-                        DBDate.Date()
+                        DBDate.Date(),
+                        ""
                     )
                 )
 
@@ -388,43 +439,45 @@ class ActivitySplash : Activity() {
                         cntFavorite,
                         cntRecom,
                         i + 1,
-                        DBDate.Date()
+                        DBDate.Date(),
+                        ""
                     )
                 )
 
-            if(dbMonth.bestDaoMonth().getAllTypes("OneStore").toString() != "[]"){
+            if (dbMonth.bestDaoMonth().getAllTypes("OneStore").toString() != "[]") {
                 dbMonth.bestDaoMonth().initTypes("OneStore")
             } else {
-                bestRef.child("month list").child((i).toString()).addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        for (postSnapshot in dataSnapshot.children) {
+                bestRef.child("month list").child((i).toString())
+                    .addValueEventListener(object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            for (postSnapshot in dataSnapshot.children) {
 
-                            val group: BookListDataBestToday? =
-                                postSnapshot.getValue(BookListDataBestToday::class.java)
+                                val group: BookListDataBestToday? =
+                                    postSnapshot.getValue(BookListDataBestToday::class.java)
 
-                            dbMonth.bestDaoMonth().insert(
-                                DataBestMonth(
-                                    group!!.writer,
-                                    group.title,
-                                    group.bookImg,
-                                    group.intro,
-                                    group.bookCode,
-                                    group.cntChapter,
-                                    group.cntPageRead,
-                                    group.cntFavorite,
-                                    group.cntRecom,
-                                    group.number,
-                                    DBDate.Date(),
-                                    "OneStore",
-                                    i.toString(),
+                                dbMonth.bestDaoMonth().insert(
+                                    DataBestMonth(
+                                        group!!.writer,
+                                        group.title,
+                                        group.bookImg,
+                                        group.intro,
+                                        group.bookCode,
+                                        group.cntChapter,
+                                        group.cntPageRead,
+                                        group.cntFavorite,
+                                        group.cntRecom,
+                                        group.number,
+                                        DBDate.Date(),
+                                        "OneStore",
+                                        i.toString(),
+                                    )
                                 )
-                            )
+                            }
                         }
-                    }
 
-                    override fun onCancelled(databaseError: DatabaseError) {
-                    }
-                })
+                        override fun onCancelled(databaseError: DatabaseError) {
+                        }
+                    })
             }
 
         }
@@ -434,6 +487,7 @@ class ActivitySplash : Activity() {
         var num = 1
 
         db.bestDao().initAll()
+        dbYesterday.bestDao().initAll()
 
         week.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -460,6 +514,39 @@ class ActivitySplash : Activity() {
                     )
 
                     num += 1
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        })
+
+
+        val yesterdayRef = bestRef.child("today").child(DBDate.Yesterday())
+
+        yesterdayRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+
+                    val group: BookListDataBestToday? =
+                        postSnapshot.getValue(BookListDataBestToday::class.java)
+
+                    dbYesterday.bestDao().insert(
+                        DataBestWeek(
+                            group!!.writer,
+                            group.title,
+                            group.bookImg,
+                            group.intro,
+                            group.bookCode,
+                            group.cntChapter,
+                            group.cntPageRead,
+                            group.cntFavorite,
+                            group.cntRecom,
+                            group.number,
+                            DBDate.Date(),
+                            "OneStore"
+                        )
+                    )
                 }
             }
 
@@ -497,7 +584,8 @@ class ActivitySplash : Activity() {
                             val cntFavorite = list[i].like_count
                             val cntRecom = list[i].rating
 
-                            bestRef.child("week list").child((((DBDate.DayInt() - 1) * 29 ) + i).toString()).setValue(
+                            bestRef.child("week list")
+                                .child((((DBDate.DayInt() - 1) * 29) + i).toString()).setValue(
                                 BookListDataBestToday(
                                     writerName,
                                     subject,
@@ -509,7 +597,8 @@ class ActivitySplash : Activity() {
                                     cntFavorite,
                                     cntRecom,
                                     i + 1,
-                                    DBDate.Date()
+                                    DBDate.Date(),
+                                    ""
                                 )
                             )
 
@@ -525,7 +614,8 @@ class ActivitySplash : Activity() {
                                     cntFavorite,
                                     cntRecom,
                                     i + 1,
-                                    DBDate.Date()
+                                    DBDate.Date(),
+                                    ""
                                 )
                             )
 
@@ -543,7 +633,8 @@ class ActivitySplash : Activity() {
                                             cntFavorite,
                                             cntRecom,
                                             i + 1,
-                                            DBDate.Date()
+                                            DBDate.Date(),
+                                            ""
                                         )
                                     )
 
@@ -563,13 +654,15 @@ class ActivitySplash : Activity() {
                                             cntFavorite,
                                             cntRecom,
                                             i + 1,
-                                            DBDate.Date()
+                                            DBDate.Date(),
+                                            ""
                                         )
                                     )
                             }
 
                             bestRef.child("month").child(DBDate.Week())
-                                .child(DBDate.DayString()).child("day").child(i.toString()).setValue(
+                                .child(DBDate.DayString()).child("day").child(i.toString())
+                                .setValue(
                                     BookListDataBestToday(
                                         writerName,
                                         subject,
@@ -581,43 +674,45 @@ class ActivitySplash : Activity() {
                                         cntFavorite,
                                         cntRecom,
                                         i + 1,
-                                        DBDate.Date()
+                                        DBDate.Date(),
+                                        ""
                                     )
                                 )
 
-                            if(dbMonth.bestDaoMonth().getAllTypes("Kakao").toString() != "[]"){
+                            if (dbMonth.bestDaoMonth().getAllTypes("Kakao").toString() != "[]") {
                                 dbMonth.bestDaoMonth().initTypes("Kakao")
                             } else {
-                                bestRef.child("month list").child((i).toString()).addValueEventListener(object : ValueEventListener {
-                                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                                        for (postSnapshot in dataSnapshot.children) {
+                                bestRef.child("month list").child((i).toString())
+                                    .addValueEventListener(object : ValueEventListener {
+                                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                            for (postSnapshot in dataSnapshot.children) {
 
-                                            val group: BookListDataBestToday? =
-                                                postSnapshot.getValue(BookListDataBestToday::class.java)
+                                                val group: BookListDataBestToday? =
+                                                    postSnapshot.getValue(BookListDataBestToday::class.java)
 
-                                            dbMonth.bestDaoMonth().insert(
-                                                DataBestMonth(
-                                                    group!!.writer,
-                                                    group.title,
-                                                    group.bookImg,
-                                                    group.intro,
-                                                    group.bookCode,
-                                                    group.cntChapter,
-                                                    group.cntPageRead,
-                                                    group.cntFavorite,
-                                                    group.cntRecom,
-                                                    group.number,
-                                                    DBDate.Date(),
-                                                    "Kakao",
-                                                    i.toString(),
+                                                dbMonth.bestDaoMonth().insert(
+                                                    DataBestMonth(
+                                                        group!!.writer,
+                                                        group.title,
+                                                        group.bookImg,
+                                                        group.intro,
+                                                        group.bookCode,
+                                                        group.cntChapter,
+                                                        group.cntPageRead,
+                                                        group.cntFavorite,
+                                                        group.cntRecom,
+                                                        group.number,
+                                                        DBDate.Date(),
+                                                        "Kakao",
+                                                        i.toString(),
+                                                    )
                                                 )
-                                            )
+                                            }
                                         }
-                                    }
 
-                                    override fun onCancelled(databaseError: DatabaseError) {
-                                    }
-                                })
+                                        override fun onCancelled(databaseError: DatabaseError) {
+                                        }
+                                    })
                             }
 
 
@@ -635,6 +730,7 @@ class ActivitySplash : Activity() {
         var num = 1
 
         db.bestDao().initAll()
+        dbYesterday.bestDao().initAll()
 
         week.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -661,6 +757,38 @@ class ActivitySplash : Activity() {
                     )
 
                     num += 1
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        })
+
+        val yesterdayRef = bestRef.child("today").child(DBDate.Yesterday())
+
+        yesterdayRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+
+                    val group: BookListDataBestToday? =
+                        postSnapshot.getValue(BookListDataBestToday::class.java)
+
+                    dbYesterday.bestDao().insert(
+                        DataBestWeek(
+                            group!!.writer,
+                            group.title,
+                            group.bookImg,
+                            group.intro,
+                            group.bookCode,
+                            group.cntChapter,
+                            group.cntPageRead,
+                            group.cntFavorite,
+                            group.cntRecom,
+                            group.number,
+                            DBDate.Date(),
+                            "Kakao"
+                        )
+                    )
                 }
             }
 
@@ -696,7 +824,8 @@ class ActivitySplash : Activity() {
                             val cntFavorite = books[i].cntFavorite
                             val cntRecom = books[i].cntRecom
 
-                            bestRef.child("week list").child((((DBDate.DayInt() - 1) * 20 ) + i).toString()).setValue(
+                            bestRef.child("week list")
+                                .child((((DBDate.DayInt() - 1) * 20) + i).toString()).setValue(
                                 BookListDataBestToday(
                                     writerName,
                                     subject,
@@ -708,7 +837,8 @@ class ActivitySplash : Activity() {
                                     cntFavorite,
                                     cntRecom,
                                     i + 1,
-                                    DBDate.Date()
+                                    DBDate.Date(),
+                                    ""
                                 )
                             )
 
@@ -724,7 +854,8 @@ class ActivitySplash : Activity() {
                                     cntFavorite,
                                     cntRecom,
                                     i + 1,
-                                    DBDate.Date()
+                                    DBDate.Date(),
+                                    ""
                                 )
                             )
 
@@ -742,7 +873,8 @@ class ActivitySplash : Activity() {
                                             cntFavorite,
                                             cntRecom,
                                             i + 1,
-                                            DBDate.Date()
+                                            DBDate.Date(),
+                                            ""
                                         )
                                     )
 
@@ -762,13 +894,15 @@ class ActivitySplash : Activity() {
                                             cntFavorite,
                                             cntRecom,
                                             i + 1,
-                                            DBDate.Date()
+                                            DBDate.Date(),
+                                            ""
                                         )
                                     )
                             }
 
                             bestRef.child("month").child(DBDate.Week())
-                                .child(DBDate.DayString()).child("day").child(i.toString()).setValue(
+                                .child(DBDate.DayString()).child("day").child(i.toString())
+                                .setValue(
                                     BookListDataBestToday(
                                         writerName,
                                         subject,
@@ -780,44 +914,46 @@ class ActivitySplash : Activity() {
                                         cntFavorite,
                                         cntRecom,
                                         i + 1,
-                                        DBDate.Date()
+                                        DBDate.Date(),
+                                        ""
                                     )
                                 )
 
 
-                            if(dbMonth.bestDaoMonth().getAllTypes("Joara").toString() != "[]"){
+                            if (dbMonth.bestDaoMonth().getAllTypes("Joara").toString() != "[]") {
                                 dbMonth.bestDaoMonth().initTypes("Joara")
                             } else {
-                                bestRef.child("month list").child((i).toString()).addValueEventListener(object : ValueEventListener {
-                                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                                        for (postSnapshot in dataSnapshot.children) {
+                                bestRef.child("month list").child((i).toString())
+                                    .addValueEventListener(object : ValueEventListener {
+                                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                            for (postSnapshot in dataSnapshot.children) {
 
-                                            val group: BookListDataBestToday? =
-                                                postSnapshot.getValue(BookListDataBestToday::class.java)
+                                                val group: BookListDataBestToday? =
+                                                    postSnapshot.getValue(BookListDataBestToday::class.java)
 
-                                            dbMonth.bestDaoMonth().insert(
-                                                DataBestMonth(
-                                                    group!!.writer,
-                                                    group.title,
-                                                    group.bookImg,
-                                                    group.intro,
-                                                    group.bookCode,
-                                                    group.cntChapter,
-                                                    group.cntPageRead,
-                                                    group.cntFavorite,
-                                                    group.cntRecom,
-                                                    group.number,
-                                                    DBDate.Date(),
-                                                    "Joara",
-                                                    i.toString(),
+                                                dbMonth.bestDaoMonth().insert(
+                                                    DataBestMonth(
+                                                        group!!.writer,
+                                                        group.title,
+                                                        group.bookImg,
+                                                        group.intro,
+                                                        group.bookCode,
+                                                        group.cntChapter,
+                                                        group.cntPageRead,
+                                                        group.cntFavorite,
+                                                        group.cntRecom,
+                                                        group.number,
+                                                        DBDate.Date(),
+                                                        "Joara",
+                                                        i.toString(),
+                                                    )
                                                 )
-                                            )
+                                            }
                                         }
-                                    }
 
-                                    override fun onCancelled(databaseError: DatabaseError) {
-                                    }
-                                })
+                                        override fun onCancelled(databaseError: DatabaseError) {
+                                        }
+                                    })
                             }
 
                         }
@@ -834,6 +970,7 @@ class ActivitySplash : Activity() {
         var num = 1
 
         db.bestDao().initAll()
+        dbYesterday.bestDao().initAll()
 
         week.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -867,7 +1004,37 @@ class ActivitySplash : Activity() {
             }
         })
 
+        val yesterdayRef = bestRef.child("today").child(DBDate.Yesterday())
 
+        yesterdayRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+
+                    val group: BookListDataBestToday? =
+                        postSnapshot.getValue(BookListDataBestToday::class.java)
+
+                    dbYesterday.bestDao().insert(
+                        DataBestWeek(
+                            group!!.writer,
+                            group.title,
+                            group.bookImg,
+                            group.intro,
+                            group.bookCode,
+                            group.cntChapter,
+                            group.cntPageRead,
+                            group.cntFavorite,
+                            group.cntRecom,
+                            group.number,
+                            DBDate.Date(),
+                            "Joara"
+                        )
+                    )
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        })
 
     }
 
