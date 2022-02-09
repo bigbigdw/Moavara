@@ -19,11 +19,11 @@
     <item
         android:id="@+id/Fragment_Best1"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/Title_Best" />
+        android:title="누르지마" />
 
     <item
         android:id="@+id/Fragment_Best2"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/Title_Best" />
+        android:title="누르지마" />
 
 </menu>
