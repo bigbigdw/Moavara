@@ -45,22 +45,18 @@ class AdapterBestToday(items: List<BookListDataBestToday?>?) :
 
             holder.index.text = (position + 1).toString()
             holder.title.text = this.holder!![position]!!.title
-            holder.number.text = this.holder!![position]!!.number.toString()
 
-            when {
-                item.status.equals("UP") -> {
-                    holder.number.text =  "+" + this.holder!![position]!!.number.toString()
-                    holder.number.setTextColor(Color.parseColor("#02A247"));
-                }
-                item.status.equals("DOWN") -> {
-                    holder.number.text = "-" + this.holder!![position]!!.number.toString()
-                    holder.number.setTextColor(Color.parseColor("#FF2C00"));
-                }
-                else -> {
-                    holder.number.text = "-"
-                    holder.number.setTextColor(Color.parseColor("#eeeeee"));
-                }
+            if(item.status.equals("UP")){
+                holder.number.text =  "+" + this.holder!![position]!!.number.toString()
+                holder.number.setTextColor(Color.parseColor("#02A247"));
+            } else if(item.status.equals("DOWN")){
+                holder.number.text = "-" + this.holder!![position]!!.number.toString()
+                holder.number.setTextColor(Color.parseColor("#FF2C00"));
+            } else if(item.status.equals("SAME")){
+                holder.number.text = "-"
+                holder.number.setTextColor(Color.parseColor("#eeeeee"));
             }
+
 
         }
     }

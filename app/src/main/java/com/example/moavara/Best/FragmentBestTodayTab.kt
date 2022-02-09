@@ -104,19 +104,21 @@ class FragmentBestTodayTab(private val tabType: String, private var bestRef: Dat
         val yesterdayNum = dbYesterday.bestDao().findName(tabType, title!!)
 
         if (yesterdayNum == 0) {
-            return num!!
+            status = "SAME"
+            return 0
         } else {
             return if (yesterdayNum < num!!) {
-                status = "UP"
-                (yesterdayNum - num) * -1
-            } else if (yesterdayNum < num) {
                 status = "DOWN"
-                (yesterdayNum - num) * -1
+                num - yesterdayNum
+            } else if (yesterdayNum > num) {
+                status = "UP"
+                (num - yesterdayNum) * -1
             } else if (yesterdayNum == num) {
                 status = "SAME"
-                (yesterdayNum - num) * -1
+                num - yesterdayNum
             } else {
-                (yesterdayNum - num) * -1
+                status = "SAME"
+                0
             }
         }
     }

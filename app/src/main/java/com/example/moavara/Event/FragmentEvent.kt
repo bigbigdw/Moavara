@@ -1,127 +1,68 @@
 package com.example.moavara.Event
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.moavara.Joara.JoaraEventResult
-import com.example.moavara.Joara.RetrofitJoara
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager.widget.ViewPager
+import com.example.moavara.Best.FragmentBestTodayTab
 import com.example.moavara.R
-import com.example.moavara.Search.EventData
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.util.*
+import com.google.android.material.tabs.TabLayout
+import com.google.firebase.database.FirebaseDatabase
 
-class FragmentEvent : Fragment() {
-
-    private var adapterLeft: AdapterEvent? = null
-    private var adapterRight: AdapterEvent? = null
-    private val itemsLeft = ArrayList<EventData?>()
-    private val itemsRight = ArrayList<EventData?>()
-    var recyclerViewLeft: RecyclerView? = null
-    var recyclerViewRight: RecyclerView? = null
-
-    lateinit var root: View
+class FragmentEvent: Fragment() {
+    private var tabLayout: TabLayout? = null
+    private var viewPager: ViewPager? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
-        root = inflater.inflate(R.layout.fragment_event, container, false)
-
-        recyclerViewLeft = root.findViewById(R.id.rview_Left)
-        recyclerViewRight = root.findViewById(R.id.rview_Right)
-
-        adapterLeft = AdapterEvent(itemsLeft)
-        adapterRight = AdapterEvent(itemsRight)
-
-        getEvent(recyclerViewLeft, recyclerViewRight)
+    ): View {
+        val root: View = inflater.inflate(R.layout.fragment_best_today, container, false)
+        viewPager = root.findViewById(R.id.view_pager)
+        setupViewPager(viewPager)
+        tabLayout = root.findViewById(R.id.post_tab)
+        tabLayout!!.setupWithViewPager(viewPager)
 
         return root
     }
 
-    private fun getEvent(recyclerViewLeft: RecyclerView?, recyclerViewRight: RecyclerView?) {
-        val linearLayoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        val linearLayoutManager2 =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+    private fun setupViewPager(viewPager: ViewPager?) {
+        val adapter = ViewPagerAdapter(
+            childFragmentManager
+        )
 
-        val call: Call<JoaraEventResult?>? = RetrofitJoara.getJoaraEvent( "0", "app_home_top_banner", "0")
-
-        call!!.enqueue(object : Callback<JoaraEventResult?> {
-            override fun onResponse(
-                call: Call<JoaraEventResult?>,
-                response: Response<JoaraEventResult?>
-            ) {
-
-                if (response.isSuccessful) {
-                    response.body()?.let { it ->
-                        val banner = it.banner
-
-                        for (i in banner!!.indices) {
-
-                            val idx = banner[i].idx
-                            val imgfile = banner[i].imgfile
-                            val is_banner_cnt = banner[i].is_banner_cnt
-                            val joaralink = banner[i].joaralink
-
-                            if(i%2 != 1){
-                                itemsLeft!!.add(
-                                    EventData(
-                                        idx,
-                                        imgfile,
-                                        is_banner_cnt,
-                                        joaralink
-                                    )
-                                )
-                            } else {
-                                itemsRight!!.add(
-                                    EventData(
-                                        idx,
-                                        imgfile,
-                                        is_banner_cnt,
-                                        joaralink
-                                    )
-                                )
-                            }
-                        }
-                    }
-                    recyclerViewLeft!!.layoutManager = linearLayoutManager
-                    recyclerViewLeft.adapter = adapterLeft
-                    adapterLeft!!.notifyDataSetChanged()
-
-                    recyclerViewRight!!.layoutManager = linearLayoutManager2
-                    recyclerViewRight.adapter = adapterRight
-                    adapterRight!!.notifyDataSetChanged()
-                }
-            }
-
-            override fun onFailure(call: Call<JoaraEventResult?>, t: Throwable) {
-                Log.d("onFailure", "실패")
-            }
-        })
-
-        adapterLeft!!.setOnItemClickListener(object : AdapterEvent.OnItemClickListener {
-            override fun onItemClick(v: View?, position: Int) {
-                val item: EventData? = adapterLeft!!.getItem(position)
-
-//                val mBottomDialogBest = BottomDialogBest(requireContext(), item)
-//                fragmentManager?.let { mBottomDialogBest.show(it, null) }
-            }
-        })
-
-        adapterRight!!.setOnItemClickListener(object : AdapterEvent.OnItemClickListener {
-            override fun onItemClick(v: View?, position: Int) {
-                val item: EventData? = adapterRight!!.getItem(position)
-
-//                val mBottomDialogBest = BottomDialogBest(requireContext(), item)
-//                fragmentManager?.let { mBottomDialogBest.show(it, null) }
-            }
-        })
+        adapter.addFragment(FragmentEventTab("Joara"), "조아라")
+        adapter.addFragment(FragmentEventTab("Ridi"), "리디북스")
+        adapter.addFragment(FragmentEventTab("Kakao"), "카카오페이지")
+        adapter.addFragment(FragmentEventTab("OneStore"), "원스토어")
+        viewPager!!.adapter = adapter
     }
+
+    class ViewPagerAdapter(manager: FragmentManager?) :
+        FragmentPagerAdapter(manager!!) {
+        private val mFragmentList: MutableList<Fragment> = ArrayList()
+        private val mFragmentTitleList: MutableList<String> = ArrayList()
+        override fun getItem(position: Int): Fragment {
+            return mFragmentList[position]
+        }
+
+        override fun getCount(): Int {
+            return mFragmentList.size
+        }
+
+        fun addFragment(fragment: Fragment, title: String) {
+            mFragmentList.add(fragment)
+            mFragmentTitleList.add(title)
+        }
+
+        override fun getPageTitle(position: Int): CharSequence? {
+            return mFragmentTitleList[position]
+        }
+    }
+
+
 }
