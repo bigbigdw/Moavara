@@ -38,7 +38,7 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        root = inflater.inflate(R.layout.fragment_best_weekend, container, false)
+        root = inflater.inflate(R.layout.fragment_best_weekend_2, container, false)
 
         recyclerView = root.findViewById(R.id.rview_Best)
         adapterWeek = AdapterBestWeekend(requireContext(), itemWeek)
