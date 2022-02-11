@@ -35,13 +35,16 @@ class FragmentBestToday() : Fragment() {
             childFragmentManager
         )
 
-        val mRootRef = FirebaseDatabase.getInstance().reference
-        val bestRef = mRootRef.child("best")
-
-        adapter.addFragment(FragmentBestTodayTab("Joara", bestRef), "조아라")
-        adapter.addFragment(FragmentBestTodayTab("Ridi", bestRef), "리디북스")
-        adapter.addFragment(FragmentBestTodayTab("Kakao", bestRef), "카카오페이지")
-        adapter.addFragment(FragmentBestTodayTab("OneStore", bestRef), "원스토어")
+        adapter.addFragment(FragmentBestTodayTab("Joara"), "웹소설")
+        adapter.addFragment(FragmentBestTodayTab("Joara"), "웹툰")
+        adapter.addFragment(FragmentBestTodayTab("Kakao"), "네이버")
+        adapter.addFragment(FragmentBestTodayTab("Kakao"), "카카오페이지")
+        adapter.addFragment(FragmentBestTodayTab("Ridi"), "리디북스")
+        adapter.addFragment(FragmentBestTodayTab("OneStore"), "원스토어")
+        adapter.addFragment(FragmentBestTodayTab("OneStore"), "미스터블루 ")
+        adapter.addFragment(FragmentBestTodayTab("OneStore"), "YES24")
+        adapter.addFragment(FragmentBestTodayTab("OneStore"), "교보문고")
+        adapter.addFragment(FragmentBestTodayTab("OneStore"), "코미코")
         viewPager!!.adapter = adapter
     }
 

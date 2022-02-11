@@ -10,15 +10,16 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
-import com.example.moavara.DataBase.DBDate
 import com.example.moavara.DataBase.DataBaseBestWeek
 import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
+import com.example.moavara.Util.BestRef
+import com.example.moavara.Util.DBDate
 import com.google.firebase.database.*
 import java.util.*
 
 
-class FragmentBestTodayTab(private val tabType: String, private var bestRef: DatabaseReference) :
+class FragmentBestTodayTab(private val tabType: String) :
     Fragment() {
 
     private var adapterToday: AdapterBestToday? = null
@@ -49,14 +50,13 @@ class FragmentBestTodayTab(private val tabType: String, private var bestRef: Dat
         return root
     }
 
-    fun getBookListBest(recyclerView: RecyclerView?) {
-        bestRef = bestRef.child(tabType).child("today").child(DBDate.Day())
+    private fun getBookListBest(recyclerView: RecyclerView?) {
 
         recyclerView!!.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapterToday
 
-        bestRef.addValueEventListener(object : ValueEventListener {
+        BestRef.getBestRefToday(tabType).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (postSnapshot in dataSnapshot.children) {
 
