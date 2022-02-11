@@ -10,7 +10,7 @@
         android:id="@+id/post_tab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#4971EF"
+        android:background="#23252D"
         app:itemBackground="@android:color/transparent"
         app:itemIconTint="#00d180"
         app:itemTextColor="#0df0df"

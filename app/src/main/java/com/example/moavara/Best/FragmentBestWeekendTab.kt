@@ -33,13 +33,14 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
 
     lateinit var root: View
     var exception = ""
-    private val monthList = mRootRef.child("best").child(tabType).child("month list")
+    val Genre = "ALL"
+    private val monthList = mRootRef.child("best").child(tabType).child(Genre).child("month list")
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        root = inflater.inflate(R.layout.fragment_best_weekend_2, container, false)
+        root = inflater.inflate(R.layout.fragment_best_weekend, container, false)
 
         recyclerView = root.findViewById(R.id.rview_Best)
         adapterWeek = AdapterBestWeekend(requireContext(), itemWeek)
@@ -55,7 +56,7 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         val mRootRef = FirebaseDatabase.getInstance().reference
-        val week = mRootRef.child("best").child(tabType).child("week")
+        val week = mRootRef.child("best").child(tabType).child(Genre).child("week")
 
 
         itemWeek.clear()
@@ -247,12 +248,12 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
                             items[i]!!.writer,
                             items[i]!!.title,
                             items[i]!!.bookImg,
-                            items[i]!!.intro,
                             items[i]!!.bookCode,
-                            items[i]!!.cntChapter,
-                            items[i]!!.cntPageRead,
-                            items[i]!!.cntFavorite,
-                            items[i]!!.cntRecom,
+                            items[i]!!.info1,
+                            items[i]!!.info2,
+                            items[i]!!.info3,
+                            items[i]!!.info4,
+                            items[i]!!.info5,
                             items[i]!!.number,
                             DBDate.Date(),
                             tabType,

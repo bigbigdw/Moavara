@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/Best_Today"
+            android:text="@string/Best_Title"
             android:textColor="#FAFAF9"
             android:textSize="20dp"
             android:textStyle="bold" />
@@ -69,7 +69,6 @@
         android:id="@+id/llayout_Search_Fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#2196F3"
         android:layout_marginBottom="60dp"
         android:orientation="vertical" />
 

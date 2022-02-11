@@ -33,6 +33,8 @@ class FragmentBestTodayTab(private val tabType: String) :
 
     lateinit var root: View
 
+    val Genre = "ALL"
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
@@ -56,7 +58,7 @@ class FragmentBestTodayTab(private val tabType: String) :
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapterToday
 
-        BestRef.getBestRefToday(tabType).addValueEventListener(object : ValueEventListener {
+        BestRef.getBestRefToday(tabType, Genre).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (postSnapshot in dataSnapshot.children) {
 
@@ -68,12 +70,12 @@ class FragmentBestTodayTab(private val tabType: String) :
                             group!!.writer,
                             group.title,
                             group.bookImg,
-                            group.intro,
                             group.bookCode,
-                            group.cntChapter,
-                            group.cntPageRead,
-                            group.cntFavorite,
-                            group.cntRecom,
+                            group.info1,
+                            group.info2,
+                            group.info3,
+                            group.info4,
+                            group.info5,
                             calculateNum(group.number, group.title),
                             group.date,
                             status

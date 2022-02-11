@@ -51,11 +51,11 @@ class BottomDialogBest(private val mContext: Context, private val item: BookList
 
         tviewTitle!!.text = item!!.title
         tviewWriter!!.text = item.writer
-        tviewChaptercnt!!.text = "총 " + item.cntChapter + "편"
-        tviewOption1!!.text = item.cntPageRead
-        tviewOption2!!.text = item.cntFavorite
-        tviewOption3!!.text = item.cntRecom
-        tviewIntro!!.text = item.intro
+        tviewChaptercnt!!.text = "총 " + item.info2 + "편"
+        tviewOption1!!.text = item.info3
+        tviewOption2!!.text = item.info4
+        tviewOption3!!.text = item.info5
+        tviewIntro!!.text = item.info1
 
         Glide.with(mContext)
             .load(item!!.bookImg)

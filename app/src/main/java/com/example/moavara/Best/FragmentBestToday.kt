@@ -35,16 +35,12 @@ class FragmentBestToday() : Fragment() {
             childFragmentManager
         )
 
-        adapter.addFragment(FragmentBestTodayTab("Joara"), "웹소설")
-        adapter.addFragment(FragmentBestTodayTab("Joara"), "웹툰")
-        adapter.addFragment(FragmentBestTodayTab("Kakao"), "네이버")
+        adapter.addFragment(FragmentBestTodayTab("Joara"), "조아라")
+        adapter.addFragment(FragmentBestTodayTab("Naver"), "네이버")
         adapter.addFragment(FragmentBestTodayTab("Kakao"), "카카오페이지")
         adapter.addFragment(FragmentBestTodayTab("Ridi"), "리디북스")
         adapter.addFragment(FragmentBestTodayTab("OneStore"), "원스토어")
-        adapter.addFragment(FragmentBestTodayTab("OneStore"), "미스터블루 ")
-        adapter.addFragment(FragmentBestTodayTab("OneStore"), "YES24")
-        adapter.addFragment(FragmentBestTodayTab("OneStore"), "교보문고")
-        adapter.addFragment(FragmentBestTodayTab("OneStore"), "코미코")
+        adapter.addFragment(FragmentBestTodayTab("MrBlue"), "미스터블루")
         viewPager!!.adapter = adapter
     }
 

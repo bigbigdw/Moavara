@@ -34,7 +34,7 @@ class AdapterBestMonth(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_booklist_best_weekend_2, parent, false)
+            .inflate(R.layout.item_booklist_best_weekend, parent, false)
         return HolderBestWeekend(view)
     }
 

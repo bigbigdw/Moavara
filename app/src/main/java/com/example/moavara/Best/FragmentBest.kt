@@ -1,5 +1,6 @@
 package com.example.moavara.Best
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,7 +27,7 @@ class FragmentBest : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         root = inflater.inflate(R.layout.fragment_best, container, false)
 
         //프래그먼트 관련
@@ -36,7 +37,6 @@ class FragmentBest : Fragment() {
         tviewWeekend = root.findViewById(R.id.tview_Weekend)
         tviewBest = root.findViewById(R.id.tview_Best)
 
-        tviewToday!!.visibility = View.GONE
 
         mFragmentBestToday = FragmentBestToday()
         parentFragmentManager.beginTransaction()
@@ -45,9 +45,9 @@ class FragmentBest : Fragment() {
 
         tviewToday!!.setOnClickListener {
 
-            tviewToday!!.visibility = View.GONE
-            tviewWeekend!!.visibility = View.VISIBLE
-            tviewBest!!.visibility = View.VISIBLE
+            tviewToday!!.setTextColor(Color.parseColor("#ffffff"))
+            tviewWeekend!!.setTextColor(Color.parseColor("#6D6F76"))
+            tviewBest!!.setTextColor(Color.parseColor("#6D6F76"))
 
             mFragmentBestToday = FragmentBestToday()
             parentFragmentManager.beginTransaction()
@@ -57,9 +57,9 @@ class FragmentBest : Fragment() {
 
         tviewWeekend!!.setOnClickListener {
 
-            tviewWeekend!!.visibility = View.GONE
-            tviewToday!!.visibility = View.VISIBLE
-            tviewBest!!.visibility = View.VISIBLE
+            tviewWeekend!!.setTextColor(Color.parseColor("#ffffff"))
+            tviewToday!!.setTextColor(Color.parseColor("#6D6F76"))
+            tviewBest!!.setTextColor(Color.parseColor("#6D6F76"))
 
             mFragmentBestWeekend = FragmentBestWeekend()
             parentFragmentManager.beginTransaction()
@@ -69,9 +69,9 @@ class FragmentBest : Fragment() {
 
         tviewBest!!.setOnClickListener {
 
-            tviewBest!!.visibility = View.GONE
-            tviewToday!!.visibility = View.VISIBLE
-            tviewWeekend!!.visibility = View.VISIBLE
+            tviewBest!!.setTextColor(Color.parseColor("#ffffff"))
+            tviewToday!!.setTextColor(Color.parseColor("#6D6F76"))
+            tviewWeekend!!.setTextColor(Color.parseColor("#6D6F76"))
 
             mFragmentBestMonth = FragmentBestMonth()
             parentFragmentManager.beginTransaction()

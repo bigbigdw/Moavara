@@ -14,6 +14,7 @@ import com.example.moavara.DataBase.DataBaseBestMonth
 import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Search.BookListDataBestWeekend
+import com.example.moavara.Util.DBDate
 import com.google.firebase.database.*
 import java.util.*
 
@@ -35,6 +36,7 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
     private var adapterMonthListDetail: AdapterBestToday? = null
 
     lateinit var root: View
+    val Genre = "ALL"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,8 +62,8 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
             .build()
 
         val mRootRef = FirebaseDatabase.getInstance().reference
-        val week = mRootRef.child("best").child(tabType).child("month")
-        val monthList = mRootRef.child("best").child(tabType).child("month")
+        val week = mRootRef.child("best").child(tabType).child(Genre).child("month").child(DBDate.Month())
+        val monthList = mRootRef.child("best").child(tabType).child(Genre).child("month")
 
         itemWeek.clear()
         getBestToday(week)
@@ -75,7 +77,7 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
 
                 itemMonthListDetail.clear()
 
-                val item: BookListDataBestWeekend? = adapterWeek!!.getItem(position)
+                adapterWeek!!.getItem(position)
 
                 recyclerViewMonthDetail!!.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                 recyclerViewMonthDetail!!.adapter = adapterMonthListDetail
@@ -94,15 +96,15 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
 
                                 itemMonthListDetail.add(
                                     BookListDataBestToday(
-                                        group!!.writer,
+                                        group.writer,
                                         group.title,
                                         group.bookImg,
-                                        group.intro,
                                         group.bookCode,
-                                        group.cntChapter,
-                                        group.cntPageRead,
-                                        group.cntFavorite,
-                                        group.cntRecom,
+                                        group.info1,
+                                        group.info2,
+                                        group.info3,
+                                        group.info4,
+                                        group.info5,
                                         group.number,
                                         group.date,
                                         "",

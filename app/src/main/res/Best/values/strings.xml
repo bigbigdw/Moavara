@@ -4,6 +4,7 @@
     <string name="Btn_Weekend">주간</string>
     <string name="Btn_Month">월간</string>
 
+    <string name="Best_Title">베스트</string>
     <string name="Best_Today">오늘의 베스트</string>
     <string name="Best_Weekend">금주의 베스트</string>
     <string name="Best_Month">이번달 베스트</string>
