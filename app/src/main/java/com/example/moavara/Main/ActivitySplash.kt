@@ -3,8 +3,6 @@ package com.example.moavara.Main
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import androidx.room.Room
 import com.example.moavara.DataBase.*
@@ -12,6 +10,8 @@ import com.example.moavara.Joara.JoaraBestListResult
 import com.example.moavara.Joara.RetrofitJoara
 import com.example.moavara.KaKao.BestResultKakao
 import com.example.moavara.KaKao.RetrofitKaKao
+import com.example.moavara.OneStore.OneStoreBookResult
+import com.example.moavara.OneStore.RetrofitOnestore
 import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Util.BestRef
@@ -58,13 +58,13 @@ class ActivitySplash : Activity() {
     private fun runMining() {
         getRidiBest("Ridi")
         getOneStoreBest("OneStore")
-        getBookListBestKakao("Kakao")
-        getBookListBestJoara("Joara")
-        getNaver("Naver")
-        getMrBlue("MrBlue")
+        getKakaoBest("Kakao")
+        getJoaraBest("Joara")
+        getNaverBest("Naver")
+        getMrBlueBest("MrBlue")
     }
 
-    private fun getMrBlue(type : String) {
+    private fun getMrBlueBest(type : String) {
 
         val doc: Document =
             Jsoup.connect("https://www.mrblue.com/novel/best/all/realtime").post()
@@ -94,7 +94,7 @@ class ActivitySplash : Activity() {
 
     }
 
-    private fun getNaver(type : String) {
+    private fun getNaverBest(type : String) {
 
         val doc: Document =
             Jsoup.connect("https://novel.naver.com/best/ranking?genre=102&periodType=DAILY").post()
@@ -156,36 +156,52 @@ class ActivitySplash : Activity() {
 
     private fun getOneStoreBest(type : String) {
 
-        val doc: Document =
-            Jsoup.connect("https://onestory.co.kr/display/card/CRD0045029?title=%EC%8B%A0%EC%9E%91%20%EC%97%B0%EC%9E%AC%20%EB%B2%A0%EC%8A%A4%ED%8A%B8")
-                .get()
-        val OneStory: Elements = doc.select(".ItemRendererInner")
         val bestRef = mRootRef.child("best").child(type).child(Genre)
         val OneStoryRef: MutableMap<String?, Any> = HashMap()
 
-        for (i in OneStory.indices) {
+        val call: Call<OneStoreBookResult?>? = RetrofitOnestore.getBestOneStore()
 
-            OneStoryRef["writerName"] = doc.select("div .ItemRendererTextArtist")[i].text()
-            OneStoryRef["subject"] = doc.select("div .ItemRendererTextTitle")[i].text()
-            OneStoryRef["bookImg"] = doc.select(".ThumbnailInner img")[i].absUrl("src")
-            OneStoryRef["bookCode"] = " "
-            OneStoryRef["info1"] = doc.select(".tItemRendererTextPublisher")[i].text()
-            OneStoryRef["info2"] = doc.select(".tItemRendererTextSeries")[i].text()
-            OneStoryRef["info3"] = doc.select(".ItemRendererTextComment span span")[i].text()
-            OneStoryRef["info4"] = doc.select(".ItemRendererTextAvgScore")[i].text()
-            OneStoryRef["info5"] = doc.select(".ItemRendererTextAvgScore")[i].text()
-            OneStoryRef["number"] = i
-            OneStoryRef["date"] = DBDate.Date()
+        call!!.enqueue(object : Callback<OneStoreBookResult?> {
+            override fun onResponse(
+                call: Call<OneStoreBookResult?>,
+                response: Response<OneStoreBookResult?>
+            ) {
 
-            miningValue(OneStoryRef, i, type)
+                if (response.isSuccessful) {
+                    response.body()?.let { it ->
+                        val productList = it.params!!.productList
 
-        }
+                        for (i in productList!!.indices) {
+
+                            OneStoryRef["writerName"] = productList[i].artistNm!!
+                            OneStoryRef["subject"] = productList[i].prodNm!!
+                            OneStoryRef["bookImg"] = "https://img.onestore.co.kr/thumbnails/img_sac/224_320_F10_95/" + productList[i].thumbnailImageUrl!!
+                            OneStoryRef["bookCode"] = productList[i].prodId!!
+                            OneStoryRef["info1"] = productList[i].totalCount!!
+                            OneStoryRef["info2"] = productList[i].avgScore!!
+                            OneStoryRef["info3"] = productList[i].commentCount!!
+                            OneStoryRef["info4"] = " "
+                            OneStoryRef["info5"] = " "
+                            OneStoryRef["number"] = i
+                            OneStoryRef["date"] = DBDate.Date()
+
+                            miningValue(OneStoryRef, i, type)
+
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<OneStoreBookResult?>, t: Throwable) {
+                Log.d("onFailure", "실패")
+            }
+        })
 
         setRoomBest(bestRef,type)
 
     }
 
-    private fun getBookListBestKakao(type : String) {
+    private fun getKakaoBest(type : String) {
 
         val bestRef = mRootRef.child("best").child(type).child(Genre)
         val KakaoRef: MutableMap<String?, Any> = HashMap()
@@ -232,7 +248,7 @@ class ActivitySplash : Activity() {
 
     }
 
-    private fun getBookListBestJoara(type : String) {
+    private fun getJoaraBest(type : String) {
         val bestRef = mRootRef.child("best").child(type).child(Genre)
         val JoaraRef: MutableMap<String?, Any> = HashMap()
 

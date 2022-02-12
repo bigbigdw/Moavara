@@ -23,7 +23,6 @@ class FragmentBestTodayTab(private val tabType: String) :
     var recyclerView: RecyclerView? = null
 
     private val items = ArrayList<BookListDataBestToday?>()
-    private val itemsYesterday = ArrayList<BookListDataBestToday?>()
     private lateinit var dbYesterday: DataBaseBestDay
 
     var status = ""
