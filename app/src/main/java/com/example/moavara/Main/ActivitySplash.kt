@@ -25,8 +25,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 val mRootRef = FirebaseDatabase.getInstance().reference
-private lateinit var db: DataBaseBestWeek
-private lateinit var dbYesterday: DataBaseBestWeek
+private lateinit var dbWeek: DataBaseBestDay
+private lateinit var dbYesterday: DataBaseBestDay
 
 class ActivitySplash : Activity() {
 
@@ -36,16 +36,22 @@ class ActivitySplash : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        db = Room.databaseBuilder(this, DataBaseBestWeek::class.java, "best-today")
+        dbWeek = Room.databaseBuilder(this, DataBaseBestDay::class.java, "best-week")
             .allowMainThreadQueries().build()
-        dbYesterday = Room.databaseBuilder(this, DataBaseBestWeek::class.java, "best-yesterday")
+        dbYesterday = Room.databaseBuilder(this, DataBaseBestDay::class.java, "best-yesterday")
             .allowMainThreadQueries().build()
+
+        dbWeek.bestDao().initAll()
+        dbYesterday.bestDao().initAll()
 
         Thread {
             runMining()
         }.start()
 
-        startLoading()
+        val novelIntent = Intent(this, ActivityLogin::class.java)
+        novelIntent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+        startActivityIfNeeded(novelIntent, 0)
+        finish()
 
     }
 
@@ -77,6 +83,8 @@ class ActivitySplash : Activity() {
             MrBlueRef["info3"] = " "
             MrBlueRef["info4"] = " "
             MrBlueRef["info5"] = " "
+            MrBlueRef["number"] = i
+            MrBlueRef["date"] = DBDate.Date()
 
             miningValue(MrBlueRef, i, type)
 
@@ -105,6 +113,8 @@ class ActivitySplash : Activity() {
             NaverRef["info3"] = Naver[i].select(".num_total").next().first()!!.text()
             NaverRef["info4"] = Naver.select(".count")[i].text()
             NaverRef["info5"] = Naver.select(".score_area")[i].text()
+            NaverRef["number"] = i
+            NaverRef["date"] = DBDate.Date()
 
             miningValue(NaverRef, i, type)
 
@@ -133,6 +143,8 @@ class ActivitySplash : Activity() {
             RidiRef["info3"] = doc.select("span .StarRate_ParticipantCount")[i].text()
             RidiRef["info4"] = " "
             RidiRef["info5"] = doc.select("span .StarRate_Score")[i].text()
+            RidiRef["number"] = i
+            RidiRef["date"] = DBDate.Date()
 
             miningValue(RidiRef, i, type)
 
@@ -162,6 +174,8 @@ class ActivitySplash : Activity() {
             OneStoryRef["info3"] = doc.select(".ItemRendererTextComment span span")[i].text()
             OneStoryRef["info4"] = doc.select(".ItemRendererTextAvgScore")[i].text()
             OneStoryRef["info5"] = doc.select(".ItemRendererTextAvgScore")[i].text()
+            OneStoryRef["number"] = i
+            OneStoryRef["date"] = DBDate.Date()
 
             miningValue(OneStoryRef, i, type)
 
@@ -199,6 +213,8 @@ class ActivitySplash : Activity() {
                             KakaoRef["info3"] = list[i].read_count!!
                             KakaoRef["info4"] = list[i].like_count!!
                             KakaoRef["info5"] = list[i].rating!!
+                            KakaoRef["number"] = i
+                            KakaoRef["date"] = DBDate.Date()
 
                             miningValue(KakaoRef, i, type)
 
@@ -243,6 +259,8 @@ class ActivitySplash : Activity() {
                             JoaraRef["info3"] = books[i].cntPageRead!!
                             JoaraRef["info4"] = books[i].cntFavorite!!
                             JoaraRef["info5"] = books[i].cntRecom!!
+                            JoaraRef["number"] = i
+                            JoaraRef["date"] = DBDate.Date()
 
                             miningValue(JoaraRef, i, type)
 
@@ -262,7 +280,7 @@ class ActivitySplash : Activity() {
 
     private fun miningValue(ref: MutableMap<String?, Any>, num : Int, type: String){
         //WeekList
-        BestRef.setBestRefWeekList(type, num, Genre).setValue(BestRef.setBookListDataBestToday(ref, num))
+//        BestRef.setBestRefWeekList(type, num, Genre).setValue(BestRef.setBookListDataBestToday(ref, num))
 
         //Today
         BestRef.setBestRefToday(type, num, Genre).setValue(BestRef.setBookListDataBestToday(ref, num))
@@ -285,43 +303,40 @@ class ActivitySplash : Activity() {
     }
 
     private fun setRoomBest(bestRef : DatabaseReference, type: String){
-        val week = bestRef.child("week list")
-        var num = 1
-
-        db.bestDao().initAll()
-        dbYesterday.bestDao().initAll()
-
-        week.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (postSnapshot in dataSnapshot.children) {
-
-                    val group: BookListDataBestToday? =
-                        postSnapshot.getValue(BookListDataBestToday::class.java)
-
-                    db.bestDao().insert(
-                        DataBestWeek(
-                            group!!.writer,
-                            group.title,
-                            group.bookImg,
-                            group.bookCode,
-                            group.info1,
-                            group.info2,
-                            group.info3,
-                            group.info4,
-                            group.info5,
-                            group.number,
-                            DBDate.Date(),
-                            type
-                        )
-                    )
-
-                    num += 1
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-            }
-        })
+//        val week = bestRef.child("week list")
+//        var num = 1
+//
+//        week.addValueEventListener(object : ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                for (postSnapshot in dataSnapshot.children) {
+//
+//                    val group: BookListDataBestToday? =
+//                        postSnapshot.getValue(BookListDataBestToday::class.java)
+//
+//                    dbWeek.bestDao().insert(
+//                        DataBestDay(
+//                            group!!.writer,
+//                            group.title,
+//                            group.bookImg,
+//                            group.bookCode,
+//                            group.info1,
+//                            group.info2,
+//                            group.info3,
+//                            group.info4,
+//                            group.info5,
+//                            group.number,
+//                            group.date,
+//                            type
+//                        )
+//                    )
+//
+//                    num += 1
+//                }
+//            }
+//
+//            override fun onCancelled(databaseError: DatabaseError) {
+//            }
+//        })
 
         val yesterdayRef = bestRef.child("today").child(DBDate.Yesterday())
 
@@ -333,7 +348,7 @@ class ActivitySplash : Activity() {
                         postSnapshot.getValue(BookListDataBestToday::class.java)
 
                     dbYesterday.bestDao().insert(
-                        DataBestWeek(
+                        DataBestDay(
                             group!!.writer,
                             group.title,
                             group.bookImg,
@@ -344,7 +359,7 @@ class ActivitySplash : Activity() {
                             group.info4,
                             group.info5,
                             group.number,
-                            DBDate.Date(),
+                            group.date,
                             type
                         )
                     )
@@ -359,15 +374,4 @@ class ActivitySplash : Activity() {
 
 
 
-    private fun startLoading() {
-        Handler(Looper.myLooper()!!).postDelayed(
-            {
-                val novelIntent = Intent(this, ActivityLogin::class.java)
-                novelIntent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                startActivityIfNeeded(novelIntent, 0)
-                finish()
-            },
-            1000
-        )
-    }
 }

@@ -10,6 +10,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.moavara.DataBase.DataBestDay
 import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
 
@@ -46,15 +47,26 @@ class AdapterBestToday(items: List<BookListDataBestToday?>?) :
             holder.index.text = (position + 1).toString()
             holder.title.text = this.holder!![position]!!.title
 
-            if(item.status.equals("UP")){
-                holder.number.text =  "+" + this.holder!![position]!!.number.toString()
-                holder.number.setTextColor(Color.parseColor("#02A247"));
-            } else if(item.status.equals("DOWN")){
-                holder.number.text = "-" + this.holder!![position]!!.number.toString()
-                holder.number.setTextColor(Color.parseColor("#FF2C00"));
-            } else if(item.status.equals("SAME")){
-                holder.number.text = "-"
-                holder.number.setTextColor(Color.parseColor("#eeeeee"));
+            when {
+                item.status.equals("UP") -> {
+                    holder.number.text =  "+" + this.holder!![position]!!.number.toString()
+                    holder.number.setTextColor(Color.parseColor("#02A247"));
+                }
+                item.status.equals("DOWN") -> {
+                    holder.number.text = "-" + this.holder!![position]!!.number.toString()
+                    holder.number.setTextColor(Color.parseColor("#FF2C00"));
+                }
+                item.status.equals("SAME") -> {
+                    holder.number.text = "-"
+                    holder.number.setTextColor(Color.parseColor("#eeeeee"));
+                }
+                item.status.equals("NEW") -> {
+                    holder.number.text = "NEW"
+                    holder.number.setTextColor(Color.parseColor("#eeeeee"));
+                }
+                else -> {
+                    holder.number.text = this.holder!![position]!!.number.toString()
+                }
             }
 
 

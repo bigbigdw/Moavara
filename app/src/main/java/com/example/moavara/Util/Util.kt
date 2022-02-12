@@ -1,6 +1,7 @@
 package com.example.moavara.Util
 
 import android.annotation.SuppressLint
+import com.example.moavara.DataBase.DataBestDay
 import com.example.moavara.Search.BookListDataBestToday
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -120,9 +121,26 @@ object BestRef {
             ref["info3"] as String?,
             ref["info4"] as String?,
             ref["info5"] as String?,
-            num + 1,
-            DBDate.Date(),
+            ref["number"] as Int?,
+            ref["date"] as String?,
             ""
+        )
+    }
+
+    fun setDataBestDay(ref: MutableMap<String?, Any>, tabType : String) : DataBestDay {
+        return DataBestDay(
+            ref["writerName"] as String?,
+            ref["subject"] as String?,
+            ref["bookImg"] as String?,
+            ref["bookCode"] as String?,
+            ref["info1"] as String?,
+            ref["info2"] as String?,
+            ref["info3"] as String?,
+            ref["info4"] as String?,
+            ref["info5"] as String?,
+            ref["number"] as Int?,
+            ref["date"] as String?,
+            tabType
         )
     }
 }

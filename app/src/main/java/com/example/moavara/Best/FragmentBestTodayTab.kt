@@ -1,8 +1,6 @@
 package com.example.moavara.Best
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,11 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
-import com.example.moavara.DataBase.DataBaseBestWeek
+import com.example.moavara.DataBase.DataBaseBestDay
 import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Util.BestRef
-import com.example.moavara.Util.DBDate
 import com.google.firebase.database.*
 import java.util.*
 
@@ -27,7 +24,7 @@ class FragmentBestTodayTab(private val tabType: String) :
 
     private val items = ArrayList<BookListDataBestToday?>()
     private val itemsYesterday = ArrayList<BookListDataBestToday?>()
-    private lateinit var dbYesterday: DataBaseBestWeek
+    private lateinit var dbYesterday: DataBaseBestDay
 
     var status = ""
 
@@ -41,7 +38,7 @@ class FragmentBestTodayTab(private val tabType: String) :
     ): View {
         root = inflater.inflate(R.layout.fragment_best_today_tab, container, false)
 
-        dbYesterday = Room.databaseBuilder(requireContext(), DataBaseBestWeek::class.java, "best-yesterday")
+        dbYesterday = Room.databaseBuilder(requireContext(), DataBaseBestDay::class.java, "best-yesterday")
             .allowMainThreadQueries().build()
 
         recyclerView = root.findViewById(R.id.rview_Best)
@@ -106,7 +103,7 @@ class FragmentBestTodayTab(private val tabType: String) :
         val yesterdayNum = dbYesterday.bestDao().findName(tabType, title!!)
 
         if (yesterdayNum == 0) {
-            status = "SAME"
+            status = "NEW"
             return 0
         } else {
             return if (yesterdayNum < num!!) {

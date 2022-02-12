@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 
 @Entity
-data class DataBestWeek (
+data class DataBestDay (
     var writer: String ? = null,
     var title: String ? = null,
     var bookImg: String ? = null,
