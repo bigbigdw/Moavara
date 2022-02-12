@@ -49,7 +49,7 @@ class AdapterBestWeekend(
                     .load(items.sun!!.bookImg)
                     .into(holder.iviewBookImg1)
 
-                if (selected != "" && getSelectedBook() != items.sun!!.bookCode) {
+                if (selected != "" && getSelectedBook() != items.sun!!.title) {
                     holder.llayoutCover1.visibility = View.VISIBLE
                 } else {
                     holder.llayoutCover1.visibility = View.GONE
@@ -61,7 +61,7 @@ class AdapterBestWeekend(
                     .load(items.mon!!.bookImg)
                     .into(holder.iviewBookImg2)
 
-                if (selected != "" && getSelectedBook() != items.mon!!.bookCode) {
+                if (selected != "" && getSelectedBook() != items.mon!!.title) {
                     holder.llayoutCover2.visibility = View.VISIBLE
                 } else {
                     holder.llayoutCover2.visibility = View.GONE
@@ -74,7 +74,7 @@ class AdapterBestWeekend(
                     .load(items.tue!!.bookImg)
                     .into(holder.iviewBookImg3)
 
-                if (selected != "" && getSelectedBook() != items.tue!!.bookCode) {
+                if (selected != "" && getSelectedBook() != items.tue!!.title) {
                     holder.llayoutCover3.visibility = View.VISIBLE
                 } else {
                     holder.llayoutCover3.visibility = View.GONE
@@ -86,7 +86,7 @@ class AdapterBestWeekend(
                     .load(items.wed!!.bookImg)
                     .into(holder.iviewBookImg4)
 
-                if (selected != "" && getSelectedBook() != items.wed!!.bookCode) {
+                if (selected != "" && getSelectedBook() != items.wed!!.title) {
                     holder.llayoutCover4.visibility = View.VISIBLE
                 } else {
                     holder.llayoutCover4.visibility = View.GONE
@@ -98,7 +98,7 @@ class AdapterBestWeekend(
                     .load(items.thur!!.bookImg)
                     .into(holder.iviewBookImg5)
 
-                if (selected != "" && getSelectedBook() != items.thur!!.bookCode) {
+                if (selected != "" && getSelectedBook() != items.thur!!.title) {
                     holder.llayoutCover5.visibility = View.VISIBLE
                 } else {
                     holder.llayoutCover5.visibility = View.GONE
@@ -110,7 +110,7 @@ class AdapterBestWeekend(
                     .load(items.fri!!.bookImg)
                     .into(holder.iviewBookImg6)
 
-                if (selected != "" && getSelectedBook() != items.fri!!.bookCode) {
+                if (selected != "" && getSelectedBook() != items.fri!!.title) {
                     holder.llayoutCover6.visibility = View.VISIBLE
                 } else {
                     holder.llayoutCover6.visibility = View.GONE
@@ -122,7 +122,7 @@ class AdapterBestWeekend(
                     .load(items.sat!!.bookImg)
                     .into(holder.iviewBookImg7)
 
-                if (selected != "" && getSelectedBook() != items.sat!!.bookCode) {
+                if (selected != "" && getSelectedBook() != items.sat!!.title) {
                     holder.llayoutCover7.visibility = View.VISIBLE
                 } else {
                     holder.llayoutCover7.visibility = View.GONE
@@ -226,8 +226,8 @@ class AdapterBestWeekend(
         return item!![position]
     }
 
-    fun setSelectedBook(bookcode: String) {
-        selected = bookcode
+    fun setSelectedBook(title: String) {
+        selected = title
     }
 
     fun getSelectedBook(): String? {

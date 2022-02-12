@@ -303,40 +303,6 @@ class ActivitySplash : Activity() {
     }
 
     private fun setRoomBest(bestRef : DatabaseReference, type: String){
-//        val week = bestRef.child("week list")
-//        var num = 1
-//
-//        week.addValueEventListener(object : ValueEventListener {
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                for (postSnapshot in dataSnapshot.children) {
-//
-//                    val group: BookListDataBestToday? =
-//                        postSnapshot.getValue(BookListDataBestToday::class.java)
-//
-//                    dbWeek.bestDao().insert(
-//                        DataBestDay(
-//                            group!!.writer,
-//                            group.title,
-//                            group.bookImg,
-//                            group.bookCode,
-//                            group.info1,
-//                            group.info2,
-//                            group.info3,
-//                            group.info4,
-//                            group.info5,
-//                            group.number,
-//                            group.date,
-//                            type
-//                        )
-//                    )
-//
-//                    num += 1
-//                }
-//            }
-//
-//            override fun onCancelled(databaseError: DatabaseError) {
-//            }
-//        })
 
         val yesterdayRef = bestRef.child("today").child(DBDate.Yesterday())
 

@@ -49,7 +49,7 @@ class AdapterBestToday(items: List<BookListDataBestToday?>?) :
 
             when {
                 item.status.equals("UP") -> {
-                    holder.number.text =  "+" + this.holder!![position]!!.number.toString()
+                    holder.number.text =  "+" + (this.holder!![position]!!.number?.times(-1)).toString()
                     holder.number.setTextColor(Color.parseColor("#02A247"));
                 }
                 item.status.equals("DOWN") -> {
