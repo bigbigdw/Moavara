@@ -16,13 +16,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rview_BestMonth"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            </androidx.recyclerview.widget.RecyclerView>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -108,18 +101,10 @@
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rview_Best"
+                android:id="@+id/rview_BestMonth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="16dp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rview_BestToday"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="visible">
-
-            </androidx.recyclerview.widget.RecyclerView>
 
             <LinearLayout
                 android:id="@+id/llayoutMonthDetail"
@@ -133,6 +118,7 @@
                     android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
                     android:layout_weight="1"
                     android:text="@string/Best_Today"
                     android:textColor="#FAFAF9"
@@ -140,9 +126,11 @@
                     android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rview_BestMonthDetail"
+                    android:id="@+id/rview_BestMonthDay"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp" />
             </LinearLayout>
 
 

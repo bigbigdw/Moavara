@@ -113,7 +113,7 @@ class FragmentBestTodayTab(private val tabType: String) :
                 num - yesterdayNum
             } else if (yesterdayNum == num) {
                 status = "SAME"
-                num - yesterdayNum
+                0
             } else {
                 status = "SAME"
                 0

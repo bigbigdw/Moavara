@@ -1,7 +1,6 @@
 package com.example.moavara.Best
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,8 +8,6 @@ import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
-import com.example.moavara.DataBase.DataBaseBestMonth
 import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Search.BookListDataBestWeekend
@@ -21,19 +18,15 @@ import java.util.*
 
 class FragmentBestMonthTab(private val tabType: String) : Fragment() {
 
-    private var adapterWeek: AdapterBestMonth? = null
-    private var adapterMonthList: AdapterBestToday? = null
-    private val itemWeek = ArrayList<BookListDataBestWeekend?>()
+    private var adapterMonth: AdapterBestMonth? = null
+    private val itemMonth = ArrayList<BookListDataBestWeekend?>()
 
-    private val itemMonthList = ArrayList<BookListDataBestToday?>()
-    var recyclerView: RecyclerView? = null
-    private lateinit var dbMonth: DataBaseBestMonth
     var recyclerViewMonth: RecyclerView? = null
 
-    private val itemMonthListDetail = ArrayList<BookListDataBestToday?>()
-    var recyclerViewMonthDetail: RecyclerView? = null
+    private val ItemMonthDay = ArrayList<BookListDataBestToday?>()
+    var recyclerviewMonthDay: RecyclerView? = null
     var llayoutMonthDetail: LinearLayout? = null
-    private var adapterMonthListDetail: AdapterBestToday? = null
+    private var adapterMonthDay: AdapterBestToday? = null
 
     lateinit var root: View
     val Genre = "ALL"
@@ -44,59 +37,48 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
     ): View {
         root = inflater.inflate(R.layout.fragment_best_month, container, false)
 
-        recyclerView = root.findViewById(R.id.rview_Best)
-        adapterWeek = AdapterBestMonth(requireContext(), itemWeek)
-
         recyclerViewMonth = root.findViewById(R.id.rview_BestMonth)
-        adapterMonthList = AdapterBestToday(itemMonthList)
+        adapterMonth = AdapterBestMonth(requireContext(), itemMonth)
 
         llayoutMonthDetail = root.findViewById(R.id.llayoutMonthDetail)
-        recyclerViewMonthDetail = root.findViewById(R.id.rview_BestMonthDetail)
-        adapterMonthListDetail = AdapterBestToday(itemMonthListDetail)
+        recyclerviewMonthDay = root.findViewById(R.id.rview_BestMonthDay)
+        adapterMonthDay = AdapterBestToday(ItemMonthDay)
 
-        dbMonth = Room.databaseBuilder(
-            requireContext(),
-            DataBaseBestMonth::class.java,
-            "user-databaseM"
-        ).allowMainThreadQueries()
-            .build()
 
         val mRootRef = FirebaseDatabase.getInstance().reference
-        val week = mRootRef.child("best").child(tabType).child(Genre).child("month").child(DBDate.Month())
-        val monthList = mRootRef.child("best").child(tabType).child(Genre).child("month")
+        val month = mRootRef.child("best").child(tabType).child(Genre).child("month").child(DBDate.Month())
+        val monthList = mRootRef.child("best").child(tabType).child(Genre).child("month").child(DBDate.Month())
 
-        itemWeek.clear()
-        getBestToday(week)
-        getMonthList()
+        itemMonth.clear()
+        getBestMonth(month)
 
-        recyclerView!!.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        recyclerView!!.adapter = adapterWeek
+        recyclerViewMonth!!.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recyclerViewMonth!!.adapter = adapterMonth
 
-        adapterWeek!!.setOnItemClickListener(object : AdapterBestMonth.OnItemClickListener {
+        adapterMonth!!.setOnItemClickListener(object : AdapterBestMonth.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int, value: String?) {
 
-                itemMonthListDetail.clear()
+                ItemMonthDay.clear()
+                val item = adapterMonth!!.getItem(position)
 
-                adapterWeek!!.getItem(position)
-
-                recyclerViewMonthDetail!!.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                recyclerViewMonthDetail!!.adapter = adapterMonthListDetail
+                recyclerviewMonthDay!!.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                recyclerviewMonthDay!!.adapter = adapterMonthDay
 
                 if(llayoutMonthDetail!!.visibility == View.GONE){
                     llayoutMonthDetail!!.visibility = View.VISIBLE
                 }
-                    monthList.child((position + 1).toString()).child(value!!).child("day").addValueEventListener(object : ValueEventListener {
+
+                    monthList.child(DBDate.Week()).child(value!!).child("day").addValueEventListener(object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
+
                             for (postSnapshot in dataSnapshot.children) {
 
                                 val group: BookListDataBestToday? =
                                     postSnapshot.getValue(BookListDataBestToday::class.java)
 
-                                Log.d("!!!!", group!!.title.toString())
-
-                                itemMonthListDetail.add(
+                                ItemMonthDay.add(
                                     BookListDataBestToday(
-                                        group.writer,
+                                        group!!.writer,
                                         group.title,
                                         group.bookImg,
                                         group.bookCode,
@@ -110,7 +92,7 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
                                         "",
                                     )
                                 )
-                                adapterMonthListDetail!!.notifyDataSetChanged()
+                                adapterMonthDay!!.notifyDataSetChanged()
                             }
                         }
 
@@ -120,45 +102,19 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
             }
         })
 
-        adapterMonthList!!.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
+        adapterMonthDay!!.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
-                val item: BookListDataBestToday? = adapterMonthList!!.getItem(position)
+                val item: BookListDataBestToday? = adapterMonthDay!!.getItem(position)
 
-            }})
+                val mBottomDialogBest = BottomDialogBest(requireContext(), item)
+                fragmentManager?.let { mBottomDialogBest.show(it, null) }
+            }
+        })
 
         return root
     }
 
-    private fun getMonthList(){
-
-        val monthList = dbMonth.bestDaoMonth().getAllFirst(tabType)
-
-        recyclerViewMonth!!.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        recyclerViewMonth!!.adapter = adapterMonthList
-
-        for(i in monthList.indices){
-            itemMonthList.add(
-                BookListDataBestToday(
-                    monthList[i].writer,
-                    monthList[i].title,
-                    monthList[i].bookImg,
-                    monthList[i].intro,
-                    monthList[i].bookCode,
-                    monthList[i].cntChapter,
-                    monthList[i].cntPageRead,
-                    monthList[i].cntFavorite,
-                    monthList[i].cntRecom,
-                    monthList[i].number,
-                    monthList[i].date,
-                    ""
-                )
-            )
-            adapterMonthList!!.notifyDataSetChanged()
-        }
-    }
-
-    private fun getBestToday(bestRef: DatabaseReference) {
+    private fun getBestMonth(bestRef: DatabaseReference) {
 
         bestRef.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
@@ -166,7 +122,7 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
                 val group: BookListDataBestWeekend? =
                     dataSnapshot.getValue(BookListDataBestWeekend::class.java)
 
-                itemWeek.add(
+                itemMonth.add(
                     BookListDataBestWeekend(
                         group!!.sun,
                         group.mon,
@@ -177,7 +133,7 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
                         group.sat,
                     )
                 )
-                adapterWeek!!.notifyDataSetChanged()
+                adapterMonth!!.notifyDataSetChanged()
             }
 
             override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {}

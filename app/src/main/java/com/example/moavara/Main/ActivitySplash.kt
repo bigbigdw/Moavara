@@ -295,8 +295,6 @@ class ActivitySplash : Activity() {
     }
 
     private fun miningValue(ref: MutableMap<String?, Any>, num : Int, type: String){
-        //WeekList
-//        BestRef.setBestRefWeekList(type, num, Genre).setValue(BestRef.setBookListDataBestToday(ref, num))
 
         //Today
         BestRef.setBestRefToday(type, num, Genre).setValue(BestRef.setBookListDataBestToday(ref, num))
