@@ -8,7 +8,17 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.room.Room
+import com.example.moavara.DataBase.DataBaseBestDay
+import com.example.moavara.DataBase.DataBestDay
+import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
+import com.example.moavara.Search.BookListDataBestToday
+import com.example.moavara.Util.DBDate
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
 
 
 class FragmentBest : Fragment() {
@@ -24,11 +34,29 @@ class FragmentBest : Fragment() {
     private var tviewWeekend: TextView? = null
     private var tviewBest: TextView? = null
 
+    private lateinit var dbWeek: DataBaseBestDay
+    private lateinit var dbYesterday: DataBaseBestDay
+
+    val Genre = "ALL"
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         root = inflater.inflate(R.layout.fragment_best, container, false)
+
+        dbYesterday = Room.databaseBuilder(requireContext(), DataBaseBestDay::class.java, "best-yesterday")
+            .allowMainThreadQueries().build()
+
+        dbWeek = Room.databaseBuilder(requireContext(), DataBaseBestDay::class.java, "best-week")
+            .allowMainThreadQueries().build()
+
+        setRoomBest("Joara")
+        setRoomBest("Naver")
+        setRoomBest("Kakao")
+        setRoomBest("Ridi")
+        setRoomBest("OneStore")
+        setRoomBest("MrBlue")
 
         //프래그먼트 관련
         llayout_Search_Fragment = root.findViewById(R.id.llayout_Search_Fragment)
@@ -81,6 +109,76 @@ class FragmentBest : Fragment() {
         }
 
         return root
+    }
+
+    private fun setRoomBest(type: String){
+
+        val week = mRootRef.child("best").child(type).child(Genre).child("today").child(DBDate.Day())
+        var num = 1
+
+        week.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+
+                    val group: BookListDataBestToday? =
+                        postSnapshot.getValue(BookListDataBestToday::class.java)
+
+                    dbWeek.bestDao().insert(
+                        DataBestDay(
+                            group!!.writer,
+                            group.title,
+                            group.bookImg,
+                            group.bookCode,
+                            group.info1,
+                            group.info2,
+                            group.info3,
+                            group.info4,
+                            group.info5,
+                            group.number,
+                            group.date,
+                            type
+                        )
+                    )
+
+                    num += 1
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        })
+
+        val yesterdayRef = mRootRef.child("best").child(type).child(Genre).child("today").child(DBDate.Yesterday())
+
+        yesterdayRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+
+                    val group: BookListDataBestToday? =
+                        postSnapshot.getValue(BookListDataBestToday::class.java)
+
+                    dbYesterday.bestDao().insert(
+                        DataBestDay(
+                            group!!.writer,
+                            group.title,
+                            group.bookImg,
+                            group.bookCode,
+                            group.info1,
+                            group.info2,
+                            group.info3,
+                            group.info4,
+                            group.info5,
+                            group.number,
+                            group.date,
+                            type
+                        )
+                    )
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        })
     }
 
 }

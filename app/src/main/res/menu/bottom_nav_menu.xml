@@ -17,13 +17,8 @@
         android:title="@string/Title_Event" />
 
     <item
-        android:id="@+id/Fragment_Best1"
+        android:id="@+id/Fragment_Pick"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="누르지마" />
-
-    <item
-        android:id="@+id/Fragment_Best2"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="누르지마" />
+        android:title="@string/Title_Pick" />
 
 </menu>

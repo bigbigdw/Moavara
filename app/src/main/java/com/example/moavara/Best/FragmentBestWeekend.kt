@@ -33,9 +33,14 @@ class FragmentBestWeekend : Fragment() {
         val adapter = ViewPagerAdapter(
             childFragmentManager
         )
-        adapter.addFragment(FragmentBestWeekendTab("Joara"), "조아라")
-        adapter.addFragment(FragmentBestWeekendTab("Naver"), "네이버")
-        adapter.addFragment(FragmentBestWeekendTab("Kakao"), "카카오페이지")
+        adapter.addFragment(FragmentBestTodayTab("Joara"), "조아라")
+        adapter.addFragment(FragmentBestTodayTab("Joara"), "조아라 노블레스")
+        adapter.addFragment(FragmentBestTodayTab("Joara"), "조아라 프리미엄")
+        adapter.addFragment(FragmentBestWeekendTab("Naver"), "네이버 웹소설")
+        adapter.addFragment(FragmentBestWeekendTab("Naver"), "네이버 챌린지리그")
+        adapter.addFragment(FragmentBestWeekendTab("Naver"), "네이버 베스트리그")
+        adapter.addFragment(FragmentBestWeekendTab("Kakao Page"), "카카오 페이지")
+        adapter.addFragment(FragmentBestWeekendTab("Kakao"), "카카오 스테이지")
         adapter.addFragment(FragmentBestWeekendTab("Ridi"), "리디북스")
         adapter.addFragment(FragmentBestWeekendTab("OneStore"), "원스토어")
         adapter.addFragment(FragmentBestWeekendTab("MrBlue"), "미스터블루")

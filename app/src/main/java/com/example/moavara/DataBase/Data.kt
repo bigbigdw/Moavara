@@ -44,8 +44,10 @@ class BookListDataBestWeekend(
 )
 
 class EventData(
-    var idx: String ? = null,
+    var link: String ? = null,
     var imgfile: String ? = null,
-    var is_banner_cnt: String ? = null,
-    var joaralink: String ? = null
+    var title: String ? = null,
+    var startDate: String ? = null,
+    var endDate: String ? = null,
+    var type: String ? = null
 )

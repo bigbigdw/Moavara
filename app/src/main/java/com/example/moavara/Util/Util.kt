@@ -110,7 +110,7 @@ object BestRef {
         return setBestRef(type, genre).child("month").child(DBDate.Month()).child(DBDate.Week()).child(DBDate.DayString())
     }
 
-    fun setBookListDataBestToday(ref: MutableMap<String?, Any>, num : Int) : BookListDataBestToday {
+    fun setBookListDataBestToday(ref: MutableMap<String?, Any>) : BookListDataBestToday {
         return BookListDataBestToday(
             ref["writerName"] as String?,
             ref["subject"] as String?,
@@ -123,7 +123,7 @@ object BestRef {
             ref["info5"] as String?,
             ref["number"] as Int?,
             ref["date"] as String?,
-            ""
+            ref["status"] as String?,
         )
     }
 

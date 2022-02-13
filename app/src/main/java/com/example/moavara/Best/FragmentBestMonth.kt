@@ -15,7 +15,6 @@ import com.google.firebase.database.FirebaseDatabase
 import java.util.ArrayList
 
 class FragmentBestMonth : Fragment() {
-    private var toolbar: Toolbar? = null
     private var tabLayout: TabLayout? = null
     private var viewPager: ViewPager? = null
     override fun onCreateView(
@@ -37,8 +36,13 @@ class FragmentBestMonth : Fragment() {
         )
 
         adapter.addFragment(FragmentBestMonthTab("Joara"), "조아라")
-        adapter.addFragment(FragmentBestMonthTab("Naver"), "네이버")
-        adapter.addFragment(FragmentBestMonthTab("Kakao"), "카카오페이지")
+        adapter.addFragment(FragmentBestMonthTab("Joara"), "조아라 노블레스")
+        adapter.addFragment(FragmentBestMonthTab("Joara"), "조아라 프리미엄")
+        adapter.addFragment(FragmentBestMonthTab("Naver"), "네이버 웹소설")
+        adapter.addFragment(FragmentBestMonthTab("Naver"), "네이버 챌린지리그")
+        adapter.addFragment(FragmentBestMonthTab("Naver"), "네이버 베스트리그")
+        adapter.addFragment(FragmentBestMonthTab("Kakao"), "카카오 페이지")
+        adapter.addFragment(FragmentBestMonthTab("Kakao"), "카카오 스테이지")
         adapter.addFragment(FragmentBestMonthTab("Ridi"), "리디북스")
         adapter.addFragment(FragmentBestMonthTab("OneStore"), "원스토어")
         adapter.addFragment(FragmentBestMonthTab("MrBlue"), "미스터블루")

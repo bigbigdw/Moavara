@@ -20,14 +20,6 @@ class JoaraEventValue {
     @SerializedName("imgfile")
     @Expose
     var imgfile: String? = null
-
-    @SerializedName("is_banner_cnt")
-    @Expose
-    var is_banner_cnt: String? = null
-
-    @SerializedName("joaralink")
-    @Expose
-    var joaralink: String? = null
 }
 
 //조아라 베스트

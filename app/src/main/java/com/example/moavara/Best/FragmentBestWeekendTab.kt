@@ -147,43 +147,26 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
                 val group: BookListDataBestToday? =
                     dataSnapshot.getValue(BookListDataBestToday::class.java)
 
+                val ref: MutableMap<String?, Any> = HashMap()
+
                 if (calculateNum(group!!.number, group.title) != 0) {
 
-                    items.add(
-                        BookListDataBestToday(
-                            group.writer,
-                            group.title,
-                            group.bookImg,
-                            group.bookCode,
-                            group.info1,
-                            group.info2,
-                            group.info3,
-                            group.info4,
-                            group.info5,
-                            calculateNum(group.number, group.title),
-                            group.date,
-                            status
-                        )
-                    )
+                    ref["writerName"] = group.writer!!
+                    ref["subject"] = group.title!!
+                    ref["bookImg"] = group.bookImg!!
+                    ref["bookCode"] = group.bookCode!!
+                    ref["info1"] = group.info1!!
+                    ref["info2"] = group.info2!!
+                    ref["info3"] = group.info3!!
+                    ref["info4"] = group.info4!!
+                    ref["info5"] = group.info5!!
+                    ref["number"] = calculateNum(group.number, group.title)
+                    ref["date"] = group.date!!
+                    ref["status"] = status
 
-                    if(calculateNum(group.number, group.title) != 0){
-                        weekList.child((((DBDate.DayInt() - 1) * 20) + num).toString()).setValue(
-                            BookListDataBestToday(
-                                group.writer,
-                                group.title,
-                                group.bookImg,
-                                group.bookCode,
-                                group.info1,
-                                group.info2,
-                                group.info3,
-                                group.info4,
-                                group.info5,
-                                calculateNum(group.number, group.title),
-                                group.date,
-                                status
-                            )
-                        )
-                    }
+                    items.add(BestRef.setBookListDataBestToday(ref))
+
+                    BestRef.setBestRefWeekList(tabType, num, Genre).setValue(BestRef.setBookListDataBestToday(ref))
 
                     num += 1
                 }
@@ -199,9 +182,6 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
             override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {}
             override fun onCancelled(databaseError: DatabaseError) {}
         })
-
-
-
 
 
 

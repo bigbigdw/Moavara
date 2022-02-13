@@ -1,6 +1,7 @@
 package com.example.moavara.Best
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +31,7 @@ class FragmentBestTodayTab(private val tabType: String) :
     lateinit var root: View
 
     val Genre = "ALL"
+    private lateinit var dbWeek: DataBaseBestDay
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,6 +44,11 @@ class FragmentBestTodayTab(private val tabType: String) :
 
         recyclerView = root.findViewById(R.id.rview_Best)
         adapterToday = AdapterBestToday(items)
+
+        dbWeek = Room.databaseBuilder(requireContext(), DataBaseBestDay::class.java, "best-week")
+            .allowMainThreadQueries().build()
+
+//        Log.d("@@@@@", dbWeek.bestDao().getAll(tabType).size.toString())
 
         getBookListBest(recyclerView)
 

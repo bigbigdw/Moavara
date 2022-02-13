@@ -34,7 +34,7 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         root = inflater.inflate(R.layout.fragment_event, container, false)
 
         recyclerViewLeft = root.findViewById(R.id.rview_Left)
@@ -51,14 +51,25 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
         recyclerViewLeft!!.adapter = adapterLeft
 
         Thread {
-            if (tabType == "Joara") {
-                getEventJoara()
-            } else if (tabType == "Ridi") {
-                getEventRidi()
-            } else if (tabType == "OneStore"){
-                getEventOneStore()
-            } else if (tabType == "Kakao"){
-                getEventKakao()
+            when (tabType) {
+                "Joara" -> {
+                    getEventJoara()
+                }
+                "Ridi" -> {
+                    getEventRidi()
+                }
+                "OneStore" -> {
+                    getEventOneStore()
+                }
+                "Kakao" -> {
+                    getEventKakao()
+                }
+                "Naver" -> {
+                    getEventNaver()
+                }
+                "MrBlue" -> {
+                    getEventMrBlue()
+                }
             }
         }.start()
 
@@ -84,25 +95,28 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
 
                             val idx = banner[i].idx
                             val imgfile = banner[i].imgfile
-                            val is_banner_cnt = banner[i].is_banner_cnt
-                            val joaralink = banner[i].joaralink
 
-                            if (i % 2 != 1) {
-                                itemsLeft.add(
-                                    EventData(
-                                        idx,
-                                        imgfile,
-                                        is_banner_cnt,
-                                        joaralink
-                                    )
-                                )
-                            } else {
+
+                            if (i % 2 == 1) {
                                 itemsRight.add(
                                     EventData(
                                         idx,
                                         imgfile,
-                                        is_banner_cnt,
-                                        joaralink
+                                        "",
+                                        "",
+                                        "",
+                                        "Joara"
+                                    )
+                                )
+                            } else {
+                                itemsLeft.add(
+                                    EventData(
+                                        idx,
+                                        imgfile,
+                                        "",
+                                        "",
+                                        "",
+                                        "Joara"
                                     )
                                 )
                             }
@@ -136,6 +150,88 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
 //                fragmentManager?.let { mBottomDialogBest.show(it, null) }
             }
         })
+    }
+
+    private fun getEventNaver() {
+        val doc: Document = Jsoup.connect("https://www.mrblue.com/event/novel?sortby=recent").get()
+        val mrBlue: Elements = doc.select(".event-list ul li")
+
+        for (i in mrBlue.indices) {
+
+            val imgfile = mrBlue.select("img")[i].absUrl("src")
+            val title = mrBlue.select("img")[i].absUrl("alt")
+            val link =  mrBlue.select("a")[i].absUrl("href")
+
+            requireActivity().runOnUiThread {
+                if (i % 2 != 1) {
+                    itemsLeft.add(
+                        EventData(
+                            link,
+                            imgfile,
+                            title,
+                            "",
+                            "",
+                            "MrBlue"
+                        )
+                    )
+                    adapterLeft!!.notifyDataSetChanged()
+                } else {
+                    itemsRight.add(
+                        EventData(
+                            link,
+                            imgfile,
+                            title,
+                            "",
+                            "",
+                            "MrBlue"
+                        )
+                    )
+                    adapterRight!!.notifyDataSetChanged()
+                }
+            }
+
+        }
+    }
+
+    private fun getEventMrBlue() {
+        val doc: Document = Jsoup.connect("https://www.mrblue.com/event/novel?sortby=recent").get()
+        val mrBlue: Elements = doc.select(".event-list ul li")
+
+        for (i in mrBlue.indices) {
+
+            val imgfile = mrBlue.select("img")[i].absUrl("src")
+            val title = mrBlue.select("img")[i].absUrl("alt")
+            val link =  mrBlue.select("a")[i].absUrl("href")
+
+            requireActivity().runOnUiThread {
+                if (i % 2 != 1) {
+                    itemsLeft.add(
+                        EventData(
+                            link,
+                            imgfile,
+                            title,
+                            "",
+                            "",
+                            "MrBlue"
+                        )
+                    )
+                    adapterLeft!!.notifyDataSetChanged()
+                } else {
+                    itemsRight.add(
+                        EventData(
+                            link,
+                            imgfile,
+                            title,
+                            "",
+                            "",
+                            "MrBlue"
+                        )
+                    )
+                    adapterRight!!.notifyDataSetChanged()
+                }
+            }
+
+        }
     }
 
     private fun getEventRidi() {
@@ -217,10 +313,6 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
         for(elem in ridiKeyword){
             val imgfile = elem.select("img").attr("data-src")
 
-            Log.d("@@@@-!", "num:$num")
-
-
-                Log.d("@@@@-@", "num:$num")
                 if (num % 2 != 1) {
                     requireActivity().runOnUiThread {
                         itemsLeft.add(
@@ -235,7 +327,6 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
                     }
                 } else {
                     requireActivity().runOnUiThread {
-                        Log.d("@@@@-@", "num:$num")
                         itemsRight.add(
                             EventData(
                                 "idx",

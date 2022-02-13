@@ -68,7 +68,6 @@ class ActivitySplash : Activity() {
 
         val doc: Document =
             Jsoup.connect("https://www.mrblue.com/novel/best/all/realtime").post()
-        val bestRef = mRootRef.child("best").child(type).child(Genre)
         val MrBlue: Elements = doc.select(".list-box ul li")
         val MrBlueRef: MutableMap<String?, Any> = HashMap()
 
@@ -90,8 +89,6 @@ class ActivitySplash : Activity() {
 
         }
 
-        setRoomBest(bestRef,type)
-
     }
 
     private fun getNaverBest(type : String) {
@@ -99,7 +96,6 @@ class ActivitySplash : Activity() {
         val doc: Document =
             Jsoup.connect("https://novel.naver.com/best/ranking?genre=102&periodType=DAILY").post()
         val Naver: Elements = doc.select(".ranking_wrap_left .list_ranking li")
-        val bestRef = mRootRef.child("best").child(type).child(Genre)
         val NaverRef: MutableMap<String?, Any> = HashMap()
 
         for (i in Naver.indices) {
@@ -120,8 +116,6 @@ class ActivitySplash : Activity() {
 
         }
 
-        setRoomBest(bestRef,type)
-
     }
 
     private fun getRidiBest(type : String) {
@@ -129,7 +123,6 @@ class ActivitySplash : Activity() {
         val doc: Document =
             Jsoup.connect("https://ridibooks.com/bestsellers/romance_serial?order=daily").post()
         val Ridi: Elements = doc.select(".book_thumbnail_wrapper")
-        val bestRef = mRootRef.child("best").child(type).child(Genre)
         val RidiRef: MutableMap<String?, Any> = HashMap()
 
         for (i in Ridi.indices) {
@@ -150,13 +143,9 @@ class ActivitySplash : Activity() {
 
         }
 
-        setRoomBest(bestRef,type)
-
     }
 
     private fun getOneStoreBest(type : String) {
-
-        val bestRef = mRootRef.child("best").child(type).child(Genre)
         val OneStoryRef: MutableMap<String?, Any> = HashMap()
 
         val call: Call<OneStoreBookResult?>? = RetrofitOnestore.getBestOneStore()
@@ -197,13 +186,9 @@ class ActivitySplash : Activity() {
             }
         })
 
-        setRoomBest(bestRef,type)
-
     }
 
     private fun getKakaoBest(type : String) {
-
-        val bestRef = mRootRef.child("best").child(type).child(Genre)
         val KakaoRef: MutableMap<String?, Any> = HashMap()
 
         val call: Call<BestResultKakao?>? = RetrofitKaKao.getBestKakao("11", "0", "0", "2", "A")
@@ -244,12 +229,9 @@ class ActivitySplash : Activity() {
             }
         })
 
-        setRoomBest(bestRef,type)
-
     }
 
     private fun getJoaraBest(type : String) {
-        val bestRef = mRootRef.child("best").child(type).child(Genre)
         val JoaraRef: MutableMap<String?, Any> = HashMap()
 
         val call: Call<JoaraBestListResult?>? = RetrofitJoara.getJoaraBookBest("today", "", "0")
@@ -290,68 +272,30 @@ class ActivitySplash : Activity() {
             }
         })
 
-        setRoomBest(bestRef,type)
-
     }
 
     private fun miningValue(ref: MutableMap<String?, Any>, num : Int, type: String){
 
+//        //Week List
+//        BestRef.setBestRefWeekList(type, num, Genre).setValue(BestRef.setBookListDataBestToday(ref, num))
+
         //Today
-        BestRef.setBestRefToday(type, num, Genre).setValue(BestRef.setBookListDataBestToday(ref, num))
+        BestRef.setBestRefToday(type, num, Genre).setValue(BestRef.setBookListDataBestToday(ref))
 
         //Week
         if (num < 10) {
-            BestRef.setBestRefWeek(type, num, Genre).setValue(BestRef.setBookListDataBestToday(ref, num))
+            BestRef.setBestRefWeek(type, num, Genre).setValue(BestRef.setBookListDataBestToday(ref))
         }
 
         //Month - Week
         if (num == 0) {
             //Month - Day
-            BestRef.setBestRefMonthWeek(type, Genre).setValue(BestRef.setBookListDataBestToday(ref, num))
+            BestRef.setBestRefMonthWeek(type, Genre).setValue(BestRef.setBookListDataBestToday(ref))
             //Month
-            BestRef.setBestRefMonth(type, Genre).setValue(BestRef.setBookListDataBestToday(ref, num))
+            BestRef.setBestRefMonth(type, Genre).setValue(BestRef.setBookListDataBestToday(ref))
         }
 
-        BestRef.setBestRefMonthDay(type, num, Genre).setValue(BestRef.setBookListDataBestToday(ref, num))
-
+        BestRef.setBestRefMonthDay(type, num, Genre).setValue(BestRef.setBookListDataBestToday(ref))
     }
-
-    private fun setRoomBest(bestRef : DatabaseReference, type: String){
-
-        val yesterdayRef = bestRef.child("today").child(DBDate.Yesterday())
-
-        yesterdayRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (postSnapshot in dataSnapshot.children) {
-
-                    val group: BookListDataBestToday? =
-                        postSnapshot.getValue(BookListDataBestToday::class.java)
-
-                    dbYesterday.bestDao().insert(
-                        DataBestDay(
-                            group!!.writer,
-                            group.title,
-                            group.bookImg,
-                            group.bookCode,
-                            group.info1,
-                            group.info2,
-                            group.info3,
-                            group.info4,
-                            group.info5,
-                            group.number,
-                            group.date,
-                            type
-                        )
-                    )
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-            }
-        })
-    }
-
-
-
 
 }
