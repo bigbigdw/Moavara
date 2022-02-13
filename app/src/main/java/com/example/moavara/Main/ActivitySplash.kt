@@ -121,7 +121,7 @@ class ActivitySplash : Activity() {
     private fun getRidiBest(type : String) {
 
         val doc: Document =
-            Jsoup.connect("https://ridibooks.com/bestsellers/romance_serial?order=daily").post()
+            Jsoup.connect("https://ridibooks.com/bestsellers/romance_serial?rent=n&adult=n&adult_exclude=y&order=daily").post()
         val Ridi: Elements = doc.select(".book_thumbnail_wrapper")
         val RidiRef: MutableMap<String?, Any> = HashMap()
 

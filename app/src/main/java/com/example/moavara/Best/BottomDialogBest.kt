@@ -35,8 +35,8 @@ class BottomDialogBest(private val mContext: Context, private val item: BookList
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val v: View = inflater.inflate(R.layout.bottomdialog_best, container, false)
+    ): View {
+        val v: View = inflater.inflate(R.layout.bottom_dialog_best, container, false)
 
         iviewBookimg = v.findViewById(R.id.iview_BookImg)
         iviewRanking = v.findViewById(R.id.iview_Ranking)
@@ -58,10 +58,10 @@ class BottomDialogBest(private val mContext: Context, private val item: BookList
         tviewIntro!!.text = item.info1
 
         Glide.with(mContext)
-            .load(item!!.bookImg)
+            .load(item.bookImg)
             .into(iviewBookimg!!)
 
-        val position = item!!.number?.minus(1)
+        val position = item.number?.minus(1)
 
         when (position) {
             0 -> {

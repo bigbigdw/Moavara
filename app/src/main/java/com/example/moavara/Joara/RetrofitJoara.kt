@@ -47,6 +47,16 @@ object RetrofitJoara {
             )
     }
 
+    fun getJoaraEventDetail(event_id: String?): Call<JoaraEventDetailResult?>? {
+        return Retrofit.Builder()
+            .baseUrl(HELPER.API_JOARA)
+            .addConverterFactory(GsonConverterFactory.create()).build()
+            .create(JoaraEventDetailervice::class.java)
+            .getRetrofit(
+                event_id
+            )
+    }
+
     fun getJoaraEvent(page: String?, banner_type: String?, category: String?): Call<JoaraEventResult?>? {
         return Retrofit.Builder()
             .baseUrl(HELPER.API_JOARA)

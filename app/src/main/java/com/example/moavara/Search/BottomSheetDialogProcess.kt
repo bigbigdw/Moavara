@@ -29,7 +29,7 @@ class BottomSheetDialogProcess( private val mContext: Context) :
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val v: View = inflater.inflate(R.layout.bottomdialog_process, container, false)
 
         focused = mContext.getSharedPreferences("PROCESS", AppCompatActivity.MODE_PRIVATE).getString("FOCUS", "")

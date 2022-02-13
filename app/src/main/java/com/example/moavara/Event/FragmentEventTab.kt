@@ -5,9 +5,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.moavara.Best.BottomDialogBest
 import com.example.moavara.Joara.JoaraEventResult
 import com.example.moavara.Joara.RetrofitJoara
 import com.example.moavara.R
@@ -73,6 +75,34 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
             }
         }.start()
 
+        adapterLeft!!.setOnItemClickListener(object : AdapterEvent.OnItemClickListener {
+            override fun onItemClick(v: View?, position: Int) {
+                val item: EventData? = adapterLeft!!.getItem(position)
+
+                if(tabType == "Joara" && !item!!.link!!.contains("joaralink://event?event_id=")){
+                    Toast.makeText(requireContext(), "이벤트 페이지가 아닙니다.", Toast.LENGTH_SHORT).show()
+                } else {
+                    val mBottomSheetDialogEvent =
+                        BottomSheetDialogEvent(requireContext(), item, tabType)
+                    fragmentManager?.let { mBottomSheetDialogEvent.show(it, null) }
+                }
+            }
+        })
+
+        adapterRight!!.setOnItemClickListener(object : AdapterEvent.OnItemClickListener {
+            override fun onItemClick(v: View?, position: Int) {
+                val item: EventData? = adapterRight!!.getItem(position)
+
+                if(tabType == "Joara" && !item!!.link!!.contains("joaralink://event?event_id=")){
+                    Toast.makeText(requireContext(), "이벤트 페이지가 아닙니다.", Toast.LENGTH_SHORT).show()
+                } else {
+                    val mBottomSheetDialogEvent =
+                        BottomSheetDialogEvent(requireContext(), item, tabType)
+                    fragmentManager?.let { mBottomSheetDialogEvent.show(it, null) }
+                }
+            }
+        })
+
         return root
     }
 
@@ -93,7 +123,7 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
 
                         for (i in banner!!.indices) {
 
-                            val idx = banner[i].idx
+                            val idx = banner[i].joaralink
                             val imgfile = banner[i].imgfile
 
 
@@ -132,24 +162,6 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
                 Log.d("onFailure", "실패")
             }
         })
-
-        adapterLeft!!.setOnItemClickListener(object : AdapterEvent.OnItemClickListener {
-            override fun onItemClick(v: View?, position: Int) {
-                val item: EventData? = adapterLeft!!.getItem(position)
-
-//                val mBottomDialogBest = BottomDialogBest(requireContext(), item)
-//                fragmentManager?.let { mBottomDialogBest.show(it, null) }
-            }
-        })
-
-        adapterRight!!.setOnItemClickListener(object : AdapterEvent.OnItemClickListener {
-            override fun onItemClick(v: View?, position: Int) {
-                val item: EventData? = adapterRight!!.getItem(position)
-
-//                val mBottomDialogBest = BottomDialogBest(requireContext(), item)
-//                fragmentManager?.let { mBottomDialogBest.show(it, null) }
-            }
-        })
     }
 
     private fun getEventNaver() {
@@ -160,7 +172,7 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
 
             val imgfile = mrBlue.select("img")[i].absUrl("src")
             val title = mrBlue.select("img")[i].absUrl("alt")
-            val link =  mrBlue.select("a")[i].absUrl("href")
+            val link = mrBlue.select("a")[i].absUrl("href")
 
             requireActivity().runOnUiThread {
                 if (i % 2 != 1) {
@@ -201,7 +213,7 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
 
             val imgfile = mrBlue.select("img")[i].absUrl("src")
             val title = mrBlue.select("img")[i].absUrl("alt")
-            val link =  mrBlue.select("a")[i].absUrl("href")
+            val link = mrBlue.select("a")[i].absUrl("href")
 
             requireActivity().runOnUiThread {
                 if (i % 2 != 1) {
@@ -310,35 +322,36 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
 
         var num = 0
 
-        for(elem in ridiKeyword){
+        for (elem in ridiKeyword) {
             val imgfile = elem.select("img").attr("data-src")
 
-                if (num % 2 != 1) {
-                    requireActivity().runOnUiThread {
-                        itemsLeft.add(
-                            EventData(
-                                "idx",
-                                "https://$imgfile",
-                                "is_banner_cnt",
-                                "joaralink"
-                            )
+            if (num % 2 != 1) {
+                requireActivity().runOnUiThread {
+                    itemsLeft.add(
+                        EventData(
+                            "idx",
+                            "https://$imgfile",
+                            "is_banner_cnt",
+                            "joaralink"
                         )
-                        adapterLeft!!.notifyDataSetChanged()
-                    }
-                } else {
-                    requireActivity().runOnUiThread {
-                        itemsRight.add(
-                            EventData(
-                                "idx",
-                                "https://$imgfile",
-                                "is_banner_cnt",
-                                "joaralink"
-                            )
-                        )
-                        adapterRight!!.notifyDataSetChanged()
-                    }
+                    )
+                    adapterLeft!!.notifyDataSetChanged()
                 }
+            } else {
+                requireActivity().runOnUiThread {
+                    itemsRight.add(
+                        EventData(
+                            "idx",
+                            "https://$imgfile",
+                            "is_banner_cnt",
+                            "joaralink"
+                        )
+                    )
+                    adapterRight!!.notifyDataSetChanged()
+                }
+            }
 
             num += 1
-        }}
+        }
     }
+}

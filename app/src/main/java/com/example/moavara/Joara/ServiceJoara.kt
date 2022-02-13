@@ -36,6 +36,14 @@ interface JoaraEventService {
     ): Call<JoaraEventResult?>?
 }
 
+//조아라 이벤트 상세
+interface JoaraEventDetailervice {
+    @GET(API.EVENT_DETAIL_JOA + HELPER.ETC)
+    fun getRetrofit(
+        @Query("event_id") event_id: String?,
+    ): Call<JoaraEventDetailResult?>?
+}
+
 //조아라 베스트
 interface JoaraBestService {
     @GET(API.BEST_BOOK_JOA + HELPER.ETC)

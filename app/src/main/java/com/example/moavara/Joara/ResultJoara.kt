@@ -8,14 +8,26 @@ class JoaraEventResult {
     @SerializedName("banner")
     @Expose
     val banner: List<JoaraEventValue>? = null
-
 }
 
-//조아라 이밴트 결과 상세
-class JoaraEventValue {
-    @SerializedName("idx")
+//조아라 이밴트 상세 결과
+class JoaraEventDetailResult {
+    @SerializedName("event")
     @Expose
-    var idx: String? = null
+    val event: EventContents? = null
+}
+
+class EventContents{
+    @SerializedName("content")
+    @Expose
+    val content:String? = null
+}
+
+//조아라 이벤트 결과 상세
+class JoaraEventValue {
+    @SerializedName("joaralink")
+    @Expose
+    var joaralink: String? = null
 
     @SerializedName("imgfile")
     @Expose
