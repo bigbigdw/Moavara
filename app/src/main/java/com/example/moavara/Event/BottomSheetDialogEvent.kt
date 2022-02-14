@@ -74,21 +74,15 @@ class BottomSheetDialogEvent(
         Thread {
 
             when (tabType) {
-//                "Ridi" -> {
-//                    getEventRidi()
-//                }
-//                "OneStore" -> {
-//                    getEventOneStore()
-//                }
+                "Ridi" -> {
+                    getEventRidi()
+                }
                 "Kakao" -> {
                     getEventKakao()
                 }
-//                "Naver" -> {
-//                    getEventNaver()
-//                }
-//                "MrBlue" -> {
-//                    getEventMrBlue()
-//                }
+                "MrBlue" -> {
+                    getEventMrBlue()
+                }
             }
         }.start()
 
@@ -112,6 +106,49 @@ class BottomSheetDialogEvent(
         }
 
         return v
+    }
+
+    fun getEventMrBlue(){
+        val doc: Document = Jsoup.connect(item!!.link).get()
+
+        Log.d("!!!!", doc.select(".event-html img").size.toString())
+
+        if(doc.select(".event-html img").size > 1){
+            val mrBlue1 = doc.select(".event-html img").first()!!.absUrl("src")
+
+            requireActivity().runOnUiThread {
+                Glide.with(mContext)
+                    .load(mrBlue1.replace("http", "https"))
+                    .into(iView!!)
+            }
+        } else if(doc.select(".event-html img").size < 1) {
+
+            val mrBlue2 = doc.select(".event-visual img").first()!!.absUrl("src")
+
+            requireActivity().runOnUiThread {
+                Glide.with(mContext)
+                    .load(mrBlue2)
+                    .into(iView!!)
+            }
+        }
+
+        title = item.title
+
+
+    }
+
+    fun getEventRidi(){
+        val doc: Document = Jsoup.connect(item!!.link).get()
+        val ridi = doc.select(".event_detail_top img").first()!!.absUrl("src")
+
+        title = item.title
+        starttime = item.startDate
+
+        requireActivity().runOnUiThread {
+            Glide.with(mContext)
+                .load(ridi)
+                .into(iView!!)
+        }
     }
 
     fun getEventKakao() {

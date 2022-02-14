@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#FFFFFF">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,6 +15,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="500dp"
+            android:maxWidth="500dp"
             android:orientation="vertical"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -28,12 +28,14 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="bottom"
                     android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/iVIew"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="40dp"
                         android:adjustViewBounds="true" />
 
                     <WebView
@@ -56,10 +58,19 @@
 
         </LinearLayout>
 
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#888888">
+            android:background="#888888"
+            tools:layout_editor_absoluteY="19dp">
 
             <Button
                 android:id="@+id/btnLeft"
@@ -87,6 +98,5 @@
                 android:textStyle="bold"
                 app:backgroundTint="@null" />
         </LinearLayout>
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

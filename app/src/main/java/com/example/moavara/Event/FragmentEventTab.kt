@@ -211,7 +211,7 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
                         EventData(
                             link,
                             imgfile,
-                            title,
+                            title.replace("https://www.mrblue.com/event/",""),
                             "",
                             "",
                             "MrBlue"
@@ -223,7 +223,7 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
                         EventData(
                             link,
                             imgfile,
-                            title,
+                            title.replace("https://www.mrblue.com/event/",""),
                             "",
                             "",
                             "MrBlue"
@@ -243,25 +243,32 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
         for (i in ridiKeyword.indices) {
 
             val imgfile = doc.select(".image_link img")[i].absUrl("src")
+            val link = doc.select(".event_title a")[i].absUrl("href")
+            val title = doc.select(".event_title a")[i].text()
+            val startDate = ridiKeyword[i].select(".contents_descript").first()!!.text()
 
             requireActivity().runOnUiThread {
                 if (i % 2 != 1) {
                     itemsLeft.add(
                         EventData(
-                            "idx",
+                            link,
                             imgfile,
-                            "is_banner_cnt",
-                            "joaralink"
+                            title,
+                            startDate,
+                            "",
+                            "Ridi"
                         )
                     )
                     adapterLeft!!.notifyDataSetChanged()
                 } else {
                     itemsRight.add(
                         EventData(
-                            "idx",
+                            link,
                             imgfile,
-                            "is_banner_cnt",
-                            "joaralink"
+                            title,
+                            startDate,
+                            "",
+                            "Ridi"
                         )
                     )
                     adapterRight!!.notifyDataSetChanged()
@@ -309,10 +316,8 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
     private fun getEventKakao() {
         val doc: Document = Jsoup.connect("https://page.kakao.com/main/recommend-events").get()
         val kakao: Elements = doc.select(".eventsBox .cellWrapper")
-
         var num = 0
 
-        Log.d("@@@@", kakao.toString())
 
         for (elem in kakao) {
             val imgfile = elem.select(".imageWrapper img").attr("data-src")
@@ -356,7 +361,9 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
     private fun onClickEvent(item: EventData?){
         if (tabType == "Joara" && !item!!.link!!.contains("joaralink://event?event_id=")) {
             Toast.makeText(requireContext(), "이벤트 페이지가 아닙니다.", Toast.LENGTH_SHORT).show()
-        } else if (tabType == "Kakao" && item!!.link!!.contains("kakaopage://exec?open_web_with_auth/store/event")) {
+        } else if (tabType == "OneStore") {
+            Toast.makeText(requireContext(), "원스토어는 지원하지 않습니다.", Toast.LENGTH_SHORT).show()
+        }else if (tabType == "Kakao" && item!!.link!!.contains("kakaopage://exec?open_web_with_auth/store/event")) {
             Toast.makeText(requireContext(), "이벤트 페이지가 아닙니다.", Toast.LENGTH_SHORT).show()
         } else {
             val mBottomSheetDialogEvent =
