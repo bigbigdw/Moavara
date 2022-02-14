@@ -26,6 +26,8 @@ class FragmentPick : Fragment() {
         tabLayout = root.findViewById(R.id.post_tab)
         tabLayout!!.setupWithViewPager(viewPager)
 
+        //https://onestory.co.kr/api/main/PN83003001/card 0 cardList datasetProp url
+
         return root
     }
 
