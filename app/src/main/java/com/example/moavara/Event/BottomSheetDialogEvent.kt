@@ -111,8 +111,6 @@ class BottomSheetDialogEvent(
     fun getEventMrBlue(){
         val doc: Document = Jsoup.connect(item!!.link).get()
 
-        Log.d("!!!!", doc.select(".event-html img").size.toString())
-
         if(doc.select(".event-html img").size > 1){
             val mrBlue1 = doc.select(".event-html img").first()!!.absUrl("src")
 
@@ -155,8 +153,6 @@ class BottomSheetDialogEvent(
         val doc: Document = Jsoup.connect("https://page.kakao.com${item!!.link}").get()
         val kakao = doc.select(".themeBox img").first()!!.absUrl("src")
 
-        Log.d("####", kakao.toString())
-
         title = item.title
 
         requireActivity().runOnUiThread {
@@ -167,13 +163,24 @@ class BottomSheetDialogEvent(
     }
 
     private fun getUrl(type: String): String {
-        if (type == "Joara") {
-            return "https://www.joara.com/event/" + item!!.link!!.replace(
-                "joaralink://event?event_id=",
-                ""
-            )
+        when (type) {
+            "Joara" -> {
+                return "https://www.joara.com/event/" + item!!.link!!.replace(
+                    "joaralink://event?event_id=",
+                    ""
+                )
+            }
+            "Ridi" -> {
+                return item!!.link!!
+            }
+            "Kakao" -> {
+                return "https://page.kakao.com${item!!.link}"
+            }
+            "MrBlue" -> {
+                return item!!.link!!
+            }
+            else -> return ""
         }
-        return ""
     }
 
     private fun getEventJoara() {
