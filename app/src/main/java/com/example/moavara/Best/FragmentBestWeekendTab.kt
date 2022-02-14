@@ -141,7 +141,7 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
 
         var num = 0
 
-        BestRef.getBestRefToday(tabType, Genre).addChildEventListener(object : ChildEventListener {
+        weekList.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
 
                 val group: BookListDataBestToday? =

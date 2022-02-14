@@ -48,8 +48,6 @@ class FragmentBestTodayTab(private val tabType: String) :
         dbWeek = Room.databaseBuilder(requireContext(), DataBaseBestDay::class.java, "best-week")
             .allowMainThreadQueries().build()
 
-//        Log.d("@@@@@", dbWeek.bestDao().getAll(tabType).size.toString())
-
         getBookListBest(recyclerView)
 
         return root

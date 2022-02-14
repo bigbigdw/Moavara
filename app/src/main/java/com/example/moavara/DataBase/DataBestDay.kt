@@ -3,6 +3,18 @@ package com.example.moavara.DataBase
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+@Entity
+data class DataEvent (
+    var link: String ? = null,
+    var imgfile: String ? = null,
+    var title: String ? = null,
+    var startDate: String ? = null,
+    var endDate: String ? = null,
+    var type: String ? = null,
+    var memo: String ? = null,
+){
+    @PrimaryKey(autoGenerate = true) var id: Int = 0
+}
 
 @Entity
 data class DataBestDay (
@@ -18,6 +30,7 @@ data class DataBestDay (
     var number: Int ? = null,
     var date: String ? = null,
     var type: String ? = null,
+    var status: String ? = null,
 ){
     @PrimaryKey(autoGenerate = true) var id: Int = 0
 }

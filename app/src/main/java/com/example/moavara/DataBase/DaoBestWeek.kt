@@ -20,9 +20,6 @@ interface BestDao {
     @Query("DELETE FROM DataBestDay")
     fun initAll()
 
-    @Query("SELECT writer, title, bookImg, intro, bookCode, cntChapter, cntPageRead, cntFavorite, cntRecom, SUM(number), date, id FROM DataBestDay GROUP BY writer, title, bookImg, intro, bookCode, cntChapter, cntPageRead, cntFavorite, cntRecom, date, id")
-    fun test(): List<DataBestDay>
-
     @Insert
     fun insert(user: DataBestDay)
 

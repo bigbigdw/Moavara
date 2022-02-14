@@ -21,6 +21,18 @@ class EventContents{
     @SerializedName("content")
     @Expose
     val content:String? = null
+
+    @SerializedName("title")
+    @Expose
+    val title:String? = null
+
+    @SerializedName("endtime")
+    @Expose
+    val endtime:String? = null
+
+    @SerializedName("starttime")
+    @Expose
+    val starttime:String? = null
 }
 
 //조아라 이벤트 결과 상세

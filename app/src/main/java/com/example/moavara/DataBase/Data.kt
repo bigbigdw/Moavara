@@ -49,5 +49,6 @@ class EventData(
     var title: String ? = null,
     var startDate: String ? = null,
     var endDate: String ? = null,
-    var type: String ? = null
+    var type: String ? = null,
+    var memo: String ? = null
 )

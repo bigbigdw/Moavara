@@ -52,6 +52,9 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerViewLeft!!.adapter = adapterLeft
 
+        itemsLeft.clear()
+        itemsRight.clear()
+
         Thread {
             when (tabType) {
                 "Joara" -> {
@@ -135,7 +138,7 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
                                         "",
                                         "",
                                         "",
-                                        "Joara"
+                                        "Joara",
                                     )
                                 )
                             } else {

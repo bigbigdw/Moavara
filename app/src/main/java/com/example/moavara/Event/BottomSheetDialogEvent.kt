@@ -11,27 +11,28 @@ import android.view.ViewGroup
 import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebView
-import android.webkit.WebViewClient
 import android.widget.Button
-import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
+import com.example.moavara.DataBase.DataEvent
+import com.example.moavara.DataBase.DataPickEvent
 import com.example.moavara.Joara.JoaraEventDetailResult
-import com.example.moavara.Joara.JoaraEventResult
 import com.example.moavara.Joara.RetrofitJoara
 import com.example.moavara.R
-import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Search.EventData
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
-import org.jsoup.select.Elements
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.ArrayList
 
-class BottomSheetDialogEvent(private val mContext: Context, private val item: EventData?, private val tabType: String?) :
+class BottomSheetDialogEvent(
+    private val mContext: Context,
+    private val item: EventData?,
+    private val tabType: String?
+) :
     BottomSheetDialogFragment() {
 
     private var btnRight: Button? = null
@@ -39,8 +40,13 @@ class BottomSheetDialogEvent(private val mContext: Context, private val item: Ev
     private var rviewEvent: RecyclerView? = null
     private var wView: WebView? = null
 
-    private var adapterEventDetail : AdapterEventDetail? = null
+    private var adapterEventDetail: AdapterEventDetail? = null
     private val items = ArrayList<String?>()
+    private var title : String? = null
+    private var endtime : String? = null
+    private var starttime : String? = null
+
+    private lateinit var dbEvent: DataPickEvent
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,10 +62,13 @@ class BottomSheetDialogEvent(private val mContext: Context, private val item: Ev
 
         adapterEventDetail = AdapterEventDetail(items)
 
+        dbEvent = Room.databaseBuilder(requireContext(), DataPickEvent::class.java, "pick-event")
+            .allowMainThreadQueries().build()
+
         rviewEvent!!.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        if(tabType == "Joara"){
+        if (tabType == "Joara") {
             getEventJoara()
         }
 
@@ -87,13 +96,36 @@ class BottomSheetDialogEvent(private val mContext: Context, private val item: Ev
 //            }
         }.start()
 
+        btnLeft!!.setOnClickListener {
+            dbEvent.eventDao().insert(DataEvent(
+                item!!.link,
+                item.imgfile,
+                title,
+                starttime,
+                endtime,
+                tabType,
+                ""
+            ))
+            Toast.makeText(requireContext(), "Pick 성공!", Toast.LENGTH_SHORT).show()
+            dismiss()
+        }
+
         btnRight!!.setOnClickListener {
-            val url = "https://www.joara.com/event/" + item!!.link!!.replace("joaralink://event?event_id=","")
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getUrl(tabType!!)))
             startActivity(intent)
         }
 
         return v
+    }
+
+    private fun getUrl(type: String): String {
+        if (type == "Joara") {
+            return "https://www.joara.com/event/" + item!!.link!!.replace(
+                "joaralink://event?event_id=",
+                ""
+            )
+        }
+        return ""
     }
 
     private fun getEventJoara() {
@@ -111,7 +143,12 @@ class BottomSheetDialogEvent(private val mContext: Context, private val item: Ev
         wView!!.getSettings().setJavaScriptEnabled(true)
 
         val call: Call<JoaraEventDetailResult?>? =
-            RetrofitJoara.getJoaraEventDetail(item!!.link!!.replace("joaralink://event?event_id=",""))
+            RetrofitJoara.getJoaraEventDetail(
+                item!!.link!!.replace(
+                    "joaralink://event?event_id=",
+                    ""
+                )
+            )
 
         call!!.enqueue(object : Callback<JoaraEventDetailResult?> {
             override fun onResponse(
@@ -122,7 +159,19 @@ class BottomSheetDialogEvent(private val mContext: Context, private val item: Ev
                 if (response.isSuccessful) {
                     response.body()?.let { it ->
                         val content = it.event!!.content
-                        wView!!.loadDataWithBaseURL(null, content!!.replace("http","https"), "text/html; charset=utf-8", "base64",null);
+
+                        title = it.event.title!!
+                        endtime = it.event.starttime!!
+                        starttime = it.event.endtime!!
+
+
+                        wView!!.loadDataWithBaseURL(
+                            null,
+                            content!!.replace("http", "https"),
+                            "text/html; charset=utf-8",
+                            "base64",
+                            null
+                        );
                     }
                 }
             }

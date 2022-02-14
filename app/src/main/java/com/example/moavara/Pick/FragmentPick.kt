@@ -35,7 +35,7 @@ class FragmentPick : Fragment() {
         )
 
         adapter.addFragment(FragmentEventTab("Joara"), "소설")
-        adapter.addFragment(FragmentEventTab("Naver"), "이벤트")
+        adapter.addFragment(FragmentPickTabEvent(), "이벤트")
         viewPager!!.adapter = adapter
     }
 

@@ -3,6 +3,8 @@ package com.example.moavara.Main
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.room.Room
 import com.example.moavara.DataBase.*
@@ -25,8 +27,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 val mRootRef = FirebaseDatabase.getInstance().reference
-private lateinit var dbWeek: DataBaseBestDay
-private lateinit var dbYesterday: DataBaseBestDay
 
 class ActivitySplash : Activity() {
 
@@ -36,22 +36,19 @@ class ActivitySplash : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        dbWeek = Room.databaseBuilder(this, DataBaseBestDay::class.java, "best-week")
-            .allowMainThreadQueries().build()
-        dbYesterday = Room.databaseBuilder(this, DataBaseBestDay::class.java, "best-yesterday")
-            .allowMainThreadQueries().build()
-
-        dbWeek.bestDao().initAll()
-        dbYesterday.bestDao().initAll()
-
         Thread {
             runMining()
         }.start()
 
-        val novelIntent = Intent(this, ActivityLogin::class.java)
-        novelIntent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-        startActivityIfNeeded(novelIntent, 0)
-        finish()
+        Handler(Looper.myLooper()!!).postDelayed(
+            {
+                val novelIntent = Intent(this, ActivityBookSetting::class.java)
+                novelIntent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                startActivityIfNeeded(novelIntent, 0)
+                finish()
+            },
+            1000
+        )
 
     }
 
@@ -277,7 +274,7 @@ class ActivitySplash : Activity() {
     private fun miningValue(ref: MutableMap<String?, Any>, num : Int, type: String){
 
 //        //Week List
-//        BestRef.setBestRefWeekList(type, num, Genre).setValue(BestRef.setBookListDataBestToday(ref, num))
+//        BestRef.setBestRefWeekList(type, num, Genre).setValue(BestRef.setBookListDataBestToday(ref))
 
         //Today
         BestRef.setBestRefToday(type, num, Genre).setValue(BestRef.setBookListDataBestToday(ref))
