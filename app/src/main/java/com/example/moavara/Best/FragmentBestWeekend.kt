@@ -39,7 +39,7 @@ class FragmentBestWeekend : Fragment() {
         adapter.addFragment(FragmentBestWeekendTab("Naver"), "네이버 웹소설")
         adapter.addFragment(FragmentBestWeekendTab("Naver"), "네이버 챌린지리그")
         adapter.addFragment(FragmentBestWeekendTab("Naver"), "네이버 베스트리그")
-        adapter.addFragment(FragmentBestWeekendTab("Kakao Page"), "카카오 페이지")
+        adapter.addFragment(FragmentBestWeekendTab("Kakao"), "카카오 페이지")
         adapter.addFragment(FragmentBestWeekendTab("Kakao"), "카카오 스테이지")
         adapter.addFragment(FragmentBestWeekendTab("Ridi"), "리디북스")
         adapter.addFragment(FragmentBestWeekendTab("OneStore"), "원스토어")

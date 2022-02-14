@@ -10,24 +10,24 @@ import java.util.*
 
 object DBDate {
 
-    fun DayInt() : Int {
+    fun DayInt(): Int {
         return Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
     }
 
-    fun Day() : String {
+    fun Day(): String {
         return Calendar.getInstance().get(Calendar.DAY_OF_WEEK).toString()
     }
 
-    fun Yesterday() : String {
+    fun Yesterday(): String {
 
-        return if(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 1){
+        return if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 1) {
             "7"
         } else {
-            (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) -1).toString()
+            (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1).toString()
         }
     }
 
-    fun DayString() : String {
+    fun DayString(): String {
 
         val day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK).toString()
 
@@ -59,18 +59,18 @@ object DBDate {
         }
     }
 
-    fun Week() : String {
+    fun Week(): String {
         return Calendar.getInstance().get(Calendar.WEEK_OF_MONTH).toString()
     }
 
     @SuppressLint("SimpleDateFormat")
-    fun Date() : String {
+    fun Date(): String {
         val currentTime: Date = Calendar.getInstance().time
         val format = SimpleDateFormat("MM-dd")
         return format.format(currentTime).toString()
     }
 
-    fun Month() : String {
+    fun Month(): String {
         return Calendar.getInstance().get(Calendar.MONTH).toString()
     }
 }
@@ -78,39 +78,52 @@ object DBDate {
 object BestRef {
     private val mRootRef = FirebaseDatabase.getInstance().reference
 
-    private fun setBestRef(type: String, genre : String) : DatabaseReference {
+    private fun setBestRef(type: String, genre: String): DatabaseReference {
         return mRootRef.child("best").child(type).child(genre)
     }
 
-    fun setBestRefWeekList(type: String, num : Int, genre : String) : DatabaseReference {
-        return setBestRef(type, genre).child("week list").child(((DBDate.DayInt() * 1000) + num).toString())
+    fun delBestRefWeekList(type: String, genre: String): DatabaseReference {
+        return setBestRef(type, genre).child("week list")
     }
 
-    fun setBestRefToday(type: String, num : Int, genre : String) : DatabaseReference {
+    fun setBestRefWeekList(type: String, num: Int, genre: String): DatabaseReference {
+        return setBestRef(type, genre).child("week list")
+            .child(((DBDate.DayInt() * 1000) + num).toString())
+    }
+
+    fun setBestRefWeekCompared(type: String, num: Int, genre: String): DatabaseReference {
+        return setBestRef(type, genre).child("week compared")
+            .child(((DBDate.DayInt() * 1000) + num).toString())
+    }
+
+    fun setBestRefToday(type: String, num: Int, genre: String): DatabaseReference {
         return setBestRef(type, genre).child("today").child(DBDate.Day()).child(num.toString())
     }
 
-    fun getBestRefToday(type: String, genre : String) : DatabaseReference {
+    fun getBestRefToday(type: String, genre: String): DatabaseReference {
         return setBestRef(type, genre).child("today").child(DBDate.Day())
     }
 
-    fun setBestRefWeek(type: String, num : Int, genre : String) : DatabaseReference {
+    fun setBestRefWeek(type: String, num: Int, genre: String): DatabaseReference {
         return setBestRef(type, genre).child("week").child(num.toString()).child(DBDate.DayString())
     }
 
-    fun setBestRefMonthWeek(type: String, genre : String) : DatabaseReference {
-        return setBestRef(type, genre).child("month").child(DBDate.Month()).child(DBDate.Week()).child(DBDate.DayString())
+    fun setBestRefMonthWeek(type: String, genre: String): DatabaseReference {
+        return setBestRef(type, genre).child("month").child(DBDate.Month()).child(DBDate.Week())
+            .child(DBDate.DayString())
     }
 
-    fun setBestRefMonthDay(type: String, num : Int, genre : String) : DatabaseReference {
-        return setBestRef(type, genre).child("month").child(DBDate.Month()).child(DBDate.Week()).child(DBDate.DayString()).child("day").child(num.toString())
+    fun setBestRefMonthDay(type: String, num: Int, genre: String): DatabaseReference {
+        return setBestRef(type, genre).child("month").child(DBDate.Month()).child(DBDate.Week())
+            .child(DBDate.DayString()).child("day").child(num.toString())
     }
 
-    fun setBestRefMonth(type: String, genre : String) : DatabaseReference {
-        return setBestRef(type, genre).child("month").child(DBDate.Month()).child(DBDate.Week()).child(DBDate.DayString())
+    fun setBestRefMonth(type: String, genre: String): DatabaseReference {
+        return setBestRef(type, genre).child("month").child(DBDate.Month()).child(DBDate.Week())
+            .child(DBDate.DayString())
     }
 
-    fun setBookListDataBestToday(ref: MutableMap<String?, Any>) : BookListDataBestToday {
+    fun setBookListDataBestToday(ref: MutableMap<String?, Any>): BookListDataBestToday {
         return BookListDataBestToday(
             ref["writerName"] as String?,
             ref["subject"] as String?,
@@ -127,7 +140,7 @@ object BestRef {
         )
     }
 
-    fun setDataBestDay(ref: MutableMap<String?, Any>, tabType : String) : DataBestDay {
+    fun setDataBestDay(ref: MutableMap<String?, Any>): DataBestDay {
         return DataBestDay(
             ref["writerName"] as String?,
             ref["subject"] as String?,
@@ -140,7 +153,8 @@ object BestRef {
             ref["info5"] as String?,
             ref["number"] as Int?,
             ref["date"] as String?,
-            tabType
+            ref["type"] as String?,
+            ref["status"] as String?,
         )
     }
 }

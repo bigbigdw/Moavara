@@ -148,27 +148,25 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
 
         for(i in week.indices){
 
-            if (calculateNum(week[i].number, week[i].title) != 0) {
                 ref["writerName"] = week[i].writer!!
                 ref["subject"] = week[i].title!!
                 ref["bookImg"] = week[i].bookImg!!
                 ref["bookCode"] = week[i].bookCode!!
-                ref["info1"] = week[i].intro!!
-                ref["info2"] = week[i].cntChapter!!
-                ref["info3"] = week[i].cntPageRead!!
-                ref["info4"] = week[i].cntFavorite!!
-                ref["info5"] = week[i].cntRecom!!
-                ref["number"] = calculateNum(week[i].number, week[i].title)
+                ref["info1"] = week[i].info1!!
+                ref["info2"] = week[i].info2!!
+                ref["info3"] = week[i].info3!!
+                ref["info4"] = week[i].info4!!
+                ref["info5"] = week[i].info5!!
+                ref["number"] = week[i].number!!
                 ref["date"] = week[i].date!!
-                ref["status"] = status
+                ref["status"] = week[i].status!!
 
                 items.add(BestRef.setBookListDataBestToday(ref))
-                BestRef.setBestRefWeekList(tabType, i, Genre).setValue(BestRef.setBookListDataBestToday(ref))
                 val cmpAsc: Comparator<BookListDataBestToday?> =
                     Comparator { o1, o2 -> o1!!.number!!.compareTo(o2!!.number!!) }
                 Collections.sort(items, cmpAsc)
                 adapterToday!!.notifyDataSetChanged()
-            }
+
 
         }
 

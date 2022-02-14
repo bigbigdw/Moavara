@@ -47,7 +47,7 @@ class FragmentBest : Fragment() {
         tviewWeekend = root.findViewById(R.id.tview_Weekend)
         tviewBest = root.findViewById(R.id.tview_Best)
 
-        tviewToday!!.setTextColor(Color.parseColor("#6D6F76"))
+        tviewToday!!.setTextColor(Color.parseColor("#ffffff"))
 
         mFragmentBestToday = FragmentBestToday()
         parentFragmentManager.beginTransaction()

@@ -6,8 +6,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import androidx.room.Room
-import com.example.moavara.DataBase.*
 import com.example.moavara.Joara.JoaraBestListResult
 import com.example.moavara.Joara.RetrofitJoara
 import com.example.moavara.KaKao.BestResultKakao
@@ -15,7 +13,6 @@ import com.example.moavara.KaKao.RetrofitKaKao
 import com.example.moavara.OneStore.OneStoreBookResult
 import com.example.moavara.OneStore.RetrofitOnestore
 import com.example.moavara.R
-import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.DBDate
 import com.google.firebase.database.*
@@ -273,8 +270,10 @@ class ActivitySplash : Activity() {
 
     private fun miningValue(ref: MutableMap<String?, Any>, num : Int, type: String){
 
-//        //Week List
-//        BestRef.setBestRefWeekList(type, num, Genre).setValue(BestRef.setBookListDataBestToday(ref))
+//        BestRef.delBestRefWeekList(type, Genre).removeValue()
+
+        //Week List
+        BestRef.setBestRefWeekList(type, num, Genre).setValue(BestRef.setBookListDataBestToday(ref))
 
         //Today
         BestRef.setBestRefToday(type, num, Genre).setValue(BestRef.setBookListDataBestToday(ref))

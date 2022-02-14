@@ -12,6 +12,7 @@ import com.example.moavara.DataBase.DataBaseBestDay
 import com.example.moavara.DataBase.DataBestDay
 import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
+import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.DBDate
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -30,6 +31,7 @@ class ActivityBookSetting : AppCompatActivity() {
     var button_next: Button? = null
 
     val Genre = "ALL"
+    var status = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,42 +98,6 @@ class ActivityBookSetting : AppCompatActivity() {
 
     private fun setRoomBest(type: String){
 
-        val week = mRootRef.child("best").child(type).child(Genre).child("week list")
-        var num = 1
-
-        week.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (postSnapshot in dataSnapshot.children) {
-
-                    val group: BookListDataBestToday? =
-                        postSnapshot.getValue(BookListDataBestToday::class.java)
-
-                    dbWeek.bestDao().insert(
-                        DataBestDay(
-                            group!!.writer,
-                            group.title,
-                            group.bookImg,
-                            group.info1,
-                            group.bookCode,
-                            group.info2,
-                            group.info3,
-                            group.info4,
-                            group.info5,
-                            group.number,
-                            group.date,
-                            type,
-                            ""
-                        )
-                    )
-
-                    num += 1
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-            }
-        })
-
         val yesterdayRef = mRootRef.child("best").child(type).child(Genre).child("today").child(
             DBDate.Yesterday())
 
@@ -164,5 +130,77 @@ class ActivityBookSetting : AppCompatActivity() {
             override fun onCancelled(databaseError: DatabaseError) {
             }
         })
+
+        val week = mRootRef.child("best").child(type).child(Genre).child("week list")
+        var num = 1
+
+        week.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+
+                    val group: BookListDataBestToday? =
+                        postSnapshot.getValue(BookListDataBestToday::class.java)
+
+                    val ref: MutableMap<String?, Any> = HashMap()
+
+                    if(dbWeek.bestDao().getAll(type) != null && dbWeek.bestDao().findDay(type, group!!.title!!, group.number!!) == null){
+                        if (calculateNum(group.number, group.title, type) != 0) {
+
+                            ref["writerName"] = group.writer!!
+                            ref["subject"] = group.title!!
+                            ref["bookImg"] = group.bookImg!!
+                            ref["bookCode"] = group.bookCode!!
+                            ref["info1"] = group.info1!!
+                            ref["info2"] = group.info2!!
+                            ref["info3"] = group.info3!!
+                            ref["info4"] = group.info4!!
+                            ref["info5"] = group.info5!!
+                            ref["number"] = calculateNum(group.number, group.title, type)
+                            ref["date"] = group.date!!
+                            ref["type"] = type
+                            ref["status"] = status
+
+                            dbWeek.bestDao().insert(BestRef.setDataBestDay(ref))
+                            BestRef.setBestRefWeekCompared(type, num, Genre).setValue(BestRef.setBookListDataBestToday(ref))
+                        }
+                    }
+
+                    num += 1
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        })
+
+    }
+
+    fun calculateNum(num : Int?, title : String?, tabType: String) : Int{
+
+        val yesterdayNum = dbYesterday.bestDao().findName(tabType, title!!)
+
+        if (yesterdayNum == 0) {
+            status = "NEW"
+            return 0
+        } else {
+            return when {
+                yesterdayNum < num!! -> {
+                    status = "DOWN"
+                    num - yesterdayNum
+                }
+                yesterdayNum > num -> {
+                    status = "UP"
+                    num - yesterdayNum
+                }
+                yesterdayNum == num -> {
+                    status = "SAME"
+                    num - yesterdayNum
+                }
+                else -> {
+                    status = "SAME"
+                    -1
+                }
+            }
+        }
     }
 }

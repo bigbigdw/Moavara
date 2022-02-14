@@ -11,6 +11,9 @@ interface BestDao {
     @Query("SELECT * FROM DataBestDay WHERE type = :type AND title = :title")
     fun findDay(type: String, title: String): DataBestDay
 
+    @Query("SELECT * FROM DataBestDay WHERE type = :type AND title = :title AND number = :number")
+    fun findDay(type: String, title: String , number: Int): DataBestDay
+
     @Query("SELECT * FROM DataBestDay WHERE type = :type ORDER BY title ASC")
     fun getAll(type: String): List<DataBestDay>
 
