@@ -27,6 +27,7 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
     private val itemWeek = ArrayList<BookListDataBestWeekend?>()
     var recyclerView: RecyclerView? = null
     private lateinit var dbYesterday: DataBaseBestDay
+    private lateinit var dbWeek: DataBaseBestDay
 
     private var adapterToday: AdapterBestToday? = null
     var recyclerViewToday: RecyclerView? = null
@@ -48,6 +49,9 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
         adapterWeek = AdapterBestWeekend(requireContext(), itemWeek)
 
         dbYesterday = Room.databaseBuilder(requireContext(), DataBaseBestDay::class.java, "best-yesterday")
+            .allowMainThreadQueries().build()
+
+        dbWeek = Room.databaseBuilder(requireContext(), DataBaseBestDay::class.java, "best-week")
             .allowMainThreadQueries().build()
 
         val linearLayoutManager =
@@ -139,51 +143,34 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapterToday
 
-        var num = 0
+        val week = dbWeek.bestDao().getAll(tabType)
+        val ref: MutableMap<String?, Any> = HashMap()
 
-        weekList.addChildEventListener(object : ChildEventListener {
-            override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
+        for(i in week.indices){
 
-                val group: BookListDataBestToday? =
-                    dataSnapshot.getValue(BookListDataBestToday::class.java)
+            if (calculateNum(week[i].number, week[i].title) != 0) {
+                ref["writerName"] = week[i].writer!!
+                ref["subject"] = week[i].title!!
+                ref["bookImg"] = week[i].bookImg!!
+                ref["bookCode"] = week[i].bookCode!!
+                ref["info1"] = week[i].intro!!
+                ref["info2"] = week[i].cntChapter!!
+                ref["info3"] = week[i].cntPageRead!!
+                ref["info4"] = week[i].cntFavorite!!
+                ref["info5"] = week[i].cntRecom!!
+                ref["number"] = calculateNum(week[i].number, week[i].title)
+                ref["date"] = week[i].date!!
+                ref["status"] = status
 
-                val ref: MutableMap<String?, Any> = HashMap()
-
-                if (calculateNum(group!!.number, group.title) != 0) {
-
-                    ref["writerName"] = group.writer!!
-                    ref["subject"] = group.title!!
-                    ref["bookImg"] = group.bookImg!!
-                    ref["bookCode"] = group.bookCode!!
-                    ref["info1"] = group.info1!!
-                    ref["info2"] = group.info2!!
-                    ref["info3"] = group.info3!!
-                    ref["info4"] = group.info4!!
-                    ref["info5"] = group.info5!!
-                    ref["number"] = calculateNum(group.number, group.title)
-                    ref["date"] = group.date!!
-                    ref["status"] = status
-
-                    items.add(BestRef.setBookListDataBestToday(ref))
-
-                    BestRef.setBestRefWeekList(tabType, num, Genre).setValue(BestRef.setBookListDataBestToday(ref))
-
-                    num += 1
-                }
-
+                items.add(BestRef.setBookListDataBestToday(ref))
+                BestRef.setBestRefWeekList(tabType, i, Genre).setValue(BestRef.setBookListDataBestToday(ref))
                 val cmpAsc: Comparator<BookListDataBestToday?> =
                     Comparator { o1, o2 -> o1!!.number!!.compareTo(o2!!.number!!) }
                 Collections.sort(items, cmpAsc)
                 adapterToday!!.notifyDataSetChanged()
-
             }
-            override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {}
-            override fun onChildRemoved(dataSnapshot: DataSnapshot) {}
-            override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {}
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
 
-
+        }
 
         adapterToday!!.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {

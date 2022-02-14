@@ -83,7 +83,7 @@ object BestRef {
     }
 
     fun setBestRefWeekList(type: String, num : Int, genre : String) : DatabaseReference {
-        return setBestRef(type, genre).child("week list").child((((DBDate.DayInt() - 1) * 20) + num).toString())
+        return setBestRef(type, genre).child("week list").child(((DBDate.DayInt() * 1000) + num).toString())
     }
 
     fun setBestRefToday(type: String, num : Int, genre : String) : DatabaseReference {
