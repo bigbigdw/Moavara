@@ -12,7 +12,7 @@
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/ETC/layout/activity_splash.xml" value="0.11666666666666667" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/ETC/layout/ddd.xml" value="0.13518518518518519" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/ETC/layout/loading.xml" value="0.13518518518518519" />
-        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Event/layout/bottom_dialog_event.xml" value="0.1" />
+        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Event/layout/bottom_dialog_event.xml" value="0.18" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Event/layout/item_event.xml" value="0.28072916666666664" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Login/layout/activity_login.xml" value="0.23055555555555557" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Main/layout/aacasc.xml" value="0.37135416666666665" />
@@ -50,6 +50,7 @@
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_search.xml" value="0.2505399568034557" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_test.xml" value="0.15925925925925927" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/item_booklist_best_month.xml" value="0.1" />
+        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/item_booklist_best_weekend.xml" value="0.1" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/item_booklist_best_weekend_2.xml" value="0.25" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/item_booklist_best_weekend_sub.xml" value="0.32864583333333336" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/menu/bottom_main_menu.xml" value="0.37135416666666665" />

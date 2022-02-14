@@ -12,10 +12,12 @@ import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
+import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.DataEvent
 import com.example.moavara.DataBase.DataPickEvent
 import com.example.moavara.Joara.JoaraEventDetailResult
@@ -23,6 +25,10 @@ import com.example.moavara.Joara.RetrofitJoara
 import com.example.moavara.R
 import com.example.moavara.Search.EventData
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
+import org.jsoup.nodes.Element
+import org.jsoup.select.Elements
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -37,14 +43,12 @@ class BottomSheetDialogEvent(
 
     private var btnRight: Button? = null
     private var btnLeft: Button? = null
-    private var rviewEvent: RecyclerView? = null
     private var wView: WebView? = null
 
-    private var adapterEventDetail: AdapterEventDetail? = null
-    private val items = ArrayList<String?>()
     private var title : String? = null
     private var endtime : String? = null
     private var starttime : String? = null
+    private var iView : ImageView? = null
 
     private lateinit var dbEvent: DataPickEvent
 
@@ -57,16 +61,11 @@ class BottomSheetDialogEvent(
 
         btnRight = v.findViewById(R.id.btnRight)
         btnLeft = v.findViewById(R.id.btnLeft)
-        rviewEvent = v.findViewById(R.id.rviewEvent)
         wView = v.findViewById(R.id.wView)
-
-        adapterEventDetail = AdapterEventDetail(items)
+        iView = v.findViewById(R.id.iVIew)
 
         dbEvent = Room.databaseBuilder(requireContext(), DataPickEvent::class.java, "pick-event")
             .allowMainThreadQueries().build()
-
-        rviewEvent!!.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         if (tabType == "Joara") {
             getEventJoara()
@@ -74,26 +73,23 @@ class BottomSheetDialogEvent(
 
         Thread {
 
-//            when (tabType) {
-//                "Joara" -> {
-//                    getEventJoara()
-//                }
+            when (tabType) {
 //                "Ridi" -> {
 //                    getEventRidi()
 //                }
 //                "OneStore" -> {
 //                    getEventOneStore()
 //                }
-//                "Kakao" -> {
-//                    getEventKakao()
-//                }
+                "Kakao" -> {
+                    getEventKakao()
+                }
 //                "Naver" -> {
 //                    getEventNaver()
 //                }
 //                "MrBlue" -> {
 //                    getEventMrBlue()
 //                }
-//            }
+            }
         }.start()
 
         btnLeft!!.setOnClickListener {
@@ -116,6 +112,21 @@ class BottomSheetDialogEvent(
         }
 
         return v
+    }
+
+    fun getEventKakao() {
+        val doc: Document = Jsoup.connect("https://page.kakao.com${item!!.link}").get()
+        val kakao = doc.select(".themeBox img").first()!!.absUrl("src")
+
+        Log.d("####", kakao.toString())
+
+        title = item.title
+
+        requireActivity().runOnUiThread {
+            Glide.with(mContext)
+                .load(kakao)
+                .into(iView!!)
+        }
     }
 
     private fun getUrl(type: String): String {

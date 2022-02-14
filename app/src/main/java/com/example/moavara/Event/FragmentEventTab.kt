@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moavara.Best.BottomDialogBest
 import com.example.moavara.Joara.JoaraEventResult
 import com.example.moavara.Joara.RetrofitJoara
 import com.example.moavara.R
@@ -82,13 +81,7 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
             override fun onItemClick(v: View?, position: Int) {
                 val item: EventData? = adapterLeft!!.getItem(position)
 
-                if(tabType == "Joara" && !item!!.link!!.contains("joaralink://event?event_id=")){
-                    Toast.makeText(requireContext(), "이벤트 페이지가 아닙니다.", Toast.LENGTH_SHORT).show()
-                } else {
-                    val mBottomSheetDialogEvent =
-                        BottomSheetDialogEvent(requireContext(), item, tabType)
-                    fragmentManager?.let { mBottomSheetDialogEvent.show(it, null) }
-                }
+                onClickEvent(item)
             }
         })
 
@@ -96,13 +89,7 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
             override fun onItemClick(v: View?, position: Int) {
                 val item: EventData? = adapterRight!!.getItem(position)
 
-                if(tabType == "Joara" && !item!!.link!!.contains("joaralink://event?event_id=")){
-                    Toast.makeText(requireContext(), "이벤트 페이지가 아닙니다.", Toast.LENGTH_SHORT).show()
-                } else {
-                    val mBottomSheetDialogEvent =
-                        BottomSheetDialogEvent(requireContext(), item, tabType)
-                    fragmentManager?.let { mBottomSheetDialogEvent.show(it, null) }
-                }
+                onClickEvent(item)
             }
         })
 
@@ -321,21 +308,27 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
 
     private fun getEventKakao() {
         val doc: Document = Jsoup.connect("https://page.kakao.com/main/recommend-events").get()
-        val ridiKeyword: Elements = doc.select(".eventsBox .imageWrapper")
+        val kakao: Elements = doc.select(".eventsBox .cellWrapper")
 
         var num = 0
 
-        for (elem in ridiKeyword) {
-            val imgfile = elem.select("img").attr("data-src")
+        Log.d("@@@@", kakao.toString())
+
+        for (elem in kakao) {
+            val imgfile = elem.select(".imageWrapper img").attr("data-src")
+            val link = elem.attr("data-url")
+            val title = elem.select(".imageWrapper img").attr("alt")
 
             if (num % 2 != 1) {
                 requireActivity().runOnUiThread {
                     itemsLeft.add(
                         EventData(
-                            "idx",
+                            link,
                             "https://$imgfile",
-                            "is_banner_cnt",
-                            "joaralink"
+                            title,
+                            "",
+                            "",
+                            "Kakao"
                         )
                     )
                     adapterLeft!!.notifyDataSetChanged()
@@ -344,10 +337,12 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
                 requireActivity().runOnUiThread {
                     itemsRight.add(
                         EventData(
-                            "idx",
+                            link,
                             "https://$imgfile",
-                            "is_banner_cnt",
-                            "joaralink"
+                            title,
+                            "",
+                            "",
+                            "Kakao"
                         )
                     )
                     adapterRight!!.notifyDataSetChanged()
@@ -355,6 +350,18 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
             }
 
             num += 1
+        }
+    }
+
+    private fun onClickEvent(item: EventData?){
+        if (tabType == "Joara" && !item!!.link!!.contains("joaralink://event?event_id=")) {
+            Toast.makeText(requireContext(), "이벤트 페이지가 아닙니다.", Toast.LENGTH_SHORT).show()
+        } else if (tabType == "Kakao" && item!!.link!!.contains("kakaopage://exec?open_web_with_auth/store/event")) {
+            Toast.makeText(requireContext(), "이벤트 페이지가 아닙니다.", Toast.LENGTH_SHORT).show()
+        } else {
+            val mBottomSheetDialogEvent =
+                BottomSheetDialogEvent(requireContext(), item, tabType)
+            fragmentManager?.let { mBottomSheetDialogEvent.show(it, null) }
         }
     }
 }
