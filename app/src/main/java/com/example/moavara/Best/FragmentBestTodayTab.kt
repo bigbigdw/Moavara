@@ -39,8 +39,9 @@ class FragmentBestTodayTab(private val tabType: String) :
     ): View {
         root = inflater.inflate(R.layout.fragment_best_today_tab, container, false)
 
-        dbYesterday = Room.databaseBuilder(requireContext(), DataBaseBestDay::class.java, "best-yesterday")
-            .allowMainThreadQueries().build()
+        dbYesterday =
+            Room.databaseBuilder(requireContext(), DataBaseBestDay::class.java, "best-yesterday")
+                .allowMainThreadQueries().build()
 
         recyclerView = root.findViewById(R.id.rview_Best)
         adapterToday = AdapterBestToday(items)
@@ -59,36 +60,32 @@ class FragmentBestTodayTab(private val tabType: String) :
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapterToday
 
-        BestRef.getBestRefToday(tabType, Genre).addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (postSnapshot in dataSnapshot.children) {
+        BestRef.getBestRefToday(tabType, Genre).get().addOnSuccessListener {
 
-                    val group: BookListDataBestToday? =
-                        postSnapshot.getValue(BookListDataBestToday::class.java)
-
-                    items.add(
-                        BookListDataBestToday(
-                            group!!.writer,
-                            group.title,
-                            group.bookImg,
-                            group.bookCode,
-                            group.info1,
-                            group.info2,
-                            group.info3,
-                            group.info4,
-                            group.info5,
-                            calculateNum(group.number, group.title),
-                            group.date,
-                            status
-                        )
+            for (i in it.children) {
+                val group: BookListDataBestToday? = i.getValue(BookListDataBestToday::class.java)
+                items.add(
+                    BookListDataBestToday(
+                        group!!.writer,
+                        group.title,
+                        group.bookImg,
+                        group.bookCode,
+                        group.info1,
+                        group.info2,
+                        group.info3,
+                        group.info4,
+                        group.info5,
+                        calculateNum(group.number, group.title),
+                        group.date,
+                        status
                     )
-                    adapterToday!!.notifyDataSetChanged()
-                }
+                )
+                adapterToday!!.notifyDataSetChanged()
             }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-            }
-        })
+        }.addOnFailureListener {}
+
+
 
         adapterToday!!.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
@@ -101,8 +98,7 @@ class FragmentBestTodayTab(private val tabType: String) :
     }
 
 
-
-    fun calculateNum(num : Int?, title : String?) : Int{
+    fun calculateNum(num: Int?, title: String?): Int {
 
         val yesterdayNum = dbYesterday.bestDao().findName(tabType, title!!)
 

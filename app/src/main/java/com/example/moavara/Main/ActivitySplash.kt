@@ -273,7 +273,7 @@ class ActivitySplash : Activity() {
 //        BestRef.delBestRefWeekList(type, Genre).removeValue()
 
         //Week List
-        BestRef.setBestRefWeekList(type, num, Genre).setValue(BestRef.setBookListDataBestToday(ref))
+//        BestRef.setBestRefWeekList(type, num, Genre).setValue(BestRef.setBookListDataBestToday(ref))
 
         //Today
         BestRef.setBestRefToday(type, num, Genre).setValue(BestRef.setBookListDataBestToday(ref))

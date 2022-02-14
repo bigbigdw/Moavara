@@ -2,6 +2,7 @@ package com.example.moavara.Main
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
@@ -101,77 +102,65 @@ class ActivityBookSetting : AppCompatActivity() {
         val yesterdayRef = mRootRef.child("best").child(type).child(Genre).child("today").child(
             DBDate.Yesterday())
 
-        yesterdayRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (postSnapshot in dataSnapshot.children) {
+        yesterdayRef.get().addOnSuccessListener {
 
-                    val group: BookListDataBestToday? =
-                        postSnapshot.getValue(BookListDataBestToday::class.java)
+            for(i in it.children){
+                val group: BookListDataBestToday? = i.getValue(BookListDataBestToday::class.java)
 
-                    dbYesterday.bestDao().insert(
-                        DataBestDay(
-                            group!!.writer,
-                            group.title,
-                            group.bookImg,
-                            group.bookCode,
-                            group.info1,
-                            group.info2,
-                            group.info3,
-                            group.info4,
-                            group.info5,
-                            group.number,
-                            group.date,
-                            type
-                        )
+                dbYesterday.bestDao().insert(
+                    DataBestDay(
+                        group!!.writer,
+                        group.title,
+                        group.bookImg,
+                        group.bookCode,
+                        group.info1,
+                        group.info2,
+                        group.info3,
+                        group.info4,
+                        group.info5,
+                        group.number,
+                        group.date,
+                        type
                     )
-                }
+                )
             }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-            }
-        })
+        }.addOnFailureListener{}
 
-        val week = mRootRef.child("best").child(type).child(Genre).child("week list")
         var num = 1
 
-        week.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (postSnapshot in dataSnapshot.children) {
+        BestRef.getBestRefToday(type, Genre).get().addOnSuccessListener {
 
-                    val group: BookListDataBestToday? =
-                        postSnapshot.getValue(BookListDataBestToday::class.java)
+            for(i in it.children){
+                val group: BookListDataBestToday? = i.getValue(BookListDataBestToday::class.java)
+                val ref: MutableMap<String?, Any> = HashMap()
 
-                    val ref: MutableMap<String?, Any> = HashMap()
+                if(dbWeek.bestDao().getAll(type) != null && dbWeek.bestDao().findDay(type, group!!.title!!, group.number!!) == null){
+                    if (calculateNum(group.number, group.title, type) != 0) {
 
-                    if(dbWeek.bestDao().getAll(type) != null && dbWeek.bestDao().findDay(type, group!!.title!!, group.number!!) == null){
-                        if (calculateNum(group.number, group.title, type) != 0) {
+                        ref["writerName"] = group.writer!!
+                        ref["subject"] = group.title!!
+                        ref["bookImg"] = group.bookImg!!
+                        ref["bookCode"] = group.bookCode!!
+                        ref["info1"] = group.info1!!
+                        ref["info2"] = group.info2!!
+                        ref["info3"] = group.info3!!
+                        ref["info4"] = group.info4!!
+                        ref["info5"] = group.info5!!
+                        ref["number"] = calculateNum(group.number, group.title, type)
+                        ref["date"] = group.date!!
+                        ref["type"] = type
+                        ref["status"] = status
 
-                            ref["writerName"] = group.writer!!
-                            ref["subject"] = group.title!!
-                            ref["bookImg"] = group.bookImg!!
-                            ref["bookCode"] = group.bookCode!!
-                            ref["info1"] = group.info1!!
-                            ref["info2"] = group.info2!!
-                            ref["info3"] = group.info3!!
-                            ref["info4"] = group.info4!!
-                            ref["info5"] = group.info5!!
-                            ref["number"] = calculateNum(group.number, group.title, type)
-                            ref["date"] = group.date!!
-                            ref["type"] = type
-                            ref["status"] = status
-
-                            dbWeek.bestDao().insert(BestRef.setDataBestDay(ref))
-                            BestRef.setBestRefWeekCompared(type, num, Genre).setValue(BestRef.setBookListDataBestToday(ref))
-                        }
+                        dbWeek.bestDao().insert(BestRef.setDataBestDay(ref))
+                        BestRef.setBestRefWeekCompared(type, num, Genre).setValue(BestRef.setBookListDataBestToday(ref))
                     }
-
-                    num += 1
                 }
+
+                num += 1
             }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-            }
-        })
+        }.addOnFailureListener{}
 
     }
 

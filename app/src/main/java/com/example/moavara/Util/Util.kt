@@ -92,7 +92,7 @@ object BestRef {
     }
 
     fun setBestRefWeekCompared(type: String, num: Int, genre: String): DatabaseReference {
-        return setBestRef(type, genre).child("week compared")
+        return setBestRef(type, genre).child("week list")
             .child(((DBDate.DayInt() * 1000) + num).toString())
     }
 

@@ -116,12 +116,10 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
 
     private fun getBestMonth(bestRef: DatabaseReference) {
 
-        bestRef.addChildEventListener(object : ChildEventListener {
-            override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
+        bestRef.get().addOnSuccessListener {
 
-                val group: BookListDataBestWeekend? =
-                    dataSnapshot.getValue(BookListDataBestWeekend::class.java)
-
+            for (i in it.children) {
+                val group: BookListDataBestWeekend? = i.getValue(BookListDataBestWeekend::class.java)
                 itemMonth.add(
                     BookListDataBestWeekend(
                         group!!.sun,
@@ -136,11 +134,7 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
                 adapterMonth!!.notifyDataSetChanged()
             }
 
-            override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {}
-            override fun onChildRemoved(dataSnapshot: DataSnapshot) {}
-            override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {}
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
+        }.addOnFailureListener {}
 
     }
 }

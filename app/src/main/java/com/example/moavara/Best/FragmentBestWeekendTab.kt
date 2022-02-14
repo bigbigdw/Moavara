@@ -76,11 +76,10 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
 
     private fun getBestToday(bestRef: DatabaseReference) {
 
-        bestRef.addChildEventListener(object : ChildEventListener {
-            override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
+        bestRef.get().addOnSuccessListener {
 
-                val group: BookListDataBestWeekend? = dataSnapshot.getValue(BookListDataBestWeekend::class.java)
-
+            for (i in it.children) {
+                val group: BookListDataBestWeekend? = i.getValue(BookListDataBestWeekend::class.java)
                 itemWeek.add(
                     BookListDataBestWeekend(
                         group!!.sun,
@@ -93,14 +92,9 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
                     )
                 )
                 adapterWeek!!.notifyDataSetChanged()
-
             }
 
-            override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {}
-            override fun onChildRemoved(dataSnapshot: DataSnapshot) {}
-            override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {}
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
+        }.addOnFailureListener {}
 
         adapterWeek!!.setOnItemClickListener(object : AdapterBestWeekend.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int, value: String?) {
