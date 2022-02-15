@@ -61,7 +61,12 @@ class ActivityBookSetting : AppCompatActivity() {
         dbYesterday.bestDao().initAll()
 
         setRoomBest("Joara")
+        setRoomBest("Joara Nobless")
+        setRoomBest("Joara Premium")
         setRoomBest("Naver")
+        setRoomBest("Naver Today")
+        setRoomBest("Naver Challenge")
+        setRoomBest("Kakao Stage")
         setRoomBest("Kakao")
         setRoomBest("Ridi")
         setRoomBest("OneStore")
