@@ -9,6 +9,8 @@ import android.util.Log
 import com.example.moavara.Joara.JoaraBestListResult
 import com.example.moavara.Joara.RetrofitJoara
 import com.example.moavara.KaKao.BestResultKakao
+import com.example.moavara.KaKao.BestResultKakaoStage
+import com.example.moavara.KaKao.BestResultKakaoStageNovel
 import com.example.moavara.KaKao.RetrofitKaKao
 import com.example.moavara.OneStore.OneStoreBookResult
 import com.example.moavara.OneStore.RetrofitOnestore
@@ -53,7 +55,12 @@ class ActivitySplash : Activity() {
         getRidiBest("Ridi")
         getOneStoreBest("OneStore")
         getKakaoBest("Kakao")
+        getKakaoStageBest("Kakao Stage")
         getJoaraBest("Joara")
+        getJoaraBestNobless("Joara Nobless")
+        getJoaraBestPremium("Joara Premium")
+        getNaverToday("Naver Today")
+        getNaverChallenge("Naver Challenge")
         getNaverBest("Naver")
         getMrBlueBest("MrBlue")
     }
@@ -80,6 +87,60 @@ class ActivitySplash : Activity() {
             MrBlueRef["date"] = DBDate.Date()
 
             miningValue(MrBlueRef, i, type)
+
+        }
+
+    }
+
+    private fun getNaverToday(type : String) {
+
+        val doc: Document =
+            Jsoup.connect("https://novel.naver.com/webnovel/ranking").post()
+        val Naver: Elements = doc.select(".ranking_wrap_left .list_ranking li")
+        val NaverRef: MutableMap<String?, Any> = HashMap()
+
+        for (i in Naver.indices) {
+
+            NaverRef["writerName"] = Naver.select(".author")[i].text()
+            NaverRef["subject"] = Naver.select(".tit")[i].text()
+            NaverRef["bookImg"] = Naver.select("div img")[i].absUrl("src")
+            NaverRef["bookCode"] = Naver.select("a")[i].absUrl("href")
+            NaverRef["info1"] = " "
+            NaverRef["info2"] = Naver[i].select(".num_total").first()!!.text()
+            NaverRef["info3"] = Naver[i].select(".num_total").next().first()!!.text()
+            NaverRef["info4"] = Naver.select(".count")[i].text()
+            NaverRef["info5"] = Naver.select(".score_area")[i].text()
+            NaverRef["number"] = i
+            NaverRef["date"] = DBDate.Date()
+
+            miningValue(NaverRef, i, type)
+
+        }
+
+    }
+
+    private fun getNaverChallenge(type : String) {
+
+        val doc: Document =
+            Jsoup.connect("https://novel.naver.com/challenge/ranking").post()
+        val Naver: Elements = doc.select(".ranking_wrap_left .list_ranking li")
+        val NaverRef: MutableMap<String?, Any> = HashMap()
+
+        for (i in Naver.indices) {
+
+            NaverRef["writerName"] = Naver.select(".author")[i].text()
+            NaverRef["subject"] = Naver.select(".tit")[i].text()
+            NaverRef["bookImg"] = Naver.select("div img")[i].absUrl("src")
+            NaverRef["bookCode"] = Naver.select("a")[i].absUrl("href")
+            NaverRef["info1"] = " "
+            NaverRef["info2"] = Naver[i].select(".num_total").first()!!.text()
+            NaverRef["info3"] = Naver[i].select(".num_total").next().first()!!.text()
+            NaverRef["info4"] = Naver.select(".count")[i].text()
+            NaverRef["info5"] = Naver.select(".score_area")[i].text()
+            NaverRef["number"] = i
+            NaverRef["date"] = DBDate.Date()
+
+            miningValue(NaverRef, i, type)
 
         }
 
@@ -182,6 +243,51 @@ class ActivitySplash : Activity() {
 
     }
 
+    private fun getKakaoStageBest(type : String) {
+        val KakaoRef: MutableMap<String?, Any> = HashMap()
+
+        val call: Call<List<BestResultKakaoStageNovel>?>? = RetrofitKaKao.getBestKakaoStage("false", "YESTERDAY", "7", "72")
+
+        call!!.enqueue(object : Callback<List<BestResultKakaoStageNovel>?> {
+            override fun onResponse(
+                call: Call<List<BestResultKakaoStageNovel>?>,
+                response: Response<List<BestResultKakaoStageNovel>?>
+            ) {
+
+                if (response.isSuccessful) {
+                    response.body()?.let { it ->
+
+                        Log.d("!!!!", "성공")
+
+                        val list = it
+
+                        for(i in list.indices){
+                            val novel = list[i].novel
+                            KakaoRef["writerName"] = novel!!.nickname!!.name!!
+                            KakaoRef["subject"] = novel.title!!
+                            KakaoRef["bookImg"] = novel.thumbnail!!.url!!
+                            KakaoRef["bookCode"] = novel.stageSeriesNumber!!
+                            KakaoRef["info1"] = novel.synopsis!!
+                            KakaoRef["info2"] = novel.publishedEpisodeCount!!
+                            KakaoRef["info3"] = novel.viewCount!!
+                            KakaoRef["info4"] = novel.visitorCount!!
+                            KakaoRef["info5"] = ""
+                            KakaoRef["number"] = i
+                            KakaoRef["date"] = DBDate.Date()
+
+                            miningValue(KakaoRef, i, type)
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<List<BestResultKakaoStageNovel>?>, t: Throwable) {
+                Log.d("onFailure", "실패")
+            }
+        })
+
+    }
+
     private fun getKakaoBest(type : String) {
         val KakaoRef: MutableMap<String?, Any> = HashMap()
 
@@ -229,6 +335,92 @@ class ActivitySplash : Activity() {
         val JoaraRef: MutableMap<String?, Any> = HashMap()
 
         val call: Call<JoaraBestListResult?>? = RetrofitJoara.getJoaraBookBest("today", "", "0")
+
+        call!!.enqueue(object : Callback<JoaraBestListResult?> {
+            override fun onResponse(
+                call: Call<JoaraBestListResult?>,
+                response: Response<JoaraBestListResult?>
+            ) {
+
+                if (response.isSuccessful) {
+                    response.body()?.let { it ->
+                        val books = it.bookLists
+
+                        for (i in books!!.indices) {
+
+                            JoaraRef["writerName"] = books[i].writerName!!
+                            JoaraRef["subject"] = books[i].subject!!
+                            JoaraRef["bookImg"] = books[i].bookImg!!
+                            JoaraRef["bookCode"] = books[i].bookCode!!
+                            JoaraRef["info1"] = books[i].intro!!
+                            JoaraRef["info2"] = books[i].cntChapter!!
+                            JoaraRef["info3"] = books[i].cntPageRead!!
+                            JoaraRef["info4"] = books[i].cntFavorite!!
+                            JoaraRef["info5"] = books[i].cntRecom!!
+                            JoaraRef["number"] = i
+                            JoaraRef["date"] = DBDate.Date()
+
+                            miningValue(JoaraRef, i, type)
+
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<JoaraBestListResult?>, t: Throwable) {
+                Log.d("onFailure", "실패")
+            }
+        })
+
+    }
+
+    private fun getJoaraBestPremium(type : String) {
+        val JoaraRef: MutableMap<String?, Any> = HashMap()
+
+        val call: Call<JoaraBestListResult?>? = RetrofitJoara.getJoaraBookBest("today", "premium", "0")
+
+        call!!.enqueue(object : Callback<JoaraBestListResult?> {
+            override fun onResponse(
+                call: Call<JoaraBestListResult?>,
+                response: Response<JoaraBestListResult?>
+            ) {
+
+                if (response.isSuccessful) {
+                    response.body()?.let { it ->
+                        val books = it.bookLists
+
+                        for (i in books!!.indices) {
+
+                            JoaraRef["writerName"] = books[i].writerName!!
+                            JoaraRef["subject"] = books[i].subject!!
+                            JoaraRef["bookImg"] = books[i].bookImg!!
+                            JoaraRef["bookCode"] = books[i].bookCode!!
+                            JoaraRef["info1"] = books[i].intro!!
+                            JoaraRef["info2"] = books[i].cntChapter!!
+                            JoaraRef["info3"] = books[i].cntPageRead!!
+                            JoaraRef["info4"] = books[i].cntFavorite!!
+                            JoaraRef["info5"] = books[i].cntRecom!!
+                            JoaraRef["number"] = i
+                            JoaraRef["date"] = DBDate.Date()
+
+                            miningValue(JoaraRef, i, type)
+
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<JoaraBestListResult?>, t: Throwable) {
+                Log.d("onFailure", "실패")
+            }
+        })
+
+    }
+
+    private fun getJoaraBestNobless(type : String) {
+        val JoaraRef: MutableMap<String?, Any> = HashMap()
+
+        val call: Call<JoaraBestListResult?>? = RetrofitJoara.getJoaraBookBest("today", "nobless", "0")
 
         call!!.enqueue(object : Callback<JoaraBestListResult?> {
             override fun onResponse(

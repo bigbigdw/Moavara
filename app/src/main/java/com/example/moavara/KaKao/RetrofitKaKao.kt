@@ -44,5 +44,24 @@ object RetrofitKaKao {
                 bm
             )
     }
+
+    //카카오 스테이지 베스트=
+    fun getBestKakaoStage(
+        adult: String?,
+        dateRange: String?,
+        genreIds: String?,
+        recentHours: String?,
+    ): Call<List<BestResultKakaoStageNovel>?>? {
+        return Retrofit.Builder()
+            .baseUrl(HELPER.API_KAKAO_STAGE)
+            .addConverterFactory(GsonConverterFactory.create()).build()
+            .create(ServiceSearchKakaoStage::class.java)
+            .getRetrofit(
+                adult,
+                dateRange,
+                genreIds,
+                recentHours
+            )
+    }
 }
 

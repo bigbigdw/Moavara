@@ -40,6 +40,62 @@ class KakaoBookItem {
     var title: String? = null
 }
 
+class BestResultKakaoStage {
+    val list: List<BestResultKakaoStageNovel>? = null
+}
+
+class BestResultKakaoStageNovel {
+    @SerializedName("novel")
+    @Expose
+    val novel: KakaoBestStageResult? = null
+}
+
+class KakaoBestStageResult {
+    @SerializedName("title")
+    @Expose
+    var title: String? = null
+
+    @SerializedName("stageSeriesNumber")
+    @Expose
+    var stageSeriesNumber: String? = null
+
+    @SerializedName("nickname")
+    @Expose
+    var nickname: KakaoBestStageNickNameResult? = null
+
+    @SerializedName("synopsis")
+    @Expose
+    var synopsis: String? = null
+
+    @SerializedName("thumbnail")
+    @Expose
+    var thumbnail: KakaoBestStageThumbnailResult? = null
+
+    @SerializedName("publishedEpisodeCount")
+    @Expose
+    var publishedEpisodeCount: String? = null
+
+    @SerializedName("viewCount")
+    @Expose
+    var viewCount: String? = null
+
+    @SerializedName("visitorCount")
+    @Expose
+    var visitorCount: String? = null
+}
+
+class KakaoBestStageThumbnailResult {
+    @SerializedName("url")
+    @Expose
+    var url: String? = null
+}
+
+class KakaoBestStageNickNameResult {
+    @SerializedName("name")
+    @Expose
+    var name: String? = null
+}
+
 //베스트 결과
 class BestResultKakao {
     @SerializedName("list")

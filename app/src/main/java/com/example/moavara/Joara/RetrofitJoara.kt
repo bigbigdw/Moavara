@@ -2,6 +2,7 @@ package com.example.moavara.Joara
 
 import android.content.Context
 import com.example.moavara.ETC.HELPER
+import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -47,11 +48,21 @@ object RetrofitJoara {
             )
     }
 
+    fun getJoaraNoticeDetail(notice_id: String?): Call<JoaraNoticeDetailResult?>? {
+        return Retrofit.Builder()
+            .baseUrl(HELPER.API_JOARA)
+            .addConverterFactory(GsonConverterFactory.create()).build()
+            .create(JoaraNoticeDetailService::class.java)
+            .getRetrofit(
+                notice_id
+            )
+    }
+
     fun getJoaraEventDetail(event_id: String?): Call<JoaraEventDetailResult?>? {
         return Retrofit.Builder()
             .baseUrl(HELPER.API_JOARA)
             .addConverterFactory(GsonConverterFactory.create()).build()
-            .create(JoaraEventDetailervice::class.java)
+            .create(JoaraEventDetailService::class.java)
             .getRetrofit(
                 event_id
             )

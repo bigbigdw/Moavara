@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.DataEvent
 import com.example.moavara.DataBase.DataPickEvent
 import com.example.moavara.Joara.JoaraEventDetailResult
+import com.example.moavara.Joara.JoaraNoticeDetailResult
 import com.example.moavara.Joara.RetrofitJoara
 import com.example.moavara.R
 import com.example.moavara.Search.EventData
@@ -108,7 +109,7 @@ class BottomSheetDialogEvent(
         return v
     }
 
-    fun getEventMrBlue(){
+    private fun getEventMrBlue(){
         val doc: Document = Jsoup.connect(item!!.link).get()
 
         if(doc.select(".event-html img").size > 1){
@@ -135,7 +136,7 @@ class BottomSheetDialogEvent(
 
     }
 
-    fun getEventRidi(){
+    private fun getEventRidi(){
         val doc: Document = Jsoup.connect(item!!.link).get()
         val ridi = doc.select(".event_detail_top img").first()!!.absUrl("src")
 
@@ -149,7 +150,7 @@ class BottomSheetDialogEvent(
         }
     }
 
-    fun getEventKakao() {
+    private fun getEventKakao() {
         val doc: Document = Jsoup.connect("https://page.kakao.com${item!!.link}").get()
         val kakao = doc.select(".themeBox img").first()!!.absUrl("src")
 
@@ -165,10 +166,17 @@ class BottomSheetDialogEvent(
     private fun getUrl(type: String): String {
         when (type) {
             "Joara" -> {
-                return "https://www.joara.com/event/" + item!!.link!!.replace(
-                    "joaralink://event?event_id=",
-                    ""
-                )
+                return if(item!!.link!!.contains("joaralink://event?event_id=")){
+                    "https://www.joara.com/event/" + item.link!!.replace(
+                        "joaralink://event?event_id=",
+                        ""
+                    )
+                } else {
+                    "https://www.joara.com/notice/" + item.link!!.replace(
+                        "joaralink://notice?notice_id=",
+                        ""
+                    )
+                }
             }
             "Ridi" -> {
                 return item!!.link!!
@@ -197,44 +205,85 @@ class BottomSheetDialogEvent(
         wView!!.webChromeClient = WebChromeClient()
         wView!!.getSettings().setJavaScriptEnabled(true)
 
-        val call: Call<JoaraEventDetailResult?>? =
-            RetrofitJoara.getJoaraEventDetail(
-                item!!.link!!.replace(
-                    "joaralink://event?event_id=",
-                    ""
+        if(item!!.link!!.contains("joaralink://event?event_id=")){
+            val call: Call<JoaraEventDetailResult?>? =
+                RetrofitJoara.getJoaraEventDetail(
+                    item.link!!.replace(
+                        "joaralink://event?event_id=",
+                        ""
+                    )
                 )
-            )
 
-        call!!.enqueue(object : Callback<JoaraEventDetailResult?> {
-            override fun onResponse(
-                call: Call<JoaraEventDetailResult?>,
-                response: Response<JoaraEventDetailResult?>
-            ) {
+            call!!.enqueue(object : Callback<JoaraEventDetailResult?> {
+                override fun onResponse(
+                    call: Call<JoaraEventDetailResult?>,
+                    response: Response<JoaraEventDetailResult?>
+                ) {
 
-                if (response.isSuccessful) {
-                    response.body()?.let { it ->
-                        val content = it.event!!.content
+                    if (response.isSuccessful) {
+                        response.body()?.let { it ->
+                            val content = it.event!!.content
 
-                        title = it.event.title!!
-                        endtime = it.event.starttime!!
-                        starttime = it.event.endtime!!
+                            title = it.event.title!!
+                            endtime = it.event.endtime!!
+                            starttime = it.event.starttime!!
 
 
-                        wView!!.loadDataWithBaseURL(
-                            null,
-                            content!!.replace("http", "https"),
-                            "text/html; charset=utf-8",
-                            "base64",
-                            null
-                        );
+                            wView!!.loadDataWithBaseURL(
+                                null,
+                                content!!.replace("http", "https"),
+                                "text/html; charset=utf-8",
+                                "base64",
+                                null
+                            );
+                        }
                     }
                 }
-            }
 
-            override fun onFailure(call: Call<JoaraEventDetailResult?>, t: Throwable) {
-                Log.d("onFailure", "실패")
-            }
-        })
+                override fun onFailure(call: Call<JoaraEventDetailResult?>, t: Throwable) {
+                    Log.d("onFailure", "실패")
+                }
+            })
+        } else {
+            val call: Call<JoaraNoticeDetailResult?>? =
+                RetrofitJoara.getJoaraNoticeDetail(
+                    item.link!!.replace(
+                        "joaralink://notice?notice_id=",
+                        ""
+                    )
+                )
+
+            call!!.enqueue(object : Callback<JoaraNoticeDetailResult?> {
+                override fun onResponse(
+                    call: Call<JoaraNoticeDetailResult?>,
+                    response: Response<JoaraNoticeDetailResult?>
+                ) {
+
+                    if (response.isSuccessful) {
+                        response.body()?.let { it ->
+                            val content = it.notice!!.content
+
+                            title = it.notice.title!!
+                            starttime = it.notice.wdate!!
+
+                            wView!!.loadDataWithBaseURL(
+                                null,
+                                content!!.replace("<br />", ""),
+                                "text/html; charset=utf-8",
+                                "base64",
+                                null
+                            );
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<JoaraNoticeDetailResult?>, t: Throwable) {
+                    Log.d("onFailure", "실패")
+                }
+            })
+        }
+
+
     }
 
     override fun getTheme() = R.style.CustomBottomSheetDialogTheme

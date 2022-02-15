@@ -10,11 +10,34 @@ class JoaraEventResult {
     val banner: List<JoaraEventValue>? = null
 }
 
+//공지사항 결과
+class JoaraNoticeDetailResult {
+    @SerializedName("notice")
+    @Expose
+    val notice: NoticeContents? = null
+}
+
+class NoticeContents {
+    @SerializedName("content")
+    @Expose
+    val content:String? = null
+
+
+    @SerializedName("title")
+    @Expose
+    val title:String? = null
+
+    @SerializedName("wdate")
+    @Expose
+    val wdate:String? = null
+}
+
 //조아라 이밴트 상세 결과
 class JoaraEventDetailResult {
     @SerializedName("event")
     @Expose
     val event: EventContents? = null
+
 }
 
 class EventContents{

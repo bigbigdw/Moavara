@@ -17,6 +17,16 @@ interface KaKaoBestService {
     ): Call<BestResultKakao?>?
 }
 
+interface ServiceSearchKakaoStage {
+    @GET("/ranking/realtime")
+    fun getRetrofit(
+        @Query("adult") adult: String?,
+        @Query("dateRange") dateRange: String?,
+        @Query("genreIds") genreIds: String?,
+        @Query("recentHours") recentHours: String?,
+    ): Call<List<BestResultKakaoStageNovel>?>?
+}
+
 interface ServiceSearchKakao {
     @FormUrlEncoded
     @POST("/api/v5/store/search")

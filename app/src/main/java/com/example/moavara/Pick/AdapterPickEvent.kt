@@ -41,7 +41,7 @@ class AdapterPickEvent(items: List<EventData?>?) :
                 .load(item!!.imgfile)
                 .into(holder.iView)
 
-            if(item.startDate != null){
+            if(item.endDate != null){
                 holder.date.visibility = View.VISIBLE
                 holder.date.text = item.startDate + " ~ " + item.endDate
             } else {

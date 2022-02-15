@@ -4,6 +4,7 @@ interface HELPER {
     companion object {
         const val API_JOARA = "https://api.joara.com";
         const val API_KAKAO = "https://api2-page.kakao.com";
+        const val API_KAKAO_STAGE = "https://api-pagestage.kakao.com";
         const val API_ONESTORE = "https://onestory.co.kr";
         //        const val API = "https://api-dev1.joara.com:7443"
         const val API_KEY = "mw_8ba234e7801ba288554ca07ae44c7"
