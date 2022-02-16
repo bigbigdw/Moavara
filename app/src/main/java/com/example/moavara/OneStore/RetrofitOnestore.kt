@@ -8,11 +8,13 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitOnestore {
-    fun getBestOneStore( ): Call<OneStoreBookResult?>? {
+    fun getBestOneStore(categoryId : String? ): Call<OneStoreBookResult?>? {
         return Retrofit.Builder()
             .baseUrl(HELPER.API_ONESTORE)
             .addConverterFactory(GsonConverterFactory.create()).build()
             .create(ServiceOnestoreBest::class.java)
-            .getRetrofit()
+            .getRetrofit(
+                categoryId
+            )
     }
 }

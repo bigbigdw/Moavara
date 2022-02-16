@@ -1,6 +1,8 @@
 package com.example.moavara.Util
 
 import android.annotation.SuppressLint
+import android.content.Context
+import androidx.appcompat.app.AppCompatActivity
 import com.example.moavara.DataBase.DataBestDay
 import com.example.moavara.Search.BookListDataBestToday
 import com.google.firebase.database.DatabaseReference
@@ -157,4 +159,159 @@ object BestRef {
             ref["status"] as String?,
         )
     }
+}
+
+object Genre {
+
+    fun getGenre(mContext : Context): String? {
+        return if(mContext.getSharedPreferences("pref", AppCompatActivity.MODE_PRIVATE).getString("GENRE", "ALL") != ""){
+            mContext.getSharedPreferences("pref", AppCompatActivity.MODE_PRIVATE).getString("GENRE", "ALL")
+        } else
+            "ALL"
+    }
+
+    fun setJoaraGenre(mContext : Context): String {
+        return when {
+            getGenre(mContext) == "BL" -> {
+                "20"
+            }
+            getGenre(mContext) == "FANTASY" -> {
+                "1"
+            }
+            getGenre(mContext) == "ROMANCE" -> {
+                "5"
+            }
+            else -> {
+                "0"
+            }
+        }
+    }
+
+    fun setNaverGenre(mContext : Context): String {
+        return when {
+            getGenre(mContext) == "BL" -> {
+                //현판
+                "https://novel.naver.com/best/ranking?genre=110&periodType=DAILY"
+            }
+            getGenre(mContext) == "FANTASY" -> {
+                "https://novel.naver.com/best/ranking?genre=102&periodType=DAILY"
+            }
+            getGenre(mContext) == "ROMANCE" -> {
+                "https://novel.naver.com/best/ranking?genre=101&periodType=DAILY"
+            }
+            else -> {
+                //무협
+                "https://novel.naver.com/best/ranking?genre=103&periodType=DAILY"
+            }
+        }
+    }
+
+    fun setRidiGenre(mContext : Context): String {
+        return when {
+            getGenre(mContext) == "BL" -> {
+                "https://ridibooks.com/bestsellers/bl-webnovel?order=daily&rent=n&adult=n&adult_exclude=y"
+            }
+            getGenre(mContext) == "FANTASY" -> {
+                "https://ridibooks.com/bestsellers/fantasy_serial?order=daily"
+            }
+            getGenre(mContext) == "ROMANCE" -> {
+                "https://ridibooks.com/bestsellers/romance_serial?rent=n&adult=n&adult_exclude=y&order=daily"
+            }
+            else -> {
+                //로맨스
+                "https://ridibooks.com/bestsellers/romance_serial?rent=n&adult=n&adult_exclude=y&order=daily"
+            }
+        }
+    }
+
+    fun setOneStoreGenre(mContext : Context): String {
+        return when {
+            getGenre(mContext) == "BL" -> {
+                "fantasy"
+            }
+            getGenre(mContext) == "FANTASY" -> {
+                "fantasy"
+            }
+            getGenre(mContext) == "ROMANCE" -> {
+                "romance"
+            }
+            else -> {
+                "fantasy"
+            }
+        }
+    }
+
+    fun setNaverTodayGenre(mContext : Context): String {
+        return when {
+            getGenre(mContext) == "BL" -> {
+                //현판
+                "https://novel.naver.com/webnovel/ranking?genre=110&periodType=DAILY"
+            }
+            getGenre(mContext) == "FANTASY" -> {
+                "https://novel.naver.com/webnovel/ranking?genre=102&periodType=DAILY"
+            }
+            getGenre(mContext) == "ROMANCE" -> {
+                "https://novel.naver.com/webnovel/ranking?genre=101&periodType=DAILY"
+            }
+            else -> {
+                //무협
+                "https://novel.naver.com/webnovel/ranking?genre=103&periodType=DAILY"
+            }
+        }
+    }
+
+    fun setNaverChallengeGenre(mContext : Context): String {
+        return when {
+            getGenre(mContext) == "BL" -> {
+                //현판
+                "https://novel.naver.com/challenge/ranking?genre=110&periodType=DAILY"
+            }
+            getGenre(mContext) == "FANTASY" -> {
+                "https://novel.naver.com/challenge/ranking?genre=102&periodType=DAILY"
+            }
+            getGenre(mContext) == "ROMANCE" -> {
+                "https://novel.naver.com/challenge/ranking?genre=101&periodType=DAILY"
+            }
+            else -> {
+                //무협
+                "https://novel.naver.com/challenge/ranking?genre=103&periodType=DAILY"
+            }
+        }
+    }
+
+    fun setMrBlueGenre(mContext : Context): String {
+        return when {
+            getGenre(mContext) == "BL" -> {
+                //현판
+                "https://www.mrblue.com/novel/best/bl/daily"
+            }
+            getGenre(mContext) == "FANTASY" -> {
+                "https://www.mrblue.com/novel/best/fanmu/daily"
+            }
+            getGenre(mContext) == "ROMANCE" -> {
+                "https://www.mrblue.com/novel/best/romance/daily"
+            }
+            else -> {
+                "https://www.mrblue.com/novel/best/all/realtime"
+            }
+        }
+    }
+
+    fun setKakaoStageGenre(mContext : Context): String {
+        return when {
+            getGenre(mContext) == "BL" -> {
+                "6"
+            }
+            getGenre(mContext) == "FANTASY" -> {
+                "1"
+            }
+            getGenre(mContext) == "ROMANCE" -> {
+                "4"
+            }
+            else -> {
+                "7"
+            }
+        }
+    }
+
 }

@@ -35,7 +35,6 @@ class FragmentPickTabEvent : Fragment() {
 
     lateinit var root: View
 
-    val Genre = "ALL"
     private lateinit var dbWeek: DataBaseBestDay
 
     override fun onCreateView(

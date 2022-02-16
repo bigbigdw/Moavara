@@ -12,6 +12,7 @@ import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Search.BookListDataBestWeekend
 import com.example.moavara.Util.DBDate
+import com.example.moavara.Util.Genre
 import com.google.firebase.database.*
 import java.util.*
 
@@ -29,13 +30,15 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
     private var adapterMonthDay: AdapterBestToday? = null
 
     lateinit var root: View
-    val Genre = "ALL"
+    var cate = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         root = inflater.inflate(R.layout.fragment_best_month, container, false)
+
+        cate = Genre.getGenre(requireContext()).toString()
 
         recyclerViewMonth = root.findViewById(R.id.rview_BestMonth)
         adapterMonth = AdapterBestMonth(requireContext(), itemMonth)
@@ -46,8 +49,8 @@ class FragmentBestMonthTab(private val tabType: String) : Fragment() {
 
 
         val mRootRef = FirebaseDatabase.getInstance().reference
-        val month = mRootRef.child("best").child(tabType).child(Genre).child("month").child(DBDate.Month())
-        val monthList = mRootRef.child("best").child(tabType).child(Genre).child("month").child(DBDate.Month())
+        val month = mRootRef.child("best").child(tabType).child(cate).child("month").child(DBDate.Month())
+        val monthList = mRootRef.child("best").child(tabType).child(cate).child("month").child(DBDate.Month())
 
         itemMonth.clear()
         getBestMonth(month)

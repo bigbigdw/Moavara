@@ -17,6 +17,7 @@ import com.example.moavara.OneStore.RetrofitOnestore
 import com.example.moavara.R
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.DBDate
+import com.example.moavara.Util.Genre
 import com.google.firebase.database.*
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -29,7 +30,7 @@ val mRootRef = FirebaseDatabase.getInstance().reference
 
 class ActivitySplash : Activity() {
 
-    val Genre = "ALL"
+    var cate = "ALL"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,9 +40,11 @@ class ActivitySplash : Activity() {
             runMining()
         }.start()
 
+        cate = Genre.getGenre(this).toString()
+
         Handler(Looper.myLooper()!!).postDelayed(
             {
-                val novelIntent = Intent(this, ActivityBookSetting::class.java)
+                val novelIntent = Intent(this, ActivityMain::class.java)
                 novelIntent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                 startActivityIfNeeded(novelIntent, 0)
                 finish()
@@ -68,7 +71,7 @@ class ActivitySplash : Activity() {
     private fun getMrBlueBest(type : String) {
 
         val doc: Document =
-            Jsoup.connect("https://www.mrblue.com/novel/best/all/realtime").post()
+            Jsoup.connect(Genre.setMrBlueGenre(this)).post()
         val MrBlue: Elements = doc.select(".list-box ul li")
         val MrBlueRef: MutableMap<String?, Any> = HashMap()
 
@@ -95,7 +98,7 @@ class ActivitySplash : Activity() {
     private fun getNaverToday(type : String) {
 
         val doc: Document =
-            Jsoup.connect("https://novel.naver.com/webnovel/ranking").post()
+            Jsoup.connect(Genre.setNaverTodayGenre(this)).post()
         val Naver: Elements = doc.select(".ranking_wrap_left .list_ranking li")
         val NaverRef: MutableMap<String?, Any> = HashMap()
 
@@ -122,7 +125,7 @@ class ActivitySplash : Activity() {
     private fun getNaverChallenge(type : String) {
 
         val doc: Document =
-            Jsoup.connect("https://novel.naver.com/challenge/ranking").post()
+            Jsoup.connect(Genre.setNaverChallengeGenre(this)).post()
         val Naver: Elements = doc.select(".ranking_wrap_left .list_ranking li")
         val NaverRef: MutableMap<String?, Any> = HashMap()
 
@@ -149,7 +152,7 @@ class ActivitySplash : Activity() {
     private fun getNaverBest(type : String) {
 
         val doc: Document =
-            Jsoup.connect("https://novel.naver.com/best/ranking?genre=102&periodType=DAILY").post()
+            Jsoup.connect(Genre.setNaverGenre(this)).post()
         val Naver: Elements = doc.select(".ranking_wrap_left .list_ranking li")
         val NaverRef: MutableMap<String?, Any> = HashMap()
 
@@ -176,7 +179,7 @@ class ActivitySplash : Activity() {
     private fun getRidiBest(type : String) {
 
         val doc: Document =
-            Jsoup.connect("https://ridibooks.com/bestsellers/romance_serial?rent=n&adult=n&adult_exclude=y&order=daily").post()
+            Jsoup.connect(Genre.setRidiGenre(this)).post()
         val Ridi: Elements = doc.select(".book_thumbnail_wrapper")
         val RidiRef: MutableMap<String?, Any> = HashMap()
 
@@ -203,7 +206,7 @@ class ActivitySplash : Activity() {
     private fun getOneStoreBest(type : String) {
         val OneStoryRef: MutableMap<String?, Any> = HashMap()
 
-        val call: Call<OneStoreBookResult?>? = RetrofitOnestore.getBestOneStore()
+        val call: Call<OneStoreBookResult?>? = RetrofitOnestore.getBestOneStore(Genre.setOneStoreGenre(this))
 
         call!!.enqueue(object : Callback<OneStoreBookResult?> {
             override fun onResponse(
@@ -246,7 +249,7 @@ class ActivitySplash : Activity() {
     private fun getKakaoStageBest(type : String) {
         val KakaoRef: MutableMap<String?, Any> = HashMap()
 
-        val call: Call<List<BestResultKakaoStageNovel>?>? = RetrofitKaKao.getBestKakaoStage("false", "YESTERDAY", "7", "72")
+        val call: Call<List<BestResultKakaoStageNovel>?>? = RetrofitKaKao.getBestKakaoStage("false", "YESTERDAY", Genre.setKakaoStageGenre(this), "72")
 
         call!!.enqueue(object : Callback<List<BestResultKakaoStageNovel>?> {
             override fun onResponse(
@@ -256,8 +259,6 @@ class ActivitySplash : Activity() {
 
                 if (response.isSuccessful) {
                     response.body()?.let { it ->
-
-                        Log.d("!!!!", "성공")
 
                         val list = it
 
@@ -334,7 +335,7 @@ class ActivitySplash : Activity() {
     private fun getJoaraBest(type : String) {
         val JoaraRef: MutableMap<String?, Any> = HashMap()
 
-        val call: Call<JoaraBestListResult?>? = RetrofitJoara.getJoaraBookBest("today", "", "0")
+        val call: Call<JoaraBestListResult?>? = RetrofitJoara.getJoaraBookBest("today", "", Genre.setJoaraGenre(this))
 
         call!!.enqueue(object : Callback<JoaraBestListResult?> {
             override fun onResponse(
@@ -468,22 +469,22 @@ class ActivitySplash : Activity() {
 //        BestRef.setBestRefWeekList(type, num, Genre).setValue(BestRef.setBookListDataBestToday(ref))
 
         //Today
-        BestRef.setBestRefToday(type, num, Genre).setValue(BestRef.setBookListDataBestToday(ref))
+        BestRef.setBestRefToday(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
 
         //Week
         if (num < 10) {
-            BestRef.setBestRefWeek(type, num, Genre).setValue(BestRef.setBookListDataBestToday(ref))
+            BestRef.setBestRefWeek(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
         }
 
         //Month - Week
         if (num == 0) {
             //Month - Day
-            BestRef.setBestRefMonthWeek(type, Genre).setValue(BestRef.setBookListDataBestToday(ref))
+            BestRef.setBestRefMonthWeek(type, cate).setValue(BestRef.setBookListDataBestToday(ref))
             //Month
-            BestRef.setBestRefMonth(type, Genre).setValue(BestRef.setBookListDataBestToday(ref))
+            BestRef.setBestRefMonth(type, cate).setValue(BestRef.setBookListDataBestToday(ref))
         }
 
-        BestRef.setBestRefMonthDay(type, num, Genre).setValue(BestRef.setBookListDataBestToday(ref))
+        BestRef.setBestRefMonthDay(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
     }
 
 }

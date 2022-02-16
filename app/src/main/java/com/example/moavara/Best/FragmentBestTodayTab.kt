@@ -13,6 +13,7 @@ import com.example.moavara.DataBase.DataBaseBestDay
 import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Util.BestRef
+import com.example.moavara.Util.Genre
 import com.google.firebase.database.*
 import java.util.*
 
@@ -30,13 +31,16 @@ class FragmentBestTodayTab(private val tabType: String) :
 
     lateinit var root: View
 
-    val Genre = "ALL"
+    var cate = ""
     private lateinit var dbWeek: DataBaseBestDay
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
+
+        cate = Genre.getGenre(requireContext()).toString()
+
         root = inflater.inflate(R.layout.fragment_best_today_tab, container, false)
 
         dbYesterday =
@@ -60,7 +64,7 @@ class FragmentBestTodayTab(private val tabType: String) :
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapterToday
 
-        BestRef.getBestRefToday(tabType, Genre).get().addOnSuccessListener {
+        BestRef.getBestRefToday(tabType, cate).get().addOnSuccessListener {
 
             for (i in it.children) {
                 val group: BookListDataBestToday? = i.getValue(BookListDataBestToday::class.java)

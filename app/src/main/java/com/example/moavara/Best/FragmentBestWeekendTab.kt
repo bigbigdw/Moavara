@@ -15,6 +15,7 @@ import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Search.BookListDataBestWeekend
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.DBDate
+import com.example.moavara.Util.Genre
 import com.google.firebase.database.*
 import java.util.*
 import kotlin.Comparator
@@ -35,15 +36,17 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
     var status = ""
 
     lateinit var root: View
-    val Genre = "ALL"
-    val week = mRootRef.child("best").child(tabType).child(Genre).child("week")
-    val weekList = mRootRef.child("best").child(tabType).child(Genre).child("week list")
+    var cate = ""
+    val week = mRootRef.child("best").child(tabType).child(cate).child("week")
+    val weekList = mRootRef.child("best").child(tabType).child(cate).child("week list")
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         root = inflater.inflate(R.layout.fragment_best_weekend, container, false)
+
+        cate = Genre.getGenre(requireContext()).toString()
 
         recyclerView = root.findViewById(R.id.rview_Best)
         adapterWeek = AdapterBestWeekend(requireContext(), itemWeek)
