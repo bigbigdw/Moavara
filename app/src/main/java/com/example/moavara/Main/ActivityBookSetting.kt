@@ -15,6 +15,7 @@ import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.DBDate
+import com.example.moavara.Util.Genre
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -31,12 +32,14 @@ class ActivityBookSetting : AppCompatActivity() {
 
     var button_next: Button? = null
 
-    val Genre = "ALL"
+    var cate = "ALL"
     var status = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_book_setting)
+
+        cate = Genre.getGenre(this).toString()
 
         llayout_step1 = findViewById(R.id.llayout_step1)
         llayout_step2 = findViewById(R.id.llayout_step2)
@@ -104,7 +107,7 @@ class ActivityBookSetting : AppCompatActivity() {
 
     private fun setRoomBest(type: String){
 
-        val yesterdayRef = mRootRef.child("best").child(type).child(Genre).child("today").child(
+        val yesterdayRef = mRootRef.child("best").child(type).child(cate).child("today").child(
             DBDate.Yesterday())
 
         yesterdayRef.get().addOnSuccessListener {
@@ -134,7 +137,7 @@ class ActivityBookSetting : AppCompatActivity() {
 
         var num = 1
 
-        BestRef.getBestRefToday(type, Genre).get().addOnSuccessListener {
+        BestRef.getBestRefToday(type, cate).get().addOnSuccessListener {
 
             for(i in it.children){
                 val group: BookListDataBestToday? = i.getValue(BookListDataBestToday::class.java)
@@ -158,7 +161,7 @@ class ActivityBookSetting : AppCompatActivity() {
                         ref["status"] = status
 
                         dbWeek.bestDao().insert(BestRef.setDataBestDay(ref))
-                        BestRef.setBestRefWeekCompared(type, num, Genre).setValue(BestRef.setBookListDataBestToday(ref))
+                        BestRef.setBestRefWeekCompared(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
                     }
                 }
 

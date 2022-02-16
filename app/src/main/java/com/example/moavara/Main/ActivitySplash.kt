@@ -378,7 +378,7 @@ class ActivitySplash : Activity() {
     private fun getJoaraBestPremium(type : String) {
         val JoaraRef: MutableMap<String?, Any> = HashMap()
 
-        val call: Call<JoaraBestListResult?>? = RetrofitJoara.getJoaraBookBest("today", "premium", "0")
+        val call: Call<JoaraBestListResult?>? = RetrofitJoara.getJoaraBookBest("today", "premium", Genre.setJoaraGenre(this))
 
         call!!.enqueue(object : Callback<JoaraBestListResult?> {
             override fun onResponse(
@@ -421,7 +421,7 @@ class ActivitySplash : Activity() {
     private fun getJoaraBestNobless(type : String) {
         val JoaraRef: MutableMap<String?, Any> = HashMap()
 
-        val call: Call<JoaraBestListResult?>? = RetrofitJoara.getJoaraBookBest("today", "nobless", "0")
+        val call: Call<JoaraBestListResult?>? = RetrofitJoara.getJoaraBookBest("today", "nobless", Genre.setJoaraGenre(this))
 
         call!!.enqueue(object : Callback<JoaraBestListResult?> {
             override fun onResponse(

@@ -37,8 +37,8 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
 
     lateinit var root: View
     var cate = ""
-    val week = mRootRef.child("best").child(tabType).child(cate).child("week")
-    val weekList = mRootRef.child("best").child(tabType).child(cate).child("week list")
+    var week = mRootRef.child("best").child(tabType).child(cate).child("week")
+    var weekList = mRootRef.child("best").child(tabType).child(cate).child("week list")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,6 +47,8 @@ class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
         root = inflater.inflate(R.layout.fragment_best_weekend, container, false)
 
         cate = Genre.getGenre(requireContext()).toString()
+        week = mRootRef.child("best").child(tabType).child(cate).child("week")
+        weekList = mRootRef.child("best").child(tabType).child(cate).child("week list")
 
         recyclerView = root.findViewById(R.id.rview_Best)
         adapterWeek = AdapterBestWeekend(requireContext(), itemWeek)
