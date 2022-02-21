@@ -1,7 +1,7 @@
 package com.example.moavara.Best
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.example.moavara.DataBase.DataBaseBestDay
 import com.example.moavara.R
+import com.example.moavara.Search.ActivitySearch
 import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.Genre
@@ -95,6 +96,15 @@ class FragmentBestTodayTab(private val tabType: String) :
             override fun onItemClick(v: View?, position: Int) {
                 val item: BookListDataBestToday? = adapterToday!!.getItem(position)
 
+//                if(item!!.equals("Joara")){
+//                    val intent = Intent(requireContext().applicationContext, ActivitySearch::class.java)
+//                    intent.putExtra("BookCode", item.bookCode)
+//                    startActivity(intent)
+//                } else {
+//                    val mBottomDialogBest = BottomDialogBest(requireContext(), item)
+//                    fragmentManager?.let { mBottomDialogBest.show(it, null) }
+//                }
+
                 val mBottomDialogBest = BottomDialogBest(requireContext(), item)
                 fragmentManager?.let { mBottomDialogBest.show(it, null) }
             }
@@ -102,7 +112,7 @@ class FragmentBestTodayTab(private val tabType: String) :
     }
 
 
-    fun calculateNum(num: Int?, title: String?): Int {
+    private fun calculateNum(num: Int?, title: String?): Int {
 
         val yesterdayNum = dbYesterday.bestDao().findName(tabType, title!!)
 
