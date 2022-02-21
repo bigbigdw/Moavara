@@ -1,4 +1,4 @@
-package com.example.moavara.Best
+package com.example.moavara.Best.Before
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,17 +10,15 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.example.moavara.R
 import com.google.android.material.tabs.TabLayout
-import com.google.firebase.database.FirebaseDatabase
+import java.util.ArrayList
 
-
-class FragmentBestToday() : Fragment() {
+class FragmentBestMonth : Fragment() {
     private var tabLayout: TabLayout? = null
     private var viewPager: ViewPager? = null
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         val root: View = inflater.inflate(R.layout.fragment_best_today, container, false)
         viewPager = root.findViewById(R.id.view_pager)
         setupViewPager(viewPager)
@@ -35,17 +33,17 @@ class FragmentBestToday() : Fragment() {
             childFragmentManager
         )
 
-        adapter.addFragment(FragmentBestTodayTab("Joara"), "조아라")
-        adapter.addFragment(FragmentBestTodayTab("Joara Nobless"), "조아라 노블레스")
-        adapter.addFragment(FragmentBestTodayTab("Joara Premium"), "조아라 프리미엄")
-        adapter.addFragment(FragmentBestTodayTab("Naver Today"), "네이버 오늘의 웹소설")
-        adapter.addFragment(FragmentBestTodayTab("Naver Challenge"), "네이버 챌린지리그")
-        adapter.addFragment(FragmentBestTodayTab("Naver"), "네이버 베스트리그")
-        adapter.addFragment(FragmentBestTodayTab("Kakao"), "카카오 페이지")
-        adapter.addFragment(FragmentBestTodayTab("Kakao Stage"), "카카오 스테이지")
-        adapter.addFragment(FragmentBestTodayTab("Ridi"), "리디북스")
-        adapter.addFragment(FragmentBestTodayTab("OneStore"), "원스토어")
-        adapter.addFragment(FragmentBestTodayTab("MrBlue"), "미스터블루")
+        adapter.addFragment(FragmentBestMonthTab("Joara"), "조아라")
+        adapter.addFragment(FragmentBestMonthTab("Joara Nobless"), "조아라 노블레스")
+        adapter.addFragment(FragmentBestMonthTab("Joara Premium"), "조아라 프리미엄")
+        adapter.addFragment(FragmentBestMonthTab("Naver Today"), "네이버 오늘의 웹소설")
+        adapter.addFragment(FragmentBestMonthTab("Naver Challenge"), "네이버 챌린지리그")
+        adapter.addFragment(FragmentBestMonthTab("Naver"), "네이버 베스트리그")
+        adapter.addFragment(FragmentBestMonthTab("Kakao"), "카카오 페이지")
+        adapter.addFragment(FragmentBestMonthTab("Kakao Stage"), "카카오 스테이지")
+        adapter.addFragment(FragmentBestMonthTab("Ridi"), "리디북스")
+        adapter.addFragment(FragmentBestMonthTab("OneStore"), "원스토어")
+        adapter.addFragment(FragmentBestMonthTab("MrBlue"), "미스터블루")
         viewPager!!.adapter = adapter
     }
 
@@ -70,6 +68,4 @@ class FragmentBestToday() : Fragment() {
             return mFragmentTitleList[position]
         }
     }
-
-
 }

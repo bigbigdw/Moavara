@@ -84,6 +84,14 @@ object BestRef {
         return mRootRef.child("best").child(type).child(genre)
     }
 
+    fun typeListTitle(): List<String> {
+        return listOf("조아라", "J.노블레스", "J.프리미엄", "네이버 오늘의 웹소설", "네이버 챌린지리그", "네이버 베스트리그", "카카오 페이지", "카카오 스테이지", "리디북스", "원스토어", "미스터블루")
+    }
+
+    fun typeList(): List<String> {
+        return listOf("Joara", "Joara Nobless", "Joara Premium", "Naver Today", "Naver Challenge", "Naver", "Kakao", "Kakao Stage", "Ridi", "OneStore", "MrBlue")
+    }
+
     fun delBestRefWeekList(type: String, genre: String): DatabaseReference {
         return setBestRef(type, genre).child("week list")
     }

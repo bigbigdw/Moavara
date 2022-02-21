@@ -1,4 +1,4 @@
-package com.example.moavara.Best
+package com.example.moavara.Best.Before
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,7 @@ import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.moavara.Best.AdapterBestToday
 import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Search.BookListDataBestWeekend

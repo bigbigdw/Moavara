@@ -9,18 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
-import com.example.moavara.Best.AdapterBestToday
-import com.example.moavara.Best.BottomDialogBest
 import com.example.moavara.DataBase.DataBaseBestDay
 import com.example.moavara.DataBase.DataPickEvent
 import com.example.moavara.Event.BottomSheetDialogEvent
 import com.example.moavara.R
-import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Search.EventData
-import com.example.moavara.Util.BestRef
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import java.util.ArrayList
 
 class FragmentPickTabEvent : Fragment() {

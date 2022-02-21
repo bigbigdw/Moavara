@@ -1,4 +1,4 @@
-package com.example.moavara.Event
+package com.example.moavara.Best
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,7 @@ import androidx.viewpager.widget.ViewPager
 import com.example.moavara.R
 import com.google.android.material.tabs.TabLayout
 
-class FragmentEvent: Fragment() {
+class FragmentBestV2 : Fragment() {
     private var tabLayout: TabLayout? = null
     private var viewPager: ViewPager? = null
 
@@ -19,7 +19,7 @@ class FragmentEvent: Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        val root: View = inflater.inflate(R.layout.fragment_best_today, container, false)
+        val root: View = inflater.inflate(R.layout.fragment_best_v2, container, false)
         viewPager = root.findViewById(R.id.view_pager)
         setupViewPager(viewPager)
         tabLayout = root.findViewById(R.id.post_tab)
@@ -33,12 +33,9 @@ class FragmentEvent: Fragment() {
             childFragmentManager
         )
 
-        adapter.addFragment(FragmentEventTab("Joara"), "조아라")
-//        adapter.addFragment(FragmentEventTab("Naver"), "네이버")
-        adapter.addFragment(FragmentEventTab("Kakao"), "카카오")
-        adapter.addFragment(FragmentEventTab("Ridi"), "리디북스")
-        adapter.addFragment(FragmentEventTab("OneStore"), "원스토어")
-        adapter.addFragment(FragmentEventTab("MrBlue"), "미스터블루")
+        adapter.addFragment(FragmentBestTodayV2(), "투데이")
+        adapter.addFragment(FragmentBestTodayTab("Joara Nobless"), "주간")
+        adapter.addFragment(FragmentBestTodayTab("Joara Premium"), "월간")
         viewPager!!.adapter = adapter
     }
 

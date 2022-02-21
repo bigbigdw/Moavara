@@ -1,26 +1,24 @@
-package com.example.moavara.Best
+package com.example.moavara.Best.Before
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.example.moavara.R
 import com.google.android.material.tabs.TabLayout
-import com.google.firebase.database.FirebaseDatabase
 import java.util.ArrayList
 
-class FragmentBestMonth : Fragment() {
+class FragmentBestWeekend : Fragment() {
     private var tabLayout: TabLayout? = null
     private var viewPager: ViewPager? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val root: View = inflater.inflate(R.layout.fragment_best_today, container, false)
         viewPager = root.findViewById(R.id.view_pager)
         setupViewPager(viewPager)
@@ -34,18 +32,17 @@ class FragmentBestMonth : Fragment() {
         val adapter = ViewPagerAdapter(
             childFragmentManager
         )
-
-        adapter.addFragment(FragmentBestMonthTab("Joara"), "조아라")
-        adapter.addFragment(FragmentBestMonthTab("Joara Nobless"), "조아라 노블레스")
-        adapter.addFragment(FragmentBestMonthTab("Joara Premium"), "조아라 프리미엄")
-        adapter.addFragment(FragmentBestMonthTab("Naver Today"), "네이버 오늘의 웹소설")
-        adapter.addFragment(FragmentBestMonthTab("Naver Challenge"), "네이버 챌린지리그")
-        adapter.addFragment(FragmentBestMonthTab("Naver"), "네이버 베스트리그")
-        adapter.addFragment(FragmentBestMonthTab("Kakao"), "카카오 페이지")
-        adapter.addFragment(FragmentBestMonthTab("Kakao Stage"), "카카오 스테이지")
-        adapter.addFragment(FragmentBestMonthTab("Ridi"), "리디북스")
-        adapter.addFragment(FragmentBestMonthTab("OneStore"), "원스토어")
-        adapter.addFragment(FragmentBestMonthTab("MrBlue"), "미스터블루")
+        adapter.addFragment(FragmentBestWeekendTab("Joara"), "조아라")
+        adapter.addFragment(FragmentBestWeekendTab("Joara Nobless"), "조아라 노블레스")
+        adapter.addFragment(FragmentBestWeekendTab("Joara Premium"), "조아라 프리미엄")
+        adapter.addFragment(FragmentBestWeekendTab("Naver Today"), "네이버 오늘의 웹소설")
+        adapter.addFragment(FragmentBestWeekendTab("Naver Challenge"), "네이버 챌린지리그")
+        adapter.addFragment(FragmentBestWeekendTab("Naver"), "네이버 베스트리그")
+        adapter.addFragment(FragmentBestWeekendTab("Kakao"), "카카오 페이지")
+        adapter.addFragment(FragmentBestWeekendTab("Kakao Stage"), "카카오 스테이지")
+        adapter.addFragment(FragmentBestWeekendTab("Ridi"), "리디북스")
+        adapter.addFragment(FragmentBestWeekendTab("OneStore"), "원스토어")
+        adapter.addFragment(FragmentBestWeekendTab("MrBlue"), "미스터블루")
         viewPager!!.adapter = adapter
     }
 

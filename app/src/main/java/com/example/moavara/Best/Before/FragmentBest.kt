@@ -1,4 +1,4 @@
-package com.example.moavara.Best
+package com.example.moavara.Best.Before
 
 import android.graphics.Color
 import android.os.Bundle
@@ -8,17 +8,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.room.Room
-import com.example.moavara.DataBase.DataBaseBestDay
-import com.example.moavara.DataBase.DataBestDay
-import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
-import com.example.moavara.Search.BookListDataBestToday
-import com.example.moavara.Util.DBDate
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
 
 
 class FragmentBest : Fragment() {
@@ -41,7 +31,7 @@ class FragmentBest : Fragment() {
         root = inflater.inflate(R.layout.fragment_best, container, false)
 
         //프래그먼트 관련
-        llayout_Search_Fragment = root.findViewById(R.id.llayout_Search_Fragment)
+        llayout_Search_Fragment = root.findViewById(R.id.llayoutWrap)
 
         tviewToday = root.findViewById(R.id.tview_Today)
         tviewWeekend = root.findViewById(R.id.tview_Weekend)
@@ -51,7 +41,7 @@ class FragmentBest : Fragment() {
 
         mFragmentBestToday = FragmentBestToday()
         parentFragmentManager.beginTransaction()
-            .replace(R.id.llayout_Search_Fragment, mFragmentBestToday!!)
+            .replace(R.id.llayoutWrap, mFragmentBestToday!!)
             .commit()
 
         tviewToday!!.setOnClickListener {
@@ -62,7 +52,7 @@ class FragmentBest : Fragment() {
 
             mFragmentBestToday = FragmentBestToday()
             parentFragmentManager.beginTransaction()
-                .replace(R.id.llayout_Search_Fragment, mFragmentBestToday!!)
+                .replace(R.id.llayoutWrap, mFragmentBestToday!!)
                 .commit()
         }
 
@@ -74,7 +64,7 @@ class FragmentBest : Fragment() {
 
             mFragmentBestWeekend = FragmentBestWeekend()
             parentFragmentManager.beginTransaction()
-                .replace(R.id.llayout_Search_Fragment, mFragmentBestWeekend!!)
+                .replace(R.id.llayoutWrap, mFragmentBestWeekend!!)
                 .commit()
         }
 
@@ -86,7 +76,7 @@ class FragmentBest : Fragment() {
 
             mFragmentBestMonth = FragmentBestMonth()
             parentFragmentManager.beginTransaction()
-                .replace(R.id.llayout_Search_Fragment, mFragmentBestMonth!!)
+                .replace(R.id.llayoutWrap, mFragmentBestMonth!!)
                 .commit()
         }
 

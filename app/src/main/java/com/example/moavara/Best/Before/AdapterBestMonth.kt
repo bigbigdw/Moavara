@@ -1,4 +1,4 @@
-package com.example.moavara.Best
+package com.example.moavara.Best.Before
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -13,7 +13,7 @@ import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestWeekend
 import java.util.ArrayList
 
-class AdapterBestWeekend(
+class AdapterBestMonth(
     private val mContext: Context,
     items:
     ArrayList<BookListDataBestWeekend?>,
@@ -21,7 +21,6 @@ class AdapterBestWeekend(
 
     var item: ArrayList<BookListDataBestWeekend?> = items
     var selected: String? = ""
-    var num: Int? = 0
 
     interface OnItemClickListener {
         fun onItemClick(v: View?, position: Int, value: String?)
@@ -49,7 +48,7 @@ class AdapterBestWeekend(
                     .load(items.sun!!.bookImg)
                     .into(holder.iviewBookImg1)
 
-                if (selected != "" && getSelectedBook() != items.sun!!.title) {
+                if (selected != "" && getSelectedBook() != items.sun!!.bookCode) {
                     holder.llayoutCover1.visibility = View.VISIBLE
                 } else {
                     holder.llayoutCover1.visibility = View.GONE
@@ -61,7 +60,7 @@ class AdapterBestWeekend(
                     .load(items.mon!!.bookImg)
                     .into(holder.iviewBookImg2)
 
-                if (selected != "" && getSelectedBook() != items.mon!!.title) {
+                if (selected != "" && getSelectedBook() != items.mon!!.bookCode) {
                     holder.llayoutCover2.visibility = View.VISIBLE
                 } else {
                     holder.llayoutCover2.visibility = View.GONE
@@ -74,7 +73,7 @@ class AdapterBestWeekend(
                     .load(items.tue!!.bookImg)
                     .into(holder.iviewBookImg3)
 
-                if (selected != "" && getSelectedBook() != items.tue!!.title) {
+                if (selected != "" && getSelectedBook() != items.tue!!.bookCode) {
                     holder.llayoutCover3.visibility = View.VISIBLE
                 } else {
                     holder.llayoutCover3.visibility = View.GONE
@@ -86,7 +85,7 @@ class AdapterBestWeekend(
                     .load(items.wed!!.bookImg)
                     .into(holder.iviewBookImg4)
 
-                if (selected != "" && getSelectedBook() != items.wed!!.title) {
+                if (selected != "" && getSelectedBook() != items.wed!!.bookCode) {
                     holder.llayoutCover4.visibility = View.VISIBLE
                 } else {
                     holder.llayoutCover4.visibility = View.GONE
@@ -98,7 +97,7 @@ class AdapterBestWeekend(
                     .load(items.thur!!.bookImg)
                     .into(holder.iviewBookImg5)
 
-                if (selected != "" && getSelectedBook() != items.thur!!.title) {
+                if (selected != "" && getSelectedBook() != items.thur!!.bookCode) {
                     holder.llayoutCover5.visibility = View.VISIBLE
                 } else {
                     holder.llayoutCover5.visibility = View.GONE
@@ -110,7 +109,7 @@ class AdapterBestWeekend(
                     .load(items.fri!!.bookImg)
                     .into(holder.iviewBookImg6)
 
-                if (selected != "" && getSelectedBook() != items.fri!!.title) {
+                if (selected != "" && getSelectedBook() != items.fri!!.bookCode) {
                     holder.llayoutCover6.visibility = View.VISIBLE
                 } else {
                     holder.llayoutCover6.visibility = View.GONE
@@ -122,7 +121,7 @@ class AdapterBestWeekend(
                     .load(items.sat!!.bookImg)
                     .into(holder.iviewBookImg7)
 
-                if (selected != "" && getSelectedBook() != items.sat!!.title) {
+                if (selected != "" && getSelectedBook() != items.sat!!.bookCode) {
                     holder.llayoutCover7.visibility = View.VISIBLE
                 } else {
                     holder.llayoutCover7.visibility = View.GONE
@@ -223,12 +222,14 @@ class AdapterBestWeekend(
     }
 
     fun getItem(position: Int): BookListDataBestWeekend? {
-        return item[position]
+        return item!![position]
     }
 
-    fun setSelectedBook(title: String) {
-        selected = title
+
+    fun setSelectedBook(bookcode: String) {
+        selected = bookcode
     }
+
 
     fun getSelectedBook(): String? {
         return selected

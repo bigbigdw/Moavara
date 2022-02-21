@@ -33,6 +33,12 @@ class BookListDataBestToday(
     var status: String ? = null,
 )
 
+class BestType(
+    var title: String ? = null,
+    var type: String ? = null,
+)
+
+
 class BookListDataBestWeekend(
     var sun: BookListDataBestToday ? = null,
     var mon: BookListDataBestToday ? = null,

@@ -1,6 +1,5 @@
 package com.example.moavara.Best
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,13 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
+import com.example.moavara.Best.Before.BottomDialogBest
 import com.example.moavara.DataBase.DataBaseBestDay
 import com.example.moavara.R
-import com.example.moavara.Search.ActivitySearch
 import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.Genre
-import com.google.firebase.database.*
 import java.util.*
 
 

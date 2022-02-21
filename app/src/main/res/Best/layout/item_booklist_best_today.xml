@@ -38,6 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <TextView
@@ -54,7 +55,6 @@
                 android:id="@+id/tview_Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="2dp"
                 android:layout_weight="1"
                 android:breakStrategy="high_quality"
                 android:ellipsize="end"
