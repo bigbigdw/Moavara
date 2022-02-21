@@ -36,7 +36,7 @@ class FragmentBestTab : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        tabViewModel = ViewModelProvider(this).get(TabViewModel::class.java)
+        tabViewModel = ViewModelProvider(this)[TabViewModel::class.java]
         index = 1
         if (arguments != null) {
             index = requireArguments().getInt(ARG_SECTION_NUMBER)

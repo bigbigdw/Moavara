@@ -52,27 +52,24 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
         recyclerView = root.findViewById(R.id.rview_Best)
         adapterWeek = AdapterBestWeekend(requireContext(), itemWeek)
 
+        recyclerViewToday = root.findViewById(R.id.rview_BestToday)
+        adapterToday = AdapterBestToday(items)
+
         dbYesterday = Room.databaseBuilder(requireContext(), DataBaseBestDay::class.java, "best-yesterday")
             .allowMainThreadQueries().build()
 
         dbWeek = Room.databaseBuilder(requireContext(), DataBaseBestDay::class.java, "best-week")
             .allowMainThreadQueries().build()
 
-        val linearLayoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        itemWeek.clear()
         getBestToday(week)
+        getBestWeekList()
 
-        recyclerViewToday = root.findViewById(R.id.rview_BestToday)
-        adapterToday = AdapterBestToday(items)
-
-        items.clear()
-        getBestWeekList(recyclerViewToday)
-
-        recyclerView!!.layoutManager = linearLayoutManager
+        recyclerView!!.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView!!.adapter = adapterWeek
 
+        recyclerViewToday!!.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerViewToday!!.adapter = adapterToday
 
         return root
@@ -135,11 +132,7 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
 
     }
 
-    private fun getBestWeekList(recyclerView: RecyclerView?) {
-
-        recyclerView!!.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        recyclerView.adapter = adapterToday
+    private fun getBestWeekList() {
 
         val week = dbWeek.bestDao().getAll(tabType)
         val ref: MutableMap<String?, Any> = HashMap()
