@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
-import com.example.moavara.Best.Before.BottomDialogBest
 import com.example.moavara.DataBase.DataBaseBestDay
 import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
@@ -17,7 +16,7 @@ import com.example.moavara.Util.Genre
 import java.util.*
 
 
-class FragmentBestTodayTab(private val tabType: String) :
+class FragmentBestTabToday(private val tabType: String) :
     Fragment() {
 
     private var adapterToday: AdapterBestToday? = null
@@ -94,15 +93,6 @@ class FragmentBestTodayTab(private val tabType: String) :
             override fun onItemClick(v: View?, position: Int) {
                 val item: BookListDataBestToday? = adapterToday!!.getItem(position)
 
-//                if(item!!.equals("Joara")){
-//                    val intent = Intent(requireContext().applicationContext, ActivitySearch::class.java)
-//                    intent.putExtra("BookCode", item.bookCode)
-//                    startActivity(intent)
-//                } else {
-//                    val mBottomDialogBest = BottomDialogBest(requireContext(), item)
-//                    fragmentManager?.let { mBottomDialogBest.show(it, null) }
-//                }
-
                 val mBottomDialogBest = BottomDialogBest(requireContext(), item)
                 fragmentManager?.let { mBottomDialogBest.show(it, null) }
             }
@@ -118,18 +108,23 @@ class FragmentBestTodayTab(private val tabType: String) :
             status = "NEW"
             return 0
         } else {
-            return if (yesterdayNum < num!!) {
-                status = "DOWN"
-                num - yesterdayNum
-            } else if (yesterdayNum > num) {
-                status = "UP"
-                num - yesterdayNum
-            } else if (yesterdayNum == num) {
-                status = "SAME"
-                0
-            } else {
-                status = "SAME"
-                0
+            return when {
+                yesterdayNum < num!! -> {
+                    status = "DOWN"
+                    num - yesterdayNum
+                }
+                yesterdayNum > num -> {
+                    status = "UP"
+                    num - yesterdayNum
+                }
+                yesterdayNum == num -> {
+                    status = "SAME"
+                    0
+                }
+                else -> {
+                    status = "SAME"
+                    0
+                }
             }
         }
     }

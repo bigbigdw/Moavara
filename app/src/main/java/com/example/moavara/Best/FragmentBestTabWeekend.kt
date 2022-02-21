@@ -1,4 +1,4 @@
-package com.example.moavara.Best.Before
+package com.example.moavara.Best
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
-import com.example.moavara.Best.AdapterBestToday
 import com.example.moavara.DataBase.*
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
@@ -22,7 +21,7 @@ import kotlin.Comparator
 import kotlin.collections.ArrayList
 
 
-class FragmentBestWeekendTab(private val tabType: String) : Fragment() {
+class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
 
     private var adapterWeek: AdapterBestWeekend? = null
     private val itemWeek = ArrayList<BookListDataBestWeekend?>()

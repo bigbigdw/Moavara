@@ -19,7 +19,7 @@ class FragmentEvent: Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        val root: View = inflater.inflate(R.layout.fragment_best_today, container, false)
+        val root: View = inflater.inflate(R.layout.fragment_best_tab, container, false)
         viewPager = root.findViewById(R.id.view_pager)
         setupViewPager(viewPager)
         tabLayout = root.findViewById(R.id.post_tab)

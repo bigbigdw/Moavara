@@ -11,15 +11,10 @@
     <string name="Search_Text2">더 자세한 검색을 하고 싶으면 아래 버튼을 눌러주세요!</string>
     <string name="Search_Text3">상세 검색</string>
 
-    <string name="search_tab1">조아라</string>
-    <string name="search_tab2">카카오페이지</string>
-    <string name="search_tab3">리디북스</string>
-    <string name="search_tab4">톡소다</string>
-    <string name="search_tab5">원스토어북스</string>
-    <string name="search_tab6">브릿G</string>
-    <string name="search_tab7">북팔</string>
-    <string name="search_tab8">허니문</string>
-    <string name="search_tab9">봄툰</string>
+    <string name="Best_Tab1">투데이</string>
+    <string name="Best_Tab2">주간</string>
+    <string name="Best_Tab3">월간</string>
+
 
     <string name="TODO"></string>
     <string name="blank">작품이 없습니다</string>
