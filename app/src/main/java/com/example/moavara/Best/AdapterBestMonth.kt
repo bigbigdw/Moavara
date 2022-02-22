@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moavara.R
+import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Search.BookListDataBestWeekend
 import java.util.ArrayList
 
@@ -34,7 +36,7 @@ class AdapterBestMonth(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_booklist_best_weekend, parent, false)
+            .inflate(R.layout.item_booklist_best_month, parent, false)
         return HolderBestWeekend(view)
     }
 
@@ -48,11 +50,11 @@ class AdapterBestMonth(
                     .load(items.sun!!.bookImg)
                     .into(holder.iviewBookImg1)
 
-                if (selected != "" && getSelectedBook() != items.sun!!.bookCode) {
-                    holder.llayoutCover1.visibility = View.VISIBLE
-                } else {
-                    holder.llayoutCover1.visibility = View.GONE
-                }
+                holder.tviewDate1.text = items.sun!!.date!!.substring(3)
+                isSelectBook(items.sun, holder.llayoutCover1)
+                holder.llayoutNull1.visibility = View.GONE
+            } else {
+                holder.llayoutNull1.visibility = View.VISIBLE
             }
 
             if (items.mon != null) {
@@ -60,12 +62,11 @@ class AdapterBestMonth(
                     .load(items.mon!!.bookImg)
                     .into(holder.iviewBookImg2)
 
-                if (selected != "" && getSelectedBook() != items.mon!!.bookCode) {
-                    holder.llayoutCover2.visibility = View.VISIBLE
-                } else {
-                    holder.llayoutCover2.visibility = View.GONE
-                }
-
+                holder.tviewDate2.text = items.mon!!.date!!.substring(3)
+                isSelectBook(items.mon, holder.llayoutCover2)
+                holder.llayoutNull2.visibility = View.GONE
+            } else {
+                holder.llayoutNull2.visibility = View.VISIBLE
             }
 
             if (items.tue != null) {
@@ -73,11 +74,11 @@ class AdapterBestMonth(
                     .load(items.tue!!.bookImg)
                     .into(holder.iviewBookImg3)
 
-                if (selected != "" && getSelectedBook() != items.tue!!.bookCode) {
-                    holder.llayoutCover3.visibility = View.VISIBLE
-                } else {
-                    holder.llayoutCover3.visibility = View.GONE
-                }
+                holder.tviewDate3.text = items.tue!!.date!!.substring(3)
+                isSelectBook(items.tue, holder.llayoutCover3)
+                holder.llayoutNull3.visibility = View.GONE
+            } else {
+                holder.llayoutNull3.visibility = View.VISIBLE
             }
 
             if (items.wed != null) {
@@ -85,11 +86,11 @@ class AdapterBestMonth(
                     .load(items.wed!!.bookImg)
                     .into(holder.iviewBookImg4)
 
-                if (selected != "" && getSelectedBook() != items.wed!!.bookCode) {
-                    holder.llayoutCover4.visibility = View.VISIBLE
-                } else {
-                    holder.llayoutCover4.visibility = View.GONE
-                }
+                holder.tviewDate4.text = items.wed!!.date!!.substring(3)
+                isSelectBook(items.wed, holder.llayoutCover4)
+                holder.llayoutNull4.visibility = View.GONE
+            } else {
+                holder.llayoutNull4.visibility = View.VISIBLE
             }
 
             if (items.thur != null) {
@@ -97,11 +98,11 @@ class AdapterBestMonth(
                     .load(items.thur!!.bookImg)
                     .into(holder.iviewBookImg5)
 
-                if (selected != "" && getSelectedBook() != items.thur!!.bookCode) {
-                    holder.llayoutCover5.visibility = View.VISIBLE
-                } else {
-                    holder.llayoutCover5.visibility = View.GONE
-                }
+                holder.tviewDate5.text = items.thur!!.date!!.substring(3)
+                isSelectBook(items.thur, holder.llayoutCover5)
+                holder.llayoutNull5.visibility = View.GONE
+            } else {
+                holder.llayoutNull5.visibility = View.VISIBLE
             }
 
             if (items.fri != null) {
@@ -109,11 +110,11 @@ class AdapterBestMonth(
                     .load(items.fri!!.bookImg)
                     .into(holder.iviewBookImg6)
 
-                if (selected != "" && getSelectedBook() != items.fri!!.bookCode) {
-                    holder.llayoutCover6.visibility = View.VISIBLE
-                } else {
-                    holder.llayoutCover6.visibility = View.GONE
-                }
+                holder.tviewDate6.text = items.fri!!.date!!.substring(3)
+                isSelectBook(items.fri, holder.llayoutCover6)
+                holder.llayoutNull6.visibility = View.GONE
+            } else {
+                holder.llayoutNull6.visibility = View.VISIBLE
             }
 
             if (items.sat != null) {
@@ -121,13 +122,21 @@ class AdapterBestMonth(
                     .load(items.sat!!.bookImg)
                     .into(holder.iviewBookImg7)
 
-                if (selected != "" && getSelectedBook() != items.sat!!.bookCode) {
-                    holder.llayoutCover7.visibility = View.VISIBLE
-                } else {
-                    holder.llayoutCover7.visibility = View.GONE
-                }
+                holder.tviewDate7.text = items.sat!!.date!!.substring(3)
+                isSelectBook(items.sat, holder.llayoutCover7)
+                holder.llayoutNull7.visibility = View.GONE
+            } else {
+                holder.llayoutNull7.visibility = View.VISIBLE
             }
 
+        }
+    }
+
+    fun isSelectBook(items : BookListDataBestToday?, llayout : LinearLayout){
+        if (selected != "" && getSelectedBook() != items!!.bookCode) {
+            llayout.visibility = View.VISIBLE
+        } else {
+            llayout.visibility = View.GONE
         }
     }
 
@@ -141,30 +150,44 @@ class AdapterBestMonth(
         var cvieWrap1: CardView = itemView.findViewById(R.id.cview_Wrap1)
         var iviewBookImg1: ImageView = itemView.findViewById(R.id.iview_BookImg1)
         var llayoutCover1: LinearLayout = itemView.findViewById(R.id.llayout_Cover1)
+        var tviewDate1: TextView = itemView.findViewById(R.id.tviewDate1)
+        var llayoutNull1 : LinearLayout = itemView.findViewById(R.id.llayoutNull1)
 
         var cvieWrap2: CardView = itemView.findViewById(R.id.cview_Wrap2)
         var iviewBookImg2: ImageView = itemView.findViewById(R.id.iview_BookImg2)
         var llayoutCover2: LinearLayout = itemView.findViewById(R.id.llayout_Cover2)
+        var tviewDate2: TextView = itemView.findViewById(R.id.tviewDate2)
+        var llayoutNull2 : LinearLayout = itemView.findViewById(R.id.llayoutNull2)
 
         var cvieWrap3: CardView = itemView.findViewById(R.id.cview_Wrap3)
         var iviewBookImg3: ImageView = itemView.findViewById(R.id.iview_BookImg3)
         var llayoutCover3: LinearLayout = itemView.findViewById(R.id.llayout_Cover3)
+        var tviewDate3: TextView = itemView.findViewById(R.id.tviewDate3)
+        var llayoutNull3 : LinearLayout = itemView.findViewById(R.id.llayoutNull3)
 
         var cvieWrap4: CardView = itemView.findViewById(R.id.cview_Wrap4)
         var iviewBookImg4: ImageView = itemView.findViewById(R.id.iview_BookImg4)
         var llayoutCover4: LinearLayout = itemView.findViewById(R.id.llayout_Cover4)
+        var tviewDate4: TextView = itemView.findViewById(R.id.tviewDate4)
+        var llayoutNull4 : LinearLayout = itemView.findViewById(R.id.llayoutNull4)
 
         var cvieWrap5: CardView = itemView.findViewById(R.id.cview_Wrap5)
         var iviewBookImg5: ImageView = itemView.findViewById(R.id.iview_BookImg5)
         var llayoutCover5: LinearLayout = itemView.findViewById(R.id.llayout_Cover5)
+        var tviewDate5: TextView = itemView.findViewById(R.id.tviewDate5)
+        var llayoutNull5 : LinearLayout = itemView.findViewById(R.id.llayoutNull5)
 
         var cvieWrap6: CardView = itemView.findViewById(R.id.cview_Wrap6)
         var iviewBookImg6: ImageView = itemView.findViewById(R.id.iview_BookImg6)
         var llayoutCover6: LinearLayout = itemView.findViewById(R.id.llayout_Cover6)
+        var tviewDate6: TextView = itemView.findViewById(R.id.tviewDate6)
+        var llayoutNull6 : LinearLayout = itemView.findViewById(R.id.llayoutNull6)
 
         var cvieWrap7: CardView = itemView.findViewById(R.id.cview_Wrap7)
         var iviewBookImg7: ImageView = itemView.findViewById(R.id.iview_BookImg7)
         var llayoutCover7: LinearLayout = itemView.findViewById(R.id.llayout_Cover7)
+        var tviewDate7: TextView = itemView.findViewById(R.id.tviewDate7)
+        var llayoutNull7 : LinearLayout = itemView.findViewById(R.id.llayoutNull7)
 
         init {
 

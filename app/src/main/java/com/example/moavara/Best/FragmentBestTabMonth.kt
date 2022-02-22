@@ -1,6 +1,7 @@
 package com.example.moavara.Best
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -121,19 +122,33 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment() {
 
         bestRef.get().addOnSuccessListener {
 
-            for (i in it.children) {
-                val group: BookListDataBestWeekend? = i.getValue(BookListDataBestWeekend::class.java)
-                itemMonth.add(
-                    BookListDataBestWeekend(
-                        group!!.sun,
-                        group.mon,
-                        group.tue,
-                        group.wed,
-                        group.thur,
-                        group.fri,
-                        group.sat,
+            for(i in 1..5){
+                if(it.child(i.toString()).value != null){
+                    val group: BookListDataBestWeekend? = it.child(i.toString()).getValue(BookListDataBestWeekend::class.java)
+                    itemMonth.add(
+                        BookListDataBestWeekend(
+                            group!!.sun,
+                            group.mon,
+                            group.tue,
+                            group.wed,
+                            group.thur,
+                            group.fri,
+                            group.sat,
+                        )
                     )
-                )
+                } else {
+                    itemMonth.add(
+                        BookListDataBestWeekend(
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                        )
+                    )
+                }
                 adapterMonth!!.notifyDataSetChanged()
             }
 

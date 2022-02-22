@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#23252D"
+    android:background="#0D0E10"
     android:orientation="vertical">
 
     <androidx.core.widget.NestedScrollView
@@ -14,97 +14,92 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:gravity="right|center_vertical|end"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="1"
+                    android:layout_width="52dp"
+                    android:layout_height="32dp"
+                    android:gravity="center_horizontal|center_vertical"
                     android:text="일"
                     android:textAlignment="center"
                     android:textColor="#FDFDFD"
-                    android:textSize="20dp"
+                    android:textSize="14dp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="1"
+                    android:layout_width="50dp"
+                    android:layout_height="32dp"
+                    android:gravity="center_horizontal|center_vertical"
                     android:text="월"
                     android:textAlignment="center"
                     android:textColor="#FDFDFD"
-                    android:textSize="20dp"
+                    android:textSize="14dp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="1"
+                    android:layout_width="52dp"
+                    android:layout_height="32dp"
+                    android:gravity="center_horizontal|center_vertical"
                     android:text="화"
                     android:textAlignment="center"
                     android:textColor="#FDFDFD"
-                    android:textSize="20dp"
+                    android:textSize="14dp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="1"
+                    android:layout_width="52dp"
+                    android:layout_height="32dp"
+                    android:gravity="center_horizontal|center_vertical"
                     android:text="수"
                     android:textAlignment="center"
                     android:textColor="#FDFDFD"
-                    android:textSize="20dp"
+                    android:textSize="14dp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="1"
+                    android:layout_width="52dp"
+                    android:layout_height="32dp"
+                    android:gravity="center_horizontal|center_vertical"
                     android:text="목"
                     android:textAlignment="center"
                     android:textColor="#FDFDFD"
-                    android:textSize="20dp"
+                    android:textSize="14dp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="1"
+                    android:layout_width="50dp"
+                    android:layout_height="32dp"
+                    android:gravity="center_horizontal|center_vertical"
                     android:text="금"
                     android:textAlignment="center"
                     android:textColor="#FDFDFD"
-                    android:textSize="20dp"
+                    android:textSize="14dp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="1"
+                    android:layout_width="50dp"
+                    android:layout_height="32dp"
+                    android:gravity="center_horizontal|center_vertical"
                     android:text="토"
                     android:textAlignment="center"
                     android:textColor="#FDFDFD"
-                    android:textSize="20dp"
+                    android:textSize="14dp"
                     android:textStyle="bold" />
 
             </LinearLayout>
 
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rview_BestMonth"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="16dp" />
+                android:layout_height="wrap_content"/>
 
             <LinearLayout
                 android:id="@+id/llayoutMonthDetail"
@@ -132,7 +127,6 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp" />
             </LinearLayout>
-
 
 
         </LinearLayout>

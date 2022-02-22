@@ -12,13 +12,15 @@
         android:layout_height="wrap_content"
         android:background="#0D0E10"
         android:gravity="bottom"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingLeft="16dp"
+
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
             android:text="베스트"

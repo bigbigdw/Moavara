@@ -75,9 +75,6 @@ class ActivityBookSetting : AppCompatActivity() {
         setRoomBest("OneStore")
         setRoomBest("MrBlue")
 
-        val intent = Intent(applicationContext, ActivityMain::class.java)
-        startActivity(intent)
-
     }
 
     private fun setLayout() {

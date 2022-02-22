@@ -3,26 +3,39 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/llayout_Wrap"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 
-    <HorizontalScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal" >
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tviewDate1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingRight="4dp"
+                
+                android:textAlignment="viewEnd"
+                android:textColor="#FFFDFD"
+                android:textSize="12dp" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cview_Wrap1"
-                android:layout_width="71dp"
-                android:layout_height="103dp"
-                android:layout_margin="4dp"
+                android:layout_width="48dp"
+                android:layout_height="72dp"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
                 app:cardCornerRadius="6dp">
 
                 <RelativeLayout
@@ -36,7 +49,26 @@
                         android:adjustViewBounds="true"
                         android:contentDescription="@string/TODO"
                         android:scaleType="fitXY"
-                        app:srcCompat="@drawable/booktest" />
+                         />
+
+                    <LinearLayout
+                        android:id="@+id/llayoutNull1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#26292E"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:adjustViewBounds="true"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/ic_launcher_gray" />
+                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/llayout_Cover1"
@@ -49,12 +81,30 @@
                 </RelativeLayout>
 
             </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tviewDate2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingRight="4dp"
+                
+                android:textAlignment="viewEnd"
+                android:textColor="#FFFDFD"
+                android:textSize="12dp" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cview_Wrap2"
-                android:layout_width="71dp"
-                android:layout_height="103dp"
-                android:layout_margin="4dp"
+                android:layout_width="48dp"
+                android:layout_height="72dp"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
                 app:cardCornerRadius="6dp">
 
                 <RelativeLayout
@@ -67,8 +117,25 @@
                         android:layout_height="match_parent"
                         android:adjustViewBounds="true"
                         android:contentDescription="@string/TODO"
-                        android:scaleType="fitXY"
-                        app:srcCompat="@drawable/booktest" />
+                        android:scaleType="fitXY" />
+
+                    <LinearLayout
+                        android:id="@+id/llayoutNull2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:background="#26292E"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:adjustViewBounds="true"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/ic_launcher_gray" />
+                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/llayout_Cover2"
@@ -81,12 +148,30 @@
                 </RelativeLayout>
 
             </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tviewDate3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingRight="4dp"
+                
+                android:textAlignment="viewEnd"
+                android:textColor="#FFFDFD"
+                android:textSize="12dp" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cview_Wrap3"
-                android:layout_width="71dp"
-                android:layout_height="103dp"
-                android:layout_margin="4dp"
+                android:layout_width="48dp"
+                android:layout_height="72dp"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
                 app:cardCornerRadius="6dp">
 
                 <RelativeLayout
@@ -99,8 +184,25 @@
                         android:layout_height="match_parent"
                         android:adjustViewBounds="true"
                         android:contentDescription="@string/TODO"
-                        android:scaleType="fitXY"
-                        app:srcCompat="@drawable/booktest" />
+                        android:scaleType="fitXY" />
+
+                    <LinearLayout
+                        android:id="@+id/llayoutNull3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#26292E"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:adjustViewBounds="true"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/ic_launcher_gray" />
+                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/llayout_Cover3"
@@ -113,12 +215,30 @@
                 </RelativeLayout>
 
             </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tviewDate4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingRight="4dp"
+                
+                android:textAlignment="viewEnd"
+                android:textColor="#FFFDFD"
+                android:textSize="12dp" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cview_Wrap4"
-                android:layout_width="71dp"
-                android:layout_height="103dp"
-                android:layout_margin="4dp"
+                android:layout_width="48dp"
+                android:layout_height="72dp"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
                 app:cardCornerRadius="6dp">
 
                 <RelativeLayout
@@ -131,8 +251,25 @@
                         android:layout_height="match_parent"
                         android:adjustViewBounds="true"
                         android:contentDescription="@string/TODO"
-                        android:scaleType="fitXY"
-                        app:srcCompat="@drawable/booktest" />
+                        android:scaleType="fitXY" />
+
+                    <LinearLayout
+                        android:id="@+id/llayoutNull4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#26292E"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:adjustViewBounds="true"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/ic_launcher_gray" />
+                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/llayout_Cover4"
@@ -145,12 +282,30 @@
                 </RelativeLayout>
 
             </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tviewDate5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingRight="4dp"
+                
+                android:textAlignment="viewEnd"
+                android:textColor="#FFFDFD"
+                android:textSize="12dp" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cview_Wrap5"
-                android:layout_width="71dp"
-                android:layout_height="103dp"
-                android:layout_margin="4dp"
+                android:layout_width="48dp"
+                android:layout_height="72dp"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
                 app:cardCornerRadius="6dp">
 
                 <RelativeLayout
@@ -163,8 +318,25 @@
                         android:layout_height="match_parent"
                         android:adjustViewBounds="true"
                         android:contentDescription="@string/TODO"
-                        android:scaleType="fitXY"
-                        app:srcCompat="@drawable/booktest" />
+                        android:scaleType="fitXY" />
+
+                    <LinearLayout
+                        android:id="@+id/llayoutNull5"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#26292E"
+                        android:orientation="horizontal"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:adjustViewBounds="true"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/ic_launcher_gray" />
+                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/llayout_Cover5"
@@ -177,12 +349,30 @@
                 </RelativeLayout>
 
             </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tviewDate6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingRight="4dp"
+                
+                android:textAlignment="viewEnd"
+                android:textColor="#FFFDFD"
+                android:textSize="12dp" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cview_Wrap6"
-                android:layout_width="71dp"
-                android:layout_height="103dp"
-                android:layout_margin="4dp"
+                android:layout_width="48dp"
+                android:layout_height="72dp"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
                 app:cardCornerRadius="6dp">
 
                 <RelativeLayout
@@ -195,8 +385,25 @@
                         android:layout_height="match_parent"
                         android:adjustViewBounds="true"
                         android:contentDescription="@string/TODO"
-                        android:scaleType="fitXY"
-                        app:srcCompat="@drawable/booktest" />
+                        android:scaleType="fitXY" />
+
+                    <LinearLayout
+                        android:id="@+id/llayoutNull6"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#26292E"
+                        android:orientation="horizontal"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:adjustViewBounds="true"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/ic_launcher_gray" />
+                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/llayout_Cover6"
@@ -209,12 +416,31 @@
                 </RelativeLayout>
 
             </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tviewDate7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingRight="4dp"
+                
+                android:textAlignment="viewEnd"
+                android:textColor="#FFFDFD"
+                android:textSize="12dp" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cview_Wrap7"
-                android:layout_width="71dp"
-                android:layout_height="103dp"
-                android:layout_margin="4dp"
+                android:layout_width="48dp"
+                android:layout_height="72dp"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
                 app:cardCornerRadius="6dp">
 
                 <RelativeLayout
@@ -227,8 +453,26 @@
                         android:layout_height="match_parent"
                         android:adjustViewBounds="true"
                         android:contentDescription="@string/TODO"
-                        android:scaleType="fitXY"
-                        app:srcCompat="@drawable/booktest" />
+                        android:scaleType="fitXY" />
+
+                    <LinearLayout
+                        android:id="@+id/llayoutNull7"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#26292E"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:adjustViewBounds="true"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/ic_launcher_gray" />
+                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/llayout_Cover7"
@@ -241,9 +485,9 @@
                 </RelativeLayout>
 
             </androidx.cardview.widget.CardView>
-
         </LinearLayout>
-    </HorizontalScrollView>
+
+    </LinearLayout>
 
 
 </LinearLayout>
