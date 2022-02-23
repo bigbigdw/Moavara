@@ -16,9 +16,7 @@ import com.example.moavara.Search.BookListDataBestWeekend
 import java.util.ArrayList
 
 class AdapterBestMonth(
-    private val mContext: Context,
-    items:
-    ArrayList<BookListDataBestWeekend?>,
+    items: ArrayList<BookListDataBestWeekend?>,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var item: ArrayList<BookListDataBestWeekend?> = items

@@ -22,17 +22,13 @@
         </activity>
 
         <activity
-            android:name="com.example.moavara.Main.ActivityIntro"
+            android:name="com.example.moavara.Main.ActivityGenre"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <activity
-            android:name="com.example.moavara.Main.ActivityLogin"
+            android:name="com.example.moavara.Main.ActivitySync"
             android:exported="true">
         </activity>
 
@@ -53,7 +49,11 @@
         <activity
             android:name="com.example.moavara.Main.ActivitySplash"
             android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <meta-data

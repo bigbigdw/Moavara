@@ -1,7 +1,6 @@
 package com.example.moavara.Best
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,7 +41,7 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment() {
         cate = Genre.getGenre(requireContext()).toString()
 
         recyclerViewMonth = root.findViewById(R.id.rview_BestMonth)
-        adapterMonth = AdapterBestMonth(requireContext(), itemMonth)
+        adapterMonth = AdapterBestMonth(itemMonth)
 
         llayoutMonthDetail = root.findViewById(R.id.llayoutMonthDetail)
         recyclerviewMonthDay = root.findViewById(R.id.rview_BestMonthDay)
@@ -50,13 +49,16 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment() {
 
 
         val mRootRef = FirebaseDatabase.getInstance().reference
-        val month = mRootRef.child("best").child(tabType).child(cate).child("month").child(DBDate.Month())
-        val monthList = mRootRef.child("best").child(tabType).child(cate).child("month").child(DBDate.Month())
+        val month =
+            mRootRef.child("best").child(tabType).child(cate).child("month").child(DBDate.Month())
+        val monthList =
+            mRootRef.child("best").child(tabType).child(cate).child("month").child(DBDate.Month())
 
         itemMonth.clear()
         getBestMonth(month)
 
-        recyclerViewMonth!!.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recyclerViewMonth!!.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerViewMonth!!.adapter = adapterMonth
 
         adapterMonth!!.setOnItemClickListener(object : AdapterBestMonth.OnItemClickListener {
@@ -65,45 +67,49 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment() {
                 ItemMonthDay.clear()
                 val item = adapterMonth!!.getItem(position)
 
-                recyclerviewMonthDay!!.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                recyclerviewMonthDay!!.adapter = adapterMonthDay
+                monthList.child(DBDate.Week()).child(value!!).child("day").get()
+                    .addOnSuccessListener {
 
-                if(llayoutMonthDetail!!.visibility == View.GONE){
-                    llayoutMonthDetail!!.visibility = View.VISIBLE
-                }
+                        recyclerviewMonthDay!!.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                        recyclerviewMonthDay!!.adapter = adapterMonthDay
 
-                    monthList.child(DBDate.Week()).child(value!!).child("day").addValueEventListener(object : ValueEventListener {
-                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        if(it.childrenCount > 0){
 
-                            for (postSnapshot in dataSnapshot.children) {
-
-                                val group: BookListDataBestToday? =
-                                    postSnapshot.getValue(BookListDataBestToday::class.java)
-
-                                ItemMonthDay.add(
-                                    BookListDataBestToday(
-                                        group!!.writer,
-                                        group.title,
-                                        group.bookImg,
-                                        group.bookCode,
-                                        group.info1,
-                                        group.info2,
-                                        group.info3,
-                                        group.info4,
-                                        group.info5,
-                                        group.number,
-                                        group.date,
-                                        "",
-                                    )
-                                )
-                                adapterMonthDay!!.notifyDataSetChanged()
+                            if(llayoutMonthDetail!!.visibility == View.GONE){
+                                llayoutMonthDetail!!.visibility = View.VISIBLE
                             }
+                        } else {
+                            llayoutMonthDetail!!.visibility = View.GONE
                         }
 
-                        override fun onCancelled(databaseError: DatabaseError) {
+                        for (postSnapshot in it.children) {
+
+                            val group: BookListDataBestToday? =
+                                postSnapshot.getValue(BookListDataBestToday::class.java)
+
+                            ItemMonthDay.add(
+                                BookListDataBestToday(
+                                    group!!.writer,
+                                    group.title,
+                                    group.bookImg,
+                                    group.bookCode,
+                                    group.info1,
+                                    group.info2,
+                                    group.info3,
+                                    group.info4,
+                                    group.info5,
+                                    group.number,
+                                    group.date,
+                                    "",
+                                )
+                            )
+                            adapterMonthDay!!.notifyDataSetChanged()
                         }
-                    })
+
+                    }.addOnFailureListener {}
+
             }
+
         })
 
         adapterMonthDay!!.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
@@ -112,6 +118,7 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment() {
 
                 val mBottomDialogBest = BottomDialogBest(requireContext(), item)
                 fragmentManager?.let { mBottomDialogBest.show(it, null) }
+
             }
         })
 
@@ -122,9 +129,10 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment() {
 
         bestRef.get().addOnSuccessListener {
 
-            for(i in 1..5){
-                if(it.child(i.toString()).value != null){
-                    val group: BookListDataBestWeekend? = it.child(i.toString()).getValue(BookListDataBestWeekend::class.java)
+            for (i in 1..5) {
+                if (it.child(i.toString()).value != null) {
+                    val group: BookListDataBestWeekend? =
+                        it.child(i.toString()).getValue(BookListDataBestWeekend::class.java)
                     itemMonth.add(
                         BookListDataBestWeekend(
                             group!!.sun,
