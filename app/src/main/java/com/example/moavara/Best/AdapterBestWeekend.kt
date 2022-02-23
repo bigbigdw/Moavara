@@ -54,6 +54,9 @@ class AdapterBestWeekend(
                 } else {
                     holder.llayoutCover1.visibility = View.GONE
                 }
+                holder.llayoutNull1.visibility = View.GONE
+            } else {
+                holder.llayoutNull1.visibility = View.VISIBLE
             }
 
             if (items.mon != null) {
@@ -66,7 +69,9 @@ class AdapterBestWeekend(
                 } else {
                     holder.llayoutCover2.visibility = View.GONE
                 }
-
+                holder.llayoutNull2.visibility = View.GONE
+            } else {
+                holder.llayoutNull2.visibility = View.VISIBLE
             }
 
             if (items.tue != null) {
@@ -79,6 +84,9 @@ class AdapterBestWeekend(
                 } else {
                     holder.llayoutCover3.visibility = View.GONE
                 }
+                holder.llayoutNull3.visibility = View.GONE
+            } else {
+                holder.llayoutNull3.visibility = View.VISIBLE
             }
 
             if (items.wed != null) {
@@ -91,6 +99,9 @@ class AdapterBestWeekend(
                 } else {
                     holder.llayoutCover4.visibility = View.GONE
                 }
+                holder.llayoutNull4.visibility = View.GONE
+            } else {
+                holder.llayoutNull4.visibility = View.VISIBLE
             }
 
             if (items.thur != null) {
@@ -103,6 +114,9 @@ class AdapterBestWeekend(
                 } else {
                     holder.llayoutCover5.visibility = View.GONE
                 }
+                holder.llayoutNull5.visibility = View.GONE
+            } else {
+                holder.llayoutNull5.visibility = View.VISIBLE
             }
 
             if (items.fri != null) {
@@ -115,6 +129,9 @@ class AdapterBestWeekend(
                 } else {
                     holder.llayoutCover6.visibility = View.GONE
                 }
+                holder.llayoutNull6.visibility = View.GONE
+            } else {
+                holder.llayoutNull6.visibility = View.VISIBLE
             }
 
             if (items.sat != null) {
@@ -127,6 +144,9 @@ class AdapterBestWeekend(
                 } else {
                     holder.llayoutCover7.visibility = View.GONE
                 }
+                holder.llayoutNull7.visibility = View.GONE
+            } else {
+                holder.llayoutNull7.visibility = View.VISIBLE
             }
 
         }
@@ -142,30 +162,37 @@ class AdapterBestWeekend(
         var cvieWrap1: CardView = itemView.findViewById(R.id.cview_Wrap1)
         var iviewBookImg1: ImageView = itemView.findViewById(R.id.iview_BookImg1)
         var llayoutCover1: LinearLayout = itemView.findViewById(R.id.llayout_Cover1)
+        var llayoutNull1 : LinearLayout = itemView.findViewById(R.id.llayoutNull1)
 
         var cvieWrap2: CardView = itemView.findViewById(R.id.cview_Wrap2)
         var iviewBookImg2: ImageView = itemView.findViewById(R.id.iview_BookImg2)
         var llayoutCover2: LinearLayout = itemView.findViewById(R.id.llayout_Cover2)
+        var llayoutNull2 : LinearLayout = itemView.findViewById(R.id.llayoutNull2)
 
         var cvieWrap3: CardView = itemView.findViewById(R.id.cview_Wrap3)
         var iviewBookImg3: ImageView = itemView.findViewById(R.id.iview_BookImg3)
         var llayoutCover3: LinearLayout = itemView.findViewById(R.id.llayout_Cover3)
+        var llayoutNull3 : LinearLayout = itemView.findViewById(R.id.llayoutNull3)
 
         var cvieWrap4: CardView = itemView.findViewById(R.id.cview_Wrap4)
         var iviewBookImg4: ImageView = itemView.findViewById(R.id.iview_BookImg4)
         var llayoutCover4: LinearLayout = itemView.findViewById(R.id.llayout_Cover4)
+        var llayoutNull4 : LinearLayout = itemView.findViewById(R.id.llayoutNull4)
 
         var cvieWrap5: CardView = itemView.findViewById(R.id.cview_Wrap5)
         var iviewBookImg5: ImageView = itemView.findViewById(R.id.iview_BookImg5)
         var llayoutCover5: LinearLayout = itemView.findViewById(R.id.llayout_Cover5)
+        var llayoutNull5 : LinearLayout = itemView.findViewById(R.id.llayoutNull5)
 
         var cvieWrap6: CardView = itemView.findViewById(R.id.cview_Wrap6)
         var iviewBookImg6: ImageView = itemView.findViewById(R.id.iview_BookImg6)
         var llayoutCover6: LinearLayout = itemView.findViewById(R.id.llayout_Cover6)
+        var llayoutNull6 : LinearLayout = itemView.findViewById(R.id.llayoutNull6)
 
         var cvieWrap7: CardView = itemView.findViewById(R.id.cview_Wrap7)
         var iviewBookImg7: ImageView = itemView.findViewById(R.id.iview_BookImg7)
         var llayoutCover7: LinearLayout = itemView.findViewById(R.id.llayout_Cover7)
+        var llayoutNull7: LinearLayout = itemView.findViewById(R.id.llayoutNull7)
 
         init {
 

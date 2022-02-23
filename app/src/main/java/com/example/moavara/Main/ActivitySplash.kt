@@ -44,9 +44,9 @@ class ActivitySplash : Activity() {
 
         Handler(Looper.myLooper()!!).postDelayed(
             {
-                val novelIntent = Intent(this, ActivityGenre::class.java)
-                novelIntent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                startActivityIfNeeded(novelIntent, 0)
+                val intent = Intent(this, ActivityGenre::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
+                startActivityIfNeeded(intent, 0)
                 finish()
             },
             1000

@@ -38,8 +38,9 @@ class ActivityGenre : AppCompatActivity() {
             savePreferences("FANTASY")
 
             val novelIntent = Intent(this, ActivitySync::class.java)
-            novelIntent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT; Intent.FLAG_ACTIVITY_NO_ANIMATION
+            novelIntent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY; Intent.FLAG_ACTIVITY_NO_ANIMATION
             startActivityIfNeeded(novelIntent, 0)
+            finish()
         }
 
         llayoutBtn2!!.setOnClickListener {
@@ -47,8 +48,9 @@ class ActivityGenre : AppCompatActivity() {
             savePreferences("ROMANCE")
 
             val novelIntent = Intent(this, ActivitySync::class.java)
-            novelIntent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT; Intent.FLAG_ACTIVITY_NO_ANIMATION
+            novelIntent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY; Intent.FLAG_ACTIVITY_NO_ANIMATION
             startActivityIfNeeded(novelIntent, 0)
+            finish()
         }
 
         llayoutBtn3!!.setOnClickListener {
@@ -56,8 +58,9 @@ class ActivityGenre : AppCompatActivity() {
             savePreferences("ALL")
 
             val novelIntent = Intent(this, ActivitySync::class.java)
-            novelIntent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT; Intent.FLAG_ACTIVITY_NO_ANIMATION
+            novelIntent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY; Intent.FLAG_ACTIVITY_NO_ANIMATION
             startActivityIfNeeded(novelIntent, 0)
+            finish()
         }
 
         llayoutBtn4!!.setOnClickListener {
@@ -65,8 +68,9 @@ class ActivityGenre : AppCompatActivity() {
             savePreferences("BL")
 
             val novelIntent = Intent(this, ActivitySync::class.java)
-            novelIntent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT; Intent.FLAG_ACTIVITY_NO_ANIMATION
+            novelIntent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY; Intent.FLAG_ACTIVITY_NO_ANIMATION
             startActivityIfNeeded(novelIntent, 0)
+            finish()
         }
 
     }

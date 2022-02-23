@@ -62,7 +62,7 @@ class ActivitySync : Activity() {
         Handler(Looper.myLooper()!!).postDelayed(
             {
                 val novelIntent = Intent(this, ActivityMain::class.java)
-                novelIntent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                novelIntent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
                 startActivityIfNeeded(novelIntent, 0)
                 finish()
             },

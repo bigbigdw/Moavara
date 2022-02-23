@@ -34,7 +34,7 @@ class ActivityMain : AppCompatActivity() {
         setLayout()
     }
 
-    fun setLayout() {
+    private fun setLayout() {
 
         if (getSharedPreferences("LOGIN", MODE_PRIVATE).getString("TOKEN", "") != "") {
 

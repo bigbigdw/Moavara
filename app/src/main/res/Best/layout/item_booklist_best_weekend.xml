@@ -43,6 +43,25 @@
                     android:orientation="vertical"
                     android:visibility="gone" />
 
+                <LinearLayout
+                    android:id="@+id/llayoutNull1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#26292E"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/TODO"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/ic_launcher_gray" />
+                </LinearLayout>
+
+
             </RelativeLayout>
 
         </androidx.cardview.widget.CardView>
@@ -75,6 +94,25 @@
                     android:background="#B3000000"
                     android:orientation="vertical"
                     android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/llayoutNull2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#26292E"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/TODO"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/ic_launcher_gray" />
+                </LinearLayout>
+
 
             </RelativeLayout>
 
@@ -109,6 +147,25 @@
                     android:orientation="vertical"
                     android:visibility="gone" />
 
+                <LinearLayout
+                    android:id="@+id/llayoutNull3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#26292E"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/TODO"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/ic_launcher_gray" />
+                </LinearLayout>
+
+
             </RelativeLayout>
 
         </androidx.cardview.widget.CardView>
@@ -141,6 +198,25 @@
                     android:background="#B3000000"
                     android:orientation="vertical"
                     android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/llayoutNull4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#26292E"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/TODO"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/ic_launcher_gray" />
+                </LinearLayout>
+
 
             </RelativeLayout>
 
@@ -175,6 +251,25 @@
                     android:orientation="vertical"
                     android:visibility="gone" />
 
+                <LinearLayout
+                    android:id="@+id/llayoutNull5"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#26292E"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/TODO"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/ic_launcher_gray" />
+                </LinearLayout>
+
+
             </RelativeLayout>
 
         </androidx.cardview.widget.CardView>
@@ -208,6 +303,25 @@
                     android:orientation="vertical"
                     android:visibility="gone" />
 
+                <LinearLayout
+                    android:id="@+id/llayoutNull6"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#26292E"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/TODO"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/ic_launcher_gray" />
+                </LinearLayout>
+
+
             </RelativeLayout>
 
         </androidx.cardview.widget.CardView>
@@ -240,6 +354,25 @@
                     android:background="#B3000000"
                     android:orientation="vertical"
                     android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/llayoutNull7"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#26292E"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/TODO"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/ic_launcher_gray" />
+                </LinearLayout>
+
 
             </RelativeLayout>
 
