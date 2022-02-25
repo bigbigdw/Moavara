@@ -46,7 +46,7 @@
         </com.google.android.material.tabs.TabLayout>
     </LinearLayout>
 
-    <androidx.viewpager.widget.ViewPager
+    <com.example.moavara.Util.NonSwipeViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

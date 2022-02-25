@@ -38,6 +38,13 @@ class BestType(
     var type: String ? = null,
 )
 
+class BestRank(
+    var number: String = "",
+    var type: String = "",
+    var date: String = "",
+    var status: String = "",
+)
+
 
 class BookListDataBestWeekend(
     var sun: BookListDataBestToday ? = null,

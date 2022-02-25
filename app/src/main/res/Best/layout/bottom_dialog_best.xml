@@ -15,7 +15,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ffffff"
+            android:background="#0D0E10"
             android:orientation="horizontal"
             android:padding="16dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -84,7 +84,7 @@
                     android:breakStrategy="high_quality"
                     android:ellipsize="end"
                     android:fontFamily="@font/noto_sans_bold"
-                    android:textColor="#000000"
+                    android:textColor="#FAFAFA"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     tools:text="@string/Common_BookTitle" />
@@ -103,7 +103,7 @@
                         android:ellipsize="end"
                         android:fontFamily="@font/noto_sans"
                         android:maxLines="1"
-                        android:textColor="#000000"
+                        android:textColor="#FAFAFA"
                         android:textSize="12sp"
                         tools:text="@string/Common_BookWriter" />
 
@@ -114,7 +114,7 @@
                         android:layout_marginEnd="2dp"
                         android:fontFamily="@font/noto_sans_bold"
                         android:text="@string/Common_Bar"
-                        android:textColor="#000000"
+                        android:textColor="#FAFAFA"
                         android:textSize="12sp"
                         android:textStyle="bold"
                         android:visibility="visible" />
@@ -127,7 +127,7 @@
                         android:ellipsize="end"
                         android:fontFamily="@font/noto_sans"
                         android:maxLines="1"
-                        android:textColor="#000000"
+                        android:textColor="#FAFAFA"
                         android:textSize="12sp"
                         tools:text="@string/Common_BookWriter" />
 
@@ -143,7 +143,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/noto_sans"
                         android:text="@string/Best_Joara1"
-                        android:textColor="#000000"
+                        android:textColor="#FAFAFA"
                         android:textSize="12sp" />
 
                     <TextView
@@ -153,7 +153,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/noto_sans_bold"
-                        android:textColor="#000000"
+                        android:textColor="#FAFAFA"
                         android:textSize="12sp"
                         android:textStyle="bold"
                         tools:text="@string/Common_Count" />
@@ -170,7 +170,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/noto_sans"
                         android:text="@string/Best_Joara2"
-                        android:textColor="#000000"
+                        android:textColor="#FAFAFA"
                         android:textSize="12sp" />
 
                     <TextView
@@ -180,7 +180,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/noto_sans_bold"
-                        android:textColor="#000000"
+                        android:textColor="#FAFAFA"
                         android:textSize="12sp"
                         android:textStyle="bold"
                         tools:text="@string/Common_Count" />
@@ -197,7 +197,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/noto_sans"
                         android:text="@string/Best_Joara3"
-                        android:textColor="#000000"
+                        android:textColor="#FAFAFA"
                         android:textSize="12sp" />
 
                     <TextView
@@ -207,7 +207,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/noto_sans_bold"
-                        android:textColor="#000000"
+                        android:textColor="#FAFAFA"
                         android:textSize="12sp"
                         android:textStyle="bold"
                         tools:text="@string/Common_Count" />
@@ -223,7 +223,7 @@
                     android:ellipsize="end"
                     android:fontFamily="@font/noto_sans"
                     android:maxLines="4"
-                    android:textColor="#767676"
+                    android:textColor="#FAFAFA"
                     android:textSize="14sp"
                     tools:text="@string/Common_BookIntro" />
 
@@ -233,10 +233,335 @@
         </LinearLayout>
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#0D0E10"
+                android:gravity="right|center_vertical|end"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#0D0E10"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        android:layout_marginRight="1dp"
+                        android:layout_weight="1"
+                        android:background="#0D0E10"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="14위"
+                        android:textAlignment="center"
+                        android:textColor="#FDFDFD"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/TODO"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/ic_best_gr_24px" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        android:layout_marginRight="1dp"
+                        android:layout_weight="1"
+                        android:background="#0D0E10"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="14위"
+                        android:textAlignment="center"
+                        android:textColor="#FDFDFD"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#0D0E10"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:orientation="vertical"
+                    android:visibility="invisible">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        android:layout_marginRight="1dp"
+                        android:layout_weight="1"
+                        android:background="#0D0E10"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="14위"
+                        android:textAlignment="center"
+                        android:textColor="#FDFDFD"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/TODO"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/ic_best_gr_24px" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        android:layout_marginRight="1dp"
+                        android:layout_weight="1"
+                        android:background="#0D0E10"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="14위"
+                        android:textAlignment="center"
+                        android:textColor="#FDFDFD"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#0D0E10"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        android:layout_marginRight="1dp"
+                        android:layout_weight="1"
+                        android:background="#0D0E10"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="14위"
+                        android:textAlignment="center"
+                        android:textColor="#FDFDFD"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/TODO"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/ic_best_gr_24px" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        android:layout_marginRight="1dp"
+                        android:layout_weight="1"
+                        android:background="#0D0E10"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="14위"
+                        android:textAlignment="center"
+                        android:textColor="#FDFDFD"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#0D0E10"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        android:layout_marginRight="1dp"
+                        android:layout_weight="1"
+                        android:background="#0D0E10"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="14위"
+                        android:textAlignment="center"
+                        android:textColor="#FDFDFD"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/TODO"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/ic_best_gr_24px" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        android:layout_marginRight="1dp"
+                        android:layout_weight="1"
+                        android:background="#0D0E10"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="14위"
+                        android:textAlignment="center"
+                        android:textColor="#FDFDFD"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#0D0E10"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        android:layout_marginRight="1dp"
+                        android:layout_weight="1"
+                        android:background="#0D0E10"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="14위"
+                        android:textAlignment="center"
+                        android:textColor="#FDFDFD"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/TODO"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/ic_best_gr_24px" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        android:layout_marginRight="1dp"
+                        android:layout_weight="1"
+                        android:background="#0D0E10"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="14위"
+                        android:textAlignment="center"
+                        android:textColor="#FDFDFD"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#0D0E10"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        android:layout_marginRight="1dp"
+                        android:layout_weight="1"
+                        android:background="#0D0E10"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="14위"
+                        android:textAlignment="center"
+                        android:textColor="#FDFDFD"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/TODO"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/ic_best_gr_24px" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        android:layout_marginRight="1dp"
+                        android:layout_weight="1"
+                        android:background="#0D0E10"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="14위"
+                        android:textAlignment="center"
+                        android:textColor="#FDFDFD"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#0D0E10"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        android:layout_marginRight="1dp"
+                        android:layout_weight="1"
+                        android:background="#0D0E10"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="14위"
+                        android:textAlignment="center"
+                        android:textColor="#FDFDFD"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/TODO"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/ic_best_gr_24px" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        android:layout_marginRight="1dp"
+                        android:layout_weight="1"
+                        android:background="#0D0E10"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="14위"
+                        android:textAlignment="center"
+                        android:textColor="#FDFDFD"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/llayout_Btn"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="#EEEEEE"
+            android:background="#844DF3"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -244,6 +569,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Best_BottomDialogBtn"
+                android:textColor="#FFFFFF"
                 android:textSize="16sp"
                 tools:ignore="TextContrastCheck" />
         </LinearLayout>

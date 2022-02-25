@@ -67,7 +67,7 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment() {
                 ItemMonthDay.clear()
                 val item = adapterMonth!!.getItem(position)
 
-                monthList.child(DBDate.Week()).child(value!!).child("day").get()
+                monthList.child((position + 1).toString()).child(value!!).child("day").get()
                     .addOnSuccessListener {
 
                         recyclerviewMonthDay!!.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

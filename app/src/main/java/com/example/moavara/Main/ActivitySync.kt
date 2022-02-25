@@ -19,6 +19,7 @@ import java.util.HashMap
 class ActivitySync : Activity() {
 
     private lateinit var dbWeek: DataBaseBestDay
+    private lateinit var dbWeekList: DataBaseBestDay
     private lateinit var dbYesterday: DataBaseBestDay
     var cate = "ALL"
     var status = ""
@@ -37,7 +38,11 @@ class ActivitySync : Activity() {
         dbWeek = Room.databaseBuilder(this, DataBaseBestDay::class.java, "best-week")
             .allowMainThreadQueries().build()
 
+        dbWeekList = Room.databaseBuilder(this, DataBaseBestDay::class.java, "week-list")
+            .allowMainThreadQueries().build()
+
         dbWeek.bestDao().initAll()
+        dbWeekList.bestDao().initAll()
         dbYesterday.bestDao().initAll()
 
         tview1 = findViewById(R.id.tview1)
@@ -133,6 +138,38 @@ class ActivitySync : Activity() {
             }
 
         }.addOnFailureListener{}
+
+        BestRef.setBestRefWeekList(type, cate).get().addOnSuccessListener {
+
+            for(i in it.children){
+                val group: BookListDataBestToday? = i.getValue(BookListDataBestToday::class.java)
+                val ref: MutableMap<String?, Any> = HashMap()
+
+                if (calculateNum(group!!.number, group.title, type) != 0) {
+
+                    ref["writerName"] = group.writer!!
+                    ref["subject"] = group.title!!
+                    ref["bookImg"] = group.bookImg!!
+                    ref["bookCode"] = group.bookCode!!
+                    ref["info1"] = group.info1!!
+                    ref["info2"] = group.info2!!
+                    ref["info3"] = group.info3!!
+                    ref["info4"] = group.info4!!
+                    ref["info5"] = group.info5!!
+                    ref["number"] = calculateNum(group.number, group.title, type)
+                    ref["date"] = group.date!!
+                    ref["type"] = type
+                    ref["status"] = status
+
+                    dbWeekList.bestDao().insert(BestRef.setDataBestDay(ref))
+                    BestRef.setBestRefWeekCompared(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
+                }
+
+                num += 1
+            }
+
+        }.addOnFailureListener{}
+
 
     }
 

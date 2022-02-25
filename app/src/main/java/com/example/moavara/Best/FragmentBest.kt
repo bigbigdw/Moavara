@@ -29,6 +29,7 @@ class FragmentBest : Fragment() {
 
         val viewPager = binding.viewPager
         viewPager.adapter = sectionsPagerAdapter
+        viewPager.setCurrentItem(viewPager.currentItem, false);
 
         val fragmentBestTab = binding.tabs
         fragmentBestTab.setupWithViewPager(viewPager)

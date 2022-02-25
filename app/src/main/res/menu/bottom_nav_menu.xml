@@ -3,22 +3,22 @@
 
     <item
         android:id="@+id/Fragment_Best"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/ic_best_vt_24px"
         android:title="@string/Title_Best" />
 
     <item
         android:id="@+id/navigation_search"
-        android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/Title_Search" />
+        android:icon="@drawable/ic_event_vt_24px"
+        android:title="이벤트" />
 
     <item
         android:id="@+id/Fragment_Event"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/Title_Event" />
+        android:icon="@drawable/ic_search_wt_24px"
+        android:title="북코드검색" />
 
     <item
         android:id="@+id/Fragment_Pick"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/Title_Pick" />
+        android:icon="@drawable/ic_board_vt_24px"
+        android:title="게시판" />
 
 </menu>

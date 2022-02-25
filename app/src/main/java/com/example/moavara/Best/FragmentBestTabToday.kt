@@ -30,7 +30,7 @@ class FragmentBestTabToday(private val tabType: String) :
     lateinit var root: View
 
     var cate = ""
-    private lateinit var dbWeek: DataBaseBestDay
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,9 +47,6 @@ class FragmentBestTabToday(private val tabType: String) :
 
         recyclerView = root.findViewById(R.id.rview_Best)
         adapterToday = AdapterBestToday(items)
-
-        dbWeek = Room.databaseBuilder(requireContext(), DataBaseBestDay::class.java, "best-week")
-            .allowMainThreadQueries().build()
 
         getBookListBest(recyclerView)
 
