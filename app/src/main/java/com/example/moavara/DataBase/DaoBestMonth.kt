@@ -1,9 +1,6 @@
 package com.example.moavara.DataBase
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface BestDaoMonth {
@@ -26,7 +23,7 @@ interface BestDaoMonth {
     @Query("SELECT * FROM DataBestMonth WHERE type = :type AND week = :week LIMIT 5")
     fun getAllFirstList(type: String, week: String): List<DataBestMonth>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(user: DataBestMonth)
 
     @Delete

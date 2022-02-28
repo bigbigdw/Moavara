@@ -9,7 +9,7 @@ interface DaoPickEvent {
     @Query("SELECT * FROM DataEvent")
     fun getAll(): List<DataEvent>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(user: DataEvent?)
 
     @Delete

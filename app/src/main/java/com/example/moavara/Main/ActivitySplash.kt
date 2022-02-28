@@ -6,10 +6,11 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import androidx.room.Room
+import com.example.moavara.DataBase.DataBaseBestDay
 import com.example.moavara.Joara.JoaraBestListResult
 import com.example.moavara.Joara.RetrofitJoara
 import com.example.moavara.KaKao.BestResultKakao
-import com.example.moavara.KaKao.BestResultKakaoStage
 import com.example.moavara.KaKao.BestResultKakaoStageNovel
 import com.example.moavara.KaKao.RetrofitKaKao
 import com.example.moavara.OneStore.OneStoreBookResult
@@ -30,17 +31,50 @@ val mRootRef = FirebaseDatabase.getInstance().reference
 
 class ActivitySplash : Activity() {
 
+    private lateinit var dbWeek: DataBaseBestDay
+    private lateinit var dbWeekList: DataBaseBestDay
+    private lateinit var dbYesterday: DataBaseBestDay
     var cate = "ALL"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
+        dbYesterday = Room.databaseBuilder(
+            this.applicationContext,
+            DataBaseBestDay::class.java,
+            "best-yesterday"
+        )
+            .allowMainThreadQueries().build()
+
+        dbWeek =
+            Room.databaseBuilder(this.applicationContext, DataBaseBestDay::class.java, "best-week")
+                .allowMainThreadQueries().build()
+
+        dbWeekList = Room.databaseBuilder(this.applicationContext, DataBaseBestDay::class.java, "week-list")
+            .allowMainThreadQueries().build()
+
+        dbWeek.bestDao().initAll()
+        dbWeekList.bestDao().initAll()
+        dbYesterday.bestDao().initAll()
+
         Thread {
             runMining()
         }.start()
 
         cate = Genre.getGenre(this).toString()
+//
+//        BestRef.delBestRefWeekCompared("Ridi", cate).removeValue()
+//        BestRef.delBestRefWeekCompared("OneStore", cate).removeValue()
+//        BestRef.delBestRefWeekCompared("Kakao", cate).removeValue()
+//        BestRef.delBestRefWeekCompared("Kakao Stage", cate).removeValue()
+//        BestRef.delBestRefWeekCompared("Joara", cate).removeValue()
+//        BestRef.delBestRefWeekCompared("Joara Nobless", cate).removeValue()
+//        BestRef.delBestRefWeekCompared("Joara Premium", cate).removeValue()
+//        BestRef.delBestRefWeekCompared("Naver Today", cate).removeValue()
+//        BestRef.delBestRefWeekCompared("Naver Challenge", cate).removeValue()
+//        BestRef.delBestRefWeekCompared("Naver", cate).removeValue()
+//        BestRef.delBestRefWeekCompared("MrBlue", cate).removeValue()
 
         Handler(Looper.myLooper()!!).postDelayed(
             {
@@ -87,7 +121,7 @@ class ActivitySplash : Activity() {
             MrBlueRef["info4"] = " "
             MrBlueRef["info5"] = " "
             MrBlueRef["number"] = i
-            MrBlueRef["date"] = DBDate.Date()
+            MrBlueRef["date"] = DBDate.DateMMDD()
 
             miningValue(MrBlueRef, i, type)
 
@@ -114,7 +148,7 @@ class ActivitySplash : Activity() {
             NaverRef["info4"] = Naver.select(".count")[i].text()
             NaverRef["info5"] = Naver.select(".score_area")[i].text()
             NaverRef["number"] = i
-            NaverRef["date"] = DBDate.Date()
+            NaverRef["date"] = DBDate.DateMMDD()
 
             miningValue(NaverRef, i, type)
 
@@ -141,7 +175,7 @@ class ActivitySplash : Activity() {
             NaverRef["info4"] = Naver.select(".count")[i].text()
             NaverRef["info5"] = Naver.select(".score_area")[i].text()
             NaverRef["number"] = i
-            NaverRef["date"] = DBDate.Date()
+            NaverRef["date"] = DBDate.DateMMDD()
 
             miningValue(NaverRef, i, type)
 
@@ -168,7 +202,7 @@ class ActivitySplash : Activity() {
             NaverRef["info4"] = Naver.select(".count")[i].text()
             NaverRef["info5"] = Naver.select(".score_area")[i].text()
             NaverRef["number"] = i
-            NaverRef["date"] = DBDate.Date()
+            NaverRef["date"] = DBDate.DateMMDD()
 
             miningValue(NaverRef, i, type)
 
@@ -195,7 +229,7 @@ class ActivitySplash : Activity() {
             RidiRef["info4"] = " "
             RidiRef["info5"] = doc.select("span .StarRate_Score")[i].text()
             RidiRef["number"] = i
-            RidiRef["date"] = DBDate.Date()
+            RidiRef["date"] = DBDate.DateMMDD()
 
             miningValue(RidiRef, i, type)
 
@@ -230,7 +264,7 @@ class ActivitySplash : Activity() {
                             OneStoryRef["info4"] = " "
                             OneStoryRef["info5"] = " "
                             OneStoryRef["number"] = i
-                            OneStoryRef["date"] = DBDate.Date()
+                            OneStoryRef["date"] = DBDate.DateMMDD()
 
                             miningValue(OneStoryRef, i, type)
 
@@ -274,7 +308,7 @@ class ActivitySplash : Activity() {
                             KakaoRef["info4"] = novel.visitorCount!!
                             KakaoRef["info5"] = ""
                             KakaoRef["number"] = i
-                            KakaoRef["date"] = DBDate.Date()
+                            KakaoRef["date"] = DBDate.DateMMDD()
 
                             miningValue(KakaoRef, i, type)
                         }
@@ -316,7 +350,7 @@ class ActivitySplash : Activity() {
                             KakaoRef["info4"] = list[i].like_count!!
                             KakaoRef["info5"] = list[i].rating!!
                             KakaoRef["number"] = i
-                            KakaoRef["date"] = DBDate.Date()
+                            KakaoRef["date"] = DBDate.DateMMDD()
 
                             miningValue(KakaoRef, i, type)
 
@@ -359,7 +393,7 @@ class ActivitySplash : Activity() {
                             JoaraRef["info4"] = books[i].cntFavorite!!
                             JoaraRef["info5"] = books[i].cntRecom!!
                             JoaraRef["number"] = i
-                            JoaraRef["date"] = DBDate.Date()
+                            JoaraRef["date"] = DBDate.DateMMDD()
 
                             miningValue(JoaraRef, i, type)
 
@@ -402,7 +436,7 @@ class ActivitySplash : Activity() {
                             JoaraRef["info4"] = books[i].cntFavorite!!
                             JoaraRef["info5"] = books[i].cntRecom!!
                             JoaraRef["number"] = i
-                            JoaraRef["date"] = DBDate.Date()
+                            JoaraRef["date"] = DBDate.DateMMDD()
 
                             miningValue(JoaraRef, i, type)
 
@@ -445,7 +479,7 @@ class ActivitySplash : Activity() {
                             JoaraRef["info4"] = books[i].cntFavorite!!
                             JoaraRef["info5"] = books[i].cntRecom!!
                             JoaraRef["number"] = i
-                            JoaraRef["date"] = DBDate.Date()
+                            JoaraRef["date"] = DBDate.DateMMDD()
 
                             miningValue(JoaraRef, i, type)
 

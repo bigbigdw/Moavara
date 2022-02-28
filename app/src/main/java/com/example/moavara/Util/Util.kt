@@ -65,8 +65,7 @@ object DBDate {
         return Calendar.getInstance().get(Calendar.WEEK_OF_MONTH).toString()
     }
 
-    @SuppressLint("SimpleDateFormat")
-    fun Date(): String {
+    fun DateMMDD(): String {
         val currentTime: Date = Calendar.getInstance().time
         val format = SimpleDateFormat("MM-dd")
         return format.format(currentTime).toString()
@@ -94,12 +93,16 @@ object BestRef {
 
 
     fun setBestRefWeekList(type: String, genre: String): DatabaseReference {
-        return setBestRef(type, genre).child("week list")
+        return setBestRef(type, genre).child("week-list")
     }
 
     fun setBestRefWeekCompared(type: String, num: Int, genre: String): DatabaseReference {
-        return setBestRef(type, genre).child("week list")
+        return setBestRef(type, genre).child("week-list")
             .child(((DBDate.DayInt() * 1000) + num).toString())
+    }
+
+    fun delBestRefWeekCompared(type: String, genre: String): DatabaseReference {
+        return setBestRef(type, genre).child("week-list")
     }
 
     fun setBestRefToday(type: String, num: Int, genre: String): DatabaseReference {

@@ -8,16 +8,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.DataBaseBestDay
-import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.R
+import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.databinding.BottomDialogBestBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import java.text.SimpleDateFormat
+import java.util.*
 
 class BottomDialogBest(private val mContext: Context, private val item: BookListDataBestToday?) :
     BottomSheetDialogFragment() {
@@ -35,8 +34,16 @@ class BottomDialogBest(private val mContext: Context, private val item: BookList
         _binding = BottomDialogBestBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        dbWeekList = Room.databaseBuilder(requireContext(), DataBaseBestDay::class.java, "week-list")
+        dbWeekList = Room.databaseBuilder(requireContext().applicationContext, DataBaseBestDay::class.java, "week-list")
             .allowMainThreadQueries().build()
+
+        val today = Date()
+
+        val sdf = SimpleDateFormat("EEEE")
+        val dayOfTheWeek = sdf.format(today)
+
+        Log.d("@@@@-@", dayOfTheWeek)
+
 
         with(binding){
 
@@ -52,9 +59,7 @@ class BottomDialogBest(private val mContext: Context, private val item: BookList
                 .load(item.bookImg)
                 .into(iviewBookImg)
 
-            val position = item.number?.minus(1)
-
-            when (position) {
+            when (item.number) {
                 0 -> {
                     iviewRanking.setImageResource(R.drawable.icon_best_1)
                 }
@@ -87,6 +92,8 @@ class BottomDialogBest(private val mContext: Context, private val item: BookList
                 }
             }
 
+            ranklist()
+
             llayoutBtn.setOnClickListener {
                 val url = "https://www.joara.com/book/" + item.bookCode
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
@@ -98,4 +105,17 @@ class BottomDialogBest(private val mContext: Context, private val item: BookList
     }
 
     override fun getTheme() = R.style.CustomBottomSheetDialogTheme
+
+    private fun ranklist(){
+
+        val weeklist = dbWeekList.bestDao().getRank(item!!.title!!)
+
+        for(i in weeklist.indices){
+            Log.d("!!!!",  weeklist[i].title.toString() + "@" + weeklist[i].status.toString() + "@@" + weeklist[i].date.toString() + "@@@" + weeklist[i].number.toString())
+        }
+
+        with(binding){
+
+        }
+    }
 }

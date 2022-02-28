@@ -5,6 +5,9 @@ import androidx.room.*
 @Dao
 interface BestDao {
 
+    @Query("SELECT * FROM DataBestDay WHERE title = :title")
+    fun getRank(title: String): List<DataBestDay>
+
     @Query("SELECT number FROM DataBestDay WHERE type = :type AND title = :title GROUP BY type")
     fun findName(type: String, title: String): Int
 
@@ -23,7 +26,7 @@ interface BestDao {
     @Query("DELETE FROM DataBestDay")
     fun initAll()
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(user: DataBestDay)
 
     @Delete

@@ -1,6 +1,8 @@
 package com.example.moavara.DataBase
 
+import android.content.Context
 import androidx.room.Database
+import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.moavara.Search.EventData
 
@@ -8,6 +10,28 @@ import com.example.moavara.Search.EventData
 abstract class DataBaseBestDay: RoomDatabase() {
     abstract fun bestDao(): BestDao
 }
+
+//abstract class DataBaseBestDay : RoomDatabase() {
+//    abstract fun bestDao(): BestDao
+//
+//    companion object {
+//        private var INSTANCE: DataBaseBestDay? = null
+//
+//        fun getInstance(mContext: Context, str : String): DataBaseBestDay? {
+//            if (INSTANCE == null) {
+//                synchronized(DataBaseBestDay::class) {
+//                    INSTANCE = Room.databaseBuilder(
+//                        mContext,
+//                        DataBaseBestDay::class.java,
+//                        "$str.db"
+//                    ).allowMainThreadQueries().build()
+//                }
+//            }
+//            return INSTANCE
+//        }
+//    }
+//}
+
 
 @Database(entities = [DataEvent::class], version = 4)
 abstract class DataPickEvent: RoomDatabase() {

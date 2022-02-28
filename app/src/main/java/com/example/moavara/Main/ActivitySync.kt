@@ -23,8 +23,8 @@ class ActivitySync : Activity() {
     private lateinit var dbYesterday: DataBaseBestDay
     var cate = "ALL"
     var status = ""
-    var tview1 : TextView? = null
-    var tview2 : TextView? = null
+    var tview1: TextView? = null
+    var tview2: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,21 +32,20 @@ class ActivitySync : Activity() {
 
         cate = Genre.getGenre(this).toString()
 
-        dbYesterday = Room.databaseBuilder(this, DataBaseBestDay::class.java, "best-yesterday")
+        dbYesterday = Room.databaseBuilder(
+            this.applicationContext,
+            DataBaseBestDay::class.java,
+            "best-yesterday"
+        )
             .allowMainThreadQueries().build()
 
-        dbWeek = Room.databaseBuilder(this, DataBaseBestDay::class.java, "best-week")
-            .allowMainThreadQueries().build()
+        dbWeek =
+            Room.databaseBuilder(this.applicationContext, DataBaseBestDay::class.java, "best-week")
+                .allowMainThreadQueries().build()
 
-        dbWeekList = Room.databaseBuilder(this, DataBaseBestDay::class.java, "week-list")
-            .allowMainThreadQueries().build()
-
-        dbWeek.bestDao().initAll()
-        dbWeekList.bestDao().initAll()
-        dbYesterday.bestDao().initAll()
-
-        tview1 = findViewById(R.id.tview1)
-        tview2 = findViewById(R.id.tview2)
+        dbWeekList =
+            Room.databaseBuilder(this.applicationContext, DataBaseBestDay::class.java, "week-list")
+                .allowMainThreadQueries().build()
 
         setRoomBest("Joara")
         setRoomBest("Joara Nobless")
@@ -59,8 +58,10 @@ class ActivitySync : Activity() {
         setRoomBest("Ridi")
         setRoomBest("OneStore")
         setRoomBest("MrBlue")
+        tview1 = findViewById(R.id.tview1)
+        tview2 = findViewById(R.id.tview2)
 
-        tview1!!.text = "선택하신 장르 [" + cate + "] 를 불러오고 있습니다"
+        tview1!!.text = "선택하신 장르 [$cate] 를 불러오고 있습니다"
         tview2!!.text = "동기화 중..."
 
 
@@ -71,19 +72,20 @@ class ActivitySync : Activity() {
                 startActivityIfNeeded(novelIntent, 0)
                 finish()
             },
-            3000
+            5000
         )
 
     }
 
-    private fun setRoomBest(type: String){
+    private fun setRoomBest(type: String) {
 
         val yesterdayRef = mRootRef.child("best").child(type).child(cate).child("today").child(
-            DBDate.Yesterday())
+            DBDate.Yesterday()
+        )
 
         yesterdayRef.get().addOnSuccessListener {
 
-            for(i in it.children){
+            for (i in it.children) {
                 val group: BookListDataBestToday? = i.getValue(BookListDataBestToday::class.java)
 
                 dbYesterday.bestDao().insert(
@@ -104,13 +106,13 @@ class ActivitySync : Activity() {
                 )
             }
 
-        }.addOnFailureListener{}
+        }.addOnFailureListener {}
 
         var num = 1
 
         BestRef.getBestRefToday(type, cate).get().addOnSuccessListener {
 
-            for(i in it.children){
+            for (i in it.children) {
                 val group: BookListDataBestToday? = i.getValue(BookListDataBestToday::class.java)
                 val ref: MutableMap<String?, Any> = HashMap()
 
@@ -131,49 +133,48 @@ class ActivitySync : Activity() {
                     ref["status"] = status
 
                     dbWeek.bestDao().insert(BestRef.setDataBestDay(ref))
-                    BestRef.setBestRefWeekCompared(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
+                    BestRef.setBestRefWeekCompared(type, num, cate)
+                        .setValue(BestRef.setBookListDataBestToday(ref))
                 }
 
                 num += 1
             }
 
-        }.addOnFailureListener{}
+        }.addOnFailureListener {}
+
+        var weekNum = 0
 
         BestRef.setBestRefWeekList(type, cate).get().addOnSuccessListener {
 
-            for(i in it.children){
+            for (i in it.children) {
                 val group: BookListDataBestToday? = i.getValue(BookListDataBestToday::class.java)
                 val ref: MutableMap<String?, Any> = HashMap()
 
-                if (calculateNum(group!!.number, group.title, type) != 0) {
+                ref["writerName"] = group!!.writer!!
+                ref["subject"] = group.title!!
+                ref["bookImg"] = group.bookImg!!
+                ref["bookCode"] = group.bookCode!!
+                ref["info1"] = group.info1!!
+                ref["info2"] = group.info2!!
+                ref["info3"] = group.info3!!
+                ref["info4"] = group.info4!!
+                ref["info5"] = group.info5!!
+                ref["number"] = group.number!!
+                ref["date"] = group.date!!
+                ref["type"] = type
+                ref["status"] = status
 
-                    ref["writerName"] = group.writer!!
-                    ref["subject"] = group.title!!
-                    ref["bookImg"] = group.bookImg!!
-                    ref["bookCode"] = group.bookCode!!
-                    ref["info1"] = group.info1!!
-                    ref["info2"] = group.info2!!
-                    ref["info3"] = group.info3!!
-                    ref["info4"] = group.info4!!
-                    ref["info5"] = group.info5!!
-                    ref["number"] = calculateNum(group.number, group.title, type)
-                    ref["date"] = group.date!!
-                    ref["type"] = type
-                    ref["status"] = status
+                dbWeekList.bestDao().insert(BestRef.setDataBestDay(ref))
 
-                    dbWeekList.bestDao().insert(BestRef.setDataBestDay(ref))
-                    BestRef.setBestRefWeekCompared(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
-                }
-
-                num += 1
+                weekNum += 1
             }
 
-        }.addOnFailureListener{}
+        }.addOnFailureListener {}
 
 
     }
 
-    private fun calculateNum(num : Int?, title : String?, tabType: String) : Int{
+    private fun calculateNum(num: Int?, title: String?, tabType: String): Int {
 
         val yesterdayNum = dbYesterday.bestDao().findName(tabType, title!!)
 

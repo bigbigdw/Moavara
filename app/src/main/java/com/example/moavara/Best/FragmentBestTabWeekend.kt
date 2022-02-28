@@ -188,32 +188,4 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
         }
     }
 
-    fun calculateNum(num : Int?, title : String?) : Int{
-
-        val yesterdayNum = dbYesterday.bestDao().findName(tabType, title!!)
-
-        if (yesterdayNum == 0) {
-            status = "NEW"
-            return 0
-        } else {
-            return when {
-                yesterdayNum < num!! -> {
-                    status = "DOWN"
-                    num - yesterdayNum
-                }
-                yesterdayNum > num -> {
-                    status = "UP"
-                    num - yesterdayNum
-                }
-                yesterdayNum == num -> {
-                    status = "SAME"
-                    num - yesterdayNum
-                }
-                else -> {
-                    status = "SAME"
-                    -1
-                }
-            }
-        }
-    }
 }
