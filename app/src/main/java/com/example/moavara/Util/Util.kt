@@ -1,8 +1,6 @@
 package com.example.moavara.Util
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.moavara.DataBase.DataBestDay
 import com.example.moavara.Search.BookListDataBestToday
@@ -143,7 +141,7 @@ object BestRef {
     }
 
     fun delBestRefWeekCompared(type: String, genre: String): DatabaseReference {
-        return setBestRef(type, genre).child("week list")
+        return setBestRef(type, genre).child("week-list")
     }
 
     fun setBestRefToday(type: String, num: Int, genre: String): DatabaseReference {
@@ -185,6 +183,7 @@ object BestRef {
             ref["info4"] as String?,
             ref["info5"] as String?,
             ref["number"] as Int?,
+            ref["numberDiff"] as Int?,
             ref["date"] as String?,
             ref["status"] as String?,
         )

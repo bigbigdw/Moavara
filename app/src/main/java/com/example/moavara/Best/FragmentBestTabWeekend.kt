@@ -1,13 +1,6 @@
 package com.example.moavara.Best
 
-import android.graphics.Color
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.text.Spannable
-import android.text.SpannableStringBuilder
-import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -174,7 +167,7 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
             override fun onItemClick(v: View?, position: Int) {
                 val item: BookListDataBestToday? = adapterToday!!.getItem(position)
 
-                val mBottomDialogBest = BottomDialogBest(requireContext(), item)
+                val mBottomDialogBest = BottomDialogBest(requireContext(), item, tabType, cate)
                 fragmentManager?.let { mBottomDialogBest.show(it, null) }
             }
         })
@@ -183,7 +176,7 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
     private fun findBook(item: BookListDataBestToday?) {
         if (item != null) {
             if (adapterWeek!!.getSelectedBook() == item.title.toString()) {
-                val mBottomDialogBest = BottomDialogBest(requireContext(), item)
+                val mBottomDialogBest = BottomDialogBest(requireContext(), item, tabType, cate)
                 fragmentManager?.let { mBottomDialogBest.show(it, null) }
                 adapterWeek!!.setSelectedBook("")
             } else {

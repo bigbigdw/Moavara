@@ -1,7 +1,6 @@
 package com.example.moavara.Best
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +13,6 @@ import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.Genre
-import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -77,6 +74,7 @@ class FragmentBestTabToday(private val tabType: String) :
                         group.info3,
                         group.info4,
                         group.info5,
+                        group.number,
                         calculateNum(group.number, group.title),
                         group.date,
                         status
@@ -93,7 +91,7 @@ class FragmentBestTabToday(private val tabType: String) :
             override fun onItemClick(v: View?, position: Int) {
                 val item: BookListDataBestToday? = adapterToday!!.getItem(position)
 
-                val mBottomDialogBest = BottomDialogBest(requireContext(), item)
+                val mBottomDialogBest = BottomDialogBest(requireContext(), item, tabType, cate)
                 fragmentManager?.let { mBottomDialogBest.show(it, null) }
             }
         })

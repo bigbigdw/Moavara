@@ -13,12 +13,18 @@ import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.DataBaseBestDay
 import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
+import com.example.moavara.Util.BestRef
+import com.example.moavara.Util.DBDate
 import com.example.moavara.databinding.BottomDialogBestBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import java.text.SimpleDateFormat
-import java.util.*
+import java.util.ArrayList
 
-class BottomDialogBest(private val mContext: Context, private val item: BookListDataBestToday?) :
+class BottomDialogBest(
+    private val mContext: Context,
+    private val item: BookListDataBestToday?,
+    private val tabType: String?,
+    private val cate: String?,
+) :
     BottomSheetDialogFragment() {
 
     private lateinit var dbWeekList: DataBaseBestDay
@@ -34,19 +40,14 @@ class BottomDialogBest(private val mContext: Context, private val item: BookList
         _binding = BottomDialogBestBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        dbWeekList = Room.databaseBuilder(requireContext().applicationContext, DataBaseBestDay::class.java, "week-list")
+        dbWeekList = Room.databaseBuilder(
+            requireContext().applicationContext,
+            DataBaseBestDay::class.java,
+            "week-list"
+        )
             .allowMainThreadQueries().build()
 
-//        val today = Date()
-//
-//        val sdf = SimpleDateFormat("MM-dd")
-//        val dayOfTheWeek = sdf.format(today)
-//
-//        Log.d("@@@@-!", today.toString())
-//        Log.d("@@@@-@", dayOfTheWeek[Calendar.DAY_OF_WEEK].toString())
-
-
-        with(binding){
+        with(binding) {
 
             tviewTitle.text = item!!.title
             tviewWriter.text = item.writer
@@ -89,7 +90,7 @@ class BottomDialogBest(private val mContext: Context, private val item: BookList
                     iviewRanking.setImageResource(R.drawable.icon_best_9)
                 }
                 else -> {
-                    Log.d("bestRankImage","NO_IMAGE")
+                    Log.d("bestRankImage", "NO_IMAGE")
                 }
             }
 
@@ -107,18 +108,74 @@ class BottomDialogBest(private val mContext: Context, private val item: BookList
 
     override fun getTheme() = R.style.CustomBottomSheetDialogTheme
 
-    private fun ranklist(){
+    private fun ranklist() {
 
-        val weeklist = dbWeekList.bestDao().getRank(item!!.title!!)
+        Log.d("$$$$", DBDate.DayWeek()[0])
 
-        for(i in weeklist.indices){
-            Log.d("!!!!",  weeklist[i].title.toString() + "@" + weeklist[i].status.toString() + "@@" + weeklist[i].date.toString() + "@@@" + weeklist[i].number.toString())
+        val rank = ArrayList<String>()
 
-            with(binding){
-                tviewRank1.text = (item.number?.minus(weeklist[i].number!!)).toString()
+        BestRef.setBestRefWeekList(tabType!!, cate!!).get().addOnSuccessListener {
+
+            for (i in it.children) {
+
+                val group: BookListDataBestToday? = i.getValue(BookListDataBestToday::class.java)
+
+                if (group!!.title == item!!.title) {
+                    Log.d(
+                        "!!!!",
+                        group.title.toString() + " " + group.status.toString() + " " + group.date.toString() + " " + group.number.toString()
+                    )
+
+                    rank.add(group.number!!.toString())
+
+                    with(binding) {
+                        if (DBDate.DayWeek()[0] == group.date) {
+                            tviewRank1.visibility = View.VISIBLE
+                            iviewRank1.setImageResource(R.drawable.ic_best_vt_24px)
+                            tviewRank1.text = item.status
+                        } else if (DBDate.DayWeek()[1] == group.date) {
+                            tviewRank2.visibility = View.VISIBLE
+                            iviewRank2.setImageResource(R.drawable.ic_best_vt_24px)
+                            tviewRank2.text = group.number.toString()
+                        } else if (DBDate.DayWeek()[2] == group.date) {
+                            tviewRank3.visibility = View.VISIBLE
+                            iviewRank3.setImageResource(R.drawable.ic_best_vt_24px)
+                            tviewRank3.text = group.number.toString()
+                        } else if (DBDate.DayWeek()[3] == group.date) {
+                            tviewRank4.visibility = View.VISIBLE
+                            iviewRank4.setImageResource(R.drawable.ic_best_vt_24px)
+                            tviewRank4.text = group.number.toString()
+                        } else if (DBDate.DayWeek()[4] == group.date) {
+                            tviewRank5.visibility = View.VISIBLE
+                            iviewRank5.setImageResource(R.drawable.ic_best_vt_24px)
+                            tviewRank5.text = group.number.toString()
+                        } else if (DBDate.DayWeek()[5] == group.date) {
+                            tviewRank6.visibility = View.VISIBLE
+                            iviewRank6.setImageResource(R.drawable.ic_best_vt_24px)
+                            tviewRank6.text = group.number.toString()
+                        } else if (DBDate.DayWeek()[6] == group.date) {
+                            tviewRank7.visibility = View.VISIBLE
+                            iviewRank7.setImageResource(R.drawable.ic_best_vt_24px)
+                            tviewRank7.text = group.number.toString()
+                        }
+                    }
+
+
+                }
+
+
 
 
             }
+
+            Log.d("@@@@", rank.toString())
+
+        }.addOnFailureListener {}
+
+        val weeklist = dbWeekList.bestDao().getRank(item!!.title!!)
+
+        for (i in weeklist.indices) {
+
         }
 
 

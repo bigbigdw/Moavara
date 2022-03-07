@@ -77,7 +77,7 @@ class ActivitySplash : Activity() {
 //        BestRef.delBestRefWeekCompared("Naver", cate).removeValue()
 //        BestRef.delBestRefWeekCompared("MrBlue", cate).removeValue()
 
-        Log.d("$$$$", DBDate.DayWeek().toString())
+
 
         Handler(Looper.myLooper()!!).postDelayed(
             {

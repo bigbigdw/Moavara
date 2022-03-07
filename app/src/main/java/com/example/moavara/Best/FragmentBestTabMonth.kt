@@ -99,6 +99,7 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment() {
                                     group.info4,
                                     group.info5,
                                     group.number,
+                                    group.number,
                                     group.date,
                                     "",
                                 )
@@ -116,7 +117,7 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment() {
             override fun onItemClick(v: View?, position: Int) {
                 val item: BookListDataBestToday? = adapterMonthDay!!.getItem(position)
 
-                val mBottomDialogBest = BottomDialogBest(requireContext(), item)
+                val mBottomDialogBest = BottomDialogBest(requireContext(), item, tabType, cate)
                 fragmentManager?.let { mBottomDialogBest.show(it, null) }
 
             }
