@@ -100,12 +100,12 @@ class ActivitySync : Activity() {
                         group.info4,
                         group.info5,
                         group.number,
+                        0,
                         group.date,
                         type
                     )
                 )
             }
-
         }.addOnFailureListener {}
 
         var num = 1
@@ -137,10 +137,8 @@ class ActivitySync : Activity() {
                     BestRef.setBestRefWeekCompared(type, num, cate)
                         .setValue(BestRef.setBookListDataBestToday(ref))
                 }
-
                 num += 1
             }
-
         }.addOnFailureListener {}
 
         var weekNum = 0
@@ -160,7 +158,8 @@ class ActivitySync : Activity() {
                 ref["info3"] = group.info3!!
                 ref["info4"] = group.info4!!
                 ref["info5"] = group.info5!!
-                ref["number"] = group.number!!
+                ref["number"] = group.number
+                ref["numberDiff"] = group.numberDiff
                 ref["date"] = group.date!!
                 ref["type"] = type
                 ref["status"] = status
@@ -184,15 +183,15 @@ class ActivitySync : Activity() {
             return 0
         } else {
             return when {
-                yesterdayNum < num!! -> {
+                num!! > yesterdayNum -> {
                     status = "DOWN"
                     num - yesterdayNum
                 }
-                yesterdayNum > num -> {
+                num < yesterdayNum -> {
                     status = "UP"
                     num - yesterdayNum
                 }
-                yesterdayNum == num -> {
+                num == yesterdayNum -> {
                     status = "SAME"
                     num - yesterdayNum
                 }

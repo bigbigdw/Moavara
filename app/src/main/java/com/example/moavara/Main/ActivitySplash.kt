@@ -65,17 +65,17 @@ class ActivitySplash : Activity() {
 
         cate = Genre.getGenre(this).toString()
 
-//        BestRef.delBestRefWeekCompared("Ridi", cate).removeValue()
-//        BestRef.delBestRefWeekCompared("OneStore", cate).removeValue()
-//        BestRef.delBestRefWeekCompared("Kakao", cate).removeValue()
-//        BestRef.delBestRefWeekCompared("Kakao Stage", cate).removeValue()
-//        BestRef.delBestRefWeekCompared("Joara", cate).removeValue()
-//        BestRef.delBestRefWeekCompared("Joara Nobless", cate).removeValue()
-//        BestRef.delBestRefWeekCompared("Joara Premium", cate).removeValue()
-//        BestRef.delBestRefWeekCompared("Naver Today", cate).removeValue()
-//        BestRef.delBestRefWeekCompared("Naver Challenge", cate).removeValue()
-//        BestRef.delBestRefWeekCompared("Naver", cate).removeValue()
-//        BestRef.delBestRefWeekCompared("MrBlue", cate).removeValue()
+        BestRef.delBestRefWeekCompared("Ridi", cate).removeValue()
+        BestRef.delBestRefWeekCompared("OneStore", cate).removeValue()
+        BestRef.delBestRefWeekCompared("Kakao", cate).removeValue()
+        BestRef.delBestRefWeekCompared("Kakao Stage", cate).removeValue()
+        BestRef.delBestRefWeekCompared("Joara", cate).removeValue()
+        BestRef.delBestRefWeekCompared("Joara Nobless", cate).removeValue()
+        BestRef.delBestRefWeekCompared("Joara Premium", cate).removeValue()
+        BestRef.delBestRefWeekCompared("Naver Today", cate).removeValue()
+        BestRef.delBestRefWeekCompared("Naver Challenge", cate).removeValue()
+        BestRef.delBestRefWeekCompared("Naver", cate).removeValue()
+        BestRef.delBestRefWeekCompared("MrBlue", cate).removeValue()
 
 
 
@@ -124,7 +124,9 @@ class ActivitySplash : Activity() {
             MrBlueRef["info4"] = " "
             MrBlueRef["info5"] = " "
             MrBlueRef["number"] = i
+            MrBlueRef["numberDiff"] = 0
             MrBlueRef["date"] = DBDate.DateMMDD()
+            MrBlueRef["status"] = ""
 
             miningValue(MrBlueRef, i, type)
 
@@ -151,7 +153,9 @@ class ActivitySplash : Activity() {
             NaverRef["info4"] = Naver.select(".count")[i].text()
             NaverRef["info5"] = Naver.select(".score_area")[i].text()
             NaverRef["number"] = i
+            NaverRef["numberDiff"] = 0
             NaverRef["date"] = DBDate.DateMMDD()
+            NaverRef["status"] = ""
 
             miningValue(NaverRef, i, type)
 
@@ -178,7 +182,9 @@ class ActivitySplash : Activity() {
             NaverRef["info4"] = Naver.select(".count")[i].text()
             NaverRef["info5"] = Naver.select(".score_area")[i].text()
             NaverRef["number"] = i
+            NaverRef["numberDiff"] = 0
             NaverRef["date"] = DBDate.DateMMDD()
+            NaverRef["status"] = ""
 
             miningValue(NaverRef, i, type)
 
@@ -205,7 +211,9 @@ class ActivitySplash : Activity() {
             NaverRef["info4"] = Naver.select(".count")[i].text()
             NaverRef["info5"] = Naver.select(".score_area")[i].text()
             NaverRef["number"] = i
+            NaverRef["numberDiff"] = 0
             NaverRef["date"] = DBDate.DateMMDD()
+            NaverRef["status"] = ""
 
             miningValue(NaverRef, i, type)
 
@@ -232,7 +240,9 @@ class ActivitySplash : Activity() {
             RidiRef["info4"] = " "
             RidiRef["info5"] = doc.select("span .StarRate_Score")[i].text()
             RidiRef["number"] = i
+            RidiRef["numberDiff"] = 0
             RidiRef["date"] = DBDate.DateMMDD()
+            RidiRef["status"] = ""
 
             miningValue(RidiRef, i, type)
 
@@ -267,7 +277,9 @@ class ActivitySplash : Activity() {
                             OneStoryRef["info4"] = " "
                             OneStoryRef["info5"] = " "
                             OneStoryRef["number"] = i
+                            OneStoryRef["numberDiff"] = 0
                             OneStoryRef["date"] = DBDate.DateMMDD()
+                            OneStoryRef["status"] = ""
 
                             miningValue(OneStoryRef, i, type)
 
@@ -311,7 +323,9 @@ class ActivitySplash : Activity() {
                             KakaoRef["info4"] = novel.visitorCount!!
                             KakaoRef["info5"] = ""
                             KakaoRef["number"] = i
+                            KakaoRef["numberDiff"] = 0
                             KakaoRef["date"] = DBDate.DateMMDD()
+                            KakaoRef["status"] = ""
 
                             miningValue(KakaoRef, i, type)
                         }
@@ -353,7 +367,9 @@ class ActivitySplash : Activity() {
                             KakaoRef["info4"] = list[i].like_count!!
                             KakaoRef["info5"] = list[i].rating!!
                             KakaoRef["number"] = i
+                            KakaoRef["numberDiff"] = 0
                             KakaoRef["date"] = DBDate.DateMMDD()
+                            KakaoRef["status"] = ""
 
                             miningValue(KakaoRef, i, type)
 
@@ -396,7 +412,9 @@ class ActivitySplash : Activity() {
                             JoaraRef["info4"] = books[i].cntFavorite!!
                             JoaraRef["info5"] = books[i].cntRecom!!
                             JoaraRef["number"] = i
+                            JoaraRef["numberDiff"] = 0
                             JoaraRef["date"] = DBDate.DateMMDD()
+                            JoaraRef["status"] = ""
 
                             miningValue(JoaraRef, i, type)
 
@@ -439,7 +457,9 @@ class ActivitySplash : Activity() {
                             JoaraRef["info4"] = books[i].cntFavorite!!
                             JoaraRef["info5"] = books[i].cntRecom!!
                             JoaraRef["number"] = i
+                            JoaraRef["numberDiff"] = 0
                             JoaraRef["date"] = DBDate.DateMMDD()
+                            JoaraRef["status"] = ""
 
                             miningValue(JoaraRef, i, type)
 
@@ -482,7 +502,9 @@ class ActivitySplash : Activity() {
                             JoaraRef["info4"] = books[i].cntFavorite!!
                             JoaraRef["info5"] = books[i].cntRecom!!
                             JoaraRef["number"] = i
+                            JoaraRef["numberDiff"] = 0
                             JoaraRef["date"] = DBDate.DateMMDD()
+                            JoaraRef["status"] = ""
 
                             miningValue(JoaraRef, i, type)
 

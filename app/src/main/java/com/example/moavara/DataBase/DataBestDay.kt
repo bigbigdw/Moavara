@@ -28,6 +28,7 @@ data class DataBestDay (
     var info4: String ? = null,
     var info5: String ? = null,
     var number: Int ? = null,
+    var numberDiff: Int ? = null,
     var date: String ? = null,
     var type: String ? = null,
     var status: String ? = null,

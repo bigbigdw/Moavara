@@ -19,19 +19,19 @@ class BookListData(
 )
 
 class BookListDataBestToday(
-    var writer: String ? = null,
-    var title: String ? = null,
-    var bookImg: String ? = null,
-    var bookCode: String ? = null,
-    var info1: String ? = null,
-    var info2: String ? = null,
-    var info3: String ? = null,
-    var info4: String ? = null,
-    var info5: String ? = null,
-    var number: Int ? = null,
-    var numberDiff: Int? = null,
-    var date: String ? = null,
-    var status: String ? = null,
+    var writer: String = "",
+    var title: String = "",
+    var bookImg: String = "",
+    var bookCode: String = "",
+    var info1: String = "",
+    var info2: String = "",
+    var info3: String = "",
+    var info4: String = "",
+    var info5: String = "",
+    var number: Int = 0,
+    var numberDiff: Int = 0,
+    var date: String = "",
+    var status: String = "",
 )
 
 class BestType(

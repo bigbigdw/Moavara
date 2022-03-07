@@ -243,7 +243,7 @@ class AdapterBestMonth(
     }
 
     fun getItem(position: Int): BookListDataBestWeekend? {
-        return item!![position]
+        return item[position]
     }
 
 

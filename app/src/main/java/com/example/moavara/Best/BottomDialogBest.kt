@@ -132,7 +132,7 @@ class BottomDialogBest(
                         if (DBDate.DayWeek()[0] == group.date) {
                             tviewRank1.visibility = View.VISIBLE
                             iviewRank1.setImageResource(R.drawable.ic_best_vt_24px)
-                            tviewRank1.text = item.status
+                            tviewRank1.text = group.number.toString()
                         } else if (DBDate.DayWeek()[1] == group.date) {
                             tviewRank2.visibility = View.VISIBLE
                             iviewRank2.setImageResource(R.drawable.ic_best_vt_24px)

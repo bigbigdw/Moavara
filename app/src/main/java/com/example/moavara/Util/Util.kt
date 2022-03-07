@@ -173,37 +173,37 @@ object BestRef {
 
     fun setBookListDataBestToday(ref: MutableMap<String?, Any>): BookListDataBestToday {
         return BookListDataBestToday(
-            ref["writerName"] as String?,
-            ref["subject"] as String?,
-            ref["bookImg"] as String?,
-            ref["bookCode"] as String?,
-            ref["info1"] as String?,
-            ref["info2"] as String?,
-            ref["info3"] as String?,
-            ref["info4"] as String?,
-            ref["info5"] as String?,
-            ref["number"] as Int?,
-            ref["numberDiff"] as Int?,
-            ref["date"] as String?,
-            ref["status"] as String?,
+            ref["writerName"] as String,
+            ref["subject"] as String,
+            ref["bookImg"] as String,
+            ref["bookCode"] as String,
+            ref["info1"] as String,
+            ref["info2"] as String,
+            ref["info3"] as String,
+            ref["info4"] as String,
+            ref["info5"] as String,
+            ref["number"] as Int,
+            ref["numberDiff"] as Int,
+            ref["date"] as String,
+            ref["status"] as String,
         )
     }
 
     fun setDataBestDay(ref: MutableMap<String?, Any>): DataBestDay {
         return DataBestDay(
-            ref["writerName"] as String?,
-            ref["subject"] as String?,
-            ref["bookImg"] as String?,
-            ref["bookCode"] as String?,
-            ref["info1"] as String?,
-            ref["info2"] as String?,
-            ref["info3"] as String?,
-            ref["info4"] as String?,
-            ref["info5"] as String?,
-            ref["number"] as Int?,
-            ref["date"] as String?,
-            ref["type"] as String?,
-            ref["status"] as String?,
+            ref["writerName"] as String,
+            ref["subject"] as String,
+            ref["bookImg"] as String,
+            ref["bookCode"] as String,
+            ref["info1"] as String,
+            ref["info2"] as String,
+            ref["info3"] as String,
+            ref["info4"] as String,
+            ref["info5"] as String,
+            ref["number"] as Int,
+            ref["numberDiff"] as Int,
+            ref["date"] as String,
+            ref["status"] as String,
         )
     }
 }

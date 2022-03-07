@@ -151,6 +151,7 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
             ref["info4"] = week[i].info4!!
             ref["info5"] = week[i].info5!!
             ref["number"] = week[i].number!!
+            ref["numberDiff"] = 0
             ref["date"] = week[i].date!!
             ref["status"] = week[i].status!!
 

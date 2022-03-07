@@ -127,6 +127,7 @@ class ActivityBookSetting : AppCompatActivity() {
                         group.info4,
                         group.info5,
                         group.number,
+                        0,
                         group.date,
                         type
                     )
@@ -156,6 +157,7 @@ class ActivityBookSetting : AppCompatActivity() {
                         ref["info4"] = group.info4!!
                         ref["info5"] = group.info5!!
                         ref["number"] = calculateNum(group.number, group.title, type)
+                        ref["numberDiff"] = 0
                         ref["date"] = group.date!!
                         ref["type"] = type
                         ref["status"] = status
@@ -172,7 +174,7 @@ class ActivityBookSetting : AppCompatActivity() {
 
     }
 
-    fun calculateNum(num : Int?, title : String?, tabType: String) : Int{
+    private fun calculateNum(num : Int?, title : String?, tabType: String) : Int{
 
         val yesterdayNum = dbYesterday.bestDao().findName(tabType, title!!)
 
@@ -181,15 +183,15 @@ class ActivityBookSetting : AppCompatActivity() {
             return 0
         } else {
             return when {
-                yesterdayNum < num!! -> {
+                num!! > yesterdayNum -> {
                     status = "DOWN"
                     num - yesterdayNum
                 }
-                yesterdayNum > num -> {
+                num < yesterdayNum -> {
                     status = "UP"
                     num - yesterdayNum
                 }
-                yesterdayNum == num -> {
+                num == yesterdayNum -> {
                     status = "SAME"
                     num - yesterdayNum
                 }
