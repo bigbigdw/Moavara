@@ -2,6 +2,7 @@ package com.example.moavara.Util
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.moavara.DataBase.DataBestDay
 import com.example.moavara.Search.BookListDataBestToday
@@ -11,6 +12,46 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 object DBDate {
+
+    fun DayWeek() : List<String> {
+
+        val week = ArrayList<String>()
+
+        val c1 = Calendar.getInstance()
+        val c2 = Calendar.getInstance()
+
+        for(i in DayInt()..6){
+            c1[Calendar.DAY_OF_WEEK -1] = i
+
+            val month = c1[Calendar.MONTH] + 3
+            val day = c1[Calendar.DAY_OF_MONTH] - 1
+
+            var daystr = day.toString()
+
+            if(day < 10){
+                daystr = "0$day"
+            }
+
+            week.add("0$month-$daystr")
+        }
+
+        for(i in 1..DayInt()){
+            c2[Calendar.DAY_OF_WEEK] = i
+
+            val month = c2[Calendar.MONTH] + 1
+            val day = c2[Calendar.DAY_OF_MONTH]
+
+            var daystr = day.toString()
+
+            if(day < 10){
+                daystr = "0$day"
+            }
+
+            week.add("0$month-$daystr")
+        }
+
+        return week
+    }
 
     fun DayInt(): Int {
         return Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
@@ -102,7 +143,7 @@ object BestRef {
     }
 
     fun delBestRefWeekCompared(type: String, genre: String): DatabaseReference {
-        return setBestRef(type, genre).child("week-list")
+        return setBestRef(type, genre).child("week list")
     }
 
     fun setBestRefToday(type: String, num: Int, genre: String): DatabaseReference {

@@ -60,11 +60,13 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
         adapterWeek = AdapterBestWeekend(requireContext(), itemWeek)
         getBestToday(week)
 
-        recyclerView!!.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recyclerView!!.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView!!.adapter = adapterWeek
 
-        dbYesterday = Room.databaseBuilder(requireContext(), DataBaseBestDay::class.java, "best-yesterday")
-            .allowMainThreadQueries().build()
+        dbYesterday =
+            Room.databaseBuilder(requireContext(), DataBaseBestDay::class.java, "best-yesterday")
+                .allowMainThreadQueries().build()
 
         dbWeek = Room.databaseBuilder(requireContext(), DataBaseBestDay::class.java, "best-week")
             .allowMainThreadQueries().build()
@@ -85,7 +87,8 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
         bestRef.get().addOnSuccessListener {
 
             for (i in it.children) {
-                val group: BookListDataBestWeekend? = i.getValue(BookListDataBestWeekend::class.java)
+                val group: BookListDataBestWeekend? =
+                    i.getValue(BookListDataBestWeekend::class.java)
                 itemWeek.add(
                     BookListDataBestWeekend(
                         group!!.sun,
@@ -97,6 +100,7 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
                         group.sat,
                     )
                 )
+
                 adapterWeek!!.notifyDataSetChanged()
             }
 
@@ -142,26 +146,26 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
         val week = dbWeek.bestDao().getAll(tabType)
         val ref: MutableMap<String?, Any> = HashMap()
 
-        for(i in week.indices){
+        for (i in week.indices) {
 
-                ref["writerName"] = week[i].writer!!
-                ref["subject"] = week[i].title!!
-                ref["bookImg"] = week[i].bookImg!!
-                ref["bookCode"] = week[i].bookCode!!
-                ref["info1"] = week[i].info1!!
-                ref["info2"] = week[i].info2!!
-                ref["info3"] = week[i].info3!!
-                ref["info4"] = week[i].info4!!
-                ref["info5"] = week[i].info5!!
-                ref["number"] = week[i].number!!
-                ref["date"] = week[i].date!!
-                ref["status"] = week[i].status!!
+            ref["writerName"] = week[i].writer!!
+            ref["subject"] = week[i].title!!
+            ref["bookImg"] = week[i].bookImg!!
+            ref["bookCode"] = week[i].bookCode!!
+            ref["info1"] = week[i].info1!!
+            ref["info2"] = week[i].info2!!
+            ref["info3"] = week[i].info3!!
+            ref["info4"] = week[i].info4!!
+            ref["info5"] = week[i].info5!!
+            ref["number"] = week[i].number!!
+            ref["date"] = week[i].date!!
+            ref["status"] = week[i].status!!
 
-                items.add(BestRef.setBookListDataBestToday(ref))
-                val cmpAsc: Comparator<BookListDataBestToday?> =
-                    Comparator { o1, o2 -> o1!!.number!!.compareTo(o2!!.number!!) }
-                Collections.sort(items, cmpAsc)
-                adapterToday!!.notifyDataSetChanged()
+            items.add(BestRef.setBookListDataBestToday(ref))
+            val cmpAsc: Comparator<BookListDataBestToday?> =
+                Comparator { o1, o2 -> o1!!.number!!.compareTo(o2!!.number!!) }
+            Collections.sort(items, cmpAsc)
+            adapterToday!!.notifyDataSetChanged()
 
 
         }

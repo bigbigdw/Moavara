@@ -37,12 +37,13 @@ class BottomDialogBest(private val mContext: Context, private val item: BookList
         dbWeekList = Room.databaseBuilder(requireContext().applicationContext, DataBaseBestDay::class.java, "week-list")
             .allowMainThreadQueries().build()
 
-        val today = Date()
-
-        val sdf = SimpleDateFormat("EEEE")
-        val dayOfTheWeek = sdf.format(today)
-
-        Log.d("@@@@-@", dayOfTheWeek)
+//        val today = Date()
+//
+//        val sdf = SimpleDateFormat("MM-dd")
+//        val dayOfTheWeek = sdf.format(today)
+//
+//        Log.d("@@@@-!", today.toString())
+//        Log.d("@@@@-@", dayOfTheWeek[Calendar.DAY_OF_WEEK].toString())
 
 
         with(binding){
@@ -112,10 +113,14 @@ class BottomDialogBest(private val mContext: Context, private val item: BookList
 
         for(i in weeklist.indices){
             Log.d("!!!!",  weeklist[i].title.toString() + "@" + weeklist[i].status.toString() + "@@" + weeklist[i].date.toString() + "@@@" + weeklist[i].number.toString())
+
+            with(binding){
+                tviewRank1.text = (item.number?.minus(weeklist[i].number!!)).toString()
+
+
+            }
         }
 
-        with(binding){
 
-        }
     }
 }

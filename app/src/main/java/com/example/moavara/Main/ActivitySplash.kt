@@ -19,13 +19,14 @@ import com.example.moavara.R
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Genre
-import com.google.firebase.database.*
+import com.google.firebase.database.FirebaseDatabase
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 
 val mRootRef = FirebaseDatabase.getInstance().reference
 
@@ -63,7 +64,7 @@ class ActivitySplash : Activity() {
         }.start()
 
         cate = Genre.getGenre(this).toString()
-//
+
 //        BestRef.delBestRefWeekCompared("Ridi", cate).removeValue()
 //        BestRef.delBestRefWeekCompared("OneStore", cate).removeValue()
 //        BestRef.delBestRefWeekCompared("Kakao", cate).removeValue()
@@ -75,6 +76,8 @@ class ActivitySplash : Activity() {
 //        BestRef.delBestRefWeekCompared("Naver Challenge", cate).removeValue()
 //        BestRef.delBestRefWeekCompared("Naver", cate).removeValue()
 //        BestRef.delBestRefWeekCompared("MrBlue", cate).removeValue()
+
+        Log.d("$$$$", DBDate.DayWeek().toString())
 
         Handler(Looper.myLooper()!!).postDelayed(
             {

@@ -128,7 +128,7 @@ class ActivitySync : Activity() {
                     ref["info4"] = group.info4!!
                     ref["info5"] = group.info5!!
                     ref["number"] = calculateNum(group.number, group.title, type)
-                    ref["date"] = group.date!!
+                    ref["date"] = DBDate.DateMMDD()
                     ref["type"] = type
                     ref["status"] = status
 
