@@ -8,11 +8,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.moavara.Joara.JoaraEventResult
 import com.example.moavara.Joara.RetrofitJoara
-import com.example.moavara.R
 import com.example.moavara.Search.EventData
+import com.example.moavara.databinding.FragmentEventBinding
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
@@ -23,33 +22,31 @@ import java.util.*
 
 class FragmentEventTab(private val tabType: String) : Fragment() {
 
-    private var adapterLeft: AdapterEvent? = null
-    private var adapterRight: AdapterEvent? = null
-    private val itemsLeft = ArrayList<EventData?>()
-    private val itemsRight = ArrayList<EventData?>()
-    var recyclerViewLeft: RecyclerView? = null
-    var recyclerViewRight: RecyclerView? = null
+    private lateinit var adapterLeft: AdapterEvent
+    private lateinit var adapterRight: AdapterEvent
+    private val itemsLeft = ArrayList<EventData>()
+    private val itemsRight = ArrayList<EventData>()
 
-    lateinit var root: View
+    private var _binding: FragmentEventBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        root = inflater.inflate(R.layout.fragment_event, container, false)
-
-        recyclerViewLeft = root.findViewById(R.id.rview_Left)
-        recyclerViewRight = root.findViewById(R.id.rview_Right)
-
+        _binding = FragmentEventBinding.inflate(inflater, container, false)
+        val view = binding.root
         adapterLeft = AdapterEvent(itemsLeft)
         adapterRight = AdapterEvent(itemsRight)
 
-        recyclerViewRight!!.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        recyclerViewRight!!.adapter = adapterRight
-        recyclerViewLeft!!.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        recyclerViewLeft!!.adapter = adapterLeft
+        with(binding){
+            rviewRight.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            rviewRight.adapter = adapterRight
+            rviewLeft.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            rviewLeft.adapter = adapterLeft
+        }
 
         itemsLeft.clear()
         itemsRight.clear()
@@ -77,23 +74,23 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
             }
         }.start()
 
-        adapterLeft!!.setOnItemClickListener(object : AdapterEvent.OnItemClickListener {
+        adapterLeft.setOnItemClickListener(object : AdapterEvent.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
-                val item: EventData? = adapterLeft!!.getItem(position)
+                val item: EventData = adapterLeft.getItem(position)
 
                 onClickEvent(item)
             }
         })
 
-        adapterRight!!.setOnItemClickListener(object : AdapterEvent.OnItemClickListener {
+        adapterRight.setOnItemClickListener(object : AdapterEvent.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
-                val item: EventData? = adapterRight!!.getItem(position)
+                val item: EventData = adapterRight.getItem(position)
 
                 onClickEvent(item)
             }
         })
 
-        return root
+        return view
     }
 
     private fun getEventJoara() {
@@ -143,8 +140,8 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
                         }
                     }
 
-                    adapterLeft!!.notifyDataSetChanged()
-                    adapterRight!!.notifyDataSetChanged()
+                    adapterLeft.notifyDataSetChanged()
+                    adapterRight.notifyDataSetChanged()
                 }
             }
 
@@ -176,7 +173,7 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
                             "MrBlue"
                         )
                     )
-                    adapterLeft!!.notifyDataSetChanged()
+                    adapterLeft.notifyDataSetChanged()
                 } else {
                     itemsRight.add(
                         EventData(
@@ -188,7 +185,7 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
                             "MrBlue"
                         )
                     )
-                    adapterRight!!.notifyDataSetChanged()
+                    adapterRight.notifyDataSetChanged()
                 }
             }
 
@@ -217,7 +214,7 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
                             "MrBlue"
                         )
                     )
-                    adapterLeft!!.notifyDataSetChanged()
+                    adapterLeft.notifyDataSetChanged()
                 } else {
                     itemsRight.add(
                         EventData(
@@ -229,7 +226,7 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
                             "MrBlue"
                         )
                     )
-                    adapterRight!!.notifyDataSetChanged()
+                    adapterRight.notifyDataSetChanged()
                 }
             }
 
@@ -259,7 +256,7 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
                             "Ridi"
                         )
                     )
-                    adapterLeft!!.notifyDataSetChanged()
+                    adapterLeft.notifyDataSetChanged()
                 } else {
                     itemsRight.add(
                         EventData(
@@ -271,7 +268,7 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
                             "Ridi"
                         )
                     )
-                    adapterRight!!.notifyDataSetChanged()
+                    adapterRight.notifyDataSetChanged()
                 }
             }
 
@@ -296,7 +293,7 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
                             "joaralink"
                         )
                     )
-                    adapterLeft!!.notifyDataSetChanged()
+                    adapterLeft.notifyDataSetChanged()
                 } else {
                     itemsRight.add(
                         EventData(
@@ -306,7 +303,7 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
                             "joaralink"
                         )
                     )
-                    adapterRight!!.notifyDataSetChanged()
+                    adapterRight.notifyDataSetChanged()
                 }
             }
 
@@ -336,7 +333,7 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
                             "Kakao"
                         )
                     )
-                    adapterLeft!!.notifyDataSetChanged()
+                    adapterLeft.notifyDataSetChanged()
                 }
             } else {
                 requireActivity().runOnUiThread {
@@ -350,7 +347,7 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
                             "Kakao"
                         )
                     )
-                    adapterRight!!.notifyDataSetChanged()
+                    adapterRight.notifyDataSetChanged()
                 }
             }
 
@@ -358,12 +355,12 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
         }
     }
 
-    private fun onClickEvent(item: EventData?){
-        if (tabType == "Joara" && !item!!.link!!.contains("joaralink://event?event_id=") && !item.link!!.contains("joaralink://notice?notice_id=")) {
+    private fun onClickEvent(item: EventData){
+        if (tabType == "Joara" && !item.link.contains("joaralink://event?event_id=") && !item.link.contains("joaralink://notice?notice_id=")) {
             Toast.makeText(requireContext(), "이벤트 페이지가 아닙니다.", Toast.LENGTH_SHORT).show()
         } else if (tabType == "OneStore") {
             Toast.makeText(requireContext(), "원스토어는 지원하지 않습니다.", Toast.LENGTH_SHORT).show()
-        }else if (tabType == "Kakao" && item!!.link!!.contains("kakaopage://exec?open_web_with_auth/store/event")) {
+        }else if (tabType == "Kakao" && item.link.contains("kakaopage://exec?open_web_with_auth/store/event")) {
             Toast.makeText(requireContext(), "이벤트 페이지가 아닙니다.", Toast.LENGTH_SHORT).show()
         } else {
             val mBottomSheetDialogEvent =

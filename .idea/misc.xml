@@ -82,9 +82,13 @@
         <entry key="app/src/main/res/Best/layout/item_booklist_best_today.xml" value="0.18" />
         <entry key="app/src/main/res/Best/layout/item_booklist_best_weekend.xml" value="0.1" />
         <entry key="app/src/main/res/ETC/layout/activity_intro.xml" value="0.1" />
+        <entry key="app/src/main/res/Event/layout/bottom_dialog_event.xml" value="0.1" />
         <entry key="app/src/main/res/Event/layout/fragment_event.xml" value="0.25" />
+        <entry key="app/src/main/res/Event/layout/item_event.xml" value="0.1" />
         <entry key="app/src/main/res/Event/layout/item_search.xml" value="0.1" />
         <entry key="app/src/main/res/Main/layout/component_wrap_main.xml" value="0.1" />
+        <entry key="app/src/main/res/Pick/layout/fragment_pick_tab.xml" value="0.1" />
+        <entry key="app/src/main/res/Pick/layout/item_pick_event.xml" value="0.1" />
         <entry key="app/src/main/res/Search/layout/activity_best_detail.xml" value="0.1921875" />
         <entry key="app/src/main/res/Search/layout/activity_search.xml" value="0.1" />
         <entry key="app/src/main/res/Search/layout/activity_search_detail.xml" value="0.20677083333333332" />

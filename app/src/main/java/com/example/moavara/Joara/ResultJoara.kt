@@ -62,11 +62,11 @@ class EventContents{
 class JoaraEventValue {
     @SerializedName("joaralink")
     @Expose
-    var joaralink: String? = null
+    var joaralink: String = ""
 
     @SerializedName("imgfile")
     @Expose
-    var imgfile: String? = null
+    var imgfile: String = ""
 }
 
 //조아라 베스트

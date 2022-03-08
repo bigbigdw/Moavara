@@ -5,15 +5,14 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class DataEvent (
-    var link: String ? = null,
-    var imgfile: String ? = null,
-    var title: String ? = null,
-    var startDate: String ? = null,
-    var endDate: String ? = null,
-    var type: String ? = null,
-    var memo: String ? = null,
+    var link: String = "",
+    var imgfile: String = "",
+    var title: String = "",
+    var genre: String = "",
+    var type: String = "",
+    var memo: String = "",
 ){
-    @PrimaryKey(autoGenerate = true) var id: Int = 0
+    @PrimaryKey(autoGenerate = true) var id: Int = 2
 }
 
 @Entity

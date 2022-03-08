@@ -1,23 +1,25 @@
 package com.example.moavara.Pick
 
-import android.graphics.Color
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.moavara.R
 import com.example.moavara.Search.EventData
+import com.example.moavara.databinding.ItemPickEventBinding
+import kotlin.collections.ArrayList
 
-class AdapterPickEvent(items: List<EventData?>?) :
+class AdapterPickEvent(items: List<EventData>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var holder: ArrayList<EventData?>? = items as ArrayList<EventData?>?
+    var itemsList: ArrayList<EventData> = items as ArrayList<EventData>
+    var memo = ""
+
 
     interface OnItemClickListener {
-        fun onItemClick(v: View?, position: Int)
+        fun onItemClick(v: View?, position: Int, type: String)
     }
 
     private var listener: OnItemClickListener? = null
@@ -27,61 +29,128 @@ class AdapterPickEvent(items: List<EventData?>?) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_pick_event, parent, false)
-        return MainBookViewHolder(view)
+        val view = ItemPickEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is MainBookViewHolder) {
+        if (holder is ViewHolder) {
 
-            val item = this.holder!![position]
+            val item = this.itemsList!![position]
 
-            Glide.with(holder.itemView.context)
-                .load(item!!.imgfile)
-                .into(holder.iView)
+            with(holder.binding){
+                Glide.with(holder.itemView.context)
+                    .load(item!!.imgfile)
+                    .into(iView)
 
-            if(item.endDate != null){
-                holder.date.visibility = View.VISIBLE
-                holder.date.text = item.startDate + " ~ " + item.endDate
-            } else {
-                holder.date.visibility = View.GONE
+                tviewTitle.text = item.title
+                tviewPlatform.text = item.type
+                tviewMemo.text = item.memo
+                tviewGenre.text = item.genre
+
+                    val pos = holder.adapterPosition
+                    if (pos != RecyclerView.NO_POSITION) {
+
+                        etviewMemo.addTextChangedListener(object :
+                            TextWatcher {
+                            override fun beforeTextChanged(text: CharSequence, start: Int, count: Int, after: Int) {
+                                Log.d("holder.Comment_EditText", "beforeTextChanged")
+                            }
+
+                            override fun onTextChanged(text: CharSequence, start: Int, before: Int, count: Int) {
+                                tviewMemo.text = text
+                                setMemoEdit(text.toString())
+                            }
+
+                            override fun afterTextChanged(s: Editable) {
+                                Log.d("holder.Comment_EditText", "onTextChanged")
+                            }
+                        })
+                    }
             }
-
-            holder.title.text = item.title
-            holder.platform.text = item.type
         }
     }
 
     override fun getItemCount(): Int {
-        return if (holder == null) 0 else holder!!.size
+        return if (itemsList == null) 0 else itemsList.size
     }
 
-    inner class MainBookViewHolder internal constructor(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
+    fun editItem(items: EventData, position: Int) {
+        itemsList[position] = items
+        notifyItemChanged(position)
+    }
 
-        var iView: ImageView = itemView.findViewById(R.id.iView)
-        var title: TextView = itemView.findViewById(R.id.tviewTitle)
-        var date: TextView = itemView.findViewById(R.id.tviewDate)
-        var platform: TextView = itemView.findViewById(R.id.tviewPlatform)
-        var llayoutWrap: LinearLayout = itemView.findViewById(R.id.llayoutWrap)
+    inner class ViewHolder internal constructor(val binding: ItemPickEventBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         init {
-
-            llayoutWrap.setOnClickListener { v: View? ->
-                val pos = adapterPosition
-                if (pos != RecyclerView.NO_POSITION) {
-                    listener!!.onItemClick(v, pos)
+            with(binding){
+                iView.setOnClickListener {
+                    val pos = adapterPosition
+                    if (pos != RecyclerView.NO_POSITION) {
+                        listener?.onItemClick(it, pos, "Img")
+                    }
                 }
+
+                tviewbtnMemo.setOnClickListener {
+                    val pos = adapterPosition
+                    if (pos != RecyclerView.NO_POSITION) {
+                        listener?.onItemClick(it, pos, "Memo")
+
+                        if(llayoutWrapMemo.visibility == View.VISIBLE){
+                            llayoutWrapMemo.visibility = View.GONE
+                        } else {
+                            llayoutWrapMemo.visibility = View.VISIBLE
+                        }
+                    }
+                }
+
+                tviewEdit.setOnClickListener {
+                    val pos = adapterPosition
+                    if (pos != RecyclerView.NO_POSITION) {
+                        listener?.onItemClick(it, pos, "Edit")
+
+                        if(etviewMemo.visibility == View.VISIBLE){
+                            etviewMemo.visibility = View.GONE
+                               tviewMemo.visibility = View.VISIBLE
+                        } else {
+                            etviewMemo.visibility = View.VISIBLE
+
+                            if(tviewMemo.text == ""){
+                                etviewMemo.hint = "메모를 입력해주세요"
+                            } else {
+                                etviewMemo.text = tviewMemo.text as Editable?
+                            }
+
+                            tviewMemo.visibility = View.GONE
+                        }
+                    }
+                }
+
+                tviewbtnConfirm.setOnClickListener {
+                    val pos = adapterPosition
+                    if (pos != RecyclerView.NO_POSITION) {
+                        listener?.onItemClick(it, pos, "Confirm")
+                        etviewMemo.visibility = View.GONE
+                        tviewMemo.visibility = View.VISIBLE
+                    }
+                }
+
+
             }
-
         }
-
-
     }
 
-    fun getItem(position: Int): EventData? {
-        return holder!![position]
+    fun getItem(position: Int): EventData {
+        return itemsList[position]
+    }
+
+    fun getMemoEdit(): String {
+        return memo
+    }
+
+    fun setMemoEdit(str : String){
+        memo = str
     }
 
 }

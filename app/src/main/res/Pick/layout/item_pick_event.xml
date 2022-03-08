@@ -2,81 +2,151 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/llayoutWrap"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:paddingStart="16dp"
-    android:paddingTop="8dp"
-    android:paddingEnd="16dp"
-    android:paddingBottom="8dp"
+    android:orientation="vertical"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 
-    <ImageView
-        android:id="@+id/iView"
-        android:layout_width="wrap_content"
-        android:layout_height="80dp"
-        android:layout_marginEnd="15dp"
-        android:adjustViewBounds="true"
-        android:contentDescription="@string/TODO"
-        android:scaleType="fitXY"
-        app:srcCompat="@drawable/booktest" />
-
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:baselineAligned="false"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp">
 
+        <ImageView
+            android:id="@+id/iView"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_marginEnd="15dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/TODO"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/booktest" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:baselineAligned="false"
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tviewTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="2dp"
-                android:breakStrategy="high_quality"
-                android:ellipsize="end"
-                android:fontFamily="@font/noto_sans_bold"
-                android:maxLines="1"
-                android:textColor="#FFFFFF"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:text="asdasdads" />
 
-            <TextView
-                android:id="@+id/tviewDate"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:breakStrategy="high_quality"
-                android:ellipsize="end"
-                android:fontFamily="@font/noto_sans"
-                android:maxLines="1"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp"
-                tools:text="asdsadasda" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tviewPlatform"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:breakStrategy="high_quality"
-                android:ellipsize="end"
-                android:fontFamily="@font/noto_sans"
-                android:maxLines="1"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp"
-                tools:text="asdasdasdas" />
+                <TextView
+                    android:id="@+id/tviewTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:breakStrategy="high_quality"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/noto_sans_bold"
+                    android:maxLines="1"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    tools:text="asdasdads" />
+
+                <TextView
+                    android:id="@+id/tviewPlatform"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:breakStrategy="high_quality"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/noto_sans"
+                    android:maxLines="1"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    tools:text="asdasdasdas" />
+
+                <TextView
+                    android:id="@+id/tviewGenre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:breakStrategy="high_quality"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/noto_sans"
+                    android:maxLines="1"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    android:visibility="visible"
+                    tools:text="asdsadasda" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tviewEdit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="8dp"
+                        android:paddingEnd="16dp"
+                        android:text="수정"
+                        android:textColor="#009688" />
+
+                    <TextView
+                        android:id="@+id/tviewbtnMemo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="8dp"
+                        android:paddingEnd="16dp"
+                        android:text="메모"
+                        android:textColor="#FF5722" />
+
+                    <TextView
+                        android:id="@+id/tviewbtnConfirm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="8dp"
+                        android:paddingEnd="16dp"
+                        android:text="적용"
+                        android:textColor="#2196F3" />
+                </LinearLayout>
+
+            </LinearLayout>
+
 
         </LinearLayout>
+    </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/llayoutWrapMemo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#F44336"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/tviewMemo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="8dp"
+            android:text="TextView"
+            android:textColor="#009688" />
+
+        <EditText
+            android:id="@+id/etviewMemo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:ems="10"
+            android:textColor="#CDDC39"
+            android:textColorHint="#CDDC39"
+            android:visibility="gone" />
 
     </LinearLayout>
 

@@ -11,11 +11,7 @@ import android.view.ViewGroup
 import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebView
-import android.widget.Button
-import android.widget.ImageView
 import android.widget.Toast
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.DataEvent
@@ -25,45 +21,39 @@ import com.example.moavara.Joara.JoaraNoticeDetailResult
 import com.example.moavara.Joara.RetrofitJoara
 import com.example.moavara.R
 import com.example.moavara.Search.EventData
+import com.example.moavara.Util.Genre
+import com.example.moavara.databinding.BottomDialogEventBinding
+import com.example.moavara.databinding.FragmentPickTabBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import org.jsoup.nodes.Element
-import org.jsoup.select.Elements
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.ArrayList
 
 class BottomSheetDialogEvent(
     private val mContext: Context,
-    private val item: EventData?,
-    private val tabType: String?
+    private val item: EventData,
+    private val tabType: String = ""
 ) :
     BottomSheetDialogFragment() {
 
-    private var btnRight: Button? = null
-    private var btnLeft: Button? = null
-    private var wView: WebView? = null
-
-    private var title : String? = null
-    private var endtime : String? = null
-    private var starttime : String? = null
-    private var iView : ImageView? = null
-
     private lateinit var dbEvent: DataPickEvent
+    var cate = ""
+
+    private var _binding: BottomDialogEventBinding? = null
+    private val binding get() = _binding!!
+    private var title : String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val v: View = inflater.inflate(R.layout.bottom_dialog_event, container, false)
+        _binding = BottomDialogEventBinding.inflate(inflater, container, false)
+        val view = binding.root
 
-        btnRight = v.findViewById(R.id.btnRight)
-        btnLeft = v.findViewById(R.id.btnLeft)
-        wView = v.findViewById(R.id.wView)
-        iView = v.findViewById(R.id.iVIew)
+        cate = Genre.getGenre(requireContext()).toString()
 
         dbEvent = Room.databaseBuilder(requireContext(), DataPickEvent::class.java, "pick-event")
             .allowMainThreadQueries().build()
@@ -73,7 +63,6 @@ class BottomSheetDialogEvent(
         }
 
         Thread {
-
             when (tabType) {
                 "Ridi" -> {
                     getEventRidi()
@@ -87,30 +76,33 @@ class BottomSheetDialogEvent(
             }
         }.start()
 
-        btnLeft!!.setOnClickListener {
-            dbEvent.eventDao().insert(DataEvent(
-                item!!.link,
-                item.imgfile,
-                title,
-                starttime,
-                endtime,
-                tabType,
-                ""
-            ))
-            Toast.makeText(requireContext(), "Pick 성공!", Toast.LENGTH_SHORT).show()
-            dismiss()
+        with(binding){
+            btnLeft.setOnClickListener {
+                dbEvent.eventDao().insert(DataEvent(
+                    item.link,
+                    item.imgfile,
+                    title,
+                    cate,
+                    tabType,
+                    ""
+                ))
+                Toast.makeText(requireContext(), "Pick 성공!", Toast.LENGTH_SHORT).show()
+                dismiss()
+            }
+
+            btnRight.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getUrl(tabType!!)))
+                startActivity(intent)
+            }
         }
 
-        btnRight!!.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getUrl(tabType!!)))
-            startActivity(intent)
-        }
 
-        return v
+
+        return view
     }
 
     private fun getEventMrBlue(){
-        val doc: Document = Jsoup.connect(item!!.link).get()
+        val doc: Document = Jsoup.connect(item.link).get()
 
         if(doc.select(".event-html img").size > 1){
             val mrBlue1 = doc.select(".event-html img").first()!!.absUrl("src")
@@ -118,7 +110,7 @@ class BottomSheetDialogEvent(
             requireActivity().runOnUiThread {
                 Glide.with(mContext)
                     .load(mrBlue1.replace("http", "https"))
-                    .into(iView!!)
+                    .into(binding.iview)
             }
         } else if(doc.select(".event-html img").size < 1) {
 
@@ -127,7 +119,7 @@ class BottomSheetDialogEvent(
             requireActivity().runOnUiThread {
                 Glide.with(mContext)
                     .load(mrBlue2)
-                    .into(iView!!)
+                    .into(binding.iview)
             }
         }
 
@@ -137,21 +129,20 @@ class BottomSheetDialogEvent(
     }
 
     private fun getEventRidi(){
-        val doc: Document = Jsoup.connect(item!!.link).get()
+        val doc: Document = Jsoup.connect(item.link).get()
         val ridi = doc.select(".event_detail_top img").first()!!.absUrl("src")
 
         title = item.title
-        starttime = item.startDate
 
         requireActivity().runOnUiThread {
             Glide.with(mContext)
                 .load(ridi)
-                .into(iView!!)
+                .into(binding.iview)
         }
     }
 
     private fun getEventKakao() {
-        val doc: Document = Jsoup.connect("https://page.kakao.com${item!!.link}").get()
+        val doc: Document = Jsoup.connect("https://page.kakao.com${item.link}").get()
         val kakao = doc.select(".themeBox img").first()!!.absUrl("src")
 
         title = item.title
@@ -159,33 +150,33 @@ class BottomSheetDialogEvent(
         requireActivity().runOnUiThread {
             Glide.with(mContext)
                 .load(kakao)
-                .into(iView!!)
+                .into(binding.iview)
         }
     }
 
     private fun getUrl(type: String): String {
         when (type) {
             "Joara" -> {
-                return if(item!!.link!!.contains("joaralink://event?event_id=")){
-                    "https://www.joara.com/event/" + item.link!!.replace(
+                return if(item.link.contains("joaralink://event?event_id=")){
+                    "https://www.joara.com/event/" + item.link.replace(
                         "joaralink://event?event_id=",
                         ""
                     )
                 } else {
-                    "https://www.joara.com/notice/" + item.link!!.replace(
+                    "https://www.joara.com/notice/" + item.link.replace(
                         "joaralink://notice?notice_id=",
                         ""
                     )
                 }
             }
             "Ridi" -> {
-                return item!!.link!!
+                return item.link
             }
             "Kakao" -> {
-                return "https://page.kakao.com${item!!.link}"
+                return "https://page.kakao.com${item.link}"
             }
             "MrBlue" -> {
-                return item!!.link!!
+                return item.link
             }
             else -> return ""
         }
@@ -193,22 +184,22 @@ class BottomSheetDialogEvent(
 
     private fun getEventJoara() {
 
-        wView!!.visibility = View.VISIBLE
+        binding.wView.visibility = View.VISIBLE
 
-        val mws = wView!!.settings
+        val mws = binding.wView.settings
 
         mws.loadWithOverviewMode = true
         mws.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
-        wView!!.overScrollMode = WebView.OVER_SCROLL_IF_CONTENT_SCROLLS
+        binding.wView.overScrollMode = WebView.OVER_SCROLL_IF_CONTENT_SCROLLS
         WebView.setWebContentsDebuggingEnabled(true)
         mws.setSupportZoom(false) // 화면 줌 허용 여부
-        wView!!.webChromeClient = WebChromeClient()
-        wView!!.getSettings().setJavaScriptEnabled(true)
+        binding.wView.webChromeClient = WebChromeClient()
+        binding.wView.getSettings().setJavaScriptEnabled(true)
 
-        if(item!!.link!!.contains("joaralink://event?event_id=")){
+        if(item.link.contains("joaralink://event?event_id=")){
             val call: Call<JoaraEventDetailResult?>? =
                 RetrofitJoara.getJoaraEventDetail(
-                    item.link!!.replace(
+                    item.link.replace(
                         "joaralink://event?event_id=",
                         ""
                     )
@@ -225,17 +216,15 @@ class BottomSheetDialogEvent(
                             val content = it.event!!.content
 
                             title = it.event.title!!
-                            endtime = it.event.endtime!!
-                            starttime = it.event.starttime!!
 
 
-                            wView!!.loadDataWithBaseURL(
+                            binding.wView.loadDataWithBaseURL(
                                 null,
                                 content!!.replace("http", "https"),
                                 "text/html; charset=utf-8",
                                 "base64",
                                 null
-                            );
+                            )
                         }
                     }
                 }
@@ -247,7 +236,7 @@ class BottomSheetDialogEvent(
         } else {
             val call: Call<JoaraNoticeDetailResult?>? =
                 RetrofitJoara.getJoaraNoticeDetail(
-                    item.link!!.replace(
+                    item.link.replace(
                         "joaralink://notice?notice_id=",
                         ""
                     )
@@ -264,15 +253,14 @@ class BottomSheetDialogEvent(
                             val content = it.notice!!.content
 
                             title = it.notice.title!!
-                            starttime = it.notice.wdate!!
 
-                            wView!!.loadDataWithBaseURL(
+                            binding.wView.loadDataWithBaseURL(
                                 null,
                                 content!!.replace("<br />", ""),
                                 "text/html; charset=utf-8",
                                 "base64",
                                 null
-                            );
+                            )
                         }
                     }
                 }
