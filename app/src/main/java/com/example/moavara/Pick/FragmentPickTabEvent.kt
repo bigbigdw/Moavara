@@ -1,5 +1,6 @@
 package com.example.moavara.Pick
 
+import android.os.AsyncTask
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,11 +9,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
+import com.example.moavara.DataBase.DataEvent
 import com.example.moavara.DataBase.DataPickEvent
 import com.example.moavara.Event.BottomSheetDialogEvent
 import com.example.moavara.Search.EventData
 import com.example.moavara.databinding.FragmentPickTabBinding
-import java.util.ArrayList
+
 
 class FragmentPickTabEvent : Fragment() {
 
@@ -68,10 +70,10 @@ class FragmentPickTabEvent : Fragment() {
 
         adapter.setOnItemClickListener(object : AdapterPickEvent.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int, type : String) {
-                val item: EventData? = adapter.getItem(position)
+                val item: EventData = adapter.getItem(position)
 
                 if(type == "Img"){
-                    if(item!!.type == "Joara" && !item.link!!.contains("joaralink://event?event_id=")){
+                    if(item.type == "Joara" && !item.link.contains("joaralink://event?event_id=")){
                         Toast.makeText(requireContext(), "이벤트 페이지가 아닙니다.", Toast.LENGTH_SHORT).show()
                     } else {
                         val mBottomSheetDialogEvent =
@@ -81,7 +83,7 @@ class FragmentPickTabEvent : Fragment() {
                 } else if(type == "Confirm"){
 
                     val data = EventData(
-                        item!!.link,
+                        item.link,
                         item.imgfile,
                         item.title,
                         item.genre,
@@ -90,7 +92,16 @@ class FragmentPickTabEvent : Fragment() {
                     )
 
                     adapter.editItem(data, position)
+
+                    dbPickEvent.eventDao().updateItem(adapter.getMemoEdit(), item.link)
+
                     Toast.makeText(requireContext(), "수정되었습니다", Toast.LENGTH_SHORT).show()
+                }  else if(type == "Delete"){
+                    dbPickEvent.eventDao().deleteItem(item.link)
+                    items.remove(item)
+                    adapter.notifyItemRemoved(position)
+
+                    Toast.makeText(requireContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show()
                 }
             }
         })

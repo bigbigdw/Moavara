@@ -12,7 +12,7 @@ data class DataEvent (
     var type: String = "",
     var memo: String = "",
 ){
-    @PrimaryKey(autoGenerate = true) var id: Int = 2
+    @PrimaryKey(autoGenerate = true) var id: Int = 0
 }
 
 @Entity

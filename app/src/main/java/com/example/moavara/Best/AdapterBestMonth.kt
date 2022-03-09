@@ -16,10 +16,10 @@ import com.example.moavara.Search.BookListDataBestWeekend
 import java.util.ArrayList
 
 class AdapterBestMonth(
-    items: ArrayList<BookListDataBestWeekend?>,
+    items: ArrayList<BookListDataBestWeekend>,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var item: ArrayList<BookListDataBestWeekend?> = items
+    var item: ArrayList<BookListDataBestWeekend> = items
     var selected: String? = ""
 
     interface OnItemClickListener {
@@ -43,12 +43,12 @@ class AdapterBestMonth(
 
             val items = item[position]
 
-            if (items!!.sun != null) {
+            if (items.sun != null) {
                 Glide.with(holder.itemView.context)
                     .load(items.sun!!.bookImg)
                     .into(holder.iviewBookImg1)
 
-                holder.tviewDate1.text = items.sun!!.date!!.substring(3)
+                holder.tviewDate1.text = items.sun!!.date.substring(3)
                 isSelectBook(items.sun, holder.llayoutCover1)
                 holder.llayoutNull1.visibility = View.GONE
             } else {
@@ -60,7 +60,7 @@ class AdapterBestMonth(
                     .load(items.mon!!.bookImg)
                     .into(holder.iviewBookImg2)
 
-                holder.tviewDate2.text = items.mon!!.date!!.substring(3)
+                holder.tviewDate2.text = items.mon!!.date.substring(3)
                 isSelectBook(items.mon, holder.llayoutCover2)
                 holder.llayoutNull2.visibility = View.GONE
             } else {
@@ -72,7 +72,7 @@ class AdapterBestMonth(
                     .load(items.tue!!.bookImg)
                     .into(holder.iviewBookImg3)
 
-                holder.tviewDate3.text = items.tue!!.date!!.substring(3)
+                holder.tviewDate3.text = items.tue!!.date.substring(3)
                 isSelectBook(items.tue, holder.llayoutCover3)
                 holder.llayoutNull3.visibility = View.GONE
             } else {
@@ -84,7 +84,7 @@ class AdapterBestMonth(
                     .load(items.wed!!.bookImg)
                     .into(holder.iviewBookImg4)
 
-                holder.tviewDate4.text = items.wed!!.date!!.substring(3)
+                holder.tviewDate4.text = items.wed!!.date.substring(3)
                 isSelectBook(items.wed, holder.llayoutCover4)
                 holder.llayoutNull4.visibility = View.GONE
             } else {
@@ -96,7 +96,7 @@ class AdapterBestMonth(
                     .load(items.thur!!.bookImg)
                     .into(holder.iviewBookImg5)
 
-                holder.tviewDate5.text = items.thur!!.date!!.substring(3)
+                holder.tviewDate5.text = items.thur!!.date.substring(3)
                 isSelectBook(items.thur, holder.llayoutCover5)
                 holder.llayoutNull5.visibility = View.GONE
             } else {
@@ -108,7 +108,7 @@ class AdapterBestMonth(
                     .load(items.fri!!.bookImg)
                     .into(holder.iviewBookImg6)
 
-                holder.tviewDate6.text = items.fri!!.date!!.substring(3)
+                holder.tviewDate6.text = items.fri!!.date.substring(3)
                 isSelectBook(items.fri, holder.llayoutCover6)
                 holder.llayoutNull6.visibility = View.GONE
             } else {
@@ -120,7 +120,7 @@ class AdapterBestMonth(
                     .load(items.sat!!.bookImg)
                     .into(holder.iviewBookImg7)
 
-                holder.tviewDate7.text = items.sat!!.date!!.substring(3)
+                holder.tviewDate7.text = items.sat!!.date.substring(3)
                 isSelectBook(items.sat, holder.llayoutCover7)
                 holder.llayoutNull7.visibility = View.GONE
             } else {
@@ -130,7 +130,7 @@ class AdapterBestMonth(
         }
     }
 
-    fun isSelectBook(items : BookListDataBestToday?, llayout : LinearLayout){
+    private fun isSelectBook(items : BookListDataBestToday?, llayout : LinearLayout){
         if (selected != "" && getSelectedBook() != items!!.bookCode) {
             llayout.visibility = View.VISIBLE
         } else {

@@ -15,6 +15,8 @@ import com.example.moavara.Search.BestType
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.Genre
 import com.example.moavara.Util.TabViewModel
+import com.example.moavara.databinding.FragmentBestTabBinding
+import com.example.moavara.databinding.FragmentPickBinding
 import kotlin.collections.ArrayList
 
 class FragmentBestTab : Fragment() {
@@ -22,14 +24,15 @@ class FragmentBestTab : Fragment() {
     private var tabViewModel: TabViewModel? = null
     var index = 0
 
-    private var adapterType: AdapterType? = null
-    var rviewType: RecyclerView? = null
-    private val typeItems = ArrayList<BestType?>()
+    private lateinit var adapterType: AdapterType
+    private val typeItems = ArrayList<BestType>()
 
-    private var mFragmentBestTabToday: FragmentBestTabToday? = null
-    private var mFragmentBestTabMonth: FragmentBestTabMonth? = null
-    private var mFragmentBestTabWeekend: FragmentBestTabWeekend? = null
-    var llayoutWrap: LinearLayout? = null
+    private var _binding: FragmentBestTabBinding? = null
+    private val binding get() = _binding!!
+
+    private lateinit var mFragmentBestTabToday: FragmentBestTabToday
+    private lateinit var mFragmentBestTabMonth: FragmentBestTabMonth
+    private lateinit var mFragmentBestTabWeekend: FragmentBestTabWeekend
 
     var pos = 0
     var cate = ""
@@ -50,15 +53,14 @@ class FragmentBestTab : Fragment() {
     ): View {
 
         cate = Genre.getGenre(requireContext()).toString()
-        val root = inflater.inflate(R.layout.fragment_best_tab, container, false)
+        _binding = FragmentBestTabBinding.inflate(inflater, container, false)
+        val view = binding.root
 
-        rviewType = root.findViewById(R.id.rviewType)
-        llayoutWrap = root.findViewById(R.id.llayoutWrap)
         adapterType = AdapterType(typeItems)
 
         setLayout()
 
-        return root
+        return view
     }
 
     private fun setLayout(){
@@ -81,17 +83,17 @@ class FragmentBestTab : Fragment() {
             if(type == "Today"){
                 mFragmentBestTabToday = FragmentBestTabToday("Joara")
                 childFragmentManager.commit {
-                    replace(R.id.llayoutWrap, mFragmentBestTabToday!!)
+                    replace(R.id.llayoutWrap, mFragmentBestTabToday)
                 }
             } else if(type == "Weekend"){
                 mFragmentBestTabWeekend = FragmentBestTabWeekend("Joara")
                 childFragmentManager.commit {
-                    replace(R.id.llayoutWrap, mFragmentBestTabWeekend!!)
+                    replace(R.id.llayoutWrap, mFragmentBestTabWeekend)
                 }
             } else if(type == "Month"){
                 mFragmentBestTabMonth = FragmentBestTabMonth("Joara")
                 childFragmentManager.commit {
-                    replace(R.id.llayoutWrap, mFragmentBestTabMonth!!)
+                    replace(R.id.llayoutWrap, mFragmentBestTabMonth)
                 }
             }
 
@@ -101,9 +103,11 @@ class FragmentBestTab : Fragment() {
 
     private fun getType(type : String) {
 
-        rviewType!!.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        rviewType!!.adapter = adapterType
+        with(binding){
+            rviewType.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            rviewType.adapter = adapterType
+        }
 
         for(i in BestRef.typeList().indices){
             typeItems.add(
@@ -115,30 +119,30 @@ class FragmentBestTab : Fragment() {
             adapterType!!.notifyDataSetChanged()
         }
 
-        adapterType!!.setOnItemClickListener(object : AdapterType.OnItemClickListener {
+        adapterType.setOnItemClickListener(object : AdapterType.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
-                val item: BestType? = adapterType!!.getItem(position)
-                adapterType!!.setSelectedBtn(position)
+                val item: BestType? = adapterType.getItem(position)
+                adapterType.setSelectedBtn(position)
                 pos = position
-                adapterType!!.notifyDataSetChanged()
+                adapterType.notifyDataSetChanged()
 
                 when (type) {
                     "Today" -> {
                         mFragmentBestTabToday = FragmentBestTabToday(item!!.type!!)
                         childFragmentManager.commit {
-                            replace(R.id.llayoutWrap, mFragmentBestTabToday!!)
+                            replace(R.id.llayoutWrap, mFragmentBestTabToday)
                         }
                     }
                     "Weekend" -> {
                         mFragmentBestTabWeekend = FragmentBestTabWeekend(item!!.type!!)
                         childFragmentManager.commit {
-                            replace(R.id.llayoutWrap, mFragmentBestTabWeekend!!)
+                            replace(R.id.llayoutWrap, mFragmentBestTabWeekend)
                         }
                     }
                     "Month" -> {
                         mFragmentBestTabMonth = FragmentBestTabMonth(item!!.type!!)
                         childFragmentManager.commit {
-                            replace(R.id.llayoutWrap, mFragmentBestTabMonth!!)
+                            replace(R.id.llayoutWrap, mFragmentBestTabMonth)
                         }
                     }
                 }

@@ -91,7 +91,7 @@ class BottomSheetDialogEvent(
             }
 
             btnRight.setOnClickListener {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getUrl(tabType!!)))
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getUrl(tabType)))
                 startActivity(intent)
             }
         }

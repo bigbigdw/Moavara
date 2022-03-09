@@ -21,9 +21,9 @@ import java.util.ArrayList
 
 class BottomDialogBest(
     private val mContext: Context,
-    private val item: BookListDataBestToday?,
-    private val tabType: String?,
-    private val cate: String?,
+    private val item: BookListDataBestToday,
+    private val tabType: String,
+    private val cate: String,
 ) :
     BottomSheetDialogFragment() {
 
@@ -49,13 +49,24 @@ class BottomDialogBest(
 
         with(binding) {
 
-            tviewTitle.text = item!!.title
+            tviewTitle.text = item.title
             tviewWriter.text = item.writer
-            tviewChapterCnt.text = "총 " + item.info2 + "편"
-            tviewOption1.text = item.info3
-            tviewOption2.text = item.info4
-            tviewOption3.text = item.info5
-            tviewIntro.text = item.info1
+
+            if(tabType == "MrBlue"){
+                tviewInfo1.visibility = View.GONE
+                tviewInfo2.visibility = View.GONE
+                tviewInfo3.visibility = View.GONE
+                tviewInfo4.visibility = View.GONE
+                tviewInfo5.visibility = View.GONE
+            } else if(tabType == "Naver Today"){
+                tviewInfo1.visibility = View.VISIBLE
+                tviewInfo2.visibility = View.VISIBLE
+                tviewInfo3.visibility = View.VISIBLE
+                tviewInfo4.visibility = View.VISIBLE
+                tviewInfo5.visibility = View.GONE
+
+                tviewInfo1.text = item.info1
+            }
 
             Glide.with(mContext)
                 .load(item.bookImg)
@@ -110,23 +121,21 @@ class BottomDialogBest(
 
     private fun ranklist() {
 
-        Log.d("$$$$", DBDate.DayWeek()[0])
-
         val rank = ArrayList<String>()
 
-        BestRef.setBestRefWeekList(tabType!!, cate!!).get().addOnSuccessListener {
+        BestRef.setBestRefWeekList(tabType, cate).get().addOnSuccessListener {
 
             for (i in it.children) {
 
                 val group: BookListDataBestToday? = i.getValue(BookListDataBestToday::class.java)
 
-                if (group!!.title == item!!.title) {
+                if (group!!.title == item.title) {
                     Log.d(
                         "!!!!",
-                        group.title.toString() + " " + group.status.toString() + " " + group.date.toString() + " " + group.number.toString()
+                        group.title + " " + group.status + " " + group.date + " " + group.number.toString()
                     )
 
-                    rank.add(group.number!!.toString())
+                    rank.add(group.number.toString())
 
                     with(binding) {
                         if (DBDate.DayWeek()[0] == group.date) {
@@ -159,25 +168,9 @@ class BottomDialogBest(
                             tviewRank7.text = group.number.toString()
                         }
                     }
-
-
                 }
-
-
-
-
             }
 
-            Log.d("@@@@", rank.toString())
-
         }.addOnFailureListener {}
-
-        val weeklist = dbWeekList.bestDao().getRank(item!!.title!!)
-
-        for (i in weeklist.indices) {
-
-        }
-
-
     }
 }

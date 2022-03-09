@@ -9,23 +9,28 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.example.moavara.R
+import com.example.moavara.databinding.FragmentEventBinding
+import com.example.moavara.databinding.FragmentEventTabBinding
 import com.google.android.material.tabs.TabLayout
 
 class FragmentEvent: Fragment() {
-    private var tabLayout: TabLayout? = null
-    private var viewPager: ViewPager? = null
+
+    private var _binding: FragmentEventBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        val root: View = inflater.inflate(R.layout.fragment_best, container, false)
-        viewPager = root.findViewById(R.id.view_pager)
-        setupViewPager(viewPager)
-        tabLayout = root.findViewById(R.id.tabs)
-        tabLayout!!.setupWithViewPager(viewPager)
+        _binding = FragmentEventBinding.inflate(inflater, container, false)
+        val view = binding.root
 
-        return root
+        with(binding){
+            setupViewPager(viewPager)
+            tabs.setupWithViewPager(viewPager)
+        }
+
+        return view
     }
 
     private fun setupViewPager(viewPager: ViewPager?) {
@@ -42,8 +47,8 @@ class FragmentEvent: Fragment() {
         viewPager!!.adapter = adapter
     }
 
-    class ViewPagerAdapter(manager: FragmentManager?) :
-        FragmentPagerAdapter(manager!!) {
+    class ViewPagerAdapter(manager: FragmentManager) :
+        FragmentPagerAdapter(manager) {
         private val mFragmentList: MutableList<Fragment> = ArrayList()
         private val mFragmentTitleList: MutableList<String> = ArrayList()
         override fun getItem(position: Int): Fragment {
@@ -59,7 +64,7 @@ class FragmentEvent: Fragment() {
             mFragmentTitleList.add(title)
         }
 
-        override fun getPageTitle(position: Int): CharSequence? {
+        override fun getPageTitle(position: Int): CharSequence {
             return mFragmentTitleList[position]
         }
     }

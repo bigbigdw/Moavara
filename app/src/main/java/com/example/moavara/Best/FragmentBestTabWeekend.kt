@@ -168,7 +168,7 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
             override fun onItemClick(v: View?, position: Int) {
                 val item: BookListDataBestToday? = adapterToday!!.getItem(position)
 
-                val mBottomDialogBest = BottomDialogBest(requireContext(), item, tabType, cate)
+                val mBottomDialogBest = BottomDialogBest(requireContext(), item!!, tabType, cate)
                 fragmentManager?.let { mBottomDialogBest.show(it, null) }
             }
         })

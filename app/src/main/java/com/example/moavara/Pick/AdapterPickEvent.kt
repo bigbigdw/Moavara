@@ -1,6 +1,7 @@
 package com.example.moavara.Pick
 
 import android.text.Editable
+import android.text.SpannableStringBuilder
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,13 +11,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moavara.Search.EventData
 import com.example.moavara.databinding.ItemPickEventBinding
-import kotlin.collections.ArrayList
 
 class AdapterPickEvent(items: List<EventData>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var itemsList: ArrayList<EventData> = items as ArrayList<EventData>
     var memo = ""
-
 
     interface OnItemClickListener {
         fun onItemClick(v: View?, position: Int, type: String)
@@ -36,11 +35,11 @@ class AdapterPickEvent(items: List<EventData>) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ViewHolder) {
 
-            val item = this.itemsList!![position]
+            val item = this.itemsList[position]
 
             with(holder.binding){
                 Glide.with(holder.itemView.context)
-                    .load(item!!.imgfile)
+                    .load(item.imgfile)
                     .into(iView)
 
                 tviewTitle.text = item.title
@@ -119,7 +118,8 @@ class AdapterPickEvent(items: List<EventData>) :
                             if(tviewMemo.text == ""){
                                 etviewMemo.hint = "메모를 입력해주세요"
                             } else {
-                                etviewMemo.text = tviewMemo.text as Editable?
+                                val editable: Editable = SpannableStringBuilder(tviewMemo.text)
+                                etviewMemo.text = editable
                             }
 
                             tviewMemo.visibility = View.GONE
@@ -136,6 +136,12 @@ class AdapterPickEvent(items: List<EventData>) :
                     }
                 }
 
+                tviewbtnDel.setOnClickListener {
+                    val pos = adapterPosition
+                    if (pos != RecyclerView.NO_POSITION) {
+                        listener?.onItemClick(it, pos, "Delete")
+                    }
+                }
 
             }
         }

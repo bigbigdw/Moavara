@@ -22,7 +22,7 @@ class AdapterBestToday(items: List<BookListDataBestToday?>?) :
 
     private var listener: OnItemClickListener? = null
 
-    fun setOnItemClickListener(listener: OnItemClickListener?) {
+    fun setOnItemClickListener(listener: OnItemClickListener) {
         this.listener = listener
     }
 

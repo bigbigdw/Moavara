@@ -3,7 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Best/layout/bottom_dialog_best.xml" value="0.1" />
+        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Best/layout/bottom_dialog_best.xml" value="0.33" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Best/layout/bottomdialog_best.xml" value="0.3333333333333333" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Best/layout/fragment_best.xml" value="0.15477293790546803" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Best/layout/fragment_best_month.xml" value="0.12604263206672844" />
@@ -21,11 +21,13 @@
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/ETC/layout/ddd.xml" value="0.13518518518518519" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/ETC/layout/loading.xml" value="0.13518518518518519" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Event/layout/bottom_dialog_event.xml" value="0.1" />
+        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Event/layout/fragment_event.xml" value="0.1" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Event/layout/item_event.xml" value="0.28072916666666664" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Login/layout/activity_login.xml" value="0.23055555555555557" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Main/layout/aacasc.xml" value="0.37135416666666665" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Main/layout/component_main_drawer.xml" value="0.37135416666666665" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Main/layout/component_wrap_main.xml" value="0.37135416666666665" />
+        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Pick/layout/fragment_pick.xml" value="0.10936051899907322" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Pick/layout/fragment_pick_tab.xml" value="0.15477293790546803" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Pick/layout/item_pick_event.xml" value="0.33" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Pick/layout/item_pick_novel.xml" value="0.15462962962962962" />
@@ -57,6 +59,7 @@
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_best_weekend.xml" value="0.1" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_best_weekend_2.xml" value="0.1" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_event.xml" value="0.1648148148148148" />
+        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_event_tab.xml" value="0.1" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_pick.xml" value="0.1" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_search.xml" value="0.2505399568034557" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_test.xml" value="0.15925925925925927" />

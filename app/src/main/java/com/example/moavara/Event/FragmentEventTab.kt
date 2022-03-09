@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moavara.Joara.JoaraEventResult
 import com.example.moavara.Joara.RetrofitJoara
 import com.example.moavara.Search.EventData
-import com.example.moavara.databinding.FragmentEventBinding
+import com.example.moavara.databinding.FragmentEventTabBinding
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
@@ -27,14 +27,14 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
     private val itemsLeft = ArrayList<EventData>()
     private val itemsRight = ArrayList<EventData>()
 
-    private var _binding: FragmentEventBinding? = null
+    private var _binding: FragmentEventTabBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentEventBinding.inflate(inflater, container, false)
+        _binding = FragmentEventTabBinding.inflate(inflater, container, false)
         val view = binding.root
         adapterLeft = AdapterEvent(itemsLeft)
         adapterRight = AdapterEvent(itemsRight)

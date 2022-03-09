@@ -45,8 +45,7 @@ class ActivitySplash : Activity() {
             this.applicationContext,
             DataBaseBestDay::class.java,
             "best-yesterday"
-        )
-            .allowMainThreadQueries().build()
+        ).allowMainThreadQueries().build()
 
         dbWeek =
             Room.databaseBuilder(this.applicationContext, DataBaseBestDay::class.java, "best-week")
@@ -65,20 +64,6 @@ class ActivitySplash : Activity() {
 
         cate = Genre.getGenre(this).toString()
 
-        BestRef.delBestRefWeekCompared("Ridi", cate).removeValue()
-        BestRef.delBestRefWeekCompared("OneStore", cate).removeValue()
-        BestRef.delBestRefWeekCompared("Kakao", cate).removeValue()
-        BestRef.delBestRefWeekCompared("Kakao Stage", cate).removeValue()
-        BestRef.delBestRefWeekCompared("Joara", cate).removeValue()
-        BestRef.delBestRefWeekCompared("Joara Nobless", cate).removeValue()
-        BestRef.delBestRefWeekCompared("Joara Premium", cate).removeValue()
-        BestRef.delBestRefWeekCompared("Naver Today", cate).removeValue()
-        BestRef.delBestRefWeekCompared("Naver Challenge", cate).removeValue()
-        BestRef.delBestRefWeekCompared("Naver", cate).removeValue()
-        BestRef.delBestRefWeekCompared("MrBlue", cate).removeValue()
-
-
-
         Handler(Looper.myLooper()!!).postDelayed(
             {
                 val intent = Intent(this, ActivityGenre::class.java)
@@ -92,20 +77,20 @@ class ActivitySplash : Activity() {
     }
 
     private fun runMining() {
-        getRidiBest("Ridi")
-        getOneStoreBest("OneStore")
-        getKakaoBest("Kakao")
-        getKakaoStageBest("Kakao Stage")
-        getJoaraBest("Joara")
-        getJoaraBestNobless("Joara Nobless")
-        getJoaraBestPremium("Joara Premium")
-        getNaverToday("Naver Today")
-        getNaverChallenge("Naver Challenge")
-        getNaverBest("Naver")
-        getMrBlueBest("MrBlue")
+        getRidiBest()
+        getOneStoreBest()
+        getKakaoBest()
+        getKakaoStageBest()
+        getJoaraBest()
+        getJoaraBestNobless()
+        getJoaraBestPremium()
+        getNaverToday()
+        getNaverChallenge()
+        getNaverBest()
+        getMrBlueBest()
     }
 
-    private fun getMrBlueBest(type : String) {
+    private fun getMrBlueBest() {
 
         val doc: Document =
             Jsoup.connect(Genre.setMrBlueGenre(this)).post()
@@ -128,13 +113,13 @@ class ActivitySplash : Activity() {
             MrBlueRef["date"] = DBDate.DateMMDD()
             MrBlueRef["status"] = ""
 
-            miningValue(MrBlueRef, i, type)
+            miningValue(MrBlueRef, i, "MrBlue")
 
         }
 
     }
 
-    private fun getNaverToday(type : String) {
+    private fun getNaverToday() {
 
         val doc: Document =
             Jsoup.connect(Genre.setNaverTodayGenre(this)).post()
@@ -147,23 +132,23 @@ class ActivitySplash : Activity() {
             NaverRef["subject"] = Naver.select(".tit")[i].text()
             NaverRef["bookImg"] = Naver.select("div img")[i].absUrl("src")
             NaverRef["bookCode"] = Naver.select("a")[i].absUrl("href")
-            NaverRef["info1"] = " "
-            NaverRef["info2"] = Naver[i].select(".num_total").first()!!.text()
-            NaverRef["info3"] = Naver[i].select(".num_total").next().first()!!.text()
-            NaverRef["info4"] = Naver.select(".count")[i].text()
-            NaverRef["info5"] = Naver.select(".score_area")[i].text()
+            NaverRef["info1"] = Naver[i].select(".num_total").first()!!.text()
+            NaverRef["info2"] = Naver[i].select(".num_total").next().first()!!.text()
+            NaverRef["info3"] = Naver.select(".count")[i].text()
+            NaverRef["info4"] = Naver.select(".score_area")[i].text()
+            NaverRef["info5"] = ""
             NaverRef["number"] = i
             NaverRef["numberDiff"] = 0
             NaverRef["date"] = DBDate.DateMMDD()
             NaverRef["status"] = ""
 
-            miningValue(NaverRef, i, type)
+            miningValue(NaverRef, i, "Naver Today")
 
         }
 
     }
 
-    private fun getNaverChallenge(type : String) {
+    private fun getNaverChallenge() {
 
         val doc: Document =
             Jsoup.connect(Genre.setNaverChallengeGenre(this)).post()
@@ -176,23 +161,23 @@ class ActivitySplash : Activity() {
             NaverRef["subject"] = Naver.select(".tit")[i].text()
             NaverRef["bookImg"] = Naver.select("div img")[i].absUrl("src")
             NaverRef["bookCode"] = Naver.select("a")[i].absUrl("href")
-            NaverRef["info1"] = " "
-            NaverRef["info2"] = Naver[i].select(".num_total").first()!!.text()
-            NaverRef["info3"] = Naver[i].select(".num_total").next().first()!!.text()
-            NaverRef["info4"] = Naver.select(".count")[i].text()
-            NaverRef["info5"] = Naver.select(".score_area")[i].text()
+            NaverRef["info1"] = Naver[i].select(".num_total").first()!!.text()
+            NaverRef["info2"] = Naver[i].select(".num_total").next().first()!!.text()
+            NaverRef["info3"] = Naver.select(".count")[i].text()
+            NaverRef["info4"] = Naver.select(".score_area")[i].text()
+            NaverRef["info5"] = ""
             NaverRef["number"] = i
             NaverRef["numberDiff"] = 0
             NaverRef["date"] = DBDate.DateMMDD()
             NaverRef["status"] = ""
 
-            miningValue(NaverRef, i, type)
+            miningValue(NaverRef, i, "Naver Challenge")
 
         }
 
     }
 
-    private fun getNaverBest(type : String) {
+    private fun getNaverBest() {
 
         val doc: Document =
             Jsoup.connect(Genre.setNaverGenre(this)).post()
@@ -205,23 +190,23 @@ class ActivitySplash : Activity() {
             NaverRef["subject"] = Naver.select(".tit")[i].text()
             NaverRef["bookImg"] = Naver.select("div img")[i].absUrl("src")
             NaverRef["bookCode"] = Naver.select("a")[i].absUrl("href")
-            NaverRef["info1"] = " "
-            NaverRef["info2"] = Naver[i].select(".num_total").first()!!.text()
-            NaverRef["info3"] = Naver[i].select(".num_total").next().first()!!.text()
-            NaverRef["info4"] = Naver.select(".count")[i].text()
-            NaverRef["info5"] = Naver.select(".score_area")[i].text()
+            NaverRef["info1"] = Naver[i].select(".num_total").first()!!.text()
+            NaverRef["info2"] = Naver[i].select(".num_total").next().first()!!.text()
+            NaverRef["info3"] = Naver.select(".count")[i].text()
+            NaverRef["info4"] = Naver.select(".score_area")[i].text()
+            NaverRef["info5"] = ""
             NaverRef["number"] = i
             NaverRef["numberDiff"] = 0
             NaverRef["date"] = DBDate.DateMMDD()
             NaverRef["status"] = ""
 
-            miningValue(NaverRef, i, type)
+            miningValue(NaverRef, i, "Naver")
 
         }
 
     }
 
-    private fun getRidiBest(type : String) {
+    private fun getRidiBest() {
 
         val doc: Document =
             Jsoup.connect(Genre.setRidiGenre(this)).post()
@@ -234,23 +219,23 @@ class ActivitySplash : Activity() {
             RidiRef["subject"] = doc.select("div .title_link")[i].text()
             RidiRef["bookImg"] = Ridi.select(".thumbnail_image .thumbnail")[i].absUrl("data-src")
             RidiRef["bookCode"] = Ridi.select("a")[i].absUrl("href")
-            RidiRef["info1"] = " "
-            RidiRef["info2"] = doc.select(".count_num")[i].text()
-            RidiRef["info3"] = doc.select("span .StarRate_ParticipantCount")[i].text()
+            RidiRef["info1"] = doc.select(".count_num")[i].text()
+            RidiRef["info2"] = doc.select("span .StarRate_ParticipantCount")[i].text()
+            RidiRef["info3"] = doc.select("span .StarRate_Score")[i].text()
             RidiRef["info4"] = " "
-            RidiRef["info5"] = doc.select("span .StarRate_Score")[i].text()
+            RidiRef["info5"] = " "
             RidiRef["number"] = i
             RidiRef["numberDiff"] = 0
             RidiRef["date"] = DBDate.DateMMDD()
             RidiRef["status"] = ""
 
-            miningValue(RidiRef, i, type)
+            miningValue(RidiRef, i, "Ridi")
 
         }
 
     }
 
-    private fun getOneStoreBest(type : String) {
+    private fun getOneStoreBest() {
         val OneStoryRef: MutableMap<String?, Any> = HashMap()
 
         val call: Call<OneStoreBookResult?>? = RetrofitOnestore.getBestOneStore(Genre.setOneStoreGenre(this))
@@ -281,7 +266,7 @@ class ActivitySplash : Activity() {
                             OneStoryRef["date"] = DBDate.DateMMDD()
                             OneStoryRef["status"] = ""
 
-                            miningValue(OneStoryRef, i, type)
+                            miningValue(OneStoryRef, i, "OneStore")
 
                         }
                     }
@@ -295,7 +280,7 @@ class ActivitySplash : Activity() {
 
     }
 
-    private fun getKakaoStageBest(type : String) {
+    private fun getKakaoStageBest() {
         val KakaoRef: MutableMap<String?, Any> = HashMap()
 
         val call: Call<List<BestResultKakaoStageNovel>?>? = RetrofitKaKao.getBestKakaoStage("false", "YESTERDAY", Genre.setKakaoStageGenre(this), "72")
@@ -327,7 +312,7 @@ class ActivitySplash : Activity() {
                             KakaoRef["date"] = DBDate.DateMMDD()
                             KakaoRef["status"] = ""
 
-                            miningValue(KakaoRef, i, type)
+                            miningValue(KakaoRef, i, "Kakao Stage")
                         }
                     }
                 }
@@ -340,7 +325,7 @@ class ActivitySplash : Activity() {
 
     }
 
-    private fun getKakaoBest(type : String) {
+    private fun getKakaoBest() {
         val KakaoRef: MutableMap<String?, Any> = HashMap()
 
         val call: Call<BestResultKakao?>? = RetrofitKaKao.getBestKakao("11", "0", "0", "2", "A")
@@ -371,7 +356,7 @@ class ActivitySplash : Activity() {
                             KakaoRef["date"] = DBDate.DateMMDD()
                             KakaoRef["status"] = ""
 
-                            miningValue(KakaoRef, i, type)
+                            miningValue(KakaoRef, i, "Kakao")
 
                         }
                     }
@@ -385,7 +370,7 @@ class ActivitySplash : Activity() {
 
     }
 
-    private fun getJoaraBest(type : String) {
+    private fun getJoaraBest() {
         val JoaraRef: MutableMap<String?, Any> = HashMap()
 
         val call: Call<JoaraBestListResult?>? = RetrofitJoara.getJoaraBookBest("today", "", Genre.setJoaraGenre(this))
@@ -395,28 +380,27 @@ class ActivitySplash : Activity() {
                 call: Call<JoaraBestListResult?>,
                 response: Response<JoaraBestListResult?>
             ) {
-
                 if (response.isSuccessful) {
                     response.body()?.let { it ->
                         val books = it.bookLists
 
                         for (i in books!!.indices) {
 
-                            JoaraRef["writerName"] = books[i].writerName!!
-                            JoaraRef["subject"] = books[i].subject!!
-                            JoaraRef["bookImg"] = books[i].bookImg!!
-                            JoaraRef["bookCode"] = books[i].bookCode!!
-                            JoaraRef["info1"] = books[i].intro!!
-                            JoaraRef["info2"] = books[i].cntChapter!!
-                            JoaraRef["info3"] = books[i].cntPageRead!!
-                            JoaraRef["info4"] = books[i].cntFavorite!!
-                            JoaraRef["info5"] = books[i].cntRecom!!
+                            JoaraRef["writerName"] = books[i].writerName
+                            JoaraRef["subject"] = books[i].subject
+                            JoaraRef["bookImg"] = books[i].bookImg
+                            JoaraRef["bookCode"] = books[i].bookCode
+                            JoaraRef["info1"] = books[i].intro
+                            JoaraRef["info2"] = books[i].cntChapter
+                            JoaraRef["info3"] = books[i].cntPageRead
+                            JoaraRef["info4"] = books[i].cntFavorite
+                            JoaraRef["info5"] = books[i].cntRecom
                             JoaraRef["number"] = i
                             JoaraRef["numberDiff"] = 0
                             JoaraRef["date"] = DBDate.DateMMDD()
                             JoaraRef["status"] = ""
 
-                            miningValue(JoaraRef, i, type)
+                            miningValue(JoaraRef, i, "Joara")
 
                         }
                     }
@@ -430,7 +414,7 @@ class ActivitySplash : Activity() {
 
     }
 
-    private fun getJoaraBestPremium(type : String) {
+    private fun getJoaraBestPremium() {
         val JoaraRef: MutableMap<String?, Any> = HashMap()
 
         val call: Call<JoaraBestListResult?>? = RetrofitJoara.getJoaraBookBest("today", "premium", Genre.setJoaraGenre(this))
@@ -447,21 +431,21 @@ class ActivitySplash : Activity() {
 
                         for (i in books!!.indices) {
 
-                            JoaraRef["writerName"] = books[i].writerName!!
-                            JoaraRef["subject"] = books[i].subject!!
-                            JoaraRef["bookImg"] = books[i].bookImg!!
-                            JoaraRef["bookCode"] = books[i].bookCode!!
-                            JoaraRef["info1"] = books[i].intro!!
-                            JoaraRef["info2"] = books[i].cntChapter!!
-                            JoaraRef["info3"] = books[i].cntPageRead!!
-                            JoaraRef["info4"] = books[i].cntFavorite!!
-                            JoaraRef["info5"] = books[i].cntRecom!!
+                            JoaraRef["writerName"] = books[i].writerName
+                            JoaraRef["subject"] = books[i].subject
+                            JoaraRef["bookImg"] = books[i].bookImg
+                            JoaraRef["bookCode"] = books[i].bookCode
+                            JoaraRef["info1"] = books[i].intro
+                            JoaraRef["info2"] = books[i].cntChapter
+                            JoaraRef["info3"] = books[i].cntPageRead
+                            JoaraRef["info4"] = books[i].cntFavorite
+                            JoaraRef["info5"] = books[i].cntRecom
                             JoaraRef["number"] = i
                             JoaraRef["numberDiff"] = 0
                             JoaraRef["date"] = DBDate.DateMMDD()
                             JoaraRef["status"] = ""
 
-                            miningValue(JoaraRef, i, type)
+                            miningValue(JoaraRef, i, "Joara Premium")
 
                         }
                     }
@@ -475,7 +459,7 @@ class ActivitySplash : Activity() {
 
     }
 
-    private fun getJoaraBestNobless(type : String) {
+    private fun getJoaraBestNobless() {
         val JoaraRef: MutableMap<String?, Any> = HashMap()
 
         val call: Call<JoaraBestListResult?>? = RetrofitJoara.getJoaraBookBest("today", "nobless", Genre.setJoaraGenre(this))
@@ -492,21 +476,21 @@ class ActivitySplash : Activity() {
 
                         for (i in books!!.indices) {
 
-                            JoaraRef["writerName"] = books[i].writerName!!
-                            JoaraRef["subject"] = books[i].subject!!
-                            JoaraRef["bookImg"] = books[i].bookImg!!
-                            JoaraRef["bookCode"] = books[i].bookCode!!
-                            JoaraRef["info1"] = books[i].intro!!
-                            JoaraRef["info2"] = books[i].cntChapter!!
-                            JoaraRef["info3"] = books[i].cntPageRead!!
-                            JoaraRef["info4"] = books[i].cntFavorite!!
-                            JoaraRef["info5"] = books[i].cntRecom!!
+                            JoaraRef["writerName"] = books[i].writerName
+                            JoaraRef["subject"] = books[i].subject
+                            JoaraRef["bookImg"] = books[i].bookImg
+                            JoaraRef["bookCode"] = books[i].bookCode
+                            JoaraRef["info1"] = books[i].intro
+                            JoaraRef["info2"] = books[i].cntChapter
+                            JoaraRef["info3"] = books[i].cntPageRead
+                            JoaraRef["info4"] = books[i].cntFavorite
+                            JoaraRef["info5"] = books[i].cntRecom
                             JoaraRef["number"] = i
                             JoaraRef["numberDiff"] = 0
                             JoaraRef["date"] = DBDate.DateMMDD()
                             JoaraRef["status"] = ""
 
-                            miningValue(JoaraRef, i, type)
+                            miningValue(JoaraRef, i, "Joara Nobless")
 
                         }
                     }
@@ -521,11 +505,6 @@ class ActivitySplash : Activity() {
     }
 
     private fun miningValue(ref: MutableMap<String?, Any>, num : Int, type: String){
-
-//        BestRef.delBestRefWeekList(type, Genre).removeValue()
-
-        //Week List
-//        BestRef.setBestRefWeekList(type, num, Genre).setValue(BestRef.setBookListDataBestToday(ref))
 
         //Today
         BestRef.setBestRefToday(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))

@@ -9,26 +9,27 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.example.moavara.Event.FragmentEventTab
-import com.example.moavara.R
-import com.google.android.material.tabs.TabLayout
+import com.example.moavara.databinding.FragmentPickBinding
 
 class FragmentPick : Fragment() {
-    private var tabLayout: TabLayout? = null
-    private var viewPager: ViewPager? = null
+    private var _binding: FragmentPickBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        val root: View = inflater.inflate(R.layout.fragment_pick, container, false)
-        viewPager = root.findViewById(R.id.view_pager)
-        setupViewPager(viewPager)
-        tabLayout = root.findViewById(R.id.post_tab)
-        tabLayout!!.setupWithViewPager(viewPager)
+        _binding = FragmentPickBinding.inflate(inflater, container, false)
+        val view = binding.root
+
+        with(binding){
+            setupViewPager(viewPager)
+            tabs.setupWithViewPager(viewPager)
+        }
 
         //https://onestory.co.kr/api/main/PN83003001/card 0 cardList datasetProp url
 
-        return root
+        return view
     }
 
     private fun setupViewPager(viewPager: ViewPager?) {

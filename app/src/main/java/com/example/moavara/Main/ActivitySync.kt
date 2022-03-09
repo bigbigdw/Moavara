@@ -18,8 +18,8 @@ import java.util.HashMap
 
 class ActivitySync : Activity() {
 
-    private lateinit var dbWeek: DataBaseBestDay
-    private lateinit var dbWeekList: DataBaseBestDay
+//    private lateinit var dbWeek: DataBaseBestDay
+//    private lateinit var dbWeekList: DataBaseBestDay
     private lateinit var dbYesterday: DataBaseBestDay
     var cate = "ALL"
     var status = ""
@@ -36,16 +36,15 @@ class ActivitySync : Activity() {
             this.applicationContext,
             DataBaseBestDay::class.java,
             "best-yesterday"
-        )
-            .allowMainThreadQueries().build()
+        ).allowMainThreadQueries().build()
 
-        dbWeek =
-            Room.databaseBuilder(this.applicationContext, DataBaseBestDay::class.java, "best-week")
-                .allowMainThreadQueries().build()
-
-        dbWeekList =
-            Room.databaseBuilder(this.applicationContext, DataBaseBestDay::class.java, "week-list")
-                .allowMainThreadQueries().build()
+//        dbWeek =
+//            Room.databaseBuilder(this.applicationContext, DataBaseBestDay::class.java, "best-week")
+//                .allowMainThreadQueries().build()
+//
+//        dbWeekList =
+//            Room.databaseBuilder(this.applicationContext, DataBaseBestDay::class.java, "week-list")
+//                .allowMainThreadQueries().build()
 
         setRoomBest("Joara")
         setRoomBest("Joara Nobless")
@@ -58,6 +57,7 @@ class ActivitySync : Activity() {
         setRoomBest("Ridi")
         setRoomBest("OneStore")
         setRoomBest("MrBlue")
+
         tview1 = findViewById(R.id.tview1)
         tview2 = findViewById(R.id.tview2)
 
@@ -118,24 +118,24 @@ class ActivitySync : Activity() {
 
                 if (calculateNum(group!!.number, group.title, type) != 0) {
 
-                    ref["writerName"] = group.writer!!
-                    ref["subject"] = group.title!!
-                    ref["bookImg"] = group.bookImg!!
-                    ref["bookCode"] = group.bookCode!!
-                    ref["info1"] = group.info1!!
-                    ref["info2"] = group.info2!!
-                    ref["info3"] = group.info3!!
-                    ref["info4"] = group.info4!!
-                    ref["info5"] = group.info5!!
-                    ref["number"] = group.number!!
+                    ref["writerName"] = group.writer
+                    ref["subject"] = group.title
+                    ref["bookImg"] = group.bookImg
+                    ref["bookCode"] = group.bookCode
+                    ref["info1"] = group.info1
+                    ref["info2"] = group.info2
+                    ref["info3"] = group.info3
+                    ref["info4"] = group.info4
+                    ref["info5"] = group.info5
+                    ref["number"] = group.number
                     ref["numberDiff"] = calculateNum(group.number, group.title, type)
                     ref["date"] = DBDate.DateMMDD()
                     ref["type"] = type
                     ref["status"] = status
 
-                    dbWeek.bestDao().insert(BestRef.setDataBestDay(ref))
-                    BestRef.setBestRefWeekCompared(type, num, cate)
-                        .setValue(BestRef.setBookListDataBestToday(ref))
+//                    dbWeek.bestDao().insert(BestRef.setDataBestDay(ref))
+//                    BestRef.setBestRefWeekCompared(type, num, cate)
+//                        .setValue(BestRef.setBookListDataBestToday(ref))
                 }
                 num += 1
             }
@@ -149,22 +149,24 @@ class ActivitySync : Activity() {
                 val group: BookListDataBestToday? = i.getValue(BookListDataBestToday::class.java)
                 val ref: MutableMap<String?, Any> = HashMap()
 
-                ref["writerName"] = group!!.writer!!
-                ref["subject"] = group.title!!
-                ref["bookImg"] = group.bookImg!!
-                ref["bookCode"] = group.bookCode!!
-                ref["info1"] = group.info1!!
-                ref["info2"] = group.info2!!
-                ref["info3"] = group.info3!!
-                ref["info4"] = group.info4!!
-                ref["info5"] = group.info5!!
-                ref["number"] = group.number
-                ref["numberDiff"] = group.numberDiff
-                ref["date"] = group.date!!
-                ref["type"] = type
-                ref["status"] = status
+                if (group != null) {
+                    ref["writerName"] = group.writer
+                    ref["subject"] = group.title
+                    ref["bookImg"] = group.bookImg
+                    ref["bookCode"] = group.bookCode
+                    ref["info1"] = group.info1
+                    ref["info2"] = group.info2
+                    ref["info3"] = group.info3
+                    ref["info4"] = group.info4
+                    ref["info5"] = group.info5
+                    ref["number"] = group.number
+                    ref["numberDiff"] = group.numberDiff
+                    ref["date"] = group.date
+                    ref["type"] = type
+                    ref["status"] = status
+                }
 
-                dbWeekList.bestDao().insert(BestRef.setDataBestDay(ref))
+//                dbWeekList.bestDao().insert(BestRef.setDataBestDay(ref))
 
                 weekNum += 1
             }

@@ -9,8 +9,14 @@ interface DaoPickEvent {
     @Query("SELECT * FROM DataEvent")
     fun getAll(): List<DataEvent>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(user: DataEvent?)
+    @Query("UPDATE DataEvent SET memo = :memo WHERE link = :link")
+    fun updateItem(memo: String, link: String)
+
+    @Query("DELETE FROM DataEvent WHERE link = :link")
+    fun deleteItem(link: String)
+
+    @Insert
+    fun insert(user: DataEvent)
 
     @Delete
     fun delete(user: DataEvent)
