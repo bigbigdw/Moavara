@@ -21,27 +21,23 @@ class KakaoBookResult {
 class KakaoBookItem {
     @SerializedName("author")
     @Expose
-    var author: String? = null
+    var author: String = ""
 
     @SerializedName("image_url")
     @Expose
-    var image_url: String? = null
+    var image_url: String = ""
 
     @SerializedName("publisher_name")
     @Expose
-    var publisher_name: String? = null
+    var publisher_name: String = ""
 
     @SerializedName("sub_category")
     @Expose
-    var sub_category: String? = null
+    var sub_category: String = ""
 
     @SerializedName("title")
     @Expose
-    var title: String? = null
-}
-
-class BestResultKakaoStage {
-    val list: List<BestResultKakaoStageNovel>? = null
+    var title: String = ""
 }
 
 class BestResultKakaoStageNovel {
@@ -53,11 +49,11 @@ class BestResultKakaoStageNovel {
 class KakaoBestStageResult {
     @SerializedName("title")
     @Expose
-    var title: String? = null
+    var title: String = ""
 
     @SerializedName("stageSeriesNumber")
     @Expose
-    var stageSeriesNumber: String? = null
+    var stageSeriesNumber: String = ""
 
     @SerializedName("nickname")
     @Expose
@@ -65,7 +61,7 @@ class KakaoBestStageResult {
 
     @SerializedName("synopsis")
     @Expose
-    var synopsis: String? = null
+    var synopsis: String = ""
 
     @SerializedName("thumbnail")
     @Expose
@@ -73,27 +69,27 @@ class KakaoBestStageResult {
 
     @SerializedName("publishedEpisodeCount")
     @Expose
-    var publishedEpisodeCount: String? = null
+    var publishedEpisodeCount: String = ""
 
     @SerializedName("viewCount")
     @Expose
-    var viewCount: String? = null
+    var viewCount: String = ""
 
     @SerializedName("visitorCount")
     @Expose
-    var visitorCount: String? = null
+    var visitorCount: String = ""
 }
 
 class KakaoBestStageThumbnailResult {
     @SerializedName("url")
     @Expose
-    var url: String? = null
+    var url: String = ""
 }
 
 class KakaoBestStageNickNameResult {
     @SerializedName("name")
     @Expose
-    var name: String? = null
+    var name: String = ""
 }
 
 //베스트 결과
@@ -106,37 +102,37 @@ class BestResultKakao {
 class KakaoBestBookResult {
     @SerializedName("author")
     @Expose
-    var author: String? = null
+    var author: String = ""
 
     @SerializedName("description")
     @Expose
-    var description: String? = null
+    var description: String = ""
 
     @SerializedName("title")
     @Expose
-    var title: String? = null
+    var title: String = ""
 
     @SerializedName("like_count")
     @Expose
-    var like_count: String? = null
+    var like_count: String = ""
 
     @SerializedName("rating")
     @Expose
-    var rating: String? = null
+    var rating: String = ""
 
     @SerializedName("series_id")
     @Expose
-    var series_id: String? = null
+    var series_id: String = ""
 
     @SerializedName("read_count")
     @Expose
-    var read_count: String? = null
+    var read_count: String = ""
 
-    @SerializedName("promotion_rate")
+    @SerializedName("caption")
     @Expose
-    var promotion_rate: String? = null
+    var caption: String = ""
 
     @SerializedName("image")
     @Expose
-    var image: String? = null
+    var image: String = ""
 }

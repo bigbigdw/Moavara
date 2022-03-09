@@ -23,7 +23,6 @@ import com.example.moavara.R
 import com.example.moavara.Search.EventData
 import com.example.moavara.Util.Genre
 import com.example.moavara.databinding.BottomDialogEventBinding
-import com.example.moavara.databinding.FragmentPickTabBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -215,12 +214,12 @@ class BottomSheetDialogEvent(
                         response.body()?.let { it ->
                             val content = it.event!!.content
 
-                            title = it.event.title!!
+                            title = it.event.title
 
 
                             binding.wView.loadDataWithBaseURL(
                                 null,
-                                content!!.replace("http", "https"),
+                                content.replace("http", "https"),
                                 "text/html; charset=utf-8",
                                 "base64",
                                 null
@@ -252,11 +251,11 @@ class BottomSheetDialogEvent(
                         response.body()?.let { it ->
                             val content = it.notice!!.content
 
-                            title = it.notice.title!!
+                            title = it.notice.title
 
                             binding.wView.loadDataWithBaseURL(
                                 null,
-                                content!!.replace("<br />", ""),
+                                content.replace("<br />", ""),
                                 "text/html; charset=utf-8",
                                 "base64",
                                 null

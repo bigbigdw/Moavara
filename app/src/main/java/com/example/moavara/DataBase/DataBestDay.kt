@@ -2,6 +2,7 @@ package com.example.moavara.DataBase
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.moavara.Search.BookListDataBestToday
 
 @Entity
 data class DataEvent (
@@ -10,7 +11,7 @@ data class DataEvent (
     var title: String = "",
     var genre: String = "",
     var type: String = "",
-    var memo: String = "",
+    var memo: String = ""
 ){
     @PrimaryKey(autoGenerate = true) var id: Int = 0
 }

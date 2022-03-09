@@ -18,7 +18,7 @@ class BookListData(
     var categoryKoName: String?
 )
 
-class BookListDataBestToday(
+data class BookListDataBestToday(
     var writer: String = "",
     var title: String = "",
     var bookImg: String = "",

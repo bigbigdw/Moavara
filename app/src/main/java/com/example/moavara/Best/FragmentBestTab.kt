@@ -4,19 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.moavara.R
 import com.example.moavara.Search.BestType
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.Genre
 import com.example.moavara.Util.TabViewModel
 import com.example.moavara.databinding.FragmentBestTabBinding
-import com.example.moavara.databinding.FragmentPickBinding
 import kotlin.collections.ArrayList
 
 class FragmentBestTab : Fragment() {
@@ -33,6 +30,7 @@ class FragmentBestTab : Fragment() {
     private lateinit var mFragmentBestTabToday: FragmentBestTabToday
     private lateinit var mFragmentBestTabMonth: FragmentBestTabMonth
     private lateinit var mFragmentBestTabWeekend: FragmentBestTabWeekend
+
 
     var pos = 0
     var cate = ""

@@ -1,6 +1,5 @@
 package com.example.moavara.Pick
 
-import android.os.AsyncTask
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,17 +8,17 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
-import com.example.moavara.DataBase.DataEvent
 import com.example.moavara.DataBase.DataPickEvent
 import com.example.moavara.Event.BottomSheetDialogEvent
 import com.example.moavara.Search.EventData
+import com.example.moavara.Util.Genre
 import com.example.moavara.databinding.FragmentPickTabBinding
 
 
-class FragmentPickTabEvent : Fragment() {
+class FragmentPickTab(val pickType : String? = null) : Fragment() {
 
     private lateinit var adapter: AdapterPickEvent
-
+    private var cate = ""
     private val items = ArrayList<EventData>()
     private lateinit var dbPickEvent: DataPickEvent
 
@@ -35,8 +34,10 @@ class FragmentPickTabEvent : Fragment() {
         _binding = FragmentPickTabBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        cate = Genre.getGenre(requireContext()).toString()
+
         dbPickEvent =
-            Room.databaseBuilder(requireContext(), DataPickEvent::class.java, "pick-event")
+            Room.databaseBuilder(requireContext(), DataPickEvent::class.java, pickType!!)
                 .allowMainThreadQueries().build()
 
         adapter = AdapterPickEvent(items)
@@ -55,6 +56,7 @@ class FragmentPickTabEvent : Fragment() {
         val eventlist = dbPickEvent.eventDao().getAll()
 
         for(i in eventlist.indices){
+
             items.add(
                 EventData(
                     eventlist[i].link,
@@ -62,7 +64,7 @@ class FragmentPickTabEvent : Fragment() {
                     eventlist[i].title,
                     eventlist[i].genre,
                     eventlist[i].type,
-                    eventlist[i].memo,
+                    eventlist[i].memo
                 )
             )
             adapter.notifyDataSetChanged()
@@ -73,13 +75,21 @@ class FragmentPickTabEvent : Fragment() {
                 val item: EventData = adapter.getItem(position)
 
                 if(type == "Img"){
-                    if(item.type == "Joara" && !item.link.contains("joaralink://event?event_id=")){
-                        Toast.makeText(requireContext(), "이벤트 페이지가 아닙니다.", Toast.LENGTH_SHORT).show()
+
+                    if(pickType == "pick-novel"){
+//                        val mBottomDialogBest = BottomDialogBest(requireContext(), item.item!!, item.type, cate)
+//                        fragmentManager?.let { mBottomDialogBest.show(it, null) }
                     } else {
-                        val mBottomSheetDialogEvent =
-                            BottomSheetDialogEvent(requireContext(), item, item.type)
-                        fragmentManager?.let { mBottomSheetDialogEvent.show(it, null) }
+                        if(item.type == "Joara" && !item.link.contains("joaralink://event?event_id=")){
+                            Toast.makeText(requireContext(), "이벤트 페이지가 아닙니다.", Toast.LENGTH_SHORT).show()
+                        } else {
+                            val mBottomSheetDialogEvent =
+                                BottomSheetDialogEvent(requireContext(), item, item.type)
+                            fragmentManager?.let { mBottomSheetDialogEvent.show(it, null) }
+                        }
                     }
+
+
                 } else if(type == "Confirm"){
 
                     val data = EventData(

@@ -10,21 +10,32 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
+import androidx.room.Room
+import com.example.moavara.DataBase.DataBaseBestDay
+import com.example.moavara.DataBase.DataBestDay
 import com.example.moavara.R
+import com.example.moavara.Search.BookListDataBestToday
+import com.example.moavara.Util.BestRef
+import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.DialogText
+import com.example.moavara.Util.Genre
 import com.google.android.material.navigation.NavigationView
+import java.util.HashMap
 
 
 class ActivityMain : AppCompatActivity() {
     var navController: NavController? = null
-    private var mContext: Context? = null
-    private var dialogText: DialogText? = null
+    private lateinit var dbWeek: DataBaseBestDay
+    private lateinit var dbWeekList: DataBaseBestDay
+    private lateinit var dbYesterday: DataBaseBestDay
+
+    var cate = "ALL"
+    var status = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        mContext = this
+        cate = Genre.getGenre(this).toString()
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -36,30 +47,167 @@ class ActivityMain : AppCompatActivity() {
 
     private fun setLayout() {
 
-        if (getSharedPreferences("LOGIN", MODE_PRIVATE).getString("TOKEN", "") != "") {
-
-            val btnLeftListener = View.OnClickListener {
-                dialogText!!.dismiss()
-            }
-            val btnRightListener = View.OnClickListener { dialogText!!.dismiss() }
-
-            dialogText = DialogText(
-                this,
-                btnLeftListener,
-                btnRightListener,
-                "안녕하세요 회원님!\n" +
-                        "회원님의 원활한 앱 사용을 위해\n" +
-                        "최초 로그인 시 안내를 드리고 있습니다.\n" +
-                        "해당 안내는 왼쪽 햄버거 버튼을 누르신 후\n" +
-                        "메뉴에 있는 앱 가이드 버튼을 누르시면\n" +
-                        "다시 만날 수 있습니다!"
-            )
-            dialogText!!.show()
-
-        }
-
         val navView = findViewById<BottomNavigationView>(R.id.nav_bottom)
         NavigationUI.setupWithNavController(navView, navController!!)
+
+        dbWeek =
+            Room.databaseBuilder(this.applicationContext, DataBaseBestDay::class.java, "best-week")
+                .allowMainThreadQueries().build()
+
+        dbWeekList =
+            Room.databaseBuilder(this.applicationContext, DataBaseBestDay::class.java, "week-list")
+                .allowMainThreadQueries().build()
+
+        dbYesterday = Room.databaseBuilder(
+            this.applicationContext,
+            DataBaseBestDay::class.java,
+            "best-yesterday"
+        ).allowMainThreadQueries().build()
+
+        setRoomBest("Joara")
+        setRoomBest("Joara Nobless")
+        setRoomBest("Joara Premium")
+        setRoomBest("Naver")
+        setRoomBest("Naver Today")
+        setRoomBest("Naver Challenge")
+        setRoomBest("Kakao Stage")
+        setRoomBest("Kakao")
+        setRoomBest("Ridi")
+        setRoomBest("OneStore")
+        setRoomBest("MrBlue")
+    }
+
+    private fun setRoomBest(type: String) {
+
+        val yesterdayRef = mRootRef.child("best").child(type).child(cate).child("today").child(
+            DBDate.Yesterday()
+        )
+
+        yesterdayRef.get().addOnSuccessListener {
+
+            for (i in it.children) {
+                val group: BookListDataBestToday? = i.getValue(BookListDataBestToday::class.java)
+
+                dbYesterday.bestDao().insert(
+                    DataBestDay(
+                        group!!.writer,
+                        group.title,
+                        group.bookImg,
+                        group.bookCode,
+                        group.info1,
+                        group.info2,
+                        group.info3,
+                        group.info4,
+                        group.info5,
+                        group.number,
+                        0,
+                        group.date,
+                        type
+                    )
+                )
+            }
+        }.addOnFailureListener {}
+
+        var num = 1
+
+        BestRef.getBestRefToday(type, cate).get().addOnSuccessListener {
+
+            for (i in it.children) {
+                val group: BookListDataBestToday? = i.getValue(BookListDataBestToday::class.java)
+                val ref: MutableMap<String?, Any> = HashMap()
+
+                if (calculateNum(group!!.number, group.title, type) != 0) {
+
+                    ref["writerName"] = group.writer
+                    ref["subject"] = group.title
+                    ref["bookImg"] = group.bookImg
+                    ref["bookCode"] = group.bookCode
+                    ref["info1"] = group.info1
+                    ref["info2"] = group.info2
+                    ref["info3"] = group.info3
+                    ref["info4"] = group.info4
+                    ref["info5"] = group.info5
+                    ref["number"] = group.number
+                    ref["numberDiff"] = calculateNum(group.number, group.title, type)
+                    ref["date"] = DBDate.DateMMDD()
+                    ref["type"] = type
+                    ref["status"] = status
+
+//                    dbWeek.bestDao().insert(BestRef.setDataBestDay(ref))
+//                    BestRef.setBestRefWeekCompared(type, num, cate)
+//                        .setValue(BestRef.setBookListDataBestToday(ref))
+                }
+                num += 1
+            }
+        }.addOnFailureListener {}
+
+        var weekNum = 0
+
+        BestRef.setBestRefWeekList(type, cate).get().addOnSuccessListener {
+
+            for (i in it.children) {
+                val group: BookListDataBestToday? = i.getValue(BookListDataBestToday::class.java)
+                val ref: MutableMap<String?, Any> = HashMap()
+
+                if (group != null) {
+                    ref["writerName"] = group.writer
+                    ref["subject"] = group.title
+                    ref["bookImg"] = group.bookImg
+                    ref["bookCode"] = group.bookCode
+                    ref["info1"] = group.info1
+                    ref["info2"] = group.info2
+                    ref["info3"] = group.info3
+                    ref["info4"] = group.info4
+                    ref["info5"] = group.info5
+                    ref["number"] = group.number
+                    ref["numberDiff"] = group.numberDiff
+                    ref["date"] = group.date
+                    ref["type"] = type
+                    ref["status"] = status
+                }
+
+//                dbWeekList.bestDao().insert(BestRef.setDataBestDay(ref))
+
+                weekNum += 1
+            }
+
+        }.addOnFailureListener {}
+
+
+    }
+
+    private fun calculateNum(num: Int?, title: String?, tabType: String): Int {
+
+        val yesterdayNum = dbYesterday.bestDao().findName(tabType, title!!)
+
+        if (yesterdayNum == 0) {
+            status = "NEW"
+            return 0
+        } else {
+            return when {
+                num!! > yesterdayNum -> {
+                    status = "DOWN"
+                    num - yesterdayNum
+                }
+                num < yesterdayNum -> {
+                    status = "UP"
+                    num - yesterdayNum
+                }
+                num == yesterdayNum -> {
+                    status = "SAME"
+                    num - yesterdayNum
+                }
+                else -> {
+                    status = "SAME"
+                    -1
+                }
+            }
+        }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
     }
 
 }

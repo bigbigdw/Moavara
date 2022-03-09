@@ -19,31 +19,31 @@ class OneStoreBookResultParam {
 class OnestoreBookItem {
     @SerializedName("prodId")
     @Expose
-    var prodId: String? = null
+    var prodId: String = ""
 
     @SerializedName("prodNm")
     @Expose
-    var prodNm: String? = null
+    var prodNm: String = ""
 
     @SerializedName("artistNm")
     @Expose
-    var artistNm: String? = null
+    var artistNm: String = ""
 
     @SerializedName("totalCount")
     @Expose
-    var totalCount: String? = null
+    var totalCount: String = ""
 
     @SerializedName("avgScore")
     @Expose
-    var avgScore: String? = null
+    var avgScore: String = ""
 
     @SerializedName("commentCount")
     @Expose
-    var commentCount: String? = null
+    var commentCount: String = ""
 
     @SerializedName("thumbnailImageUrl")
     @Expose
-    var thumbnailImageUrl: String? = null
+    var thumbnailImageUrl: String = ""
 }
 
 //

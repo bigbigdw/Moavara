@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
-import com.example.moavara.Event.FragmentEventTab
 import com.example.moavara.databinding.FragmentPickBinding
 
 class FragmentPick : Fragment() {
@@ -27,8 +26,6 @@ class FragmentPick : Fragment() {
             tabs.setupWithViewPager(viewPager)
         }
 
-        //https://onestory.co.kr/api/main/PN83003001/card 0 cardList datasetProp url
-
         return view
     }
 
@@ -37,8 +34,8 @@ class FragmentPick : Fragment() {
             childFragmentManager
         )
 
-        adapter.addFragment(FragmentEventTab("Joara"), "소설")
-        adapter.addFragment(FragmentPickTabEvent(), "이벤트")
+        adapter.addFragment(FragmentPickTab("pick-novel"), "소설")
+        adapter.addFragment(FragmentPickTab("pick-event"), "이벤트")
         viewPager!!.adapter = adapter
     }
 

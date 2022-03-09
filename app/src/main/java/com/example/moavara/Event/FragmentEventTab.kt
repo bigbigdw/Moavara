@@ -122,7 +122,7 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
                                         "",
                                         "",
                                         "",
-                                        "Joara",
+                                        "Joara"
                                     )
                                 )
                             } else {
@@ -242,7 +242,6 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
             val imgfile = doc.select(".image_link img")[i].absUrl("src")
             val link = doc.select(".event_title a")[i].absUrl("href")
             val title = doc.select(".event_title a")[i].text()
-            val startDate = ridiKeyword[i].select(".contents_descript").first()!!.text()
 
             requireActivity().runOnUiThread {
                 if (i % 2 != 1) {
@@ -251,7 +250,7 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
                             link,
                             imgfile,
                             title,
-                            startDate,
+                            "",
                             "",
                             "Ridi"
                         )
@@ -263,7 +262,7 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
                             link,
                             imgfile,
                             title,
-                            startDate,
+                            "",
                             "",
                             "Ridi"
                         )
@@ -287,20 +286,24 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
                 if (i % 2 != 1) {
                     itemsLeft.add(
                         EventData(
-                            "idx",
+                            "",
                             imgfile,
-                            "is_banner_cnt",
-                            "joaralink"
+                            "",
+                            "",
+                            "",
+                            ""
                         )
                     )
                     adapterLeft.notifyDataSetChanged()
                 } else {
                     itemsRight.add(
                         EventData(
-                            "idx",
+                            "",
                             imgfile,
-                            "is_banner_cnt",
-                            "joaralink"
+                            "",
+                            "",
+                            "",
+                            ""
                         )
                     )
                     adapterRight.notifyDataSetChanged()

@@ -8,9 +8,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.DataBaseBestDay
+import com.example.moavara.DataBase.DataEvent
+import com.example.moavara.DataBase.DataPickEvent
 import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Util.BestRef
@@ -28,6 +31,7 @@ class BottomDialogBest(
     BottomSheetDialogFragment() {
 
     private lateinit var dbWeekList: DataBaseBestDay
+    private lateinit var dbEvent: DataPickEvent
 
     private var _binding: BottomDialogBestBinding? = null
     private val binding get() = _binding!!
@@ -39,6 +43,9 @@ class BottomDialogBest(
     ): View {
         _binding = BottomDialogBestBinding.inflate(inflater, container, false)
         val view = binding.root
+
+        dbEvent = Room.databaseBuilder(requireContext(), DataPickEvent::class.java, "pick-novel")
+            .allowMainThreadQueries().build()
 
         dbWeekList = Room.databaseBuilder(
             requireContext().applicationContext,
@@ -52,13 +59,13 @@ class BottomDialogBest(
             tviewTitle.text = item.title
             tviewWriter.text = item.writer
 
-            if(tabType == "MrBlue"){
+            if (tabType == "MrBlue") {
                 tviewInfo1.visibility = View.GONE
                 tviewInfo2.visibility = View.GONE
                 tviewInfo3.visibility = View.GONE
                 tviewInfo4.visibility = View.GONE
                 tviewInfo5.visibility = View.GONE
-            } else if(tabType == "Naver Today"){
+            } else if (tabType == "Kakao Stage" || tabType == "Naver Today" || tabType == "Naver Challenge" || tabType == "Naver") {
                 tviewInfo1.visibility = View.VISIBLE
                 tviewInfo2.visibility = View.VISIBLE
                 tviewInfo3.visibility = View.VISIBLE
@@ -66,6 +73,31 @@ class BottomDialogBest(
                 tviewInfo5.visibility = View.GONE
 
                 tviewInfo1.text = item.info1
+                tviewInfo2.text = item.info2
+                tviewInfo3.text = item.info3
+                tviewInfo4.text = item.info4
+            } else if (tabType == "Ridi" || tabType == "OneStore") {
+                tviewInfo1.visibility = View.VISIBLE
+                tviewInfo2.visibility = View.VISIBLE
+                tviewInfo3.visibility = View.VISIBLE
+                tviewInfo4.visibility = View.GONE
+                tviewInfo5.visibility = View.GONE
+
+                tviewInfo1.text = item.info1
+                tviewInfo2.text = item.info2
+                tviewInfo3.text = item.info3
+            } else if (tabType == "Kakao" || tabType == "Joara" || tabType == "Joara Premium" || tabType == "Joara Nobless") {
+                tviewInfo1.visibility = View.VISIBLE
+                tviewInfo2.visibility = View.VISIBLE
+                tviewInfo3.visibility = View.VISIBLE
+                tviewInfo4.visibility = View.VISIBLE
+                tviewInfo5.visibility = View.VISIBLE
+
+                tviewInfo1.text = item.info1
+                tviewInfo2.text = item.info2
+                tviewInfo3.text = item.info3
+                tviewInfo4.text = item.info4
+                tviewInfo5.text = item.info5
             }
 
             Glide.with(mContext)
@@ -107,14 +139,52 @@ class BottomDialogBest(
 
             ranklist()
 
-            llayoutBtn.setOnClickListener {
-                val url = "https://www.joara.com/book/" + item.bookCode
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            llayoutBtnLeft.setOnClickListener {
+                dbEvent.eventDao().insert(
+                    DataEvent(
+                        item.bookCode,
+                        item.bookImg,
+                        item.title,
+                        cate,
+                        tabType,
+                        ""
+                    )
+                )
+                Toast.makeText(requireContext(), "Pick 성공!", Toast.LENGTH_SHORT).show()
+                dismiss()
+            }
+
+            llayoutBtnRight.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getUrl()))
                 startActivity(intent)
             }
         }
 
         return view
+    }
+
+    private fun getUrl(): String {
+
+        return if (tabType == "MrBlue") {
+            "https://www.mrblue.com/novel/" + item.bookCode
+        } else if (tabType == "Naver Today") {
+            item.bookCode
+        } else if (tabType == "Naver Challenge") {
+            item.bookCode
+        } else if (tabType == "Naver") {
+            item.bookCode
+        } else if (tabType == "Kakao Stage") {
+            "https://pagestage.kakao.com/novels/" + item.bookCode
+        } else if (tabType == "Kakao") {
+            "https://page.kakao.com/home?seriesId=" + item.bookCode
+        } else if (tabType == "OneStore") {
+            "https://onestory.co.kr/detail/" + item.bookCode
+        } else if (tabType == "Ridi") {
+            item.bookCode
+        } else if (tabType == "Joara" || tabType == "Joara Premium" || tabType == "Joara Nobless") {
+            "https://www.joara.com/book/" + item.bookCode
+        } else ""
+
     }
 
     override fun getTheme() = R.style.CustomBottomSheetDialogTheme
