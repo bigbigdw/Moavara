@@ -26,6 +26,12 @@ interface BestDao {
     @Query("DELETE FROM DataBestDay")
     fun initAll()
 
+    @Query("UPDATE DataBestDay SET memo = :memo WHERE bookCode = :bookCode")
+    fun updateItem(memo: String, bookCode: String)
+
+    @Query("DELETE FROM DataBestDay WHERE bookCode = :bookCode")
+    fun deleteItem(bookCode: String)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(user: DataBestDay)
 

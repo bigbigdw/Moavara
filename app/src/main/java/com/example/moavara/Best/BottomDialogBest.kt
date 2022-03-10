@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.DataBaseBestDay
+import com.example.moavara.DataBase.DataBestDay
 import com.example.moavara.DataBase.DataEvent
 import com.example.moavara.DataBase.DataPickEvent
 import com.example.moavara.R
@@ -31,7 +32,7 @@ class BottomDialogBest(
     BottomSheetDialogFragment() {
 
     private lateinit var dbWeekList: DataBaseBestDay
-    private lateinit var dbEvent: DataPickEvent
+    private lateinit var dbEvent: DataBaseBestDay
 
     private var _binding: BottomDialogBestBinding? = null
     private val binding get() = _binding!!
@@ -44,7 +45,7 @@ class BottomDialogBest(
         _binding = BottomDialogBestBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        dbEvent = Room.databaseBuilder(requireContext(), DataPickEvent::class.java, "pick-novel")
+        dbEvent = Room.databaseBuilder(requireContext(), DataBaseBestDay::class.java, "pick-novel")
             .allowMainThreadQueries().build()
 
         dbWeekList = Room.databaseBuilder(
@@ -140,12 +141,20 @@ class BottomDialogBest(
             ranklist()
 
             llayoutBtnLeft.setOnClickListener {
-                dbEvent.eventDao().insert(
-                    DataEvent(
-                        item.bookCode,
-                        item.bookImg,
+                dbEvent.bestDao().insert(
+                    DataBestDay(
+                        item.writer,
                         item.title,
-                        cate,
+                        item.bookImg,
+                        item.bookCode,
+                        item.info1,
+                        item.info2,
+                        item.info3,
+                        item.info4,
+                        item.info5,
+                        item.number,
+                        item.numberDiff,
+                        item.date,
                         tabType,
                         ""
                     )

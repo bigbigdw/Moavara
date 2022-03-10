@@ -116,7 +116,7 @@ class ActivityMain : AppCompatActivity() {
                 val group: BookListDataBestToday? = i.getValue(BookListDataBestToday::class.java)
                 val ref: MutableMap<String?, Any> = HashMap()
 
-                if (calculateNum(group!!.number, group.title, type) != 0) {
+                if (calculateNum(group!!.number, group.title, type) != 999) {
 
                     ref["writerName"] = group.writer
                     ref["subject"] = group.title
@@ -134,8 +134,8 @@ class ActivityMain : AppCompatActivity() {
                     ref["status"] = status
 
 //                    dbWeek.bestDao().insert(BestRef.setDataBestDay(ref))
-//                    BestRef.setBestRefWeekCompared(type, num, cate)
-//                        .setValue(BestRef.setBookListDataBestToday(ref))
+                    BestRef.setBestRefWeekCompared(type, num, cate)
+                        .setValue(BestRef.setBookListDataBestToday(ref))
                 }
                 num += 1
             }
@@ -182,7 +182,7 @@ class ActivityMain : AppCompatActivity() {
 
         if (yesterdayNum == 0) {
             status = "NEW"
-            return 0
+            return 999
         } else {
             return when {
                 num!! > yesterdayNum -> {
@@ -199,7 +199,7 @@ class ActivityMain : AppCompatActivity() {
                 }
                 else -> {
                     status = "SAME"
-                    -1
+                    0
                 }
             }
         }

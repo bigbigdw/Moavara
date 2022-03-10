@@ -34,8 +34,8 @@ class FragmentPick : Fragment() {
             childFragmentManager
         )
 
-        adapter.addFragment(FragmentPickTab("pick-novel"), "소설")
-        adapter.addFragment(FragmentPickTab("pick-event"), "이벤트")
+        adapter.addFragment(FragmentPickTabNovel(), "소설")
+        adapter.addFragment(FragmentPickTabEvent(), "이벤트")
         viewPager!!.adapter = adapter
     }
 

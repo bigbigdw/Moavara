@@ -32,6 +32,7 @@ data class BookListDataBestToday(
     var numberDiff: Int = 0,
     var date: String = "",
     var status: String = "",
+    var memo: String = ""
 )
 
 class BestType(
