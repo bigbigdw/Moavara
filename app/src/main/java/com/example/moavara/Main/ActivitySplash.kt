@@ -67,7 +67,7 @@ class ActivitySplash : Activity() {
                 startActivityIfNeeded(intent, 0)
                 finish()
             },
-            1000
+            2000
         )
 
     }

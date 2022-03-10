@@ -20,6 +20,9 @@ interface BestDao {
     @Query("SELECT * FROM DataBestDay WHERE type = :type ORDER BY title ASC")
     fun getAll(type: String): List<DataBestDay>
 
+    @Query("SELECT * FROM DataBestDay")
+    fun getPickAll(): List<DataBestDay>
+
     @Query("DELETE FROM DataBestDay WHERE type = :type")
     fun initWeek(type: String)
 
@@ -32,7 +35,7 @@ interface BestDao {
     @Query("DELETE FROM DataBestDay WHERE bookCode = :bookCode")
     fun deleteItem(bookCode: String)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     fun insert(user: DataBestDay)
 
     @Delete

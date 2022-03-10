@@ -56,7 +56,7 @@ class FragmentPickTabNovel : Fragment() {
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rviewPick.adapter = adapter
 
-        val eventlist = dbPickEvent.bestDao().getAll("ALL")
+        val eventlist = dbPickEvent.bestDao().getPickAll()
 
         for(i in eventlist.indices){
 

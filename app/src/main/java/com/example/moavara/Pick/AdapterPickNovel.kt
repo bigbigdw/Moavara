@@ -39,7 +39,7 @@ class AdapterPickNovel (items: List<BookListDataBestToday>) :
 
             with(holder.binding){
                 Glide.with(holder.itemView.context)
-                    .load(item.bookCode)
+                    .load(item.bookImg)
                     .into(iView)
 
                 tviewTitle.text = item.title
