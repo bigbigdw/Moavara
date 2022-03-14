@@ -18,12 +18,14 @@ class AlarmReceiver : BroadcastReceiver() {
         const val TAG = "AlarmReceiver"
         const val NOTIFICATION_ID = 0
         const val PRIMARY_CHANNEL_ID = "primary_notification_channel"
+        var cate = "ALL"
     }
 
     lateinit var notificationManager: NotificationManager
 
     override fun onReceive(context: Context, intent: Intent) {
         Log.d(TAG, "Received intent : $intent")
+        cate = Genre.getGenre(context).toString()
         notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         createNotificationChannel()
@@ -41,12 +43,17 @@ class AlarmReceiver : BroadcastReceiver() {
         val builder =
             NotificationCompat.Builder(context, PRIMARY_CHANNEL_ID)
                 .setSmallIcon(R.drawable.moabara_logo)
-                .setContentTitle("Alert")
-                .setContentText("This is repeating alarm")
+                .setContentTitle("모아바라")
+                .setContentText("업데이트가 완료되었습니다!")
                 .setContentIntent(contentPendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true)
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
+
+        Thread {
+            Mining.runMining(context, cate)
+        }.start()
+
 
         notificationManager.notify(NOTIFICATION_ID, builder.build())
     }
