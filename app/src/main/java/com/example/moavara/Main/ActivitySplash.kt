@@ -1,32 +1,21 @@
 package com.example.moavara.Main
 
 import android.app.Activity
+import android.app.job.JobInfo
+import android.app.job.JobScheduler
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
+import android.widget.Toast
 import androidx.room.Room
 import com.example.moavara.DataBase.DataBaseBestDay
-import com.example.moavara.Joara.JoaraBestListResult
-import com.example.moavara.Joara.RetrofitJoara
-import com.example.moavara.KaKao.BestResultKakao
-import com.example.moavara.KaKao.BestResultKakaoStageNovel
-import com.example.moavara.KaKao.RetrofitKaKao
-import com.example.moavara.OneStore.OneStoreBookResult
-import com.example.moavara.OneStore.RetrofitOnestore
 import com.example.moavara.R
-import com.example.moavara.Util.BestRef
-import com.example.moavara.Util.DBDate
-import com.example.moavara.Util.Genre
+import com.example.moavara.Util.*
 import com.google.firebase.database.FirebaseDatabase
-import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
-import org.jsoup.select.Elements
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.util.*
+import java.util.concurrent.TimeUnit
 
 val mRootRef = FirebaseDatabase.getInstance().reference
 
@@ -59,6 +48,14 @@ class ActivitySplash : Activity() {
         dbYesterday.bestDao().initAll()
 
         cate = Genre.getGenre(this).toString()
+
+        val js = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+        val serviceComponent = ComponentName(this, MyJobService::class.java)
+        val jobInfo = JobInfo.Builder(ActivityTest.JOB_ID_B, serviceComponent)
+            .setPeriodic(TimeUnit.HOURS.toMillis(12))
+            .build()
+        js.schedule(jobInfo)
+        Toast.makeText(this, "12시간 뒤 업데이트", Toast.LENGTH_SHORT).show()
 
         Handler(Looper.myLooper()!!).postDelayed(
             {

@@ -406,6 +406,7 @@ object Genre {
 
 object Mining {
     fun runMining(context: Context, cate: String) {
+        Log.d("JOB","MINING")
         getRidiBest(context, cate)
         getOneStoreBest(context, cate)
         getKakaoBest(cate)
