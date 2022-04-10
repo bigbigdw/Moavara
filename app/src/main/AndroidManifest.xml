@@ -26,6 +26,11 @@
             </intent-filter>
         </activity>
 
+        <service
+            android:name=".Util.MyJobService"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
+
         <receiver android:name=".Util.BootReceiver"
             android:exported="true">
             <intent-filter>
