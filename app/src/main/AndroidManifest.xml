@@ -22,19 +22,9 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <service
-            android:name=".Util.MyJobService"
-            android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE"/>
-
-        <receiver android:name=".Util.AlarmReceiver"
-            android:exported="false">
-        </receiver>
 
         <receiver android:name=".Util.BootReceiver"
             android:exported="true">
@@ -42,6 +32,19 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/ic_launcher_round" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/teal_700" />
+
+        <service android:name=".Util.FirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
 
         <activity
             android:name="com.example.moavara.Search.ActivitySearch"
@@ -76,7 +79,6 @@
         <activity
             android:name="com.example.moavara.Main.ActivitySplash"
             android:exported="true">
-
         </activity>
 
         <meta-data

@@ -68,9 +68,13 @@
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/item_booklist_best_weekend.xml" value="0.1" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/item_booklist_best_weekend_2.xml" value="0.25" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/item_booklist_best_weekend_sub.xml" value="0.32864583333333336" />
+        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/notification.xml" value="0.18" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/menu/bottom_main_menu.xml" value="0.37135416666666665" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/menu/bottom_nav_menu.xml" value="0.35106382978723405" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.34427083333333336" />
+        <entry key="..\:/ANDROID_SDK/platforms/android-31/data/res/drawable-watch/sym_def_app_icon.xml" value="0.1" />
+        <entry key="..\:/ANDROID_SDK/platforms/android-31/data/res/layout/activity_list_item.xml" value="0.1" />
+        <entry key="..\:/ANDROID_SDK/platforms/android-31/data/res/layout/simple_list_item_checked.xml" value="0.1" />
         <entry key="app/src/main/res/Best/layout/activity_best_detail.xml" value="0.16944444444444445" />
         <entry key="app/src/main/res/Best/layout/bottom_dialog_best.xml" value="0.1" />
         <entry key="app/src/main/res/Best/layout/collapse_best_detail.xml" value="0.1921875" />
