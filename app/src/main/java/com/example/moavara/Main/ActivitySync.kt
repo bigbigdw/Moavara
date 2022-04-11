@@ -3,32 +3,18 @@ package com.example.moavara.Main
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.widget.TextView
-import androidx.room.Room
-import com.example.moavara.DataBase.DataBaseBestDay
-import com.example.moavara.DataBase.DataBestDay
-import com.example.moavara.Joara.JoaraBestListResult
-import com.example.moavara.Joara.RetrofitJoara
-import com.example.moavara.KaKao.BestResultKakao
-import com.example.moavara.KaKao.BestResultKakaoStageNovel
-import com.example.moavara.KaKao.RetrofitKaKao
-import com.example.moavara.OneStore.OneStoreBookResult
-import com.example.moavara.OneStore.RetrofitOnestore
+import androidx.work.*
+import com.example.moavara.Firebase.FirebaseWorkManager
 import com.example.moavara.R
-import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Util.*
-import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
-import org.jsoup.select.Elements
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.util.HashMap
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
+import java.util.concurrent.TimeUnit
 
 class ActivitySync : Activity() {
 
@@ -51,9 +37,13 @@ class ActivitySync : Activity() {
         tview1!!.text = "선택하신 장르 [$cate] 를 불러오고 있습니다"
         tview2!!.text = "동기화 중..."
 
-        Thread {
-            Mining.runMining(context, cate)
-        }.start()
+        /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
+        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(12, TimeUnit.HOURS)
+            .build()
+
+        val workManager = WorkManager.getInstance()
+
+        workManager.enqueue(workRequest)
 
         Handler(Looper.myLooper()!!).postDelayed(
             {
@@ -63,6 +53,20 @@ class ActivitySync : Activity() {
             2000
         )
 
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("!!!!", "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+
+            // Log and toast
+            Log.d("!!!!", token)
+        })
+
+        FirebaseMessaging.getInstance().subscribeToTopic("all");
 
     }
 

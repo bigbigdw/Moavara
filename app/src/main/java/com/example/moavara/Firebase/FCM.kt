@@ -1,8 +1,9 @@
-package com.example.moavara.Util
+package com.example.moavara.Firebase
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.os.Build;
@@ -10,10 +11,26 @@ import android.util.Log
 import android.widget.RemoteViews;
 import androidx.core.app.NotificationCompat
 import com.example.moavara.R
+import com.example.moavara.Util.ActivityTest
+import com.example.moavara.Util.Mining
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
-class FirebaseMessagingService : FirebaseMessagingService() {
+class FCM : FirebaseMessagingService() {
+
+    // 토큰 생성
+    override fun onNewToken(token: String) {
+        Log.d("!!!!!", "Refreshed token: $token")
+
+        // 토큰 값 따로 저장
+        val pref = this.getSharedPreferences("token", Context.MODE_PRIVATE)
+        val editor = pref.edit()
+        editor.putString("token",token).apply()
+        editor.commit()
+
+        Log.i("!!!!!", "토큰 저장 성공적")
+    }
+
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
 
         Thread {
@@ -67,9 +84,6 @@ class FirebaseMessagingService : FirebaseMessagingService() {
             notificationChannel.setSound(uri, null)
             notificationManager.createNotificationChannel(notificationChannel)
         }
-
-
-
         notificationManager.notify(0, builder.build())
     }
 }

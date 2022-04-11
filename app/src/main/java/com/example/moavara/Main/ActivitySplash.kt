@@ -1,6 +1,6 @@
 package com.example.moavara.Main
 
-import com.example.moavara.Util.FirebaseMessagingService
+import com.example.moavara.Firebase.FCM
 import android.app.Activity
 import android.app.job.JobInfo
 import android.app.job.JobScheduler
@@ -16,7 +16,6 @@ import com.example.moavara.DataBase.DataBaseBestDay
 import com.example.moavara.R
 import com.example.moavara.Util.ActivityTest
 import com.example.moavara.Util.Genre
-import com.example.moavara.Util.MyJobService
 import com.google.firebase.database.FirebaseDatabase
 import java.util.concurrent.TimeUnit
 
@@ -34,7 +33,7 @@ class ActivitySplash : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        val fcm = Intent(applicationContext, FirebaseMessagingService::class.java)
+        val fcm = Intent(applicationContext, FCM::class.java)
         startService(fcm)
 
         dbYesterday = Room.databaseBuilder(
@@ -55,16 +54,6 @@ class ActivitySplash : Activity() {
         dbYesterday.bestDao().initAll()
 
         cate = Genre.getGenre(this).toString()
-
-        val js = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
-        val serviceComponent = ComponentName(this, MyJobService::class.java)
-        val jobInfo = JobInfo.Builder(ActivityTest.JOB_ID_B, serviceComponent)
-            .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
-            .setPeriodic(TimeUnit.HOURS.toMillis(12))
-            .setPersisted(true)
-            .build()
-        js.schedule(jobInfo)
-        Toast.makeText(this, "12시간 뒤 업데이트", Toast.LENGTH_SHORT).show()
 
         Handler(Looper.myLooper()!!).postDelayed(
             {

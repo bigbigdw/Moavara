@@ -20,16 +20,8 @@
         <activity
             android:name="com.example.moavara.Util.ActivityTest"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
 
-        <service
-            android:name=".Util.MyJobService"
-            android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE"/>
+        </activity>
 
         <receiver android:name=".Util.BootReceiver"
             android:exported="true">
@@ -45,7 +37,7 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/teal_700" />
 
-        <service android:name=".Util.FirebaseMessagingService">
+        <service android:name=".Firebase.FCM">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
@@ -84,6 +76,10 @@
         <activity
             android:name="com.example.moavara.Main.ActivitySplash"
             android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <meta-data
