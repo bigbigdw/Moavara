@@ -25,9 +25,8 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) : Wo
             Mining.runMining(applicationContext, "ROMANCE")
             Mining.runMining(applicationContext, "BL")
             Mining.runMining(applicationContext, "FANTASY")
+            postFCM()
         }
-
-        postFCM()
 
         return Result.success()
     }
