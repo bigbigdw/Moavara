@@ -8,8 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.room.Room
+import com.example.moavara.DataBase.DataBaseBestDay
 import com.example.moavara.R
 import com.example.moavara.Search.BestType
+import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.Genre
 import com.example.moavara.Util.TabViewModel
@@ -31,7 +34,8 @@ class FragmentBestTab : Fragment() {
     private lateinit var mFragmentBestTabMonth: FragmentBestTabMonth
     private lateinit var mFragmentBestTabWeekend: FragmentBestTabWeekend
 
-
+    lateinit var dbYesterday: DataBaseBestDay
+    var status = ""
     var pos = 0
     var cate = ""
 
@@ -56,7 +60,13 @@ class FragmentBestTab : Fragment() {
 
         adapterType = AdapterType(typeItems)
 
+        dbYesterday =
+            Room.databaseBuilder(requireContext(), DataBaseBestDay::class.java, "best-yesterday")
+                .allowMainThreadQueries().build()
+
         setLayout()
+
+        BestToday("JOARA")
 
         return view
     }
@@ -78,20 +88,25 @@ class FragmentBestTab : Fragment() {
                 }
             }
 
-            if(type == "Today"){
-                mFragmentBestTabToday = FragmentBestTabToday("Joara")
-                childFragmentManager.commit {
-                    replace(R.id.llayoutWrap, mFragmentBestTabToday)
+            when (type) {
+                "Today" -> {
+                    BestToday("JOARA")
+//                    mFragmentBestTabToday = FragmentBestTabToday("Joara")
+//                    childFragmentManager.commit {
+//                        replace(R.id.llayoutWrap, mFragmentBestTabToday)
+//                    }
                 }
-            } else if(type == "Weekend"){
-                mFragmentBestTabWeekend = FragmentBestTabWeekend("Joara")
-                childFragmentManager.commit {
-                    replace(R.id.llayoutWrap, mFragmentBestTabWeekend)
+                "Weekend" -> {
+//                    mFragmentBestTabWeekend = FragmentBestTabWeekend("Joara")
+//                    childFragmentManager.commit {
+//                        replace(R.id.llayoutWrap, mFragmentBestTabWeekend)
+//                    }
                 }
-            } else if(type == "Month"){
-                mFragmentBestTabMonth = FragmentBestTabMonth("Joara")
-                childFragmentManager.commit {
-                    replace(R.id.llayoutWrap, mFragmentBestTabMonth)
+                "Month" -> {
+//                    mFragmentBestTabMonth = FragmentBestTabMonth("Joara")
+//                    childFragmentManager.commit {
+//                        replace(R.id.llayoutWrap, mFragmentBestTabMonth)
+//                    }
                 }
             }
 
@@ -126,22 +141,22 @@ class FragmentBestTab : Fragment() {
 
                 when (type) {
                     "Today" -> {
-                        mFragmentBestTabToday = FragmentBestTabToday(item!!.type!!)
-                        childFragmentManager.commit {
-                            replace(R.id.llayoutWrap, mFragmentBestTabToday)
-                        }
+//                        mFragmentBestTabToday = FragmentBestTabToday(item!!.type!!)
+//                        childFragmentManager.commit {
+//                            replace(R.id.llayoutWrap, mFragmentBestTabToday)
+//                        }
                     }
                     "Weekend" -> {
-                        mFragmentBestTabWeekend = FragmentBestTabWeekend(item!!.type!!)
-                        childFragmentManager.commit {
-                            replace(R.id.llayoutWrap, mFragmentBestTabWeekend)
-                        }
+//                        mFragmentBestTabWeekend = FragmentBestTabWeekend(item!!.type!!)
+//                        childFragmentManager.commit {
+//                            replace(R.id.llayoutWrap, mFragmentBestTabWeekend)
+//                        }
                     }
                     "Month" -> {
-                        mFragmentBestTabMonth = FragmentBestTabMonth(item!!.type!!)
-                        childFragmentManager.commit {
-                            replace(R.id.llayoutWrap, mFragmentBestTabMonth)
-                        }
+//                        mFragmentBestTabMonth = FragmentBestTabMonth(item!!.type!!)
+//                        childFragmentManager.commit {
+//                            replace(R.id.llayoutWrap, mFragmentBestTabMonth)
+//                        }
                     }
                 }
             }
@@ -156,6 +171,86 @@ class FragmentBestTab : Fragment() {
             bundle.putInt(ARG_SECTION_NUMBER, index)
             fragment.arguments = bundle
             return fragment
+        }
+    }
+
+    fun BestToday(tabType : String){
+        var adapterToday: AdapterBestToday?
+
+        val items = ArrayList<BookListDataBestToday?>()
+        var status = ""
+        var cate = ""
+
+        cate = Genre.getGenre(requireContext()).toString()
+
+        adapterToday = AdapterBestToday(items)
+
+        binding.rviewBest.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.rviewBest.adapter = adapterToday
+
+        BestRef.getBestRefToday(tabType, cate).get().addOnSuccessListener {
+
+            for (i in it.children) {
+                val group: BookListDataBestToday? = i.getValue(BookListDataBestToday::class.java)
+                items.add(
+                    BookListDataBestToday(
+                        group!!.writer,
+                        group.title,
+                        group.bookImg,
+                        group.bookCode,
+                        group.info1,
+                        group.info2,
+                        group.info3,
+                        group.info4,
+                        group.info5,
+                        group.number,
+                        calculateNum(tabType, group.number, group.title),
+                        group.date,
+                        status
+                    )
+                )
+                adapterToday!!.notifyDataSetChanged()
+            }
+
+        }.addOnFailureListener {}
+
+        adapterToday.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
+            override fun onItemClick(v: View?, position: Int) {
+                val item: BookListDataBestToday? = adapterToday!!.getItem(position)
+
+                val mBottomDialogBest = BottomDialogBest(requireContext(), item!!, tabType, cate)
+                fragmentManager?.let { mBottomDialogBest.show(it, null) }
+            }
+        })
+    }
+
+    private fun calculateNum(tabType: String, num: Int?, title: String?): Int {
+
+        val yesterdayNum = dbYesterday.bestDao().findName(tabType, title!!)
+
+        if (yesterdayNum == 0) {
+            status = "NEW"
+            return 0
+        } else {
+            return when {
+                yesterdayNum < num!! -> {
+                    status = "DOWN"
+                    num - yesterdayNum
+                }
+                yesterdayNum > num -> {
+                    status = "UP"
+                    num - yesterdayNum
+                }
+                yesterdayNum == num -> {
+                    status = "SAME"
+                    0
+                }
+                else -> {
+                    status = "SAME"
+                    0
+                }
+            }
         }
     }
 }

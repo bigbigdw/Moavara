@@ -23,13 +23,11 @@
                 android:paddingTop="20dp"
                 android:paddingBottom="20dp" />
 
-            <LinearLayout
-                android:id="@+id/llayoutWrap"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rview_Best"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
-                android:layout_marginBottom="60dp"
-                android:orientation="vertical" />
+                android:background="#3F51B5" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

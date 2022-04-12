@@ -37,14 +37,6 @@ class ActivitySync : Activity() {
         tview1!!.text = "선택하신 장르 [$cate] 를 불러오고 있습니다"
         tview2!!.text = "동기화 중..."
 
-        /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
-        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(15, TimeUnit.MINUTES)
-            .build()
-
-        val workManager = WorkManager.getInstance()
-
-        workManager.enqueue(workRequest)
-
         Handler(Looper.myLooper()!!).postDelayed(
             {
                 val intent = Intent(this, ActivityMain::class.java)
@@ -52,6 +44,19 @@ class ActivitySync : Activity() {
             },
             2000
         )
+
+        /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
+        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(15, TimeUnit.MINUTES)
+            .build()
+
+        val pref = getSharedPreferences("WORKMANAGER", MODE_PRIVATE)
+        val editor = pref.edit()
+        editor.putString("WORKMANAGER", workRequest.id.toString())
+        editor.apply()
+
+        val workManager = WorkManager.getInstance()
+
+        workManager.enqueue(workRequest)
 
         FirebaseMessaging.getInstance().subscribeToTopic("all")
 

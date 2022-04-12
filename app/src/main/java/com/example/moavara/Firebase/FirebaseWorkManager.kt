@@ -18,15 +18,6 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) : Wo
 ) {
     override fun doWork(): Result {
         /* 처리해야할 작업에 관한 코드들 */
-        thread(start = true) {
-            Thread.sleep(1000)
-            Mining.runMining(applicationContext, "ALL")
-            Mining.runMining(applicationContext, "ROMANCE")
-            Mining.runMining(applicationContext, "BL")
-            Mining.runMining(applicationContext, "FANTASY")
-            postFCM()
-        }
-
         return Result.success()
     }
 

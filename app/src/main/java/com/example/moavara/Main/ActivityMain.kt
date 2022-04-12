@@ -1,26 +1,28 @@
 package com.example.moavara.Main
 
-import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
-import android.view.View
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import android.util.Log
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.room.Room
+import androidx.work.WorkManager
 import com.example.moavara.DataBase.DataBaseBestDay
 import com.example.moavara.DataBase.DataBestDay
 import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.DBDate
-import com.example.moavara.Util.DialogText
 import com.example.moavara.Util.Genre
-import com.google.android.material.navigation.NavigationView
-import java.util.HashMap
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.util.*
+import kotlin.collections.HashMap
+import kotlin.system.exitProcess
 
 
 class ActivityMain : AppCompatActivity() {
@@ -206,8 +208,39 @@ class ActivityMain : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        finish()
+
+        getSharedPreferences(
+            "WORKMANAGER",
+            MODE_PRIVATE
+        ).getString("WORKMANAGER", "")?.let { Log.d("@@@@", it) }
+
+        val myAlertBuilder: AlertDialog.Builder = AlertDialog.Builder(this@ActivityMain)
+        myAlertBuilder.setTitle("모아바라 종료")
+        myAlertBuilder.setMessage("모아바라를 종료하시겠습니까?")
+        myAlertBuilder.setPositiveButton(
+            "예"
+        ) { _, _ ->
+            WorkManager.getInstance(this).cancelWorkById(
+                UUID.fromString(
+                    getSharedPreferences(
+                        "WORKMANAGER",
+                        MODE_PRIVATE
+                    ).getString("WORKMANAGER", "")
+                )
+            )
+            finishAffinity();
+            System.runFinalization();
+            exitProcess(0);
+        }
+        myAlertBuilder.setNegativeButton(
+            "아니요"
+        ) { _, _ ->
+
+        }
+        // Alert를 생성해주고 보여주는 메소드(show를 선언해야 Alert가 생성됨)
+        myAlertBuilder.show()
+
+
     }
 
 }
