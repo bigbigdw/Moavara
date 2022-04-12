@@ -27,8 +27,6 @@ class FCM : FirebaseMessagingService() {
         val editor = pref.edit()
         editor.putString("token",token).apply()
         editor.commit()
-
-        Log.i("!!!!!", "토큰 저장 성공적")
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
@@ -38,7 +36,6 @@ class FCM : FirebaseMessagingService() {
             Mining.runMining(applicationContext, "ROMANCE")
             Mining.runMining(applicationContext, "BL")
             Mining.runMining(applicationContext, "FANTASY")
-            Log.d("@@@@", "알람 옴!")
         }.start()
 
         if (remoteMessage.data.isNotEmpty()) {

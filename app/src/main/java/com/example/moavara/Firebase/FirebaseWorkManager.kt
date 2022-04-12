@@ -20,7 +20,6 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) : Wo
         /* 처리해야할 작업에 관한 코드들 */
         thread(start = true) {
             Thread.sleep(1000)
-            Log.d("@@@@@", "doing Job in other thread")
             Mining.runMining(applicationContext, "ALL")
             Mining.runMining(applicationContext, "ROMANCE")
             Mining.runMining(applicationContext, "BL")
@@ -31,15 +30,15 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) : Wo
         return Result.success()
     }
 
-    fun postFCM() {
+    private fun postFCM() {
 
-        Log.d("@@@@@", "대기");
+        Log.d("FCM", "대기");
 
         val fcmBody = DataFCMBody(
             "/topics/all",
             "high",
             DataFCMBodyData("data", "body"),
-            DataFCMBodyNotification("모아바라 작품 최신화", "베스트 리스트가 갱신되었습니다", "default", "ic_stat_ic_notification"),
+            DataFCMBodyNotification("모아바라", "베스트 리스트가 갱신되었습니다", "default", "ic_stat_ic_notification"),
         )
 
         val call = Retrofit.Builder()
@@ -57,15 +56,15 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) : Wo
             ) {
                 if (response.isSuccessful) {
                     response.body()?.let { it ->
-                        Log.d("@@@@@", "성공");
+                        Log.d("FCM", "성공");
                     }
                 } else {
-                    Log.d("@@@@@", "실패2");
+                    Log.d("FCM", "실패2");
                 }
             }
 
             override fun onFailure(call: Call<FWorkManagerResult?>, t: Throwable) {
-                Log.d("@@@@@", "실패");
+                Log.d("FCM", "실패");
             }
         })
     }

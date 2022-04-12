@@ -38,7 +38,7 @@ class ActivitySync : Activity() {
         tview2!!.text = "동기화 중..."
 
         /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
-        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(12, TimeUnit.HOURS)
+        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(15, TimeUnit.MINUTES)
             .build()
 
         val workManager = WorkManager.getInstance()
@@ -53,20 +53,7 @@ class ActivitySync : Activity() {
             2000
         )
 
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                Log.w("!!!!", "Fetching FCM registration token failed", task.exception)
-                return@OnCompleteListener
-            }
-
-            // Get new FCM registration token
-            val token = task.result
-
-            // Log and toast
-            Log.d("!!!!", token)
-        })
-
-        FirebaseMessaging.getInstance().subscribeToTopic("all");
+        FirebaseMessaging.getInstance().subscribeToTopic("all")
 
     }
 
