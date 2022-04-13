@@ -17,6 +17,8 @@ import com.example.moavara.DataBase.DataBestDay
 import com.example.moavara.Main.ActivityMain
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
+import com.example.moavara.Search.AdapterBookSearch
+import com.example.moavara.Search.BookListData
 import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.DBDate
@@ -43,7 +45,6 @@ class FragmentBestTabToday(private val tabType: String) :
 
     var cate = ""
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
@@ -52,12 +53,14 @@ class FragmentBestTabToday(private val tabType: String) :
         cate = Genre.getGenre(requireContext()).toString()
 
         root = inflater.inflate(R.layout.fragment_best_today_tab, container, false)
-        dbYesterday =
-            Room.databaseBuilder(requireContext(), DataBaseBestDay::class.java, "best-yesterday")
-                .allowMainThreadQueries().build()
+
 
         recyclerView = root.findViewById(R.id.rview_Best)
         adapterToday = AdapterBestToday(items)
+
+        dbYesterday =
+            Room.databaseBuilder(requireContext(), DataBaseBestDay::class.java, "best-yesterday")
+                .allowMainThreadQueries().build()
 
         getBookListBest(recyclerView)
 
@@ -69,32 +72,6 @@ class FragmentBestTabToday(private val tabType: String) :
         recyclerView!!.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapterToday
-
-//        BestRef.getBestRefToday(tabType, cate).get().addOnSuccessListener {
-//
-//            for (i in it.children) {
-//                val group: BookListDataBestToday? = i.getValue(BookListDataBestToday::class.java)
-//                items.add(
-//                    BookListDataBestToday(
-//                        group!!.writer,
-//                        group.title,
-//                        group.bookImg,
-//                        group.bookCode,
-//                        group.info1,
-//                        group.info2,
-//                        group.info3,
-//                        group.info4,
-//                        group.info5,
-//                        group.number,
-//                        calculateNum(group.number, group.title),
-//                        group.date,
-//                        status
-//                    )
-//                )
-//                adapterToday!!.notifyDataSetChanged()
-//            }
-//
-//        }.addOnFailureListener {}
 
         BestRef.getBestRefToday(tabType, cate).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -141,31 +118,6 @@ class FragmentBestTabToday(private val tabType: String) :
 
 
     private fun calculateNum(num: Int?, title: String?): Int {
-
-//        val items = ArrayList<BookListDataBestToday?>()
-//        var yesterdayNum = 0
-//
-//        val yesterdayRef = mRootRef.child("best").child(tabType).child(cate).child("today").child(
-//            DBDate.Yesterday()
-//        )
-//
-//        yesterdayRef.get().addOnSuccessListener {
-//
-//            for (i in it.children) {
-//                val group: BookListDataBestToday? = i.getValue(BookListDataBestToday::class.java)
-//
-//                if(group!!.title == title){
-//                    Log.d("!!!!", group.title + " | " + title)
-//                    yesterdayNum = group.number
-//                    break
-//                }
-//            }
-//
-//            Log.d("!!!!", num.toString())
-//
-//        }.addOnFailureListener {}
-
-
 
         val yesterdayNum = dbYesterday.bestDao().findName(tabType, title!!)
 

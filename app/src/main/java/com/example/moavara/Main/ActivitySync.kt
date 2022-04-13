@@ -47,20 +47,20 @@ class ActivitySync : Activity() {
             1000
         )
 
-//        /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
-//        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(6, TimeUnit.HOURS)
-//            .build()
-//
-//        val pref = getSharedPreferences("WORKMANAGER", MODE_PRIVATE)
-//        val editor = pref.edit()
-//        editor.putString("WORKMANAGER", workRequest.id.toString())
-//        editor.apply()
-//
-//        val workManager = WorkManager.getInstance()
-//
-//        workManager.enqueue(workRequest)
-//
-//        FirebaseMessaging.getInstance().subscribeToTopic("all")
+        /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
+        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(4, TimeUnit.HOURS)
+            .build()
+
+        val pref = getSharedPreferences("WORKMANAGER", MODE_PRIVATE)
+        val editor = pref.edit()
+        editor.putString("WORKMANAGER", workRequest.id.toString())
+        editor.apply()
+
+        val workManager = WorkManager.getInstance()
+
+        workManager.enqueue(workRequest)
+
+        FirebaseMessaging.getInstance().subscribeToTopic("all")
 
     }
 }
