@@ -20,13 +20,6 @@ class FCM : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
 
-        Thread {
-            Mining.runMining(applicationContext, "ALL")
-            Mining.runMining(applicationContext, "ROMANCE")
-            Mining.runMining(applicationContext, "BL")
-            Mining.runMining(applicationContext, "FANTASY")
-        }.start()
-
         if (remoteMessage.data.isNotEmpty()) {
             showNotification(remoteMessage.data["title"], remoteMessage.data["message"])
         }

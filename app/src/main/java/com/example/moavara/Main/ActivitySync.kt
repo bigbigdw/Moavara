@@ -9,6 +9,7 @@ import android.os.Looper
 import android.util.Log
 import android.widget.TextView
 import androidx.work.*
+import com.example.moavara.DataBase.DataBaseBestDay
 import com.example.moavara.Firebase.FirebaseWorkManager
 import com.example.moavara.R
 import com.example.moavara.Util.*
@@ -23,6 +24,7 @@ class ActivitySync : Activity() {
     var tview1: TextView? = null
     var tview2: TextView? = null
     lateinit var context: Context
+    private lateinit var dbYesterday: DataBaseBestDay
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +44,7 @@ class ActivitySync : Activity() {
                 val intent = Intent(this, ActivityMain::class.java)
                 startActivity(intent)
             },
-            2000
+            1000
         )
 
         /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
@@ -61,5 +63,4 @@ class ActivitySync : Activity() {
         FirebaseMessaging.getInstance().subscribeToTopic("all")
 
     }
-
 }

@@ -26,6 +26,13 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) : Wo
 
         Log.d("FCM", "대기");
 
+        Thread {
+            Mining.runMining(applicationContext, "ALL")
+            Mining.runMining(applicationContext, "ROMANCE")
+            Mining.runMining(applicationContext, "BL")
+            Mining.runMining(applicationContext, "FANTASY")
+        }.start()
+
         val fcmBody = DataFCMBody(
             "/topics/all",
             "high",

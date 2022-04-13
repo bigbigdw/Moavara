@@ -42,6 +42,7 @@ class FragmentBest : Fragment() {
         childFragmentManager.commit {
             replace(R.id.llayoutWrap, mFragmentBestTabToday)
         }
+        getType("Today")
 
         fragmentBestTab.addTab(fragmentBestTab.newTab().setText(R.string.Best_Tab1))
         fragmentBestTab.addTab(fragmentBestTab.newTab().setText(R.string.Best_Tab2))

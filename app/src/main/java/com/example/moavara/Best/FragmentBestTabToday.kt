@@ -1,6 +1,7 @@
 package com.example.moavara.Best
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,10 +10,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.example.moavara.DataBase.DataBaseBestDay
+import com.example.moavara.DataBase.DataBestDay
+import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Util.BestRef
+import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Genre
+import com.example.moavara.Util.Mining
 import java.util.*
 
 
@@ -40,7 +45,6 @@ class FragmentBestTabToday(private val tabType: String) :
         cate = Genre.getGenre(requireContext()).toString()
 
         root = inflater.inflate(R.layout.fragment_best_today_tab, container, false)
-
         dbYesterday =
             Room.databaseBuilder(requireContext(), DataBaseBestDay::class.java, "best-yesterday")
                 .allowMainThreadQueries().build()
@@ -86,7 +90,6 @@ class FragmentBestTabToday(private val tabType: String) :
         }.addOnFailureListener {}
 
 
-
         adapterToday!!.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
                 val item: BookListDataBestToday? = adapterToday!!.getItem(position)
@@ -99,6 +102,31 @@ class FragmentBestTabToday(private val tabType: String) :
 
 
     private fun calculateNum(num: Int?, title: String?): Int {
+
+//        val items = ArrayList<BookListDataBestToday?>()
+//        var yesterdayNum = 0
+//
+//        val yesterdayRef = mRootRef.child("best").child(tabType).child(cate).child("today").child(
+//            DBDate.Yesterday()
+//        )
+//
+//        yesterdayRef.get().addOnSuccessListener {
+//
+//            for (i in it.children) {
+//                val group: BookListDataBestToday? = i.getValue(BookListDataBestToday::class.java)
+//
+//                if(group!!.title == title){
+//                    Log.d("!!!!", group.title + " | " + title)
+//                    yesterdayNum = group.number
+//                    break
+//                }
+//            }
+//
+//            Log.d("!!!!", num.toString())
+//
+//        }.addOnFailureListener {}
+
+
 
         val yesterdayNum = dbYesterday.bestDao().findName(tabType, title!!)
 
