@@ -18,17 +18,6 @@ import com.google.firebase.messaging.RemoteMessage
 
 class FCM : FirebaseMessagingService() {
 
-    // 토큰 생성
-    override fun onNewToken(token: String) {
-        Log.d("!!!!!", "Refreshed token: $token")
-
-        // 토큰 값 따로 저장
-        val pref = this.getSharedPreferences("token", Context.MODE_PRIVATE)
-        val editor = pref.edit()
-        editor.putString("token",token).apply()
-        editor.commit()
-    }
-
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
 
         Thread {

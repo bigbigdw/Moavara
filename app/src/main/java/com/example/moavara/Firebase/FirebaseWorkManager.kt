@@ -18,6 +18,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) : Wo
 ) {
     override fun doWork(): Result {
         /* 처리해야할 작업에 관한 코드들 */
+        postFCM()
         return Result.success()
     }
 

@@ -46,10 +46,19 @@
         </com.google.android.material.tabs.TabLayout>
     </LinearLayout>
 
-    <com.example.moavara.Util.NonSwipeViewPager
-        android:id="@+id/view_pager"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rviewType"
+        android:layout_marginStart="16dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp" />
+
+    <LinearLayout
+        android:id="@+id/llayoutWrap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
+        android:orientation="vertical" />
 
 </LinearLayout>
