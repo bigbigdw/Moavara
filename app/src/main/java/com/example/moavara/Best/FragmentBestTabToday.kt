@@ -1,6 +1,9 @@
 package com.example.moavara.Best
 
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.example.moavara.DataBase.DataBaseBestDay
 import com.example.moavara.DataBase.DataBestDay
+import com.example.moavara.Main.ActivityMain
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
@@ -18,6 +22,9 @@ import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Genre
 import com.example.moavara.Util.Mining
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import java.util.*
 
 
@@ -63,31 +70,63 @@ class FragmentBestTabToday(private val tabType: String) :
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapterToday
 
-        BestRef.getBestRefToday(tabType, cate).get().addOnSuccessListener {
+//        BestRef.getBestRefToday(tabType, cate).get().addOnSuccessListener {
+//
+//            for (i in it.children) {
+//                val group: BookListDataBestToday? = i.getValue(BookListDataBestToday::class.java)
+//                items.add(
+//                    BookListDataBestToday(
+//                        group!!.writer,
+//                        group.title,
+//                        group.bookImg,
+//                        group.bookCode,
+//                        group.info1,
+//                        group.info2,
+//                        group.info3,
+//                        group.info4,
+//                        group.info5,
+//                        group.number,
+//                        calculateNum(group.number, group.title),
+//                        group.date,
+//                        status
+//                    )
+//                )
+//                adapterToday!!.notifyDataSetChanged()
+//            }
+//
+//        }.addOnFailureListener {}
 
-            for (i in it.children) {
-                val group: BookListDataBestToday? = i.getValue(BookListDataBestToday::class.java)
-                items.add(
-                    BookListDataBestToday(
-                        group!!.writer,
-                        group.title,
-                        group.bookImg,
-                        group.bookCode,
-                        group.info1,
-                        group.info2,
-                        group.info3,
-                        group.info4,
-                        group.info5,
-                        group.number,
-                        calculateNum(group.number, group.title),
-                        group.date,
-                        status
+        BestRef.getBestRefToday(tabType, cate).addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+
+                    val group: BookListDataBestToday? =
+                        postSnapshot.getValue(BookListDataBestToday::class.java)
+
+                    items.add(
+                        BookListDataBestToday(
+                            group!!.writer,
+                            group.title,
+                            group.bookImg,
+                            group.bookCode,
+                            group.info1,
+                            group.info2,
+                            group.info3,
+                            group.info4,
+                            group.info5,
+                            group.number,
+                            calculateNum(group.number, group.title),
+                            group.date,
+                            status
+                        )
                     )
-                )
+                }
                 adapterToday!!.notifyDataSetChanged()
             }
 
-        }.addOnFailureListener {}
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        })
 
 
         adapterToday!!.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
