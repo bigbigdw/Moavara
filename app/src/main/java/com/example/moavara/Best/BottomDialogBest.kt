@@ -212,8 +212,6 @@ class BottomDialogBest(
 
                 if (group!!.title == item.title) {
 
-                    Log.d("@@@@", group.date + " | " + group.title)
-
                     rank.add(group.number.toString())
 
                     mRootRef.child("Week").get().addOnSuccessListener {

@@ -72,7 +72,6 @@ class FragmentSearchTab : Fragment() {
                     adapter!!.setOnItemClickListener(object : AdapterBookSearch.OnItemClickListener {
                         override fun onItemClick(v: View?, position: Int, value: String?) {
                             val item: BookListData? = adapter!!.getItem(position)
-                            Log.d("@@@@","조아라")
                         }
                     })
                 }
@@ -82,12 +81,10 @@ class FragmentSearchTab : Fragment() {
                     adapter!!.setOnItemClickListener(object : AdapterBookSearch.OnItemClickListener {
                         override fun onItemClick(v: View?, position: Int, value: String?) {
                             val item: BookListData? = adapter!!.getItem(position)
-                            Log.d("@@@@","카카오")
                         }
                     })
                 }
                 "TAB3" -> {
-                    Log.d("@@@@-#", tabNum);
                 }
             }
         })

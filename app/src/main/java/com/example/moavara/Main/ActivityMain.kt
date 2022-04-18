@@ -115,14 +115,9 @@ class ActivityMain : AppCompatActivity() {
 
         BestRef.getBestRefToday(type, cate).get().addOnSuccessListener {
 
-            Log.d("@@@@", DBDate.DayInt().toString())
-            Log.d("@@@@", (1000 * DBDate.DayInt()).toString())
-            Log.d("@@@@", ((1000 * DBDate.DayInt()) + 999).toString())
-
-            BestRef.setBestRef(type, cate).child("week-list").child("2000").removeValue()
-
-            for (i in (1000 * num)..((1000 * num) + 999)) {
-                BestRef.setBestRefWeekCompared(type, i, cate).removeValue()
+            for (i in (1000 * DBDate.DayInt())..((1000 * DBDate.DayInt()) + 999)) {
+                BestRef.setBestRef(type, cate).child("week-list")
+                    .child(i.toString()).removeValue()
             }
 
             for (i in it.children) {
@@ -146,9 +141,9 @@ class ActivityMain : AppCompatActivity() {
                     ref["type"] = type
                     ref["status"] = status
 
-//                    dbWeek.bestDao().insert(BestRef.setDataBestDay(ref))
-//                    BestRef.setBestRefWeekCompared(type, num, cate)
-//                        .setValue(BestRef.setBookListDataBestToday(ref))
+                    dbWeek.bestDao().insert(BestRef.setDataBestDay(ref))
+                    BestRef.setBestRefWeekCompared(type, num, cate)
+                        .setValue(BestRef.setBookListDataBestToday(ref))
                 }
                 num += 1
             }
@@ -219,11 +214,6 @@ class ActivityMain : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-
-        getSharedPreferences(
-            "WORKMANAGER",
-            MODE_PRIVATE
-        ).getString("WORKMANAGER", "")?.let { Log.d("@@@@", it) }
 
         val myAlertBuilder: AlertDialog.Builder = AlertDialog.Builder(this@ActivityMain)
         myAlertBuilder.setTitle("모아바라 종료")
