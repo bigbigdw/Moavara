@@ -8,13 +8,17 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.widget.TextView
+import android.widget.Toast
 import androidx.work.*
 import com.example.moavara.DataBase.DataBaseBestDay
+import com.example.moavara.DataBase.DataBestDay
 import com.example.moavara.Firebase.FirebaseWorkManager
 import com.example.moavara.R
+import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Util.*
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 class ActivitySync : Activity() {
@@ -47,20 +51,29 @@ class ActivitySync : Activity() {
             1000
         )
 
+        mRootRef.child("Week").child(DBDate.DayString()).setValue(DBDate.DateMMDD())
+
         /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
-        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(4, TimeUnit.HOURS)
+        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(30, TimeUnit.MINUTES)
             .build()
 
-        val pref = getSharedPreferences("WORKMANAGER", MODE_PRIVATE)
-        val editor = pref.edit()
-        editor.putString("WORKMANAGER", workRequest.id.toString())
-        editor.apply()
-
+        val miningRef = mRootRef.child("Mining")
         val workManager = WorkManager.getInstance()
 
-        workManager.enqueue(workRequest)
+        miningRef.get().addOnSuccessListener {
+            if(it.value != null && it.value!! == "MINING"){
 
-        FirebaseMessaging.getInstance().subscribeToTopic("all")
+                Log.d("####", "NOT NULL " + it.value)
+                Toast.makeText(this, "WorkManager 이미 존재함", Toast.LENGTH_SHORT).show()
 
+            } else {
+                Log.d("####", "NULL")
+                miningRef.setValue("MINING")
+
+                workManager.enqueue(workRequest)
+                FirebaseMessaging.getInstance().subscribeToTopic("all")
+                Toast.makeText(this, "WorkManager 추가됨", Toast.LENGTH_SHORT).show()
+            }
+        }.addOnFailureListener{}
     }
 }

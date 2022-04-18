@@ -36,26 +36,29 @@ data class BookListDataBestToday(
 )
 
 class BestType(
-    var title: String ? = null,
-    var type: String ? = null,
+    var title: String? = null,
+    var type: String? = null,
 )
 
-class BestRank(
-    var number: String = "",
-    var type: String = "",
-    var date: String = "",
-    var status: String = "",
+class WeekendDate(
+    var sun: String = "",
+    var mon: String = "",
+    var tue: String = "",
+    var wed: String = "",
+    var thur: String = "",
+    var fri: String = "",
+    var sat: String = "",
 )
 
 
 class BookListDataBestWeekend(
-    var sun: BookListDataBestToday ? = null,
-    var mon: BookListDataBestToday ? = null,
-    var tue: BookListDataBestToday ? = null,
-    var wed: BookListDataBestToday ? = null,
-    var thur: BookListDataBestToday ? = null,
-    var fri: BookListDataBestToday ? = null,
-    var sat: BookListDataBestToday ? = null,
+    var sun: BookListDataBestToday? = null,
+    var mon: BookListDataBestToday? = null,
+    var tue: BookListDataBestToday? = null,
+    var wed: BookListDataBestToday? = null,
+    var thur: BookListDataBestToday? = null,
+    var fri: BookListDataBestToday? = null,
+    var sat: BookListDataBestToday? = null,
 )
 
 class EventData(

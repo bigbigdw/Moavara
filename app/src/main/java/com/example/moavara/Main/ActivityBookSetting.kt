@@ -163,7 +163,7 @@ class ActivityBookSetting : AppCompatActivity() {
                         ref["status"] = status
 
                         dbWeek.bestDao().insert(BestRef.setDataBestDay(ref))
-                        BestRef.setBestRefWeekCompared(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
+//                        BestRef.setBestRefWeekCompared(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
                     }
                 }
 

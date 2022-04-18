@@ -20,6 +20,7 @@ import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Genre
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.messaging.FirebaseMessaging
 import java.util.*
 import kotlin.collections.HashMap
 import kotlin.system.exitProcess
@@ -114,6 +115,16 @@ class ActivityMain : AppCompatActivity() {
 
         BestRef.getBestRefToday(type, cate).get().addOnSuccessListener {
 
+            Log.d("@@@@", DBDate.DayInt().toString())
+            Log.d("@@@@", (1000 * DBDate.DayInt()).toString())
+            Log.d("@@@@", ((1000 * DBDate.DayInt()) + 999).toString())
+
+            BestRef.setBestRef(type, cate).child("week-list").child("2000").removeValue()
+
+            for (i in (1000 * num)..((1000 * num) + 999)) {
+                BestRef.setBestRefWeekCompared(type, i, cate).removeValue()
+            }
+
             for (i in it.children) {
                 val group: BookListDataBestToday? = i.getValue(BookListDataBestToday::class.java)
                 val ref: MutableMap<String?, Any> = HashMap()
@@ -136,8 +147,8 @@ class ActivityMain : AppCompatActivity() {
                     ref["status"] = status
 
 //                    dbWeek.bestDao().insert(BestRef.setDataBestDay(ref))
-                    BestRef.setBestRefWeekCompared(type, num, cate)
-                        .setValue(BestRef.setBookListDataBestToday(ref))
+//                    BestRef.setBestRefWeekCompared(type, num, cate)
+//                        .setValue(BestRef.setBookListDataBestToday(ref))
                 }
                 num += 1
             }
@@ -220,14 +231,12 @@ class ActivityMain : AppCompatActivity() {
         myAlertBuilder.setPositiveButton(
             "예"
         ) { _, _ ->
-            WorkManager.getInstance(this).cancelWorkById(
-                UUID.fromString(
-                    getSharedPreferences(
-                        "WORKMANAGER",
-                        MODE_PRIVATE
-                    ).getString("WORKMANAGER", "")
-                )
-            )
+
+            WorkManager.getInstance().cancelAllWork()
+
+            val miningRef = mRootRef.child("Mining")
+            miningRef.setValue("HAHA")
+
             finishAffinity();
             System.runFinalization();
             exitProcess(0);
