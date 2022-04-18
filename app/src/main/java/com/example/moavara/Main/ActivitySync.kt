@@ -54,7 +54,7 @@ class ActivitySync : Activity() {
         mRootRef.child("Week").child(DBDate.DayString()).setValue(DBDate.DateMMDD())
 
         /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
-        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(30, TimeUnit.MINUTES)
+        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(4, TimeUnit.HOURS)
             .build()
 
         val miningRef = mRootRef.child("Mining")

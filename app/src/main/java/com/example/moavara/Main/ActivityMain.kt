@@ -31,6 +31,7 @@ class ActivityMain : AppCompatActivity() {
     private lateinit var dbWeek: DataBaseBestDay
     private lateinit var dbWeekList: DataBaseBestDay
     private lateinit var dbYesterday: DataBaseBestDay
+    var toolbar : Toolbar? = null
 
     var cate = "ALL"
     var status = ""
@@ -44,6 +45,14 @@ class ActivityMain : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         navController = Navigation.findNavController(this, R.id.navHostFragmentMain)
+
+        toolbar.setOnClickListener {
+            WorkManager.getInstance().cancelAllWork()
+            val miningRef = mRootRef.child("Mining")
+            miningRef.setValue("HAHA")
+            Toast.makeText(this, "WorkManager 해제됨", Toast.LENGTH_SHORT).show()
+        }
+
 
         setLayout()
     }
@@ -222,11 +231,6 @@ class ActivityMain : AppCompatActivity() {
             "예"
         ) { _, _ ->
 
-            WorkManager.getInstance().cancelAllWork()
-
-            val miningRef = mRootRef.child("Mining")
-            miningRef.setValue("HAHA")
-
             finishAffinity();
             System.runFinalization();
             exitProcess(0);
@@ -234,7 +238,6 @@ class ActivityMain : AppCompatActivity() {
         myAlertBuilder.setNegativeButton(
             "아니요"
         ) { _, _ ->
-
         }
         // Alert를 생성해주고 보여주는 메소드(show를 선언해야 Alert가 생성됨)
         myAlertBuilder.show()

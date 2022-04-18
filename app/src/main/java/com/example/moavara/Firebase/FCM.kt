@@ -49,7 +49,7 @@ class FCM : FirebaseMessagingService() {
             applicationContext, channel_id
         )
             .setSmallIcon(R.mipmap.ic_launcher)
-            .setSound(uri)
+//            .setSound(uri)
             .setAutoCancel(true)
             .setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
             .setOnlyAlertOnce(true)
