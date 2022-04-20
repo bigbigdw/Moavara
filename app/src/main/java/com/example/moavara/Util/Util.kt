@@ -814,8 +814,6 @@ object Mining {
 
     private fun miningValue(ref: MutableMap<String?, Any>, num: Int, type: String, cate: String) {
 
-
-
         //Today
         BestRef.setBestRefToday(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
 
@@ -871,6 +869,12 @@ object Mining {
 
     fun getBookListToday(itemsYesterday : ArrayList<BookListDataBestToday?>, tabType : String, cate : String){
 
+        for (i in (1000 * DBDate.DayInt())..((1000 * DBDate.DayInt()) + 999)) {
+            BestRef.setBestRef(tabType, cate).child("week-list")
+                .child(i.toString()).removeValue()
+        }
+
+        var num = 1
         val items = ArrayList<BookListDataBestToday?>()
 
         BestRef.getBestRefToday(tabType, cate).addValueEventListener(object : ValueEventListener {
@@ -895,6 +899,9 @@ object Mining {
                             status
                         )
                     )
+
+                    BestRef.setBestRefWeekCompared(tabType, num, cate).setValue(items)
+                    num += 1
                 }
 
             }
