@@ -2,18 +2,23 @@ package com.example.moavara.Util
 
 import android.content.Context
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.moavara.Best.AdapterBestToday
+import com.example.moavara.Best.BottomDialogBest
 import com.example.moavara.DataBase.DataBestDay
 import com.example.moavara.Joara.JoaraBestListResult
 import com.example.moavara.Joara.RetrofitJoara
 import com.example.moavara.KaKao.BestResultKakao
 import com.example.moavara.KaKao.BestResultKakaoStageNovel
 import com.example.moavara.KaKao.RetrofitKaKao
+import com.example.moavara.Main.mRootRef
 import com.example.moavara.OneStore.OneStoreBookResult
 import com.example.moavara.OneStore.RetrofitOnestore
 import com.example.moavara.Search.BookListDataBestToday
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.example.moavara.Util.DBDate.status
+import com.google.firebase.database.*
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
@@ -24,6 +29,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 object DBDate {
+
+    var status = ""
 
     fun DayInt(): Int {
         return Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
@@ -807,6 +814,8 @@ object Mining {
 
     private fun miningValue(ref: MutableMap<String?, Any>, num: Int, type: String, cate: String) {
 
+
+
         //Today
         BestRef.setBestRefToday(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
 
@@ -824,5 +833,103 @@ object Mining {
         }
 
         BestRef.setBestRefMonthDay(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
+
+        val yesterdayRef = mRootRef.child("best").child(type).child(cate).child("today").child(
+            DBDate.Yesterday()
+        )
+
+        val itemsYesterday = ArrayList<BookListDataBestToday?>()
+
+        yesterdayRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+                    val group: BookListDataBestToday? =
+                        postSnapshot.getValue(BookListDataBestToday::class.java)
+                    itemsYesterday.add(
+                        BookListDataBestToday(
+                            group!!.writer,
+                            group.title,
+                            group.bookImg,
+                            group.bookCode,
+                            group.info1,
+                            group.info2,
+                            group.info3,
+                            group.info4,
+                            group.info5,
+                            group.number,
+                            group.number,
+                            group.date,
+                            status
+                        )
+                    )
+                }
+                getBookListToday(itemsYesterday, type, cate)
+            }
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
+    }
+
+    fun getBookListToday(itemsYesterday : ArrayList<BookListDataBestToday?>, tabType : String, cate : String){
+
+        val items = ArrayList<BookListDataBestToday?>()
+
+        BestRef.getBestRefToday(tabType, cate).addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+                    val group: BookListDataBestToday? =
+                        postSnapshot.getValue(BookListDataBestToday::class.java)
+                    items.add(
+                        BookListDataBestToday(
+                            group!!.writer,
+                            group.title,
+                            group.bookImg,
+                            group.bookCode,
+                            group.info1,
+                            group.info2,
+                            group.info3,
+                            group.info4,
+                            group.info5,
+                            group.number,
+                            calculateNum(group.number, group.title, itemsYesterday),
+                            group.date,
+                            status
+                        )
+                    )
+                }
+
+            }
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
+    }
+
+
+    fun calculateNum(num: Int?, title: String?, itemsYesterday : ArrayList<BookListDataBestToday?>): Int {
+
+        for (i in itemsYesterday) {
+            if (i != null) {
+                if (i.title == title) {
+                    when {
+                        i.number == 0 -> {
+                            status = "NEW"
+                            return 0
+                        }
+                        i.number < num!! -> {
+                            status = "DOWN"
+                            return num - i.number
+                        }
+                        i.number > num -> {
+                            status = "UP"
+                            return num - i.number
+                        }
+                        i.number == num -> {
+                            status = "SAME"
+                            0
+                        }
+                    }
+                }
+            }
+        }
+        status = "NEW"
+        return 0
     }
 }

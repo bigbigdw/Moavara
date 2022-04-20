@@ -31,6 +31,7 @@ class BottomDialogBest(
     private val item: BookListDataBestToday,
     private val tabType: String,
     private val cate: String,
+    private val pos : Int
 ) :
     BottomSheetDialogFragment() {
 
@@ -55,8 +56,7 @@ class BottomDialogBest(
             requireContext().applicationContext,
             DataBaseBestDay::class.java,
             "week-list"
-        )
-            .allowMainThreadQueries().build()
+        ).allowMainThreadQueries().build()
 
         with(binding) {
 
@@ -220,40 +220,76 @@ class BottomDialogBest(
 
                         with(binding) {
                             when {
-                                week!!.mon == group.date -> {
+                                week!!.sun == group.date -> {
                                     tviewRank1.visibility = View.VISIBLE
                                     iviewRank1.setImageResource(R.drawable.ic_best_vt_24px)
                                     tviewRank1.text = group.number.toString()
                                 }
-                                week.tue == group.date -> {
+                                week.mon == group.date -> {
                                     tviewRank2.visibility = View.VISIBLE
                                     iviewRank2.setImageResource(R.drawable.ic_best_vt_24px)
                                     tviewRank2.text = group.number.toString()
                                 }
-                                week.wed == group.date -> {
+                                week.tue == group.date -> {
                                     tviewRank3.visibility = View.VISIBLE
                                     iviewRank3.setImageResource(R.drawable.ic_best_vt_24px)
                                     tviewRank3.text = group.number.toString()
+
                                 }
-                                week.thur == group.date -> {
+                                week.wed == group.date -> {
                                     tviewRank4.visibility = View.VISIBLE
                                     iviewRank4.setImageResource(R.drawable.ic_best_vt_24px)
                                     tviewRank4.text = group.number.toString()
                                 }
-                                week.fri == group.date -> {
+                                week.thur == group.date -> {
                                     tviewRank5.visibility = View.VISIBLE
                                     iviewRank5.setImageResource(R.drawable.ic_best_vt_24px)
                                     tviewRank5.text = group.number.toString()
+
                                 }
-                                week.sat == group.date -> {
+                                week.fri == group.date -> {
                                     tviewRank6.visibility = View.VISIBLE
                                     iviewRank6.setImageResource(R.drawable.ic_best_vt_24px)
                                     tviewRank6.text = group.number.toString()
+
                                 }
-                                week.sun == group.date -> {
+                                week.sat == group.date -> {
                                     tviewRank7.visibility = View.VISIBLE
                                     iviewRank7.setImageResource(R.drawable.ic_best_vt_24px)
                                     tviewRank7.text = group.number.toString()
+                                }
+                            }
+
+                            Log.d("@@@@", item.date)
+
+                            when {
+                                week!!.sun == DBDate.DateMMDD() -> {
+                                    iviewRank1.setImageResource(R.drawable.ic_best_gn_24px)
+                                    tviewRank1.text = (pos + 1).toString()
+                                }
+                                week.mon == DBDate.DateMMDD() -> {
+                                    iviewRank2.setImageResource(R.drawable.ic_best_gn_24px)
+                                    tviewRank2.text = (pos + 1).toString()
+                                }
+                                week.tue == DBDate.DateMMDD() -> {
+                                    iviewRank3.setImageResource(R.drawable.ic_best_gn_24px)
+                                    tviewRank3.text = (pos + 1).toString()
+                                }
+                                week.wed == DBDate.DateMMDD() -> {
+                                    iviewRank4.setImageResource(R.drawable.ic_best_gn_24px)
+                                    tviewRank4.text = (pos + 1).toString()
+                                }
+                                week.thur == DBDate.DateMMDD() -> {
+                                    iviewRank5.setImageResource(R.drawable.ic_best_gn_24px)
+                                    tviewRank5.text = (pos + 1).toString()
+                                }
+                                week.fri == DBDate.DateMMDD() -> {
+                                    iviewRank6.setImageResource(R.drawable.ic_best_gn_24px)
+                                    tviewRank6.text = (pos + 1).toString()
+                                }
+                                week.sat == DBDate.DateMMDD() -> {
+                                    iviewRank7.setImageResource(R.drawable.ic_best_gn_24px)
+                                    tviewRank7.text = (pos + 1).toString()
                                 }
                             }
                         }

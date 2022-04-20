@@ -103,7 +103,7 @@ class FragmentPickTabNovel : Fragment() {
                 )
 
                 if(type == "Img"){
-                    val mBottomDialogBest = BottomDialogBest(requireContext(), data, item.status, cate)
+                    val mBottomDialogBest = BottomDialogBest(requireContext(), data, item.status, cate, item.number)
                     fragmentManager?.let { mBottomDialogBest.show(it, null) }
                 } else if(type == "Confirm"){
 

@@ -141,23 +141,23 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
 
         for (i in week.indices) {
 
-            ref["writerName"] = week[i].writer!!
-            ref["subject"] = week[i].title!!
-            ref["bookImg"] = week[i].bookImg!!
-            ref["bookCode"] = week[i].bookCode!!
-            ref["info1"] = week[i].info1!!
-            ref["info2"] = week[i].info2!!
-            ref["info3"] = week[i].info3!!
-            ref["info4"] = week[i].info4!!
-            ref["info5"] = week[i].info5!!
-            ref["number"] = week[i].number!!
+            ref["writerName"] = week[i].writer
+            ref["subject"] = week[i].title
+            ref["bookImg"] = week[i].bookImg
+            ref["bookCode"] = week[i].bookCode
+            ref["info1"] = week[i].info1
+            ref["info2"] = week[i].info2
+            ref["info3"] = week[i].info3
+            ref["info4"] = week[i].info4
+            ref["info5"] = week[i].info5
+            ref["number"] = week[i].number
             ref["numberDiff"] = 0
-            ref["date"] = week[i].date!!
-            ref["status"] = week[i].status!!
+            ref["date"] = week[i].date
+            ref["status"] = week[i].status
 
             items.add(BestRef.setBookListDataBestToday(ref))
             val cmpAsc: Comparator<BookListDataBestToday?> =
-                Comparator { o1, o2 -> o1!!.number!!.compareTo(o2!!.number!!) }
+                Comparator { o1, o2 -> o1!!.number.compareTo(o2!!.number) }
             Collections.sort(items, cmpAsc)
             adapterToday!!.notifyDataSetChanged()
 
@@ -168,7 +168,7 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
             override fun onItemClick(v: View?, position: Int) {
                 val item: BookListDataBestToday? = adapterToday!!.getItem(position)
 
-                val mBottomDialogBest = BottomDialogBest(requireContext(), item!!, tabType, cate)
+                val mBottomDialogBest = BottomDialogBest(requireContext(), item!!, tabType, cate, position)
                 fragmentManager?.let { mBottomDialogBest.show(it, null) }
             }
         })
@@ -177,7 +177,7 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
     private fun findBook(item: BookListDataBestToday?) {
         if (item != null) {
             if (adapterWeek!!.getSelectedBook() == item.title.toString()) {
-                val mBottomDialogBest = BottomDialogBest(requireContext(), item, tabType, cate)
+                val mBottomDialogBest = BottomDialogBest(requireContext(), item, tabType, cate, item.number)
                 fragmentManager?.let { mBottomDialogBest.show(it, null) }
                 adapterWeek!!.setSelectedBook("")
             } else {

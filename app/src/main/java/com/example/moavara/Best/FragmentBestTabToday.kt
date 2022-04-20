@@ -91,17 +91,7 @@ class FragmentBestTabToday(private val tabType: String) :
                 adapterToday!!.notifyDataSetChanged()
                 getBookListToday(itemsYesterday)
             }
-            override fun onCancelled(databaseError: DatabaseError) {
-            }
-        })
-
-        adapterToday!!.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
-            override fun onItemClick(v: View?, position: Int) {
-                val item: BookListDataBestToday? = adapterToday!!.getItem(position)
-
-                val mBottomDialogBest = BottomDialogBest(requireContext(), item!!, tabType, cate)
-                fragmentManager?.let { mBottomDialogBest.show(it, null) }
-            }
+            override fun onCancelled(databaseError: DatabaseError) {}
         })
     }
 
@@ -136,7 +126,15 @@ class FragmentBestTabToday(private val tabType: String) :
                 }
 
             }
-            override fun onCancelled(databaseError: DatabaseError) {
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
+
+        adapterToday!!.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
+            override fun onItemClick(v: View?, position: Int) {
+                val item: BookListDataBestToday? = adapterToday!!.getItem(position)
+
+                val mBottomDialogBest = BottomDialogBest(requireContext(), item!!, tabType, cate, position)
+                fragmentManager?.let { mBottomDialogBest.show(it, null) }
             }
         })
     }
