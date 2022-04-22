@@ -6,7 +6,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import com.example.moavara.Search.BestType
+import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.Mining
+import com.example.moavara.Util.Mining.getWeekCompared
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Retrofit
@@ -31,6 +34,13 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) : Wo
             Mining.runMining(applicationContext, "ROMANCE")
             Mining.runMining(applicationContext, "BL")
             Mining.runMining(applicationContext, "FANTASY")
+
+//            for(i in BestRef.typeList().indices){
+//                getWeekCompared(BestRef.typeList()[i], "ALL")
+//                getWeekCompared(BestRef.typeList()[i], "ROMANCE")
+//                getWeekCompared(BestRef.typeList()[i], "BL")
+//                getWeekCompared(BestRef.typeList()[i], "FANTASY")
+//            }
         }.start()
 
         val fcmBody = DataFCMBody(

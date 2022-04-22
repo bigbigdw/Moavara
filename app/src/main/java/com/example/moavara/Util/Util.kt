@@ -141,7 +141,7 @@ object BestRef {
     }
 
     fun setBestRefWeekCompared(type: String, num: Int, genre: String): DatabaseReference {
-        return setBestRef(type, genre).child("week-list")
+        return setBestRef(type, genre).child("week-list2")
             .child(((DBDate.DayInt() * 1000) + num).toString())
     }
 
@@ -832,6 +832,9 @@ object Mining {
 
         BestRef.setBestRefMonthDay(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
 
+    }
+
+    fun getWeekCompared(type: String, cate: String){
         val yesterdayRef = mRootRef.child("best").child(type).child(cate).child("today").child(
             DBDate.Yesterday()
         )
@@ -861,6 +864,7 @@ object Mining {
                         )
                     )
                 }
+                Log.d("@@@@@", "STEP 1")
                 getBookListToday(itemsYesterday, type, cate)
             }
             override fun onCancelled(databaseError: DatabaseError) {}
@@ -875,38 +879,82 @@ object Mining {
         }
 
         var num = 1
-        val items = ArrayList<BookListDataBestToday?>()
 
-        BestRef.getBestRefToday(tabType, cate).addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (postSnapshot in dataSnapshot.children) {
-                    val group: BookListDataBestToday? =
-                        postSnapshot.getValue(BookListDataBestToday::class.java)
-                    items.add(
-                        BookListDataBestToday(
-                            group!!.writer,
-                            group.title,
-                            group.bookImg,
-                            group.bookCode,
-                            group.info1,
-                            group.info2,
-                            group.info3,
-                            group.info4,
-                            group.info5,
-                            group.number,
-                            calculateNum(group.number, group.title, itemsYesterday),
-                            group.date,
-                            status
-                        )
-                    )
+        Log.d("@@@@", "STEP 2")
 
-                    BestRef.setBestRefWeekCompared(tabType, num, cate).setValue(items)
-                    num += 1
-                }
+//        val TodayRef = mRootRef.child("best").child("JOARA").child("FANTASY").child("today").child(DBDate.Day())
+//
+//        TodayRef.get().addValueEventListener(object : ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                for (postSnapshot in dataSnapshot.children) {
+//                    val group: BookListDataBestToday? =
+//                        postSnapshot.getValue(BookListDataBestToday::class.java)
+//
+//                    val ref: MutableMap<String?, Any> = HashMap()
+//
+//                    ref["writerName"] = group!!.writer
+//                    ref["subject"] = group.title
+//                    ref["bookImg"] = group.bookImg
+//                    ref["bookCode"] = group.bookCode
+//                    ref["info1"] = group.info1
+//                    ref["info2"] = group.info2
+//                    ref["info3"] = group.info3
+//                    ref["info4"] = group.info4
+//                    ref["info5"] = group.info5
+//                    ref["number"] = group.number
+//                    ref["numberDiff"] = calculateNum(group.number, group.title, itemsYesterday)
+//                    ref["date"] = DBDate.DateMMDD()
+//                    ref["type"] = tabType
+//                    ref["status"] = status
+//
+//                    BestRef.setBestRefWeekCompared(tabType, num, cate)
+//                        .setValue(BestRef.setBookListDataBestToday(ref))
+//                    num += 1
+//
+//                    Log.d("@@@@", "STEP 2 SUCCESS")
+//                }
+//
+//            }
+//            override fun onCancelled(databaseError: DatabaseError) {
+//                Log.d("@@@@", "CANCELED")
+//            }
+//
+//        })
 
+        BestRef.getBestRefToday(tabType, cate).get().addOnSuccessListener {
+
+            for (i in (1000 * DBDate.DayInt())..((1000 * DBDate.DayInt()) + 999)) {
+                BestRef.setBestRef(tabType, cate).child("week-list")
+                    .child(i.toString()).removeValue()
             }
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
+
+            for (i in it.children) {
+                val group: BookListDataBestToday? = i.getValue(BookListDataBestToday::class.java)
+                val ref: MutableMap<String?, Any> = HashMap()
+
+                if (calculateNum(group!!.number, group.title, itemsYesterday) != 999) {
+
+                    ref["writerName"] = group.writer
+                    ref["subject"] = group.title
+                    ref["bookImg"] = group.bookImg
+                    ref["bookCode"] = group.bookCode
+                    ref["info1"] = group.info1
+                    ref["info2"] = group.info2
+                    ref["info3"] = group.info3
+                    ref["info4"] = group.info4
+                    ref["info5"] = group.info5
+                    ref["number"] = group.number
+                    ref["numberDiff"] = calculateNum(group.number, group.title, itemsYesterday)
+                    ref["date"] = DBDate.DateMMDD()
+                    ref["type"] = tabType
+                    ref["status"] = status
+
+                    BestRef.setBestRefWeekCompared(tabType, num, cate)
+                        .setValue(BestRef.setBookListDataBestToday(ref))
+                }
+                num += 1
+            }
+        }.addOnFailureListener {}
     }
 
 

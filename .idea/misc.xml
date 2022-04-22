@@ -120,7 +120,7 @@
         <entry key="app/src/main/res/layout/item_booklist_best_month.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_booklist_best_weekend_sub.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_event.xml" value="0.1" />
-        <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.25" />
+        <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.1" />
       </map>
     </option>
   </component>

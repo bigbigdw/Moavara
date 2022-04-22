@@ -19,6 +19,7 @@ import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Genre
+import com.example.moavara.Util.Mining
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.messaging.FirebaseMessaging
 import java.util.*
@@ -87,6 +88,8 @@ class ActivityMain : AppCompatActivity() {
         setRoomBest("Ridi")
         setRoomBest("OneStore")
         setRoomBest("MrBlue")
+
+        Mining.getWeekCompared("JOARA", "FANTASY")
     }
 
     private fun setRoomBest(type: String) {
@@ -122,6 +125,13 @@ class ActivityMain : AppCompatActivity() {
 
         var num = 1
 
+//        for (i in BestRef.typeList().indices) {
+//            Mining.getWeekCompared(BestRef.typeList()[i], "ALL")
+//            Mining.getWeekCompared(BestRef.typeList()[i], "ROMANCE")
+//            Mining.getWeekCompared(BestRef.typeList()[i], "BL")
+//            Mining.getWeekCompared(BestRef.typeList()[i], "FANTASY")
+//        }
+        
         BestRef.getBestRefToday(type, cate).get().addOnSuccessListener {
 
             for (i in (1000 * DBDate.DayInt())..((1000 * DBDate.DayInt()) + 999)) {

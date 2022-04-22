@@ -14,10 +14,15 @@
     <item
         android:id="@+id/Fragment_Event"
         android:icon="@drawable/ic_event_vt_24px"
-        android:title="@string/Event_Title" />
+        android:title="이벤트" />
 
     <item
         android:id="@+id/Fragment_Pick"
+        android:icon="@drawable/ic_board_vt_24px"
+        android:title="@string/Title_Pick" />
+
+    <item
+        android:id="@+id/Fragment_Pick2"
         android:icon="@drawable/ic_board_vt_24px"
         android:title="@string/Title_Pick" />
 
