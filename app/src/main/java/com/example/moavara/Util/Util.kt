@@ -17,6 +17,7 @@ import com.example.moavara.Main.mRootRef
 import com.example.moavara.OneStore.OneStoreBookResult
 import com.example.moavara.OneStore.RetrofitOnestore
 import com.example.moavara.Search.BookListDataBestToday
+import com.example.moavara.Search.CalculNum
 import com.example.moavara.Util.DBDate.status
 import com.google.firebase.database.*
 import org.jsoup.Jsoup
@@ -141,7 +142,7 @@ object BestRef {
     }
 
     fun setBestRefWeekCompared(type: String, num: Int, genre: String): DatabaseReference {
-        return setBestRef(type, genre).child("week-list2")
+        return setBestRef(type, genre).child("week-list")
             .child(((DBDate.DayInt() * 1000) + num).toString())
     }
 
@@ -373,7 +374,6 @@ object Genre {
 
 object Mining {
     fun runMining(context: Context, cate: String) {
-        Log.d("JOB","MINING")
         getRidiBest(context, cate)
         getOneStoreBest(context, cate)
         getKakaoBest(cate)
@@ -394,25 +394,62 @@ object Mining {
         val MrBlue: Elements = doc.select(".list-box ul li")
         val MrBlueRef: MutableMap<String?, Any> = HashMap()
 
-        for (i in MrBlue.indices) {
+        val yesterdayRef = mRootRef.child("best").child("MrBlue").child(cate).child("today").child(
+            DBDate.Yesterday()
+        )
 
-            MrBlueRef["writerName"] = MrBlue.select(".txt-box .name > a")[i].attr("title")
-            MrBlueRef["subject"] = MrBlue.select(".tit > a")[i].attr("title")
-            MrBlueRef["bookImg"] = MrBlue.select(".img img")[i].absUrl("src")
-            MrBlueRef["bookCode"] = MrBlue.select(".txt-box a")[i].absUrl("href")
-            MrBlueRef["info1"] = MrBlue.select(".txt-box .name > a")[i].absUrl("href")
-            MrBlueRef["info2"] = " "
-            MrBlueRef["info3"] = " "
-            MrBlueRef["info4"] = " "
-            MrBlueRef["info5"] = " "
-            MrBlueRef["number"] = i
-            MrBlueRef["numberDiff"] = 0
-            MrBlueRef["date"] = DBDate.DateMMDD()
-            MrBlueRef["status"] = ""
+        val itemsYesterday = ArrayList<BookListDataBestToday?>()
 
-            miningValue(MrBlueRef, i, "MrBlue", cate)
+        yesterdayRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+                    val group: BookListDataBestToday? =
+                        postSnapshot.getValue(BookListDataBestToday::class.java)
+                    itemsYesterday.add(
+                        BookListDataBestToday(
+                            group!!.writer,
+                            group.title,
+                            group.bookImg,
+                            group.bookCode,
+                            group.info1,
+                            group.info2,
+                            group.info3,
+                            group.info4,
+                            group.info5,
+                            group.number,
+                            group.numberDiff,
+                            group.date,
+                            group.status
+                        )
+                    )
+                }
 
-        }
+                for (i in MrBlue.indices) {
+
+                    val title = MrBlue.select(".tit > a")[i].attr("title")
+
+                    MrBlueRef["writerName"] = MrBlue.select(".txt-box .name > a")[i].attr("title")
+                    MrBlueRef["subject"] = title
+                    MrBlueRef["bookImg"] = MrBlue.select(".img img")[i].absUrl("src")
+                    MrBlueRef["bookCode"] = MrBlue.select(".txt-box a")[i].absUrl("href")
+                    MrBlueRef["info1"] = MrBlue.select(".txt-box .name > a")[i].absUrl("href")
+                    MrBlueRef["info2"] = " "
+                    MrBlueRef["info3"] = " "
+                    MrBlueRef["info4"] = " "
+                    MrBlueRef["info5"] = " "
+                    MrBlueRef["number"] = i
+                    MrBlueRef["numberDiff"] = calculateNum(i, title, itemsYesterday).num
+                    MrBlueRef["date"] = DBDate.DateMMDD()
+                    MrBlueRef["status"] = calculateNum(i, title, itemsYesterday).status
+
+                    miningValue(MrBlueRef, i, "MrBlue", cate)
+
+                }
+            }
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
+
+
 
     }
 
@@ -423,26 +460,60 @@ object Mining {
         val Naver: Elements = doc.select(".ranking_wrap_left .list_ranking li")
         val NaverRef: MutableMap<String?, Any> = HashMap()
 
-        for (i in Naver.indices) {
+        val yesterdayRef = mRootRef.child("best").child("Naver Today").child(cate).child("today").child(
+            DBDate.Yesterday()
+        )
 
-            NaverRef["writerName"] = Naver.select(".author")[i].text()
-            NaverRef["subject"] = Naver.select(".tit")[i].text()
-            NaverRef["bookImg"] = Naver.select("div img")[i].absUrl("src")
-            NaverRef["bookCode"] = Naver.select("a")[i].absUrl("href")
-            NaverRef["info1"] = Naver[i].select(".num_total").first()!!.text()
-            NaverRef["info2"] = Naver[i].select(".num_total").next().first()!!.text()
-            NaverRef["info3"] = Naver.select(".count")[i].text()
-            NaverRef["info4"] = Naver.select(".score_area")[i].text()
-            NaverRef["info5"] = ""
-            NaverRef["number"] = i
-            NaverRef["numberDiff"] = 0
-            NaverRef["date"] = DBDate.DateMMDD()
-            NaverRef["status"] = ""
+        val itemsYesterday = ArrayList<BookListDataBestToday?>()
 
-            miningValue(NaverRef, i, "Naver Today", cate)
+        yesterdayRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+                    val group: BookListDataBestToday? =
+                        postSnapshot.getValue(BookListDataBestToday::class.java)
+                    itemsYesterday.add(
+                        BookListDataBestToday(
+                            group!!.writer,
+                            group.title,
+                            group.bookImg,
+                            group.bookCode,
+                            group.info1,
+                            group.info2,
+                            group.info3,
+                            group.info4,
+                            group.info5,
+                            group.number,
+                            group.numberDiff,
+                            group.date,
+                            group.status
+                        )
+                    )
+                }
 
-        }
+                for (i in Naver.indices) {
 
+                    val title = Naver.select(".tit")[i].text()
+
+                    NaverRef["writerName"] = Naver.select(".author")[i].text()
+                    NaverRef["subject"] = title
+                    NaverRef["bookImg"] = Naver.select("div img")[i].absUrl("src")
+                    NaverRef["bookCode"] = Naver.select("a")[i].absUrl("href")
+                    NaverRef["info1"] = Naver[i].select(".num_total").first()!!.text()
+                    NaverRef["info2"] = Naver[i].select(".num_total").next().first()!!.text()
+                    NaverRef["info3"] = Naver.select(".count")[i].text()
+                    NaverRef["info4"] = Naver.select(".score_area")[i].text()
+                    NaverRef["info5"] = ""
+                    NaverRef["number"] = i
+                    NaverRef["numberDiff"] = calculateNum(i, title, itemsYesterday).num
+                    NaverRef["date"] = DBDate.DateMMDD()
+                    NaverRef["status"] = calculateNum(i, title, itemsYesterday).status
+
+                    miningValue(NaverRef, i, "Naver Today", cate)
+
+                }
+            }
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
     }
 
     private fun getNaverChallenge(context: Context, cate: String) {
@@ -452,26 +523,60 @@ object Mining {
         val Naver: Elements = doc.select(".ranking_wrap_left .list_ranking li")
         val NaverRef: MutableMap<String?, Any> = HashMap()
 
-        for (i in Naver.indices) {
+        val yesterdayRef = mRootRef.child("best").child("Naver Challenge").child(cate).child("today").child(
+            DBDate.Yesterday()
+        )
 
-            NaverRef["writerName"] = Naver.select(".author")[i].text()
-            NaverRef["subject"] = Naver.select(".tit")[i].text()
-            NaverRef["bookImg"] = Naver.select("div img")[i].absUrl("src")
-            NaverRef["bookCode"] = Naver.select("a")[i].absUrl("href")
-            NaverRef["info1"] = Naver[i].select(".num_total").first()!!.text()
-            NaverRef["info2"] = Naver[i].select(".num_total").next().first()!!.text()
-            NaverRef["info3"] = Naver.select(".count")[i].text()
-            NaverRef["info4"] = Naver.select(".score_area")[i].text()
-            NaverRef["info5"] = ""
-            NaverRef["number"] = i
-            NaverRef["numberDiff"] = 0
-            NaverRef["date"] = DBDate.DateMMDD()
-            NaverRef["status"] = ""
+        val itemsYesterday = ArrayList<BookListDataBestToday?>()
 
-            miningValue(NaverRef, i, "Naver Challenge", cate)
+        yesterdayRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+                    val group: BookListDataBestToday? =
+                        postSnapshot.getValue(BookListDataBestToday::class.java)
+                    itemsYesterday.add(
+                        BookListDataBestToday(
+                            group!!.writer,
+                            group.title,
+                            group.bookImg,
+                            group.bookCode,
+                            group.info1,
+                            group.info2,
+                            group.info3,
+                            group.info4,
+                            group.info5,
+                            group.number,
+                            group.numberDiff,
+                            group.date,
+                            group.status
+                        )
+                    )
+                }
 
-        }
+                for (i in Naver.indices) {
 
+                    val title = Naver.select(".tit")[i].text()
+
+                    NaverRef["writerName"] = Naver.select(".author")[i].text()
+                    NaverRef["subject"] = title
+                    NaverRef["bookImg"] = Naver.select("div img")[i].absUrl("src")
+                    NaverRef["bookCode"] = Naver.select("a")[i].absUrl("href")
+                    NaverRef["info1"] = Naver[i].select(".num_total").first()!!.text()
+                    NaverRef["info2"] = Naver[i].select(".num_total").next().first()!!.text()
+                    NaverRef["info3"] = Naver.select(".count")[i].text()
+                    NaverRef["info4"] = Naver.select(".score_area")[i].text()
+                    NaverRef["info5"] = ""
+                    NaverRef["number"] = i
+                    NaverRef["numberDiff"] = calculateNum(i, title, itemsYesterday).num
+                    NaverRef["date"] = DBDate.DateMMDD()
+                    NaverRef["status"] = calculateNum(i, title, itemsYesterday).status
+
+                    miningValue(NaverRef, i, "Naver Challenge", cate)
+
+                }
+            }
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
     }
 
     private fun getNaverBest(context: Context, cate: String) {
@@ -481,25 +586,63 @@ object Mining {
         val Naver: Elements = doc.select(".ranking_wrap_left .list_ranking li")
         val NaverRef: MutableMap<String?, Any> = HashMap()
 
-        for (i in Naver.indices) {
 
-            NaverRef["writerName"] = Naver.select(".author")[i].text()
-            NaverRef["subject"] = Naver.select(".tit")[i].text()
-            NaverRef["bookImg"] = Naver.select("div img")[i].absUrl("src")
-            NaverRef["bookCode"] = Naver.select("a")[i].absUrl("href")
-            NaverRef["info1"] = Naver[i].select(".num_total").first()!!.text()
-            NaverRef["info2"] = Naver[i].select(".num_total").next().first()!!.text()
-            NaverRef["info3"] = Naver.select(".count")[i].text()
-            NaverRef["info4"] = Naver.select(".score_area")[i].text()
-            NaverRef["info5"] = ""
-            NaverRef["number"] = i
-            NaverRef["numberDiff"] = 0
-            NaverRef["date"] = DBDate.DateMMDD()
-            NaverRef["status"] = ""
+        val yesterdayRef = mRootRef.child("best").child("Naver").child(cate).child("today").child(
+            DBDate.Yesterday()
+        )
 
-            miningValue(NaverRef, i, "Naver", cate)
+        val itemsYesterday = ArrayList<BookListDataBestToday?>()
 
-        }
+        yesterdayRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+                    val group: BookListDataBestToday? =
+                        postSnapshot.getValue(BookListDataBestToday::class.java)
+                    itemsYesterday.add(
+                        BookListDataBestToday(
+                            group!!.writer,
+                            group.title,
+                            group.bookImg,
+                            group.bookCode,
+                            group.info1,
+                            group.info2,
+                            group.info3,
+                            group.info4,
+                            group.info5,
+                            group.number,
+                            group.numberDiff,
+                            group.date,
+                            group.status
+                        )
+                    )
+                }
+
+                for (i in Naver.indices) {
+
+                    val title = Naver.select(".tit")[i].text()
+
+                    NaverRef["writerName"] = Naver.select(".author")[i].text()
+                    NaverRef["subject"] = title
+                    NaverRef["bookImg"] = Naver.select("div img")[i].absUrl("src")
+                    NaverRef["bookCode"] = Naver.select("a")[i].absUrl("href")
+                    NaverRef["info1"] = Naver[i].select(".num_total").first()!!.text()
+                    NaverRef["info2"] = Naver[i].select(".num_total").next().first()!!.text()
+                    NaverRef["info3"] = Naver.select(".count")[i].text()
+                    NaverRef["info4"] = Naver.select(".score_area")[i].text()
+                    NaverRef["info5"] = ""
+                    NaverRef["number"] = i
+                    NaverRef["numberDiff"] = calculateNum(i, title, itemsYesterday).num
+                    NaverRef["date"] = DBDate.DateMMDD()
+                    NaverRef["status"] = calculateNum(i, title, itemsYesterday).status
+
+                    miningValue(NaverRef, i, "Naver", cate)
+
+                }
+            }
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
+
+
 
     }
 
@@ -510,26 +653,60 @@ object Mining {
         val Ridi: Elements = doc.select(".book_thumbnail_wrapper")
         val RidiRef: MutableMap<String?, Any> = HashMap()
 
-        for (i in Ridi.indices) {
+        val yesterdayRef = mRootRef.child("best").child("Ridi").child(cate).child("today").child(
+            DBDate.Yesterday()
+        )
 
-            RidiRef["writerName"] = doc.select("div .author_detail_link")[i].text()
-            RidiRef["subject"] = doc.select("div .title_link")[i].text()
-            RidiRef["bookImg"] = Ridi.select(".thumbnail_image .thumbnail")[i].absUrl("data-src")
-            RidiRef["bookCode"] = Ridi.select("a")[i].absUrl("href")
-            RidiRef["info1"] = doc.select(".count_num")[i].text()
-            RidiRef["info2"] = "추천 수 : " + doc.select("span .StarRate_ParticipantCount")[i].text()
-            RidiRef["info3"] = "평점 : " + doc.select("span .StarRate_Score")[i].text()
-            RidiRef["info4"] = " "
-            RidiRef["info5"] = " "
-            RidiRef["number"] = i
-            RidiRef["numberDiff"] = 0
-            RidiRef["date"] = DBDate.DateMMDD()
-            RidiRef["status"] = ""
+        val itemsYesterday = ArrayList<BookListDataBestToday?>()
 
-            miningValue(RidiRef, i, "Ridi", cate)
+        yesterdayRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+                    val group: BookListDataBestToday? =
+                        postSnapshot.getValue(BookListDataBestToday::class.java)
+                    itemsYesterday.add(
+                        BookListDataBestToday(
+                            group!!.writer,
+                            group.title,
+                            group.bookImg,
+                            group.bookCode,
+                            group.info1,
+                            group.info2,
+                            group.info3,
+                            group.info4,
+                            group.info5,
+                            group.number,
+                            group.numberDiff,
+                            group.date,
+                            group.status
+                        )
+                    )
+                }
 
-        }
+                for (i in Ridi.indices) {
 
+                    val title = doc.select("div .title_link")[i].text()
+
+                    RidiRef["writerName"] = doc.select("div .author_detail_link")[i].text()
+                    RidiRef["subject"] = doc.select("div .title_link")[i].text()
+                    RidiRef["bookImg"] = Ridi.select(".thumbnail_image .thumbnail")[i].absUrl("data-src")
+                    RidiRef["bookCode"] = Ridi.select("a")[i].absUrl("href")
+                    RidiRef["info1"] = doc.select(".count_num")[i].text()
+                    RidiRef["info2"] = "추천 수 : " + doc.select("span .StarRate_ParticipantCount")[i].text()
+                    RidiRef["info3"] = "평점 : " + doc.select("span .StarRate_Score")[i].text()
+                    RidiRef["info4"] = ""
+                    RidiRef["info5"] = ""
+                    RidiRef["number"] = i
+                    RidiRef["numberDiff"] = calculateNum(i, title, itemsYesterday).num
+                    RidiRef["date"] = DBDate.DateMMDD()
+                    RidiRef["status"] = calculateNum(i, title, itemsYesterday).status
+
+                    miningValue(RidiRef, i, "Ridi", cate)
+
+                }
+            }
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
     }
 
     private fun getOneStoreBest(context: Context, cate: String) {
@@ -538,43 +715,76 @@ object Mining {
         val call: Call<OneStoreBookResult?>? =
             RetrofitOnestore.getBestOneStore(Genre.setOneStoreGenre(context))
 
-        call!!.enqueue(object : Callback<OneStoreBookResult?> {
-            override fun onResponse(
-                call: Call<OneStoreBookResult?>,
-                response: Response<OneStoreBookResult?>
-            ) {
+        val yesterdayRef = mRootRef.child("best").child("OneStore").child(cate).child("today").child(
+            DBDate.Yesterday()
+        )
 
-                if (response.isSuccessful) {
-                    response.body()?.let { it ->
-                        val productList = it.params!!.productList
+        val itemsYesterday = ArrayList<BookListDataBestToday?>()
 
-                        for (i in productList!!.indices) {
+        yesterdayRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+                    val group: BookListDataBestToday? =
+                        postSnapshot.getValue(BookListDataBestToday::class.java)
+                    itemsYesterday.add(
+                        BookListDataBestToday(
+                            group!!.writer,
+                            group.title,
+                            group.bookImg,
+                            group.bookCode,
+                            group.info1,
+                            group.info2,
+                            group.info3,
+                            group.info4,
+                            group.info5,
+                            group.number,
+                            group.numberDiff,
+                            group.date,
+                            group.status
+                        )
+                    )
+                }
 
-                            OneStoryRef["writerName"] = productList[i].artistNm
-                            OneStoryRef["subject"] = productList[i].prodNm
-                            OneStoryRef["bookImg"] =
-                                "https://img.onestore.co.kr/thumbnails/img_sac/224_320_F10_95/" + productList[i].thumbnailImageUrl!!
-                            OneStoryRef["bookCode"] = productList[i].prodId
-                            OneStoryRef["info1"] = "조회 수 : " + productList[i].totalCount
-                            OneStoryRef["info2"] = "평점 : " + productList[i].avgScore
-                            OneStoryRef["info3"] = "댓글 수 : " + productList[i].commentCount
-                            OneStoryRef["info4"] = " "
-                            OneStoryRef["info5"] = " "
-                            OneStoryRef["number"] = i
-                            OneStoryRef["numberDiff"] = 0
-                            OneStoryRef["date"] = DBDate.DateMMDD()
-                            OneStoryRef["status"] = ""
+                call!!.enqueue(object : Callback<OneStoreBookResult?> {
+                    override fun onResponse(
+                        call: Call<OneStoreBookResult?>,
+                        response: Response<OneStoreBookResult?>
+                    ) {
 
-                            miningValue(OneStoryRef, i, "OneStore", cate)
+                        if (response.isSuccessful) {
+                            response.body()?.let { it ->
+                                val productList = it.params!!.productList
 
+                                for (i in productList!!.indices) {
+
+                                    OneStoryRef["writerName"] = productList[i].artistNm
+                                    OneStoryRef["subject"] = productList[i].prodNm
+                                    OneStoryRef["bookImg"] =
+                                        "https://img.onestore.co.kr/thumbnails/img_sac/224_320_F10_95/" + productList[i].thumbnailImageUrl!!
+                                    OneStoryRef["bookCode"] = productList[i].prodId
+                                    OneStoryRef["info1"] = "조회 수 : " + productList[i].totalCount
+                                    OneStoryRef["info2"] = "평점 : " + productList[i].avgScore
+                                    OneStoryRef["info3"] = "댓글 수 : " + productList[i].commentCount
+                                    OneStoryRef["info4"] = " "
+                                    OneStoryRef["info5"] = " "
+                                    OneStoryRef["number"] = i
+                                    OneStoryRef["numberDiff"] = calculateNum(i, productList[i].prodNm, itemsYesterday).num
+                                    OneStoryRef["date"] = DBDate.DateMMDD()
+                                    OneStoryRef["status"] = calculateNum(i, productList[i].prodNm, itemsYesterday).status
+
+                                    miningValue(OneStoryRef, i, "OneStore", cate)
+
+                                }
+                            }
                         }
                     }
-                }
-            }
 
-            override fun onFailure(call: Call<OneStoreBookResult?>, t: Throwable) {
-                Log.d("onFailure", "실패")
+                    override fun onFailure(call: Call<OneStoreBookResult?>, t: Throwable) {
+                        Log.d("onFailure", "실패")
+                    }
+                })
             }
+            override fun onCancelled(databaseError: DatabaseError) {}
         })
 
     }
@@ -589,44 +799,77 @@ object Mining {
             "72"
         )
 
-        call!!.enqueue(object : Callback<List<BestResultKakaoStageNovel>?> {
-            override fun onResponse(
-                call: Call<List<BestResultKakaoStageNovel>?>,
-                response: Response<List<BestResultKakaoStageNovel>?>
-            ) {
 
-                if (response.isSuccessful) {
-                    response.body()?.let { it ->
+        val yesterdayRef = mRootRef.child("best").child("Kakao Stage").child(cate).child("today").child(
+            DBDate.Yesterday()
+        )
 
-                        val list = it
+        val itemsYesterday = ArrayList<BookListDataBestToday?>()
 
-                        for (i in list.indices) {
-                            val novel = list[i].novel
-                            KakaoRef["writerName"] = novel!!.nickname!!.name
-                            KakaoRef["subject"] = novel.title
-                            KakaoRef["bookImg"] = novel.thumbnail!!.url
-                            KakaoRef["bookCode"] = novel.stageSeriesNumber
-                            KakaoRef["info1"] = "줄거리 : " + novel.synopsis
-                            KakaoRef["info2"] = "총" + novel.publishedEpisodeCount + " 화"
-                            KakaoRef["info3"] = "조회 수 : " + novel.viewCount
-                            KakaoRef["info4"] = "선호작 수 : " + novel.visitorCount
-                            KakaoRef["info5"] = ""
-                            KakaoRef["number"] = i
-                            KakaoRef["numberDiff"] = 0
-                            KakaoRef["date"] = DBDate.DateMMDD()
-                            KakaoRef["status"] = ""
+        yesterdayRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+                    val group: BookListDataBestToday? =
+                        postSnapshot.getValue(BookListDataBestToday::class.java)
+                    itemsYesterday.add(
+                        BookListDataBestToday(
+                            group!!.writer,
+                            group.title,
+                            group.bookImg,
+                            group.bookCode,
+                            group.info1,
+                            group.info2,
+                            group.info3,
+                            group.info4,
+                            group.info5,
+                            group.number,
+                            group.numberDiff,
+                            group.date,
+                            group.status
+                        )
+                    )
+                }
 
-                            miningValue(KakaoRef, i, "Kakao Stage", cate)
+                call!!.enqueue(object : Callback<List<BestResultKakaoStageNovel>?> {
+                    override fun onResponse(
+                        call: Call<List<BestResultKakaoStageNovel>?>,
+                        response: Response<List<BestResultKakaoStageNovel>?>
+                    ) {
+
+                        if (response.isSuccessful) {
+                            response.body()?.let { it ->
+
+                                val list = it
+
+                                for (i in list.indices) {
+                                    val novel = list[i].novel
+                                    KakaoRef["writerName"] = novel!!.nickname!!.name
+                                    KakaoRef["subject"] = novel.title
+                                    KakaoRef["bookImg"] = novel.thumbnail!!.url
+                                    KakaoRef["bookCode"] = novel.stageSeriesNumber
+                                    KakaoRef["info1"] = "줄거리 : " + novel.synopsis
+                                    KakaoRef["info2"] = "총" + novel.publishedEpisodeCount + " 화"
+                                    KakaoRef["info3"] = "조회 수 : " + novel.viewCount
+                                    KakaoRef["info4"] = "선호작 수 : " + novel.visitorCount
+                                    KakaoRef["info5"] = ""
+                                    KakaoRef["number"] = i
+                                    KakaoRef["numberDiff"] = calculateNum(i, novel.title, itemsYesterday).num
+                                    KakaoRef["date"] = DBDate.DateMMDD()
+                                    KakaoRef["status"] = calculateNum(i, novel.title, itemsYesterday).status
+
+                                    miningValue(KakaoRef, i, "Kakao Stage", cate)
+                                }
+                            }
                         }
                     }
-                }
-            }
 
-            override fun onFailure(call: Call<List<BestResultKakaoStageNovel>?>, t: Throwable) {
-                Log.d("onFailure", "실패")
+                    override fun onFailure(call: Call<List<BestResultKakaoStageNovel>?>, t: Throwable) {
+                        Log.d("onFailure", "실패")
+                    }
+                })
             }
+            override fun onCancelled(databaseError: DatabaseError) {}
         })
-
     }
 
     private fun getKakaoBest(cate: String) {
@@ -634,44 +877,80 @@ object Mining {
 
         val call: Call<BestResultKakao?>? = RetrofitKaKao.getBestKakao("11", "0", "0", "2", "A")
 
-        call!!.enqueue(object : Callback<BestResultKakao?> {
-            override fun onResponse(
-                call: Call<BestResultKakao?>,
-                response: Response<BestResultKakao?>
-            ) {
 
-                if (response.isSuccessful) {
-                    response.body()?.let { it ->
-                        val list = it.list
+        val yesterdayRef = mRootRef.child("best").child("Kakao").child(cate).child("today").child(
+            DBDate.Yesterday()
+        )
 
-                        for (i in list!!.indices) {
+        val itemsYesterday = ArrayList<BookListDataBestToday?>()
 
-                            KakaoRef["writerName"] = list[i].author
-                            KakaoRef["subject"] = list[i].title
-                            KakaoRef["bookImg"] =
-                                "https://dn-img-page.kakao.com/download/resource?kid=" + list[i].image!!
-                            KakaoRef["bookCode"] = list[i].series_id
-                            KakaoRef["info1"] = "줄거리 : " + list[i].description
-                            KakaoRef["info2"] = "부제 : " + list[i].caption
-                            KakaoRef["info3"] = "조회 수 : " + list[i].read_count
-                            KakaoRef["info4"] = "추천 수 : " + list[i].like_count
-                            KakaoRef["info5"] = "평점 : " + list[i].rating
-                            KakaoRef["number"] = i
-                            KakaoRef["numberDiff"] = 0
-                            KakaoRef["date"] = DBDate.DateMMDD()
-                            KakaoRef["status"] = ""
+        yesterdayRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+                    val group: BookListDataBestToday? =
+                        postSnapshot.getValue(BookListDataBestToday::class.java)
+                    itemsYesterday.add(
+                        BookListDataBestToday(
+                            group!!.writer,
+                            group.title,
+                            group.bookImg,
+                            group.bookCode,
+                            group.info1,
+                            group.info2,
+                            group.info3,
+                            group.info4,
+                            group.info5,
+                            group.number,
+                            group.numberDiff,
+                            group.date,
+                            group.status
+                        )
+                    )
+                }
 
-                            miningValue(KakaoRef, i, "Kakao", cate)
 
+                call!!.enqueue(object : Callback<BestResultKakao?> {
+                    override fun onResponse(
+                        call: Call<BestResultKakao?>,
+                        response: Response<BestResultKakao?>
+                    ) {
+
+                        if (response.isSuccessful) {
+                            response.body()?.let { it ->
+                                val list = it.list
+
+                                for (i in list!!.indices) {
+
+                                    KakaoRef["writerName"] = list[i].author
+                                    KakaoRef["subject"] = list[i].title
+                                    KakaoRef["bookImg"] =
+                                        "https://dn-img-page.kakao.com/download/resource?kid=" + list[i].image!!
+                                    KakaoRef["bookCode"] = list[i].series_id
+                                    KakaoRef["info1"] = "줄거리 : " + list[i].description
+                                    KakaoRef["info2"] = "부제 : " + list[i].caption
+                                    KakaoRef["info3"] = "조회 수 : " + list[i].read_count
+                                    KakaoRef["info4"] = "추천 수 : " + list[i].like_count
+                                    KakaoRef["info5"] = "평점 : " + list[i].rating
+                                    KakaoRef["number"] = i
+                                    KakaoRef["numberDiff"] = calculateNum(i, list[i].title, itemsYesterday).num
+                                    KakaoRef["date"] = DBDate.DateMMDD()
+                                    KakaoRef["status"] = calculateNum(i, list[i].title, itemsYesterday).status
+
+                                    miningValue(KakaoRef, i, "Kakao", cate)
+
+                                }
+                            }
                         }
                     }
-                }
-            }
 
-            override fun onFailure(call: Call<BestResultKakao?>, t: Throwable) {
-                Log.d("onFailure", "실패")
+                    override fun onFailure(call: Call<BestResultKakao?>, t: Throwable) {
+                        Log.d("onFailure", "실패")
+                    }
+                })
             }
+            override fun onCancelled(databaseError: DatabaseError) {}
         })
+
 
     }
 
@@ -681,43 +960,75 @@ object Mining {
         val call: Call<JoaraBestListResult?>? =
             RetrofitJoara.getJoaraBookBest("today", "", Genre.setJoaraGenre(context))
 
-        call!!.enqueue(object : Callback<JoaraBestListResult?> {
-            override fun onResponse(
-                call: Call<JoaraBestListResult?>,
-                response: Response<JoaraBestListResult?>
-            ) {
-                if (response.isSuccessful) {
-                    response.body()?.let { it ->
-                        val books = it.bookLists
+        val yesterdayRef = mRootRef.child("best").child("Joara").child(cate).child("today").child(
+            DBDate.Yesterday()
+        )
 
-                        for (i in books!!.indices) {
+        val itemsYesterday = ArrayList<BookListDataBestToday?>()
 
-                            JoaraRef["writerName"] = books[i].writerName
-                            JoaraRef["subject"] = books[i].subject
-                            JoaraRef["bookImg"] = books[i].bookImg
-                            JoaraRef["bookCode"] = books[i].bookCode
-                            JoaraRef["info1"] = "줄거리 : " + books[i].intro
-                            JoaraRef["info2"] = "총 " + books[i].cntChapter + " 화"
-                            JoaraRef["info3"] = "조회 수 : " + books[i].cntPageRead
-                            JoaraRef["info4"] = "선호작 수 : " + books[i].cntFavorite
-                            JoaraRef["info5"] = "추천 수 : " + books[i].cntRecom
-                            JoaraRef["number"] = i
-                            JoaraRef["numberDiff"] = 0
-                            JoaraRef["date"] = DBDate.DateMMDD()
-                            JoaraRef["status"] = ""
+        yesterdayRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+                    val group: BookListDataBestToday? =
+                        postSnapshot.getValue(BookListDataBestToday::class.java)
+                    itemsYesterday.add(
+                        BookListDataBestToday(
+                            group!!.writer,
+                            group.title,
+                            group.bookImg,
+                            group.bookCode,
+                            group.info1,
+                            group.info2,
+                            group.info3,
+                            group.info4,
+                            group.info5,
+                            group.number,
+                            group.numberDiff,
+                            group.date,
+                            group.status
+                        )
+                    )
+                }
 
-                            miningValue(JoaraRef, i, "Joara", cate)
+                call!!.enqueue(object : Callback<JoaraBestListResult?> {
+                    override fun onResponse(
+                        call: Call<JoaraBestListResult?>,
+                        response: Response<JoaraBestListResult?>
+                    ) {
+                        if (response.isSuccessful) {
+                            response.body()?.let { it ->
+                                val books = it.bookLists
 
+                                for (i in books!!.indices) {
+
+                                    JoaraRef["writerName"] = books[i].writerName
+                                    JoaraRef["subject"] = books[i].subject
+                                    JoaraRef["bookImg"] = books[i].bookImg
+                                    JoaraRef["bookCode"] = books[i].bookCode
+                                    JoaraRef["info1"] = "줄거리 : " + books[i].intro
+                                    JoaraRef["info2"] = "총 " + books[i].cntChapter + " 화"
+                                    JoaraRef["info3"] = "조회 수 : " + books[i].cntPageRead
+                                    JoaraRef["info4"] = "선호작 수 : " + books[i].cntFavorite
+                                    JoaraRef["info5"] = "추천 수 : " + books[i].cntRecom
+                                    JoaraRef["number"] = i
+                                    JoaraRef["numberDiff"] = calculateNum(i, books[i].subject, itemsYesterday).num
+                                    JoaraRef["date"] = DBDate.DateMMDD()
+                                    JoaraRef["status"] = calculateNum(i, books[i].subject, itemsYesterday).status
+
+                                    miningValue(JoaraRef, i, "Joara", cate)
+
+                                }
+                            }
                         }
                     }
-                }
-            }
 
-            override fun onFailure(call: Call<JoaraBestListResult?>, t: Throwable) {
-                Log.d("onFailure", "실패")
+                    override fun onFailure(call: Call<JoaraBestListResult?>, t: Throwable) {
+                        Log.d("onFailure", "실패")
+                    }
+                })
             }
+            override fun onCancelled(databaseError: DatabaseError) {}
         })
-
     }
 
     private fun getJoaraBestPremium(context: Context, cate: String) {
@@ -726,42 +1037,74 @@ object Mining {
         val call: Call<JoaraBestListResult?>? =
             RetrofitJoara.getJoaraBookBest("today", "premium", Genre.setJoaraGenre(context))
 
-        call!!.enqueue(object : Callback<JoaraBestListResult?> {
-            override fun onResponse(
-                call: Call<JoaraBestListResult?>,
-                response: Response<JoaraBestListResult?>
-            ) {
+        val yesterdayRef = mRootRef.child("best").child("Joara Premium").child(cate).child("today").child(
+            DBDate.Yesterday()
+        )
 
-                if (response.isSuccessful) {
-                    response.body()?.let { it ->
-                        val books = it.bookLists
+        val itemsYesterday = ArrayList<BookListDataBestToday?>()
 
-                        for (i in books!!.indices) {
+        yesterdayRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+                    val group: BookListDataBestToday? =
+                        postSnapshot.getValue(BookListDataBestToday::class.java)
+                    itemsYesterday.add(
+                        BookListDataBestToday(
+                            group!!.writer,
+                            group.title,
+                            group.bookImg,
+                            group.bookCode,
+                            group.info1,
+                            group.info2,
+                            group.info3,
+                            group.info4,
+                            group.info5,
+                            group.number,
+                            group.numberDiff,
+                            group.date,
+                            group.status
+                        )
+                    )
+                }
 
-                            JoaraRef["writerName"] = books[i].writerName
-                            JoaraRef["subject"] = books[i].subject
-                            JoaraRef["bookImg"] = books[i].bookImg
-                            JoaraRef["bookCode"] = books[i].bookCode
-                            JoaraRef["info1"] = "줄거리 : " + books[i].intro
-                            JoaraRef["info2"] = "총 " + books[i].cntChapter + " 화"
-                            JoaraRef["info3"] = "조회 수 : " + books[i].cntPageRead
-                            JoaraRef["info4"] = "선호작 수 : " + books[i].cntFavorite
-                            JoaraRef["info5"] = "추천 수 : " + books[i].cntRecom
-                            JoaraRef["number"] = i
-                            JoaraRef["numberDiff"] = 0
-                            JoaraRef["date"] = DBDate.DateMMDD()
-                            JoaraRef["status"] = ""
+                call!!.enqueue(object : Callback<JoaraBestListResult?> {
+                    override fun onResponse(
+                        call: Call<JoaraBestListResult?>,
+                        response: Response<JoaraBestListResult?>
+                    ) {
+                        if (response.isSuccessful) {
+                            response.body()?.let { it ->
+                                val books = it.bookLists
 
-                            miningValue(JoaraRef, i, "Joara Premium", cate)
+                                for (i in books!!.indices) {
 
+                                    JoaraRef["writerName"] = books[i].writerName
+                                    JoaraRef["subject"] = books[i].subject
+                                    JoaraRef["bookImg"] = books[i].bookImg
+                                    JoaraRef["bookCode"] = books[i].bookCode
+                                    JoaraRef["info1"] = "줄거리 : " + books[i].intro
+                                    JoaraRef["info2"] = "총 " + books[i].cntChapter + " 화"
+                                    JoaraRef["info3"] = "조회 수 : " + books[i].cntPageRead
+                                    JoaraRef["info4"] = "선호작 수 : " + books[i].cntFavorite
+                                    JoaraRef["info5"] = "추천 수 : " + books[i].cntRecom
+                                    JoaraRef["number"] = i
+                                    JoaraRef["numberDiff"] = calculateNum(i, books[i].subject, itemsYesterday).num
+                                    JoaraRef["date"] = DBDate.DateMMDD()
+                                    JoaraRef["status"] = calculateNum(i, books[i].subject, itemsYesterday).status
+
+                                    miningValue(JoaraRef, i, "Joara Premium", cate)
+
+                                }
+                            }
                         }
                     }
-                }
-            }
 
-            override fun onFailure(call: Call<JoaraBestListResult?>, t: Throwable) {
-                Log.d("onFailure", "실패")
+                    override fun onFailure(call: Call<JoaraBestListResult?>, t: Throwable) {
+                        Log.d("onFailure", "실패")
+                    }
+                })
             }
+            override fun onCancelled(databaseError: DatabaseError) {}
         })
 
     }
@@ -772,44 +1115,76 @@ object Mining {
         val call: Call<JoaraBestListResult?>? =
             RetrofitJoara.getJoaraBookBest("today", "nobless", Genre.setJoaraGenre(context))
 
-        call!!.enqueue(object : Callback<JoaraBestListResult?> {
-            override fun onResponse(
-                call: Call<JoaraBestListResult?>,
-                response: Response<JoaraBestListResult?>
-            ) {
 
-                if (response.isSuccessful) {
-                    response.body()?.let { it ->
-                        val books = it.bookLists
+        val yesterdayRef = mRootRef.child("best").child("Joara Nobless").child(cate).child("today").child(
+            DBDate.Yesterday()
+        )
 
-                        for (i in books!!.indices) {
+        val itemsYesterday = ArrayList<BookListDataBestToday?>()
 
-                            JoaraRef["writerName"] = books[i].writerName
-                            JoaraRef["subject"] = books[i].subject
-                            JoaraRef["bookImg"] = books[i].bookImg
-                            JoaraRef["bookCode"] = books[i].bookCode
-                            JoaraRef["info1"] = "줄거리 : " + books[i].intro
-                            JoaraRef["info2"] = "총" + books[i].cntChapter + " 화"
-                            JoaraRef["info3"] = "조회 수 : " + books[i].cntPageRead
-                            JoaraRef["info4"] = "선호작 수 : " + books[i].cntFavorite
-                            JoaraRef["info5"] = "추천 수 : " + books[i].cntRecom
-                            JoaraRef["number"] = i
-                            JoaraRef["numberDiff"] = 0
-                            JoaraRef["date"] = DBDate.DateMMDD()
-                            JoaraRef["status"] = ""
+        yesterdayRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+                    val group: BookListDataBestToday? =
+                        postSnapshot.getValue(BookListDataBestToday::class.java)
+                    itemsYesterday.add(
+                        BookListDataBestToday(
+                            group!!.writer,
+                            group.title,
+                            group.bookImg,
+                            group.bookCode,
+                            group.info1,
+                            group.info2,
+                            group.info3,
+                            group.info4,
+                            group.info5,
+                            group.number,
+                            group.numberDiff,
+                            group.date,
+                            group.status
+                        )
+                    )
+                }
 
-                            miningValue(JoaraRef, i, "Joara Nobless", cate)
+                call!!.enqueue(object : Callback<JoaraBestListResult?> {
+                    override fun onResponse(
+                        call: Call<JoaraBestListResult?>,
+                        response: Response<JoaraBestListResult?>
+                    ) {
+                        if (response.isSuccessful) {
+                            response.body()?.let { it ->
+                                val books = it.bookLists
 
+                                for (i in books!!.indices) {
+
+                                    JoaraRef["writerName"] = books[i].writerName
+                                    JoaraRef["subject"] = books[i].subject
+                                    JoaraRef["bookImg"] = books[i].bookImg
+                                    JoaraRef["bookCode"] = books[i].bookCode
+                                    JoaraRef["info1"] = "줄거리 : " + books[i].intro
+                                    JoaraRef["info2"] = "총 " + books[i].cntChapter + " 화"
+                                    JoaraRef["info3"] = "조회 수 : " + books[i].cntPageRead
+                                    JoaraRef["info4"] = "선호작 수 : " + books[i].cntFavorite
+                                    JoaraRef["info5"] = "추천 수 : " + books[i].cntRecom
+                                    JoaraRef["number"] = i
+                                    JoaraRef["numberDiff"] = calculateNum(i, books[i].subject, itemsYesterday).num
+                                    JoaraRef["date"] = DBDate.DateMMDD()
+                                    JoaraRef["status"] = calculateNum(i, books[i].subject, itemsYesterday).status
+
+                                    miningValue(JoaraRef, i, "Joara Nobless", cate)
+
+                                }
+                            }
                         }
                     }
-                }
-            }
 
-            override fun onFailure(call: Call<JoaraBestListResult?>, t: Throwable) {
-                Log.d("onFailure", "실패")
+                    override fun onFailure(call: Call<JoaraBestListResult?>, t: Throwable) {
+                        Log.d("onFailure", "실패")
+                    }
+                })
             }
+            override fun onCancelled(databaseError: DatabaseError) {}
         })
-
     }
 
     private fun miningValue(ref: MutableMap<String?, Any>, num: Int, type: String, cate: String) {
@@ -834,157 +1209,27 @@ object Mining {
 
     }
 
-    fun getWeekCompared(type: String, cate: String){
-        val yesterdayRef = mRootRef.child("best").child(type).child(cate).child("today").child(
-            DBDate.Yesterday()
-        )
-
-        val itemsYesterday = ArrayList<BookListDataBestToday?>()
-
-        yesterdayRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (postSnapshot in dataSnapshot.children) {
-                    val group: BookListDataBestToday? =
-                        postSnapshot.getValue(BookListDataBestToday::class.java)
-                    itemsYesterday.add(
-                        BookListDataBestToday(
-                            group!!.writer,
-                            group.title,
-                            group.bookImg,
-                            group.bookCode,
-                            group.info1,
-                            group.info2,
-                            group.info3,
-                            group.info4,
-                            group.info5,
-                            group.number,
-                            group.number,
-                            group.date,
-                            status
-                        )
-                    )
-                }
-                Log.d("@@@@@", "STEP 1")
-                getBookListToday(itemsYesterday, type, cate)
-            }
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
-    }
-
-    fun getBookListToday(itemsYesterday : ArrayList<BookListDataBestToday?>, tabType : String, cate : String){
-
-        for (i in (1000 * DBDate.DayInt())..((1000 * DBDate.DayInt()) + 999)) {
-            BestRef.setBestRef(tabType, cate).child("week-list")
-                .child(i.toString()).removeValue()
-        }
-
-        var num = 1
-
-        Log.d("@@@@", "STEP 2")
-
-//        val TodayRef = mRootRef.child("best").child("JOARA").child("FANTASY").child("today").child(DBDate.Day())
-//
-//        TodayRef.get().addValueEventListener(object : ValueEventListener {
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                for (postSnapshot in dataSnapshot.children) {
-//                    val group: BookListDataBestToday? =
-//                        postSnapshot.getValue(BookListDataBestToday::class.java)
-//
-//                    val ref: MutableMap<String?, Any> = HashMap()
-//
-//                    ref["writerName"] = group!!.writer
-//                    ref["subject"] = group.title
-//                    ref["bookImg"] = group.bookImg
-//                    ref["bookCode"] = group.bookCode
-//                    ref["info1"] = group.info1
-//                    ref["info2"] = group.info2
-//                    ref["info3"] = group.info3
-//                    ref["info4"] = group.info4
-//                    ref["info5"] = group.info5
-//                    ref["number"] = group.number
-//                    ref["numberDiff"] = calculateNum(group.number, group.title, itemsYesterday)
-//                    ref["date"] = DBDate.DateMMDD()
-//                    ref["type"] = tabType
-//                    ref["status"] = status
-//
-//                    BestRef.setBestRefWeekCompared(tabType, num, cate)
-//                        .setValue(BestRef.setBookListDataBestToday(ref))
-//                    num += 1
-//
-//                    Log.d("@@@@", "STEP 2 SUCCESS")
-//                }
-//
-//            }
-//            override fun onCancelled(databaseError: DatabaseError) {
-//                Log.d("@@@@", "CANCELED")
-//            }
-//
-//        })
-
-        BestRef.getBestRefToday(tabType, cate).get().addOnSuccessListener {
-
-            for (i in (1000 * DBDate.DayInt())..((1000 * DBDate.DayInt()) + 999)) {
-                BestRef.setBestRef(tabType, cate).child("week-list")
-                    .child(i.toString()).removeValue()
-            }
-
-            for (i in it.children) {
-                val group: BookListDataBestToday? = i.getValue(BookListDataBestToday::class.java)
-                val ref: MutableMap<String?, Any> = HashMap()
-
-                if (calculateNum(group!!.number, group.title, itemsYesterday) != 999) {
-
-                    ref["writerName"] = group.writer
-                    ref["subject"] = group.title
-                    ref["bookImg"] = group.bookImg
-                    ref["bookCode"] = group.bookCode
-                    ref["info1"] = group.info1
-                    ref["info2"] = group.info2
-                    ref["info3"] = group.info3
-                    ref["info4"] = group.info4
-                    ref["info5"] = group.info5
-                    ref["number"] = group.number
-                    ref["numberDiff"] = calculateNum(group.number, group.title, itemsYesterday)
-                    ref["date"] = DBDate.DateMMDD()
-                    ref["type"] = tabType
-                    ref["status"] = status
-
-                    BestRef.setBestRefWeekCompared(tabType, num, cate)
-                        .setValue(BestRef.setBookListDataBestToday(ref))
-                }
-                num += 1
-            }
-        }.addOnFailureListener {}
-    }
-
-
-    fun calculateNum(num: Int?, title: String?, itemsYesterday : ArrayList<BookListDataBestToday?>): Int {
+    fun calculateNum(num: Int?, title: String?, itemsYesterday : ArrayList<BookListDataBestToday?>): CalculNum {
 
         for (i in itemsYesterday) {
             if (i != null) {
                 if (i.title == title) {
                     when {
-                        i.number == 0 -> {
-                            status = "NEW"
-                            return 0
-                        }
                         i.number < num!! -> {
-                            status = "DOWN"
-                            return num - i.number
+                            return CalculNum(num - i.number, "DOWN")
                         }
                         i.number > num -> {
-                            status = "UP"
-                            return num - i.number
+                            return  CalculNum(num - i.number, "UP")
                         }
                         i.number == num -> {
-                            status = "SAME"
-                            0
+                            CalculNum(0, "-")
+                        } else -> {
+                        CalculNum(0, "")
                         }
                     }
                 }
             }
         }
-        status = "NEW"
-        return 0
+        return CalculNum(0, "-")
     }
 }

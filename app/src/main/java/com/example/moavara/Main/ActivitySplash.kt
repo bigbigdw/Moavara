@@ -23,10 +23,6 @@ import java.util.concurrent.TimeUnit
 val mRootRef = FirebaseDatabase.getInstance().reference
 
 class ActivitySplash : Activity() {
-
-    private lateinit var dbWeek: DataBaseBestDay
-    private lateinit var dbWeekList: DataBaseBestDay
-    private lateinit var dbYesterday: DataBaseBestDay
     var cate = "ALL"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,23 +31,6 @@ class ActivitySplash : Activity() {
 
         val fcm = Intent(applicationContext, FCM::class.java)
         startService(fcm)
-
-        dbYesterday = Room.databaseBuilder(
-            this.applicationContext,
-            DataBaseBestDay::class.java,
-            "best-yesterday"
-        ).allowMainThreadQueries().build()
-
-        dbWeek =
-            Room.databaseBuilder(this.applicationContext, DataBaseBestDay::class.java, "best-week")
-                .allowMainThreadQueries().build()
-
-        dbWeekList = Room.databaseBuilder(this.applicationContext, DataBaseBestDay::class.java, "week-list")
-            .allowMainThreadQueries().build()
-
-        dbWeek.bestDao().initAll()
-        dbWeekList.bestDao().initAll()
-        dbYesterday.bestDao().initAll()
 
         cate = Genre.getGenre(this).toString()
 

@@ -61,6 +61,11 @@ class BookListDataBestWeekend(
     var sat: BookListDataBestToday? = null,
 )
 
+class CalculNum(
+    var num: Int = 0,
+    var status: String = ""
+)
+
 class EventData(
     var link: String = "",
     var imgfile: String = "",

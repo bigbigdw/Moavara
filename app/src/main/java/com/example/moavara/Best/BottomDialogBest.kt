@@ -35,7 +35,6 @@ class BottomDialogBest(
 ) :
     BottomSheetDialogFragment() {
 
-    private lateinit var dbWeekList: DataBaseBestDay
     private lateinit var dbEvent: DataBaseBestDay
 
     private var _binding: BottomDialogBestBinding? = null
@@ -51,12 +50,6 @@ class BottomDialogBest(
 
         dbEvent = Room.databaseBuilder(requireContext(), DataBaseBestDay::class.java, "pick-novel")
             .allowMainThreadQueries().build()
-
-        dbWeekList = Room.databaseBuilder(
-            requireContext().applicationContext,
-            DataBaseBestDay::class.java,
-            "week-list"
-        ).allowMainThreadQueries().build()
 
         with(binding) {
 
@@ -261,33 +254,41 @@ class BottomDialogBest(
                             }
 
                             Log.d("@@@@", item.date)
-
+                            Log.d("####", pos.toString()
+                            )
                             when {
                                 week!!.sun == DBDate.DateMMDD() -> {
+                                    tviewRank1.visibility = View.VISIBLE
                                     iviewRank1.setImageResource(R.drawable.ic_best_gn_24px)
                                     tviewRank1.text = (pos + 1).toString()
                                 }
                                 week.mon == DBDate.DateMMDD() -> {
+                                    tviewRank2.visibility = View.VISIBLE
                                     iviewRank2.setImageResource(R.drawable.ic_best_gn_24px)
                                     tviewRank2.text = (pos + 1).toString()
                                 }
                                 week.tue == DBDate.DateMMDD() -> {
+                                    tviewRank3.visibility = View.VISIBLE
                                     iviewRank3.setImageResource(R.drawable.ic_best_gn_24px)
                                     tviewRank3.text = (pos + 1).toString()
                                 }
                                 week.wed == DBDate.DateMMDD() -> {
+                                    tviewRank4.visibility = View.VISIBLE
                                     iviewRank4.setImageResource(R.drawable.ic_best_gn_24px)
                                     tviewRank4.text = (pos + 1).toString()
                                 }
                                 week.thur == DBDate.DateMMDD() -> {
+                                    tviewRank5.visibility = View.VISIBLE
                                     iviewRank5.setImageResource(R.drawable.ic_best_gn_24px)
                                     tviewRank5.text = (pos + 1).toString()
                                 }
                                 week.fri == DBDate.DateMMDD() -> {
+                                    tviewRank6.visibility = View.VISIBLE
                                     iviewRank6.setImageResource(R.drawable.ic_best_gn_24px)
                                     tviewRank6.text = (pos + 1).toString()
                                 }
                                 week.sat == DBDate.DateMMDD() -> {
+                                    tviewRank7.visibility = View.VISIBLE
                                     iviewRank7.setImageResource(R.drawable.ic_best_gn_24px)
                                     tviewRank7.text = (pos + 1).toString()
                                 }

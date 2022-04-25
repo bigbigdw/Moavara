@@ -1,32 +1,0 @@
-
-2kotlin:S1128"Remove this unused import.(±Ğ½ø
-7kotlin:S1128"Remove this unused import.(µ““ûÿÿÿÿ
-ckotlin:S1192Œ"JDefine a constant instead of duplicating this literal "week-list" 4 times.(—ö´œ
-‚kotlin:S1192§"dDefine a constant instead of duplicating this literal ".ranking_wrap_left .list_ranking li" 3 times.(·àğ¥øÿÿÿÿ
-fkotlin:S1192¬"HDefine a constant instead of duplicating this literal ".author" 3 times.(¹…õ˜şÿÿÿÿ
-akotlin:S1192®"HDefine a constant instead of duplicating this literal "div img" 3 times.(ñ¤ñŸ
-ikotlin:S1192°"KDefine a constant instead of duplicating this literal ".num_total" 6 times.(Å¹—Ãÿÿÿÿÿ
-`kotlin:S1192²"GDefine a constant instead of duplicating this literal ".count" 3 times.(ÿ–›”
-dkotlin:S1192³"LDefine a constant instead of duplicating this literal ".score_area" 3 times.(…Õá
-fkotlin:S1192ˆ"NDefine a constant instead of duplicating this literal "ì¶”ì²œ ìˆ˜ : " 5 times.(¼ğÌr
-gkotlin:S1192®"NDefine a constant instead of duplicating this literal "ì¡°íšŒ ìˆ˜ : " 6 times.(õ¼ó
-kkotlin:S1192á"MDefine a constant instead of duplicating this literal "ì¤„ê±°ë¦¬ : " 5 times.(í¶•àùÿÿÿÿ
-jkotlin:S1192ä"QDefine a constant instead of duplicating this literal "ì„ í˜¸ì‘ ìˆ˜ : " 4 times.(‚×øİ
-kkotlin:S117Š"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(Ú¿ºÇ
-pkotlin:S117‹"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(Î—âËùÿÿÿÿ
-pkotlin:S117§"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(·àğ¥øÿÿÿÿ
-kkotlin:S117¨"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(°­ß§
-pkotlin:S117Ä"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(·àğ¥øÿÿÿÿ
-kkotlin:S117Å"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(°­ß§
-pkotlin:S117á"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(·àğ¥øÿÿÿÿ
-kkotlin:S117â"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(°­ß§
-kkotlin:S117ş"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(„¾Ú
-pkotlin:S117ÿ"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(› ÃÆùÿÿÿÿ
-kkotlin:S117˜"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(¶óÌÖ
-pkotlin:S117Ç"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(«à´ğÿÿÿÿÿ
-pkotlin:S117ù"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(«à´ğÿÿÿÿÿ
-kkotlin:S117§"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(ÅöëÂ
-kkotlin:S117Ô"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(ÅöëÂ
-kkotlin:S117‚"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(ÅöëÂ
-xkotlin:S1186æ"ZAdd a nested comment explaining why this function is empty or complete the implementation.(‡ØÚŸûÿÿÿÿ
-Gkotlin:S1066Ä".Merge this "if" statement with the nested one.(²Ñß 

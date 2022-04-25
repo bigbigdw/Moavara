@@ -28,7 +28,6 @@ class ActivitySync : Activity() {
     var tview1: TextView? = null
     var tview2: TextView? = null
     lateinit var context: Context
-    private lateinit var dbYesterday: DataBaseBestDay
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +49,13 @@ class ActivitySync : Activity() {
             },
             1000
         )
-
+//
+//        Thread {
+//            Mining.runMining(applicationContext, "ALL")
+//            Mining.runMining(applicationContext, "ROMANCE")
+//            Mining.runMining(applicationContext, "BL")
+//            Mining.runMining(applicationContext, "FANTASY")
+//        }.start()
 
         mRootRef.child("Week").child(DBDate.DayString()).setValue(DBDate.DateMMDD())
 

@@ -55,7 +55,7 @@ class ActivityMain : AppCompatActivity() {
         }
 
 
-        setLayout()
+//        setLayout()
     }
 
     private fun setLayout() {
@@ -88,8 +88,6 @@ class ActivityMain : AppCompatActivity() {
         setRoomBest("Ridi")
         setRoomBest("OneStore")
         setRoomBest("MrBlue")
-
-        Mining.getWeekCompared("JOARA", "FANTASY")
     }
 
     private fun setRoomBest(type: String) {

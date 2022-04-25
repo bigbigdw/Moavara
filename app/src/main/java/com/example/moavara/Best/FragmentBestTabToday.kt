@@ -1,7 +1,6 @@
 package com.example.moavara.Best
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,50 +51,12 @@ class FragmentBestTabToday(private val tabType: String) :
             Room.databaseBuilder(requireContext(), DataBaseBestDay::class.java, "best-yesterday")
                 .allowMainThreadQueries().build()
 
-        getBookListBest()
+        getBookListToday()
 
         return root
     }
 
-    private fun getBookListBest() {
-
-        val yesterdayRef = mRootRef.child("best").child(tabType).child(cate).child("today").child(
-            DBDate.Yesterday()
-        )
-
-        val itemsYesterday = ArrayList<BookListDataBestToday?>()
-
-        yesterdayRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (postSnapshot in dataSnapshot.children) {
-                    val group: BookListDataBestToday? =
-                        postSnapshot.getValue(BookListDataBestToday::class.java)
-                    itemsYesterday.add(
-                        BookListDataBestToday(
-                            group!!.writer,
-                            group.title,
-                            group.bookImg,
-                            group.bookCode,
-                            group.info1,
-                            group.info2,
-                            group.info3,
-                            group.info4,
-                            group.info5,
-                            group.number,
-                            group.number,
-                            group.date,
-                            status
-                        )
-                    )
-                }
-                adapterToday!!.notifyDataSetChanged()
-                getBookListToday(itemsYesterday)
-            }
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
-    }
-
-    private fun getBookListToday(itemsYesterday : ArrayList<BookListDataBestToday?>){
+    private fun getBookListToday() {
         recyclerView?.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView?.adapter = adapterToday
@@ -117,9 +78,9 @@ class FragmentBestTabToday(private val tabType: String) :
                             group.info4,
                             group.info5,
                             group.number,
-                            calculateNum(group.number, group.title, itemsYesterday),
+                            group.numberDiff,
                             group.date,
-                            status
+                            group.status
                         )
                     )
                     adapterToday!!.notifyDataSetChanged()
@@ -138,38 +99,4 @@ class FragmentBestTabToday(private val tabType: String) :
             }
         })
     }
-
-    private fun calculateNum(num: Int?, title: String?, itemsYesterday : ArrayList<BookListDataBestToday?>): Int {
-
-        for (i in itemsYesterday) {
-            if (i != null) {
-                if (i.title == title) {
-                    when {
-                        i.number == 0 -> {
-                            status = "NEW"
-                            return 0
-                        }
-                        i.number < num!! -> {
-                            status = "DOWN"
-                            return num - i.number
-                        }
-                        i.number > num -> {
-                            status = "UP"
-                            return num - i.number
-                        }
-                        i.number == num -> {
-                            status = "SAME"
-                            0
-                        }
-                    }
-                }
-            }
-        }
-        status = "NEW"
-        return 0
-    }
-
-
-
-
 }
