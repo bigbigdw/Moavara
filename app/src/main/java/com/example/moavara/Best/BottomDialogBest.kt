@@ -216,46 +216,46 @@ class BottomDialogBest(
                                 week!!.sun == group.date -> {
                                     tviewRank1.visibility = View.VISIBLE
                                     iviewRank1.setImageResource(R.drawable.ic_best_vt_24px)
-                                    tviewRank1.text = group.number.toString()
+                                    tviewRank1.text = (group.number + 1).toString()
                                 }
                                 week.mon == group.date -> {
                                     tviewRank2.visibility = View.VISIBLE
                                     iviewRank2.setImageResource(R.drawable.ic_best_vt_24px)
-                                    tviewRank2.text = group.number.toString()
+                                    tviewRank2.text = (group.number + 1).toString()
                                 }
                                 week.tue == group.date -> {
                                     tviewRank3.visibility = View.VISIBLE
                                     iviewRank3.setImageResource(R.drawable.ic_best_vt_24px)
-                                    tviewRank3.text = group.number.toString()
+                                    tviewRank3.text = (group.number + 1).toString()
 
                                 }
                                 week.wed == group.date -> {
                                     tviewRank4.visibility = View.VISIBLE
                                     iviewRank4.setImageResource(R.drawable.ic_best_vt_24px)
-                                    tviewRank4.text = group.number.toString()
+                                    tviewRank4.text = (group.number + 1).toString()
                                 }
                                 week.thur == group.date -> {
                                     tviewRank5.visibility = View.VISIBLE
                                     iviewRank5.setImageResource(R.drawable.ic_best_vt_24px)
-                                    tviewRank5.text = group.number.toString()
+                                    tviewRank5.text = (group.number + 1).toString()
 
                                 }
                                 week.fri == group.date -> {
                                     tviewRank6.visibility = View.VISIBLE
                                     iviewRank6.setImageResource(R.drawable.ic_best_vt_24px)
-                                    tviewRank6.text = group.number.toString()
+                                    tviewRank6.text = (group.number + 1).toString()
 
                                 }
                                 week.sat == group.date -> {
                                     tviewRank7.visibility = View.VISIBLE
                                     iviewRank7.setImageResource(R.drawable.ic_best_vt_24px)
-                                    tviewRank7.text = group.number.toString()
+                                    tviewRank7.text = (group.number + 1).toString()
                                 }
                             }
 
-                            Log.d("@@@@", item.date)
-                            Log.d("####", pos.toString()
-                            )
+                            Log.d("@@@@-1", item.date)
+                            Log.d("@@@@-2", week!!.tue)
+
                             when {
                                 week!!.sun == DBDate.DateMMDD() -> {
                                     tviewRank1.visibility = View.VISIBLE

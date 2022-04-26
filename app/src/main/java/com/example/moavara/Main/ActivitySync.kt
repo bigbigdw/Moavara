@@ -49,13 +49,13 @@ class ActivitySync : Activity() {
             },
             1000
         )
-//
-//        Thread {
-//            Mining.runMining(applicationContext, "ALL")
-//            Mining.runMining(applicationContext, "ROMANCE")
-//            Mining.runMining(applicationContext, "BL")
-//            Mining.runMining(applicationContext, "FANTASY")
-//        }.start()
+
+        Thread {
+            Mining.runMining(applicationContext, "ALL")
+            Mining.runMining(applicationContext, "ROMANCE")
+            Mining.runMining(applicationContext, "BL")
+            Mining.runMining(applicationContext, "FANTASY")
+        }.start()
 
         mRootRef.child("Week").child(DBDate.DayString()).setValue(DBDate.DateMMDD())
 

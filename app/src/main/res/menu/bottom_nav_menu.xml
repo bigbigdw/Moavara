@@ -22,7 +22,7 @@
         android:title="@string/Title_Pick" />
 
     <item
-        android:id="@+id/Fragment_Pick2"
+        android:id="@+id/Fragment_Community"
         android:icon="@drawable/ic_board_vt_24px"
         android:title="@string/Title_Pick" />
 

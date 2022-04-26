@@ -91,9 +91,9 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment() {
                                         group.info4,
                                         group.info5,
                                         group.number,
-                                        group.number,
+                                        group.numberDiff,
                                         group.date,
-                                        "",
+                                        group.status,
                                     )
                                 )
                                 adapterMonthDay!!.notifyDataSetChanged()

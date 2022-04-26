@@ -29,4 +29,10 @@
         android:label=""
         tools:layout="@layout/fragment_best_today_tab" />
 
+    <fragment
+        android:id="@+id/Fragment_Community"
+        android:name="com.example.moavara.Community.FragmentCommunity"
+        android:label=""
+        tools:layout="@layout/fragment_best_today_tab" />
+
 </navigation>

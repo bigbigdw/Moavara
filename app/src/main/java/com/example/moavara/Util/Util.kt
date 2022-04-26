@@ -1197,6 +1197,8 @@ object Mining {
             BestRef.setBestRefWeek(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
         }
 
+        BestRef.setBestRefWeekCompared(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
+
         //Month - Week
         if (num == 0) {
             //Month - Day
@@ -1224,7 +1226,7 @@ object Mining {
                         i.number == num -> {
                             CalculNum(0, "-")
                         } else -> {
-                        CalculNum(0, "")
+                        CalculNum(0, "NEW")
                         }
                     }
                 }

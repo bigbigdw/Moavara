@@ -176,12 +176,12 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
 
     private fun findBook(item: BookListDataBestToday?) {
         if (item != null) {
-            if (adapterWeek!!.getSelectedBook() == item.title.toString()) {
+            if (adapterWeek!!.getSelectedBook() == item.title) {
                 val mBottomDialogBest = BottomDialogBest(requireContext(), item, tabType, cate, item.number)
                 fragmentManager?.let { mBottomDialogBest.show(it, null) }
                 adapterWeek!!.setSelectedBook("")
             } else {
-                adapterWeek!!.setSelectedBook(item.title.toString())
+                adapterWeek!!.setSelectedBook(item.title)
             }
         }
     }

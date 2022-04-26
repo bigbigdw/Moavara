@@ -1,30 +1,16 @@
 package com.example.moavara.Main
 
-import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
-import androidx.room.Room
 import androidx.work.WorkManager
-import com.example.moavara.DataBase.DataBaseBestDay
-import com.example.moavara.DataBase.DataBestDay
 import com.example.moavara.R
-import com.example.moavara.Search.BookListDataBestToday
-import com.example.moavara.Util.BestRef
-import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Genre
-import com.example.moavara.Util.Mining
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.messaging.FirebaseMessaging
-import java.util.*
-import kotlin.collections.HashMap
-import kotlin.system.exitProcess
 
 
 class ActivityMain : AppCompatActivity() {
@@ -49,6 +35,9 @@ class ActivityMain : AppCompatActivity() {
             miningRef.setValue("HAHA")
             Toast.makeText(this, "WorkManager 해제됨", Toast.LENGTH_SHORT).show()
         }
+
+        val navView = findViewById<BottomNavigationView>(R.id.nav_bottom)
+        NavigationUI.setupWithNavController(navView, navController!!)
     }
 
 }

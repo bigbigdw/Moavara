@@ -90,7 +90,7 @@ class FragmentBestTabToday(private val tabType: String) :
             override fun onCancelled(databaseError: DatabaseError) {}
         })
 
-        adapterToday!!.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
+        adapterToday?.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
                 val item: BookListDataBestToday? = adapterToday!!.getItem(position)
 

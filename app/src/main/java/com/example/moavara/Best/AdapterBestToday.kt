@@ -59,8 +59,7 @@ class AdapterBestToday(items: List<BookListDataBestToday?>?) :
                     holder.number.setTextColor(Color.parseColor("#eeeeee"));
                 }
                 else -> {
-                    holder.number.text = "NO DATA"
-                    holder.number.text = this.holder!![position]!!.number.toString()
+                    holder.number.text = "NEW"
                 }
             }
 
