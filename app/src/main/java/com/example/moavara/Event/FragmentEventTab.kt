@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.moavara.Joara.JoaraEventResult
-import com.example.moavara.Joara.RetrofitJoara
+import com.example.moavara.Retrofit.JoaraEventResult
+import com.example.moavara.Retrofit.RetrofitJoara
 import com.example.moavara.Search.EventData
 import com.example.moavara.databinding.FragmentEventTabBinding
 import org.jsoup.Jsoup

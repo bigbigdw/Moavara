@@ -1,7 +1,37 @@
-package com.example.moavara.Joara
+package com.example.moavara.Retrofit
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+
+class JoaraBestDetailCommentsResult {
+    @SerializedName("status")
+    @Expose
+    val status: String = ""
+
+    @SerializedName("comments")
+    @Expose
+    val comments: List<JoaraCommentValue>? = null
+}
+
+class JoaraBestDetailResult {
+    @SerializedName("status")
+    @Expose
+    val status: String = ""
+
+    @SerializedName("book")
+    @Expose
+    val book: JoaraBestListValue? = null
+}
+
+class JoaraCommentValue{
+    @SerializedName("comment")
+    @Expose
+    val comment: String = ""
+
+    @SerializedName("created")
+    @Expose
+    val created: String = ""
+}
 
 //조아라 이밴트 결과
 class JoaraEventResult {
@@ -58,6 +88,10 @@ class JoaraEventValue {
 
 //조아라 베스트
 class JoaraBestListResult {
+    @SerializedName("status")
+    @Expose
+    val status: String = ""
+
     @SerializedName("books")
     @Expose
     val bookLists: List<JoaraBestListValue>? = null

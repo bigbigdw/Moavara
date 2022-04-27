@@ -86,6 +86,12 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
+        <activity
+            android:name="com.example.moavara.Best.ActivityBestDetail"
+            android:label=""
+            android:exported="true">
+        </activity>
+
     </application>
 
 </manifest>

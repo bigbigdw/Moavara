@@ -1,8 +1,6 @@
-package com.example.moavara.OneStore
+package com.example.moavara.Retrofit
 
 import com.example.moavara.ETC.HELPER
-import com.example.moavara.KaKao.BestResultKakao
-import com.example.moavara.KaKao.KaKaoBestService
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

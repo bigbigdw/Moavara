@@ -2,23 +2,18 @@ package com.example.moavara.Util
 
 import android.content.Context
 import android.util.Log
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.moavara.Best.AdapterBestToday
-import com.example.moavara.Best.BottomDialogBest
 import com.example.moavara.DataBase.DataBestDay
-import com.example.moavara.Joara.JoaraBestListResult
-import com.example.moavara.Joara.RetrofitJoara
-import com.example.moavara.KaKao.BestResultKakao
-import com.example.moavara.KaKao.BestResultKakaoStageNovel
-import com.example.moavara.KaKao.RetrofitKaKao
+import com.example.moavara.Retrofit.JoaraBestListResult
+import com.example.moavara.Retrofit.RetrofitJoara
+import com.example.moavara.Retrofit.BestResultKakao
+import com.example.moavara.Retrofit.BestResultKakaoStageNovel
+import com.example.moavara.Retrofit.RetrofitKaKao
 import com.example.moavara.Main.mRootRef
-import com.example.moavara.OneStore.OneStoreBookResult
-import com.example.moavara.OneStore.RetrofitOnestore
+import com.example.moavara.Retrofit.OneStoreBookResult
+import com.example.moavara.Retrofit.RetrofitOnestore
 import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Search.CalculNum
-import com.example.moavara.Util.DBDate.status
 import com.google.firebase.database.*
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -26,8 +21,27 @@ import org.jsoup.select.Elements
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+
+object Param {
+
+    fun getItemAPI(mContext : Context?) : MutableMap<String?, Any> {
+
+        val Param: MutableMap<String?, Any> = HashMap()
+
+        mContext ?: return Param
+
+        Param["api_key"] = "mw_8ba234e7801ba288554ca07ae44c7"
+        Param["ver"] = "2.6.3"
+        Param["device"] = "mw"
+        Param["deviceuid"] = "5127d5951c983034a16980c8a893ac99d16dbef988ee36882b793aa14ad33604"
+        Param["devicetoken"] =  "mw"
+
+        return Param
+    }
+}
 
 object DBDate {
 
@@ -387,7 +401,7 @@ object Mining {
         getMrBlueBest(context, cate)
     }
 
-    private fun getMrBlueBest(context: Context, cate: String) {
+    fun getMrBlueBest(context: Context, cate: String) {
 
         val doc: Document =
             Jsoup.connect(Genre.setMrBlueGenre(context)).post()
@@ -453,7 +467,7 @@ object Mining {
 
     }
 
-    private fun getNaverToday(context: Context, cate: String) {
+    fun getNaverToday(context: Context, cate: String) {
 
         val doc: Document =
             Jsoup.connect(Genre.setNaverTodayGenre(context)).post()
@@ -516,7 +530,7 @@ object Mining {
         })
     }
 
-    private fun getNaverChallenge(context: Context, cate: String) {
+    fun getNaverChallenge(context: Context, cate: String) {
 
         val doc: Document =
             Jsoup.connect(Genre.setNaverChallengeGenre(context)).post()
@@ -579,7 +593,7 @@ object Mining {
         })
     }
 
-    private fun getNaverBest(context: Context, cate: String) {
+    fun getNaverBest(context: Context, cate: String) {
 
         val doc: Document =
             Jsoup.connect(Genre.setNaverGenre(context)).post()
@@ -646,7 +660,7 @@ object Mining {
 
     }
 
-    private fun getRidiBest(context: Context, cate: String) {
+    fun getRidiBest(context: Context, cate: String) {
 
         val doc: Document =
             Jsoup.connect(Genre.setRidiGenre(context)).post()
@@ -657,59 +671,63 @@ object Mining {
             DBDate.Yesterday()
         )
 
-        val itemsYesterday = ArrayList<BookListDataBestToday?>()
+        try{
+            val itemsYesterday = ArrayList<BookListDataBestToday?>()
 
-        yesterdayRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (postSnapshot in dataSnapshot.children) {
-                    val group: BookListDataBestToday? =
-                        postSnapshot.getValue(BookListDataBestToday::class.java)
-                    itemsYesterday.add(
-                        BookListDataBestToday(
-                            group!!.writer,
-                            group.title,
-                            group.bookImg,
-                            group.bookCode,
-                            group.info1,
-                            group.info2,
-                            group.info3,
-                            group.info4,
-                            group.info5,
-                            group.number,
-                            group.numberDiff,
-                            group.date,
-                            group.status
+            yesterdayRef.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (postSnapshot in dataSnapshot.children) {
+                        val group: BookListDataBestToday? =
+                            postSnapshot.getValue(BookListDataBestToday::class.java)
+                        itemsYesterday.add(
+                            BookListDataBestToday(
+                                group!!.writer,
+                                group.title,
+                                group.bookImg,
+                                group.bookCode,
+                                group.info1,
+                                group.info2,
+                                group.info3,
+                                group.info4,
+                                group.info5,
+                                group.number,
+                                group.numberDiff,
+                                group.date,
+                                group.status
+                            )
                         )
-                    )
+                    }
+
+                    for (i in Ridi.indices) {
+
+                        val title = doc.select("div .title_link")[i].text()
+
+                        RidiRef["writerName"] = doc.select("div .author_detail_link")[i].text()
+                        RidiRef["subject"] = doc.select("div .title_link")[i].text()
+                        RidiRef["bookImg"] = Ridi.select(".thumbnail_image .thumbnail")[i].absUrl("data-src")
+                        RidiRef["bookCode"] = Ridi.select("a")[i].absUrl("href")
+                        RidiRef["info1"] = doc.select(".count_num")[i].text()
+                        RidiRef["info2"] = "추천 수 : " + doc.select("span .StarRate_ParticipantCount")[i].text()
+                        RidiRef["info3"] = "평점 : " + doc.select("span .StarRate_Score")[i].text()
+                        RidiRef["info4"] = ""
+                        RidiRef["info5"] = ""
+                        RidiRef["number"] = i
+                        RidiRef["numberDiff"] = calculateNum(i, title, itemsYesterday).num
+                        RidiRef["date"] = DBDate.DateMMDD()
+                        RidiRef["status"] = calculateNum(i, title, itemsYesterday).status
+
+                        miningValue(RidiRef, i, "Ridi", cate)
+
+                    }
                 }
+                override fun onCancelled(databaseError: DatabaseError) {}
+            })
+        } catch (exception : IOException){
 
-                for (i in Ridi.indices) {
-
-                    val title = doc.select("div .title_link")[i].text()
-
-                    RidiRef["writerName"] = doc.select("div .author_detail_link")[i].text()
-                    RidiRef["subject"] = doc.select("div .title_link")[i].text()
-                    RidiRef["bookImg"] = Ridi.select(".thumbnail_image .thumbnail")[i].absUrl("data-src")
-                    RidiRef["bookCode"] = Ridi.select("a")[i].absUrl("href")
-                    RidiRef["info1"] = doc.select(".count_num")[i].text()
-                    RidiRef["info2"] = "추천 수 : " + doc.select("span .StarRate_ParticipantCount")[i].text()
-                    RidiRef["info3"] = "평점 : " + doc.select("span .StarRate_Score")[i].text()
-                    RidiRef["info4"] = ""
-                    RidiRef["info5"] = ""
-                    RidiRef["number"] = i
-                    RidiRef["numberDiff"] = calculateNum(i, title, itemsYesterday).num
-                    RidiRef["date"] = DBDate.DateMMDD()
-                    RidiRef["status"] = calculateNum(i, title, itemsYesterday).status
-
-                    miningValue(RidiRef, i, "Ridi", cate)
-
-                }
-            }
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
+        }
     }
 
-    private fun getOneStoreBest(context: Context, cate: String) {
+    fun getOneStoreBest(context: Context, cate: String) {
         val OneStoryRef: MutableMap<String?, Any> = HashMap()
 
         val call: Call<OneStoreBookResult?>? =
@@ -789,7 +807,7 @@ object Mining {
 
     }
 
-    private fun getKakaoStageBest(context: Context, cate: String) {
+    fun getKakaoStageBest(context: Context, cate: String) {
         val KakaoRef: MutableMap<String?, Any> = HashMap()
 
         val call: Call<List<BestResultKakaoStageNovel>?>? = RetrofitKaKao.getBestKakaoStage(
@@ -872,7 +890,7 @@ object Mining {
         })
     }
 
-    private fun getKakaoBest(cate: String) {
+    fun getKakaoBest(cate: String) {
         val KakaoRef: MutableMap<String?, Any> = HashMap()
 
         val call: Call<BestResultKakao?>? = RetrofitKaKao.getBestKakao("11", "0", "0", "2", "A")
@@ -954,7 +972,7 @@ object Mining {
 
     }
 
-    private fun getJoaraBest(context: Context, cate: String) {
+    fun getJoaraBest(context: Context, cate: String) {
         val JoaraRef: MutableMap<String?, Any> = HashMap()
 
         val call: Call<JoaraBestListResult?>? =
@@ -1031,7 +1049,7 @@ object Mining {
         })
     }
 
-    private fun getJoaraBestPremium(context: Context, cate: String) {
+    fun getJoaraBestPremium(context: Context, cate: String) {
         val JoaraRef: MutableMap<String?, Any> = HashMap()
 
         val call: Call<JoaraBestListResult?>? =
@@ -1109,7 +1127,7 @@ object Mining {
 
     }
 
-    private fun getJoaraBestNobless(context: Context, cate: String) {
+    fun getJoaraBestNobless(context: Context, cate: String) {
         val JoaraRef: MutableMap<String?, Any> = HashMap()
 
         val call: Call<JoaraBestListResult?>? =
@@ -1187,7 +1205,7 @@ object Mining {
         })
     }
 
-    private fun miningValue(ref: MutableMap<String?, Any>, num: Int, type: String, cate: String) {
+    fun miningValue(ref: MutableMap<String?, Any>, num: Int, type: String, cate: String) {
 
         //Today
         BestRef.setBestRefToday(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
@@ -1195,6 +1213,11 @@ object Mining {
         //Week
         if (num < 10) {
             BestRef.setBestRefWeek(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
+        }
+
+        for (i in (1000 * DBDate.DayInt())..((1000 * DBDate.DayInt()) + 999)) {
+            BestRef.setBestRef(type, cate).child("week-list")
+                .child(i.toString()).removeValue()
         }
 
         BestRef.setBestRefWeekCompared(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
@@ -1234,4 +1257,5 @@ object Mining {
         }
         return CalculNum(0, "-")
     }
+
 }

@@ -7,13 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
-import com.example.moavara.DataBase.DataBaseBestDay
-import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Util.BestRef
-import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Genre
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -28,7 +24,6 @@ class FragmentBestTabToday(private val tabType: String) :
     var recyclerView: RecyclerView? = null
 
     private val items = ArrayList<BookListDataBestToday?>()
-    private lateinit var dbYesterday: DataBaseBestDay
 
     var status = ""
 
@@ -42,14 +37,10 @@ class FragmentBestTabToday(private val tabType: String) :
     ): View {
 
         cate = Genre.getGenre(requireContext()).toString()
-        root = inflater.inflate(R.layout.fragment_best_today_tab, container, false)
+        root = inflater.inflate(R.layout.fragment_best_tab_today, container, false)
 
         recyclerView = root.findViewById(R.id.rview_Best)
         adapterToday = AdapterBestToday(items)
-
-        dbYesterday =
-            Room.databaseBuilder(requireContext(), DataBaseBestDay::class.java, "best-yesterday")
-                .allowMainThreadQueries().build()
 
         getBookListToday()
 

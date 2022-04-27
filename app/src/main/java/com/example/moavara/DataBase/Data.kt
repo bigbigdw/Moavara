@@ -74,3 +74,8 @@ class EventData(
     var type: String = "",
     var memo: String = ""
 )
+
+data class BestComment(
+    var comment: String = "",
+    var date: String = ""
+)

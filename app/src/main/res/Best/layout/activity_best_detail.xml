@@ -20,7 +20,7 @@
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:contentScrim="#4971EF"
+                app:contentScrim="#0D0D0D"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <FrameLayout
@@ -38,35 +38,37 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="55dp"
-                            android:background="#00d180"
+                            android:background="#1E1E20"
                             android:orientation="vertical"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
 
                             <include
+                                android:id="@+id/inclue_best_detail"
                                 layout="@layout/include_best_detail"
                                 android:animateLayoutChanges="true" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
                                 android:layout_marginBottom="8dp"
-                                android:background="#083d85"
+                                android:background="#0D0E10"
                                 android:orientation="horizontal"
                                 android:paddingStart="16dp"
                                 android:paddingTop="16dp"
                                 android:paddingEnd="16dp"
-                                android:paddingBottom="40dp">
+                                android:paddingBottom="24dp">
 
                                 <TextView
-                                    android:id="@+id/BookDetailIntro"
+                                    android:id="@+id/tviewIntro"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:breakStrategy="high_quality"
                                     android:ellipsize="end"
                                     android:fontFamily="@font/noto_sans"
                                     android:text="@string/Common_BookIntro"
-                                    android:textColor="#4971EF"
+                                    android:textColor="#ffffff"
                                     android:textSize="14sp" />
                             </LinearLayout>
 
@@ -78,26 +80,29 @@
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
-                    android:background="#008626"
+                    android:background="#0D0E10"
                     app:layout_collapseMode="pin"
                     app:popupTheme="@style/AppTheme.PopupOverlay">
 
                 </androidx.appcompat.widget.Toolbar>
 
-                <TextView
-                    android:id="@+id/BookTitle"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
-                    android:ellipsize="end"
-                    android:ems="10"
                     android:gravity="center"
-                    android:maxEms="10"
-                    android:maxLines="1"
-                    android:text="111111111"
-                    android:textColor="#ffffff"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:layout_collapseMode="pin" />
+                    android:orientation="vertical"
+                    app:layout_collapseMode="pin">
+
+                    <ImageView
+                        android:id="@+id/HomeImg"
+                        android:layout_width="110dp"
+                        android:layout_height="22dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/TODO"
+                        android:src="@drawable/moabara_logo" />
+                </LinearLayout>
+
+
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
@@ -105,7 +110,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textColor="22222222"
+            android:textColor="#222222"
             android:orientation="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -113,33 +118,30 @@
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#4971EF"
+                android:layout_gravity="bottom"
+                android:background="#0D0E10"
                 app:itemBackground="@android:color/transparent"
                 app:itemIconTint="#00d180"
-                app:itemTextColor="#565656"
-                app:tabIndicatorColor="#A5C500"
+                app:itemTextColor="#0df0df"
+                app:tabGravity="fill"
+                app:tabIndicatorColor="#844DF3"
                 app:tabMode="fixed"
-                app:tabSelectedTextColor="#A5C500"
-                app:tabTextColor="#ffffff" />
+                app:tabSelectedTextColor="#844DF3"
+                app:tabTextColor="#565C69">
+
+            </com.google.android.material.tabs.TabLayout>
 
             <androidx.core.widget.NestedScrollView
-                android:id="@+id/View"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="#1E1E20"
                 android:fillViewport="true">
 
                 <LinearLayout
+                    android:id="@+id/llayoutWrap"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <androidx.viewpager.widget.ViewPager
-                        android:id="@+id/view_pager"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="#000000"
-                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-                </LinearLayout>
+                    android:orientation="vertical" />
             </androidx.core.widget.NestedScrollView>
 
         </LinearLayout>

@@ -9,7 +9,6 @@ plugins {
 
 android {
     compileSdkVersion 31
-    buildToolsVersion "29.0.3"
 
     defaultConfig {
         applicationId "com.example.moavara"
@@ -60,20 +59,20 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.google.firebase:firebase-crashlytics:18.2.7'
-    implementation 'com.google.firebase:firebase-analytics:20.0.2'
-    implementation 'com.google.firebase:firebase-messaging:20.1.0'
-    implementation "androidx.work:work-runtime-ktx:2.5.0" // Kotlin + Coroutines
+    implementation 'com.google.firebase:firebase-crashlytics:18.2.9'
+    implementation 'com.google.firebase:firebase-analytics:20.1.2'
+    implementation 'com.google.firebase:firebase-messaging:23.0.3'
+    implementation "androidx.work:work-runtime-ktx:2.7.1" // Kotlin + Coroutines
     testImplementation 'junit:junit:'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-    implementation 'androidx.work:work-runtime-ktx:2.7.0'
+    implementation 'androidx.work:work-runtime-ktx:2.7.1'
 
     implementation 'com.synnapps:carouselview:0.1.5'
 
     //Room
-    implementation 'androidx.room:room-runtime:2.4.0'
-    kapt 'androidx.room:room-compiler:2.4.0'
+    implementation 'androidx.room:room-runtime:2.4.2'
+    kapt 'androidx.room:room-compiler:2.4.2'
 
     // Retrofit 라이브러리
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'

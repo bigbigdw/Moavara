@@ -576,6 +576,24 @@
                     android:textSize="16sp"
                     tools:ignore="TextContrastCheck" />
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lview_detail"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="#03A9F4"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="작품 상세"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    tools:ignore="TextContrastCheck" />
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>

@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="0dp"
     android:layout_marginEnd="0dp"
-    android:layout_marginBottom="8dp"
-    android:background="#666666"
+    android:background="#0D0E10"
     android:orientation="horizontal"
     android:padding="16dp"
     app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +24,7 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/BookCover"
+                android:id="@+id/iviewBookCover"
                 android:layout_width="91dp"
                 android:layout_height="132dp"
                 android:adjustViewBounds="true"
@@ -35,7 +33,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -46,7 +45,6 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
-                        android:id="@+id/BtnFavOn"
                         android:layout_width="30dp"
                         android:layout_height="32dp"
                         android:adjustViewBounds="true"
@@ -54,16 +52,6 @@
                         android:scaleType="fitXY"
                         app:srcCompat="@drawable/moabara_logo" />
 
-                    <ImageView
-                        android:id="@+id/BtnFavOff"
-                        android:layout_width="30dp"
-                        android:layout_height="32dp"
-                        android:adjustViewBounds="true"
-                        android:contentDescription="@string/TODO"
-                        android:scaleType="fitXY"
-                        android:visibility="gone"
-                        app:srcCompat="@drawable/moabara_logo"
-                        tools:visibility="gone" />
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -75,59 +63,17 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/BookTypeBody"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:breakStrategy="high_quality"
-                android:ellipsize="end"
-                android:fontFamily="@font/noto_sans_bold"
-                android:maxLines="2"
-                android:text="1111111"
-                android:textColor="#111111"
-                android:textSize="12sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/BarBody"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:breakStrategy="high_quality"
-                android:ellipsize="end"
-                android:fontFamily="@font/noto_sans_bold"
-                android:maxLines="2"
-                android:text="@string/Common_Bar"
-                android:textColor="#222222"
-                android:textSize="12sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/CategoryBody"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:breakStrategy="high_quality"
-                android:ellipsize="end"
-                android:fontFamily="@font/noto_sans_bold"
-                android:maxLines="2"
-                android:text="@string/Common_Genre"
-                android:textColor="#333333"
-                android:textSize="12sp"
-                android:textStyle="bold" />
-
-
-        </LinearLayout>
+            android:orientation="horizontal" />
 
         <TextView
-            android:id="@+id/BookTitleBody"
+            android:id="@+id/tviewTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"
@@ -135,12 +81,12 @@
             android:ellipsize="end"
             android:fontFamily="@font/noto_sans_bold"
             android:text="@string/Common_BookTitle"
-            android:textColor="#444444"
+            android:textColor="#ffffff"
             android:textSize="16sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/BookWriterBody"
+            android:id="@+id/tviewWriter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -149,21 +95,21 @@
             android:fontFamily="@font/noto_sans"
             android:maxLines="1"
             android:text="@string/Common_BookWriter"
-            android:textColor="#444444"
+            android:textColor="#ffffff"
             android:textSize="12sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:layout_marginEnd="20dp"
             android:baselineAligned="false"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
+                android:layout_marginTop="2dp"
                 android:layout_marginEnd="4dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
@@ -174,10 +120,10 @@
                     android:layout_height="18dp"
                     android:contentDescription="@string/TODO"
                     android:scaleType="fitXY"
-                    android:src="@drawable/moabara_logo" />
+                    android:src="@drawable/ic_launcher_gray" />
 
                 <TextView
-                    android:id="@+id/BookReadBody"
+                    android:id="@+id/tviewInfo1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
@@ -187,15 +133,16 @@
                     android:fontFamily="@font/noto_sans"
                     android:maxLines="3"
                     android:text="@string/Common_Count"
-                    android:textColor="#767676"
+                    android:textColor="#ffffff"
                     android:textSize="14sp" />
 
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
+                android:layout_marginTop="2dp"
                 android:layout_marginEnd="4dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
@@ -206,10 +153,10 @@
                     android:layout_height="18dp"
                     android:contentDescription="@string/TODO"
                     android:scaleType="fitXY"
-                    android:src="@drawable/moabara_logo" />
+                    android:src="@drawable/ic_launcher_gray" />
 
                 <TextView
-                    android:id="@+id/BookRecommendBody"
+                    android:id="@+id/tviewInfo2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
@@ -219,58 +166,16 @@
                     android:fontFamily="@font/noto_sans"
                     android:maxLines="3"
                     android:text="@string/Common_Count"
-                    android:textColor="#767676"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="20dp"
-            android:baselineAligned="false"
-            android:orientation="horizontal">
-
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/moabara_logo" />
-
-                <TextView
-                    android:id="@+id/BookFavBody"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginEnd="4dp"
-                    android:breakStrategy="high_quality"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/noto_sans"
-                    android:maxLines="3"
-                    android:text="@string/Common_Count"
-                    android:textColor="#767676"
+                    android:textColor="#ffffff"
                     android:textSize="14sp" />
 
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
+                android:layout_marginTop="2dp"
                 android:layout_marginEnd="4dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
@@ -281,10 +186,10 @@
                     android:layout_height="18dp"
                     android:contentDescription="@string/TODO"
                     android:scaleType="fitXY"
-                    android:src="@drawable/moabara_logo" />
+                    android:src="@drawable/ic_launcher_gray" />
 
                 <TextView
-                    android:id="@+id/BookCommentBody"
+                    android:id="@+id/tviewInfo4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
@@ -294,7 +199,40 @@
                     android:fontFamily="@font/noto_sans"
                     android:maxLines="3"
                     android:text="@string/Common_Count"
-                    android:textColor="#767676"
+                    android:textColor="#ffffff"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="4dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:contentDescription="@string/TODO"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_launcher_gray" />
+
+                <TextView
+                    android:id="@+id/tviewInfo3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:breakStrategy="high_quality"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/noto_sans"
+                    android:maxLines="3"
+                    android:text="@string/Common_Count"
+                    android:textColor="#ffffff"
                     android:textSize="14sp" />
 
             </LinearLayout>

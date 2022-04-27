@@ -11,10 +11,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moavara.Joara.JoaraSearchResult
-import com.example.moavara.Joara.RetrofitJoara
-import com.example.moavara.KaKao.RetrofitKaKao
-import com.example.moavara.KaKao.SearchResultKakao
+import com.example.moavara.Retrofit.JoaraSearchResult
+import com.example.moavara.Retrofit.RetrofitJoara
+import com.example.moavara.Retrofit.RetrofitKaKao
+import com.example.moavara.Retrofit.SearchResultKakao
 import com.example.moavara.R
 import com.example.moavara.Util.TabViewModel
 import retrofit2.Call

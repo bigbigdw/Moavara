@@ -1,4 +1,4 @@
-package com.example.moavara.Joara
+package com.example.moavara.Retrofit
 
 import com.example.moavara.ETC.API
 import com.example.moavara.ETC.HELPER
@@ -27,6 +27,7 @@ interface ServiceSearchJoara {
 }
 
 //조아라 이벤트
+//조아라 이벤트 상세
 interface JoaraEventService {
     @GET(API.EVENT_JOA + HELPER.ETC)
     fun getRetrofit(
@@ -34,22 +35,18 @@ interface JoaraEventService {
         @Query("banner_type") banner_type: String?,
         @Query("category") category: String?,
     ): Call<JoaraEventResult?>?
-}
 
-interface JoaraNoticeDetailService {
+    @GET(API.EVENT_DETAIL_JOA + HELPER.ETC)
+    fun getEventDetail(
+        @Query("event_id") event_id: String?,
+    ): Call<JoaraEventDetailResult?>?
+
     @GET(API.NOTICE_DETAIL_JOA + HELPER.ETC)
-    fun getRetrofit(
+    fun getNoticeDetail(
         @Query("notice_id") notice_id: String?,
     ): Call<JoaraNoticeDetailResult?>?
 }
 
-//조아라 이벤트 상세
-interface JoaraEventDetailService {
-    @GET(API.EVENT_DETAIL_JOA + HELPER.ETC)
-    fun getRetrofit(
-        @Query("event_id") event_id: String?,
-    ): Call<JoaraEventDetailResult?>?
-}
 
 //조아라 베스트
 interface JoaraBestService {
@@ -59,10 +56,14 @@ interface JoaraBestService {
         @Query("store") store: String?,
         @Query("category") category: String?,
     ): Call<JoaraBestListResult?>?
+
+    @GET("v1/book/detail.joa")
+    fun getBookDetail(@QueryMap queryMap: MutableMap<String?, Any>): Call<JoaraBestDetailResult>
+
+    @GET("v1/board/book_comment.joa")
+    fun getBookComment(@QueryMap queryMap: MutableMap<String?, Any>): Call<JoaraBestDetailCommentsResult>
+
+    @GET("v1/book/other")
+    fun getBookOther(@QueryMap queryMap: MutableMap<String?, Any>): Call<JoaraBestListResult>
 }
 
-//토큰 체크
-interface CheckTokenService {
-    @GET(API.USER_TOKEN_CHECK_JOA + HELPER.ETC)
-    fun getRetrofit(@Query("token") token: String?): Call<CheckTokenResult?>?
-}

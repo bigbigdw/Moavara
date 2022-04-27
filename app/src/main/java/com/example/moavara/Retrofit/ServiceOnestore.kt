@@ -1,6 +1,5 @@
-package com.example.moavara.OneStore
+package com.example.moavara.Retrofit
 
-import com.example.moavara.KaKao.SearchResultKakao
 import retrofit2.Call
 import retrofit2.http.*
 

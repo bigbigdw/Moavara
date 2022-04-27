@@ -16,9 +16,9 @@ import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.DataEvent
 import com.example.moavara.DataBase.DataPickEvent
-import com.example.moavara.Joara.JoaraEventDetailResult
-import com.example.moavara.Joara.JoaraNoticeDetailResult
-import com.example.moavara.Joara.RetrofitJoara
+import com.example.moavara.Retrofit.JoaraEventDetailResult
+import com.example.moavara.Retrofit.JoaraNoticeDetailResult
+import com.example.moavara.Retrofit.RetrofitJoara
 import com.example.moavara.R
 import com.example.moavara.Search.EventData
 import com.example.moavara.Util.Genre

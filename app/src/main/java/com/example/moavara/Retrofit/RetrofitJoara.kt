@@ -1,8 +1,6 @@
-package com.example.moavara.Joara
+package com.example.moavara.Retrofit
 
-import android.content.Context
 import com.example.moavara.ETC.HELPER
-import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -52,8 +50,8 @@ object RetrofitJoara {
         return Retrofit.Builder()
             .baseUrl(HELPER.API_JOARA)
             .addConverterFactory(GsonConverterFactory.create()).build()
-            .create(JoaraNoticeDetailService::class.java)
-            .getRetrofit(
+            .create(JoaraEventService::class.java)
+            .getNoticeDetail(
                 notice_id
             )
     }
@@ -62,8 +60,8 @@ object RetrofitJoara {
         return Retrofit.Builder()
             .baseUrl(HELPER.API_JOARA)
             .addConverterFactory(GsonConverterFactory.create()).build()
-            .create(JoaraEventDetailService::class.java)
-            .getRetrofit(
+            .create(JoaraEventService::class.java)
+            .getEventDetail(
                 event_id
             )
     }
@@ -90,5 +88,29 @@ object RetrofitJoara {
                 store,
                 category
             )
+    }
+
+    fun getBookDetailJoa(map: MutableMap<String?, Any>): Call<JoaraBestDetailResult> {
+        return Retrofit.Builder()
+            .baseUrl(HELPER.API_JOARA)
+            .addConverterFactory(GsonConverterFactory.create()).build()
+            .create(JoaraBestService::class.java)
+            .getBookDetail(map)
+    }
+
+    fun getBookCommentJoa(map: MutableMap<String?, Any>): Call<JoaraBestDetailCommentsResult> {
+        return Retrofit.Builder()
+            .baseUrl(HELPER.API_JOARA)
+            .addConverterFactory(GsonConverterFactory.create()).build()
+            .create(JoaraBestService::class.java)
+            .getBookComment(map)
+    }
+
+    fun getBookOtherJoa(map: MutableMap<String?, Any>): Call<JoaraBestListResult> {
+        return Retrofit.Builder()
+            .baseUrl(HELPER.API_JOARA)
+            .addConverterFactory(GsonConverterFactory.create()).build()
+            .create(JoaraBestService::class.java)
+            .getBookOther(map)
     }
 }

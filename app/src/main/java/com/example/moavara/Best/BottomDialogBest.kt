@@ -13,8 +13,6 @@ import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.DataBaseBestDay
 import com.example.moavara.DataBase.DataBestDay
-import com.example.moavara.DataBase.DataEvent
-import com.example.moavara.DataBase.DataPickEvent
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
@@ -23,8 +21,6 @@ import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.DBDate
 import com.example.moavara.databinding.BottomDialogBestBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.firebase.messaging.FirebaseMessaging
-import java.util.ArrayList
 
 class BottomDialogBest(
     private val mContext: Context,
@@ -159,6 +155,14 @@ class BottomDialogBest(
                 dismiss()
             }
 
+            lviewDetail.setOnClickListener {
+                val bookDetailIntent = Intent(mContext, ActivityBestDetail::class.java)
+                bookDetailIntent.putExtra("BookCode", String.format("%s", item.bookCode))
+                bookDetailIntent.putExtra("Type", String.format("%s", tabType))
+                startActivity(bookDetailIntent)
+                dismiss()
+            }
+
             llayoutBtnRight.setOnClickListener {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getUrl()))
                 startActivity(intent)
@@ -252,9 +256,6 @@ class BottomDialogBest(
                                     tviewRank7.text = (group.number + 1).toString()
                                 }
                             }
-
-                            Log.d("@@@@-1", item.date)
-                            Log.d("@@@@-2", week!!.tue)
 
                             when {
                                 week!!.sun == DBDate.DateMMDD() -> {

@@ -15,11 +15,6 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) : Wo
 ) {
     override fun doWork(): Result {
         /* 처리해야할 작업에 관한 코드들 */
-        postFCM()
-        return Result.success()
-    }
-
-    private fun postFCM() {
         Thread {
             Mining.runMining(applicationContext, "ALL")
             Mining.runMining(applicationContext, "ROMANCE")
@@ -27,11 +22,20 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) : Wo
             Mining.runMining(applicationContext, "FANTASY")
         }.start()
 
+        Log.d("MOAVARA_FCM", "DONE")
+
+        postFCM()
+
+        return Result.success()
+    }
+
+    private fun postFCM() {
+
         val fcmBody = DataFCMBody(
             "/topics/all",
             "high",
             DataFCMBodyData("data", "body"),
-            DataFCMBodyNotification("모아바라", "베스트 리스트가 갱신되었습니다!!!", "default", "ic_stat_ic_notification"),
+            DataFCMBodyNotification("모아바라", "베스트 리스트가 갱신되었습니다???", "default", "ic_stat_ic_notification"),
         )
 
         val call = Retrofit.Builder()

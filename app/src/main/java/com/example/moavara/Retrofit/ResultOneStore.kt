@@ -1,4 +1,4 @@
-package com.example.moavara.OneStore
+package com.example.moavara.Retrofit
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
