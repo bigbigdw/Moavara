@@ -1,6 +1,8 @@
 package com.example.moavara.Firebase
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.work.Worker
 import androidx.work.WorkerParameters
@@ -15,14 +17,19 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) : Wo
 ) {
     override fun doWork(): Result {
         /* 처리해야할 작업에 관한 코드들 */
-        Thread {
-            Mining.runMining(applicationContext, "ALL")
-            Mining.runMining(applicationContext, "ROMANCE")
-            Mining.runMining(applicationContext, "BL")
-            Mining.runMining(applicationContext, "FANTASY")
-        }.start()
+//        Handler(Looper.getMainLooper()).postDelayed({
+//            Mining.runMining(applicationContext, "ALL")
+//        }, 1000) //1초 후 실행
+//        Handler(Looper.getMainLooper()).postDelayed({
+//            Mining.runMining(applicationContext, "ROMANCE")
+//        }, 1000) //1초 후 실행
+//        Handler(Looper.getMainLooper()).postDelayed({
+//            Mining.runMining(applicationContext, "BL")
+//        }, 1000) //1초 후 실행
+//        Handler(Looper.getMainLooper()).postDelayed({
+//            Mining.runMining(applicationContext, "FANTASY")
+//        }, 1000) //1초 후 실행
 
-        Log.d("MOAVARA_FCM", "DONE")
 
         postFCM()
 
@@ -35,7 +42,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) : Wo
             "/topics/all",
             "high",
             DataFCMBodyData("data", "body"),
-            DataFCMBodyNotification("모아바라", "베스트 리스트가 갱신되었습니다???", "default", "ic_stat_ic_notification"),
+            DataFCMBodyNotification("모아바라", "베스트 리스트가 갱신되었습니다-0429", "default", "ic_stat_ic_notification"),
         )
 
         val call = Retrofit.Builder()

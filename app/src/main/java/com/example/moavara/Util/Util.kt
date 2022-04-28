@@ -2,7 +2,6 @@ package com.example.moavara.Util
 
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.moavara.DataBase.DataBestDay
 import com.example.moavara.Main.mRootRef
@@ -22,7 +21,7 @@ import java.util.*
 
 object Param {
 
-    fun getItemAPI(mContext : Context?) : MutableMap<String?, Any> {
+    fun getItemAPI(mContext: Context?): MutableMap<String?, Any> {
 
         val Param: MutableMap<String?, Any> = HashMap()
 
@@ -32,7 +31,7 @@ object Param {
         Param["ver"] = "2.6.3"
         Param["device"] = "mw"
         Param["deviceuid"] = "5127d5951c983034a16980c8a893ac99d16dbef988ee36882b793aa14ad33604"
-        Param["devicetoken"] =  "mw"
+        Param["devicetoken"] = "mw"
 
         return Param
     }
@@ -235,15 +234,15 @@ object Genre {
             "ALL"
     }
 
-    fun setJoaraGenre(mContext: Context): String {
+    fun setJoaraGenre(str : String): String {
         return when {
-            getGenre(mContext) == "BL" -> {
+            str == "BL" -> {
                 "20"
             }
-            getGenre(mContext) == "FANTASY" -> {
+            str == "FANTASY" -> {
                 "1"
             }
-            getGenre(mContext) == "ROMANCE" -> {
+            str == "ROMANCE" -> {
                 "5"
             }
             else -> {
@@ -252,16 +251,16 @@ object Genre {
         }
     }
 
-    fun setNaverGenre(mContext: Context): String {
+    fun setNaverGenre(str : String): String {
         return when {
-            getGenre(mContext) == "BL" -> {
+            str == "BL" -> {
                 //현판
                 "https://novel.naver.com/best/ranking?genre=110&periodType=DAILY"
             }
-            getGenre(mContext) == "FANTASY" -> {
+            str == "FANTASY" -> {
                 "https://novel.naver.com/best/ranking?genre=102&periodType=DAILY"
             }
-            getGenre(mContext) == "ROMANCE" -> {
+            str == "ROMANCE" -> {
                 "https://novel.naver.com/best/ranking?genre=101&periodType=DAILY"
             }
             else -> {
@@ -271,15 +270,15 @@ object Genre {
         }
     }
 
-    fun setRidiGenre(mContext: Context): String {
+    fun setRidiGenre(str: String): String {
         return when {
-            getGenre(mContext) == "BL" -> {
+            str == "BL" -> {
                 "https://ridibooks.com/bestsellers/bl-webnovel?order=daily&rent=n&adult=n&adult_exclude=y"
             }
-            getGenre(mContext) == "FANTASY" -> {
+            str == "FANTASY" -> {
                 "https://ridibooks.com/bestsellers/fantasy_serial?order=daily"
             }
-            getGenre(mContext) == "ROMANCE" -> {
+            str == "ROMANCE" -> {
                 "https://ridibooks.com/bestsellers/romance_serial?rent=n&adult=n&adult_exclude=y&order=daily"
             }
             else -> {
@@ -289,15 +288,15 @@ object Genre {
         }
     }
 
-    fun setOneStoreGenre(mContext: Context): String {
+    fun setOneStoreGenre(str: String): String {
         return when {
-            getGenre(mContext) == "BL" -> {
+            str == "BL" -> {
                 "fantasy"
             }
-            getGenre(mContext) == "FANTASY" -> {
+            str == "FANTASY" -> {
                 "fantasy"
             }
-            getGenre(mContext) == "ROMANCE" -> {
+            str == "ROMANCE" -> {
                 "romance"
             }
             else -> {
@@ -306,16 +305,16 @@ object Genre {
         }
     }
 
-    fun setNaverTodayGenre(mContext: Context): String {
+    fun setNaverTodayGenre(str: String): String {
         return when {
-            getGenre(mContext) == "BL" -> {
+            str == "BL" -> {
                 //현판
                 "https://novel.naver.com/webnovel/ranking?genre=110&periodType=DAILY"
             }
-            getGenre(mContext) == "FANTASY" -> {
+            str == "FANTASY" -> {
                 "https://novel.naver.com/webnovel/ranking?genre=102&periodType=DAILY"
             }
-            getGenre(mContext) == "ROMANCE" -> {
+            str == "ROMANCE" -> {
                 "https://novel.naver.com/webnovel/ranking?genre=101&periodType=DAILY"
             }
             else -> {
@@ -325,16 +324,16 @@ object Genre {
         }
     }
 
-    fun setNaverChallengeGenre(mContext: Context): String {
+    fun setNaverChallengeGenre(str : String): String {
         return when {
-            getGenre(mContext) == "BL" -> {
+            str == "BL" -> {
                 //현판
                 "https://novel.naver.com/challenge/ranking?genre=110&periodType=DAILY"
             }
-            getGenre(mContext) == "FANTASY" -> {
+            str == "FANTASY" -> {
                 "https://novel.naver.com/challenge/ranking?genre=102&periodType=DAILY"
             }
-            getGenre(mContext) == "ROMANCE" -> {
+            str == "ROMANCE" -> {
                 "https://novel.naver.com/challenge/ranking?genre=101&periodType=DAILY"
             }
             else -> {
@@ -344,16 +343,16 @@ object Genre {
         }
     }
 
-    fun setMrBlueGenre(mContext: Context): String {
+    fun setMrBlueGenre(str : String): String {
         return when {
-            getGenre(mContext) == "BL" -> {
+            str == "BL" -> {
                 //현판
                 "https://www.mrblue.com/novel/best/bl/daily"
             }
-            getGenre(mContext) == "FANTASY" -> {
+            str == "FANTASY" -> {
                 "https://www.mrblue.com/novel/best/fanmu/daily"
             }
-            getGenre(mContext) == "ROMANCE" -> {
+            str == "ROMANCE" -> {
                 "https://www.mrblue.com/novel/best/romance/daily"
             }
             else -> {
@@ -362,15 +361,15 @@ object Genre {
         }
     }
 
-    fun setKakaoStageGenre(mContext: Context): String {
+    fun setKakaoStageGenre(str: String): String {
         return when {
-            getGenre(mContext) == "BL" -> {
+            str == "BL" -> {
                 "6"
             }
-            getGenre(mContext) == "FANTASY" -> {
+            str == "FANTASY" -> {
                 "1"
             }
-            getGenre(mContext) == "ROMANCE" -> {
+            str == "ROMANCE" -> {
                 "4"
             }
             else -> {
@@ -383,291 +382,304 @@ object Genre {
 
 object Mining {
     fun runMining(context: Context, cate: String) {
-        getRidiBest(context, cate)
-//        getOneStoreBest(context, cate)
-//        getKakaoBest(cate)
-//        getKakaoStageBest(context, cate)
+        getRidiBest(cate)
+        getOneStoreBest(cate)
+        getKakaoBest(cate)
+        getKakaoStageBest(cate)
         getJoaraBest(context, cate)
-//        getJoaraBestNobless(context, cate)
-//        getJoaraBestPremium(context, cate)
-//        getNaverToday(context, cate)
-//        getNaverChallenge(context, cate)
-//        getNaverBest(context, cate)
-//        getMrBlueBest(context, cate)
+        getJoaraBestNobless(cate)
+        getJoaraBestPremium(cate)
+        getNaverToday(cate)
+        getNaverChallenge(cate)
+        getNaverBest(cate)
+        getMrBlueBest(context, cate)
     }
 
     fun getMrBlueBest(context: Context, cate: String) {
+        Thread {
+            val doc: Document =
+                Jsoup.connect(Genre.setMrBlueGenre(cate)).post()
+            val MrBlue: Elements = doc.select(".list-box ul li")
+            val MrBlueRef: MutableMap<String?, Any> = HashMap()
 
-        val doc: Document =
-            Jsoup.connect(Genre.setMrBlueGenre(context)).post()
-        val MrBlue: Elements = doc.select(".list-box ul li")
-        val MrBlueRef: MutableMap<String?, Any> = HashMap()
+            val yesterdayRef =
+                mRootRef.child("best").child("MrBlue").child(cate).child("today").child(
+                    DBDate.Yesterday()
+                )
 
-        val yesterdayRef = mRootRef.child("best").child("MrBlue").child(cate).child("today").child(
-            DBDate.Yesterday()
-        )
+            val itemsYesterday = ArrayList<BookListDataBestToday?>()
 
-        val itemsYesterday = ArrayList<BookListDataBestToday?>()
-
-        yesterdayRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (postSnapshot in dataSnapshot.children) {
-                    val group: BookListDataBestToday? =
-                        postSnapshot.getValue(BookListDataBestToday::class.java)
-                    itemsYesterday.add(
-                        BookListDataBestToday(
-                            group!!.writer,
-                            group.title,
-                            group.bookImg,
-                            group.bookCode,
-                            group.info1,
-                            group.info2,
-                            group.info3,
-                            group.info4,
-                            group.info5,
-                            group.number,
-                            group.numberDiff,
-                            group.date,
-                            group.status
+            yesterdayRef.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (postSnapshot in dataSnapshot.children) {
+                        val group: BookListDataBestToday? =
+                            postSnapshot.getValue(BookListDataBestToday::class.java)
+                        itemsYesterday.add(
+                            BookListDataBestToday(
+                                group!!.writer,
+                                group.title,
+                                group.bookImg,
+                                group.bookCode,
+                                group.info1,
+                                group.info2,
+                                group.info3,
+                                group.info4,
+                                group.info5,
+                                group.number,
+                                group.numberDiff,
+                                group.date,
+                                group.status
+                            )
                         )
-                    )
+                    }
+
+                    for (i in MrBlue.indices) {
+
+                        val title = MrBlue.select(".tit > a")[i].attr("title")
+
+                        MrBlueRef["writerName"] =
+                            MrBlue.select(".txt-box .name > a")[i].attr("title")
+                        MrBlueRef["subject"] = title
+                        MrBlueRef["bookImg"] = MrBlue.select(".img img")[i].absUrl("src")
+                        MrBlueRef["bookCode"] = MrBlue.select(".txt-box a")[i].absUrl("href")
+                        MrBlueRef["info1"] = MrBlue.select(".txt-box .name > a")[i].absUrl("href")
+                        MrBlueRef["info2"] = " "
+                        MrBlueRef["info3"] = " "
+                        MrBlueRef["info4"] = " "
+                        MrBlueRef["info5"] = " "
+                        MrBlueRef["number"] = i
+                        MrBlueRef["numberDiff"] = calculateNum(i, title, itemsYesterday).num
+                        MrBlueRef["date"] = DBDate.DateMMDD()
+                        MrBlueRef["status"] = calculateNum(i, title, itemsYesterday).status
+
+                        miningValue(MrBlueRef, i, "MrBlue", cate)
+
+                    }
                 }
 
-                for (i in MrBlue.indices) {
+                override fun onCancelled(databaseError: DatabaseError) {}
+            })
+        }.start()
 
-                    val title = MrBlue.select(".tit > a")[i].attr("title")
+    }
 
-                    MrBlueRef["writerName"] = MrBlue.select(".txt-box .name > a")[i].attr("title")
-                    MrBlueRef["subject"] = title
-                    MrBlueRef["bookImg"] = MrBlue.select(".img img")[i].absUrl("src")
-                    MrBlueRef["bookCode"] = MrBlue.select(".txt-box a")[i].absUrl("href")
-                    MrBlueRef["info1"] = MrBlue.select(".txt-box .name > a")[i].absUrl("href")
-                    MrBlueRef["info2"] = " "
-                    MrBlueRef["info3"] = " "
-                    MrBlueRef["info4"] = " "
-                    MrBlueRef["info5"] = " "
-                    MrBlueRef["number"] = i
-                    MrBlueRef["numberDiff"] = calculateNum(i, title, itemsYesterday).num
-                    MrBlueRef["date"] = DBDate.DateMMDD()
-                    MrBlueRef["status"] = calculateNum(i, title, itemsYesterday).status
+    fun getNaverToday(cate: String) {
+        Thread {
+            val doc: Document =
+                Jsoup.connect(Genre.setNaverTodayGenre(cate)).post()
+            val Naver: Elements = doc.select(".ranking_wrap_left .list_ranking li")
+            val NaverRef: MutableMap<String?, Any> = HashMap()
 
-                    miningValue(MrBlueRef, i, "MrBlue", cate)
+            val yesterdayRef =
+                mRootRef.child("best").child("Naver Today").child(cate).child("today").child(
+                    DBDate.Yesterday()
+                )
 
+            val itemsYesterday = ArrayList<BookListDataBestToday?>()
+
+            yesterdayRef.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (postSnapshot in dataSnapshot.children) {
+                        val group: BookListDataBestToday? =
+                            postSnapshot.getValue(BookListDataBestToday::class.java)
+                        itemsYesterday.add(
+                            BookListDataBestToday(
+                                group!!.writer,
+                                group.title,
+                                group.bookImg,
+                                group.bookCode,
+                                group.info1,
+                                group.info2,
+                                group.info3,
+                                group.info4,
+                                group.info5,
+                                group.number,
+                                group.numberDiff,
+                                group.date,
+                                group.status
+                            )
+                        )
+                    }
+
+                    for (i in Naver.indices) {
+
+                        val title = Naver.select(".tit")[i].text()
+
+                        NaverRef["writerName"] = Naver.select(".author")[i].text()
+                        NaverRef["subject"] = title
+                        NaverRef["bookImg"] = Naver.select("div img")[i].absUrl("src")
+                        NaverRef["bookCode"] = Naver.select("a")[i].absUrl("href")
+                        NaverRef["info1"] = Naver[i].select(".num_total").first()!!.text()
+                        NaverRef["info2"] = Naver[i].select(".num_total").next().first()!!.text()
+                        NaverRef["info3"] = Naver.select(".count")[i].text()
+                        NaverRef["info4"] = Naver.select(".score_area")[i].text()
+                        NaverRef["info5"] = ""
+                        NaverRef["number"] = i
+                        NaverRef["numberDiff"] = calculateNum(i, title, itemsYesterday).num
+                        NaverRef["date"] = DBDate.DateMMDD()
+                        NaverRef["status"] = calculateNum(i, title, itemsYesterday).status
+
+                        miningValue(NaverRef, i, "Naver Today", cate)
+
+                    }
                 }
-            }
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
 
+                override fun onCancelled(databaseError: DatabaseError) {}
+            })
+        }.start()
 
 
     }
 
-    fun getNaverToday(context: Context, cate: String) {
+    fun getNaverChallenge(cate: String) {
+        Thread {
+            val doc: Document =
+                Jsoup.connect(Genre.setNaverChallengeGenre(cate)).post()
+            val Naver: Elements = doc.select(".ranking_wrap_left .list_ranking li")
+            val NaverRef: MutableMap<String?, Any> = HashMap()
 
-        val doc: Document =
-            Jsoup.connect(Genre.setNaverTodayGenre(context)).post()
-        val Naver: Elements = doc.select(".ranking_wrap_left .list_ranking li")
-        val NaverRef: MutableMap<String?, Any> = HashMap()
+            val yesterdayRef =
+                mRootRef.child("best").child("Naver Challenge").child(cate).child("today").child(
+                    DBDate.Yesterday()
+                )
 
-        val yesterdayRef = mRootRef.child("best").child("Naver Today").child(cate).child("today").child(
-            DBDate.Yesterday()
-        )
+            val itemsYesterday = ArrayList<BookListDataBestToday?>()
 
-        val itemsYesterday = ArrayList<BookListDataBestToday?>()
-
-        yesterdayRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (postSnapshot in dataSnapshot.children) {
-                    val group: BookListDataBestToday? =
-                        postSnapshot.getValue(BookListDataBestToday::class.java)
-                    itemsYesterday.add(
-                        BookListDataBestToday(
-                            group!!.writer,
-                            group.title,
-                            group.bookImg,
-                            group.bookCode,
-                            group.info1,
-                            group.info2,
-                            group.info3,
-                            group.info4,
-                            group.info5,
-                            group.number,
-                            group.numberDiff,
-                            group.date,
-                            group.status
+            yesterdayRef.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (postSnapshot in dataSnapshot.children) {
+                        val group: BookListDataBestToday? =
+                            postSnapshot.getValue(BookListDataBestToday::class.java)
+                        itemsYesterday.add(
+                            BookListDataBestToday(
+                                group!!.writer,
+                                group.title,
+                                group.bookImg,
+                                group.bookCode,
+                                group.info1,
+                                group.info2,
+                                group.info3,
+                                group.info4,
+                                group.info5,
+                                group.number,
+                                group.numberDiff,
+                                group.date,
+                                group.status
+                            )
                         )
-                    )
+                    }
+
+                    for (i in Naver.indices) {
+
+                        val title = Naver.select(".tit")[i].text()
+
+                        NaverRef["writerName"] = Naver.select(".author")[i].text()
+                        NaverRef["subject"] = title
+                        NaverRef["bookImg"] = Naver.select("div img")[i].absUrl("src")
+                        NaverRef["bookCode"] = Naver.select("a")[i].absUrl("href")
+                        NaverRef["info1"] = Naver[i].select(".num_total").first()!!.text()
+                        NaverRef["info2"] = Naver[i].select(".num_total").next().first()!!.text()
+                        NaverRef["info3"] = Naver.select(".count")[i].text()
+                        NaverRef["info4"] = Naver.select(".score_area")[i].text()
+                        NaverRef["info5"] = ""
+                        NaverRef["number"] = i
+                        NaverRef["numberDiff"] = calculateNum(i, title, itemsYesterday).num
+                        NaverRef["date"] = DBDate.DateMMDD()
+                        NaverRef["status"] = calculateNum(i, title, itemsYesterday).status
+
+                        miningValue(NaverRef, i, "Naver Challenge", cate)
+
+                    }
                 }
 
-                for (i in Naver.indices) {
-
-                    val title = Naver.select(".tit")[i].text()
-
-                    NaverRef["writerName"] = Naver.select(".author")[i].text()
-                    NaverRef["subject"] = title
-                    NaverRef["bookImg"] = Naver.select("div img")[i].absUrl("src")
-                    NaverRef["bookCode"] = Naver.select("a")[i].absUrl("href")
-                    NaverRef["info1"] = Naver[i].select(".num_total").first()!!.text()
-                    NaverRef["info2"] = Naver[i].select(".num_total").next().first()!!.text()
-                    NaverRef["info3"] = Naver.select(".count")[i].text()
-                    NaverRef["info4"] = Naver.select(".score_area")[i].text()
-                    NaverRef["info5"] = ""
-                    NaverRef["number"] = i
-                    NaverRef["numberDiff"] = calculateNum(i, title, itemsYesterday).num
-                    NaverRef["date"] = DBDate.DateMMDD()
-                    NaverRef["status"] = calculateNum(i, title, itemsYesterday).status
-
-                    miningValue(NaverRef, i, "Naver Today", cate)
-
-                }
-            }
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
-    }
-
-    fun getNaverChallenge(context: Context, cate: String) {
-
-        val doc: Document =
-            Jsoup.connect(Genre.setNaverChallengeGenre(context)).post()
-        val Naver: Elements = doc.select(".ranking_wrap_left .list_ranking li")
-        val NaverRef: MutableMap<String?, Any> = HashMap()
-
-        val yesterdayRef = mRootRef.child("best").child("Naver Challenge").child(cate).child("today").child(
-            DBDate.Yesterday()
-        )
-
-        val itemsYesterday = ArrayList<BookListDataBestToday?>()
-
-        yesterdayRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (postSnapshot in dataSnapshot.children) {
-                    val group: BookListDataBestToday? =
-                        postSnapshot.getValue(BookListDataBestToday::class.java)
-                    itemsYesterday.add(
-                        BookListDataBestToday(
-                            group!!.writer,
-                            group.title,
-                            group.bookImg,
-                            group.bookCode,
-                            group.info1,
-                            group.info2,
-                            group.info3,
-                            group.info4,
-                            group.info5,
-                            group.number,
-                            group.numberDiff,
-                            group.date,
-                            group.status
-                        )
-                    )
-                }
-
-                for (i in Naver.indices) {
-
-                    val title = Naver.select(".tit")[i].text()
-
-                    NaverRef["writerName"] = Naver.select(".author")[i].text()
-                    NaverRef["subject"] = title
-                    NaverRef["bookImg"] = Naver.select("div img")[i].absUrl("src")
-                    NaverRef["bookCode"] = Naver.select("a")[i].absUrl("href")
-                    NaverRef["info1"] = Naver[i].select(".num_total").first()!!.text()
-                    NaverRef["info2"] = Naver[i].select(".num_total").next().first()!!.text()
-                    NaverRef["info3"] = Naver.select(".count")[i].text()
-                    NaverRef["info4"] = Naver.select(".score_area")[i].text()
-                    NaverRef["info5"] = ""
-                    NaverRef["number"] = i
-                    NaverRef["numberDiff"] = calculateNum(i, title, itemsYesterday).num
-                    NaverRef["date"] = DBDate.DateMMDD()
-                    NaverRef["status"] = calculateNum(i, title, itemsYesterday).status
-
-                    miningValue(NaverRef, i, "Naver Challenge", cate)
-
-                }
-            }
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
-    }
-
-    fun getNaverBest(context: Context, cate: String) {
-
-        val doc: Document =
-            Jsoup.connect(Genre.setNaverGenre(context)).post()
-        val Naver: Elements = doc.select(".ranking_wrap_left .list_ranking li")
-        val NaverRef: MutableMap<String?, Any> = HashMap()
-
-
-        val yesterdayRef = mRootRef.child("best").child("Naver").child(cate).child("today").child(
-            DBDate.Yesterday()
-        )
-
-        val itemsYesterday = ArrayList<BookListDataBestToday?>()
-
-        yesterdayRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (postSnapshot in dataSnapshot.children) {
-                    val group: BookListDataBestToday? =
-                        postSnapshot.getValue(BookListDataBestToday::class.java)
-                    itemsYesterday.add(
-                        BookListDataBestToday(
-                            group!!.writer,
-                            group.title,
-                            group.bookImg,
-                            group.bookCode,
-                            group.info1,
-                            group.info2,
-                            group.info3,
-                            group.info4,
-                            group.info5,
-                            group.number,
-                            group.numberDiff,
-                            group.date,
-                            group.status
-                        )
-                    )
-                }
-
-                for (i in Naver.indices) {
-
-                    val title = Naver.select(".tit")[i].text()
-
-                    NaverRef["writerName"] = Naver.select(".author")[i].text()
-                    NaverRef["subject"] = title
-                    NaverRef["bookImg"] = Naver.select("div img")[i].absUrl("src")
-                    NaverRef["bookCode"] = Naver.select("a")[i].absUrl("href")
-                    NaverRef["info1"] = Naver[i].select(".num_total").first()!!.text()
-                    NaverRef["info2"] = Naver[i].select(".num_total").next().first()!!.text()
-                    NaverRef["info3"] = Naver.select(".count")[i].text()
-                    NaverRef["info4"] = Naver.select(".score_area")[i].text()
-                    NaverRef["info5"] = ""
-                    NaverRef["number"] = i
-                    NaverRef["numberDiff"] = calculateNum(i, title, itemsYesterday).num
-                    NaverRef["date"] = DBDate.DateMMDD()
-                    NaverRef["status"] = calculateNum(i, title, itemsYesterday).status
-
-                    miningValue(NaverRef, i, "Naver", cate)
-
-                }
-            }
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
-
+                override fun onCancelled(databaseError: DatabaseError) {}
+            })
+        }.start()
 
 
     }
 
-    fun getRidiBest(context: Context, cate: String) {
+    fun getNaverBest(cate: String) {
+        Thread {
+            val doc: Document =
+                Jsoup.connect(Genre.setNaverGenre(cate)).post()
+            val Naver: Elements = doc.select(".ranking_wrap_left .list_ranking li")
+            val NaverRef: MutableMap<String?, Any> = HashMap()
+
+
+            val yesterdayRef =
+                mRootRef.child("best").child("Naver").child(cate).child("today").child(
+                    DBDate.Yesterday()
+                )
+
+            val itemsYesterday = ArrayList<BookListDataBestToday?>()
+
+            yesterdayRef.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (postSnapshot in dataSnapshot.children) {
+                        val group: BookListDataBestToday? =
+                            postSnapshot.getValue(BookListDataBestToday::class.java)
+                        itemsYesterday.add(
+                            BookListDataBestToday(
+                                group!!.writer,
+                                group.title,
+                                group.bookImg,
+                                group.bookCode,
+                                group.info1,
+                                group.info2,
+                                group.info3,
+                                group.info4,
+                                group.info5,
+                                group.number,
+                                group.numberDiff,
+                                group.date,
+                                group.status
+                            )
+                        )
+                    }
+
+                    for (i in Naver.indices) {
+
+                        val title = Naver.select(".tit")[i].text()
+
+                        NaverRef["writerName"] = Naver.select(".author")[i].text()
+                        NaverRef["subject"] = title
+                        NaverRef["bookImg"] = Naver.select("div img")[i].absUrl("src")
+                        NaverRef["bookCode"] = Naver.select("a")[i].absUrl("href")
+                        NaverRef["info1"] = Naver[i].select(".num_total").first()!!.text()
+                        NaverRef["info2"] = Naver[i].select(".num_total").next().first()!!.text()
+                        NaverRef["info3"] = Naver.select(".count")[i].text()
+                        NaverRef["info4"] = Naver.select(".score_area")[i].text()
+                        NaverRef["info5"] = ""
+                        NaverRef["number"] = i
+                        NaverRef["numberDiff"] = calculateNum(i, title, itemsYesterday).num
+                        NaverRef["date"] = DBDate.DateMMDD()
+                        NaverRef["status"] = calculateNum(i, title, itemsYesterday).status
+
+                        miningValue(NaverRef, i, "Naver", cate)
+
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {}
+            })
+        }.start()
+    }
+
+    fun getRidiBest(cate: String) {
 
         Thread {
             val doc: Document =
-                Jsoup.connect(Genre.setRidiGenre(context)).post()
+                Jsoup.connect(Genre.setRidiGenre(cate)).post()
             val Ridi: Elements = doc.select(".book_thumbnail_wrapper")
             val RidiRef: MutableMap<String?, Any> = HashMap()
 
-            val yesterdayRef = mRootRef.child("best").child("Ridi").child(cate).child("today").child(
-                DBDate.Yesterday()
-            )
+            val yesterdayRef =
+                mRootRef.child("best").child("Ridi").child(cate).child("today").child(
+                    DBDate.Yesterday()
+                )
 
-            try{
+            try {
                 val itemsYesterday = ArrayList<BookListDataBestToday?>()
 
                 yesterdayRef.addValueEventListener(object : ValueEventListener {
@@ -700,11 +712,14 @@ object Mining {
 
                             RidiRef["writerName"] = doc.select("div .author_detail_link")[i].text()
                             RidiRef["subject"] = doc.select("div .title_link")[i].text()
-                            RidiRef["bookImg"] = Ridi.select(".thumbnail_image .thumbnail")[i].absUrl("data-src")
+                            RidiRef["bookImg"] =
+                                Ridi.select(".thumbnail_image .thumbnail")[i].absUrl("data-src")
                             RidiRef["bookCode"] = Ridi.select("a")[i].absUrl("href")
                             RidiRef["info1"] = doc.select(".count_num")[i].text()
-                            RidiRef["info2"] = "추천 수 : " + doc.select("span .StarRate_ParticipantCount")[i].text()
-                            RidiRef["info3"] = "평점 : " + doc.select("span .StarRate_Score")[i].text()
+                            RidiRef["info2"] =
+                                "추천 수 : " + doc.select("span .StarRate_ParticipantCount")[i].text()
+                            RidiRef["info3"] =
+                                "평점 : " + doc.select("span .StarRate_Score")[i].text()
                             RidiRef["info4"] = ""
                             RidiRef["info5"] = ""
                             RidiRef["number"] = i
@@ -716,9 +731,10 @@ object Mining {
 
                         }
                     }
+
                     override fun onCancelled(databaseError: DatabaseError) {}
                 })
-            } catch (exception : IOException){
+            } catch (exception: IOException) {
 
             }
         }.start()
@@ -726,15 +742,16 @@ object Mining {
 
     }
 
-    fun getOneStoreBest(context: Context, cate: String) {
+    fun getOneStoreBest(cate: String) {
         val OneStoryRef: MutableMap<String?, Any> = HashMap()
 
         val call: Call<OneStoreBookResult?>? =
-            RetrofitOnestore.getBestOneStore(Genre.setOneStoreGenre(context))
+            RetrofitOnestore.getBestOneStore(Genre.setOneStoreGenre(cate))
 
-        val yesterdayRef = mRootRef.child("best").child("OneStore").child(cate).child("today").child(
-            DBDate.Yesterday()
-        )
+        val yesterdayRef =
+            mRootRef.child("best").child("OneStore").child(cate).child("today").child(
+                DBDate.Yesterday()
+            )
 
         val itemsYesterday = ArrayList<BookListDataBestToday?>()
 
@@ -785,9 +802,14 @@ object Mining {
                                     OneStoryRef["info4"] = " "
                                     OneStoryRef["info5"] = " "
                                     OneStoryRef["number"] = i
-                                    OneStoryRef["numberDiff"] = calculateNum(i, productList[i].prodNm, itemsYesterday).num
+                                    OneStoryRef["numberDiff"] =
+                                        calculateNum(i, productList[i].prodNm, itemsYesterday).num
                                     OneStoryRef["date"] = DBDate.DateMMDD()
-                                    OneStoryRef["status"] = calculateNum(i, productList[i].prodNm, itemsYesterday).status
+                                    OneStoryRef["status"] = calculateNum(
+                                        i,
+                                        productList[i].prodNm,
+                                        itemsYesterday
+                                    ).status
 
                                     miningValue(OneStoryRef, i, "OneStore", cate)
 
@@ -801,25 +823,27 @@ object Mining {
                     }
                 })
             }
+
             override fun onCancelled(databaseError: DatabaseError) {}
         })
 
     }
 
-    fun getKakaoStageBest(context: Context, cate: String) {
+    fun getKakaoStageBest(cate: String) {
         val KakaoRef: MutableMap<String?, Any> = HashMap()
 
         val call: Call<List<BestResultKakaoStageNovel>?>? = RetrofitKaKao.getBestKakaoStage(
             "false",
             "YESTERDAY",
-            Genre.setKakaoStageGenre(context),
+            Genre.setKakaoStageGenre(cate),
             "72"
         )
 
 
-        val yesterdayRef = mRootRef.child("best").child("Kakao Stage").child(cate).child("today").child(
-            DBDate.Yesterday()
-        )
+        val yesterdayRef =
+            mRootRef.child("best").child("Kakao Stage").child(cate).child("today").child(
+                DBDate.Yesterday()
+            )
 
         val itemsYesterday = ArrayList<BookListDataBestToday?>()
 
@@ -847,7 +871,7 @@ object Mining {
                     )
                 }
 
-                call!!.enqueue(object : Callback<List<BestResultKakaoStageNovel>?> {
+                call!!.clone().enqueue(object : Callback<List<BestResultKakaoStageNovel>?> {
                     override fun onResponse(
                         call: Call<List<BestResultKakaoStageNovel>?>,
                         response: Response<List<BestResultKakaoStageNovel>?>
@@ -870,9 +894,11 @@ object Mining {
                                     KakaoRef["info4"] = "선호작 수 : " + novel.visitorCount
                                     KakaoRef["info5"] = ""
                                     KakaoRef["number"] = i
-                                    KakaoRef["numberDiff"] = calculateNum(i, novel.title, itemsYesterday).num
+                                    KakaoRef["numberDiff"] =
+                                        calculateNum(i, novel.title, itemsYesterday).num
                                     KakaoRef["date"] = DBDate.DateMMDD()
-                                    KakaoRef["status"] = calculateNum(i, novel.title, itemsYesterday).status
+                                    KakaoRef["status"] =
+                                        calculateNum(i, novel.title, itemsYesterday).status
 
                                     miningValue(KakaoRef, i, "Kakao Stage", cate)
                                 }
@@ -880,11 +906,15 @@ object Mining {
                         }
                     }
 
-                    override fun onFailure(call: Call<List<BestResultKakaoStageNovel>?>, t: Throwable) {
+                    override fun onFailure(
+                        call: Call<List<BestResultKakaoStageNovel>?>,
+                        t: Throwable
+                    ) {
                         Log.d("onFailure", "실패")
                     }
                 })
             }
+
             override fun onCancelled(databaseError: DatabaseError) {}
         })
     }
@@ -949,9 +979,11 @@ object Mining {
                                     KakaoRef["info4"] = "추천 수 : " + list[i].like_count
                                     KakaoRef["info5"] = "평점 : " + list[i].rating
                                     KakaoRef["number"] = i
-                                    KakaoRef["numberDiff"] = calculateNum(i, list[i].title, itemsYesterday).num
+                                    KakaoRef["numberDiff"] =
+                                        calculateNum(i, list[i].title, itemsYesterday).num
                                     KakaoRef["date"] = DBDate.DateMMDD()
-                                    KakaoRef["status"] = calculateNum(i, list[i].title, itemsYesterday).status
+                                    KakaoRef["status"] =
+                                        calculateNum(i, list[i].title, itemsYesterday).status
 
                                     miningValue(KakaoRef, i, "Kakao", cate)
 
@@ -965,6 +997,7 @@ object Mining {
                     }
                 })
             }
+
             override fun onCancelled(databaseError: DatabaseError) {}
         })
 
@@ -977,11 +1010,13 @@ object Mining {
         val param = Param.getItemAPI(context)
         param["best"] = "today"
         param["store"] = ""
-        param["category"] = Genre.setJoaraGenre(context)
+        param["category"] = Genre.setJoaraGenre(cate)
 
-        val yesterdayRef = FirebaseDatabase.getInstance().reference.child("best").child("Joara").child(cate).child("today").child(
-            DBDate.Yesterday()
-        )
+        val yesterdayRef =
+            FirebaseDatabase.getInstance().reference.child("best").child("Joara").child(cate)
+                .child("today").child(
+                    DBDate.Yesterday()
+                )
 
         val itemsYesterday = ArrayList<BookListDataBestToday?>()
 
@@ -1011,48 +1046,55 @@ object Mining {
                     )
                 }
 
-                apiJoara.getJoaraBookBest(param, object : RetrofitDataListener<JoaraBestListResult> {
-                    override fun onSuccess(data: JoaraBestListResult) {
+                apiJoara.getJoaraBookBest(
+                    param,
+                    object : RetrofitDataListener<JoaraBestListResult> {
+                        override fun onSuccess(data: JoaraBestListResult) {
 
-                        var books = data.bookLists
+                            var books = data.bookLists
 
-                        Log.d("####", "####-1" + books.toString())
+                            Log.d("####", "####-1" + books.toString())
 
-                        for (i in books!!.indices) {
+                            for (i in books!!.indices) {
 
-                            JoaraRef["writerName"] = books[i].writerName
-                            JoaraRef["subject"] = books[i].subject
-                            JoaraRef["bookImg"] = books[i].bookImg
-                            JoaraRef["bookCode"] = books[i].bookCode
-                            JoaraRef["info1"] = "줄거리 : " + books[i].intro
-                            JoaraRef["info2"] = "총 " + books[i].cntChapter + " 화"
-                            JoaraRef["info3"] = "조회 수 : " + books[i].cntPageRead
-                            JoaraRef["info4"] = "선호작 수 : " + books[i].cntFavorite
-                            JoaraRef["info5"] = "추천 수 : " + books[i].cntRecom
-                            JoaraRef["number"] = i
-                            JoaraRef["numberDiff"] = calculateNum(i, books[i].subject, itemsYesterday).num
-                            JoaraRef["date"] = DBDate.DateMMDD()
-                            JoaraRef["status"] = calculateNum(i, books[i].subject, itemsYesterday).status
+                                JoaraRef["writerName"] = books[i].writerName
+                                JoaraRef["subject"] = books[i].subject
+                                JoaraRef["bookImg"] = books[i].bookImg
+                                JoaraRef["bookCode"] = books[i].bookCode
+                                JoaraRef["info1"] = "줄거리 : " + books[i].intro
+                                JoaraRef["info2"] = "총 " + books[i].cntChapter + " 화"
+                                JoaraRef["info3"] = "조회 수 : " + books[i].cntPageRead
+                                JoaraRef["info4"] = "선호작 수 : " + books[i].cntFavorite
+                                JoaraRef["info5"] = "추천 수 : " + books[i].cntRecom
+                                JoaraRef["number"] = i
+                                JoaraRef["numberDiff"] =
+                                    calculateNum(i, books[i].subject, itemsYesterday).num
+                                JoaraRef["date"] = DBDate.DateMMDD()
+                                JoaraRef["status"] =
+                                    calculateNum(i, books[i].subject, itemsYesterday).status
 
-                            miningValue(JoaraRef, i, "Joara", cate)
+                                miningValue(JoaraRef, i, "Joara", cate)
+                            }
                         }
-                    }
-                })
+                    })
 
             }
+
             override fun onCancelled(databaseError: DatabaseError) {}
         })
     }
 
-    fun getJoaraBestPremium(context: Context, cate: String) {
+    fun getJoaraBestPremium(cate: String) {
         val JoaraRef: MutableMap<String?, Any> = HashMap()
 
         val call: Call<JoaraBestListResult?>? =
-            RetrofitJoara.getJoaraBookBest("today", "premium", Genre.setJoaraGenre(context))
+            RetrofitJoara.getJoaraBookBest("today", "premium", Genre.setJoaraGenre(cate))
 
-        val yesterdayRef = FirebaseDatabase.getInstance().reference.child("best").child("Joara Premium").child(cate).child("today").child(
-            DBDate.Yesterday()
-        )
+        val yesterdayRef =
+            FirebaseDatabase.getInstance().reference.child("best").child("Joara Premium")
+                .child(cate).child("today").child(
+                    DBDate.Yesterday()
+                )
 
         val itemsYesterday = ArrayList<BookListDataBestToday?>()
 
@@ -1101,9 +1143,11 @@ object Mining {
                                     JoaraRef["info4"] = "선호작 수 : " + books[i].cntFavorite
                                     JoaraRef["info5"] = "추천 수 : " + books[i].cntRecom
                                     JoaraRef["number"] = i
-                                    JoaraRef["numberDiff"] = calculateNum(i, books[i].subject, itemsYesterday).num
+                                    JoaraRef["numberDiff"] =
+                                        calculateNum(i, books[i].subject, itemsYesterday).num
                                     JoaraRef["date"] = DBDate.DateMMDD()
-                                    JoaraRef["status"] = calculateNum(i, books[i].subject, itemsYesterday).status
+                                    JoaraRef["status"] =
+                                        calculateNum(i, books[i].subject, itemsYesterday).status
 
                                     miningValue(JoaraRef, i, "Joara Premium", cate)
 
@@ -1117,21 +1161,24 @@ object Mining {
                     }
                 })
             }
+
             override fun onCancelled(databaseError: DatabaseError) {}
         })
 
     }
 
-    fun getJoaraBestNobless(context: Context, cate: String) {
+    fun getJoaraBestNobless(cate: String) {
         val JoaraRef: MutableMap<String?, Any> = HashMap()
 
         val call: Call<JoaraBestListResult?>? =
-            RetrofitJoara.getJoaraBookBest("today", "nobless", Genre.setJoaraGenre(context))
+            RetrofitJoara.getJoaraBookBest("today", "nobless", Genre.setJoaraGenre(cate))
 
 
-        val yesterdayRef = FirebaseDatabase.getInstance().reference.child("best").child("Joara Nobless").child(cate).child("today").child(
-            DBDate.Yesterday()
-        )
+        val yesterdayRef =
+            FirebaseDatabase.getInstance().reference.child("best").child("Joara Nobless")
+                .child(cate).child("today").child(
+                    DBDate.Yesterday()
+                )
 
         val itemsYesterday = ArrayList<BookListDataBestToday?>()
 
@@ -1180,9 +1227,11 @@ object Mining {
                                     JoaraRef["info4"] = "선호작 수 : " + books[i].cntFavorite
                                     JoaraRef["info5"] = "추천 수 : " + books[i].cntRecom
                                     JoaraRef["number"] = i
-                                    JoaraRef["numberDiff"] = calculateNum(i, books[i].subject, itemsYesterday).num
+                                    JoaraRef["numberDiff"] =
+                                        calculateNum(i, books[i].subject, itemsYesterday).num
                                     JoaraRef["date"] = DBDate.DateMMDD()
-                                    JoaraRef["status"] = calculateNum(i, books[i].subject, itemsYesterday).status
+                                    JoaraRef["status"] =
+                                        calculateNum(i, books[i].subject, itemsYesterday).status
 
                                     miningValue(JoaraRef, i, "Joara Nobless", cate)
 
@@ -1196,6 +1245,7 @@ object Mining {
                     }
                 })
             }
+
             override fun onCancelled(databaseError: DatabaseError) {}
         })
     }
@@ -1210,12 +1260,13 @@ object Mining {
             BestRef.setBestRefWeek(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
         }
 
-        for (i in (1000 * DBDate.DayInt())..((1000 * DBDate.DayInt()) + 999)) {
-            BestRef.setBestRef(type, cate).child("week-list")
-                .child(i.toString()).removeValue()
-        }
+//        for (i in (1000 * DBDate.DayInt())..((1000 * DBDate.DayInt()) + 99)) {
+//            BestRef.setBestRef(type, cate).child("week-list")
+//                .child(i.toString()).removeValue()
+//        }
 
-        BestRef.setBestRefWeekCompared(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
+        BestRef.setBestRefWeekCompared(type, num, cate)
+            .setValue(BestRef.setBookListDataBestToday(ref))
 
         //Month - Week
         if (num == 0) {
@@ -1229,7 +1280,11 @@ object Mining {
 
     }
 
-    fun calculateNum(num: Int?, title: String?, itemsYesterday : ArrayList<BookListDataBestToday?>): CalculNum {
+    fun calculateNum(
+        num: Int?,
+        title: String?,
+        itemsYesterday: ArrayList<BookListDataBestToday?>
+    ): CalculNum {
 
         for (i in itemsYesterday) {
             if (i != null) {
@@ -1239,12 +1294,13 @@ object Mining {
                             return CalculNum(num - i.number, "DOWN")
                         }
                         i.number > num -> {
-                            return  CalculNum(num - i.number, "UP")
+                            return CalculNum(num - i.number, "UP")
                         }
                         i.number == num -> {
                             CalculNum(0, "-")
-                        } else -> {
-                        CalculNum(0, "NEW")
+                        }
+                        else -> {
+                            CalculNum(0, "NEW")
                         }
                     }
                 }

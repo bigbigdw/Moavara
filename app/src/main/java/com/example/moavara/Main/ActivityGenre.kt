@@ -3,74 +3,72 @@ package com.example.moavara.Main
 import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
+import android.util.Log
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.moavara.R
+import com.example.moavara.Util.Genre
+import com.example.moavara.databinding.ActivityBestDetailBinding
+import com.example.moavara.databinding.ActivityGenreBinding
+import com.example.moavara.databinding.ActivitySplashBinding
 
 class ActivityGenre : AppCompatActivity() {
 
-    private var llayoutBtn1: LinearLayout? = null
-    private var llayoutBtn2: LinearLayout? = null
-    private var llayoutBtn3: LinearLayout? = null
-    private var llayoutBtn4: LinearLayout? = null
-    private var tviewMoavara: TextView? = null
-    private var tviewGenre: TextView? = null
+    private lateinit var binding: ActivityGenreBinding
+    var context = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_genre)
+        binding = ActivityGenreBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        llayoutBtn1 = findViewById(R.id.llayout_btn1)
-        llayoutBtn2 = findViewById(R.id.llayout_btn2)
-        llayoutBtn3 = findViewById(R.id.llayout_btn3)
-        llayoutBtn4 = findViewById(R.id.llayout_btn4)
+        with(binding){
+            tviewMoavara.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+            tviewGenre.paintFlags = Paint.UNDERLINE_TEXT_FLAG
 
-        tviewMoavara = findViewById(R.id.tviewMoavara)
-        tviewGenre = findViewById(R.id.tviewGenre)
+            Log.d("####", Genre.getGenre(context)!!)
 
-        tviewMoavara!!.paintFlags = Paint.UNDERLINE_TEXT_FLAG
-        tviewGenre!!.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+            llayoutBtn1.setOnClickListener {
 
-        llayoutBtn1!!.setOnClickListener {
+                savePreferences("FANTASY")
 
-            savePreferences("FANTASY")
+                val novelIntent = Intent(context, ActivitySync::class.java)
+                novelIntent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY; Intent.FLAG_ACTIVITY_NO_ANIMATION
+                startActivityIfNeeded(novelIntent, 0)
+                finish()
+            }
 
-            val novelIntent = Intent(this, ActivitySync::class.java)
-            novelIntent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY; Intent.FLAG_ACTIVITY_NO_ANIMATION
-            startActivityIfNeeded(novelIntent, 0)
-            finish()
-        }
+            llayoutBtn2.setOnClickListener {
 
-        llayoutBtn2!!.setOnClickListener {
+                savePreferences("ROMANCE")
 
-            savePreferences("ROMANCE")
+                val novelIntent = Intent(context, ActivitySync::class.java)
+                novelIntent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY; Intent.FLAG_ACTIVITY_NO_ANIMATION
+                startActivityIfNeeded(novelIntent, 0)
+                finish()
+            }
 
-            val novelIntent = Intent(this, ActivitySync::class.java)
-            novelIntent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY; Intent.FLAG_ACTIVITY_NO_ANIMATION
-            startActivityIfNeeded(novelIntent, 0)
-            finish()
-        }
+            llayoutBtn3.setOnClickListener {
 
-        llayoutBtn3!!.setOnClickListener {
+                savePreferences("ALL")
 
-            savePreferences("ALL")
+                val novelIntent = Intent(context, ActivitySync::class.java)
+                novelIntent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY; Intent.FLAG_ACTIVITY_NO_ANIMATION
+                startActivityIfNeeded(novelIntent, 0)
+                finish()
+            }
 
-            val novelIntent = Intent(this, ActivitySync::class.java)
-            novelIntent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY; Intent.FLAG_ACTIVITY_NO_ANIMATION
-            startActivityIfNeeded(novelIntent, 0)
-            finish()
-        }
+            llayoutBtn4.setOnClickListener {
 
-        llayoutBtn4!!.setOnClickListener {
+                savePreferences("BL")
 
-            savePreferences("BL")
-
-            val novelIntent = Intent(this, ActivitySync::class.java)
-            novelIntent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY; Intent.FLAG_ACTIVITY_NO_ANIMATION
-            startActivityIfNeeded(novelIntent, 0)
-            finish()
+                val novelIntent = Intent(context, ActivitySync::class.java)
+                novelIntent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY; Intent.FLAG_ACTIVITY_NO_ANIMATION
+                startActivityIfNeeded(novelIntent, 0)
+                finish()
+            }
         }
 
     }
