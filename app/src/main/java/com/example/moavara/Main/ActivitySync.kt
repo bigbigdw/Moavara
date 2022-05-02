@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.work.*
@@ -15,6 +16,7 @@ import com.example.moavara.DataBase.DataBestDay
 import com.example.moavara.Firebase.FirebaseWorkManager
 import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
+import com.example.moavara.Search.WeekendDate
 import com.example.moavara.Util.*
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.database.FirebaseDatabase
@@ -66,6 +68,22 @@ class ActivitySync : Activity() {
                 }
             }.addOnFailureListener{}
         }, 1000) //1초 후 실행
+
+        mRootRef.child("Week").get().addOnSuccessListener {
+
+            val week: WeekendDate? = it.getValue(WeekendDate::class.java)
+
+            if(week != null){
+                getSharedPreferences("WEEK", MODE_PRIVATE).edit().putString("SUN", week.sun).apply()
+                getSharedPreferences("WEEK", MODE_PRIVATE).edit().putString("MON", week.mon).apply()
+                getSharedPreferences("WEEK", MODE_PRIVATE).edit().putString("TUE", week.tue).apply()
+                getSharedPreferences("WEEK", MODE_PRIVATE).edit().putString("WED", week.wed).apply()
+                getSharedPreferences("WEEK", MODE_PRIVATE).edit().putString("THUR", week.thur).apply()
+                getSharedPreferences("WEEK", MODE_PRIVATE).edit().putString("FRI", week.fri).apply()
+                getSharedPreferences("WEEK", MODE_PRIVATE).edit().putString("SAT", week.sat).apply()
+            }
+
+        }.addOnFailureListener{}
 
 //        Handler(Looper.getMainLooper()).postDelayed({
 //            Mining.runMining(applicationContext, "ALL")

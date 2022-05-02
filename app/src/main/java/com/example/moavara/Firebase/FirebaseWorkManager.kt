@@ -17,18 +17,18 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) : Wo
 ) {
     override fun doWork(): Result {
         /* 처리해야할 작업에 관한 코드들 */
-//        Handler(Looper.getMainLooper()).postDelayed({
-//            Mining.runMining(applicationContext, "ALL")
-//        }, 1000) //1초 후 실행
-//        Handler(Looper.getMainLooper()).postDelayed({
-//            Mining.runMining(applicationContext, "ROMANCE")
-//        }, 1000) //1초 후 실행
-//        Handler(Looper.getMainLooper()).postDelayed({
-//            Mining.runMining(applicationContext, "BL")
-//        }, 1000) //1초 후 실행
-//        Handler(Looper.getMainLooper()).postDelayed({
-//            Mining.runMining(applicationContext, "FANTASY")
-//        }, 1000) //1초 후 실행
+        Handler(Looper.getMainLooper()).postDelayed({
+            Mining.runMining(applicationContext, "ALL")
+        }, 1000) //1초 후 실행
+        Handler(Looper.getMainLooper()).postDelayed({
+            Mining.runMining(applicationContext, "ROMANCE")
+        }, 1000) //1초 후 실행
+        Handler(Looper.getMainLooper()).postDelayed({
+            Mining.runMining(applicationContext, "BL")
+        }, 1000) //1초 후 실행
+        Handler(Looper.getMainLooper()).postDelayed({
+            Mining.runMining(applicationContext, "FANTASY")
+        }, 1000) //1초 후 실행
 
 
         postFCM()
