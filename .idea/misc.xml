@@ -119,7 +119,7 @@
         <entry key="app/src/main/res/layout/activity_book_setting.xml" value="0.16944444444444445" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_best.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_best_detail_analyze.xml" value="0.11574074074074074" />
+        <entry key="app/src/main/res/layout/fragment_best_detail_analyze.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_best_month.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_best_today.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_best_today_tab.xml" value="0.1" />

@@ -7,8 +7,6 @@ f
 6app/src/main/java/com/example/moavara/DataBase/Data.kt,0/e/0e89638febe889205ed46227adbd24dba93714ae
 w
 Gapp/src/main/java/com/example/moavara/Best/FragmentBestDetailComment.kt,8/f/8f526f4b9776e2d180746873b9b6fd0cb75aa7ad
-n
->app/src/main/java/com/example/moavara/Best/BottomDialogBest.kt,6/0/60c769947c2f14d4152dc3f32968b68bd3d35ca8
 <
 build.gradle,f/0/f07866736216be0ee2aba49e392191aeae700a35
 b
