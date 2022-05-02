@@ -24,8 +24,9 @@ class ActivityBestDetail : AppCompatActivity() {
     var bookCode = ""
     var type = ""
     var context = this
+    var bookTitle = ""
     private lateinit var binding: ActivityBestDetailBinding
-    private lateinit var mFragmentBestTabMonth: FragmentBestTabMonth
+    private lateinit var mFragmentBestDetailAnalyze: FragmentBestDetailAnalyze
     private lateinit var mFragmentBestDetailBooks: FragmentBestDetailBooks
     private lateinit var mFragmentBestDetailComment: FragmentBestDetailComment
 
@@ -48,7 +49,7 @@ class ActivityBestDetail : AppCompatActivity() {
 
         binding.tabs.addTab(binding.tabs.newTab().setText("댓글"))
         binding.tabs.addTab(binding.tabs.newTab().setText("다른 작품"))
-        binding.tabs.addTab(binding.tabs.newTab().setText(R.string.Best_Tab3))
+        binding.tabs.addTab(binding.tabs.newTab().setText("작품 분석"))
 
         binding.tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
@@ -66,9 +67,9 @@ class ActivityBestDetail : AppCompatActivity() {
                         }
                     }
                     2->{
-                        mFragmentBestTabMonth = FragmentBestTabMonth("Joara")
+                        mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze("Joara", bookCode)
                         supportFragmentManager.commit {
-                            replace(R.id.llayoutWrap, mFragmentBestTabMonth)
+                            replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
                         }
                     }
                 }
@@ -104,7 +105,9 @@ class ActivityBestDetail : AppCompatActivity() {
                                     .load(it.book.bookImg)
                                     .into(inclueBestDetail.iviewBookCover)
 
-                                inclueBestDetail.tviewTitle.text = it.book.subject
+                                bookTitle = it.book.subject
+
+                                inclueBestDetail.tviewTitle.text = bookTitle
                                 inclueBestDetail.tviewWriter.text = it.book.writerName
 
                                 inclueBestDetail.tviewInfo1.text = "총 " + it.book.cntChapter + " 화"
