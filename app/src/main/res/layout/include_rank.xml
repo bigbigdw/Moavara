@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right|center_vertical|end"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#1E1E20"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical"
+            tools:visibility="visible">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="#1E1E20"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="일"
+                android:textAlignment="center"
+                android:textColor="#FDFDFD"
+                android:textSize="14dp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/iviewRank1"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/TODO"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_best_gr_24px" />
+
+            <TextView
+                android:id="@+id/tviewRank1"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="#1E1E20"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="14위"
+                android:textAlignment="center"
+                android:textColor="#FDFDFD"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:visibility="invisible"
+                tools:visibility="visible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#1E1E20"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical"
+            tools:visibility="visible">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="#1E1E20"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="월"
+                android:textAlignment="center"
+                android:textColor="#FDFDFD"
+                android:textSize="14dp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/iviewRank2"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/TODO"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_best_gr_24px" />
+
+            <TextView
+                android:id="@+id/tviewRank2"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="#1E1E20"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="14위"
+                android:textAlignment="center"
+                android:textColor="#FDFDFD"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:visibility="invisible"
+                tools:visibility="visible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#1E1E20"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical"
+            tools:visibility="visible">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="#1E1E20"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="화"
+                android:textAlignment="center"
+                android:textColor="#FDFDFD"
+                android:textSize="14dp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/iviewRank3"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/TODO"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_best_gr_24px" />
+
+            <TextView
+                android:id="@+id/tviewRank3"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="#1E1E20"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="14위"
+                android:textAlignment="center"
+                android:textColor="#FDFDFD"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:visibility="invisible"
+                tools:visibility="visible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#1E1E20"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical"
+            tools:visibility="visible">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="#1E1E20"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="수"
+                android:textAlignment="center"
+                android:textColor="#FDFDFD"
+                android:textSize="14dp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/iviewRank4"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/TODO"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_best_gr_24px" />
+
+            <TextView
+                android:id="@+id/tviewRank4"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="#1E1E20"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="14위"
+                android:textAlignment="center"
+                android:textColor="#FDFDFD"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:visibility="invisible"
+                tools:visibility="visible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#1E1E20"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical"
+            tools:visibility="visible">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="#1E1E20"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="목"
+                android:textAlignment="center"
+                android:textColor="#FDFDFD"
+                android:textSize="14dp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/iviewRank5"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/TODO"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_best_gr_24px" />
+
+            <TextView
+                android:id="@+id/tviewRank5"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="#1E1E20"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="14위"
+                android:textAlignment="center"
+                android:textColor="#FDFDFD"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:visibility="invisible"
+                tools:visibility="visible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#1E1E20"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical"
+            tools:visibility="visible">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="#1E1E20"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="금"
+                android:textAlignment="center"
+                android:textColor="#FDFDFD"
+                android:textSize="14dp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/iviewRank6"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/TODO"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_best_gr_24px" />
+
+            <TextView
+                android:id="@+id/tviewRank6"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="#1E1E20"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="14위"
+                android:textAlignment="center"
+                android:textColor="#FDFDFD"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:visibility="invisible"
+                tools:visibility="visible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#1E1E20"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical"
+            tools:visibility="visible">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="#1E1E20"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="토"
+                android:textAlignment="center"
+                android:textColor="#FDFDFD"
+                android:textSize="14dp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/iviewRank7"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/TODO"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_best_gr_24px" />
+
+            <TextView
+                android:id="@+id/tviewRank7"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="#1E1E20"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="14위"
+                android:textAlignment="center"
+                android:textColor="#FDFDFD"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:visibility="invisible"
+                tools:visibility="visible" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

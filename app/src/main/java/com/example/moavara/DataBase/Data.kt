@@ -1,5 +1,7 @@
 package com.example.moavara.Search
 
+import com.github.mikephil.charting.data.BarEntry
+
 
 class BookListData(
     var writer: String?,
@@ -78,4 +80,11 @@ class EventData(
 data class BestComment(
     var comment: String = "",
     var date: String = ""
+)
+
+data class BestChart(
+    var dateList: MutableList<String>? = null,
+    var entryList: MutableList<BarEntry>? = null,
+    var title: String = "",
+    var color: String = ""
 )

@@ -95,6 +95,7 @@
         <entry key="app/src/main/res/Best/layout/fragment_best_weekend.xml" value="0.25" />
         <entry key="app/src/main/res/Best/layout/include_best_detail.xml" value="0.1" />
         <entry key="app/src/main/res/Best/layout/item_best_detail_comment.xml" value="0.1" />
+        <entry key="app/src/main/res/Best/layout/item_best_detail_other.xml" value="0.36574074074074076" />
         <entry key="app/src/main/res/Best/layout/item_best_rank.xml" value="0.23425925925925925" />
         <entry key="app/src/main/res/Best/layout/item_booklist_best_month.xml" value="0.25" />
         <entry key="app/src/main/res/Best/layout/item_booklist_best_today.xml" value="0.18" />
@@ -127,6 +128,8 @@
         <entry key="app/src/main/res/layout/fragment_best_v2.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_best_weekend.xml" value="0.10843373493975904" />
         <entry key="app/src/main/res/layout/fragment_event.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/include_rank.xml" value="0.11574074074074074" />
+        <entry key="app/src/main/res/layout/item_best_detail_analysis.xml" value="0.11574074074074074" />
         <entry key="app/src/main/res/layout/item_best_detail_analyze.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_best_type.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_booklist_best_month.xml" value="0.1" />

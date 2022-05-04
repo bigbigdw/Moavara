@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.commit
 import com.bumptech.glide.Glide
 import com.example.moavara.R
+import com.example.moavara.Retrofit.JoaraBestChapter
 import com.example.moavara.Retrofit.JoaraBestDetailResult
 import com.example.moavara.Retrofit.RetrofitJoara
 import com.example.moavara.Util.Param
@@ -25,6 +26,7 @@ class ActivityBestDetail : AppCompatActivity() {
     var type = ""
     var context = this
     var bookTitle = ""
+    var chapter : List<JoaraBestChapter>? = null
     private lateinit var binding: ActivityBestDetailBinding
     private lateinit var mFragmentBestDetailAnalyze: FragmentBestDetailAnalyze
     private lateinit var mFragmentBestDetailBooks: FragmentBestDetailBooks
@@ -55,19 +57,19 @@ class ActivityBestDetail : AppCompatActivity() {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 when(tab.position){
                     0->{
-                        mFragmentBestDetailComment = FragmentBestDetailComment("Joara", bookCode)
+                        mFragmentBestDetailComment = FragmentBestDetailComment(type, bookCode)
                         supportFragmentManager.commit {
                             replace(R.id.llayoutWrap, mFragmentBestDetailComment)
                         }
                     }
                     1->{
-                        mFragmentBestDetailBooks = FragmentBestDetailBooks("Joara", bookCode)
+                        mFragmentBestDetailBooks = FragmentBestDetailBooks(type, bookCode)
                         supportFragmentManager.commit {
                             replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
                         }
                     }
                     2->{
-                        mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze("Joara", bookCode)
+                        mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(type, bookCode)
                         supportFragmentManager.commit {
                             replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
                         }
@@ -78,7 +80,7 @@ class ActivityBestDetail : AppCompatActivity() {
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
 
-        if(type == "Joara"){
+        if(type == "Joara" || type == "Joara Nobless" || type == "Joara Premium"){
             setLayoutJoara()
         }
 
@@ -106,13 +108,14 @@ class ActivityBestDetail : AppCompatActivity() {
                                     .into(inclueBestDetail.iviewBookCover)
 
                                 bookTitle = it.book.subject
+                                chapter = it.book.chapter
 
                                 inclueBestDetail.tviewTitle.text = bookTitle
                                 inclueBestDetail.tviewWriter.text = it.book.writerName
 
                                 inclueBestDetail.tviewInfo1.text = "총 " + it.book.cntChapter + " 화"
-                                inclueBestDetail.tviewInfo2.text =  "조회 수 : " + it.book.cntFavorite
-                                inclueBestDetail.tviewInfo3.text =  "선호작 수 : " + it.book.cntPageRead
+                                inclueBestDetail.tviewInfo2.text =  "선호작 수 : " + it.book.cntFavorite
+                                inclueBestDetail.tviewInfo3.text =  "조회 수 : " + it.book.cntPageRead
                                 inclueBestDetail.tviewInfo4.text =  "추천 수 : " + it.book.cntRecom
 
                                 tviewIntro.text =  it.book.intro

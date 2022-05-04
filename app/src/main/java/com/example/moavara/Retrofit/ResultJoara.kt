@@ -134,6 +134,28 @@ class JoaraBestListValue {
     @SerializedName("cnt_page_read")
     @Expose
     var cntPageRead: String = ""
+
+    @SerializedName("chapter")
+    @Expose
+    var chapter : List<JoaraBestChapter>? = null
+}
+
+class JoaraBestChapter {
+    @SerializedName("cnt_comment")
+    @Expose
+    val cnt_comment: String = ""
+
+    @SerializedName("cnt_page_read")
+    @Expose
+    val cnt_page_read: String = ""
+
+    @SerializedName("cnt_recom")
+    @Expose
+    val cnt_recom: String = ""
+
+    @SerializedName("sortno")
+    @Expose
+    val sortno: String = ""
 }
 
 // 토큰 체크

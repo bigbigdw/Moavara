@@ -1,5 +1,6 @@
 package com.example.moavara.Best
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -8,12 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.moavara.R
+import com.example.moavara.Search.BestChart
 import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Genre
 import com.example.moavara.databinding.FragmentBestDetailAnalyzeBinding
+import com.example.moavara.databinding.ItemBestDetailAnalysisBinding
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
@@ -27,6 +32,9 @@ import java.util.*
 
 class FragmentBestDetailAnalyze(private val platfrom: String, private val bookCode: String) :
     Fragment() {
+
+    private var adapterChart: AdapterChart? = null
+    private val items = ArrayList<BestChart>()
 
     private var _binding: FragmentBestDetailAnalyzeBinding? = null
     private val binding get() = _binding!!
@@ -43,14 +51,52 @@ class FragmentBestDetailAnalyze(private val platfrom: String, private val bookCo
 
         cate = Genre.getGenre(requireContext()).toString()
 
-        if(platfrom == "Joara"){
+        adapterChart = AdapterChart(items)
+        binding.rViewChart.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.rViewChart.adapter = adapterChart
+
+        if(platfrom == "Joara" || platfrom == "Joara Nobless" || platfrom == "Joara Premium"){
+            getAnalyze()
             getAnalyzeJoara()
         }
 
         return view
     }
 
-    private fun getAnalyzeJoara() {
+    fun getAnalyzeJoara(){
+        var adapterChartJoara: AdapterChart?
+        val itemsJoara = ArrayList<BestChart>()
+
+        adapterChartJoara = AdapterChart(itemsJoara)
+        binding.rViewChart.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.rViewChartJoara.adapter = adapterChartJoara
+
+        var chapter = (context as ActivityBestDetail).chapter
+        val dateList = mutableListOf<String>()
+        val entryList = mutableListOf<BarEntry>()
+        val entryList2 = mutableListOf<BarEntry>()
+        val entryList3 = mutableListOf<BarEntry>()
+        var num = 0
+
+        Log.d("@@@@", chapter.toString())
+
+        if (chapter != null) {
+            for(i in chapter.indices){
+                dateList.add(chapter[i].sortno)
+                entryList.add(BarEntry(num.toFloat(), chapter[i].cnt_comment.toFloat()))
+                entryList2.add(BarEntry(num.toFloat(), chapter[i].cnt_page_read.toFloat()))
+                entryList3.add(BarEntry(num.toFloat(), chapter[i].cnt_recom.toFloat()))
+            }
+            itemsJoara.add(BestChart(dateList, entryList, "조회 수", "#6e2b93"))
+            itemsJoara.add(BestChart(dateList, entryList2, "선호작 수", "#6e2b93"))
+            itemsJoara.add(BestChart(dateList, entryList3, "추천 수", "#6e2b93"))
+            adapterChartJoara!!.notifyDataSetChanged()
+        }
+    }
+
+    private fun getAnalyze() {
         BestRef.setBestRefWeekList(platfrom, cate).get().addOnSuccessListener {
             val dateList = mutableListOf<String>()
             //BarEntry를 담는 리스트
@@ -76,9 +122,6 @@ class FragmentBestDetailAnalyze(private val platfrom: String, private val bookCo
                 if (group!!.title == (context as ActivityBestDetail).bookTitle) {
                     dateList.add(group.date)
 
-//                    val cmpAsc: Comparator<String?> = Comparator { o1, o2 -> o1!!.compareTo(o2!!) }
-//                    Collections.sort(dateList, cmpAsc)
-
                     //BarEntry로 값 추가 후 리스트에 담는다
                     entryList.add(BarEntry(num.toFloat(),group.info3.replace("조회 수 : ", "").toFloat()))
                     entryList2.add(BarEntry(num.toFloat(),group.info4.replace("선호작 수 : ", "").toFloat()))
@@ -86,7 +129,7 @@ class FragmentBestDetailAnalyze(private val platfrom: String, private val bookCo
                     entryList4.add(Entry(num.toFloat(), group.number.toFloat()))
 
 
-                    with(binding) {
+                    with(binding.includeRank) {
                         when {
                             sun == group.date -> {
                                 tviewRank1.visibility = View.VISIBLE
@@ -169,296 +212,105 @@ class FragmentBestDetailAnalyze(private val platfrom: String, private val bookCo
                 }
             }
 
-            Log.d("####", entryList.toString())
+            Log.d("####", entryList3.toString())
+            Log.d("####", entryList2.toString())
 
-            binding.barChart.xAxis.valueFormatter = object: ValueFormatter() {
-                override fun getFormattedValue(value: Float): String {
-                    return dateList[value.toInt()]
-                }
-            }
-
-            binding.barChart2.xAxis.valueFormatter = object: ValueFormatter() {
-                override fun getFormattedValue(value: Float): String {
-                    return dateList[value.toInt()]
-                }
-            }
-
-            binding.barChart3.xAxis.valueFormatter = object: ValueFormatter() {
-                override fun getFormattedValue(value: Float): String {
-                    return dateList[value.toInt()]
-                }
-            }
-
-//            binding.lineChart.xAxis.valueFormatter = object: ValueFormatter() {
-//                override fun getFormattedValue(value: Float): String {
-//                    return dateList[value.toInt()]
-//                }
-//            }
-
-            //위에서 만든 BarEntry 리스트를 인자로 준다
-            val barDataSet = BarDataSet(entryList, "조회수")
-
-            //example
-            //다음과 같이 Bar 커스터마이징이 가능하다
-            barDataSet.color = ColorTemplate.rgb("#ff7b22")
-            barDataSet.valueTextColor = Color.parseColor("#ffffff")
-
-            // , 구분으로 여러 BarDataSet을 줄 수 있습니다.
-            val barData = BarData(barDataSet)
-
-            //example
-            //BarData에 추가된 모든 BarDataSet에 일괄 적용되는 값입니다.
-            barData.barWidth = 0.5f
-
-            //binding으로 접근하여 barData 전달
-            val barChart = binding.barChart
-            barChart.data = barData
-
-            barChart.apply {
-                //터치, Pinch 상호작용
-                setScaleEnabled(false)
-                setPinchZoom(false)
-
-                //Chart가 그려질때 애니메이션
-                animateXY(0,800)
-
-                //Chart 밑에 description 표시 유무
-                description=null
-
-                //Legend는 차트의 범례를 의미합니다
-                //범례가 표시될 위치를 설정
-                legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-                legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
-
-                //차트의 좌, 우측 최소/최대값을 설정합니다.
-                //차트 제일 밑이 0부터 시작하고 싶은 경우 설정합니다.
-                axisLeft.axisMinimum = 0f
-                axisRight.axisMinimum = 0f
-
-                //기본적으로 차트 우측 축에도 데이터가 표시됩니다
-                //이를 활성화/비활성화 하기 위함
-                axisRight.setDrawLabels(false)
-
-                //xAxis, yAxis 둘다 존재하여 따로 설정이 가능합니다
-                //차트 내부에 Grid 표시 유무
-                xAxis.setDrawGridLines(false)
-
-                //x축 데이터 표시 위치
-                xAxis.position = XAxis.XAxisPosition.BOTTOM
-
-                //x축 데이터 갯수 설정
-                xAxis.labelCount = entryList.size
-
-                xAxis.textColor = Color.parseColor("#ffffff")
-                axisLeft.textColor = Color.parseColor("#ffffff")
-                legend.textColor = Color.parseColor("#ffffff")
-            }
-
-
-            //barChart 갱신하여 데이터 표시
-            barChart.invalidate()
-
-
-
-            //위에서 만든 BarEntry 리스트를 인자로 준다
-            val barDataSet2 = BarDataSet(entryList2, "선호작 수")
-
-            //example
-            //다음과 같이 Bar 커스터마이징이 가능하다
-            barDataSet2.color = ColorTemplate.rgb("#4971EF")
-            barDataSet2.valueTextColor = Color.parseColor("#ffffff")
-
-            // , 구분으로 여러 BarDataSet을 줄 수 있습니다.
-            val barData2 = BarData(barDataSet2)
-
-            //example
-            //BarData에 추가된 모든 BarDataSet에 일괄 적용되는 값입니다.
-            barData2.barWidth = 0.5f
-
-            //binding으로 접근하여 barData 전달
-            val barChart2 = binding.barChart2
-            barChart2.data = barData2
-
-            barChart2.apply {
-                //터치, Pinch 상호작용
-                setScaleEnabled(false)
-                setPinchZoom(false)
-
-                //Chart가 그려질때 애니메이션
-                animateXY(0,800)
-
-                //Chart 밑에 description 표시 유무
-                description=null
-
-                //Legend는 차트의 범례를 의미합니다
-                //범례가 표시될 위치를 설정
-                legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-                legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
-
-                //차트의 좌, 우측 최소/최대값을 설정합니다.
-                //차트 제일 밑이 0부터 시작하고 싶은 경우 설정합니다.
-                axisLeft.axisMinimum = 0f
-                axisRight.axisMinimum = 0f
-
-                //기본적으로 차트 우측 축에도 데이터가 표시됩니다
-                //이를 활성화/비활성화 하기 위함
-                axisRight.setDrawLabels(false)
-
-                //xAxis, yAxis 둘다 존재하여 따로 설정이 가능합니다
-                //차트 내부에 Grid 표시 유무
-                xAxis.setDrawGridLines(false)
-
-                //x축 데이터 표시 위치
-                xAxis.position = XAxis.XAxisPosition.BOTTOM
-
-                //x축 데이터 갯수 설정
-                xAxis.labelCount = entryList.size
-
-                xAxis.textColor = Color.parseColor("#ffffff")
-                axisLeft.textColor = Color.parseColor("#ffffff")
-                legend.textColor = Color.parseColor("#ffffff")
-            }
-
-
-            //barChart 갱신하여 데이터 표시
-            barChart2.invalidate()
-
-            //위에서 만든 BarEntry 리스트를 인자로 준다
-            val barDataSet3 = BarDataSet(entryList3, "추천 수")
-
-            //example
-            //다음과 같이 Bar 커스터마이징이 가능하다
-            barDataSet3.color = ColorTemplate.rgb("#00d180")
-            barDataSet3.valueTextColor = Color.parseColor("#ffffff")
-
-            // , 구분으로 여러 BarDataSet을 줄 수 있습니다.
-            val barData3 = BarData(barDataSet3)
-
-            //example
-            //BarData에 추가된 모든 BarDataSet에 일괄 적용되는 값입니다.
-            barData3.barWidth = 0.5f
-
-            //binding으로 접근하여 barData 전달
-            val barChart3 = binding.barChart3
-            barChart3.data = barData3
-
-            barChart3.apply {
-                //터치, Pinch 상호작용
-                setScaleEnabled(false)
-                setPinchZoom(false)
-
-                //Chart가 그려질때 애니메이션
-                animateXY(0,800)
-
-                //Chart 밑에 description 표시 유무
-                description=null
-
-                //Legend는 차트의 범례를 의미합니다
-                //범례가 표시될 위치를 설정
-                legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-                legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
-
-                //차트의 좌, 우측 최소/최대값을 설정합니다.
-                //차트 제일 밑이 0부터 시작하고 싶은 경우 설정합니다.
-                axisLeft.axisMinimum = 0f
-                axisRight.axisMinimum = 0f
-
-                //기본적으로 차트 우측 축에도 데이터가 표시됩니다
-                //이를 활성화/비활성화 하기 위함
-                axisRight.setDrawLabels(false)
-
-                //xAxis, yAxis 둘다 존재하여 따로 설정이 가능합니다
-                //차트 내부에 Grid 표시 유무
-                xAxis.setDrawGridLines(false)
-
-                //x축 데이터 표시 위치
-                xAxis.position = XAxis.XAxisPosition.BOTTOM
-
-                //x축 데이터 갯수 설정
-                xAxis.labelCount = entryList.size
-
-                xAxis.textColor = Color.parseColor("#ffffff")
-                axisLeft.textColor = Color.parseColor("#ffffff")
-                legend.textColor = Color.parseColor("#ffffff")
-            }
-
-
-            //barChart 갱신하여 데이터 표시
-            barChart3.invalidate()
-
-
-//            val set1 = LineDataSet(entryList4, "순위")
-//
-//            val dataSets: ArrayList<ILineDataSet> = ArrayList()
-//            dataSets.add(set1) // add the data sets
-//
-//            // create a data object with the data sets
-//            val data = LineData(dataSets)
-//
-//            // black lines and points
-//            set1.color = Color.parseColor("#4971EF")
-//
-//            set1.setCircleColor(Color.BLACK)
-//            set1.setDrawCircles(false)
-//            set1.setDrawValues(false)
-//            set1.lineWidth = 5F
-//
-//            // set data
-//            binding.lineChart.data = data
-//
-//            val lineChart = binding.lineChart
-//            barChart3.data = barData3
-//
-//            lineChart.apply {
-//                //터치, Pinch 상호작용
-//                setScaleEnabled(false)
-//                setPinchZoom(false)
-//
-//                //Chart가 그려질때 애니메이션
-//                animateXY(0,800)
-//
-//                //Chart 밑에 description 표시 유무
-//                description=null
-//
-//                //Legend는 차트의 범례를 의미합니다
-//                //범례가 표시될 위치를 설정
-//                legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-//                legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
-//
-//                //차트의 좌, 우측 최소/최대값을 설정합니다.
-//                //차트 제일 밑이 0부터 시작하고 싶은 경우 설정합니다.
-//                axisLeft.axisMinimum = -20f
-//                axisRight.axisMinimum = -20f
-//
-//                axisLeft.axisMaximum = 20f
-//                axisRight.axisMaximum = 20f
-//
-//                axisLeft.isInverted = true
-//                axisRight.isInverted = true
-//
-//                //기본적으로 차트 우측 축에도 데이터가 표시됩니다
-//                //이를 활성화/비활성화 하기 위함
-//                axisRight.setDrawLabels(false)
-//
-//                //xAxis, yAxis 둘다 존재하여 따로 설정이 가능합니다
-//                //차트 내부에 Grid 표시 유무
-//                xAxis.setDrawGridLines(false)
-//
-//                //x축 데이터 표시 위치
-//                xAxis.position = XAxis.XAxisPosition.BOTTOM
-//
-//                //x축 데이터 갯수 설정
-//                xAxis.labelCount = entryList.size
-//
-//                xAxis.textColor = Color.parseColor("#ffffff")
-//                axisLeft.textColor = Color.parseColor("#ffffff")
-//                legend.textColor = Color.parseColor("#ffffff")
-//            }
-
-
-
+            items.add(BestChart(dateList, entryList, "조회 수", "#ff7b22"))
+            items.add(BestChart(dateList, entryList2, "선호작 수", "#4971EF"))
+            items.add(BestChart(dateList, entryList3, "추천 수", "#00d180"))
+            adapterChart!!.notifyDataSetChanged()
         }.addOnFailureListener {}
     }
+}
 
 
+
+class AdapterChart(items: List<BestChart?>?) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    var holder: ArrayList<BestChart?>? = items as ArrayList<BestChart?>?
+
+    interface OnItemClickListener {
+        fun onItemClick(v: View?, position: Int)
+    }
+
+    private var listener: OnItemClickListener? = null
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.listener = listener
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val view =
+            ItemBestDetailAnalysisBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder is ViewHolder) {
+
+            val item = this.holder!![position]
+
+            if (item != null) {
+
+                holder.binding.barChart.xAxis.valueFormatter = object: ValueFormatter() {
+                    override fun getFormattedValue(value: Float): String? {
+                        return item.dateList?.get(value.toInt())
+                    }
+                }
+
+                val barDataSet = BarDataSet(item.entryList, item.title)
+
+                barDataSet.color = ColorTemplate.rgb(item.color)
+                barDataSet.valueTextColor = Color.parseColor("#ffffff")
+                barDataSet.valueTextSize = 10F
+
+                val barData = BarData(barDataSet)
+                barData.barWidth = 0.5f
+
+                val barChart = holder.binding.barChart
+                barChart.data = barData
+
+                barChart.apply {
+                    setScaleEnabled(false)
+                    setPinchZoom(false)
+
+                    animateXY(0,800)
+
+                    description = null
+
+                    legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
+                    legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
+
+                    axisLeft.axisMinimum = 0f
+                    axisRight.axisMinimum = 0f
+
+                    axisRight.setDrawLabels(false)
+
+                    xAxis.setDrawGridLines(false)
+
+                    xAxis.position = XAxis.XAxisPosition.BOTTOM
+
+                    xAxis.labelCount = item.entryList?.size ?: 0
+
+                    xAxis.textColor = Color.parseColor("#ffffff")
+                    axisLeft.textColor = Color.parseColor("#ffffff")
+                    legend.textColor = Color.parseColor("#ffffff")
+                }
+                barChart.invalidate()
+            }
+
+        }
+    }
+
+    override fun getItemCount(): Int {
+        return if (holder == null) 0 else holder!!.size
+    }
+
+    inner class ViewHolder internal constructor(val binding: ItemBestDetailAnalysisBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+    }
+
+    fun getItem(position: Int): BestChart? {
+        return holder!![position]
+    }
 }
