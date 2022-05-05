@@ -1,6 +1,5 @@
 package com.example.moavara.Best
 
-import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -69,8 +68,7 @@ class FragmentBestDetailAnalyze(private val platfrom: String, private val bookCo
         val itemsJoara = ArrayList<BestChart>()
 
         adapterChartJoara = AdapterChart(itemsJoara)
-        binding.rViewChart.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.rViewChartJoara.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rViewChartJoara.adapter = adapterChartJoara
 
         var chapter = (context as ActivityBestDetail).chapter
@@ -80,18 +78,18 @@ class FragmentBestDetailAnalyze(private val platfrom: String, private val bookCo
         val entryList3 = mutableListOf<BarEntry>()
         var num = 0
 
-        Log.d("@@@@", chapter.toString())
-
         if (chapter != null) {
             for(i in chapter.indices){
-                dateList.add(chapter[i].sortno)
+                dateList.add(chapter[i].sortno + "화")
+                Log.d("####", chapter[i].sortno + "화")
                 entryList.add(BarEntry(num.toFloat(), chapter[i].cnt_comment.toFloat()))
                 entryList2.add(BarEntry(num.toFloat(), chapter[i].cnt_page_read.toFloat()))
                 entryList3.add(BarEntry(num.toFloat(), chapter[i].cnt_recom.toFloat()))
+                num += 1
             }
-            itemsJoara.add(BestChart(dateList, entryList, "조회 수", "#6e2b93"))
-            itemsJoara.add(BestChart(dateList, entryList2, "선호작 수", "#6e2b93"))
-            itemsJoara.add(BestChart(dateList, entryList3, "추천 수", "#6e2b93"))
+            itemsJoara.add(BestChart(dateList, entryList, "편당 댓글 수", "#6e2b93"))
+            itemsJoara.add(BestChart(dateList, entryList2, "편당 조회 수", "#6e2b93"))
+            itemsJoara.add(BestChart(dateList, entryList3, "편당 추천 수", "#6e2b93"))
             adapterChartJoara!!.notifyDataSetChanged()
         }
     }
@@ -212,9 +210,6 @@ class FragmentBestDetailAnalyze(private val platfrom: String, private val bookCo
                 }
             }
 
-            Log.d("####", entryList3.toString())
-            Log.d("####", entryList2.toString())
-
             items.add(BestChart(dateList, entryList, "조회 수", "#ff7b22"))
             items.add(BestChart(dateList, entryList2, "선호작 수", "#4971EF"))
             items.add(BestChart(dateList, entryList3, "추천 수", "#00d180"))
@@ -273,6 +268,7 @@ class AdapterChart(items: List<BestChart?>?) :
                 barChart.apply {
                     setScaleEnabled(false)
                     setPinchZoom(false)
+                    isClickable = false
 
                     animateXY(0,800)
 
@@ -290,13 +286,18 @@ class AdapterChart(items: List<BestChart?>?) :
 
                     xAxis.position = XAxis.XAxisPosition.BOTTOM
 
-                    xAxis.labelCount = item.entryList?.size ?: 0
-
                     xAxis.textColor = Color.parseColor("#ffffff")
                     axisLeft.textColor = Color.parseColor("#ffffff")
                     legend.textColor = Color.parseColor("#ffffff")
                 }
+                if(item.entryList?.size!! < 7){
+                    barChart.xAxis.labelCount = item.entryList?.size ?: 0
+                } else {
+                    barChart.xAxis.labelCount = 7
+                }
                 barChart.invalidate()
+                barChart.setVisibleXRangeMinimum(7F)
+                barChart.setVisibleXRangeMaximum(7F)
             }
 
         }
