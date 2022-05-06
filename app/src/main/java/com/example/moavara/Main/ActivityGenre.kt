@@ -28,8 +28,6 @@ class ActivityGenre : AppCompatActivity() {
             tviewMoavara.paintFlags = Paint.UNDERLINE_TEXT_FLAG
             tviewGenre.paintFlags = Paint.UNDERLINE_TEXT_FLAG
 
-            Log.d("####", Genre.getGenre(context)!!)
-
             llayoutBtn1.setOnClickListener {
 
                 savePreferences("FANTASY")

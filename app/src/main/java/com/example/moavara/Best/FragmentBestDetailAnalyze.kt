@@ -2,7 +2,6 @@ package com.example.moavara.Best
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -56,9 +55,9 @@ class FragmentBestDetailAnalyze(private val platfrom: String, private val bookCo
         binding.rViewChart.adapter = adapterChart
 
         if(platfrom == "Joara" || platfrom == "Joara Nobless" || platfrom == "Joara Premium"){
-            getAnalyze()
             getAnalyzeJoara()
         }
+        getAnalyze()
 
         return view
     }
@@ -81,7 +80,6 @@ class FragmentBestDetailAnalyze(private val platfrom: String, private val bookCo
         if (chapter != null) {
             for(i in chapter.indices){
                 dateList.add(chapter[i].sortno + "화")
-                Log.d("####", chapter[i].sortno + "화")
                 entryList.add(BarEntry(num.toFloat(), chapter[i].cnt_comment.toFloat()))
                 entryList2.add(BarEntry(num.toFloat(), chapter[i].cnt_page_read.toFloat()))
                 entryList3.add(BarEntry(num.toFloat(), chapter[i].cnt_recom.toFloat()))

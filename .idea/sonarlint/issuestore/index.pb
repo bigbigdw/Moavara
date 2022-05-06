@@ -7,7 +7,7 @@ n
 build.gradle,f/0/f07866736216be0ee2aba49e392191aeae700a35
 b
 2app/src/main/java/com/example/moavara/Util/Util.kt,d/f/dfd26be9b0b24dc129aa2a4272bf44f5245d1a42
-r
-Bapp/src/main/java/com/example/moavara/Best/FragmentBestTabToday.kt,b/d/bd22fd9e8fc8e4be68b512fc47ae5289bcb3663c
 ?
 settings.gradle,0/5/05efc8b1657769a27696d478ded1e95f38737233
+m
+=app/src/main/java/com/example/moavara/Retrofit/ResultJoara.kt,a/5/a53d664ee2b66567c0a73fb857b2024c7aecd221

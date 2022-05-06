@@ -101,6 +101,7 @@
         <entry key="app/src/main/res/Best/layout/item_booklist_best_today.xml" value="0.18" />
         <entry key="app/src/main/res/Best/layout/item_booklist_best_weekend.xml" value="0.1" />
         <entry key="app/src/main/res/Community/layout/fragment_community.xml" value="0.1" />
+        <entry key="app/src/main/res/ETC/layout/activity_genre.xml" value="0.17407407407407408" />
         <entry key="app/src/main/res/ETC/layout/activity_intro.xml" value="0.1" />
         <entry key="app/src/main/res/Event/layout/bottom_dialog_event.xml" value="0.1" />
         <entry key="app/src/main/res/Event/layout/fragment_event.xml" value="0.25" />
@@ -114,11 +115,14 @@
         <entry key="app/src/main/res/Search/layout/activity_search_detail.xml" value="0.20677083333333332" />
         <entry key="app/src/main/res/Search/layout/collapse_best_detail.xml" value="0.1921875" />
         <entry key="app/src/main/res/drawable/selector_bottom_navigation.xml" value="0.243" />
+        <entry key="app/src/main/res/drawable/selector_genre.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/selector_item_type_off.xml" value="0.1375" />
         <entry key="app/src/main/res/drawable/selector_item_type_on.xml" value="0.1375" />
+        <entry key="app/src/main/res/drawable/selector_main_bottom.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/shape_book_best_day_text.xml" value="0.1745" />
         <entry key="app/src/main/res/layout/activity_book_setting.xml" value="0.16944444444444445" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.24202127659574468" />
+        <entry key="app/src/main/res/layout/bottom_dialog_main.xml" value="0.33211678832116787" />
         <entry key="app/src/main/res/layout/fragment_best.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_best_detail_analyze.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_best_month.xml" value="0.1" />
@@ -136,6 +140,7 @@
         <entry key="app/src/main/res/layout/item_booklist_best_weekend_sub.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_event.xml" value="0.1" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.1" />
+        <entry key="app/src/main/res/menu/main_menu.xml" value="0.17407407407407408" />
       </map>
     </option>
   </component>

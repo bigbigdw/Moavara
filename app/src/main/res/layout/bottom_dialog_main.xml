@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#0D0E10"
+        android:orientation="vertical"
+        android:paddingStart="50dp"
+        android:paddingTop="40dp"
+        android:paddingEnd="50dp"
+        android:paddingBottom="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="현재 설정된 장르는 "
+                android:textColor="#EDE6FD"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/tviewGenre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="판타지"
+                android:textColor="#844DF3"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" 입니다"
+                android:textColor="#EDE6FD"
+                android:textSize="17sp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="플랫폼 별 세부장르 변경을 "
+            android:textAlignment="center"
+            android:textColor="#EDE6FD"
+            android:textSize="17sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="진행하시겠습니까?"
+            android:textAlignment="center"
+            android:textColor="#EDE6FD"
+            android:textSize="17sp" />
+
+        <LinearLayout
+            android:id="@+id/llayoutSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/selector_main_bottom"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:text="세부장르 변경하러 가기"
+                android:textColor="#EDE6FD"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="@string/TODO"
+                app:srcCompat="@drawable/ic_arrow_right_wt_24px" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tviewDismiss"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="아니오. 그대로 진행하겠습니다."
+            android:textAlignment="center"
+            android:textColor="#6E7686" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

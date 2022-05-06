@@ -17,7 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#1E1E20"
             android:gravity="center_horizontal|center_vertical"
             android:orientation="vertical"
             tools:visibility="visible">
@@ -27,7 +26,6 @@
                 android:layout_height="32dp"
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
-                android:background="#1E1E20"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="일"
                 android:textAlignment="center"
@@ -51,7 +49,7 @@
                 android:layout_height="32dp"
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
-                android:background="#1E1E20"
+                
                 android:gravity="center_horizontal|center_vertical"
                 android:text="14위"
                 android:textAlignment="center"
@@ -66,7 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#1E1E20"
+            
             android:gravity="center_horizontal|center_vertical"
             android:orientation="vertical"
             tools:visibility="visible">
@@ -76,7 +74,7 @@
                 android:layout_height="32dp"
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
-                android:background="#1E1E20"
+                
                 android:gravity="center_horizontal|center_vertical"
                 android:text="월"
                 android:textAlignment="center"
@@ -100,7 +98,7 @@
                 android:layout_height="32dp"
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
-                android:background="#1E1E20"
+                
                 android:gravity="center_horizontal|center_vertical"
                 android:text="14위"
                 android:textAlignment="center"
@@ -115,7 +113,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#1E1E20"
+            
             android:gravity="center_horizontal|center_vertical"
             android:orientation="vertical"
             tools:visibility="visible">
@@ -125,7 +123,7 @@
                 android:layout_height="32dp"
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
-                android:background="#1E1E20"
+                
                 android:gravity="center_horizontal|center_vertical"
                 android:text="화"
                 android:textAlignment="center"
@@ -149,7 +147,7 @@
                 android:layout_height="32dp"
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
-                android:background="#1E1E20"
+                
                 android:gravity="center_horizontal|center_vertical"
                 android:text="14위"
                 android:textAlignment="center"
@@ -164,7 +162,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#1E1E20"
+            
             android:gravity="center_horizontal|center_vertical"
             android:orientation="vertical"
             tools:visibility="visible">
@@ -174,7 +172,7 @@
                 android:layout_height="32dp"
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
-                android:background="#1E1E20"
+                
                 android:gravity="center_horizontal|center_vertical"
                 android:text="수"
                 android:textAlignment="center"
@@ -198,7 +196,7 @@
                 android:layout_height="32dp"
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
-                android:background="#1E1E20"
+                
                 android:gravity="center_horizontal|center_vertical"
                 android:text="14위"
                 android:textAlignment="center"
@@ -213,7 +211,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#1E1E20"
+            
             android:gravity="center_horizontal|center_vertical"
             android:orientation="vertical"
             tools:visibility="visible">
@@ -223,7 +221,7 @@
                 android:layout_height="32dp"
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
-                android:background="#1E1E20"
+                
                 android:gravity="center_horizontal|center_vertical"
                 android:text="목"
                 android:textAlignment="center"
@@ -247,7 +245,7 @@
                 android:layout_height="32dp"
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
-                android:background="#1E1E20"
+                
                 android:gravity="center_horizontal|center_vertical"
                 android:text="14위"
                 android:textAlignment="center"
@@ -262,7 +260,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#1E1E20"
+            
             android:gravity="center_horizontal|center_vertical"
             android:orientation="vertical"
             tools:visibility="visible">
@@ -272,7 +270,7 @@
                 android:layout_height="32dp"
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
-                android:background="#1E1E20"
+                
                 android:gravity="center_horizontal|center_vertical"
                 android:text="금"
                 android:textAlignment="center"
@@ -296,7 +294,7 @@
                 android:layout_height="32dp"
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
-                android:background="#1E1E20"
+                
                 android:gravity="center_horizontal|center_vertical"
                 android:text="14위"
                 android:textAlignment="center"
@@ -311,7 +309,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#1E1E20"
+            
             android:gravity="center_horizontal|center_vertical"
             android:orientation="vertical"
             tools:visibility="visible">
@@ -321,7 +319,7 @@
                 android:layout_height="32dp"
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
-                android:background="#1E1E20"
+                
                 android:gravity="center_horizontal|center_vertical"
                 android:text="토"
                 android:textAlignment="center"
@@ -345,7 +343,7 @@
                 android:layout_height="32dp"
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
-                android:background="#1E1E20"
+                
                 android:gravity="center_horizontal|center_vertical"
                 android:text="14위"
                 android:textAlignment="center"

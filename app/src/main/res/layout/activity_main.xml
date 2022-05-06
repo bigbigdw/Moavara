@@ -21,7 +21,6 @@
                 android:id="@+id/HomeImg"
                 android:layout_width="110dp"
                 android:layout_height="22dp"
-                android:layout_gravity="center"
                 android:contentDescription="@string/TODO"
                 app:srcCompat="@drawable/moabara_logo" />
 

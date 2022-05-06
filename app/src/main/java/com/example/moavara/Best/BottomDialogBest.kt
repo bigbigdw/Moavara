@@ -215,7 +215,7 @@ class BottomDialogBest(
 
                         val week: WeekendDate? = it.getValue(WeekendDate::class.java)
 
-                        with(binding) {
+                        with(binding.includeRank) {
                             when {
                                 week!!.sun == group.date -> {
                                     tviewRank1.visibility = View.VISIBLE

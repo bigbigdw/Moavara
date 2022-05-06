@@ -117,14 +117,6 @@
             android:layout_height="wrap_content"
             android:paddingBottom="16dp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rview_BestToday"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp">
-
-        </androidx.recyclerview.widget.RecyclerView>
-
     </LinearLayout>
 
 </LinearLayout>

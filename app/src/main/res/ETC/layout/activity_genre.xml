@@ -97,12 +97,12 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/llayout_btn1"
-                android:layout_width="158dp"
-                android:layout_height="158dp"
+                android:layout_width="260dp"
+                android:layout_height="56dp"
                 android:layout_margin="2dp"
                 android:background="@drawable/selector_genre"
                 android:gravity="center"
@@ -119,8 +119,8 @@
 
             <LinearLayout
                 android:id="@+id/llayout_btn2"
-                android:layout_width="158dp"
-                android:layout_height="158dp"
+                android:layout_width="260dp"
+                android:layout_height="56dp"
                 android:layout_margin="2dp"
                 android:background="@drawable/selector_genre"
                 android:gravity="center"
@@ -140,12 +140,12 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/llayout_btn4"
-                android:layout_width="158dp"
-                android:layout_height="158dp"
+                android:layout_width="260dp"
+                android:layout_height="56dp"
                 android:layout_margin="2dp"
                 android:background="@drawable/selector_genre"
                 android:gravity="center"
@@ -162,8 +162,8 @@
 
             <LinearLayout
                 android:id="@+id/llayout_btn3"
-                android:layout_width="158dp"
-                android:layout_height="158dp"
+                android:layout_width="260dp"
+                android:layout_height="56dp"
                 android:layout_margin="2dp"
                 android:background="@drawable/selector_genre"
                 android:gravity="center"
