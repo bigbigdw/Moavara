@@ -82,9 +82,32 @@ data class BestComment(
     var date: String = ""
 )
 
+data class CommunityBoard(
+    var title: String = "",
+    var nid: String = "",
+    var date: String = ""
+)
+
 data class BestChart(
     var dateList: MutableList<String>? = null,
     var entryList: MutableList<BarEntry>? = null,
     var title: String = "",
     var color: String = ""
+)
+
+data class BookListDataBestToday2(
+    var writer: String = "",
+    var title: String = "",
+    var bookImg: String = "",
+    var bookCode: String = "",
+    var info1: String = "",
+    var info2: String = "",
+    var info3: String = "",
+    var info4: String = "",
+    var info5: String = "",
+    var number: Int = 0,
+    var numberDiff: Int = 0,
+    var date: String = "",
+    var status: String = "",
+    var memo: String = ""
 )

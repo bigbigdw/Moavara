@@ -113,4 +113,12 @@ object RetrofitJoara {
             .create(JoaraBestService::class.java)
             .getBookOther(map)
     }
+
+    fun getBoardListJoa(map: MutableMap<String?, Any>): Call<JoaraBoardResult> {
+        return Retrofit.Builder()
+            .baseUrl(HELPER.API_JOARA)
+            .addConverterFactory(GsonConverterFactory.create()).build()
+            .create(JoaraBestService::class.java)
+            .getBoardListJoa(map)
+    }
 }

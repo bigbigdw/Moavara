@@ -20,11 +20,9 @@ import com.google.android.material.tabs.TabLayout
 
 class FragmentCommunity : Fragment() {
 
-    private lateinit var mFragmentBestTabToday: FragmentBestTabToday
-    private lateinit var mFragmentBestTabMonth: FragmentBestTabMonth
-    private lateinit var mFragmentBestTabWeekend: FragmentBestTabWeekend
-    private lateinit var adapterType: AdapterType
-    private val typeItems = ArrayList<BestType>()
+    private lateinit var fragmentBoard: FragmentBoard
+    private lateinit var fragmentDC: FragmentDC
+    private lateinit var fragmentTwitter: FragmentTwitter
 
     private var _binding: FragmentCommunityBinding? = null
     private val binding get() = _binding!!
@@ -41,39 +39,35 @@ class FragmentCommunity : Fragment() {
 
         val fragmentBestTab = binding.tabs
 
-        mFragmentBestTabToday = FragmentBestTabToday("Joara")
+        fragmentBoard = FragmentBoard()
         childFragmentManager.commit {
-            replace(R.id.llayoutWrap, mFragmentBestTabToday)
+            replace(R.id.llayoutWrap, fragmentBoard)
         }
-        getType("Today")
 
-        fragmentBestTab.addTab(fragmentBestTab.newTab().setText(R.string.Best_Tab1))
-        fragmentBestTab.addTab(fragmentBestTab.newTab().setText(R.string.Best_Tab2))
-        fragmentBestTab.addTab(fragmentBestTab.newTab().setText(R.string.Best_Tab3))
+        fragmentBestTab.addTab(fragmentBestTab.newTab().setText("자유게시판"))
+        fragmentBestTab.addTab(fragmentBestTab.newTab().setText("DC 인사이드"))
+        fragmentBestTab.addTab(fragmentBestTab.newTab().setText("트위터"))
 
         fragmentBestTab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 when(tab.position){
                     0->{
-                        mFragmentBestTabToday = FragmentBestTabToday("Joara")
+                        fragmentBoard = FragmentBoard()
                         childFragmentManager.commit {
-                            replace(R.id.llayoutWrap, mFragmentBestTabToday)
+                            replace(R.id.llayoutWrap, fragmentBoard)
                         }
-                        getType("Today")
                     }
                     1->{
-                        mFragmentBestTabWeekend = FragmentBestTabWeekend("Joara")
+                        fragmentDC = FragmentDC()
                         childFragmentManager.commit {
-                            replace(R.id.llayoutWrap, mFragmentBestTabWeekend)
+                            replace(R.id.llayoutWrap, fragmentDC)
                         }
-                        getType("Weekend")
                     }
                     2->{
-                        mFragmentBestTabMonth = FragmentBestTabMonth("Joara")
+                        fragmentTwitter = FragmentTwitter()
                         childFragmentManager.commit {
-                            replace(R.id.llayoutWrap, mFragmentBestTabMonth)
+                            replace(R.id.llayoutWrap, fragmentTwitter)
                         }
-                        getType("Month")
                     }
                 }
             }
@@ -82,56 +76,5 @@ class FragmentCommunity : Fragment() {
         })
 
         return view
-    }
-
-    private fun getType(type : String) {
-
-        adapterType = AdapterType(typeItems)
-
-        with(binding){
-            rviewType.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            rviewType.adapter = adapterType
-        }
-
-        for(i in BestRef.typeList().indices){
-            typeItems.add(
-                BestType(
-                    BestRef.typeListTitle()[i],
-                    BestRef.typeList()[i]
-                )
-            )
-        }
-        adapterType.notifyDataSetChanged()
-
-        adapterType.setOnItemClickListener(object : AdapterType.OnItemClickListener {
-            override fun onItemClick(v: View?, position: Int) {
-                val item: BestType? = adapterType.getItem(position)
-                adapterType.setSelectedBtn(position)
-                pos = position
-                adapterType.notifyDataSetChanged()
-
-                when (type) {
-                    "Today" -> {
-                        mFragmentBestTabToday = FragmentBestTabToday(item!!.type!!)
-                        childFragmentManager.commit {
-                            replace(R.id.llayoutWrap, mFragmentBestTabToday)
-                        }
-                    }
-                    "Weekend" -> {
-                        mFragmentBestTabWeekend = FragmentBestTabWeekend(item!!.type!!)
-                        childFragmentManager.commit {
-                            replace(R.id.llayoutWrap, mFragmentBestTabWeekend)
-                        }
-                    }
-                    "Month" -> {
-                        mFragmentBestTabMonth = FragmentBestTabMonth(item!!.type!!)
-                        childFragmentManager.commit {
-                            replace(R.id.llayoutWrap, mFragmentBestTabMonth)
-                        }
-                    }
-                }
-            }
-        })
     }
 }

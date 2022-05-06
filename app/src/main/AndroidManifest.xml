@@ -51,20 +51,6 @@
         <activity
             android:name="com.example.moavara.Main.ActivityGenre"
             android:exported="true">
-
-        </activity>
-
-        <activity
-            android:name="com.example.moavara.Main.ActivitySync"
-            android:exported="true">
-        </activity>
-
-        <activity
-            android:name="com.example.moavara.Main.ActivityGuide"
-            android:label=""
-            android:exported="true"
-            android:theme="@style/Theme.TakeALook.NoActionBar"
-            >
         </activity>
 
         <activity

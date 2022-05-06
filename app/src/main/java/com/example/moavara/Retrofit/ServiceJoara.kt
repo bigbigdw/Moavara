@@ -65,5 +65,8 @@ interface JoaraBestService {
 
     @GET("v1/book/other")
     fun getBookOther(@QueryMap queryMap: MutableMap<String?, Any>): Call<JoaraBestListResult>
+
+    @GET("v1/board/board_list.joa")
+    fun getBoardListJoa(@QueryMap queryMap: MutableMap<String?, Any>): Call<JoaraBoardResult>
 }
 

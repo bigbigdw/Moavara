@@ -3,6 +3,30 @@ package com.example.moavara.Retrofit
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
+class JoaraBoardResult {
+    @SerializedName("status")
+    @Expose
+    val status: String = ""
+
+    @SerializedName("boards")
+    @Expose
+    val boards: List<JoaraBoardDetail>? = null
+}
+
+class JoaraBoardDetail {
+    @SerializedName("title")
+    @Expose
+    val title: String = ""
+
+    @SerializedName("nid")
+    @Expose
+    val nid: String = ""
+
+    @SerializedName("created")
+    @Expose
+    val created: String = ""
+}
+
 class JoaraBestDetailCommentsResult {
     @SerializedName("status")
     @Expose
