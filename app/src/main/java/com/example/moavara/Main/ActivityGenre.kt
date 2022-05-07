@@ -67,14 +67,14 @@ class ActivityGenre : AppCompatActivity() {
         FirebaseDatabase.getInstance().reference.child("Week").child(DBDate.DayString()).setValue(
             DBDate.DateMMDD())
 
-        /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
-        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(4, TimeUnit.HOURS)
-            .build()
-
-        val miningRef = FirebaseDatabase.getInstance().reference.child("Mining")
-        val workManager = WorkManager.getInstance()
-
         Handler(Looper.getMainLooper()).postDelayed({
+            /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
+            val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(15, TimeUnit.MINUTES)
+                .build()
+
+            val miningRef = FirebaseDatabase.getInstance().reference.child("Mining")
+            val workManager = WorkManager.getInstance()
+
             miningRef.get().addOnSuccessListener {
                 if(it.value != null && it.value!! == "MINING"){
                     Toast.makeText(this, "WorkManager 이미 존재함", Toast.LENGTH_SHORT).show()

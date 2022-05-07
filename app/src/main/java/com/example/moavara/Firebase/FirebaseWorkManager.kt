@@ -19,15 +19,19 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) : Wo
         /* 처리해야할 작업에 관한 코드들 */
         Handler(Looper.getMainLooper()).postDelayed({
             Mining.runMining(applicationContext, "ALL")
+            Log.d("MINING", "ALL")
         }, 1000) //1초 후 실행
         Handler(Looper.getMainLooper()).postDelayed({
             Mining.runMining(applicationContext, "ROMANCE")
+            Log.d("MINING", "ROMANCE")
         }, 1000) //1초 후 실행
         Handler(Looper.getMainLooper()).postDelayed({
             Mining.runMining(applicationContext, "BL")
+            Log.d("MINING", "BL")
         }, 1000) //1초 후 실행
         Handler(Looper.getMainLooper()).postDelayed({
             Mining.runMining(applicationContext, "FANTASY")
+            Log.d("MINING", "FANTASY")
         }, 1000) //1초 후 실행
 
 
@@ -42,7 +46,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) : Wo
             "/topics/all",
             "high",
             DataFCMBodyData("data", "body"),
-            DataFCMBodyNotification("모아바라", "베스트 리스트가 갱신되었습니다-0429", "default", "ic_stat_ic_notification"),
+            DataFCMBodyNotification("모아바라", "베스트 리스트가 갱신되었습니다-0506", "default", "ic_stat_ic_notification"),
         )
 
         val call = Retrofit.Builder()

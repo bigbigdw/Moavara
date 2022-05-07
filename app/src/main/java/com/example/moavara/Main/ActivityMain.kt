@@ -45,7 +45,7 @@ class ActivityMain : AppCompatActivity() {
         toolbar.setOnClickListener {
             WorkManager.getInstance().cancelAllWork()
             val miningRef = mRootRef.child("Mining")
-            miningRef.setValue("HAHA")
+            miningRef.setValue("NULL")
             Toast.makeText(this, "WorkManager 해제됨", Toast.LENGTH_SHORT).show()
         }
 

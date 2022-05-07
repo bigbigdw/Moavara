@@ -1,5 +1,6 @@
 package com.example.moavara.Firebase
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -31,6 +32,7 @@ class FCM : FirebaseMessagingService() {
         }
     }
 
+    @SuppressLint("RemoteViewLayout")
     private fun getCustomDesign(title: String?, message: String?): RemoteViews {
         val remoteViews = RemoteViews(applicationContext.packageName, R.layout.notification)
         remoteViews.setTextViewText(R.id.noti_title, title)
@@ -59,7 +61,7 @@ class FCM : FirebaseMessagingService() {
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel =
-                NotificationChannel(channel_id, "web_app", NotificationManager.IMPORTANCE_HIGH)
+                NotificationChannel(channel_id, "베스트 수집", NotificationManager.IMPORTANCE_HIGH)
             notificationChannel.setSound(uri, null)
             notificationManager.createNotificationChannel(notificationChannel)
         }
