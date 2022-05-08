@@ -52,9 +52,9 @@ class AdapterBestMonth(
 
                     tviewDate1.text = items.sun!!.date.substring(3)
                     isSelectBook(items.sun, llayoutCover1)
-                    llayoutNull1.visibility = View.GONE
+                    iviewBookImg1.visibility = View.VISIBLE
                 } else {
-                    llayoutNull1.visibility = View.VISIBLE
+                    iviewBookImg1.visibility = View.GONE
                 }
 
                 if (items.mon != null) {
@@ -64,9 +64,9 @@ class AdapterBestMonth(
 
                     tviewDate2.text = items.mon!!.date.substring(3)
                     isSelectBook(items.mon, llayoutCover2)
-                    llayoutNull2.visibility = View.GONE
+                    iviewBookImg2.visibility = View.VISIBLE
                 } else {
-                    llayoutNull2.visibility = View.VISIBLE
+                    iviewBookImg2.visibility = View.GONE
                 }
 
                 if (items.tue != null) {
@@ -76,9 +76,9 @@ class AdapterBestMonth(
 
                     tviewDate3.text = items.tue!!.date.substring(3)
                     isSelectBook(items.tue, llayoutCover3)
-                    llayoutNull3.visibility = View.GONE
+                    iviewBookImg3.visibility = View.VISIBLE
                 } else {
-                    llayoutNull3.visibility = View.VISIBLE
+                    iviewBookImg3.visibility = View.GONE
                 }
 
                 if (items.wed != null) {
@@ -88,9 +88,9 @@ class AdapterBestMonth(
 
                     tviewDate4.text = items.wed!!.date.substring(3)
                     isSelectBook(items.wed, llayoutCover4)
-                    llayoutNull4.visibility = View.GONE
+                    iviewBookImg4.visibility = View.VISIBLE
                 } else {
-                    llayoutNull4.visibility = View.VISIBLE
+                    iviewBookImg4.visibility = View.GONE
                 }
 
                 if (items.thur != null) {
@@ -100,9 +100,9 @@ class AdapterBestMonth(
 
                     tviewDate5.text = items.thur!!.date.substring(3)
                     isSelectBook(items.thur, llayoutCover5)
-                    llayoutNull5.visibility = View.GONE
+                    iviewBookImg5.visibility = View.VISIBLE
                 } else {
-                    llayoutNull5.visibility = View.VISIBLE
+                    iviewBookImg5.visibility = View.GONE
                 }
 
                 if (items.fri != null) {
@@ -112,9 +112,9 @@ class AdapterBestMonth(
 
                     tviewDate6.text = items.fri!!.date.substring(3)
                     isSelectBook(items.fri, llayoutCover6)
-                    llayoutNull6.visibility = View.GONE
+                    iviewBookImg6.visibility = View.VISIBLE
                 } else {
-                    llayoutNull6.visibility = View.VISIBLE
+                    iviewBookImg6.visibility = View.GONE
                 }
 
                 if (items.sat != null) {
@@ -124,9 +124,9 @@ class AdapterBestMonth(
 
                     tviewDate7.text = items.sat!!.date.substring(3)
                     isSelectBook(items.sat, llayoutCover7)
-                    llayoutNull7.visibility = View.GONE
+                    iviewBookImg7.visibility = View.VISIBLE
                 } else {
-                    llayoutNull7.visibility = View.VISIBLE
+                    iviewBookImg7.visibility = View.GONE
                 }
             }
         }
