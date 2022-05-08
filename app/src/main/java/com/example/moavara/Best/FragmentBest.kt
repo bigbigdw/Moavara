@@ -84,6 +84,7 @@ class FragmentBest : Fragment() {
     private fun getType(type : String) {
 
         adapterType = AdapterType(typeItems)
+        typeItems.clear()
 
         with(binding){
             rviewType.layoutManager =

@@ -1,19 +1,17 @@
 package com.example.moavara.Firebase
 
 import android.annotation.SuppressLint
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context
-import android.content.Intent;
-import android.media.RingtoneManager;
-import android.os.Build;
-import android.util.Log
-import android.widget.RemoteViews;
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Intent
+import android.media.RingtoneManager
+import android.os.Build
+import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.example.moavara.R
 import com.example.moavara.Util.ActivityTest
-import com.example.moavara.Util.Mining
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
@@ -42,11 +40,15 @@ class FCM : FirebaseMessagingService() {
     }
 
     private fun showNotification(title: String?, message: String?) {
+
         val intent = Intent(this, ActivityTest::class.java)
         val channel_id = "channel"
+
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
         val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+
         var builder: NotificationCompat.Builder = NotificationCompat.Builder(
             applicationContext, channel_id
         )

@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
+import com.example.moavara.databinding.ItemBestDetailCommentBinding
+import com.example.moavara.databinding.ItemBooklistBestTodayBinding
 
 class AdapterBestToday(items: List<BookListDataBestToday?>?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -27,8 +29,7 @@ class AdapterBestToday(items: List<BookListDataBestToday?>?) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_booklist_best_today, parent, false)
+        val view = ItemBooklistBestTodayBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MainBookViewHolder(view)
     }
 
@@ -37,33 +38,35 @@ class AdapterBestToday(items: List<BookListDataBestToday?>?) :
 
             val item = this.holder!![position]
 
-            Glide.with(holder.itemView.context)
-                .load(item!!.bookImg)
-                .circleCrop()
-                .into(holder.image)
 
-            holder.index.text = (position + 1).toString()
-            holder.title.text = this.holder!![position]!!.title
 
-            when {
-                item.status == "UP" -> {
-                    holder.number.text =  "+" + (this.holder!![position]!!.numberDiff?.times(-1)).toString()
-                    holder.number.setTextColor(Color.parseColor("#02A247"));
-                }
-                item.status == "DOWN" -> {
-                    holder.number.text = "-" + this.holder!![position]!!.numberDiff.toString()
-                    holder.number.setTextColor(Color.parseColor("#FF2C00"));
-                }
-                item.status == "-" -> {
-                    holder.number.text = "-"
-                    holder.number.setTextColor(Color.parseColor("#eeeeee"));
-                }
-                else -> {
-                    holder.number.text = "NEW"
+            with(holder.binding){
+                Glide.with(holder.itemView.context)
+                    .load(item!!.bookImg)
+                    .circleCrop()
+                    .into(ivewBookImg)
+
+                tviewIndex.text = (position + 1).toString()
+                tviewTitle.text = item.title
+
+                when {
+                    item.status == "UP" -> {
+                        tviewNum.text =  "+" + (item.numberDiff?.times(-1)).toString()
+                        tviewNum.setTextColor(Color.parseColor("#02A247"));
+                    }
+                    item.status == "DOWN" -> {
+                        tviewNum.text = "-" + item.numberDiff.toString()
+                        tviewNum.setTextColor(Color.parseColor("#FF2C00"));
+                    }
+                    item.status == "-" -> {
+                        tviewNum.text = "-"
+                        tviewNum.setTextColor(Color.parseColor("#eeeeee"));
+                    }
+                    else -> {
+                        tviewNum.text = "NEW"
+                    }
                 }
             }
-
-
         }
     }
 
@@ -71,18 +74,12 @@ class AdapterBestToday(items: List<BookListDataBestToday?>?) :
         return if (holder == null) 0 else holder!!.size
     }
 
-    inner class MainBookViewHolder internal constructor(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
-
-        var image: ImageView = itemView.findViewById(R.id.ivew_bookImg)
-        var title: TextView = itemView.findViewById(R.id.tview_Title)
-        var index: TextView = itemView.findViewById(R.id.tview_Index)
-        var number: TextView = itemView.findViewById(R.id.tview_Num)
-        var llayoutWrap: LinearLayout = itemView.findViewById(R.id.llayout_Wrap)
+    inner class MainBookViewHolder internal constructor(val binding: ItemBooklistBestTodayBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         init {
 
-            llayoutWrap.setOnClickListener { v: View? ->
+            binding.llayoutWrap.setOnClickListener { v: View? ->
                 val pos = adapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
                     listener!!.onItemClick(v, pos)

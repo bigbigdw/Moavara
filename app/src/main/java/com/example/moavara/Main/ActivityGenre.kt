@@ -1,5 +1,7 @@
 package com.example.moavara.Main
 
+import android.app.Notification
+import android.app.job.JobInfo
 import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
@@ -7,8 +9,7 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
+import androidx.work.*
 import com.example.moavara.Firebase.FirebaseWorkManager
 import com.example.moavara.Search.WeekendDate
 import com.example.moavara.Util.DBDate
@@ -68,8 +69,14 @@ class ActivityGenre : AppCompatActivity() {
             DBDate.DateMMDD())
 
         Handler(Looper.getMainLooper()).postDelayed({
+
+            val mConstraints = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build()
+
             /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
             val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(15, TimeUnit.MINUTES)
+                .setConstraints(mConstraints)
                 .build()
 
             val miningRef = FirebaseDatabase.getInstance().reference.child("Mining")
