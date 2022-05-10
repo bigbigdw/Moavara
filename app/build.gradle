@@ -50,6 +50,7 @@ android {
 
 dependencies {
     implementation 'com.github.PhilJay:MpAndroidChart:v3.1.0'
+    implementation 'com.google.firebase:firebase-auth-ktx'
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.0'

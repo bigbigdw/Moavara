@@ -44,6 +44,14 @@
         </service>
 
         <activity
+            android:name=".Main.ActivityLogin"
+            android:exported="true" />
+
+        <activity
+            android:name=".Main.ActivityRegister"
+            android:exported="true" />
+
+        <activity
             android:name="com.example.moavara.Search.ActivitySearch"
             android:exported="true">
         </activity>

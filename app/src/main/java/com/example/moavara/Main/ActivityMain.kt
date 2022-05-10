@@ -86,6 +86,10 @@ class ActivityMain : AppCompatActivity() {
                 val bottomDialogMain = BottomDialogMain()
                 supportFragmentManager.let { bottomDialogMain.show(it, null) }
             }
+            R.id.Fragment_Pick -> {
+                val intent = Intent(this, ActivityLogin::class.java)
+                startActivity(intent)
+            }
         }
         return super.onOptionsItemSelected(item)
     }
