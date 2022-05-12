@@ -53,7 +53,7 @@ class ActivityLogin : AppCompatActivity() {
         googleButton.setOnClickListener { googleLogin() }
 
         // 페이스북 로그인 버튼
-        facebookButton.setOnClickListener { facebookLogin() }
+        facebookButton.setOnClickListener {  auth?.signOut() }
 
         var gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -128,13 +128,13 @@ class ActivityLogin : AppCompatActivity() {
         auth?.signInWithCredential(credential)
             ?.addOnCompleteListener{
                     task ->
-                if(task.isSuccessful){
-                    // 아이디, 비밀번호 맞을 때
-                    moveMainPage(task.result?.user)
-                }else{
-                    // 틀렸을 때
-                    Toast.makeText(this,task.exception?.message,Toast.LENGTH_SHORT).show()
-                }
+//                if(task.isSuccessful){
+//                    // 아이디, 비밀번호 맞을 때
+//                    moveMainPage(task.result?.user)
+//                }else{
+//                    // 틀렸을 때
+//                    Toast.makeText(this,task.exception?.message,Toast.LENGTH_SHORT).show()
+//                }
             }
     }
 
@@ -188,14 +188,14 @@ class ActivityLogin : AppCompatActivity() {
             var result = data?.let { Auth.GoogleSignInApi.getSignInResultFromIntent(it) }!!
             // 구글API가 넘겨주는 값 받아옴
 
-//            if(result.isSuccess) {
-//                var accout = result.signInAccount
-//                firebaseAuthWithGoogle(accout)
-//                Toast.makeText(this,"로그인 성공",Toast.LENGTH_SHORT).show()
-//            }
-//            else{
-//                Toast.makeText(this,"로그인 실패",Toast.LENGTH_SHORT).show()
-//            }
+            if(result.isSuccess) {
+                var accout = result.signInAccount
+                firebaseAuthWithGoogle(accout)
+                Toast.makeText(this,"로그인 성공",Toast.LENGTH_SHORT).show()
+            }
+            else{
+                Toast.makeText(this,"로그인 실패",Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
