@@ -10,6 +10,7 @@ import android.media.RingtoneManager
 import android.os.Build
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
+import com.example.moavara.Main.ActivitySplash
 import com.example.moavara.R
 import com.example.moavara.Util.ActivityTest
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -41,7 +42,7 @@ class FCM : FirebaseMessagingService() {
 
     private fun showNotification(title: String?, message: String?) {
 
-        val intent = Intent(this, ActivityTest::class.java)
+        val intent = Intent(this, ActivitySplash::class.java)
         val channel_id = "channel"
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)

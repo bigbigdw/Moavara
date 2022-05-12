@@ -9,7 +9,7 @@
     <item
         android:id="@+id/navigation_search"
         android:icon="@drawable/ic_barcode_search_vt_24px"
-        android:title="북코드검색" />
+        android:title="북코드" />
 
     <item
         android:id="@+id/Fragment_Event"
@@ -20,5 +20,10 @@
         android:id="@+id/Fragment_Community"
         android:icon="@drawable/ic_notice_board_vt_24px"
         android:title="커뮤니티" />
+
+    <item
+        android:id="@+id/Fragment_Community2"
+        android:icon="@mipmap/ic_launcher"
+        android:title="모아바라" />
 
 </menu>

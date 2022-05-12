@@ -1,48 +1,0 @@
-
-fkotlin:S1192†"NDefine a constant instead of duplicating this literal "Joara Nobless" 3 times.(àóÿk
-gkotlin:S1192‡"NDefine a constant instead of duplicating this literal "Joara Premium" 3 times.(Æ¸²ƒ
-jkotlin:S1192ˆ"LDefine a constant instead of duplicating this literal "Naver Today" 3 times.(¼¢íœùÿÿÿÿ
-nkotlin:S1192‰"PDefine a constant instead of duplicating this literal "Naver Challenge" 3 times.(ÏÜ¼ªúÿÿÿÿ
-ekotlin:S1192Œ"LDefine a constant instead of duplicating this literal "Kakao Stage" 3 times.(ĞĞ“½
-ckotlin:S1192•"JDefine a constant instead of duplicating this literal "week-list" 3 times.(—ö´œ
-‚kotlin:S1192Ş"dDefine a constant instead of duplicating this literal ".ranking_wrap_left .list_ranking li" 3 times.(·àğ¥øÿÿÿÿ
-fkotlin:S1192„"HDefine a constant instead of duplicating this literal ".author" 3 times.(¹…õ˜şÿÿÿÿ
-akotlin:S1192†"HDefine a constant instead of duplicating this literal "div img" 3 times.(ñ¤ñŸ
-ikotlin:S1192ˆ"KDefine a constant instead of duplicating this literal ".num_total" 6 times.(Å¹—Ãÿÿÿÿÿ
-`kotlin:S1192‹"GDefine a constant instead of duplicating this literal ".count" 3 times.(ÿ–›”
-kkotlin:S1192Œ"LDefine a constant instead of duplicating this literal ".score_area" 3 times.(…Õá8ûäëÖ‰0
-skotlin:S1192é"NDefine a constant instead of duplicating this literal "ì¶”ì²œ ìˆ˜ : " 5 times.(¾€˜‚ÿÿÿÿÿ8ûäëÖ‰0
-nkotlin:S1192º"NDefine a constant instead of duplicating this literal "ì¡°íšŒ ìˆ˜ : " 6 times.(õ¼ó8ûäëÖ‰0
-rkotlin:S1192"MDefine a constant instead of duplicating this literal "ì¤„ê±°ë¦¬ : " 5 times.(í¶•àùÿÿÿÿ8üäëÖ‰0
-qkotlin:S1192 "QDefine a constant instead of duplicating this literal "ì„ í˜¸ì‘ ìˆ˜ : " 4 times.(‚×øİ8üäëÖ‰0
-okotlin:S117"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(›üóøÿÿÿÿ
-wkotlin:S117ã"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(«à´ğÿÿÿÿÿ8ªåëÖ‰0
-wkotlin:S117½"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(«à´ğÿÿÿÿÿ8ªåëÖ‰0
-rkotlin:S117’"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(ÅöëÂ8ªåëÖ‰0
-rkotlin:S117â"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(ÅöëÂ8«åëÖ‰0
-rkotlin:S117µ	"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(ÅöëÂ8«åëÖ‰0
-rkotlin:S117…"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(¶óÌÖ8«åëÖ‰0
-kkotlin:S117”"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(Ú¿ºÇ
-pkotlin:S117•"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(Î—âËùÿÿÿÿ
-pkotlin:S117Ş"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(·àğ¥øÿÿÿÿ
-kkotlin:S117ß"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(°­ß§
-pkotlin:S117¨"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(·àğ¥øÿÿÿÿ
-rkotlin:S117©"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(°­ß§8®åëÖ‰0
-pkotlin:S117ô"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(·àğ¥øÿÿÿÿ
-rkotlin:S117õ"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(°­ß§8¯åëÖ‰0
-rkotlin:S117½"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(„¾Ú8°åëÖ‰0
-wkotlin:S117¾"SRename this local variable to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(› ÃÆùÿÿÿÿ8°åëÖ‰0
-xkotlin:S1186¸"ZAdd a nested comment explaining why this function is empty or complete the implementation.(‡ØÚŸûÿÿÿÿ
-kotlin:S1186‹"ZAdd a nested comment explaining why this function is empty or complete the implementation.(‡ØÚŸûÿÿÿÿ8¿åëÖ‰0
-kotlin:S1186İ"ZAdd a nested comment explaining why this function is empty or complete the implementation.(‡ØÚŸûÿÿÿÿ8¿åëÖ‰0
-kotlin:S1186¯	"ZAdd a nested comment explaining why this function is empty or complete the implementation.(‡ØÚŸûÿÿÿÿ8¿åëÖ‰0
-kotlin:S1186ƒ
-"ZAdd a nested comment explaining why this function is empty or complete the implementation.(‡ØÚŸûÿÿÿÿ8¿åëÖ‰0
-kotlin:S1186Û"ZAdd a nested comment explaining why this function is empty or complete the implementation.(‡ØÚŸûÿÿÿÿ8ÀåëÖ‰0
-kotlin:S1186Ï"ZAdd a nested comment explaining why this function is empty or complete the implementation.(‡ØÚŸûÿÿÿÿ8ÀåëÖ‰0
-kotlin:S1186˜"ZAdd a nested comment explaining why this function is empty or complete the implementation.(‡ØÚŸûÿÿÿÿ8ÀåëÖ‰0
-kotlin:S1186ã"ZAdd a nested comment explaining why this function is empty or complete the implementation.(‡ØÚŸûÿÿÿÿ8ÀåëÖ‰0
-kotlin:S1186¯"ZAdd a nested comment explaining why this function is empty or complete the implementation.(‡ØÚŸûÿÿÿÿ8ÀåëÖ‰0
-kotlin:S1186ø"ZAdd a nested comment explaining why this function is empty or complete the implementation.(‡ØÚŸûÿÿÿÿ8ÁåëÖ‰0
-Nkotlin:S1066¬
-".Merge this "if" statement with the nested one.(²Ñß 8ÃåëÖ‰0

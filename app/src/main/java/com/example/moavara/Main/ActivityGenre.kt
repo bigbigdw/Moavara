@@ -75,7 +75,7 @@ class ActivityGenre : AppCompatActivity() {
                 .build()
 
             /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
-            val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(15, TimeUnit.MINUTES)
+            val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(4, TimeUnit.HOURS)
                 .setConstraints(mConstraints)
                 .build()
 
