@@ -9,10 +9,6 @@ w
 Gapp/src/main/java/com/example/moavara/Best/FragmentBestDetailAnalyze.kt,9/2/92b8d1004258fc719c5c1b916eb1df5e9483afcd
 n
 >app/src/main/java/com/example/moavara/Best/BottomDialogMain.kt,b/e/be42dc48b9a0dfdf08cf08377962c9eb9394c01a
-t
-Dapp/src/main/java/com/example/moavara/Best/FragmentBestTabWeekend.kt,3/d/3d7d585f802e6f6715e04f3946b9cdd80ffbd1ae
-P
- app/src/main/AndroidManifest.xml,8/c/8c55c3ccc257e5907959013f99656e4c8ec3903e
 r
 Bapp/src/main/java/com/example/moavara/Best/FragmentBestTabMonth.kt,0/e/0e5c0f2be8766f7b7ee4ba405e9694cef83679bb
 n
@@ -49,21 +45,7 @@ l
 <app/src/main/java/com/example/moavara/Main/ActivitySplash.kt,5/3/53bde87a661ebda0fc6741320bd72ca6b9d583a4
 q
 Aapp/src/main/java/com/example/moavara/Firebase/FirebaseService.kt,3/e/3e39eee09b3c1287d04442f278213dc831ce8232
-j
-:app/src/main/java/com/example/moavara/Main/ActivityMain.kt,c/2/c26c82f52c833d76ced7647cc041ca892a01834a
-u
-Eapp/src/main/java/com/example/moavara/Firebase/FirebaseWorkManager.kt,b/1/b180fb8a2a4aea8dc6fc3bf9cc9c4b206097df8d
 e
 5app/src/main/java/com/example/moavara/Firebase/FCM.kt,2/2/22e8e21ca09e4e6fa185acebfeae628b699cb321
-k
-;app/src/main/java/com/example/moavara/Main/ActivityGenre.kt,7/7/77cd8c51f960bd11a6fe5cd67880e1fb6d3dd08e
-n
->app/src/main/java/com/example/moavara/Main/ActivityRegister.kt,3/5/3573bed8b9befd11182e9fcd7ecc610be41aa23c
-<
-build.gradle,f/0/f07866736216be0ee2aba49e392191aeae700a35
-A
-gradle.properties,2/a/2afbb999f001938c88fa43fc2ef52abf0f8213e4
-@
-app/build.gradle,f/4/f4a01d6a4fcb971362ec00a83903fd3902f52164
 l
 <app/src/main/java/com/example/moavara/Event/FragmentEvent.kt,5/c/5c0ae7b652f27bbbf3e4f51aca748e9f81d5e0ab

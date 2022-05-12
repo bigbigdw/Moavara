@@ -14,6 +14,7 @@ import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Search.BookListDataBestWeekend
 import com.example.moavara.Util.BestRef
+import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Genre
 import com.example.moavara.databinding.ActivityGenreBinding
 import com.example.moavara.databinding.FragmentBestTabTodayBinding
@@ -45,6 +46,7 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
 
         cate = Genre.getGenre(requireContext()).toString()
         week = FirebaseDatabase.getInstance().reference.child("best").child(tabType).child(cate).child("week")
+            .child(DBDate.Week())
 
         adapterWeek = AdapterBestWeekend(requireContext(), itemWeek)
         getBestWeekList(week)

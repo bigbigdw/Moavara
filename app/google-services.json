@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "614881755918-56d7vl1luh5c6190aek7shkc8rped4h9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.moavara",
+            "certificate_hash": "7a4932ca0c640c7f4930d03a43df9440a8040040"
+          }
+        },
+        {
           "client_id": "614881755918-4u6sulpfivff875kmq2jg9jkptophlbm.apps.googleusercontent.com",
           "client_type": 3
         }

@@ -7,12 +7,15 @@ import android.graphics.Paint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.work.*
 import com.example.moavara.Firebase.FirebaseWorkManager
 import com.example.moavara.Search.WeekendDate
+import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.DBDate
+import com.example.moavara.Util.Mining
 import com.example.moavara.databinding.ActivityGenreBinding
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.messaging.FirebaseMessaging
