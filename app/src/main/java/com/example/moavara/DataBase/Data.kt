@@ -111,3 +111,8 @@ data class BookListDataBestToday2(
     var status: String = "",
     var memo: String = ""
 )
+
+data class UserInfo(
+    var nickName: String = "",
+    var genre: String = "",
+)

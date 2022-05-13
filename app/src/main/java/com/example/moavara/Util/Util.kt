@@ -157,10 +157,10 @@ object BestRef {
 //    fun delBestRefWeekCompared(type: String, genre: String): DatabaseReference {
 //        return setBestRef(type, genre).child("week list")
 //    }
-//
-//    fun delBestRefWeekCompared2(type: String, genre: String): DatabaseReference {
-//        return setBestRef(type, genre).child("week")
-//    }
+
+    fun delBestRefWeekCompared2(type: String, genre: String): DatabaseReference {
+        return setBestRef(type, genre).child("week")
+    }
 
     fun setBestRefToday(type: String, num: Int, genre: String): DatabaseReference {
         return setBestRef(type, genre).child("today").child(DBDate.Day()).child(num.toString())
@@ -1298,8 +1298,8 @@ object Mining {
             BestRef.setBestRefWeek(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
         }
 
-        BestRef.setBestRefWeekCompared(type, num, cate)
-            .setValue(BestRef.setBookListDataBestToday(ref))
+        BestRef.setBestRefWeekCompared(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
+
 
         //Month - Week
         if (num == 0) {

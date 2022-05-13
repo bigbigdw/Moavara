@@ -8,6 +8,11 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.moavara.R
+import com.example.moavara.Search.BookListDataBestToday
+import com.example.moavara.Search.CommunityBoard
+import com.example.moavara.Util.DBDate
+import com.example.moavara.Util.Mining
+import com.example.moavara.databinding.ActivityBestDetailBinding
 import com.example.moavara.databinding.ActivityLoginBinding
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
@@ -24,6 +29,9 @@ import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_login.*
 import java.util.*
 
@@ -32,28 +40,30 @@ class ActivityLogin : AppCompatActivity() {
     private var googleSignInClient : GoogleSignInClient? = null
     private var GOOGLE_LOGIN_CODE = 9001
     private var callbackManager : CallbackManager? = null
+    private lateinit var binding: ActivityLoginBinding
+    var context = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         auth = FirebaseAuth.getInstance()
         callbackManager = CallbackManager.Factory.create()
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        // 회원가입 창으로
-        signupButton.setOnClickListener {
-            startActivity(Intent(this,ActivityRegister::class.java))
+        with(binding){
+
+            // 구글 로그인 버튼
+            btnLogin.setOnClickListener { googleLogin() }
+
+            // 로그인 버튼
+            btnRegister.setOnClickListener {
+                auth?.signOut()
+                googleSignInClient?.signOut()
+                Toast.makeText(context,"로그아웃 성공",Toast.LENGTH_SHORT).show()
+            }
         }
 
-        // 로그인 버튼
-        loginButton.setOnClickListener {
-            signIn(idEditText.text.toString(),passwordEditText.text.toString())
-        }
-
-        // 구글 로그인 버튼
-        googleButton.setOnClickListener { googleLogin() }
-
-        // 페이스북 로그인 버튼
-        facebookButton.setOnClickListener {  auth?.signOut() }
 
         var gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -62,59 +72,10 @@ class ActivityLogin : AppCompatActivity() {
         googleSignInClient = GoogleSignIn.getClient(this,gso)
     }
 
-//    private fun getHashKey() {
-//        var packageInfo: PackageInfo? = null
-//        try {
-//            packageInfo =
-//                packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
-//        } catch (e: PackageManager.NameNotFoundException) {
-//            e.printStackTrace()
-//        }
-//        if (packageInfo == null) Log.e("KeyHash", "KeyHash:null")
-//        for (signature in packageInfo!!.signatures) {
-//            try {
-//                val md = MessageDigest.getInstance("SHA")
-//                md.update(signature.toByteArray())
-//                Log.d(
-//                    "KeyHash",
-//                    Base64.encodeToString(md.digest(), Base64.DEFAULT)
-//                )
-//            } catch (e: NoSuchAlgorithmException) {
-//                Log.e(
-//                    "KeyHash",
-//                    "Unable to get MessageDigest. signature=$signature",
-//                    e
-//                )
-//            }
-//        }
-//    }
-
     // 로그아웃하지 않을 시 자동 로그인 , 회원가입시 바로 로그인 됨
     public override fun onStart() {
         super.onStart()
-        moveMainPage(auth?.currentUser)
-    }
-
-    // 로그인
-    private fun signIn(email: String, password: String) {
-
-        if (email.isNotEmpty() && password.isNotEmpty()) {
-            auth?.signInWithEmailAndPassword(email, password)
-                ?.addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        Toast.makeText(
-                            baseContext, "로그인에 성공 하였습니다.",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        moveMainPage(auth?.currentUser)
-                    } else {
-                        Toast.makeText(
-                            baseContext, "로그인에 실패 하였습니다.",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-        }
+//        moveMainPage(auth?.currentUser)
     }
 
     // 구글 로그인 함수
@@ -128,55 +89,36 @@ class ActivityLogin : AppCompatActivity() {
         auth?.signInWithCredential(credential)
             ?.addOnCompleteListener{
                     task ->
-//                if(task.isSuccessful){
-//                    // 아이디, 비밀번호 맞을 때
-//                    moveMainPage(task.result?.user)
-//                }else{
-//                    // 틀렸을 때
-//                    Toast.makeText(this,task.exception?.message,Toast.LENGTH_SHORT).show()
-//                }
-            }
-    }
 
-    // 페이스북 로그인 함수
-    fun facebookLogin(){
-        LoginManager.getInstance()
-            .logInWithReadPermissions(this, Arrays.asList("public_profile","email"))
+                Log.d("@@@", task.result.toString());
 
-        LoginManager.getInstance()
-            .registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
-                override fun onSuccess(result: LoginResult?) {
-                    // 로그인 성공시
-                    handleFacebookAccessToken(result?.accessToken)
-                    // 파이어베이스로 로그인 데이터를 넘겨줌
-                }
-
-                override fun onCancel() {
-
-                }
-
-                override fun onError(error: FacebookException?) {
-
-                }
-            })
-    }
-
-    fun handleFacebookAccessToken(token : AccessToken?){
-        var credential = FacebookAuthProvider.getCredential(token?.token!!)
-
-        auth?.signInWithCredential(credential)
-            ?.addOnCompleteListener{
-                    task ->
                 if(task.isSuccessful){
                     // 아이디, 비밀번호 맞을 때
-                    moveMainPage(task.result?.user)
-                    Toast.makeText(this,"로그인 성공",Toast.LENGTH_SHORT).show()
+//                    moveMainPage(task.result?.user)
+
+                    mRootRef.child("User").child(task.result?.user?.uid.toString()).addValueEventListener(object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            if(dataSnapshot.exists()){
+                                Toast.makeText(context,"환영한다 기존회원",Toast.LENGTH_SHORT).show()
+                                finish()
+                            } else {
+                                Toast.makeText(context,"환영한다 뉴비",Toast.LENGTH_SHORT).show()
+                                mRootRef.child("User").child(task.result?.user?.uid.toString()).setValue("HIHI")
+
+                                startActivity(Intent(context,ActivityRegister::class.java))
+                                finish()
+                            }
+                        }
+
+                        override fun onCancelled(databaseError: DatabaseError) {}
+                    })
+
+
                 }else{
                     // 틀렸을 때
                     Toast.makeText(this,task.exception?.message,Toast.LENGTH_SHORT).show()
                 }
             }
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -203,9 +145,9 @@ class ActivityLogin : AppCompatActivity() {
 
     // 유저정보 넘겨주고 메인 액티비티 호출
     fun moveMainPage(user: FirebaseUser?){
-//        if( user!= null){
-//            startActivity(Intent(this,ActivityMain::class.java))
-//            finish()
-//        }
+        if(user!= null){
+            startActivity(Intent(this,ActivityMain::class.java))
+            finish()
+        }
     }
 }

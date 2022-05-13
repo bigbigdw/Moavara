@@ -1,6 +1,7 @@
 package com.example.moavara.Best
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -67,6 +68,9 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
             for (i in it.children) {
                 val group: BookListDataBestWeekend? =
                     i.getValue(BookListDataBestWeekend::class.java)
+
+                Log.d("!!!!", "1");
+
                 itemWeek.add(
                     BookListDataBestWeekend(
                         group!!.sun,

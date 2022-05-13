@@ -126,7 +126,7 @@
         <entry key="app/src/main/res/drawable/selector_main_bottom.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/shape_book_best_day_text.xml" value="0.1745" />
         <entry key="app/src/main/res/layout/activity_book_setting.xml" value="0.16944444444444445" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.24202127659574468" />
         <entry key="app/src/main/res/layout/activity_signup.xml" value="0.1" />
         <entry key="app/src/main/res/layout/bottom_dialog_main.xml" value="0.33211678832116787" />
