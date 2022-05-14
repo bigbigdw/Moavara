@@ -150,15 +150,10 @@ object BestRef {
     }
 
     fun setBestRefWeekCompared(type: String, num: Int, genre: String): DatabaseReference {
-        return setBestRef(type, genre).child("week-list")
-            .child(((DBDate.DayInt() * 1000) + num).toString())
+        return setBestRef(type, genre).child("week-list").child(((DBDate.DayInt() * 1000) + num).toString())
     }
 
-//    fun delBestRefWeekCompared(type: String, genre: String): DatabaseReference {
-//        return setBestRef(type, genre).child("week list")
-//    }
-
-    fun delBestRefWeekCompared2(type: String, genre: String): DatabaseReference {
+    fun delBestRefWeekCompared(type: String, genre: String): DatabaseReference {
         return setBestRef(type, genre).child("week")
     }
 
@@ -171,6 +166,10 @@ object BestRef {
     }
 
     fun setBestRefWeek(type: String, num: Int, genre: String): DatabaseReference {
+        return setBestRef(type, genre).child("week").child(DBDate.Week()).child(num.toString()).child(DBDate.DayString())
+    }
+
+    fun getBestRefWeek(type: String, num: Int, genre: String): DatabaseReference {
         return setBestRef(type, genre).child("week").child(DBDate.Week()).child(num.toString()).child(DBDate.DayString())
     }
 
@@ -1289,6 +1288,8 @@ object Mining {
     }
 
     fun miningValue(ref: MutableMap<String?, Any>, num: Int, type: String, cate: String) {
+
+//        BestRef.delBestRefWeekCompared(type, cate).removeValue()
 
         //Today
         BestRef.setBestRefToday(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
