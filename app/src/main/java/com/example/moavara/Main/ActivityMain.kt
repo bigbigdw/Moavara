@@ -13,6 +13,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import androidx.work.WorkManager
 import com.example.moavara.Best.BottomDialogMain
+import com.example.moavara.Pick.ActivityPick
 import com.example.moavara.R
 import com.example.moavara.Util.Genre
 import com.example.moavara.databinding.ActivityMainBinding
@@ -82,9 +83,13 @@ class ActivityMain : AppCompatActivity() {
                 val bottomDialogMain = BottomDialogMain()
                 supportFragmentManager.let { bottomDialogMain.show(it, null) }
             }
-            R.id.Fragment_Pick -> {
-                val intent = Intent(this, ActivityLogin::class.java)
+            R.id.ActivityPick -> {
+                val intent = Intent(this, ActivityPick::class.java)
                 startActivity(intent)
+            }
+            android.R.id.home -> {
+                finish()
+                return true
             }
         }
         return super.onOptionsItemSelected(item)

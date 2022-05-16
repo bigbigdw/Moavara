@@ -5,12 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import com.example.moavara.Main.ActivityGenre
 import com.example.moavara.Util.Genre
 import com.example.moavara.databinding.BottomDialogMainBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class BottomDialogMain :
+class BottomDialogMain() :
     BottomSheetDialogFragment() {
 
     private var _binding: BottomDialogMainBinding? = null
@@ -44,6 +45,9 @@ class BottomDialogMain :
         binding.llayoutSubmit.setOnClickListener {
 //            Snackbar.make(toolbar, "Menu pressed", Snackbar.LENGTH_SHORT).show()
             val intent = Intent(context, ActivityGenre::class.java)
+            intent.putExtra("MODE", "USER")
+            intent.putExtra("UID", context?.getSharedPreferences("pref", AppCompatActivity.MODE_PRIVATE)
+                ?.getString("UID", ""))
             context?.startActivity(intent)
         }
 

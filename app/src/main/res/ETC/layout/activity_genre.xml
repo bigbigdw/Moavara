@@ -23,6 +23,7 @@
             android:src="@mipmap/ic_launcher" />
 
         <TextView
+            android:id="@+id/tviewTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"
@@ -37,7 +38,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tviewMoavara"
+                android:id="@+id/tviewUserName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="모아바라"
@@ -47,6 +48,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tviewUserName2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" 입니다."

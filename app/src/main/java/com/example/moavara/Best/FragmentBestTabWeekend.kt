@@ -7,22 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
-import com.example.moavara.DataBase.*
 import com.example.moavara.Main.mRootRef
-import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Search.BookListDataBestWeekend
-import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Genre
-import com.example.moavara.databinding.ActivityGenreBinding
-import com.example.moavara.databinding.FragmentBestTabTodayBinding
 import com.example.moavara.databinding.FragmentBestWeekendBinding
 import com.google.firebase.database.*
-import java.util.*
-import kotlin.Comparator
 import kotlin.collections.ArrayList
 
 

@@ -12,18 +12,21 @@ import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.widget.Toast
-import androidx.room.Room
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.example.moavara.DataBase.DataEvent
-import com.example.moavara.DataBase.DataPickEvent
+import com.example.moavara.Main.mRootRef
 import com.example.moavara.Retrofit.JoaraEventDetailResult
 import com.example.moavara.Retrofit.JoaraNoticeDetailResult
 import com.example.moavara.Retrofit.RetrofitJoara
 import com.example.moavara.R
 import com.example.moavara.Search.EventData
+import com.example.moavara.Search.UserPickEvent
 import com.example.moavara.Util.Genre
 import com.example.moavara.databinding.BottomDialogEventBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import retrofit2.Call
@@ -37,12 +40,13 @@ class BottomSheetDialogEvent(
 ) :
     BottomSheetDialogFragment() {
 
-    private lateinit var dbEvent: DataPickEvent
     var cate = ""
 
     private var _binding: BottomDialogEventBinding? = null
     private val binding get() = _binding!!
     private var title : String = ""
+    var UID = ""
+    var userInfo = mRootRef.child("User")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,8 +58,8 @@ class BottomSheetDialogEvent(
 
         cate = Genre.getGenre(requireContext()).toString()
 
-        dbEvent = Room.databaseBuilder(requireContext(), DataPickEvent::class.java, "pick-event")
-            .allowMainThreadQueries().build()
+        UID = context?.getSharedPreferences("pref", AppCompatActivity.MODE_PRIVATE)
+            ?.getString("UID", "").toString()
 
         if (tabType == "Joara") {
             getEventJoara()
@@ -77,14 +81,23 @@ class BottomSheetDialogEvent(
 
         with(binding){
             btnLeft.setOnClickListener {
-                dbEvent.eventDao().insert(DataEvent(
+                val group = UserPickEvent(
                     item.link,
                     item.imgfile,
                     title,
                     cate,
                     tabType,
                     ""
-                ))
+                )
+
+                userInfo.child(UID).child("event").addListenerForSingleValueEvent(object :
+                        ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            userInfo.child(UID).child("event").child(dataSnapshot.childrenCount.toString()).setValue(group)
+                        }
+                        override fun onCancelled(databaseError: DatabaseError) {}
+                    })
+
                 Toast.makeText(requireContext(), "Pick 성공!", Toast.LENGTH_SHORT).show()
                 dismiss()
             }

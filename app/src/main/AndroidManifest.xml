@@ -47,8 +47,9 @@
             android:exported="true" />
 
         <activity
-            android:name=".Main.ActivityRegister"
-            android:exported="true" />
+            android:name=".Pick.ActivityPick"
+            android:label=""
+            android:exported="true"/>
 
         <activity
             android:name="com.example.moavara.Search.ActivitySearch"

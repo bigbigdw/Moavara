@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.DataBaseBestDay
@@ -16,11 +17,16 @@ import com.example.moavara.DataBase.DataBestDay
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
+import com.example.moavara.Search.UserPickBook
+import com.example.moavara.Search.UserPickEvent
 import com.example.moavara.Search.WeekendDate
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.DBDate
 import com.example.moavara.databinding.BottomDialogBestBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 
 class BottomDialogBest(
     private val mContext: Context,
@@ -31,7 +37,8 @@ class BottomDialogBest(
 ) :
     BottomSheetDialogFragment() {
 
-    private lateinit var dbEvent: DataBaseBestDay
+    var UID = ""
+    var userInfo = mRootRef.child("User")
 
     private var _binding: BottomDialogBestBinding? = null
     private val binding get() = _binding!!
@@ -44,8 +51,8 @@ class BottomDialogBest(
         _binding = BottomDialogBestBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        dbEvent = Room.databaseBuilder(requireContext(), DataBaseBestDay::class.java, "pick-novel")
-            .allowMainThreadQueries().build()
+        UID = context?.getSharedPreferences("pref", AppCompatActivity.MODE_PRIVATE)
+            ?.getString("UID", "").toString()
 
         with(binding) {
 
@@ -133,24 +140,32 @@ class BottomDialogBest(
             ranklist()
 
             llayoutBtnLeft.setOnClickListener {
-                dbEvent.bestDao().insert(
-                    DataBestDay(
-                        item.writer,
-                        item.title,
-                        item.bookImg,
-                        item.bookCode,
-                        item.info1,
-                        item.info2,
-                        item.info3,
-                        item.info4,
-                        item.info5,
-                        item.number,
-                        item.numberDiff,
-                        item.date,
-                        tabType,
-                        ""
-                    )
+
+                val group = BookListDataBestToday(
+                    item.writer,
+                    item.title,
+                    item.bookImg,
+                    item.bookCode,
+                    item.info1,
+                    item.info2,
+                    item.info3,
+                    item.info4,
+                    item.info5,
+                    item.number,
+                    item.numberDiff,
+                    item.date,
+                    tabType,
+                    ""
                 )
+
+                userInfo.child(UID).child("book").addListenerForSingleValueEvent(object :
+                    ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        userInfo.child(UID).child("book").child(dataSnapshot.childrenCount.toString()).setValue(group)
+                    }
+                    override fun onCancelled(databaseError: DatabaseError) {}
+                })
+
                 Toast.makeText(requireContext(), "Pick 성공!", Toast.LENGTH_SHORT).show()
                 dismiss()
             }

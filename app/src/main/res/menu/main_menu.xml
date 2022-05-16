@@ -9,7 +9,7 @@
         android:title="@string/Title_Best" />
 
     <item
-        android:id="@+id/Fragment_Pick"
+        android:id="@+id/ActivityPick"
         app:showAsAction="always"
         android:icon="@drawable/ic_board_vt_24px"
         android:title="@string/Title_Pick" />

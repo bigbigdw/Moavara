@@ -113,6 +113,34 @@ data class BookListDataBestToday2(
 )
 
 data class UserInfo(
-    var nickName: String = "",
-    var genre: String = "",
+    var Nickname: String = "",
+    var Genre: String = "",
 )
+
+data class UserPickEvent(
+    var link: String = "",
+    var imgfile: String = "",
+    var title: String = "",
+    var genre: String = "",
+    var type: String = "",
+    var memo: String = ""
+)
+
+data class UserPickBook(
+    var writer: String = "",
+    var title: String = "",
+    var bookImg: String = "",
+    var bookCode: String = "",
+    var info1: String = "",
+    var info2: String = "",
+    var info3: String = "",
+    var info4: String = "",
+    var info5: String = "",
+    var number: Int = 0,
+    var numberDiff: Int = 0,
+    var date: String = "",
+    var type: String = "",
+    var status: String = "",
+    var memo: String = "",
+)
+

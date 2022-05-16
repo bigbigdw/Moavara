@@ -5,28 +5,32 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.example.moavara.Best.BottomDialogBest
 import com.example.moavara.DataBase.DataBaseBestDay
-import com.example.moavara.DataBase.DataBestDay
-import com.example.moavara.DataBase.DataPickEvent
-import com.example.moavara.Event.BottomSheetDialogEvent
+import com.example.moavara.Main.mRootRef
 import com.example.moavara.Search.BookListDataBestToday
-import com.example.moavara.Search.EventData
+import com.example.moavara.Search.UserPickBook
+import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.Genre
 import com.example.moavara.databinding.FragmentPickTabBinding
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 
 class FragmentPickTabNovel : Fragment() {
 
     private lateinit var adapter: AdapterPickNovel
     private var cate = ""
     private val items = ArrayList<BookListDataBestToday>()
-    private lateinit var dbPickEvent: DataBaseBestDay
 
     private var _binding: FragmentPickTabBinding? = null
     private val binding get() = _binding!!
+    var UID = ""
+    var userInfo = mRootRef.child("User")
 
     var status = ""
 
@@ -39,9 +43,8 @@ class FragmentPickTabNovel : Fragment() {
 
         cate = Genre.getGenre(requireContext()).toString()
 
-        dbPickEvent =
-            Room.databaseBuilder(requireContext(), DataBaseBestDay::class.java,"pick-novel")
-                .allowMainThreadQueries().build()
+        UID = context?.getSharedPreferences("pref", AppCompatActivity.MODE_PRIVATE)
+            ?.getString("UID", "").toString()
 
         adapter = AdapterPickNovel(items)
 
@@ -56,30 +59,35 @@ class FragmentPickTabNovel : Fragment() {
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rviewPick.adapter = adapter
 
-        val eventlist = dbPickEvent.bestDao().getPickAll()
-
-        for(i in eventlist.indices){
-
-            items.add(
-                BookListDataBestToday(
-                    eventlist[i].writer,
-                    eventlist[i].title,
-                    eventlist[i].bookImg,
-                    eventlist[i].bookCode,
-                    eventlist[i].info1,
-                    eventlist[i].info2,
-                    eventlist[i].info3,
-                    eventlist[i].info4,
-                    eventlist[i].info5,
-                    eventlist[i].number,
-                    eventlist[i].numberDiff,
-                    eventlist[i].date,
-                    eventlist[i].type,
-                    ""
-                )
-            )
-            adapter.notifyDataSetChanged()
-        }
+        userInfo.child(UID).child("book").addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+                    val group: UserPickBook? =
+                        postSnapshot.getValue(UserPickBook::class.java)
+                    items.add(
+                        BookListDataBestToday(
+                            group!!.writer,
+                            group.title,
+                            group.bookImg,
+                            group.bookCode,
+                            group.info1,
+                            group.info2,
+                            group.info3,
+                            group.info4,
+                            group.info5,
+                            group.number,
+                            group.numberDiff,
+                            group.date,
+                            group.status,
+                            group.memo
+                        )
+                    )
+                    adapter!!.notifyDataSetChanged()
+                }
+            }
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
 
         adapter.setOnItemClickListener(object : AdapterPickNovel.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int, type : String) {
@@ -108,11 +116,11 @@ class FragmentPickTabNovel : Fragment() {
                 } else if(type == "Confirm"){
 
                     adapter.editItem(data, position)
-                    dbPickEvent.bestDao().updateItem(adapter.getMemoEdit(), item.bookCode)
+//                    dbPickEvent.bestDao().updateItem(adapter.getMemoEdit(), item.bookCode)
 
                     Toast.makeText(requireContext(), "수정되었습니다", Toast.LENGTH_SHORT).show()
                 }  else if(type == "Delete"){
-                    dbPickEvent.bestDao().deleteItem(item.bookCode)
+//                    dbPickEvent.bestDao().deleteItem(item.bookCode)
                     items.remove(item)
                     adapter.notifyItemRemoved(position)
 

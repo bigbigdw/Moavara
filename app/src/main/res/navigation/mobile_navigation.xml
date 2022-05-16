@@ -24,12 +24,6 @@
         tools:layout="@layout/fragment_event" />
 
     <fragment
-        android:id="@+id/Fragment_Pick"
-        android:name="com.example.moavara.Pick.FragmentPick"
-        android:label=""
-        tools:layout="@layout/fragment_best_tab_today" />
-
-    <fragment
         android:id="@+id/Fragment_Community"
         android:name="com.example.moavara.Community.FragmentCommunity"
         android:label=""
