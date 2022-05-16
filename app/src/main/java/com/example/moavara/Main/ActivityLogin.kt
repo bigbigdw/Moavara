@@ -58,15 +58,18 @@ class ActivityLogin : AppCompatActivity() {
 
             // 로그인 버튼
             btnRegister.setOnClickListener {
-                val currentUser = FirebaseAuth.getInstance().currentUser
-                currentUser?.delete()
-                    ?.addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            auth?.signOut()
-                            googleSignInClient?.signOut()
-                            Toast.makeText(context, "로그아웃 성공", Toast.LENGTH_SHORT).show()
-                        }
-                    }
+                auth?.signOut()
+                googleSignInClient?.signOut()
+
+//                val currentUser = FirebaseAuth.getInstance().currentUser
+//                currentUser?.delete()
+//                    ?.addOnCompleteListener { task ->
+//                        if (task.isSuccessful) {
+//                            auth?.signOut()
+//                            googleSignInClient?.signOut()
+//                            Toast.makeText(context, "로그아웃 성공", Toast.LENGTH_SHORT).show()
+//                        }
+//                    }
             }
         }
 
@@ -77,52 +80,7 @@ class ActivityLogin : AppCompatActivity() {
             .build()
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
-        FirebaseDatabase.getInstance().reference.child("Week").child(DBDate.DayString()).setValue(
-            DBDate.DateMMDD())
 
-        Handler(Looper.getMainLooper()).postDelayed({
-
-            val mConstraints = Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build()
-
-            /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
-            val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(4, TimeUnit.HOURS)
-                .setConstraints(mConstraints)
-                .build()
-
-            val miningRef = FirebaseDatabase.getInstance().reference.child("Mining")
-            val workManager = WorkManager.getInstance()
-
-            miningRef.get().addOnSuccessListener {
-                if(it.value != null && it.value!! == "MINING"){
-                    Toast.makeText(this, "WorkManager 이미 존재함", Toast.LENGTH_SHORT).show()
-
-                } else {
-                    miningRef.setValue("MINING")
-
-                    workManager.enqueue(workRequest)
-                    FirebaseMessaging.getInstance().subscribeToTopic("all")
-                    Toast.makeText(this, "WorkManager 추가됨", Toast.LENGTH_SHORT).show()
-                }
-            }.addOnFailureListener{}
-        }, 1000) //1초 후 실행
-
-        FirebaseDatabase.getInstance().reference.child("Week").get().addOnSuccessListener {
-
-            val week: WeekendDate? = it.getValue(WeekendDate::class.java)
-
-            if(week != null){
-                getSharedPreferences("WEEK", MODE_PRIVATE).edit().putString("SUN", week.sun).apply()
-                getSharedPreferences("WEEK", MODE_PRIVATE).edit().putString("MON", week.mon).apply()
-                getSharedPreferences("WEEK", MODE_PRIVATE).edit().putString("TUE", week.tue).apply()
-                getSharedPreferences("WEEK", MODE_PRIVATE).edit().putString("WED", week.wed).apply()
-                getSharedPreferences("WEEK", MODE_PRIVATE).edit().putString("THUR", week.thur).apply()
-                getSharedPreferences("WEEK", MODE_PRIVATE).edit().putString("FRI", week.fri).apply()
-                getSharedPreferences("WEEK", MODE_PRIVATE).edit().putString("SAT", week.sat).apply()
-            }
-
-        }.addOnFailureListener{}
     }
 
     // 구글 로그인 함수
@@ -173,6 +131,11 @@ class ActivityLogin : AppCompatActivity() {
                 }
             }
     }
+    // 로그아웃하지 않을 시 자동 로그인 , 회원가입시 바로 로그인 됨
+//    public override fun onStart() {
+//        super.onStart()
+//        moveMainPage(auth?.currentUser)
+//    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -198,5 +161,29 @@ class ActivityLogin : AppCompatActivity() {
         val editor = pref.edit()
         editor.putString(key, value)
         editor.apply()
+    }
+
+    // 유저정보 넘겨주고 메인 액티비티 호출
+    fun moveMainPage(user: FirebaseUser?){
+        if(user!= null){
+            mRootRef.child("User").child(user.uid)
+                .addListenerForSingleValueEvent(object :
+                    ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            val group: UserInfo? = dataSnapshot.getValue(UserInfo::class.java)
+
+                            savePreferences("NICKNAME", group?.Nickname ?: "")
+                            savePreferences("GENRE", group?.Genre ?: "")
+                            savePreferences("UID", user.uid)
+
+                            Toast.makeText(context, "환영한다 " + group?.Nickname, Toast.LENGTH_SHORT).show()
+                            startActivity(Intent(context, ActivityMain::class.java))
+                            finish()
+                        }
+                    }
+                    override fun onCancelled(databaseError: DatabaseError) {}
+                })
+        }
     }
 }
