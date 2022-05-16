@@ -63,17 +63,5 @@ b
 2app/src/main/java/com/example/moavara/Util/Util.kt,d/f/dfd26be9b0b24dc129aa2a4272bf44f5245d1a42
 u
 Eapp/src/main/java/com/example/moavara/Firebase/FirebaseWorkManager.kt,b/1/b180fb8a2a4aea8dc6fc3bf9cc9c4b206097df8d
-t
-Dapp/src/main/java/com/example/moavara/Best/FragmentBestTabWeekend.kt,3/d/3d7d585f802e6f6715e04f3946b9cdd80ffbd1ae
-p
-@app/src/main/java/com/example/moavara/Best/ActivityBestDetail.kt,f/0/f05d2cd84b1de5143aeb9cff642b8d211316737a
-w
-Gapp/src/main/java/com/example/moavara/Best/FragmentBestDetailAnalyze.kt,9/2/92b8d1004258fc719c5c1b916eb1df5e9483afcd
-n
->app/src/main/java/com/example/moavara/Best/BottomDialogBest.kt,6/0/60c769947c2f14d4152dc3f32968b68bd3d35ca8
 j
 :app/src/main/java/com/example/moavara/Main/ActivityMain.kt,c/2/c26c82f52c833d76ced7647cc041ca892a01834a
-k
-;app/src/main/java/com/example/moavara/Main/ActivityLogin.kt,7/e/7e69f86b2582885f11612b37c544ae07de513c1d
-k
-;app/src/main/java/com/example/moavara/Main/ActivityGenre.kt,7/7/77cd8c51f960bd11a6fe5cd67880e1fb6d3dd08e

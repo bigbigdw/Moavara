@@ -1,17 +1,8 @@
 package com.example.moavara.Util
 
-import android.app.job.JobInfo
-import android.app.job.JobScheduler
-import android.content.ComponentName
-import android.content.Context
 import android.os.Bundle
-import android.text.format.DateUtils
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.example.moavara.Main.ActivitySplash
 import com.example.moavara.R
-import kotlinx.android.synthetic.main.activity_test.*
-import java.util.concurrent.TimeUnit
 
 class ActivityTest : AppCompatActivity() {
 

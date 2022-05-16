@@ -7,7 +7,6 @@ import com.example.moavara.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.activity_signup.*
 
 
 class ActivityRegister : AppCompatActivity() {
@@ -19,9 +18,9 @@ class ActivityRegister : AppCompatActivity() {
         setContentView(R.layout.activity_signup)
 
         // 계정 생성 버튼
-        signup_okButton.setOnClickListener {
-            createAccount("TEST","TEST")
-        }
+//        signup_okButton.setOnClickListener {
+//            createAccount("TEST","TEST")
+//        }
     }
 
     // 계정 생성

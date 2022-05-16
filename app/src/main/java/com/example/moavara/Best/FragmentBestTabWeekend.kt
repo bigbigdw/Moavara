@@ -46,8 +46,7 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
         val view = binding.root
 
         cate = Genre.getGenre(requireContext()).toString()
-        week = FirebaseDatabase.getInstance().reference.child("best").child(tabType).child(cate).child("week")
-            .child(DBDate.Week())
+        week = FirebaseDatabase.getInstance().reference.child("best").child(tabType).child(cate).child("week").child(DBDate.Week())
 
         adapterWeek = AdapterBestWeekend(requireContext(), itemWeek)
         getBestWeekList(week)

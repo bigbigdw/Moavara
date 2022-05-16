@@ -12,15 +12,11 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import androidx.work.WorkManager
-import com.example.moavara.Best.BottomDialogBest
 import com.example.moavara.Best.BottomDialogMain
 import com.example.moavara.R
 import com.example.moavara.Util.Genre
-import com.example.moavara.databinding.ActivityBestDetailBinding
 import com.example.moavara.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_best_detail.*
 import kotlin.system.exitProcess
 
 
