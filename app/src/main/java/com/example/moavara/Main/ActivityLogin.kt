@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +13,7 @@ import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import com.example.moavara.Best.DialogLoginAlert
 import com.example.moavara.Firebase.FirebaseWorkManager
 import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestToday
@@ -42,6 +44,7 @@ class ActivityLogin : AppCompatActivity() {
     private var GOOGLE_LOGIN_CODE = 9001
     private var callbackManager: CallbackManager? = null
     private lateinit var binding: ActivityLoginBinding
+
     var context = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,17 +63,9 @@ class ActivityLogin : AppCompatActivity() {
             btnRegister.setOnClickListener {
                 auth?.signOut()
                 googleSignInClient?.signOut()
-
-//                val currentUser = FirebaseAuth.getInstance().currentUser
-//                currentUser?.delete()
-//                    ?.addOnCompleteListener { task ->
-//                        if (task.isSuccessful) {
-//                            auth?.signOut()
-//                            googleSignInClient?.signOut()
-//                            Toast.makeText(context, "로그아웃 성공", Toast.LENGTH_SHORT).show()
-//                        }
-//                    }
             }
+
+
         }
 
 
@@ -91,34 +86,80 @@ class ActivityLogin : AppCompatActivity() {
 
     fun firebaseAuthWithGoogle(account: GoogleSignInAccount?) {
         var credential = GoogleAuthProvider.getCredential(account?.idToken, null)
+
         auth?.signInWithCredential(credential)
             ?.addOnCompleteListener { task ->
 
                 if (task.isSuccessful) {
 
-                    mRootRef.child("User").child(task.result?.user?.uid.toString())
-                        .addListenerForSingleValueEvent(object :
+                   val user =  mRootRef.child("User").child(task.result?.user?.uid.toString())
+
+                    user.child("Nickname").setValue("USER_NAME")
+                    user.child("Genre").setValue("USER_GENRE")
+
+                    user.addListenerForSingleValueEvent(object :
                             ValueEventListener {
                             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                                if (dataSnapshot.exists()) {
-                                    val group: UserInfo? = dataSnapshot.getValue(UserInfo::class.java)
+                                val group: UserInfo? = dataSnapshot.getValue(UserInfo::class.java)
 
-                                    savePreferences("NICKNAME", group?.Nickname ?: "")
-                                    savePreferences("GENRE", group?.Genre ?: "")
-                                    savePreferences("UID", task.result?.user?.uid.toString())
+                                if (group != null) {
+                                    if (group.Nickname != "USER_NAME") {
+                                        if(dataSnapshot.getValue(UserInfo::class.java) != null){
 
-                                    Toast.makeText(context, "환영한다 " + group?.Nickname, Toast.LENGTH_SHORT).show()
-                                    startActivity(Intent(context, ActivityMain::class.java))
-                                    finish()
-                                } else {
-                                    Toast.makeText(context, "환영한다 뉴비", Toast.LENGTH_SHORT).show()
-                                    mRootRef.child("User").child(task.result?.user?.uid.toString()).setValue("HIHI")
 
-                                    val intent = Intent(context, ActivityGenre::class.java)
-                                    intent.putExtra("MODE", "NEWBIE")
-                                    intent.putExtra("UID", task.result?.user?.uid.toString())
-                                    startActivity(intent)
-                                    finish()
+                                            savePreferences("NICKNAME", group?.Nickname ?: "")
+                                            savePreferences("GENRE", group?.Genre ?: "")
+                                            savePreferences("UID", task.result?.user?.uid.toString())
+
+                                            Toast.makeText(context, "환영한다 " + group?.Nickname, Toast.LENGTH_SHORT).show()
+                                            startActivity(Intent(context, ActivityMain::class.java))
+                                            finish()
+                                        }
+
+                                    } else {
+
+                                        var dialogLoginAlert: DialogLoginAlert?
+
+                                        val btnStep1 = View.OnClickListener { v: View? ->
+
+                                            val currentUser = FirebaseAuth.getInstance().currentUser
+                                            currentUser?.delete()
+                                                ?.addOnCompleteListener { task ->
+                                                    if (task.isSuccessful) {
+                                                        auth?.signOut()
+                                                        googleSignInClient?.signOut()
+                                                        Toast.makeText(
+                                                            context,
+                                                            "계정 정보 삭제",
+                                                            Toast.LENGTH_SHORT
+                                                        ).show()
+                                                    }
+                                                }
+                                        }
+
+                                        val btnStep2 = View.OnClickListener { v: View? ->
+
+                                            Toast.makeText(context, "환영한다 뉴비", Toast.LENGTH_SHORT).show()
+                                            mRootRef.child("User").child(task.result?.user?.uid.toString()).setValue("HIHI")
+
+                                            val intent = Intent(context, ActivityGenre::class.java)
+                                            intent.putExtra("MODE", "NEWBIE")
+                                            intent.putExtra("UID", task.result?.user?.uid.toString())
+                                            startActivity(intent)
+                                            finish()
+                                        }
+
+                                        // 안내 팝업
+                                        dialogLoginAlert = DialogLoginAlert(
+                                            context,
+                                            btnStep1,
+                                            btnStep2
+                                        )
+
+                                        dialogLoginAlert.show()
+
+
+                                    }
                                 }
                             }
 
@@ -140,18 +181,24 @@ class ActivityLogin : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        callbackManager?.onActivityResult(requestCode, resultCode, data)
+        callbackManager!!.onActivityResult(requestCode, resultCode, data)
+
+        Log.d("####-1", "11111")
 
         if (requestCode == GOOGLE_LOGIN_CODE) {
             var result = data?.let { Auth.GoogleSignInApi.getSignInResultFromIntent(it) }!!
             // 구글API가 넘겨주는 값 받아옴
 
+            Log.d("####-2", result.status.toString())
+
             if (result.isSuccess) {
                 var accout = result.signInAccount
                 firebaseAuthWithGoogle(accout)
                 Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show()
+                Log.d("####-31", result.status.toString())
             } else {
-                Toast.makeText(this, "로그인 실패", Toast.LENGTH_SHORT).show()
+                Log.d("####-32", result.status.toString())
+                Toast.makeText(this, "로그인 실패!!!", Toast.LENGTH_SHORT).show()
             }
         }
     }

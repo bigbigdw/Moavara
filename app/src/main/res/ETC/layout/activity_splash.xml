@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/login"
@@ -30,19 +29,27 @@
             android:layout_width="110dp"
             android:layout_height="24dp"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="60dp"
+            android:layout_marginBottom="22dp"
             android:contentDescription="@string/TODO"
             android:src="@drawable/moabara_logo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="당신의 하루를 모아바라가 응원합니다."
+            android:textColor="#A7ACB7" />
 
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="60dp"
@@ -56,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:text="By 김대우, 유성아, 박주은"
                 android:textAlignment="center"
-                android:textColor="#ffffff"
+                android:textColor="#898989"
                 android:textSize="12sp" />
 
             <TextView
@@ -65,9 +72,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/noto_sans"
-                android:text="ⓒ 모아바라 2021-2022"
+                android:text="© MOAVARA Corp"
                 android:textAlignment="center"
-                android:textColor="#ffffff"
+                android:textColor="#898989"
                 android:textSize="12sp" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
