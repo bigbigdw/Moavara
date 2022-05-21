@@ -91,21 +91,15 @@ class ActivityLogin : AppCompatActivity() {
             ?.addOnCompleteListener { task ->
 
                 if (task.isSuccessful) {
-
                    val user =  mRootRef.child("User").child(task.result?.user?.uid.toString())
-
-                    user.child("Nickname").setValue("USER_NAME")
-                    user.child("Genre").setValue("USER_GENRE")
 
                     user.addListenerForSingleValueEvent(object :
                             ValueEventListener {
                             override fun onDataChange(dataSnapshot: DataSnapshot) {
                                 val group: UserInfo? = dataSnapshot.getValue(UserInfo::class.java)
 
-                                if (group != null) {
-                                    if (group.Nickname != "USER_NAME") {
+                                    if (dataSnapshot.exists()) {
                                         if(dataSnapshot.getValue(UserInfo::class.java) != null){
-
 
                                             savePreferences("NICKNAME", group?.Nickname ?: "")
                                             savePreferences("GENRE", group?.Genre ?: "")
@@ -141,7 +135,7 @@ class ActivityLogin : AppCompatActivity() {
 
                                             Toast.makeText(context, "환영한다 뉴비", Toast.LENGTH_SHORT).show()
                                             mRootRef.child("User").child(task.result?.user?.uid.toString()).setValue("HIHI")
-
+                                            savePreferences("UID", task.result?.user?.uid.toString())
                                             val intent = Intent(context, ActivityGenre::class.java)
                                             intent.putExtra("MODE", "NEWBIE")
                                             intent.putExtra("UID", task.result?.user?.uid.toString())
@@ -161,8 +155,6 @@ class ActivityLogin : AppCompatActivity() {
 
                                     }
                                 }
-                            }
-
                             override fun onCancelled(databaseError: DatabaseError) {}
                         })
                 } else {

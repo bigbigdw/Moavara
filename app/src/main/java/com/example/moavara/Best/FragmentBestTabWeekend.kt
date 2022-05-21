@@ -59,8 +59,6 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
                 val group: BookListDataBestWeekend? =
                     i.getValue(BookListDataBestWeekend::class.java)
 
-                Log.d("!!!!", "1");
-
                 itemWeek.add(
                     BookListDataBestWeekend(
                         group!!.sun,
