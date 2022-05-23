@@ -12,19 +12,25 @@
         tools:layout="@layout/fragment_best" />
 
     <fragment
-        android:id="@+id/navigation_search"
-        android:name="com.example.moavara.Search.FragmentSearch"
-        android:label=""
-        tools:layout="@layout/fragment_search" />
-
-    <fragment
         android:id="@+id/Fragment_Event"
         android:name="com.example.moavara.Event.FragmentEvent"
         android:label=""
         tools:layout="@layout/fragment_event" />
 
     <fragment
+        android:id="@+id/navigation_search"
+        android:name="com.example.moavara.Search.FragmentSearch"
+        android:label=""
+        tools:layout="@layout/fragment_search" />
+
+    <fragment
         android:id="@+id/Fragment_Community"
+        android:name="com.example.moavara.Community.FragmentCommunity"
+        android:label=""
+        tools:layout="@layout/fragment_best_tab_today" />
+
+    <fragment
+        android:id="@+id/ActivityNews"
         android:name="com.example.moavara.Community.FragmentCommunity"
         android:label=""
         tools:layout="@layout/fragment_best_tab_today" />

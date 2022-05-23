@@ -22,8 +22,8 @@
         android:title="커뮤니티" />
 
     <item
-        android:id="@+id/Fragment_Community2"
+        android:id="@+id/ActivityNews"
         android:icon="@mipmap/ic_launcher"
-        android:title="모아바라" />
+        android:title="늬우스" />
 
 </menu>
