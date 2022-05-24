@@ -131,6 +131,7 @@
         <entry key="app/src/main/res/layout/activity_book_setting.xml" value="0.16944444444444445" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.24202127659574468" />
+        <entry key="app/src/main/res/layout/activity_news.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_signup.xml" value="0.1" />
         <entry key="app/src/main/res/layout/bottom_dialog_main.xml" value="0.33211678832116787" />
         <entry key="app/src/main/res/layout/fragment_best.xml" value="0.1" />
@@ -150,6 +151,7 @@
         <entry key="app/src/main/res/layout/item_booklist_best_weekend_sub.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_community.xml" value="0.17407407407407408" />
         <entry key="app/src/main/res/layout/item_event.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_news.xml" value="0.22" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.1" />
         <entry key="app/src/main/res/menu/main_menu.xml" value="0.17407407407407408" />
       </map>

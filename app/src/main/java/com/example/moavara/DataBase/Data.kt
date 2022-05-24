@@ -144,3 +144,12 @@ data class UserPickBook(
     var memo: String = "",
 )
 
+data class NewsBX(
+    var date: String = "",
+    var keyWord: String = "",
+    var NewsTitle: String = "",
+    var NewsUrl: String = "",
+    var summary: String = "",
+    var opinion: String = "",
+)
+

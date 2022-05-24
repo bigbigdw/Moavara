@@ -40,8 +40,8 @@ class ActivityBestDetail : AppCompatActivity() {
         bookCode = intent.getStringExtra("BookCode") ?: ""
         type = intent.getStringExtra("Type") ?: ""
 
-        val mToolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(mToolbar)
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
         Objects.requireNonNull(supportActionBar)!!.setDisplayHomeAsUpEnabled(true)
 
         mFragmentBestDetailComment = FragmentBestDetailComment("Joara", bookCode)

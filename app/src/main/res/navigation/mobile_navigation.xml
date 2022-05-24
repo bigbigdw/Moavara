@@ -29,9 +29,9 @@
         android:label=""
         tools:layout="@layout/fragment_best_tab_today" />
 
-    <fragment
+    <activity
         android:id="@+id/ActivityNews"
-        android:name="com.example.moavara.Community.FragmentCommunity"
+        android:name="com.example.moavara.News.ActivityNews"
         android:label=""
         tools:layout="@layout/fragment_best_tab_today" />
 
