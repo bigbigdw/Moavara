@@ -47,8 +47,6 @@ class FragmentPickTabEvent() : Fragment() {
 
         cate = Genre.getGenre(requireContext()).toString()
 
-
-
         adapter = AdapterPickEvent(items)
 
         getEventTab()

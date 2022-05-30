@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1E1E20"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#0D0E10"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <ImageView
+                android:id="@+id/HomeImg"
+                android:layout_width="110dp"
+                android:layout_height="22dp"
+                android:contentDescription="@string/TODO"
+                app:srcCompat="@drawable/moabara_logo" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/etviewOpinion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:backgroundTint="#844DF3"
+                    android:cursorVisible="@null"
+                    android:ems="10"
+                    android:hint="의견"
+                    android:inputType="textPersonName"
+                    android:textAlignment="textStart"
+                    android:textColor="#EDE6FD"
+                    android:textColorHint="#6E7686" />
+
+                <EditText
+                    android:id="@+id/etviewNewsUrl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:backgroundTint="#844DF3"
+                    android:cursorVisible="@null"
+                    android:ems="10"
+                    android:hint="뉴스 링크"
+                    android:inputType="textPersonName"
+                    android:textAlignment="textStart"
+                    android:textColor="#EDE6FD"
+                    android:textColorHint="#6E7686" />
+
+                <EditText
+                    android:id="@+id/etviewSummary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:backgroundTint="#844DF3"
+                    android:cursorVisible="@null"
+                    android:ems="10"
+                    android:hint="요약"
+                    android:inputType="textPersonName"
+                    android:textAlignment="textStart"
+                    android:textColor="#EDE6FD"
+                    android:textColorHint="#6E7686" />
+
+                <EditText
+                    android:id="@+id/etviewKeyword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:backgroundTint="#844DF3"
+                    android:cursorVisible="@null"
+                    android:ems="10"
+                    android:hint="키워드"
+                    android:inputType="textPersonName"
+                    android:textAlignment="textStart"
+                    android:textColor="#EDE6FD"
+                    android:textColorHint="#6E7686" />
+
+                <EditText
+                    android:id="@+id/etviewNewsTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:backgroundTint="#844DF3"
+                    android:cursorVisible="@null"
+                    android:ems="10"
+                    android:hint="뉴스 타이틀"
+                    android:inputType="textPersonName"
+                    android:textAlignment="textStart"
+                    android:textColor="#EDE6FD"
+                    android:textColorHint="#6E7686" />
+
+                <LinearLayout
+                    android:id="@+id/llayoutBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="#9C27B0"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="확인"
+                        android:textAlignment="center"
+                        android:textColor="#F44336"
+                        android:textSize="24sp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

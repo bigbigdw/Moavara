@@ -2,24 +2,12 @@ package com.example.moavara.Main
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.work.Constraints
-import androidx.work.NetworkType
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
-import com.example.moavara.Best.DialogLoginAlert
-import com.example.moavara.Firebase.FirebaseWorkManager
 import com.example.moavara.R
-import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Search.UserInfo
-import com.example.moavara.Search.WeekendDate
-import com.example.moavara.Util.DBDate
 import com.example.moavara.databinding.ActivityLoginBinding
 import com.facebook.CallbackManager
 import com.google.android.gms.auth.api.Auth
@@ -32,11 +20,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.messaging.FirebaseMessaging
-import java.util.concurrent.TimeUnit
-import kotlin.system.exitProcess
 
 class ActivityLogin : AppCompatActivity() {
     private var auth: FirebaseAuth? = null
@@ -55,7 +39,6 @@ class ActivityLogin : AppCompatActivity() {
         setContentView(binding.root)
 
         with(binding) {
-
             // 구글 로그인 버튼
             btnLogin.setOnClickListener { googleLogin() }
 
@@ -64,17 +47,13 @@ class ActivityLogin : AppCompatActivity() {
                 auth?.signOut()
                 googleSignInClient?.signOut()
             }
-
-
         }
-
 
         var gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
         googleSignInClient = GoogleSignIn.getClient(this, gso)
-
 
     }
 
@@ -112,7 +91,7 @@ class ActivityLogin : AppCompatActivity() {
 
                                     } else {
 
-                                        var dialogLoginAlert: DialogLoginAlert?
+                                        var dialogLogin: DialogLogin?
 
                                         val btnStep1 = View.OnClickListener { v: View? ->
 
@@ -144,13 +123,13 @@ class ActivityLogin : AppCompatActivity() {
                                         }
 
                                         // 안내 팝업
-                                        dialogLoginAlert = DialogLoginAlert(
+                                        dialogLogin = DialogLogin(
                                             context,
                                             btnStep1,
                                             btnStep2
                                         )
 
-                                        dialogLoginAlert.show()
+                                        dialogLogin.show()
 
 
                                     }

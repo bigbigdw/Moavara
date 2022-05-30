@@ -2,68 +2,62 @@ package com.example.moavara.News
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moavara.Best.BottomDialogMain
+import com.example.moavara.Main.mRootRef
 import com.example.moavara.Pick.ActivityPick
 import com.example.moavara.R
 import com.example.moavara.Search.NewsBX
+import com.example.moavara.Util.DBDate
 import com.example.moavara.databinding.ActivityNewsBinding
+import com.example.moavara.databinding.ActivityNewsWriteBinding
 import com.example.moavara.databinding.ItemNewsBinding
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import java.util.*
 
 class ActivityNewsWrite : AppCompatActivity() {
 
-    private lateinit var binding: ActivityNewsBinding
-    private lateinit var adapter: AdapterNews
-    private val items = ArrayList<NewsBX?>()
+    private lateinit var binding: ActivityNewsWriteBinding
+    var NewsBX = FirebaseDatabase.getInstance().reference.child("NewsBX")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityNewsBinding.inflate(layoutInflater)
+        binding = ActivityNewsWriteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         Objects.requireNonNull(supportActionBar)!!.setDisplayHomeAsUpEnabled(true)
 
-        adapter = AdapterNews(items)
+        binding.llayoutBtn.setOnClickListener { view ->
+            Log.d("###", "HIHI")
 
-        binding.rviewNews.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        binding.rviewNews.adapter = adapter
-
-        for(i in 1..10){
-            items.add(
+            NewsBX.child("2").setValue(
                 NewsBX(
-                    "2022. 4. 12",
-                    "웹소설 리뷰, 예능, 셀럽",
-                    "네이버시리즈, 웹소설 입덕 웹예능 ‘쓰리덕즈’ 7일 시작",
-                    "https://zdnet.co.kr/view/?no=20220406091403",
-                    "웹소설 대중화를 위해 업계 최초로 셀럽과 웹소설 리뷰 웹예능",
-                    "대기업 자본에 의해 웹소설이 양지로 끌어올려지고 있습니다.\n" +
-                            "카카오가 옷소매 붉은 끝동으로 아주 핫한 시점에 준호를 모델로 슈퍼 웹툰 프로젝트 광고를 제작한 건 다들 아실텐데요! \n" +
-                            "준호가 원작의 대사를 읊거나하는 상황이 독자들의 궁금증을 활활 불태운듯 합니다. 영상은 공개 1시간 만에 100만 뷰, 웹소설과 웹툰은 누적 조회수 1억뷰를 달성했습니다. \n" +
-                            "이에 질 수 없다! 네이버시리즈 또한 웹소설 리뷰를 주제로 한 웹 예능을 기획했습니다. \n" +
-                            "웹소설의 대중화를 위해 업계 최초로 셀럽을 통해 웹소설을 대놓고 홍보하는 예능 프로그램입니다. \n" +
-                            "\n" +
-                            "둘의 공통점은 셀럽과 거대한 자본을 사용했다는 것 외에도, 요즘 사람들이 익숙한 영상 매체를 활용한다는 점이 있습니다.\n" +
-                            "조아라 유튜브 개설에 대한 이야기가 한 번 씩 있었는데요.(신입 지원자들 이력서에도) 여러가지 현실적으로 힘든 점은 있겠지만, 고민해봐야할 부분인 것 같습니다.",
+                    DBDate.DateMMDD(),
+                    "",
+                    "광주대학교 문예창작과 주최 제2회 전국 고교생 웹소설 공모전 시상식 성료",
+                    "http://www.lecturernews.com/news/articleView.html?idxno=87513",
+                    "예능에서도 그렇고 10대의 가능성! (예: 고등래퍼, 스걸파)이 주목을 받는다. 조아라에서도 새로운 공모전 주체를 10대로 잡아서.. 가볍게 한 번 해보는건 어떨까? 자유주제나.. 아니면 지금 청춘이니까.. 실감나는 청춘물을...\n" +
+                            "아무튼 필력이 성인에 비해 어떨진 모르겠지만, 일단 예비작가들이면서 사용자들을 데려올 수 있다는게 큰 장점아닐까!",
+                    "제 2회 전국 고교생 웹소설 공모전 시상식이 1월 17일 개최.\n" +
+                            "광주대학교 x 뉴스페이퍼 키다리스튜디오 공동 주최\n" +
+                            "장원 수상은 박찬주 학생의 `나를 죽인 악녀에게 빙의했다`"
                 )
             )
-            adapter!!.notifyDataSetChanged()
         }
 
 
-        binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)

@@ -10,6 +10,8 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.example.moavara.R
 import com.example.moavara.databinding.ActivityPickBinding
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class ActivityPick : AppCompatActivity() {
@@ -25,6 +27,7 @@ class ActivityPick : AppCompatActivity() {
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
+        Objects.requireNonNull(supportActionBar)!!.setDisplayHomeAsUpEnabled(true)
 
         with(binding){
             setupViewPager(viewPager)

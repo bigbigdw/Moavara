@@ -1,4 +1,4 @@
-package com.example.moavara.Best
+package com.example.moavara.Main
 
 import android.app.Dialog
 import android.content.Context
@@ -7,7 +7,7 @@ import android.view.View
 import android.view.WindowManager
 import com.example.moavara.databinding.DialogLoginAlertBinding
 
-class DialogLoginAlert(
+class DialogLogin(
     context: Context,
     private val mBtnLeftListener: View.OnClickListener,
     private val mBtnRightListener: View.OnClickListener,
