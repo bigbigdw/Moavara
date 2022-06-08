@@ -78,7 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="23dp"
-                android:text="© MOAVARA Corp"
+                android:text="© Joara Corp"
                 android:textAlignment="center"
                 android:textColor="#898989"
                 android:textSize="11dp" />

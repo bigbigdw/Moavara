@@ -2,16 +2,21 @@ package com.example.moavara.Main
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.moavara.R
 import com.example.moavara.Util.Genre
 import com.example.moavara.databinding.ActivityGenreBinding
 import com.google.firebase.auth.FirebaseAuth
+import java.util.*
 
 
 class ActivityGenre : AppCompatActivity() {
@@ -38,6 +43,8 @@ class ActivityGenre : AppCompatActivity() {
             if(mode == "USER" && UID != ""){
                 llayoutNickname.visibility = View.GONE
                 llayoutNickname.visibility = View.GONE
+                llayoutBtnGenre.visibility = View.GONE
+                btnNickname.visibility = View.GONE
                 llayoutGenre.visibility = View.VISIBLE
 
                 if(Genre.getGenre(context).toString() == "FANTASY"){
@@ -64,12 +71,40 @@ class ActivityGenre : AppCompatActivity() {
                 llayoutNickname.visibility = View.VISIBLE
                 llayoutGenre.visibility = View.GONE
 
+                etviewNickname.addTextChangedListener(object : TextWatcher {
+                        override fun beforeTextChanged(
+                            text: CharSequence,
+                            start: Int,
+                            count: Int,
+                            after: Int
+                        ) {
+                        }
+
+                        override fun onTextChanged(
+                            text: CharSequence,
+                            start: Int,
+                            before: Int,
+                            count: Int
+                        ) {
+                        }
+
+                        override fun afterTextChanged(s: Editable) {
+                            if (s.toString().isEmpty()) {
+                                btnNickname.setBackgroundColor(Color.parseColor("#26292E"))
+                            } else {
+                                btnNickname.setBackgroundColor(Color.parseColor("#844DF3"))
+                            }
+                        }
+                    })
+
                 btnNickname.setOnClickListener{
                     if(etviewNickname.text.toString() == ""){
                         Toast.makeText(context, "닉네임을 설정해 주세요", Toast.LENGTH_SHORT).show()
                     } else {
                         llayoutNickname.visibility = View.GONE
+                        llayoutNickname.visibility = View.GONE
                         llayoutGenre.visibility = View.VISIBLE
+                        llayoutBtnGenre.visibility = View.VISIBLE
                         tviewTitle.text = "환영합니다."
                         tviewUserName.visibility = View.VISIBLE
                         tviewUserName.text = etviewNickname.text
@@ -95,7 +130,7 @@ class ActivityGenre : AppCompatActivity() {
                     llayoutBtn3.setBackgroundResource(R.drawable.selector_genre)
                     llayoutBtn4.setBackgroundResource(R.drawable.selector_genre)
                     userInfo.child(UID).child("Genre").setValue("FANTASY")
-                    submit()
+                    llayoutBtnGenre.setBackgroundColor(Color.parseColor("#844DF3"))
                 }
 
             }
@@ -114,7 +149,7 @@ class ActivityGenre : AppCompatActivity() {
                     llayoutBtn2.setBackgroundResource(R.drawable.selector_genre_on)
                     llayoutBtn3.setBackgroundResource(R.drawable.selector_genre)
                     llayoutBtn4.setBackgroundResource(R.drawable.selector_genre)
-                    submit()
+                    llayoutBtnGenre.setBackgroundColor(Color.parseColor("#844DF3"))
                 }
             }
 
@@ -131,7 +166,7 @@ class ActivityGenre : AppCompatActivity() {
                     llayoutBtn2.setBackgroundResource(R.drawable.selector_genre)
                     llayoutBtn3.setBackgroundResource(R.drawable.selector_genre_on)
                     llayoutBtn4.setBackgroundResource(R.drawable.selector_genre)
-                    submit()
+                    llayoutBtnGenre.setBackgroundColor(Color.parseColor("#844DF3"))
                 }
             }
 
@@ -148,37 +183,48 @@ class ActivityGenre : AppCompatActivity() {
                     llayoutBtn2.setBackgroundResource(R.drawable.selector_genre)
                     llayoutBtn3.setBackgroundResource(R.drawable.selector_genre)
                     llayoutBtn4.setBackgroundResource(R.drawable.selector_genre_on)
-                    submit()
+                    llayoutBtnGenre.setBackgroundColor(Color.parseColor("#844DF3"))
+                }
+            }
+
+            llayoutBtnGenre.setOnClickListener {
+                with(binding){
+                    if(genre == ""){
+                        Toast.makeText(context, "장르를 선택해 주세요", Toast.LENGTH_SHORT).show()
+                    } else {
+                        userInfo.child(UID).child("Nickname").setValue(etviewNickname.text.toString())
+
+                        var dialogLogin: DialogConfirmLogin? = null
+
+                        val leftListener = View.OnClickListener { v: View? ->
+                            dialogLogin?.dismiss()
+                        }
+
+                        val rightListener = View.OnClickListener { v: View? ->
+
+                            savePreferences("NICKNAME", etviewNickname.text.toString())
+                            val intent = Intent(context, ActivityMain::class.java)
+                            Toast.makeText(context, "모아바라에 오신것을 환영합니다", Toast.LENGTH_SHORT).show()
+                            startActivity(intent)
+                        }
+
+                        // 안내 팝업
+                        dialogLogin = DialogConfirmLogin(
+                            context,
+                            "닉네임 : " + etviewNickname.text + "\n선호장르 : $genre",
+                            leftListener,
+                            rightListener
+                        )
+
+                        dialogLogin.window?.setBackgroundDrawable(
+                            ColorDrawable(
+                                Color.TRANSPARENT)
+                        )
+                        dialogLogin.show()
+                    }
                 }
             }
         }
-    }
-
-    fun submit(){
-
-        with(binding){
-            if(genre == ""){
-                Toast.makeText(context, "장르를 선택해 주세요", Toast.LENGTH_SHORT).show()
-            } else {
-                userInfo.child(UID).child("Nickname").setValue(etviewNickname.text.toString())
-
-                val myAlertBuilder: AlertDialog.Builder = AlertDialog.Builder(this@ActivityGenre)
-                myAlertBuilder.setTitle("모아바라 가입")
-                myAlertBuilder.setMessage("회원 정보를 확인해주세요 \n 닉네임 : " + etviewNickname.text + "\n선호장르 : $genre \n가 맞나요?")
-                myAlertBuilder.setPositiveButton(
-                    "예"
-                ) { _, _ ->
-                    savePreferences("NICKNAME", etviewNickname.text.toString())
-                    val intent = Intent(context, ActivityMain::class.java)
-                    Toast.makeText(context, "모아바라에 오신것을 환영합니다", Toast.LENGTH_SHORT).show()
-                    startActivity(intent)
-                }
-                myAlertBuilder.setNegativeButton("아니요") { _, _ -> }
-
-                myAlertBuilder.show()
-            }
-        }
-
     }
 
 

@@ -121,6 +121,10 @@
         <entry key="app/src/main/res/Search/layout/activity_search_detail.xml" value="0.20677083333333332" />
         <entry key="app/src/main/res/Search/layout/collapse_best_detail.xml" value="0.1921875" />
         <entry key="app/src/main/res/drawable/selector_bottom_navigation.xml" value="0.243" />
+        <entry key="app/src/main/res/drawable/selector_dialog_login.xml" value="0.1305" />
+        <entry key="app/src/main/res/drawable/selector_dialog_login_btn.xml" value="0.33" />
+        <entry key="app/src/main/res/drawable/selector_dialog_login_confirm_a.xml" value="0.1305" />
+        <entry key="app/src/main/res/drawable/selector_dialog_login_confirm_b.xml" value="0.1305" />
         <entry key="app/src/main/res/drawable/selector_genre.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/selector_genre_on.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/selector_genre_upper.xml" value="0.1" />
@@ -138,7 +142,8 @@
         <entry key="app/src/main/res/layout/activity_news_write.xml" value="0.2111111111111111" />
         <entry key="app/src/main/res/layout/activity_signup.xml" value="0.1" />
         <entry key="app/src/main/res/layout/bottom_dialog_main.xml" value="0.33211678832116787" />
-        <entry key="app/src/main/res/layout/dialog_login_alert.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/dialog_login_alert.xml" value="0.4737991266375546" />
+        <entry key="app/src/main/res/layout/dialog_login_confirm.xml" value="0.11764705882352941" />
         <entry key="app/src/main/res/layout/fragment_best.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_best_detail_analyze.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_best_month.xml" value="0.1" />

@@ -18,6 +18,11 @@
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
+    <style name="ThemeOverlay.CheckBox" parent="">
+        <item name="android:textColorSecondary">#3E424B</item>
+        <item name="colorAccent">#EDE6FD</item>
+    </style>
+
     <style name="Theme.TakeALook.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

@@ -32,33 +32,49 @@
                     android:id="@+id/llayoutBody"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="left|center_vertical"
+                    android:gravity="center_horizontal|top"
                     android:minHeight="260dp"
                     android:orientation="vertical"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="60dp"
+                        android:orientation="horizontal"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp">
+
+                        <TextView
+                            android:id="@+id/tviewUnderline"
+                            android:layout_width="wrap_content"
+
+                            android:layout_height="wrap_content"
+                            android:text="회원정보"
+                            android:textAlignment="textStart"
+                            android:textColor="#844DF3"
+                            android:textSize="13dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="를 확인해 주세요."
+                            android:textColor="#EDE6FD" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tviewBody"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:lineSpacingExtra="8dp"
                         android:paddingStart="20dp"
                         android:paddingEnd="20dp"
-                        android:text="모아바라는 ㈜ 조아라의 사내 스터디에서 개발한 어플리케이션으로 ㈜조아라 임직원만 사용이 가능합니다. 사내 자산으로 외부 유출이 불가능하며, 유출 시 법적 책임을 질 수 있습니다."
-                        android:textAlignment="textStart"
+                        android:text="닉네임: asdasdasdasd adsad\n선호장르: ㄴㅇㄴㅇㄹㅇㄴㄹ"
                         android:textColor="#EDE6FD"
-                        android:textSize="13dp"
-                        android:textStyle="bold" />
-
-                    <CheckBox
-                        android:id="@+id/cbox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:text="확인했습니다"
-                        android:textAlignment="viewStart"
-                        android:textColor="#EDE6FD"
-                        android:textSize="12dp"
-                        android:theme="@style/ThemeOverlay.CheckBox" />
+                        android:textSize="14dp" />
 
                 </LinearLayout>
 
@@ -70,18 +86,32 @@
                     app:layout_constraintStart_toStartOf="@+id/llayoutBody">
 
                     <Button
-                        android:id="@+id/btnEnable"
+                        android:id="@+id/btnLeft"
                         style="@style/Widget.AppCompat.Button.Borderless"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
-                        android:background="@drawable/selector_dialog_login_btn"
-                        android:text="다음으로"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector_dialog_login_confirm_a"
+                        android:text="뒤로가기"
                         android:textColor="#EDE6FD"
                         android:textSize="14dp"
                         android:textStyle="bold"
-                        android:visibility="gone"
-                        app:backgroundTint="@null"
-                        tools:visibility="visible" />
+                        android:visibility="visible"
+                        app:backgroundTint="@null" />
+
+                    <Button
+                        android:id="@+id/btnRight"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector_dialog_login_confirm_b"
+                        android:text="확인"
+                        android:textColor="#EDE6FD"
+                        android:textSize="14dp"
+                        android:textStyle="bold"
+                        android:visibility="visible"
+                        app:backgroundTint="@null" />
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 

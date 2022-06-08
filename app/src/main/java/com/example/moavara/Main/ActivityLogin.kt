@@ -1,6 +1,8 @@
 package com.example.moavara.Main
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -125,10 +127,13 @@ class ActivityLogin : AppCompatActivity() {
                                         // 안내 팝업
                                         dialogLogin = DialogLogin(
                                             context,
-                                            btnStep1,
                                             btnStep2
                                         )
 
+                                        dialogLogin.window?.setBackgroundDrawable(
+                                            ColorDrawable(
+                                                Color.TRANSPARENT)
+                                        )
                                         dialogLogin.show()
 
 

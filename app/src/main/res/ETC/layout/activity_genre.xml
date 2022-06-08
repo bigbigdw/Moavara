@@ -4,277 +4,284 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1E1E20"
+    android:background="#3E424B"
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/llayoutWrap"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#1E1E20"
         android:orientation="vertical">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/selector_genre_upper"
-            android:gravity="bottom|center_horizontal"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/selector_genre_upper"
-                android:gravity="center_horizontal|center_vertical"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="72dp"
-                    android:layout_height="72dp"
-                    android:contentDescription="@string/TODO"
-                    android:src="@mipmap/ic_launcher" />
-
-                <TextView
-                    android:id="@+id/tviewTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:text="Welcome"
-                    android:textAlignment="center"
-                    android:textColor="#EDE6FD"
-                    android:textSize="24dp" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tviewUserName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="모아바라"
-                        android:textAlignment="center"
-                        android:textColor="#844DF3"
-                        android:textSize="18dp"
-                        android:textStyle="bold"
-                        android:visibility="gone" />
-
-                    <TextView
-                        android:id="@+id/tviewUserName2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="모아바라에 오신것을 환영합니다."
-                        android:textAlignment="center"
-                        android:textColor="#EDE6FD"
-                        android:textSize="18dp"
-                        android:visibility="visible" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/llayoutGenre"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
+                android:gravity="bottom|center_horizontal"
                 android:orientation="vertical"
-                android:visibility="visible"
-                tools:visibility="gone">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="27dp"
-                    android:layout_marginBottom="20dp"
-                    android:gravity="center"
-                    android:orientation="horizontal">
+                    android:background="@drawable/selector_genre_upper"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="72dp"
+                        android:layout_height="72dp"
+                        android:contentDescription="@string/TODO"
+                        android:src="@mipmap/ic_launcher" />
 
                     <TextView
-                        android:id="@+id/tviewGenre"
+                        android:id="@+id/tviewTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="장르"
-                        android:textAlignment="center"
-                        android:textColor="#844DF3"
-                        android:textSize="18dp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="를 선택해주세요"
+                        android:layout_marginBottom="8dp"
+                        android:text="Welcome"
                         android:textAlignment="center"
                         android:textColor="#EDE6FD"
-                        android:textSize="18dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="22dp"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
+                        android:textSize="24dp" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tviewUserName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="모아바라"
+                            android:textAlignment="center"
+                            android:textColor="#844DF3"
+                            android:textSize="18dp"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/tviewUserName2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="모아바라에 오신것을 환영합니다."
+                            android:textAlignment="center"
+                            android:textColor="#EDE6FD"
+                            android:textSize="18dp"
+                            android:visibility="visible" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llayoutGenre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:visibility="visible"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="27dp"
+                        android:layout_marginBottom="20dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tviewGenre"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="장르"
+                            android:textAlignment="center"
+                            android:textColor="#844DF3"
+                            android:textSize="18dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="를 선택해주세요"
+                            android:textAlignment="center"
+                            android:textColor="#EDE6FD"
+                            android:textSize="18dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="22dp"
+                        android:gravity="center_horizontal"
                         android:orientation="vertical">
 
                         <LinearLayout
-                            android:id="@+id/llayout_btn1"
-                            android:layout_width="260dp"
-                            android:layout_height="56dp"
-                            android:layout_marginBottom="8dp"
-                            android:background="@drawable/selector_genre"
-                            android:gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:orientation="vertical">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="판타지"
-                                android:textColor="#EDE6FD"
-                                android:textSize="16dp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/llayout_btn1"
+                                android:layout_width="260dp"
+                                android:layout_height="56dp"
+                                android:layout_marginBottom="8dp"
+                                android:background="@drawable/selector_genre"
+                                android:gravity="center"
+                                android:orientation="vertical">
 
-                        <LinearLayout
-                            android:id="@+id/llayout_btn2"
-                            android:layout_width="260dp"
-                            android:layout_height="56dp"
-                            android:layout_marginBottom="8dp"
-                            android:background="@drawable/selector_genre"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="판타지"
+                                    android:textColor="#EDE6FD"
+                                    android:textSize="16dp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="로맨스"
-                                android:textColor="#EDE6FD"
-                                android:textSize="16dp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/llayout_btn2"
+                                android:layout_width="260dp"
+                                android:layout_height="56dp"
+                                android:layout_marginBottom="8dp"
+                                android:background="@drawable/selector_genre"
+                                android:gravity="center"
+                                android:orientation="vertical">
 
-                        <LinearLayout
-                            android:id="@+id/llayout_btn3"
-                            android:layout_width="260dp"
-                            android:layout_height="56dp"
-                            android:layout_marginBottom="8dp"
-                            android:background="@drawable/selector_genre"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="로맨스"
+                                    android:textColor="#EDE6FD"
+                                    android:textSize="16dp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="장르 무관"
-                                android:textColor="#EDE6FD"
-                                android:textSize="16dp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/llayout_btn3"
+                                android:layout_width="260dp"
+                                android:layout_height="56dp"
+                                android:layout_marginBottom="8dp"
+                                android:background="@drawable/selector_genre"
+                                android:gravity="center"
+                                android:orientation="vertical">
 
-                        <LinearLayout
-                            android:id="@+id/llayout_btn4"
-                            android:layout_width="260dp"
-                            android:layout_height="56dp"
-                            android:layout_marginBottom="8dp"
-                            android:background="@drawable/selector_genre"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="장르 무관"
+                                    android:textColor="#EDE6FD"
+                                    android:textSize="16dp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="BL"
-                                android:textColor="#EDE6FD"
-                                android:textSize="16dp"
-                                android:textStyle="bold" />
+                            <LinearLayout
+                                android:id="@+id/llayout_btn4"
+                                android:layout_width="260dp"
+                                android:layout_height="56dp"
+                                android:layout_marginBottom="8dp"
+                                android:background="@drawable/selector_genre"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="BL"
+                                    android:textColor="#EDE6FD"
+                                    android:textSize="16dp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
                         </LinearLayout>
 
                     </LinearLayout>
 
                 </LinearLayout>
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/llayoutNickname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal|center_vertical"
-                android:orientation="vertical"
-                android:visibility="visible"
-                tools:visibility="visible">
-
-                <EditText
-                    android:id="@+id/etviewNickname"
+                <LinearLayout
+                    android:id="@+id/llayoutNickname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="66dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="80dp"
-                    android:backgroundTint="#844DF3"
-                    android:cursorVisible="@null"
-                    android:ems="10"
-                    android:hint="닉네임을 설정해 주세요"
-                    android:inputType="textPersonName"
-                    android:textAlignment="textStart"
-                    android:textColor="#EDE6FD"
-                    android:textColorHint="#6E7686" />
+                    android:gravity="center_horizontal|center_vertical"
+                    android:orientation="vertical"
+                    android:visibility="visible"
+                    tools:visibility="gone">
 
-                <LinearLayout
-                    android:id="@+id/btnNickname"
-                    android:layout_width="260dp"
-                    android:layout_height="56dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="36dp"
-                    android:background="@drawable/selector_main_login_btn"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <EditText
+                        android:id="@+id/etviewNickname"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="8dp"
-                        android:text="설정 완료"
+                        android:layout_marginStart="23dp"
+                        android:layout_marginTop="66dp"
+                        android:layout_marginEnd="23dp"
+                        android:layout_marginBottom="80dp"
+                        android:backgroundTint="#844DF3"
+                        android:cursorVisible="@null"
+                        android:ems="10"
+                        android:hint="닉네임을 입력해 주세요"
+                        android:inputType="textPersonName"
+                        android:paddingStart="12dp"
+                        android:textAlignment="textStart"
                         android:textColor="#EDE6FD"
-                        android:textSize="16sp" />
+                        android:textColorHint="#6E7686" />
 
                 </LinearLayout>
 
             </LinearLayout>
 
-        </LinearLayout>
+            <LinearLayout
+                android:id="@+id/btnNickname"
+                android:layout_width="match_parent"
+                android:layout_height="62dp"
+                android:background="#26292E"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:visibility="gone">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="230dp">
+
+                <TextView
+                    android:id="@+id/tviewNickname"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:text="다음으로"
+                    android:textAlignment="center"
+                    android:textColor="#EDE6FD"
+                    android:textSize="14dp" />
+            </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/llayoutBtnGenre"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="62dp"
+                android:background="#26292E"
+                android:gravity="center"
                 android:orientation="vertical"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
 
                 <TextView
-                    android:id="@+id/btnRegister"
-                    android:layout_width="match_parent"
+                    android:id="@+id/tviewBtnGenre"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="23dp"
-                    android:text="© MOAVARA Corp"
+                    android:text="다음으로"
                     android:textAlignment="center"
-                    android:textColor="#898989"
-                    android:textSize="11dp" />
-
-
+                    android:textColor="#EDE6FD"
+                    android:textSize="14dp" />
             </LinearLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
