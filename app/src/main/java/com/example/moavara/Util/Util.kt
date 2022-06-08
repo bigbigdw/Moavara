@@ -19,23 +19,6 @@ import java.net.SocketTimeoutException
 import java.text.SimpleDateFormat
 import java.util.*
 
-object Param {
-
-    fun getItemAPI(mContext: Context?): MutableMap<String?, Any> {
-
-        val Param: MutableMap<String?, Any> = HashMap()
-
-        mContext ?: return Param
-
-        Param["api_key"] = "mw_8ba234e7801ba288554ca07ae44c7"
-        Param["ver"] = "2.6.3"
-        Param["device"] = "mw"
-        Param["deviceuid"] = "5127d5951c983034a16980c8a893ac99d16dbef988ee36882b793aa14ad33604"
-        Param["devicetoken"] = "mw"
-
-        return Param
-    }
-}
 
 object DBDate {
 
@@ -105,125 +88,6 @@ object DBDate {
     }
 }
 
-object BestRef {
-    private val mRootRef = FirebaseDatabase.getInstance().reference
-
-    fun setBestRef(type: String, genre: String): DatabaseReference {
-        return mRootRef.child("best").child(type).child(genre)
-    }
-
-    fun typeListTitle(): List<String> {
-        return listOf(
-            "조아라",
-            "노블레스",
-            "프리미엄",
-            "네이버시리즈",
-            "챌린지리그",
-            "베스트리그",
-            "카카오페이지",
-            "스테이지",
-            "리디북스",
-            "원스토리",
-            "미스터블루"
-        )
-    }
-
-    fun typeList(): List<String> {
-        return listOf(
-            "Joara",
-            "Joara Nobless",
-            "Joara Premium",
-            "Naver Today",
-            "Naver Challenge",
-            "Naver",
-            "Kakao",
-            "Kakao Stage",
-            "Ridi",
-            "OneStore",
-            "MrBlue"
-        )
-    }
-
-
-    fun setBestRefWeekList(type: String, genre: String): DatabaseReference {
-        return setBestRef(type, genre).child("week-list")
-    }
-
-    fun setBestRefWeekCompared(type: String, num: Int, genre: String): DatabaseReference {
-        return setBestRef(type, genre).child("week-list").child(((DBDate.DayInt() * 1000) + num).toString())
-    }
-
-    fun delBestRefWeekCompared(type: String, genre: String): DatabaseReference {
-        return setBestRef(type, genre).child("week")
-    }
-
-    fun setBestRefToday(type: String, num: Int, genre: String): DatabaseReference {
-        return setBestRef(type, genre).child("today").child(DBDate.Day()).child(num.toString())
-    }
-
-    fun getBestRefToday(type: String, genre: String): DatabaseReference {
-        return setBestRef(type, genre).child("today").child(DBDate.Day())
-    }
-
-    fun setBestRefWeek(type: String, num: Int, genre: String): DatabaseReference {
-        return setBestRef(type, genre).child("week").child(DBDate.Week()).child(num.toString()).child(DBDate.DayString())
-    }
-
-    fun getBestRefWeek(type: String, num: Int, genre: String): DatabaseReference {
-        return setBestRef(type, genre).child("week").child(DBDate.Week()).child(num.toString()).child(DBDate.DayString())
-    }
-
-    fun setBestRefMonthWeek(type: String, genre: String): DatabaseReference {
-        return setBestRef(type, genre).child("month").child(DBDate.Month()).child(DBDate.Week())
-            .child(DBDate.DayString())
-    }
-
-    fun setBestRefMonthDay(type: String, num: Int, genre: String): DatabaseReference {
-        return setBestRef(type, genre).child("month").child(DBDate.Month()).child(DBDate.Week())
-            .child(DBDate.DayString()).child("day").child(num.toString())
-    }
-
-    fun setBestRefMonth(type: String, genre: String): DatabaseReference {
-        return setBestRef(type, genre).child("month").child(DBDate.Month()).child(DBDate.Week())
-            .child(DBDate.DayString())
-    }
-
-    fun setBookListDataBestToday(ref: MutableMap<String?, Any>): BookListDataBestToday {
-        return BookListDataBestToday(
-            ref["writerName"] as String,
-            ref["subject"] as String,
-            ref["bookImg"] as String,
-            ref["bookCode"] as String,
-            ref["info1"] as String,
-            ref["info2"] as String,
-            ref["info3"] as String,
-            ref["info4"] as String,
-            ref["info5"] as String,
-            ref["number"] as Int,
-            ref["numberDiff"] as Int,
-            ref["date"] as String,
-            ref["status"] as String,
-        )
-    }
-
-    fun setDataBestDay(ref: MutableMap<String?, Any>): DataBestDay {
-        return DataBestDay(
-            ref["writerName"] as String,
-            ref["subject"] as String,
-            ref["bookImg"] as String,
-            ref["bookCode"] as String,
-            ref["info1"] as String,
-            ref["info2"] as String,
-            ref["info3"] as String,
-            ref["info4"] as String,
-            ref["info5"] as String,
-            ref["number"] as Int,
-            ref["numberDiff"] as Int,
-            ref["date"] as String,
-            ref["status"] as String,
-        )
-    }
-}
 
 object Genre {
 
@@ -389,9 +253,15 @@ object Mining {
         getOneStoreBest(cate)
         getKakaoBest(cate)
         getKakaoStageBest(cate)
-        getJoaraBest(context, cate)
-        getJoaraBestNobless(cate)
-        getJoaraBestPremium(cate)
+        for (i in 1..5) {
+            getJoaraBest(context, cate, i)
+        }
+        for (i in 1..5) {
+            getJoaraBestNobless(context, cate, i)
+        }
+        for (i in 1..5) {
+            getJoaraBestPremium(context, cate, i)
+        }
         getNaverToday(cate)
         getNaverChallenge(cate)
         getNaverBest(cate)
@@ -1041,13 +911,8 @@ object Mining {
 
     }
 
-    fun getJoaraBest(context: Context, cate: String) {
+    fun getJoaraBest(context: Context, cate: String, page: Int) {
         val JoaraRef: MutableMap<String?, Any> = HashMap()
-
-        val param = Param.getItemAPI(context)
-        param["best"] = "today"
-        param["store"] = ""
-        param["category"] = Genre.setJoaraGenre(cate)
 
         val yesterdayRef =
             FirebaseDatabase.getInstance().reference.child("best").child("Joara").child(cate)
@@ -1058,8 +923,15 @@ object Mining {
         val itemsYesterday = ArrayList<BookListDataBestToday?>()
 
         val apiJoara = RetrofitJoara2()
+        val param = Param.getItemAPI(context)
 
-        yesterdayRef.addValueEventListener(object : ValueEventListener {
+        param["page"] = page.toString()
+        param["best"] = "today"
+        param["store"] = ""
+        param["category"] = Genre.setJoaraGenre(cate)
+
+        yesterdayRef.addListenerForSingleValueEvent(object :
+            ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (postSnapshot in dataSnapshot.children) {
                     val group: BookListDataBestToday? =
@@ -1088,9 +960,7 @@ object Mining {
                     object : RetrofitDataListener<JoaraBestListResult> {
                         override fun onSuccess(data: JoaraBestListResult) {
 
-                            var books = data.bookLists
-
-                            Log.d("####", "####-1" + books.toString())
+                            val books = data.bookLists
 
                             for (i in books!!.indices) {
 
@@ -1110,237 +980,235 @@ object Mining {
                                 JoaraRef["status"] =
                                     calculateNum(i, books[i].subject, itemsYesterday).status
 
-                                miningValue(JoaraRef, i, "Joara", cate)
+                                miningValue(JoaraRef, (i + ((page - 1) * books.size)), "Joara", cate)
                             }
                         }
                     })
-
             }
 
             override fun onCancelled(databaseError: DatabaseError) {}
         })
+
     }
+}
 
-    fun getJoaraBestPremium(cate: String) {
-        val JoaraRef: MutableMap<String?, Any> = HashMap()
+fun getJoaraBestPremium(context: Context, cate: String,  page: Int) {
 
-        val call: Call<JoaraBestListResult?>? =
-            RetrofitJoara.getJoaraBookBest("today", "premium", Genre.setJoaraGenre(cate))
+    val JoaraRef: MutableMap<String?, Any> = HashMap()
 
-        val yesterdayRef =
-            FirebaseDatabase.getInstance().reference.child("best").child("Joara Premium")
-                .child(cate).child("today").child(
-                    DBDate.Yesterday()
-                )
+    val yesterdayRef =
+        FirebaseDatabase.getInstance().reference.child("best").child("Joara Premium").child(cate)
+            .child("today").child(
+                DBDate.Yesterday()
+            )
 
-        val itemsYesterday = ArrayList<BookListDataBestToday?>()
+    val itemsYesterday = ArrayList<BookListDataBestToday?>()
 
-        yesterdayRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (postSnapshot in dataSnapshot.children) {
-                    val group: BookListDataBestToday? =
-                        postSnapshot.getValue(BookListDataBestToday::class.java)
-                    itemsYesterday.add(
-                        BookListDataBestToday(
-                            group!!.writer,
-                            group.title,
-                            group.bookImg,
-                            group.bookCode,
-                            group.info1,
-                            group.info2,
-                            group.info3,
-                            group.info4,
-                            group.info5,
-                            group.number,
-                            group.numberDiff,
-                            group.date,
-                            group.status
-                        )
+    val apiJoara = RetrofitJoara2()
+    val param = Param.getItemAPI(context)
+
+    param["page"] = page.toString()
+    param["best"] = "today"
+    param["store"] = "premium"
+    param["category"] = Genre.setJoaraGenre(cate)
+
+
+    yesterdayRef.addListenerForSingleValueEvent(object :
+        ValueEventListener {
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            for (postSnapshot in dataSnapshot.children) {
+                val group: BookListDataBestToday? =
+                    postSnapshot.getValue(BookListDataBestToday::class.java)
+                itemsYesterday.add(
+                    BookListDataBestToday(
+                        group!!.writer,
+                        group.title,
+                        group.bookImg,
+                        group.bookCode,
+                        group.info1,
+                        group.info2,
+                        group.info3,
+                        group.info4,
+                        group.info5,
+                        group.number,
+                        group.numberDiff,
+                        group.date,
+                        group.status
                     )
-                }
+                )
+            }
 
-                call!!.enqueue(object : Callback<JoaraBestListResult?> {
-                    override fun onResponse(
-                        call: Call<JoaraBestListResult?>,
-                        response: Response<JoaraBestListResult?>
-                    ) {
-                        if (response.isSuccessful) {
-                            response.body()?.let { it ->
-                                val books = it.bookLists
+            apiJoara.getJoaraBookBest(
+                param,
+                object : RetrofitDataListener<JoaraBestListResult> {
+                    override fun onSuccess(data: JoaraBestListResult) {
 
-                                for (i in books!!.indices) {
+                        val books = data.bookLists
 
-                                    JoaraRef["writerName"] = books[i].writerName
-                                    JoaraRef["subject"] = books[i].subject
-                                    JoaraRef["bookImg"] = books[i].bookImg
-                                    JoaraRef["bookCode"] = books[i].bookCode
-                                    JoaraRef["info1"] = "줄거리 : " + books[i].intro
-                                    JoaraRef["info2"] = "총 " + books[i].cntChapter + " 화"
-                                    JoaraRef["info3"] = "조회 수 : " + books[i].cntPageRead
-                                    JoaraRef["info4"] = "선호작 수 : " + books[i].cntFavorite
-                                    JoaraRef["info5"] = "추천 수 : " + books[i].cntRecom
-                                    JoaraRef["number"] = i
-                                    JoaraRef["numberDiff"] =
-                                        calculateNum(i, books[i].subject, itemsYesterday).num
-                                    JoaraRef["date"] = DBDate.DateMMDD()
-                                    JoaraRef["status"] =
-                                        calculateNum(i, books[i].subject, itemsYesterday).status
+                        for (i in books!!.indices) {
 
-                                    miningValue(JoaraRef, i, "Joara Premium", cate)
+                            JoaraRef["writerName"] = books[i].writerName
+                            JoaraRef["subject"] = books[i].subject
+                            JoaraRef["bookImg"] = books[i].bookImg
+                            JoaraRef["bookCode"] = books[i].bookCode
+                            JoaraRef["info1"] = "줄거리 : " + books[i].intro
+                            JoaraRef["info2"] = "총 " + books[i].cntChapter + " 화"
+                            JoaraRef["info3"] = "조회 수 : " + books[i].cntPageRead
+                            JoaraRef["info4"] = "선호작 수 : " + books[i].cntFavorite
+                            JoaraRef["info5"] = "추천 수 : " + books[i].cntRecom
+                            JoaraRef["number"] = i
+                            JoaraRef["numberDiff"] =
+                                calculateNum(i, books[i].subject, itemsYesterday).num
+                            JoaraRef["date"] = DBDate.DateMMDD()
+                            JoaraRef["status"] =
+                                calculateNum(i, books[i].subject, itemsYesterday).status
 
-                                }
-                            }
+                            miningValue(JoaraRef, (i + ((page - 1) * books.size)), "Joara Premium", cate)
                         }
                     }
-
-                    override fun onFailure(call: Call<JoaraBestListResult?>, t: Throwable) {
-                        Log.d("onFailure", "실패")
-                    }
                 })
+        }
+
+        override fun onCancelled(databaseError: DatabaseError) {}
+    })
+
+}
+
+fun getJoaraBestNobless(context: Context, cate: String,  page: Int) {
+
+    val JoaraRef: MutableMap<String?, Any> = HashMap()
+
+    val yesterdayRef =
+        FirebaseDatabase.getInstance().reference.child("best").child("Joara nobless").child(cate)
+            .child("today").child(
+                DBDate.Yesterday()
+            )
+
+    val itemsYesterday = ArrayList<BookListDataBestToday?>()
+
+    val apiJoara = RetrofitJoara2()
+    val param = Param.getItemAPI(context)
+
+    param["page"] = page.toString()
+    param["best"] = "today"
+    param["store"] = "premium"
+    param["category"] = Genre.setJoaraGenre(cate)
+
+
+    yesterdayRef.addListenerForSingleValueEvent(object :
+        ValueEventListener {
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            for (postSnapshot in dataSnapshot.children) {
+                val group: BookListDataBestToday? =
+                    postSnapshot.getValue(BookListDataBestToday::class.java)
+                itemsYesterday.add(
+                    BookListDataBestToday(
+                        group!!.writer,
+                        group.title,
+                        group.bookImg,
+                        group.bookCode,
+                        group.info1,
+                        group.info2,
+                        group.info3,
+                        group.info4,
+                        group.info5,
+                        group.number,
+                        group.numberDiff,
+                        group.date,
+                        group.status
+                    )
+                )
             }
 
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
+            apiJoara.getJoaraBookBest(
+                param,
+                object : RetrofitDataListener<JoaraBestListResult> {
+                    override fun onSuccess(data: JoaraBestListResult) {
 
-    }
+                        val books = data.bookLists
 
-    fun getJoaraBestNobless(cate: String) {
-        val JoaraRef: MutableMap<String?, Any> = HashMap()
+                        for (i in books!!.indices) {
 
-        val call: Call<JoaraBestListResult?>? =
-            RetrofitJoara.getJoaraBookBest("today", "nobless", Genre.setJoaraGenre(cate))
+                            JoaraRef["writerName"] = books[i].writerName
+                            JoaraRef["subject"] = books[i].subject
+                            JoaraRef["bookImg"] = books[i].bookImg
+                            JoaraRef["bookCode"] = books[i].bookCode
+                            JoaraRef["info1"] = "줄거리 : " + books[i].intro
+                            JoaraRef["info2"] = "총 " + books[i].cntChapter + " 화"
+                            JoaraRef["info3"] = "조회 수 : " + books[i].cntPageRead
+                            JoaraRef["info4"] = "선호작 수 : " + books[i].cntFavorite
+                            JoaraRef["info5"] = "추천 수 : " + books[i].cntRecom
+                            JoaraRef["number"] = i
+                            JoaraRef["numberDiff"] =
+                                calculateNum(i, books[i].subject, itemsYesterday).num
+                            JoaraRef["date"] = DBDate.DateMMDD()
+                            JoaraRef["status"] =
+                                calculateNum(i, books[i].subject, itemsYesterday).status
 
-
-        val yesterdayRef =
-            FirebaseDatabase.getInstance().reference.child("best").child("Joara Nobless")
-                .child(cate).child("today").child(
-                    DBDate.Yesterday()
-                )
-
-        val itemsYesterday = ArrayList<BookListDataBestToday?>()
-
-        yesterdayRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (postSnapshot in dataSnapshot.children) {
-                    val group: BookListDataBestToday? =
-                        postSnapshot.getValue(BookListDataBestToday::class.java)
-                    itemsYesterday.add(
-                        BookListDataBestToday(
-                            group!!.writer,
-                            group.title,
-                            group.bookImg,
-                            group.bookCode,
-                            group.info1,
-                            group.info2,
-                            group.info3,
-                            group.info4,
-                            group.info5,
-                            group.number,
-                            group.numberDiff,
-                            group.date,
-                            group.status
-                        )
-                    )
-                }
-
-                call!!.enqueue(object : Callback<JoaraBestListResult?> {
-                    override fun onResponse(
-                        call: Call<JoaraBestListResult?>,
-                        response: Response<JoaraBestListResult?>
-                    ) {
-                        if (response.isSuccessful) {
-                            response.body()?.let { it ->
-                                val books = it.bookLists
-
-                                for (i in books!!.indices) {
-
-                                    JoaraRef["writerName"] = books[i].writerName
-                                    JoaraRef["subject"] = books[i].subject
-                                    JoaraRef["bookImg"] = books[i].bookImg
-                                    JoaraRef["bookCode"] = books[i].bookCode
-                                    JoaraRef["info1"] = "줄거리 : " + books[i].intro
-                                    JoaraRef["info2"] = "총 " + books[i].cntChapter + " 화"
-                                    JoaraRef["info3"] = "조회 수 : " + books[i].cntPageRead
-                                    JoaraRef["info4"] = "선호작 수 : " + books[i].cntFavorite
-                                    JoaraRef["info5"] = "추천 수 : " + books[i].cntRecom
-                                    JoaraRef["number"] = i
-                                    JoaraRef["numberDiff"] =
-                                        calculateNum(i, books[i].subject, itemsYesterday).num
-                                    JoaraRef["date"] = DBDate.DateMMDD()
-                                    JoaraRef["status"] =
-                                        calculateNum(i, books[i].subject, itemsYesterday).status
-
-                                    miningValue(JoaraRef, i, "Joara Nobless", cate)
-
-                                }
-                            }
+                            miningValue(JoaraRef, (i + ((page - 1) * books.size)), "Joara nobless", cate)
                         }
                     }
-
-                    override fun onFailure(call: Call<JoaraBestListResult?>, t: Throwable) {
-                        Log.d("onFailure", "실패")
-                    }
                 })
-            }
+        }
 
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
-    }
+        override fun onCancelled(databaseError: DatabaseError) {}
+    })
 
-    fun miningValue(ref: MutableMap<String?, Any>, num: Int, type: String, cate: String) {
+}
+
+fun miningValue(ref: MutableMap<String?, Any>, num: Int, type: String, cate: String) {
 
 //        BestRef.delBestRefWeekCompared(type, cate).removeValue()
 
-        //Today
-        BestRef.setBestRefToday(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
+    //Today
+    BestRef.setBestRefToday(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
 
-        //Week
-        if (num < 10) {
-            BestRef.setBestRefWeek(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
-        }
-
-        BestRef.setBestRefWeekCompared(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
-
-
-        //Month - Week
-        if (num == 0) {
-            //Month - Day
-            BestRef.setBestRefMonthWeek(type, cate).setValue(BestRef.setBookListDataBestToday(ref))
-            //Month
-            BestRef.setBestRefMonth(type, cate).setValue(BestRef.setBookListDataBestToday(ref))
-        }
-
-        BestRef.setBestRefMonthDay(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
-
+    //Week
+    if (num < 10) {
+        BestRef.setBestRefWeek(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
     }
 
-    fun calculateNum(
-        num: Int?,
-        title: String?,
-        itemsYesterday: ArrayList<BookListDataBestToday?>
-    ): CalculNum {
+    BestRef.setBestRefWeekCompared(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
 
-        for (i in itemsYesterday) {
-            if (i != null) {
-                if (i.title == title) {
-                    when {
-                        i.number < num!! -> {
-                            return CalculNum(num - i.number, "DOWN")
-                        }
-                        i.number > num -> {
-                            return CalculNum(num - i.number, "UP")
-                        }
-                        i.number == num -> {
-                            CalculNum(0, "-")
-                        }
-                        else -> {
-                            CalculNum(0, "NEW")
-                        }
+
+    //Month - Week
+    if (num == 0) {
+        //Month - Day
+        BestRef.setBestRefMonthWeek(type, cate).setValue(BestRef.setBookListDataBestToday(ref))
+        //Month
+        BestRef.setBestRefMonth(type, cate).setValue(BestRef.setBookListDataBestToday(ref))
+    }
+
+    BestRef.setBestRefMonthDay(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
+
+}
+
+fun calculateNum(
+    num: Int?,
+    title: String?,
+    itemsYesterday: ArrayList<BookListDataBestToday?>
+): CalculNum {
+
+    for (i in itemsYesterday) {
+        if (i != null) {
+            if (i.title == title) {
+                when {
+                    i.number < num!! -> {
+                        return CalculNum(num - i.number, "DOWN")
+                    }
+                    i.number > num -> {
+                        return CalculNum(num - i.number, "UP")
+                    }
+                    i.number == num -> {
+                        CalculNum(0, "-")
+                    }
+                    else -> {
+                        CalculNum(0, "NEW")
                     }
                 }
             }
         }
-        return CalculNum(0, "-")
     }
-
+    return CalculNum(0, "-")
 }
+

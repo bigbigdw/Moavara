@@ -51,7 +51,8 @@ class FragmentBestTabToday(private val tabType: String) :
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rviewBest.adapter = adapterToday
 
-        BestRef.getBestRefToday(tabType, cate).addValueEventListener(object : ValueEventListener {
+        BestRef.getBestRefToday(tabType, cate).addListenerForSingleValueEvent(object :
+            ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (postSnapshot in dataSnapshot.children) {
                     val group: BookListDataBestToday? =

@@ -6,8 +6,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import com.example.moavara.R
 import com.example.moavara.Util.Genre
+import com.example.moavara.Util.Mining
 import com.google.firebase.database.FirebaseDatabase
 
 
