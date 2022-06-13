@@ -22,6 +22,7 @@ import com.example.moavara.Firebase.FirebaseWorkManager
 import com.example.moavara.Pick.ActivityPick
 import com.example.moavara.R
 import com.example.moavara.Search.WeekendDate
+import com.example.moavara.User.ActivityUser
 import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Genre
 import com.example.moavara.databinding.ActivityMainBinding
@@ -143,6 +144,10 @@ class ActivityMain : AppCompatActivity() {
             }
             R.id.ActivityPick -> {
                 val intent = Intent(this, ActivityPick::class.java)
+                startActivity(intent)
+            }
+            R.id.ActivityUser -> {
+                val intent = Intent(this, ActivityUser::class.java)
                 startActivity(intent)
             }
             android.R.id.home -> {

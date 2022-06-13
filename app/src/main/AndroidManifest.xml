@@ -92,6 +92,12 @@
             android:exported="true">
         </activity>
 
+        <activity
+            android:name="com.example.moavara.User.ActivityUser"
+            android:label=""
+            android:exported="true">
+        </activity>
+
     </application>
 
 </manifest>

@@ -30,11 +30,12 @@ class ActivityLogin : AppCompatActivity() {
     private var GOOGLE_LOGIN_CODE = 9001
     private var callbackManager: CallbackManager? = null
     private lateinit var binding: ActivityLoginBinding
-
+    var mode = "GO"
     var context = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("####-2", intent.getStringExtra("MODE") ?: "GO")
         auth = FirebaseAuth.getInstance()
         callbackManager = CallbackManager.Factory.create()
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -148,11 +149,16 @@ class ActivityLogin : AppCompatActivity() {
                 }
             }
     }
+
     // 로그아웃하지 않을 시 자동 로그인 , 회원가입시 바로 로그인 됨
-//    public override fun onStart() {
-//        super.onStart()
-//        moveMainPage(auth?.currentUser)
-//    }
+    public override fun onStart() {
+        super.onStart()
+        Log.d("####-1", intent.getStringExtra("MODE") ?: "GO")
+        Log.d("####", auth?.currentUser.toString())
+        if(intent.getStringExtra("MODE") ?: "GO" == "GO"){
+            moveMainPage(auth?.currentUser)
+        }
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

@@ -8,6 +8,7 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
+import android.util.Log
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.example.moavara.Main.ActivitySplash
@@ -23,12 +24,8 @@ class FCM : FirebaseMessagingService() {
         if (remoteMessage.data.isNotEmpty()) {
             showNotification(remoteMessage.data["title"], remoteMessage.data["message"])
         }
-        if (remoteMessage.notification != null) {
-            showNotification(
-                remoteMessage.notification!!.title, remoteMessage.notification!!
-                    .body
-            )
-        }
+        Log.d("!!!!", remoteMessage.data["title"] as String)
+        Log.d("!!!!", remoteMessage.data["message"] as String)
     }
 
     @SuppressLint("RemoteViewLayout")
@@ -45,7 +42,7 @@ class FCM : FirebaseMessagingService() {
         val intent = Intent(this, ActivitySplash::class.java)
         val channel_id = "channel"
 
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
         val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
