@@ -44,7 +44,7 @@
 
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
-            android:text="마이픽"
+            android:text="고객센터"
             android:textColor="#EDE6FD"
             android:textSize="20sp"
             android:textStyle="bold" />

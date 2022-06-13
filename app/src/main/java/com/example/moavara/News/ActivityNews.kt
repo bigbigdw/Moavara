@@ -12,7 +12,9 @@ import com.example.moavara.Best.BottomDialogMain
 import com.example.moavara.Main.ActivityGenre
 import com.example.moavara.Pick.ActivityPick
 import com.example.moavara.R
+import com.example.moavara.Search.ActivitySearch
 import com.example.moavara.Search.NewsBX
+import com.example.moavara.User.ActivityUser
 import com.example.moavara.databinding.ActivityNewsBinding
 import com.example.moavara.databinding.ItemNewsBinding
 import com.google.android.material.snackbar.Snackbar
@@ -76,13 +78,14 @@ class ActivityNews : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // 클릭된 메뉴 아이템의 아이디 마다 when 구절로 클릭시 동작을 설정한다.
+        // 클릭된 메뉴 아이템의 아이디 마다 when 구절로 클릭시 동작을 설정한다.
         when (item.itemId) {
-            R.id.menu_option -> {
-                val bottomDialogMain = BottomDialogMain()
-                supportFragmentManager.let { bottomDialogMain.show(it, null) }
+            R.id.ActivitySearch -> {
+                val intent = Intent(this, ActivitySearch::class.java)
+                startActivity(intent)
             }
-            R.id.ActivityPick -> {
-                val intent = Intent(this, ActivityPick::class.java)
+            R.id.ActivityUser -> {
+                val intent = Intent(this, ActivityUser::class.java)
                 startActivity(intent)
             }
             android.R.id.home -> {

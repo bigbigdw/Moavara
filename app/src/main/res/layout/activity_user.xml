@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -30,72 +31,198 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#CDDC39"
+        android:background="#3E424B"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="344dp"
+            android:background="@drawable/selector_user_upper"
+            android:gravity="bottom|center_horizontal"
             android:orientation="vertical">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:id="@+id/llayoutLogout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right|center_vertical"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="6dp"
+                        android:text="로그아웃"
+                        android:textColor="#565C69"
+                        android:textSize="14dp" />
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginRight="16dp"
+                        android:contentDescription="@string/TODO"
+                        android:src="@drawable/ic_logout_24px" />
+
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:layout_width="106dp"
+                android:layout_height="106dp"
+                android:background="@drawable/selector_user_img_wrap"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:contentDescription="@string/TODO"
+                    android:src="@mipmap/ic_launcher" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/etviewNickname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#EDE6FD"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:text="요롤로요시요롤로요시"
+                    android:textColor="#EDE6FD"
+                    android:textColorHint="#EDE6FD"
+                    android:textSize="20dp"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
                 <TextView
                     android:id="@+id/tviewNickName"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="닉네임 님" />
+                    android:textColor="#EDE6FD"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:visibility="visible"
+                    tools:text="요롤로요시요롤로요시"
+                    tools:visibility="gone" />
 
-                <TextView
-                    android:id="@+id/tviewLogout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="로그아웃" />
+                <ImageView
+                    android:id="@+id/iviewBtnEdit"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginLeft="2dp"
+                    android:contentDescription="@string/TODO"
+                    android:src="@drawable/ic_edit_wt_24px" />
+
             </LinearLayout>
 
             <TextView
                 android:id="@+id/tviewGenre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="선호장르" />
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="34dp"
+                android:textColor="#EDE6FD"
+                android:textSize="14dp"
+                tools:text="선택장르 : 로맨스" />
+
         </LinearLayout>
 
-        <View
-            android:id="@+id/view"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#F44336" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tviewBtnAlert"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="#FF9800"
-            android:text="공지사항" />
+            <LinearLayout
+                android:id="@+id/llayoutNotice"
+                android:layout_width="260dp"
+                android:layout_height="56dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/selector_user_btn"
+                android:gravity="center"
+                android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tviewBtnGenre"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="#9C27B0"
-            android:text="초기 장르 설정 변경" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="고객 센터"
+                    android:textColor="#6E7686"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/tviewBtnGuide"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="#3F51B5"
-            android:text="가이드 다시 보기" />
+            <LinearLayout
+                android:id="@+id/tviewBtnGenre"
+                android:layout_width="260dp"
+                android:layout_height="56dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/selector_user_btn"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="초기 장르설정 변경"
+                    android:textColor="#6E7686"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llayoutGuide"
+                android:layout_width="260dp"
+                android:layout_height="56dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/selector_user_btn"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="가이드 다시보기"
+                    android:textColor="#6E7686"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llayoutCall"
+                android:layout_width="260dp"
+                android:layout_height="56dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/selector_user_btn"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="빠른 연결"
+                    android:textColor="#6E7686"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
+
     </LinearLayout>
-
 </LinearLayout>

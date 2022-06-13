@@ -7,23 +7,23 @@
         android:title="@string/Title_Best" />
 
     <item
-        android:id="@+id/navigation_search"
-        android:icon="@drawable/ic_barcode_search_vt_24px"
-        android:title="북코드" />
-
-    <item
         android:id="@+id/Fragment_Event"
         android:icon="@drawable/ic_event_vt_24px"
         android:title="이벤트" />
 
     <item
-        android:id="@+id/Fragment_Community"
-        android:icon="@drawable/ic_notice_board_vt_24px"
-        android:title="커뮤니티" />
+        android:id="@+id/ActivityMyPick"
+        android:icon="@drawable/ic_push_pin_vt_24px"
+        android:title="마이픽" />
 
     <item
         android:id="@+id/ActivityNews"
-        android:icon="@mipmap/ic_launcher"
-        android:title="늬우스" />
+        android:icon="@drawable/ic_news_vt_24px"
+        android:title="뉴스" />
+
+    <item
+        android:id="@+id/Fragment_Community"
+        android:icon="@drawable/ic_community_vt_24px"
+        android:title="커뮤니티" />
 
 </menu>

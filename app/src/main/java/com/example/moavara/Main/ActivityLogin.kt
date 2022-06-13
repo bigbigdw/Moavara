@@ -35,7 +35,6 @@ class ActivityLogin : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("####-2", intent.getStringExtra("MODE") ?: "GO")
         auth = FirebaseAuth.getInstance()
         callbackManager = CallbackManager.Factory.create()
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -52,7 +51,7 @@ class ActivityLogin : AppCompatActivity() {
             }
         }
 
-        var gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
@@ -62,12 +61,12 @@ class ActivityLogin : AppCompatActivity() {
 
     // 구글 로그인 함수
     fun googleLogin() {
-        var signInIntent = googleSignInClient?.signInIntent
+        val signInIntent = googleSignInClient?.signInIntent
         startActivityForResult(signInIntent, GOOGLE_LOGIN_CODE)
     }
 
     fun firebaseAuthWithGoogle(account: GoogleSignInAccount?) {
-        var credential = GoogleAuthProvider.getCredential(account?.idToken, null)
+        val credential = GoogleAuthProvider.getCredential(account?.idToken, null)
 
         auth?.signInWithCredential(credential)
             ?.addOnCompleteListener { task ->
@@ -153,9 +152,7 @@ class ActivityLogin : AppCompatActivity() {
     // 로그아웃하지 않을 시 자동 로그인 , 회원가입시 바로 로그인 됨
     public override fun onStart() {
         super.onStart()
-        Log.d("####-1", intent.getStringExtra("MODE") ?: "GO")
-        Log.d("####", auth?.currentUser.toString())
-        if(intent.getStringExtra("MODE") ?: "GO" == "GO"){
+        if((intent.getStringExtra("MODE") ?: "GO") == "GO"){
             moveMainPage(auth?.currentUser)
         }
     }
@@ -165,21 +162,15 @@ class ActivityLogin : AppCompatActivity() {
 
         callbackManager!!.onActivityResult(requestCode, resultCode, data)
 
-        Log.d("####-1", "11111")
-
         if (requestCode == GOOGLE_LOGIN_CODE) {
-            var result = data?.let { Auth.GoogleSignInApi.getSignInResultFromIntent(it) }!!
+            val result = data?.let { Auth.GoogleSignInApi.getSignInResultFromIntent(it) }!!
             // 구글API가 넘겨주는 값 받아옴
 
-            Log.d("####-2", result.status.toString())
-
             if (result.isSuccess) {
-                var accout = result.signInAccount
+                val accout = result.signInAccount
                 firebaseAuthWithGoogle(accout)
                 Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show()
-                Log.d("####-31", result.status.toString())
             } else {
-                Log.d("####-32", result.status.toString())
                 Toast.makeText(this, "로그인 실패!!!", Toast.LENGTH_SHORT).show()
             }
         }

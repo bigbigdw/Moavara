@@ -12,32 +12,33 @@
         android:layout_height="wrap_content"
         android:background="#0D0E10"
         android:gravity="bottom"
-        android:orientation="vertical"
->
+        android:paddingLeft="16dp"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
+
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
             android:text="커뮤니티"
             android:textColor="#EDE6FD"
-            android:textSize="28sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:background="#0D0E10"
             app:itemBackground="@android:color/transparent"
             app:itemIconTint="#00d180"
             app:itemTextColor="#0df0df"
-            app:tabGravity="fill"
+            app:tabGravity="start"
             app:tabIndicatorColor="#844DF3"
-            app:tabMode="fixed"
+            app:tabMode="scrollable"
             app:tabSelectedTextColor="#844DF3"
             app:tabTextColor="#565C69">
 

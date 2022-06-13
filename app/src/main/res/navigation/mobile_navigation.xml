@@ -17,11 +17,11 @@
         android:label=""
         tools:layout="@layout/fragment_event" />
 
-    <fragment
-        android:id="@+id/navigation_search"
-        android:name="com.example.moavara.Search.FragmentSearch"
+    <activity
+        android:id="@+id/ActivityMyPick"
+        android:name="com.example.moavara.Pick.ActivityPick"
         android:label=""
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/activity_pick" />
 
     <fragment
         android:id="@+id/Fragment_Community"
@@ -33,6 +33,6 @@
         android:id="@+id/ActivityNews"
         android:name="com.example.moavara.News.ActivityNews"
         android:label=""
-        tools:layout="@layout/fragment_best_tab_today" />
+        tools:layout="@layout/activity_news" />
 
 </navigation>

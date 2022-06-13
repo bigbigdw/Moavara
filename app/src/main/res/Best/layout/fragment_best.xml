@@ -22,7 +22,7 @@
 
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
-            android:text="베스트트"
+            android:text="베스트"
             android:textColor="#EDE6FD"
             android:textSize="20sp"
             android:textStyle="bold" />

@@ -32,13 +32,20 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.synnapps.carouselview.CarouselView
-                    android:id="@+id/Carousel_MainBanner"
+                    android:id="@+id/cview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="50dp"
                     android:background="#000000"
                     android:visibility="visible"
                     app:disableAutoPlayOnUserInteraction="false"
+                    app:fillColor="#FFFFFFFF"
+                    app:indicatorMarginVertical="158dp"
+                    app:pageColor="#00000000"
+                    app:radius="4dp"
+                    app:slideInterval="3000"
+                    app:strokeColor="#FF777777"
+                    app:strokeWidth="1dp"
                     tools:visibility="visible" />
 
             </LinearLayout>
@@ -54,12 +61,12 @@
                     android:id="@+id/button_next"
                     style="@style/Widget.AppCompat.Button"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="62dp"
                     android:layout_weight="1"
-                    android:background="@drawable/shape_btn_write_bottom"
-                    android:text="끝내기"
-                    android:textColor="#FFFFFF"
-                    android:textStyle="bold" />
+                    android:background="#844DF3"
+                    android:text="모아바라 시작하기"
+                    android:textColor="#EDE6FD"
+                    android:textSize="20dp" />
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
