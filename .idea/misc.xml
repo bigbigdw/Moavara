@@ -150,6 +150,7 @@
         <entry key="app/src/main/res/layout/activity_news.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_news_write.xml" value="0.2111111111111111" />
         <entry key="app/src/main/res/layout/activity_signup.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_user.xml" value="0.1" />
         <entry key="app/src/main/res/layout/bottom_dialog_main.xml" value="0.33211678832116787" />
         <entry key="app/src/main/res/layout/dialog_login_alert.xml" value="0.4737991266375546" />
         <entry key="app/src/main/res/layout/dialog_login_confirm.xml" value="0.11764705882352941" />
@@ -176,7 +177,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android API 10 Platform" project-jdk-type="Android SDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

@@ -1,7 +1,9 @@
 package com.example.moavara.Best
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
 import com.example.moavara.Search.BestChart
 import com.example.moavara.Search.BookListDataBestToday
@@ -28,7 +31,7 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import java.util.*
 
 
-class FragmentBestDetailAnalyze(private val platfrom: String, private val bookCode: String) :
+class FragmentBestDetailAnalyze(private val platfrom: String, private val pos: Int) :
     Fragment() {
 
     private var adapterChart: AdapterChart? = null
@@ -125,6 +128,7 @@ class FragmentBestDetailAnalyze(private val platfrom: String, private val bookCo
                     entryList4.add(Entry(num.toFloat(), group.number.toFloat()))
 
 
+
                     with(binding.includeRank) {
                         when {
                             sun == group.date -> {
@@ -207,6 +211,13 @@ class FragmentBestDetailAnalyze(private val platfrom: String, private val bookCo
                     num += 1
                 }
             }
+
+            mRootRef.child("best").child(platfrom).child(context?.getSharedPreferences("pref",
+                Context.MODE_PRIVATE
+            )?.getString("GENRE", "") ?: "").child("week-list").child(DBDate.Week() + ((DBDate.DayInt() * 1000) + pos).toString()).child("trophyCount").setValue(entryList3.size)
+
+
+            Log.d("####", (DBDate.Week() + ((DBDate.DayInt() * 1000) + pos).toString()).toString())
 
             items.add(BestChart(dateList, entryList, "조회 수", "#ff7b22"))
             items.add(BestChart(dateList, entryList2, "선호작 수", "#4971EF"))

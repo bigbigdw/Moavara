@@ -34,6 +34,7 @@ data class BookListDataBestToday(
     var numberDiff: Int = 0,
     var date: String = "",
     var status: String = "",
+    var trophyCount: Int = 0,
     var memo: String = ""
 )
 
@@ -141,6 +142,7 @@ data class UserPickBook(
     var date: String = "",
     var type: String = "",
     var status: String = "",
+    var trophyCount: Int = 0,
     var memo: String = "",
 )
 

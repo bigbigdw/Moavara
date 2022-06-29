@@ -69,7 +69,7 @@ class ActivityBestDetail : AppCompatActivity() {
                         }
                     }
                     2->{
-                        mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(type, bookCode)
+                        mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(type, intent.getIntExtra("POSITION", 0))
                         supportFragmentManager.commit {
                             replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
                         }

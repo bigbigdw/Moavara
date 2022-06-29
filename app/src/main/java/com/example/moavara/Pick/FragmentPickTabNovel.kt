@@ -80,6 +80,7 @@ class FragmentPickTabNovel : Fragment() {
                             group.numberDiff,
                             group.date,
                             group.status,
+                            group.trophyCount,
                             group.memo
                         )
                     )
@@ -107,6 +108,7 @@ class FragmentPickTabNovel : Fragment() {
                     item.numberDiff,
                     item.date,
                     item.status,
+                    item.trophyCount,
                     adapter.getMemoEdit()
                 )
 

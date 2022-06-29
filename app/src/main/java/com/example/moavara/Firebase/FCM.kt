@@ -24,8 +24,6 @@ class FCM : FirebaseMessagingService() {
         if (remoteMessage.data.isNotEmpty()) {
             showNotification(remoteMessage.data["title"], remoteMessage.data["message"])
         }
-        Log.d("!!!!", remoteMessage.data["title"] as String)
-        Log.d("!!!!", remoteMessage.data["message"] as String)
     }
 
     @SuppressLint("RemoteViewLayout")
@@ -42,7 +40,7 @@ class FCM : FirebaseMessagingService() {
         val intent = Intent(this, ActivitySplash::class.java)
         val channel_id = "channel"
 
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
         val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)

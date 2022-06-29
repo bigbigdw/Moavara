@@ -71,7 +71,8 @@ class FragmentBestTabToday(private val tabType: String) :
                             group.number,
                             group.numberDiff,
                             group.date,
-                            group.status
+                            group.status,
+                            group.trophyCount,
                         )
                     )
                     adapterToday!!.notifyDataSetChanged()
@@ -86,6 +87,7 @@ class FragmentBestTabToday(private val tabType: String) :
                 val item: BookListDataBestToday? = adapterToday!!.getItem(position)
 
                 val mBottomDialogBest = BottomDialogBest(requireContext(), item!!, tabType, cate, position)
+
                 fragmentManager?.let { mBottomDialogBest.show(it, null) }
             }
         })

@@ -730,7 +730,8 @@ object Mining {
                             group.number,
                             group.numberDiff,
                             group.date,
-                            group.status
+                            group.status,
+                            group.trophyCount
                         )
                     )
                 }

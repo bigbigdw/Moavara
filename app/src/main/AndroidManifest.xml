@@ -101,6 +101,7 @@
         <activity
             android:name="com.example.moavara.User.ActivityGuide"
             android:label=""
+            android:noHistory="true"
             android:exported="true">
         </activity>
 

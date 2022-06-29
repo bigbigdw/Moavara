@@ -1,6 +1,7 @@
 package com.example.moavara.Best
 
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -50,6 +51,10 @@ class BottomDialogBest(
     ): View {
         _binding = BottomDialogBestBinding.inflate(inflater, container, false)
         val view = binding.root
+        var trophyNum = 0
+
+
+        mRootRef.child("best").child(tabType).child(context?.getSharedPreferences("pref", MODE_PRIVATE)?.getString("GENRE", "") ?: "").child("week-list").child(DBDate.Week() + ((DBDate.DayInt() * 1000) + pos).toString()).child("trophyCount")
 
         UID = context?.getSharedPreferences("pref", AppCompatActivity.MODE_PRIVATE)
             ?.getString("UID", "").toString()
@@ -155,7 +160,8 @@ class BottomDialogBest(
                     item.numberDiff,
                     item.date,
                     tabType,
-                    ""
+                    item.trophyCount,
+                    "",
                 )
 
                 userInfo.child(UID).child("book").addListenerForSingleValueEvent(object :
@@ -174,6 +180,7 @@ class BottomDialogBest(
                 val bookDetailIntent = Intent(mContext, ActivityBestDetail::class.java)
                 bookDetailIntent.putExtra("BookCode", String.format("%s", item.bookCode))
                 bookDetailIntent.putExtra("Type", String.format("%s", tabType))
+                bookDetailIntent.putExtra("POSITION", pos)
                 startActivity(bookDetailIntent)
                 dismiss()
             }
