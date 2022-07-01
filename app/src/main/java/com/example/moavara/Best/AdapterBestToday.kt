@@ -4,14 +4,9 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.moavara.R
-import com.example.moavara.Search.BookListDataBestToday
-import com.example.moavara.databinding.ItemBestDetailCommentBinding
+import com.example.moavara.DataBase.BookListDataBestToday
 import com.example.moavara.databinding.ItemBooklistBestTodayBinding
 
 class AdapterBestToday(items: List<BookListDataBestToday?>?) :
@@ -59,11 +54,11 @@ class AdapterBestToday(items: List<BookListDataBestToday?>?) :
                         tviewNum.setTextColor(Color.parseColor("#FF2C00"));
                     }
                     item.status == "-" -> {
-                        tviewNum.text =  "-- (${item.trophyCount})"
+                        tviewNum.text =  "(${item.trophyCount})"
                         tviewNum.setTextColor(Color.parseColor("#eeeeee"));
                     }
                     else -> {
-                        tviewNum.text = "NEW (${item.trophyCount})"
+                        tviewNum.text = "NEW"
                     }
                 }
             }

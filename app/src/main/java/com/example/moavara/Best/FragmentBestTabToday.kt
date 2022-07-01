@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.moavara.DataBase.BookListDataBestToday
 import com.example.moavara.R
-import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.Genre
 import com.example.moavara.databinding.FragmentBestTabTodayBinding
@@ -71,6 +71,7 @@ class FragmentBestTabToday(private val tabType: String) :
                             group.number,
                             group.numberDiff,
                             group.date,
+                            group.type,
                             group.status,
                             group.trophyCount,
                         )

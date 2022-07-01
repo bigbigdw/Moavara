@@ -1,7 +1,6 @@
 package com.example.moavara.Util
 
-import com.example.moavara.DataBase.DataBestDay
-import com.example.moavara.Search.BookListDataBestToday
+import com.example.moavara.DataBase.BookListDataBestToday
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
@@ -102,25 +101,9 @@ object BestRef {
             ref["number"] as Int,
             ref["numberDiff"] as Int,
             ref["date"] as String,
+            ref["type"] as String,
             ref["status"] as String,
-        )
-    }
-
-    fun setDataBestDay(ref: MutableMap<String?, Any>): DataBestDay {
-        return DataBestDay(
-            ref["writerName"] as String,
-            ref["subject"] as String,
-            ref["bookImg"] as String,
-            ref["bookCode"] as String,
-            ref["info1"] as String,
-            ref["info2"] as String,
-            ref["info3"] as String,
-            ref["info4"] as String,
-            ref["info5"] as String,
-            ref["number"] as Int,
-            ref["numberDiff"] as Int,
-            ref["date"] as String,
-            ref["status"] as String,
+            ref["trophyCount"] as Int,
         )
     }
 }

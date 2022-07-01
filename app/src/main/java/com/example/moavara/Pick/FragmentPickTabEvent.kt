@@ -8,13 +8,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.room.Room
-import com.example.moavara.DataBase.DataPickEvent
 import com.example.moavara.Event.BottomSheetDialogEvent
 import com.example.moavara.Main.mRootRef
-import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Search.EventData
-import com.example.moavara.Search.UserPickBook
 import com.example.moavara.Util.Genre
 import com.example.moavara.databinding.FragmentPickTabBinding
 import com.google.firebase.database.DataSnapshot

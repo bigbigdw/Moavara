@@ -1,5 +1,6 @@
 package com.example.moavara.Search
 
+import com.example.moavara.DataBase.BookListDataBestToday
 import com.github.mikephil.charting.data.BarEntry
 
 
@@ -18,24 +19,6 @@ class BookListData(
     var cntFavorite: String?,
     var bookCode: String?,
     var categoryKoName: String?
-)
-
-data class BookListDataBestToday(
-    var writer: String = "",
-    var title: String = "",
-    var bookImg: String = "",
-    var bookCode: String = "",
-    var info1: String = "",
-    var info2: String = "",
-    var info3: String = "",
-    var info4: String = "",
-    var info5: String = "",
-    var number: Int = 0,
-    var numberDiff: Int = 0,
-    var date: String = "",
-    var status: String = "",
-    var trophyCount: Int = 0,
-    var memo: String = ""
 )
 
 class BestType(
@@ -94,23 +77,6 @@ data class BestChart(
     var entryList: MutableList<BarEntry>? = null,
     var title: String = "",
     var color: String = ""
-)
-
-data class BookListDataBestToday2(
-    var writer: String = "",
-    var title: String = "",
-    var bookImg: String = "",
-    var bookCode: String = "",
-    var info1: String = "",
-    var info2: String = "",
-    var info3: String = "",
-    var info4: String = "",
-    var info5: String = "",
-    var number: Int = 0,
-    var numberDiff: Int = 0,
-    var date: String = "",
-    var status: String = "",
-    var memo: String = ""
 )
 
 data class UserInfo(

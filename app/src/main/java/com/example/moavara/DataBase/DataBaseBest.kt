@@ -1,12 +1,9 @@
 package com.example.moavara.DataBase
 
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.moavara.Search.EventData
 
-@Database(entities = [DataBestDay::class], version = 4)
+@Database(entities = [BookListDataBestToday::class], version = 4)
 abstract class DataBaseBestDay: RoomDatabase() {
     abstract fun bestDao(): BestDao
 }

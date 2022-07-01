@@ -8,8 +8,11 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.room.Room
+import com.example.moavara.DataBase.DataBaseBestDay
 import com.example.moavara.R
 import com.example.moavara.Search.UserInfo
+import com.example.moavara.Util.DBDate
 import com.example.moavara.databinding.ActivityLoginBinding
 import com.facebook.CallbackManager
 import com.google.android.gms.auth.api.Auth
@@ -57,6 +60,21 @@ class ActivityLogin : AppCompatActivity() {
             .build()
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
+        savePreferences("TODAY", DBDate.DateMMDD())
+
+
+
+        val bestDao: DataBaseBestDay = Room.databaseBuilder(this, DataBaseBestDay::class.java, "week-list")
+            .allowMainThreadQueries().build()
+
+        if(getSharedPreferences("pref", MODE_PRIVATE).getString("TODAY", "") != DBDate.DateMMDD()){
+            bestDao.bestDao().initAll()
+            Log.d("####", "NOT SAME DAY")
+        } else {
+            Log.d("####", "SAME DAY")
+        }
+
+        Log.d("####", "HIHI ${bestDao.bestDao().countTrophy("히든 게임 시즌 3 데칼코마니")}")
     }
 
     // 구글 로그인 함수

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -13,11 +14,13 @@ import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
+import androidx.room.Room
 import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.moavara.Best.BottomDialogMain
+import com.example.moavara.DataBase.DataBaseBestDay
 import com.example.moavara.Firebase.FirebaseWorkManager
 import com.example.moavara.Pick.ActivityPick
 import com.example.moavara.R
@@ -26,6 +29,7 @@ import com.example.moavara.Search.WeekendDate
 import com.example.moavara.User.ActivityUser
 import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Genre
+import com.example.moavara.Util.Mining
 import com.example.moavara.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.FirebaseDatabase

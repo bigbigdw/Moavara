@@ -8,13 +8,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.room.Room
 import com.example.moavara.Best.BottomDialogBest
-import com.example.moavara.DataBase.DataBaseBestDay
+import com.example.moavara.DataBase.BookListDataBestToday
 import com.example.moavara.Main.mRootRef
-import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Search.UserPickBook
-import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.Genre
 import com.example.moavara.databinding.FragmentPickTabBinding
 import com.google.firebase.database.DataSnapshot
@@ -79,6 +76,7 @@ class FragmentPickTabNovel : Fragment() {
                             group.number,
                             group.numberDiff,
                             group.date,
+                            group.type,
                             group.status,
                             group.trophyCount,
                             group.memo
@@ -107,6 +105,7 @@ class FragmentPickTabNovel : Fragment() {
                     item.number,
                     item.numberDiff,
                     item.date,
+                    item.type,
                     item.status,
                     item.trophyCount,
                     adapter.getMemoEdit()

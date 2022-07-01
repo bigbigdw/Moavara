@@ -16,7 +16,7 @@ data class DataEvent (
 }
 
 @Entity
-data class DataBestDay (
+data class BookListDataBestToday (
     var writer: String = "",
     var title: String = "",
     var bookImg: String = "",
@@ -31,6 +31,7 @@ data class DataBestDay (
     var date: String = "",
     var type: String = "",
     var status: String = "",
+    var trophyCount: Int = 0,
     var memo: String = "",
 ){
     @PrimaryKey(autoGenerate = true) var id: Int = 0

@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.moavara.Search.BookListDataBestToday
+import com.example.moavara.DataBase.BookListDataBestToday
 import com.example.moavara.databinding.ItemPickEventBinding
 
 class AdapterPickNovel (items: List<BookListDataBestToday>) :

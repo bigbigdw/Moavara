@@ -9,15 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.moavara.R
-import com.example.moavara.Retrofit.JoaraBestDetailCommentsResult
+import com.example.moavara.DataBase.BookListDataBestToday
 import com.example.moavara.Retrofit.JoaraBestListResult
 import com.example.moavara.Retrofit.RetrofitJoara
-import com.example.moavara.Search.BestComment
-import com.example.moavara.Search.BookListDataBestToday
 import com.example.moavara.Util.Param
 import com.example.moavara.databinding.FragmentBestDetailTabsBinding
-import com.example.moavara.databinding.ItemBestDetailCommentBinding
 import com.example.moavara.databinding.ItemBestDetailOtherBinding
 import retrofit2.Call
 import retrofit2.Callback

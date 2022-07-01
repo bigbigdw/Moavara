@@ -1,20 +1,14 @@
 package com.example.moavara.Best
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.moavara.R
-import com.example.moavara.Search.BookListDataBestToday
+import com.example.moavara.DataBase.BookListDataBestToday
 import com.example.moavara.Search.BookListDataBestWeekend
 import com.example.moavara.databinding.ItemBooklistBestMonthBinding
-import com.example.moavara.databinding.ItemBooklistBestWeekendBinding
 import java.util.ArrayList
 
 class AdapterBestMonth(

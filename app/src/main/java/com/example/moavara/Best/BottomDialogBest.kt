@@ -11,15 +11,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.room.Room
 import com.bumptech.glide.Glide
-import com.example.moavara.DataBase.DataBaseBestDay
-import com.example.moavara.DataBase.DataBestDay
+import com.example.moavara.DataBase.BookListDataBestToday
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
-import com.example.moavara.Search.BookListDataBestToday
-import com.example.moavara.Search.UserPickBook
-import com.example.moavara.Search.UserPickEvent
 import com.example.moavara.Search.WeekendDate
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.DBDate
@@ -160,8 +155,8 @@ class BottomDialogBest(
                     item.numberDiff,
                     item.date,
                     tabType,
+                    item.status,
                     item.trophyCount,
-                    "",
                 )
 
                 userInfo.child(UID).child("book").addListenerForSingleValueEvent(object :
