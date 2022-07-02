@@ -35,7 +35,7 @@ interface BestDao {
     @Query("DELETE FROM BookListDataBestToday WHERE bookCode = :bookCode")
     fun deleteItem(bookCode: String)
 
-    @Query("SELECT title = :title, COUNT(*) FROM BookListDataBestToday GROUP BY title HAVING COUNT(*) > 1")
+    @Query("SELECT COUNT(title) FROM BookListDataBestToday WHERE title =:title")
     fun countTrophy(title: String): Int
 
     @Insert

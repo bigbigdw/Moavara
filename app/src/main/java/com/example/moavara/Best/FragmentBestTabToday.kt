@@ -10,6 +10,7 @@ import com.example.moavara.DataBase.BookListDataBestToday
 import com.example.moavara.R
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.Genre
+import com.example.moavara.Util.Mining
 import com.example.moavara.databinding.FragmentBestTabTodayBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -40,6 +41,8 @@ class FragmentBestTabToday(private val tabType: String) :
         root = inflater.inflate(R.layout.fragment_best_tab_today, container, false)
 
         adapterToday = AdapterBestToday(items)
+
+//        Mining.RoomDB(requireContext(), tabType, cate)
 
         getBookListToday()
 

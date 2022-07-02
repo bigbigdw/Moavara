@@ -20,6 +20,7 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.moavara.Best.BottomDialogMain
+import com.example.moavara.DataBase.BookListDataBestToday
 import com.example.moavara.DataBase.DataBaseBestDay
 import com.example.moavara.Firebase.FirebaseWorkManager
 import com.example.moavara.Pick.ActivityPick
@@ -27,12 +28,13 @@ import com.example.moavara.R
 import com.example.moavara.Search.ActivitySearch
 import com.example.moavara.Search.WeekendDate
 import com.example.moavara.User.ActivityUser
-import com.example.moavara.Util.DBDate
-import com.example.moavara.Util.Genre
-import com.example.moavara.Util.Mining
+import com.example.moavara.Util.*
 import com.example.moavara.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.messaging.FirebaseMessaging
 import java.util.concurrent.TimeUnit
 import kotlin.system.exitProcess
@@ -61,6 +63,24 @@ class ActivityMain : AppCompatActivity() {
             val miningRef = mRootRef.child("Mining")
             miningRef.setValue("NULL")
             Toast.makeText(this, "WorkManager 해제됨", Toast.LENGTH_SHORT).show()
+
+//            /* 처리해야할 작업에 관한 코드들 */
+//            Handler(Looper.getMainLooper()).postDelayed({
+//                Mining.runMining(applicationContext, "ALL")
+//                Log.d("MINING", "ALL")
+//            }, 1000) //1초 후 실행
+//            Handler(Looper.getMainLooper()).postDelayed({
+//                Mining.runMining(applicationContext, "ROMANCE")
+//                Log.d("MINING", "ROMANCE")
+//            }, 1000) //1초 후 실행
+//            Handler(Looper.getMainLooper()).postDelayed({
+//                Mining.runMining(applicationContext, "BL")
+//                Log.d("MINING", "BL")
+//            }, 1000) //1초 후 실행
+//            Handler(Looper.getMainLooper()).postDelayed({
+//                Mining.runMining(applicationContext, "FANTASY")
+//                Log.d("MINING", "FANTASY")
+//            }, 1000) //1초 후 실행
         }
 
         val navView = findViewById<BottomNavigationView>(R.id.nav_bottom)

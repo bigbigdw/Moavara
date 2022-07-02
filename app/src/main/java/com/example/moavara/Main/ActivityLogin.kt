@@ -63,18 +63,6 @@ class ActivityLogin : AppCompatActivity() {
         savePreferences("TODAY", DBDate.DateMMDD())
 
 
-
-        val bestDao: DataBaseBestDay = Room.databaseBuilder(this, DataBaseBestDay::class.java, "week-list")
-            .allowMainThreadQueries().build()
-
-        if(getSharedPreferences("pref", MODE_PRIVATE).getString("TODAY", "") != DBDate.DateMMDD()){
-            bestDao.bestDao().initAll()
-            Log.d("####", "NOT SAME DAY")
-        } else {
-            Log.d("####", "SAME DAY")
-        }
-
-        Log.d("####", "HIHI ${bestDao.bestDao().countTrophy("히든 게임 시즌 3 데칼코마니")}")
     }
 
     // 구글 로그인 함수
