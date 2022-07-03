@@ -37,6 +37,12 @@ data class BookListDataBestToday (
     @PrimaryKey(autoGenerate = true) var id: Int = 0
 }
 
+data class TrophyInfo (
+    var number: Int = 0,
+    var numberDiff: Int = 0,
+    var date: String = "",
+)
+
 @Entity
 data class DataBestMonth (
     var writer: String ? = null,
