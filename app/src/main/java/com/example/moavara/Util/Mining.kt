@@ -85,7 +85,7 @@ object Mining {
                             )
                         }
 
-                        val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "MrBlue")
+                        val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "MrBlue $cate")
                             .allowMainThreadQueries().build()
 
                         for (i in MrBlue.indices) {
@@ -108,8 +108,8 @@ object Mining {
                             MrBlueRef["date"] = DBDate.DateMMDD()
                             MrBlueRef["status"] = calculateNum(i, title, itemsYesterday).status
                             MrBlueRef["type"] = "MrBlue"
-                            MrBlueRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
-//                            MrBlueRef["trophyCount"] = bestDao.bestDao().countTrophy(title)
+//                            MrBlueRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
+                            MrBlueRef["trophyCount"] = bestDao.bestDao().countTrophy(title)
 
                             miningValue(MrBlueRef, i, "MrBlue", cate, context)
 
@@ -168,7 +168,7 @@ object Mining {
                             )
                         }
 
-                        val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Naver Today")
+                        val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Naver Today $cate")
                             .allowMainThreadQueries().build()
 
                         for (i in Naver.indices) {
@@ -190,8 +190,8 @@ object Mining {
                             NaverRef["date"] = DBDate.DateMMDD()
                             NaverRef["status"] = calculateNum(i, title, itemsYesterday).status
                             NaverRef["type"] = "Naver Today"
-                            NaverRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
-//                            NaverRef["trophyCount"] = bestDao.bestDao().countTrophy(title)
+//                            NaverRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
+                            NaverRef["trophyCount"] = bestDao.bestDao().countTrophy(title)
 
                             miningValue(NaverRef, i, "Naver Today", cate, context)
 
@@ -252,7 +252,7 @@ object Mining {
                             )
                         }
 
-                        val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Naver Challenge")
+                        val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Naver Challenge $cate")
                             .allowMainThreadQueries().build()
 
                         for (i in Naver.indices) {
@@ -274,8 +274,8 @@ object Mining {
                             NaverRef["date"] = DBDate.DateMMDD()
                             NaverRef["status"] = calculateNum(i, title, itemsYesterday).status
                             NaverRef["type"] = "Naver Challenge"
-                            NaverRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
-//                            NaverRef["trophyCount"] = bestDao.bestDao().countTrophy(title)
+//                            NaverRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
+                            NaverRef["trophyCount"] = bestDao.bestDao().countTrophy(title)
 
                             miningValue(NaverRef, i, "Naver Challenge", cate, context)
 
@@ -337,7 +337,7 @@ object Mining {
                             )
                         }
 
-                        val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Naver")
+                        val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Naver $cate")
                             .allowMainThreadQueries().build()
 
                         for (i in Naver.indices) {
@@ -359,8 +359,8 @@ object Mining {
                             NaverRef["date"] = DBDate.DateMMDD()
                             NaverRef["status"] = calculateNum(i, title, itemsYesterday).status
                             NaverRef["type"] = "Naver"
-                            NaverRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
-//                            NaverRef["trophyCount"] = bestDao.bestDao().countTrophy(title)
+//                            NaverRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
+                            NaverRef["trophyCount"] = bestDao.bestDao().countTrophy(title)
 
                             miningValue(NaverRef, i, "Naver", cate, context)
 
@@ -417,7 +417,7 @@ object Mining {
                             )
                         }
 
-                        val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Ridi")
+                        val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Ridi $cate")
                             .allowMainThreadQueries().build()
 
                         for (i in Ridi.indices) {
@@ -441,8 +441,8 @@ object Mining {
                             RidiRef["date"] = DBDate.DateMMDD()
                             RidiRef["status"] = calculateNum(i, title, itemsYesterday).status
                             RidiRef["type"] = "Ridi"
-                            RidiRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
-//                            RidiRef["trophyCount"] = bestDao.bestDao().countTrophy(doc.select("div .title_link")[i].text())
+//                            RidiRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
+                            RidiRef["trophyCount"] = bestDao.bestDao().countTrophy(doc.select("div .title_link")[i].text())
 
                             miningValue(RidiRef, i, "Ridi", cate, context)
                         }
@@ -510,7 +510,7 @@ object Mining {
                                 response.body()?.let { it ->
                                     val productList = it.params!!.productList
 
-                                    val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "OneStore")
+                                    val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "OneStore $cate")
                                         .allowMainThreadQueries().build()
 
                                     for (i in productList!!.indices) {
@@ -541,8 +541,8 @@ object Mining {
                                         ).status
 
                                         OneStoryRef["type"] = "OneStore"
-                                        OneStoryRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
-//                                        OneStoryRef["trophyCount"] = bestDao.bestDao().countTrophy(productList[i].prodNm)
+//                                        OneStoryRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
+                                        OneStoryRef["trophyCount"] = bestDao.bestDao().countTrophy(productList[i].prodNm)
 
                                         miningValue(OneStoryRef, i, "OneStore", cate, context)
 
@@ -620,7 +620,7 @@ object Mining {
 
                                 val list = it
 
-                                val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Kakao Stage")
+                                val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Kakao Stage $cate")
                                     .allowMainThreadQueries().build()
 
                                 for (i in list.indices) {
@@ -641,8 +641,8 @@ object Mining {
                                     KakaoRef["status"] =
                                         calculateNum(i, novel.title, itemsYesterday).status
                                     KakaoRef["type"] = "Kakao Stage"
-                                    KakaoRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
-//                                    KakaoRef["trophyCount"] = bestDao.bestDao().countTrophy(novel.title)
+//                                    KakaoRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
+                                    KakaoRef["trophyCount"] = bestDao.bestDao().countTrophy(novel.title)
 
                                     miningValue(KakaoRef, i, "Kakao Stage", cate, context)
                                 }
@@ -713,7 +713,7 @@ object Mining {
                             response.body()?.let { it ->
                                 val list = it.list
 
-                                val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Kakao")
+                                val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Kakao $cate")
                                     .allowMainThreadQueries().build()
 
                                 for (i in list!!.indices) {
@@ -735,8 +735,8 @@ object Mining {
                                     KakaoRef["status"] =
                                         calculateNum(i, list[i].title, itemsYesterday).status
                                     KakaoRef["type"] = "Kakao"
-                                    KakaoRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
-//                                    KakaoRef["trophyCount"] = bestDao.bestDao().countTrophy(list[i].title)
+//                                    KakaoRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
+                                    KakaoRef["trophyCount"] = bestDao.bestDao().countTrophy(list[i].title)
 
                                     miningValue(KakaoRef, i, "Kakao", cate, context)
 
@@ -810,7 +810,7 @@ object Mining {
 
                             val books = data.bookLists
 
-                            val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Joara")
+                            val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Joara $cate")
                                 .allowMainThreadQueries().build()
 
                             for (i in books!!.indices) {
@@ -831,8 +831,8 @@ object Mining {
                                 JoaraRef["status"] =
                                     calculateNum(i, books[i].subject, itemsYesterday).status
                                 JoaraRef["type"] = "Joara"
-                                JoaraRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
-//                                JoaraRef["trophyCount"] = bestDao.bestDao().countTrophy(books[i].subject)
+//                                JoaraRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
+                                JoaraRef["trophyCount"] = bestDao.bestDao().countTrophy(books[i].subject)
 
                                 miningValue(JoaraRef, (i + ((page - 1) * books.size)), "Joara", cate, context)
                             }
@@ -900,7 +900,7 @@ object Mining {
 
                             val books = data.bookLists
 
-                            val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Joara Premium")
+                            val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Joara Premium $cate")
                                 .allowMainThreadQueries().build()
 
                             for (i in books!!.indices) {
@@ -921,8 +921,8 @@ object Mining {
                                 JoaraRef["status"] =
                                     calculateNum(i, books[i].subject, itemsYesterday).status
                                 JoaraRef["type"] = "Joara Premium"
-                                JoaraRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
-//                                JoaraRef["trophyCount"] = bestDao.bestDao().countTrophy(books[i].subject)
+//                                JoaraRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
+                                JoaraRef["trophyCount"] = bestDao.bestDao().countTrophy(books[i].subject)
 
                                 miningValue(JoaraRef, (i + ((page - 1) * books.size)), "Joara Premium", cate, context)
                             }
@@ -990,7 +990,7 @@ object Mining {
 
                             val books = data.bookLists
 
-                            val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Joara Nobless")
+                            val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Joara Nobless $cate")
                                 .allowMainThreadQueries().build()
 
                             for (i in books!!.indices) {
@@ -1011,8 +1011,8 @@ object Mining {
                                 JoaraRef["status"] =
                                     calculateNum(i, books[i].subject, itemsYesterday).status
                                 JoaraRef["type"] = "Joara Nobless"
-                                JoaraRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
-//                                JoaraRef["trophyCount"] = bestDao.bestDao().countTrophy(books[i].subject)
+//                                JoaraRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
+                                JoaraRef["trophyCount"] = bestDao.bestDao().countTrophy(books[i].subject)
 
                                 miningValue(JoaraRef, (i + ((page - 1) * books.size)), "Joara Nobless", cate, context)
                             }
@@ -1034,7 +1034,7 @@ object Mining {
                     val bestDao: DataBaseBestDay = Room.databaseBuilder(
                         context,
                         DataBaseBestDay::class.java,
-                        tabType
+                        "$tabType $cate"
                     )
                         .allowMainThreadQueries().build()
 

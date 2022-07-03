@@ -42,7 +42,7 @@ class FragmentBestTabToday(private val tabType: String) :
 
         adapterToday = AdapterBestToday(items)
 
-//        Mining.RoomDB(requireContext(), tabType, cate)
+        Mining.RoomDB(requireContext(), tabType, cate)
 
         getBookListToday()
 
