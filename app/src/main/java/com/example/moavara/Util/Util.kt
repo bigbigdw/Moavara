@@ -247,16 +247,6 @@ object Genre {
 
 fun miningValue(ref: MutableMap<String?, Any>, num: Int, type: String, cate: String, context: Context) {
 
-    val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "week-list")
-            .allowMainThreadQueries().build()
-
-    if(context.getSharedPreferences("pref", AppCompatActivity.MODE_PRIVATE).getString("TODAY", "") != DBDate.DateMMDD()){
-        bestDao.bestDao().insert(BestRef.setBookListDataBestToday(ref))
-        Log.d("####", "${ref["title"]} ${bestDao.bestDao().countTrophy(ref["title"] as String)}")
-    }
-
-
-
 //        BestRef.delBestRefWeekCompared(type, cate).removeValue()
 
     //Today
