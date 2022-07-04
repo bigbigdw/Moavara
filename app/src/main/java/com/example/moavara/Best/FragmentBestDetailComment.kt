@@ -48,12 +48,8 @@ class FragmentBestDetailComment(private val platfrom: String, private val bookCo
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rviewBest.adapter = adapterBestComment
 
-        Log.d("####-0", platfrom)
-
         if(platfrom == "Joara" || platfrom == "Joara Nobless" || platfrom == "Joara Premium"){
             getCommentsJoara()
-        }  else if (platfrom == "Naver Today") {
-            getCommentsNaverToday()
         }
 
 
@@ -98,21 +94,6 @@ class FragmentBestDetailComment(private val platfrom: String, private val bookCo
             }
         })
 
-    }
-
-    fun getCommentsNaverToday(){
-        Thread {
-            val doc: Document = Jsoup.connect("https://series.naver.com/novel/detail.series?productNo=5403611").get()
-
-            Log.d("####-1", doc.select("ul .u_cbox_list").toString())
-            Log.d("####-2", doc.select(".u_cbox_list").toString())
-            Log.d("####-3", doc.select("ul").toString())
-
-            requireActivity().runOnUiThread {
-                with(binding){
-                }
-            }
-        }.start()
     }
 }
 

@@ -7,6 +7,14 @@ import com.google.firebase.database.FirebaseDatabase
 object BestRef {
     private val mRootRef = FirebaseDatabase.getInstance().reference
 
+    fun StrToInt(str: String): Int {
+        if(str.contains("만")){
+            return str.replace("만","").toInt() * 10000
+        } else if (str.contains(",")) {
+            return str.replace(",","").toInt()
+        } else return str.toInt()
+    }
+
     fun setBestRef(type: String, genre: String): DatabaseReference {
         return mRootRef.child("best").child(type).child(genre)
     }

@@ -166,6 +166,8 @@ object Genre {
         }
     }
 
+
+
     fun setNaverTodayGenre(str: String): String {
         return when {
             str == "BL" -> {

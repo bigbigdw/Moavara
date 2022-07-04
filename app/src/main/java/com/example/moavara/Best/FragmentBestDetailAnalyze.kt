@@ -3,21 +3,31 @@ package com.example.moavara.Best
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
+import androidx.work.Constraints
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.example.moavara.DataBase.BookListDataBestToday
+import com.example.moavara.DataBase.DataBaseBestDay
+import com.example.moavara.Firebase.FirebaseWorkManager
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
+import com.example.moavara.Retrofit.JoaraBestListResult
+import com.example.moavara.Retrofit.RetrofitDataListener
 import com.example.moavara.Search.BestChart
-import com.example.moavara.Util.BestRef
-import com.example.moavara.Util.DBDate
-import com.example.moavara.Util.Genre
+import com.example.moavara.Util.*
 import com.example.moavara.databinding.FragmentBestDetailAnalyzeBinding
 import com.example.moavara.databinding.ItemBestDetailAnalysisBinding
 import com.github.mikephil.charting.components.Legend
@@ -28,7 +38,13 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.messaging.FirebaseMessaging
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 class FragmentBestDetailAnalyze(private val platfrom: String, private val pos: Int) :
@@ -58,22 +74,27 @@ class FragmentBestDetailAnalyze(private val platfrom: String, private val pos: I
         binding.rViewChart.adapter = adapterChart
 
         if(platfrom == "Joara" || platfrom == "Joara Nobless" || platfrom == "Joara Premium"){
+            binding.rViewChartJoara.visibility = View.VISIBLE
             getAnalyzeJoara()
         }
-        getAnalyze()
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            getAnalyze()
+        }, 3000) //1초 후 실행
+
 
         return view
     }
 
     fun getAnalyzeJoara(){
-        var adapterChartJoara: AdapterChart?
+        val adapterChartJoara: AdapterChart?
         val itemsJoara = ArrayList<BestChart>()
 
         adapterChartJoara = AdapterChart(itemsJoara)
         binding.rViewChartJoara.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rViewChartJoara.adapter = adapterChartJoara
 
-        var chapter = (context as ActivityBestDetail).chapter
+        val chapter = (context as ActivityBestDetail).chapter
         val dateList = mutableListOf<String>()
         val entryList = mutableListOf<BarEntry>()
         val entryList2 = mutableListOf<BarEntry>()
@@ -96,134 +117,153 @@ class FragmentBestDetailAnalyze(private val platfrom: String, private val pos: I
     }
 
     private fun getAnalyze() {
-        BestRef.setBestRefWeekList(platfrom, cate).get().addOnSuccessListener {
-            val dateList = mutableListOf<String>()
-            //BarEntry를 담는 리스트
-            val entryList = mutableListOf<BarEntry>()
-            val entryList2 = mutableListOf<BarEntry>()
-            val entryList3 = mutableListOf<BarEntry>()
-            val entryList4 = mutableListOf<Entry>()
 
-            val sun = requireContext().getSharedPreferences("WEEK", AppCompatActivity.MODE_PRIVATE).getString("SUN", "")
-            val mon = requireContext().getSharedPreferences("WEEK", AppCompatActivity.MODE_PRIVATE).getString("MON", "")
-            val tue = requireContext().getSharedPreferences("WEEK", AppCompatActivity.MODE_PRIVATE).getString("TUE", "")
-            val wed = requireContext().getSharedPreferences("WEEK", AppCompatActivity.MODE_PRIVATE).getString("WED", "")
-            val thur = requireContext().getSharedPreferences("WEEK", AppCompatActivity.MODE_PRIVATE).getString("THUR", "")
-            val fri = requireContext().getSharedPreferences("WEEK", AppCompatActivity.MODE_PRIVATE).getString("FRI", "")
-            val sat = requireContext().getSharedPreferences("WEEK", AppCompatActivity.MODE_PRIVATE).getString("SAT", "")
+        BestRef.setBestRefWeekList(platfrom, cate).addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-            var num = 0
+                requireActivity().runOnUiThread {
+                    val dateList = mutableListOf<String>()
+                    //BarEntry를 담는 리스트
+                    val entryList = mutableListOf<BarEntry>()
+                    val entryList2 = mutableListOf<BarEntry>()
+                    val entryList3 = mutableListOf<BarEntry>()
+                    val entryList4 = mutableListOf<Entry>()
 
-            for (i in it.children) {
+                    val sun = requireContext().getSharedPreferences("WEEK", AppCompatActivity.MODE_PRIVATE).getString("SUN", "")
+                    val mon = requireContext().getSharedPreferences("WEEK", AppCompatActivity.MODE_PRIVATE).getString("MON", "")
+                    val tue = requireContext().getSharedPreferences("WEEK", AppCompatActivity.MODE_PRIVATE).getString("TUE", "")
+                    val wed = requireContext().getSharedPreferences("WEEK", AppCompatActivity.MODE_PRIVATE).getString("WED", "")
+                    val thur = requireContext().getSharedPreferences("WEEK", AppCompatActivity.MODE_PRIVATE).getString("THUR", "")
+                    val fri = requireContext().getSharedPreferences("WEEK", AppCompatActivity.MODE_PRIVATE).getString("FRI", "")
+                    val sat = requireContext().getSharedPreferences("WEEK", AppCompatActivity.MODE_PRIVATE).getString("SAT", "")
 
-                val group: BookListDataBestToday? = i.getValue(BookListDataBestToday::class.java)
+                    var num = 0
 
-                if (group!!.title == (context as ActivityBestDetail).bookTitle) {
-                    dateList.add(group.date)
+                    for (i in dataSnapshot.children) {
 
-                    //BarEntry로 값 추가 후 리스트에 담는다
-                    entryList.add(BarEntry(num.toFloat(),group.info3.replace("조회 수 : ", "").toFloat()))
-                    entryList2.add(BarEntry(num.toFloat(),group.info4.replace("선호작 수 : ", "").toFloat()))
-                    entryList3.add(BarEntry(num.toFloat(),group.info5.replace("추천 수 : ", "").toFloat()))
-                    entryList4.add(Entry(num.toFloat(), group.number.toFloat()))
+                        val group: BookListDataBestToday? = i.getValue(BookListDataBestToday::class.java)
+                        if (group!!.title == (context as ActivityBestDetail).bookTitle) {
+                            dateList.add(group.date)
 
+                            //BarEntry로 값 추가 후 리스트에 담는다
+                            if(platfrom == "Joara" || platfrom == "Joara Nobless" || platfrom == "Joara Premium"){
+                                entryList.add(BarEntry(num.toFloat(),group.info3.replace("조회 수 : ", "").toFloat()))
+                                entryList2.add(BarEntry(num.toFloat(),group.info4.replace("선호작 수 : ", "").toFloat()))
+                                entryList3.add(BarEntry(num.toFloat(),group.info5.replace("추천 수 : ", "").toFloat()))
+                                entryList4.add(Entry(num.toFloat(), group.number.toFloat()))
+                            } else if(platfrom == "Naver Today" || platfrom == "Naver Challenge" || platfrom == "Naver"){
+                                entryList.add(BarEntry(num.toFloat(), BestRef.StrToInt(group.info2.replace("조회 ", "")).toFloat()))
+                                entryList2.add(BarEntry(num.toFloat(), BestRef.StrToInt(group.info3.replace("관심 ", "")).toFloat()))
+                                entryList3.add(BarEntry(num.toFloat(), group.info4.replace("별점", "").toFloat()))
+                                entryList4.add(Entry(num.toFloat(), group.number.toFloat()))
+                            }
 
+                            Log.d("####", "${group.info4} ${group.info4.replace("별점", "").toFloat()}")
 
-                    with(binding.includeRank) {
-                        when {
-                            sun == group.date -> {
-                                tviewRank1.visibility = View.VISIBLE
-                                iviewRank1.setImageResource(R.drawable.ic_best_vt_24px)
-                                tviewRank1.text = (group.number + 1).toString()
-                            }
-                            mon == group.date -> {
-                                tviewRank2.visibility = View.VISIBLE
-                                iviewRank2.setImageResource(R.drawable.ic_best_vt_24px)
-                                tviewRank2.text = (group.number + 1).toString()
-                            }
-                            tue == group.date -> {
-                                tviewRank3.visibility = View.VISIBLE
-                                iviewRank3.setImageResource(R.drawable.ic_best_vt_24px)
-                                tviewRank3.text = (group.number + 1).toString()
+                            with(binding.includeRank) {
+                                when {
+                                    sun == group.date -> {
+                                        tviewRank1.visibility = View.VISIBLE
+                                        iviewRank1.setImageResource(R.drawable.ic_best_vt_24px)
+                                        tviewRank1.text = (group.number + 1).toString()
+                                    }
+                                    mon == group.date -> {
+                                        tviewRank2.visibility = View.VISIBLE
+                                        iviewRank2.setImageResource(R.drawable.ic_best_vt_24px)
+                                        tviewRank2.text = (group.number + 1).toString()
+                                    }
+                                    tue == group.date -> {
+                                        tviewRank3.visibility = View.VISIBLE
+                                        iviewRank3.setImageResource(R.drawable.ic_best_vt_24px)
+                                        tviewRank3.text = (group.number + 1).toString()
 
-                            }
-                            wed == group.date -> {
-                                tviewRank4.visibility = View.VISIBLE
-                                iviewRank4.setImageResource(R.drawable.ic_best_vt_24px)
-                                tviewRank4.text = (group.number + 1).toString()
-                            }
-                            thur == group.date -> {
-                                tviewRank5.visibility = View.VISIBLE
-                                iviewRank5.setImageResource(R.drawable.ic_best_vt_24px)
-                                tviewRank5.text = (group.number + 1).toString()
+                                    }
+                                    wed == group.date -> {
+                                        tviewRank4.visibility = View.VISIBLE
+                                        iviewRank4.setImageResource(R.drawable.ic_best_vt_24px)
+                                        tviewRank4.text = (group.number + 1).toString()
+                                    }
+                                    thur == group.date -> {
+                                        tviewRank5.visibility = View.VISIBLE
+                                        iviewRank5.setImageResource(R.drawable.ic_best_vt_24px)
+                                        tviewRank5.text = (group.number + 1).toString()
+                                    }
 
-                            }
-                            fri == group.date -> {
-                                tviewRank6.visibility = View.VISIBLE
-                                iviewRank6.setImageResource(R.drawable.ic_best_vt_24px)
-                                tviewRank6.text = (group.number + 1).toString()
-                            }
-                            sat == group.date -> {
-                                tviewRank7.visibility = View.VISIBLE
-                                iviewRank7.setImageResource(R.drawable.ic_best_vt_24px)
-                                tviewRank7.text = (group.number + 1).toString()
-                            }
-                        }
+                                    fri == group.date -> {
+                                        tviewRank6.visibility = View.VISIBLE
+                                        iviewRank6.setImageResource(R.drawable.ic_best_vt_24px)
+                                        tviewRank6.text = (group.number + 1).toString()
+                                    }
+                                    sat == group.date -> {
+                                        tviewRank7.visibility = View.VISIBLE
+                                        iviewRank7.setImageResource(R.drawable.ic_best_vt_24px)
+                                        tviewRank7.text = (group.number + 1).toString()
+                                    }
+                                }
 
-                        when {
-                            sun == DBDate.DateMMDD() -> {
-                                tviewRank1.visibility = View.VISIBLE
-                                iviewRank1.setImageResource(R.drawable.ic_best_gn_24px)
-                                tviewRank1.text = (group.number + 1).toString()
+                                when {
+                                    sun == DBDate.DateMMDD() -> {
+                                        tviewRank1.visibility = View.VISIBLE
+                                        iviewRank1.setImageResource(R.drawable.ic_best_gn_24px)
+                                        tviewRank1.text = (group.number + 1).toString()
+                                    }
+                                    mon == DBDate.DateMMDD() -> {
+                                        tviewRank2.visibility = View.VISIBLE
+                                        iviewRank2.setImageResource(R.drawable.ic_best_gn_24px)
+                                        tviewRank2.text = (group.number + 1).toString()
+                                    }
+                                    tue == DBDate.DateMMDD() -> {
+                                        tviewRank3.visibility = View.VISIBLE
+                                        iviewRank3.setImageResource(R.drawable.ic_best_gn_24px)
+                                        tviewRank3.text = (group.number + 1).toString()
+                                    }
+                                    wed == DBDate.DateMMDD() -> {
+                                        tviewRank4.visibility = View.VISIBLE
+                                        iviewRank4.setImageResource(R.drawable.ic_best_gn_24px)
+                                        tviewRank4.text = (group.number + 1).toString()
+                                    }
+                                    thur == DBDate.DateMMDD() -> {
+                                        tviewRank5.visibility = View.VISIBLE
+                                        iviewRank5.setImageResource(R.drawable.ic_best_gn_24px)
+                                        tviewRank5.text = (group.number + 1).toString()
+                                    }
+                                    fri == DBDate.DateMMDD() -> {
+                                        tviewRank6.visibility = View.VISIBLE
+                                        iviewRank6.setImageResource(R.drawable.ic_best_gn_24px)
+                                        tviewRank6.text = (group.number + 1).toString()
+                                    }
+                                    sat == DBDate.DateMMDD() -> {
+                                        tviewRank7.visibility = View.VISIBLE
+                                        iviewRank7.setImageResource(R.drawable.ic_best_gn_24px)
+                                        tviewRank7.text = (group.number + 1).toString()
+                                    }
+                                }
                             }
-                            mon == DBDate.DateMMDD() -> {
-                                tviewRank2.visibility = View.VISIBLE
-                                iviewRank2.setImageResource(R.drawable.ic_best_gn_24px)
-                                tviewRank2.text = (group.number + 1).toString()
-                            }
-                            tue == DBDate.DateMMDD() -> {
-                                tviewRank3.visibility = View.VISIBLE
-                                iviewRank3.setImageResource(R.drawable.ic_best_gn_24px)
-                                tviewRank3.text = (group.number + 1).toString()
-                            }
-                            wed == DBDate.DateMMDD() -> {
-                                tviewRank4.visibility = View.VISIBLE
-                                iviewRank4.setImageResource(R.drawable.ic_best_gn_24px)
-                                tviewRank4.text = (group.number + 1).toString()
-                            }
-                            thur == DBDate.DateMMDD() -> {
-                                tviewRank5.visibility = View.VISIBLE
-                                iviewRank5.setImageResource(R.drawable.ic_best_gn_24px)
-                                tviewRank5.text = (group.number + 1).toString()
-                            }
-                            fri == DBDate.DateMMDD() -> {
-                                tviewRank6.visibility = View.VISIBLE
-                                iviewRank6.setImageResource(R.drawable.ic_best_gn_24px)
-                                tviewRank6.text = (group.number + 1).toString()
-                            }
-                            sat == DBDate.DateMMDD() -> {
-                                tviewRank7.visibility = View.VISIBLE
-                                iviewRank7.setImageResource(R.drawable.ic_best_gn_24px)
-                                tviewRank7.text = (group.number + 1).toString()
-                            }
+                            num += 1
                         }
                     }
-                    num += 1
+
+                    mRootRef.child("best").child(platfrom).child(context?.getSharedPreferences("pref",
+                        Context.MODE_PRIVATE
+                    )?.getString("GENRE", "") ?: "").child("week-list").child(DBDate.Week() + ((DBDate.DayInt() * 1000) + pos).toString()).child("trophyCount").setValue(entryList3.size)
+
+
+                    if(platfrom == "Joara" || platfrom == "Joara Nobless" || platfrom == "Joara Premium"){
+                        items.add(BestChart(dateList, entryList, "조회 수", "#ff7b22"))
+                        items.add(BestChart(dateList, entryList2, "선호작 수", "#4971EF"))
+                        items.add(BestChart(dateList, entryList3, "추천 수", "#00d180"))
+                    } else if(platfrom == "Naver Today" || platfrom == "Naver Challenge" || platfrom == "Naver"){
+                        items.add(BestChart(dateList, entryList, "조회 수", "#ff7b22"))
+                        items.add(BestChart(dateList, entryList2, "관심 수", "#4971EF"))
+                        items.add(BestChart(dateList, entryList3, "별점", "#00d180"))
+                    }
+                    adapterChart!!.notifyDataSetChanged()
                 }
             }
 
-            mRootRef.child("best").child(platfrom).child(context?.getSharedPreferences("pref",
-                Context.MODE_PRIVATE
-            )?.getString("GENRE", "") ?: "").child("week-list").child(DBDate.Week() + ((DBDate.DayInt() * 1000) + pos).toString()).child("trophyCount").setValue(entryList3.size)
-
-
-            Log.d("####", (DBDate.Week() + ((DBDate.DayInt() * 1000) + pos).toString()).toString())
-
-            items.add(BestChart(dateList, entryList, "조회 수", "#ff7b22"))
-            items.add(BestChart(dateList, entryList2, "선호작 수", "#4971EF"))
-            items.add(BestChart(dateList, entryList3, "추천 수", "#00d180"))
-            adapterChart!!.notifyDataSetChanged()
-        }.addOnFailureListener {}
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
     }
 }
 

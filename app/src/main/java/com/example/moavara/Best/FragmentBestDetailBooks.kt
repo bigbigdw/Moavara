@@ -12,9 +12,15 @@ import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.BookListDataBestToday
 import com.example.moavara.Retrofit.JoaraBestListResult
 import com.example.moavara.Retrofit.RetrofitJoara
+import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Param
+import com.example.moavara.Util.calculateNum
+import com.example.moavara.Util.miningValue
 import com.example.moavara.databinding.FragmentBestDetailTabsBinding
 import com.example.moavara.databinding.ItemBestDetailOtherBinding
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
+import org.jsoup.select.Elements
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -46,8 +52,9 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
 
         if(platfrom == "Joara" || platfrom == "Joara Nobless" || platfrom == "Joara Premium"){
             getOthersJoa()
+        }  else if (platfrom == "Naver Today"  || platfrom == "Naver Challenge") {
+            getCommentsNaverToday()
         }
-
 
         return view
     }
@@ -88,8 +95,8 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
                                         ""
                                     )
                                 )
-                                adapterBestOthers!!.notifyDataSetChanged()
                             }
+                            adapterBestOthers!!.notifyDataSetChanged()
                         }
                     }
                 }
@@ -100,6 +107,36 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
             }
         })
 
+    }
+
+    fun getCommentsNaverToday(){
+        Thread {
+            val doc: Document = Jsoup.connect(bookCode).get()
+            val Naver: Elements = doc.select(".srch_cont .list_type2 li a")
+
+            requireActivity().runOnUiThread {
+                for (i in Naver.indices) {
+                    items.add(
+                        BookListDataBestToday(
+                            Naver[i].select("strong").text(),
+                            Naver[i].select("p .ellipsis").text(),
+                            Naver.select("div img")[i].absUrl("src"),
+                            Naver[i].absUrl("href"),
+                            "작가 : ${Naver[0].select("strong").text()}",
+                            "",
+                            "",
+                            "",
+                            "",
+                            0,
+                            0,
+                            "",
+                            ""
+                        )
+                    )
+                }
+                adapterBestOthers!!.notifyDataSetChanged()
+            }
+        }.start()
     }
 }
 

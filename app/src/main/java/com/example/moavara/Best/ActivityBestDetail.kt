@@ -48,28 +48,50 @@ class ActivityBestDetail : AppCompatActivity() {
         setSupportActionBar(toolbar)
         Objects.requireNonNull(supportActionBar)!!.setDisplayHomeAsUpEnabled(true)
 
-        mFragmentBestDetailComment = FragmentBestDetailComment(type, bookCode)
-        supportFragmentManager.commit {
-            replace(R.id.llayoutWrap, mFragmentBestDetailComment)
+        Log.d("####", type)
+
+        if (type == "Joara" || type == "Joara Nobless" || type == "Joara Premium") {
+            setLayoutJoara()
+        } else if (type == "Naver Today" || type == "Naver Challenge" || type == "Naver"){
+            setLayoutNaverToday()
         }
 
-        binding.tabs.addTab(binding.tabs.newTab().setText("댓글"))
-        binding.tabs.addTab(binding.tabs.newTab().setText("다른 작품"))
-        binding.tabs.addTab(binding.tabs.newTab().setText("작품 분석"))
+        if(type == "Naver Today" || type == "Naver Challenge" || type == "Naver"){
+            binding.tabs.addTab(binding.tabs.newTab().setText("다른 작품"))
+            binding.tabs.addTab(binding.tabs.newTab().setText("작품 분석"))
+        } else {
+            binding.tabs.addTab(binding.tabs.newTab().setText("댓글"))
+            binding.tabs.addTab(binding.tabs.newTab().setText("다른 작품"))
+            binding.tabs.addTab(binding.tabs.newTab().setText("작품 분석"))
+        }
 
         binding.tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 when(tab.position){
                     0->{
-                        mFragmentBestDetailComment = FragmentBestDetailComment(type, bookCode)
-                        supportFragmentManager.commit {
-                            replace(R.id.llayoutWrap, mFragmentBestDetailComment)
+                        if (type == "Joara" || type == "Joara Nobless" || type == "Joara Premium") {
+                            mFragmentBestDetailComment = FragmentBestDetailComment(type, bookCode)
+                            supportFragmentManager.commit {
+                                replace(R.id.llayoutWrap, mFragmentBestDetailComment)
+                            }
+                        } else if (type == "Naver Today" || type == "Naver Challenge" || type == "Naver") {
+                            mFragmentBestDetailBooks = FragmentBestDetailBooks(type, bookCode)
+                            supportFragmentManager.commit {
+                                replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
+                            }
                         }
                     }
                     1->{
-                        mFragmentBestDetailBooks = FragmentBestDetailBooks(type, bookCode)
-                        supportFragmentManager.commit {
-                            replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
+                        if (type == "Joara" || type == "Joara Nobless" || type == "Joara Premium") {
+                            mFragmentBestDetailBooks = FragmentBestDetailBooks(type, bookCode)
+                            supportFragmentManager.commit {
+                                replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
+                            }
+                        } else if (type == "Naver Today" || type == "Naver Challenge" || type == "Naver") {
+                            mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(type, intent.getIntExtra("POSITION", 0))
+                            supportFragmentManager.commit {
+                                replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
+                            }
                         }
                     }
                     2->{
@@ -83,13 +105,6 @@ class ActivityBestDetail : AppCompatActivity() {
             override fun onTabUnselected(tab: TabLayout.Tab) {}
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
-
-        if (type == "Joara" || type == "Joara Nobless" || type == "Joara Premium") {
-            setLayoutJoara()
-        } else if (type == "Naver Today" || type == "Naver Challenge") {
-            setLayoutNaverToday()
-        }
-
     }
 
     fun setLayoutJoara(){
@@ -128,6 +143,11 @@ class ActivityBestDetail : AppCompatActivity() {
                             }
                         }
                     }
+
+                    mFragmentBestDetailComment = FragmentBestDetailComment(type, bookCode)
+                    supportFragmentManager.commit {
+                        replace(R.id.llayoutWrap, mFragmentBestDetailComment)
+                    }
                 }
             }
 
@@ -141,12 +161,16 @@ class ActivityBestDetail : AppCompatActivity() {
         Thread {
             val doc: Document = Jsoup.connect(bookCode).post()
 
+            bookCode = "https://novel.naver.com/${doc.select(".writer a").first()!!.attr("href")}"
+
             runOnUiThread {
                 with(binding){
                     Glide.with(context)
                         .load(doc.select(".section_area_info .pic img").attr("src"))
                         .into(inclueBestDetail.iviewBookCover)
 
+                    bookTitle = doc.select(".book_title").text()
+                    inclueBestDetail.tviewTitle.text = bookTitle
                     inclueBestDetail.tviewWriter.text = doc.select(".writer").text()
 
                     inclueBestDetail.tviewInfo1.text = doc.select(".info_book .like").text()
@@ -155,6 +179,11 @@ class ActivityBestDetail : AppCompatActivity() {
                     inclueBestDetail.tviewInfo4.text =  "장르 : ${doc.select(".info_book .genre").text()}"
 
                     tviewIntro.text = doc.select(".section_area_info .dsc").text()
+                }
+
+                mFragmentBestDetailBooks = FragmentBestDetailBooks(type, bookCode)
+                supportFragmentManager.commit {
+                    replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
                 }
             }
         }.start()
