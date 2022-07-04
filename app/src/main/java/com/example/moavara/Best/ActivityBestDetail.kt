@@ -11,9 +11,13 @@ import com.example.moavara.R
 import com.example.moavara.Retrofit.JoaraBestChapter
 import com.example.moavara.Retrofit.JoaraBestDetailResult
 import com.example.moavara.Retrofit.RetrofitJoara
+import com.example.moavara.Util.Genre
 import com.example.moavara.Util.Param
 import com.example.moavara.databinding.ActivityBestDetailBinding
 import com.google.android.material.tabs.TabLayout
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
+import org.jsoup.select.Elements
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -44,7 +48,7 @@ class ActivityBestDetail : AppCompatActivity() {
         setSupportActionBar(toolbar)
         Objects.requireNonNull(supportActionBar)!!.setDisplayHomeAsUpEnabled(true)
 
-        mFragmentBestDetailComment = FragmentBestDetailComment("Joara", bookCode)
+        mFragmentBestDetailComment = FragmentBestDetailComment(type, bookCode)
         supportFragmentManager.commit {
             replace(R.id.llayoutWrap, mFragmentBestDetailComment)
         }
@@ -80,8 +84,10 @@ class ActivityBestDetail : AppCompatActivity() {
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
 
-        if(type == "Joara" || type == "Joara Nobless" || type == "Joara Premium"){
+        if (type == "Joara" || type == "Joara Nobless" || type == "Joara Premium") {
             setLayoutJoara()
+        } else if (type == "Naver Today" || type == "Naver Challenge") {
+            setLayoutNaverToday()
         }
 
     }
@@ -129,6 +135,29 @@ class ActivityBestDetail : AppCompatActivity() {
                 Log.d("onFailure", "실패")
             }
         })
+    }
+
+    fun setLayoutNaverToday(){
+        Thread {
+            val doc: Document = Jsoup.connect(bookCode).post()
+
+            runOnUiThread {
+                with(binding){
+                    Glide.with(context)
+                        .load(doc.select(".section_area_info .pic img").attr("src"))
+                        .into(inclueBestDetail.iviewBookCover)
+
+                    inclueBestDetail.tviewWriter.text = doc.select(".writer").text()
+
+                    inclueBestDetail.tviewInfo1.text = doc.select(".info_book .like").text()
+                    inclueBestDetail.tviewInfo2.text =  doc.select(".info_book .download").text()
+                    inclueBestDetail.tviewInfo3.text =  doc.select(".info_book .publish").text()
+                    inclueBestDetail.tviewInfo4.text =  "장르 : ${doc.select(".info_book .genre").text()}"
+
+                    tviewIntro.text = doc.select(".section_area_info .dsc").text()
+                }
+            }
+        }.start()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

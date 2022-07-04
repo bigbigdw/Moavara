@@ -59,10 +59,10 @@ class ActivityMain : AppCompatActivity() {
         navController = Navigation.findNavController(this, R.id.navHostFragmentMain)
 
         toolbar.setOnClickListener {
-            WorkManager.getInstance().cancelAllWork()
-            val miningRef = mRootRef.child("Mining")
-            miningRef.setValue("NULL")
-            Toast.makeText(this, "WorkManager 해제됨", Toast.LENGTH_SHORT).show()
+//            WorkManager.getInstance().cancelAllWork()
+//            val miningRef = mRootRef.child("Mining")
+//            miningRef.setValue("NULL")
+//            Toast.makeText(this, "WorkManager 해제됨", Toast.LENGTH_SHORT).show()
 
 //            /* 처리해야할 작업에 관한 코드들 */
 //            Handler(Looper.getMainLooper()).postDelayed({
@@ -104,16 +104,16 @@ class ActivityMain : AppCompatActivity() {
             val workManager = WorkManager.getInstance()
 
             miningRef.get().addOnSuccessListener {
-                if(it.value != null && it.value!! == "MINING"){
-                    Toast.makeText(this, "WorkManager 이미 존재함", Toast.LENGTH_SHORT).show()
-
-                } else {
-                    miningRef.setValue("MINING")
-
-                    workManager.enqueue(workRequest)
-                    FirebaseMessaging.getInstance().subscribeToTopic("all")
-                    Toast.makeText(this, "WorkManager 추가됨", Toast.LENGTH_SHORT).show()
-                }
+//                if(it.value != null && it.value!! == "MINING"){
+//                    Toast.makeText(this, "WorkManager 이미 존재함", Toast.LENGTH_SHORT).show()
+//
+//                } else {
+//                    miningRef.setValue("MINING")
+//
+//                    workManager.enqueue(workRequest)
+//                    FirebaseMessaging.getInstance().subscribeToTopic("all")
+//                    Toast.makeText(this, "WorkManager 추가됨", Toast.LENGTH_SHORT).show()
+//                }
             }.addOnFailureListener{}
         }, 1000) //1초 후 실행
 
