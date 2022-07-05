@@ -136,3 +136,85 @@ class KakaoBestBookResult {
     @Expose
     var image: String = ""
 }
+
+class BestKakaoBookDetail {
+    @SerializedName("home")
+    @Expose
+    val home: BestKakaoBookDetailHome? = null
+
+    @SerializedName("notice")
+    @Expose
+    val notice: BestKakaoBookDetailNotice? = null
+}
+
+class BestKakaoBookDetailNotice{
+    @SerializedName("create_dt")
+    @Expose
+    var create_dt: String = ""
+
+    @SerializedName("description")
+    @Expose
+    var description: String = ""
+
+    @SerializedName("title")
+    @Expose
+    var title: String = ""
+}
+
+class BestKakaoBookDetailHome {
+    @SerializedName("description")
+    @Expose
+    var description: String = ""
+
+    @SerializedName("author_name")
+    @Expose
+    var author_name: String = ""
+
+    @SerializedName("page_comment_count")
+    @Expose
+    var page_comment_count: String = ""
+
+    @SerializedName("page_rating_count")
+    @Expose
+    var page_rating_count: String = ""
+
+    @SerializedName("page_rating_summary")
+    @Expose
+    var page_rating_summary: String = ""
+
+    @SerializedName("read_count")
+    @Expose
+    var read_count: String = ""
+
+    @SerializedName("sub_category")
+    @Expose
+    var sub_category: String = ""
+
+    @SerializedName("title")
+    @Expose
+    var title: String = ""
+
+    @SerializedName("land_thumbnail_url")
+    @Expose
+    var land_thumbnail_url: String = ""
+
+    @SerializedName("open_counts")
+    @Expose
+    var open_counts: String = ""
+}
+
+class BestKakaoBookDetailComment {
+    @SerializedName("comment_list")
+    @Expose
+    lateinit var comment_list : ArrayList<BestKakaoBookDetailCommentList>
+}
+
+class BestKakaoBookDetailCommentList{
+    @SerializedName("comment")
+    @Expose
+    var comment: String = ""
+
+    @SerializedName("create_dt")
+    @Expose
+    var create_dt: String = ""
+}

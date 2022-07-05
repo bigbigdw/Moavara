@@ -50,12 +50,6 @@ interface JoaraEventService {
 
 //조아라 베스트
 interface JoaraBestService {
-    @GET(API.BEST_BOOK_JOA + HELPER.ETC)
-    fun getRetrofit(
-        @Query("best") best: String?,
-        @Query("store") store: String?,
-        @Query("category") category: String?,
-    ): Call<JoaraBestListResult?>?
 
     @GET("v1/book/detail.joa")
     fun getBookDetail(@QueryMap queryMap: MutableMap<String?, Any>): Call<JoaraBestDetailResult>

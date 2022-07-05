@@ -3,16 +3,16 @@ package com.example.moavara.Best
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.commit
+import androidx.room.Room
 import com.bumptech.glide.Glide
+import com.example.moavara.DataBase.DataBaseBestDay
 import com.example.moavara.R
-import com.example.moavara.Retrofit.JoaraBestChapter
-import com.example.moavara.Retrofit.JoaraBestDetailResult
-import com.example.moavara.Retrofit.RetrofitJoara
-import com.example.moavara.Util.Genre
-import com.example.moavara.Util.Param
+import com.example.moavara.Retrofit.*
+import com.example.moavara.Util.*
 import com.example.moavara.databinding.ActivityBestDetailBinding
 import com.google.android.material.tabs.TabLayout
 import org.jsoup.Jsoup
@@ -48,12 +48,12 @@ class ActivityBestDetail : AppCompatActivity() {
         setSupportActionBar(toolbar)
         Objects.requireNonNull(supportActionBar)!!.setDisplayHomeAsUpEnabled(true)
 
-        Log.d("####", type)
-
         if (type == "Joara" || type == "Joara Nobless" || type == "Joara Premium") {
             setLayoutJoara()
         } else if (type == "Naver Today" || type == "Naver Challenge" || type == "Naver"){
             setLayoutNaverToday()
+        } else if (type == "Kakao"){
+            setLayoutKaKao()
         }
 
         if(type == "Naver Today" || type == "Naver Challenge" || type == "Naver"){
@@ -169,6 +169,12 @@ class ActivityBestDetail : AppCompatActivity() {
                         .load(doc.select(".section_area_info .pic img").attr("src"))
                         .into(inclueBestDetail.iviewBookCover)
 
+                    if(type == "Naver Challenge" || type == "Naver"){
+                        inclueBestDetail.llayoutWrap2.visibility = View.GONE
+                    } else {
+                        inclueBestDetail.llayoutWrap2.visibility = View.VISIBLE
+                    }
+
                     bookTitle = doc.select(".book_title").text()
                     inclueBestDetail.tviewTitle.text = bookTitle
                     inclueBestDetail.tviewWriter.text = doc.select(".writer").text()
@@ -188,6 +194,41 @@ class ActivityBestDetail : AppCompatActivity() {
             }
         }.start()
     }
+
+    fun setLayoutKaKao(){
+        val apiKakao = RetrofitKaKao()
+        val param : MutableMap<String?, Any> = HashMap()
+
+        param["seriesid"] = bookCode
+
+        apiKakao.postKakaoBookDetail(
+            param,
+            object : RetrofitDataListener<BestKakaoBookDetail> {
+                override fun onSuccess(data: BestKakaoBookDetail) {
+
+                    with(binding){
+                        data.home?.let { it ->
+                            Glide.with(context)
+                                .load("https://dn-img-page.kakao.com/download/resource?kid=${it.land_thumbnail_url}")
+                                .into(inclueBestDetail.iviewBookCover)
+
+                            bookTitle = it.title
+
+                            inclueBestDetail.tviewTitle.text = bookTitle
+                            inclueBestDetail.tviewWriter.text = it.author_name
+
+                            inclueBestDetail.tviewInfo1.text = "총 ${it.open_counts}화"
+                            inclueBestDetail.tviewInfo2.text =  "장르 : ${it.sub_category}"
+                            inclueBestDetail.tviewInfo3.text =  "조회 수 : ${it.read_count}"
+                            inclueBestDetail.tviewInfo4.text =  "댓글 수 : ${it.page_comment_count}"
+
+                            tviewIntro.text =  it.description
+                        }
+                    }
+                }
+            })
+    }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {

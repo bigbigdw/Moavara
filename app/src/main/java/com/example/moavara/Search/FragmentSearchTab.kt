@@ -178,7 +178,7 @@ class FragmentSearchTab : Fragment() {
     }
 
     fun searchKakao(page: Int?) {
-        RetrofitKaKao.postSearchKakao(
+        RetrofitKaKao().postSearchKakao(
             page,"사랑",11)!!.enqueue(object : Callback<SearchResultKakao?> {
             override fun onResponse(
                 call: Call<SearchResultKakao?>,

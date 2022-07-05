@@ -5,7 +5,9 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object RetrofitKaKao {
+class RetrofitKaKao {
+    private val apiKakaoStage = com.example.moavara.Retrofit.Retrofit.apiKakaoStage
+    private val apiKakao = com.example.moavara.Retrofit.Retrofit.apiKakao
 
     //카카오 검색
     fun postSearchKakao(
@@ -46,22 +48,36 @@ object RetrofitKaKao {
     }
 
     //카카오 스테이지 베스트=
-    fun getBestKakaoStage(
-        adult: String?,
-        dateRange: String?,
-        genreIds: String?,
-        recentHours: String?,
-    ): Call<List<BestResultKakaoStageNovel>?>? {
-        return Retrofit.Builder()
-            .baseUrl(HELPER.API_KAKAO_STAGE)
-            .addConverterFactory(GsonConverterFactory.create()).build()
-            .create(ServiceSearchKakaoStage::class.java)
-            .getRetrofit(
-                adult,
-                dateRange,
-                genreIds,
-                recentHours
-            )
+//    fun getBestKakaoStage(
+//        adult: String?,
+//        dateRange: String?,
+//        genreIds: String?,
+//        recentHours: String?,
+//    ): Call<List<BestResultKakaoStageNovel>?>? {
+//        return Retrofit.Builder()
+//            .baseUrl(HELPER.API_KAKAO_STAGE)
+//            .addConverterFactory(GsonConverterFactory.create()).build()
+//            .create(ServiceSearchKakaoStage::class.java)
+//            .getRetrofit(
+//                adult,
+//                dateRange,
+//                genreIds,
+//                recentHours
+//            )
+//    }
+
+    fun getBestKakaoStage(map: MutableMap<String?, Any>, dataListener: RetrofitDataListener<List<BestResultKakaoStageNovel>>) {
+        apiKakaoStage.getBestKakaoStage(map).enqueue(baseCallback(dataListener))
     }
+
+    fun postKakaoBookDetail(map: MutableMap<String?, Any>, dataListener: RetrofitDataListener<BestKakaoBookDetail>) {
+        apiKakao.postKakaoBookDetail(map).enqueue(baseCallback(dataListener))
+    }
+
+    fun postKakaoBookDetailComment(map: MutableMap<String?, Any>, dataListener: RetrofitDataListener<BestKakaoBookDetailComment>) {
+        apiKakao.postKakaoBookDetailComment(map).enqueue(baseCallback(dataListener))
+    }
+
+
 }
 

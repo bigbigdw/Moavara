@@ -190,7 +190,12 @@ object Mining {
                             NaverRef["date"] = DBDate.DateMMDD()
                             NaverRef["status"] = calculateNum(i, title, itemsYesterday).status
                             NaverRef["type"] = "Naver Today"
-                            NaverRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
+                            try{
+                                NaverRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
+                            } catch (exception: IndexOutOfBoundsException){
+                                NaverRef["trophyCount"] = 1
+                            }
+
 //                            NaverRef["trophyCount"] = bestDao.bestDao().countTrophy(title)
 
                             miningValue(NaverRef, i, "Naver Today", cate, context)
@@ -567,13 +572,13 @@ object Mining {
     fun getKakaoStageBest(cate: String, context: Context) {
         val KakaoRef: MutableMap<String?, Any> = HashMap()
 
-        val call: Call<List<BestResultKakaoStageNovel>?>? = RetrofitKaKao.getBestKakaoStage(
-            "false",
-            "YESTERDAY",
-            Genre.setKakaoStageGenre(cate),
-            "72"
-        )
+        val apiKakao = RetrofitKaKao()
+        val param : MutableMap<String?, Any> = HashMap()
 
+        param["adult"] = "false"
+        param["dateRange"] = "YESTERDAY"
+        param["genreIds"] = Genre.setKakaoStageGenre(cate)
+        param["recentHours"] = "72"
 
         val yesterdayRef =
             mRootRef.child("best").child("Kakao Stage").child(cate).child("today").child(
@@ -609,14 +614,12 @@ object Mining {
                     )
                 }
 
-                call!!.clone().enqueue(object : Callback<List<BestResultKakaoStageNovel>?> {
-                    override fun onResponse(
-                        call: Call<List<BestResultKakaoStageNovel>?>,
-                        response: Response<List<BestResultKakaoStageNovel>?>
-                    ) {
+                apiKakao.getBestKakaoStage(
+                    param,
+                    object : RetrofitDataListener<List<BestResultKakaoStageNovel>> {
+                        override fun onSuccess(data: List<BestResultKakaoStageNovel>) {
 
-                        if (response.isSuccessful) {
-                            response.body()?.let { it ->
+                            data.let {
 
                                 val list = it
 
@@ -642,21 +645,14 @@ object Mining {
                                         calculateNum(i, novel.title, itemsYesterday).status
                                     KakaoRef["type"] = "Kakao Stage"
                                     KakaoRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
-//                                    KakaoRef["trophyCount"] = bestDao.bestDao().countTrophy(novel.title)
+                        //                                    KakaoRef["trophyCount"] = bestDao.bestDao().countTrophy(novel.title)
 
                                     miningValue(KakaoRef, i, "Kakao Stage", cate, context)
                                 }
                             }
-                        }
-                    }
 
-                    override fun onFailure(
-                        call: Call<List<BestResultKakaoStageNovel>?>,
-                        t: Throwable
-                    ) {
-                        Log.d("onFailure", "실패")
-                    }
-                })
+                        }
+                    })
             }
 
             override fun onCancelled(databaseError: DatabaseError) {}
@@ -666,8 +662,7 @@ object Mining {
     fun getKakaoBest(cate: String, context: Context) {
         val KakaoRef: MutableMap<String?, Any> = HashMap()
 
-        val call: Call<BestResultKakao?>? = RetrofitKaKao.getBestKakao("11", "0", "0", "2", "A")
-
+        val call: Call<BestResultKakao?>? = RetrofitKaKao().getBestKakao("11", "0", "0", "2", "A")
 
         val yesterdayRef = mRootRef.child("best").child("Kakao").child(cate).child("today").child(
             DBDate.Yesterday()

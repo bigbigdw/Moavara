@@ -78,18 +78,6 @@ object RetrofitJoara {
             )
     }
 
-    fun getJoaraBookBest(best: String?, store: String?, category: String?): Call<JoaraBestListResult?>? {
-        return Retrofit.Builder()
-            .baseUrl(HELPER.API_JOARA)
-            .addConverterFactory(GsonConverterFactory.create()).build()
-            .create(JoaraBestService::class.java)
-            .getRetrofit(
-                best,
-                store,
-                category
-            )
-    }
-
     fun getBookDetailJoa(map: MutableMap<String?, Any>): Call<JoaraBestDetailResult> {
         return Retrofit.Builder()
             .baseUrl(HELPER.API_JOARA)
