@@ -48,6 +48,8 @@ class ActivityBestDetail : AppCompatActivity() {
         setSupportActionBar(toolbar)
         Objects.requireNonNull(supportActionBar)!!.setDisplayHomeAsUpEnabled(true)
 
+        Log.d("####", type)
+
         if (type == "Joara" || type == "Joara Nobless" || type == "Joara Premium") {
             setLayoutJoara()
         } else if (type == "Naver Today" || type == "Naver Challenge" || type == "Naver"){
@@ -59,6 +61,9 @@ class ActivityBestDetail : AppCompatActivity() {
         if(type == "Naver Today" || type == "Naver Challenge" || type == "Naver"){
             binding.tabs.addTab(binding.tabs.newTab().setText("다른 작품"))
             binding.tabs.addTab(binding.tabs.newTab().setText("작품 분석"))
+        } else if(type == "Kakao") {
+            binding.tabs.addTab(binding.tabs.newTab().setText("댓글"))
+            binding.tabs.addTab(binding.tabs.newTab().setText("작품 분석"))
         } else {
             binding.tabs.addTab(binding.tabs.newTab().setText("댓글"))
             binding.tabs.addTab(binding.tabs.newTab().setText("다른 작품"))
@@ -69,7 +74,7 @@ class ActivityBestDetail : AppCompatActivity() {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 when(tab.position){
                     0->{
-                        if (type == "Joara" || type == "Joara Nobless" || type == "Joara Premium") {
+                        if (type == "Joara" || type == "Joara Nobless" || type == "Joara Premium" || type == "Kakao") {
                             mFragmentBestDetailComment = FragmentBestDetailComment(type, bookCode)
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailComment)
@@ -87,7 +92,7 @@ class ActivityBestDetail : AppCompatActivity() {
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
                             }
-                        } else if (type == "Naver Today" || type == "Naver Challenge" || type == "Naver") {
+                        } else if (type == "Naver Today" || type == "Naver Challenge" || type == "Naver" || type == "Kakao") {
                             mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(type, intent.getIntExtra("POSITION", 0))
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
@@ -227,6 +232,11 @@ class ActivityBestDetail : AppCompatActivity() {
                     }
                 }
             })
+
+        mFragmentBestDetailComment = FragmentBestDetailComment(type, bookCode)
+        supportFragmentManager.commit {
+            replace(R.id.llayoutWrap, mFragmentBestDetailComment)
+        }
     }
 
 

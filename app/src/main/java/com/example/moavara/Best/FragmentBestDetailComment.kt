@@ -48,7 +48,7 @@ class FragmentBestDetailComment(private val platfrom: String, private val bookCo
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rviewBest.adapter = adapterBestComment
 
-        Log.d("####", platfrom)
+        Log.d("####-2", platfrom)
 
         if(platfrom == "Joara" || platfrom == "Joara Nobless" || platfrom == "Joara Premium"){
             getCommentsJoara()

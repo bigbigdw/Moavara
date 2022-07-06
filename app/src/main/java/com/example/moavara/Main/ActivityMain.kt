@@ -59,28 +59,28 @@ class ActivityMain : AppCompatActivity() {
         navController = Navigation.findNavController(this, R.id.navHostFragmentMain)
 
         toolbar.setOnClickListener {
-//            WorkManager.getInstance().cancelAllWork()
-//            val miningRef = mRootRef.child("Mining")
-//            miningRef.setValue("NULL")
-//            Toast.makeText(this, "WorkManager 해제됨", Toast.LENGTH_SHORT).show()
+            WorkManager.getInstance().cancelAllWork()
+            val miningRef = mRootRef.child("Mining")
+            miningRef.setValue("NULL")
+            Toast.makeText(this, "WorkManager 해제됨", Toast.LENGTH_SHORT).show()
 
             /* 처리해야할 작업에 관한 코드들 */
-            Handler(Looper.getMainLooper()).postDelayed({
-                Mining.runMining(applicationContext, "ALL")
-                Log.d("MINING", "ALL")
-            }, 1000) //1초 후 실행
-            Handler(Looper.getMainLooper()).postDelayed({
-                Mining.runMining(applicationContext, "ROMANCE")
-                Log.d("MINING", "ROMANCE")
-            }, 1000) //1초 후 실행
-            Handler(Looper.getMainLooper()).postDelayed({
-                Mining.runMining(applicationContext, "BL")
-                Log.d("MINING", "BL")
-            }, 1000) //1초 후 실행
-            Handler(Looper.getMainLooper()).postDelayed({
-                Mining.runMining(applicationContext, "FANTASY")
-                Log.d("MINING", "FANTASY")
-            }, 1000) //1초 후 실행
+//            Handler(Looper.getMainLooper()).postDelayed({
+//                Mining.runMining(applicationContext, "ALL")
+//                Log.d("MINING", "ALL")
+//            }, 1000) //1초 후 실행
+//            Handler(Looper.getMainLooper()).postDelayed({
+//                Mining.runMining(applicationContext, "ROMANCE")
+//                Log.d("MINING", "ROMANCE")
+//            }, 1000) //1초 후 실행
+//            Handler(Looper.getMainLooper()).postDelayed({
+//                Mining.runMining(applicationContext, "BL")
+//                Log.d("MINING", "BL")
+//            }, 1000) //1초 후 실행
+//            Handler(Looper.getMainLooper()).postDelayed({
+//                Mining.runMining(applicationContext, "FANTASY")
+//                Log.d("MINING", "FANTASY")
+//            }, 1000) //1초 후 실행
         }
 
         val navView = findViewById<BottomNavigationView>(R.id.nav_bottom)
