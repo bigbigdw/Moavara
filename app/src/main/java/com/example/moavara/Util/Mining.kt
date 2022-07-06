@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.room.Room
 import com.example.moavara.DataBase.BookListDataBestToday
 import com.example.moavara.DataBase.DataBaseBestDay
+import com.example.moavara.Main.ActivityAdmin
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.Retrofit.*
 import com.google.firebase.database.DataSnapshot
@@ -108,8 +109,16 @@ object Mining {
                             MrBlueRef["date"] = DBDate.DateMMDD()
                             MrBlueRef["status"] = calculateNum(i, title, itemsYesterday).status
                             MrBlueRef["type"] = "MrBlue"
-                            MrBlueRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
-//                            MrBlueRef["trophyCount"] = bestDao.bestDao().countTrophy(title)
+
+                            if(context is ActivityAdmin){
+                                if(context.isRoom){
+                                    MrBlueRef["trophyCount"] = bestDao.bestDao().countTrophy(title)
+                                } else {
+                                    MrBlueRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0)
+                                }
+                            } else {
+                                MrBlueRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
+                            }
 
                             miningValue(MrBlueRef, i, "MrBlue", cate, context)
 
@@ -190,13 +199,20 @@ object Mining {
                             NaverRef["date"] = DBDate.DateMMDD()
                             NaverRef["status"] = calculateNum(i, title, itemsYesterday).status
                             NaverRef["type"] = "Naver Today"
-                            try{
-                                NaverRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
-                            } catch (exception: IndexOutOfBoundsException){
-                                NaverRef["trophyCount"] = 1
-                            }
 
-//                            NaverRef["trophyCount"] = bestDao.bestDao().countTrophy(title)
+                            if(context is ActivityAdmin){
+                                if(context.isRoom){
+                                    NaverRef["trophyCount"] = bestDao.bestDao().countTrophy(title)
+                                } else {
+                                    NaverRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0)
+                                }
+                            } else {
+                                try{
+                                    NaverRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
+                                } catch (exception: IndexOutOfBoundsException){
+                                    NaverRef["trophyCount"] = 1
+                                }
+                            }
 
                             miningValue(NaverRef, i, "Naver Today", cate, context)
 
@@ -279,8 +295,16 @@ object Mining {
                             NaverRef["date"] = DBDate.DateMMDD()
                             NaverRef["status"] = calculateNum(i, title, itemsYesterday).status
                             NaverRef["type"] = "Naver Challenge"
-                            NaverRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
-//                            NaverRef["trophyCount"] = bestDao.bestDao().countTrophy(title)
+
+                            if(context is ActivityAdmin){
+                                if(context.isRoom){
+                                    NaverRef["trophyCount"] = bestDao.bestDao().countTrophy(title)
+                                } else {
+                                    NaverRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0)
+                                }
+                            } else {
+                                NaverRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
+                            }
 
                             miningValue(NaverRef, i, "Naver Challenge", cate, context)
 
@@ -364,8 +388,16 @@ object Mining {
                             NaverRef["date"] = DBDate.DateMMDD()
                             NaverRef["status"] = calculateNum(i, title, itemsYesterday).status
                             NaverRef["type"] = "Naver"
-                            NaverRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
-//                            NaverRef["trophyCount"] = bestDao.bestDao().countTrophy(title)
+
+                            if(context is ActivityAdmin){
+                                if(context.isRoom){
+                                    NaverRef["trophyCount"] = bestDao.bestDao().countTrophy(title)
+                                } else {
+                                    NaverRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0)
+                                }
+                            } else {
+                                NaverRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
+                            }
 
                             miningValue(NaverRef, i, "Naver", cate, context)
 
@@ -426,30 +458,39 @@ object Mining {
                             .allowMainThreadQueries().build()
 
                         for (i in Ridi.indices) {
+                            if(i > 0){
+                                val title = doc.select("div .title_link")[i].text()
 
-                            val title = doc.select("div .title_link")[i].text()
+                                RidiRef["writerName"] = doc.select("div .author_detail_link")[i].text()
+                                RidiRef["subject"] = doc.select("div .title_link")[i].text()
+                                RidiRef["bookImg"] =
+                                    Ridi.select(".thumbnail_image .thumbnail")[i].absUrl("data-src")
+                                RidiRef["bookCode"] = Ridi.select("a")[i].absUrl("href")
+                                RidiRef["info1"] = doc.select(".count_num")[i].text()
+                                RidiRef["info2"] =
+                                    "추천 수 : " + doc.select("span .StarRate_ParticipantCount")[i].text()
+                                RidiRef["info3"] =
+                                    "평점 : " + doc.select("span .StarRate_Score")[i].text()
+                                RidiRef["info4"] = ""
+                                RidiRef["info5"] = ""
+                                RidiRef["number"] = i
+                                RidiRef["numberDiff"] = calculateNum(i, title, itemsYesterday).num
+                                RidiRef["date"] = DBDate.DateMMDD()
+                                RidiRef["status"] = calculateNum(i, title, itemsYesterday).status
+                                RidiRef["type"] = "Ridi"
 
-                            RidiRef["writerName"] = doc.select("div .author_detail_link")[i].text()
-                            RidiRef["subject"] = doc.select("div .title_link")[i].text()
-                            RidiRef["bookImg"] =
-                                Ridi.select(".thumbnail_image .thumbnail")[i].absUrl("data-src")
-                            RidiRef["bookCode"] = Ridi.select("a")[i].absUrl("href")
-                            RidiRef["info1"] = doc.select(".count_num")[i].text()
-                            RidiRef["info2"] =
-                                "추천 수 : " + doc.select("span .StarRate_ParticipantCount")[i].text()
-                            RidiRef["info3"] =
-                                "평점 : " + doc.select("span .StarRate_Score")[i].text()
-                            RidiRef["info4"] = ""
-                            RidiRef["info5"] = ""
-                            RidiRef["number"] = i
-                            RidiRef["numberDiff"] = calculateNum(i, title, itemsYesterday).num
-                            RidiRef["date"] = DBDate.DateMMDD()
-                            RidiRef["status"] = calculateNum(i, title, itemsYesterday).status
-                            RidiRef["type"] = "Ridi"
-                            RidiRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
-//                            RidiRef["trophyCount"] = bestDao.bestDao().countTrophy(doc.select("div .title_link")[i].text())
+                                if(context is ActivityAdmin){
+                                    if(context.isRoom){
+                                        RidiRef["trophyCount"] = bestDao.bestDao().countTrophy(doc.select("div .title_link")[i].text())
+                                    } else {
+                                        RidiRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0)
+                                    }
+                                } else {
+                                    RidiRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
+                                }
 
-                            miningValue(RidiRef, i, "Ridi", cate, context)
+                                miningValue(RidiRef, i - 1, "Ridi", cate, context)
+                            }
                         }
                     }
 
@@ -546,8 +587,16 @@ object Mining {
                                         ).status
 
                                         OneStoryRef["type"] = "OneStore"
-                                        OneStoryRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
-//                                        OneStoryRef["trophyCount"] = bestDao.bestDao().countTrophy(productList[i].prodNm)
+
+                                        if(context is ActivityAdmin){
+                                            if(context.isRoom){
+                                                OneStoryRef["trophyCount"] = bestDao.bestDao().countTrophy(productList[i].prodNm)
+                                            } else {
+                                                OneStoryRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0)
+                                            }
+                                        } else {
+                                            OneStoryRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
+                                        }
 
                                         miningValue(OneStoryRef, i, "OneStore", cate, context)
 
@@ -644,8 +693,16 @@ object Mining {
                                     KakaoRef["status"] =
                                         calculateNum(i, novel.title, itemsYesterday).status
                                     KakaoRef["type"] = "Kakao Stage"
-                                    KakaoRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
-                        //                                    KakaoRef["trophyCount"] = bestDao.bestDao().countTrophy(novel.title)
+
+                                    if(context is ActivityAdmin){
+                                        if(context.isRoom){
+                                            KakaoRef["trophyCount"] = bestDao.bestDao().countTrophy(novel.title)
+                                        } else {
+                                            KakaoRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0)
+                                        }
+                                    } else {
+                                        KakaoRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
+                                    }
 
                                     miningValue(KakaoRef, i, "Kakao Stage", cate, context)
                                 }
@@ -730,8 +787,16 @@ object Mining {
                                     KakaoRef["status"] =
                                         calculateNum(i, list[i].title, itemsYesterday).status
                                     KakaoRef["type"] = "Kakao"
-                                    KakaoRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
-//                                    KakaoRef["trophyCount"] = bestDao.bestDao().countTrophy(list[i].title)
+
+                                    if(context is ActivityAdmin){
+                                        if(context.isRoom){
+                                            KakaoRef["trophyCount"] = bestDao.bestDao().countTrophy(list[i].title)
+                                        } else {
+                                            KakaoRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0)
+                                        }
+                                    } else {
+                                        KakaoRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
+                                    }
 
                                     miningValue(KakaoRef, i, "Kakao", cate, context)
 
@@ -826,8 +891,16 @@ object Mining {
                                 JoaraRef["status"] =
                                     calculateNum(i, books[i].subject, itemsYesterday).status
                                 JoaraRef["type"] = "Joara"
-                                JoaraRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
-//                                JoaraRef["trophyCount"] = bestDao.bestDao().countTrophy(books[i].subject)
+
+                                if(context is ActivityAdmin){
+                                    if(context.isRoom){
+                                        JoaraRef["trophyCount"] = bestDao.bestDao().countTrophy(books[i].subject)
+                                    } else {
+                                        JoaraRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0)
+                                    }
+                                } else {
+                                    JoaraRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
+                                }
 
                                 miningValue(JoaraRef, (i + ((page - 1) * books.size)), "Joara", cate, context)
                             }
@@ -916,8 +989,16 @@ object Mining {
                                 JoaraRef["status"] =
                                     calculateNum(i, books[i].subject, itemsYesterday).status
                                 JoaraRef["type"] = "Joara Premium"
-                                JoaraRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
-//                                JoaraRef["trophyCount"] = bestDao.bestDao().countTrophy(books[i].subject)
+
+                                if(context is ActivityAdmin){
+                                    if(context.isRoom){
+                                        JoaraRef["trophyCount"] = bestDao.bestDao().countTrophy(books[i].subject)
+                                    } else {
+                                        JoaraRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0)
+                                    }
+                                } else {
+                                    JoaraRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
+                                }
 
                                 miningValue(JoaraRef, (i + ((page - 1) * books.size)), "Joara Premium", cate, context)
                             }
@@ -1006,8 +1087,16 @@ object Mining {
                                 JoaraRef["status"] =
                                     calculateNum(i, books[i].subject, itemsYesterday).status
                                 JoaraRef["type"] = "Joara Nobless"
-                                JoaraRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
-//                                JoaraRef["trophyCount"] = bestDao.bestDao().countTrophy(books[i].subject)
+
+                                if(context is ActivityAdmin){
+                                    if(context.isRoom){
+                                        JoaraRef["trophyCount"] = bestDao.bestDao().countTrophy(books[i].subject)
+                                    } else {
+                                        JoaraRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0)
+                                    }
+                                } else {
+                                    JoaraRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
+                                }
 
                                 miningValue(JoaraRef, (i + ((page - 1) * books.size)), "Joara Nobless", cate, context)
                             }
@@ -1060,5 +1149,15 @@ object Mining {
 
                 override fun onCancelled(databaseError: DatabaseError) {}
             })
+    }
+
+    fun RoomDBRemove(context: Context, tabType: String, cate: String){
+        val bestDao: DataBaseBestDay = Room.databaseBuilder(
+            context,
+            DataBaseBestDay::class.java,
+            "$tabType $cate"
+        ).allowMainThreadQueries().build()
+
+        bestDao.bestDao().initAll()
     }
 }

@@ -12,10 +12,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.room.Room
 import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import com.example.moavara.DataBase.DataBaseBestDay
 import com.example.moavara.Firebase.FirebaseWorkManager
 import com.example.moavara.R
 import com.example.moavara.Search.ActivitySearch
@@ -34,6 +36,7 @@ class ActivityAdmin : AppCompatActivity() {
 
     var cate = "ALL"
     var status = ""
+    var isRoom = false
     private lateinit var binding: ActivityAdminBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,6 +84,8 @@ class ActivityAdmin : AppCompatActivity() {
             }
 
             llayoutBtn3.setOnClickListener{
+                isRoom = false
+
                 /* 처리해야할 작업에 관한 코드들 */
                 Handler(Looper.getMainLooper()).postDelayed({
                     Mining.runMining(applicationContext, "ALL")
@@ -98,6 +103,7 @@ class ActivityAdmin : AppCompatActivity() {
                     Mining.runMining(applicationContext, "FANTASY")
                     Log.d("MINING", "FANTASY")
                 }, 1000) //1초 후 실행
+                Toast.makeText(this@ActivityAdmin, "데이터 갱신 완료", Toast.LENGTH_SHORT).show()
             }
 
             llayoutBtn4.setOnClickListener {
@@ -277,6 +283,211 @@ class ActivityAdmin : AppCompatActivity() {
                     Mining.RoomDB(this@ActivityAdmin, "MrBlue", "FANTASY")
                     Log.d("MINING", "FANTASY")
                 }, 1000) //1초 후 실행
+                Toast.makeText(this@ActivityAdmin, "Room 완료", Toast.LENGTH_SHORT).show()
+            }
+
+            llayoutBtn5.setOnClickListener{
+
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Joara", "ALL")
+                    Log.d("MINING", "ALL")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Joara", "ROMANCE")
+                    Log.d("MINING", "ROMANCE")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Joara", "BL")
+                    Log.d("MINING", "BL")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Joara", "FANTASY")
+                    Log.d("MINING", "FANTASY")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Joara Nobless", "ALL")
+                    Log.d("MINING", "ALL")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Joara Nobless", "ROMANCE")
+                    Log.d("MINING", "ROMANCE")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Joara Nobless", "BL")
+                    Log.d("MINING", "BL")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Joara Nobless", "FANTASY")
+                    Log.d("MINING", "FANTASY")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Joara Premium", "ALL")
+                    Log.d("MINING", "ALL")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Joara Premium", "ROMANCE")
+                    Log.d("MINING", "ROMANCE")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Joara Premium", "BL")
+                    Log.d("MINING", "BL")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Joara Premium", "FANTASY")
+                    Log.d("MINING", "FANTASY")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Naver Today", "ALL")
+                    Log.d("MINING", "ALL")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Naver Today", "ROMANCE")
+                    Log.d("MINING", "ROMANCE")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Naver Today", "BL")
+                    Log.d("MINING", "BL")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Naver Today", "FANTASY")
+                    Log.d("MINING", "FANTASY")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Naver Challenge", "ALL")
+                    Log.d("MINING", "ALL")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Naver Challenge", "ROMANCE")
+                    Log.d("MINING", "ROMANCE")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Naver Challenge", "BL")
+                    Log.d("MINING", "BL")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Naver Challenge", "FANTASY")
+                    Log.d("MINING", "FANTASY")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Naver", "ALL")
+                    Log.d("MINING", "ALL")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Naver", "ROMANCE")
+                    Log.d("MINING", "ROMANCE")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Naver", "BL")
+                    Log.d("MINING", "BL")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Naver", "FANTASY")
+                    Log.d("MINING", "FANTASY")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Kakao", "ALL")
+                    Log.d("MINING", "ALL")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Kakao", "ROMANCE")
+                    Log.d("MINING", "ROMANCE")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Kakao", "BL")
+                    Log.d("MINING", "BL")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Kakao", "FANTASY")
+                    Log.d("MINING", "FANTASY")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Kakao Stage", "ALL")
+                    Log.d("MINING", "ALL")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Kakao Stage", "ROMANCE")
+                    Log.d("MINING", "ROMANCE")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Kakao Stage", "BL")
+                    Log.d("MINING", "BL")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Kakao Stage", "FANTASY")
+                    Log.d("MINING", "FANTASY")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Ridi", "ALL")
+                    Log.d("MINING", "ALL")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Ridi", "ROMANCE")
+                    Log.d("MINING", "ROMANCE")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Ridi", "BL")
+                    Log.d("MINING", "BL")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "Ridi", "FANTASY")
+                    Log.d("MINING", "FANTASY")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "OneStore", "ALL")
+                    Log.d("MINING", "ALL")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "OneStore", "ROMANCE")
+                    Log.d("MINING", "ROMANCE")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "OneStore", "BL")
+                    Log.d("MINING", "BL")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "OneStore", "FANTASY")
+                    Log.d("MINING", "FANTASY")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "MrBlue", "ALL")
+                    Log.d("MINING", "ALL")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "MrBlue", "ROMANCE")
+                    Log.d("MINING", "ROMANCE")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "MrBlue", "BL")
+                    Log.d("MINING", "BL")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.RoomDBRemove(this@ActivityAdmin, "MrBlue", "FANTASY")
+                    Log.d("MINING", "FANTASY")
+                }, 1000) //1초 후 실행
+                Toast.makeText(this@ActivityAdmin, "Room 초기화 완료", Toast.LENGTH_SHORT).show()
+            }
+
+            llayoutBtn7.setOnClickListener{
+                isRoom = true
+
+                /* 처리해야할 작업에 관한 코드들 */
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.runMining(applicationContext, "ALL")
+                    Log.d("MINING", "ALL")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.runMining(applicationContext, "ROMANCE")
+                    Log.d("MINING", "ROMANCE")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.runMining(applicationContext, "BL")
+                    Log.d("MINING", "BL")
+                }, 1000) //1초 후 실행
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Mining.runMining(applicationContext, "FANTASY")
+                    Log.d("MINING", "FANTASY")
+                }, 1000) //1초 후 실행
+                Toast.makeText(this@ActivityAdmin, "데이터 갱신 완료", Toast.LENGTH_SHORT).show()
             }
         }
 

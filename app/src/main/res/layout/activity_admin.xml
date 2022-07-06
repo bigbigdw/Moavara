@@ -184,7 +184,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="데이터 수집"
+                                android:text="데이터 갱신"
                                 android:textColor="#EDE6FD"
                                 android:textSize="16dp"
                                 android:textStyle="bold" />
@@ -203,6 +203,42 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Room"
+                                android:textColor="#EDE6FD"
+                                android:textSize="16dp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/llayout_btn5"
+                            android:layout_width="260dp"
+                            android:layout_height="56dp"
+                            android:layout_marginBottom="8dp"
+                            android:background="@drawable/selector_genre"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Room 초기화"
+                                android:textColor="#EDE6FD"
+                                android:textSize="16dp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/llayout_btn7"
+                            android:layout_width="260dp"
+                            android:layout_height="56dp"
+                            android:layout_marginBottom="8dp"
+                            android:background="@drawable/selector_genre"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Room 데이터 갱신"
                                 android:textColor="#EDE6FD"
                                 android:textSize="16dp"
                                 android:textStyle="bold" />

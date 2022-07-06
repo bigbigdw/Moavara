@@ -48,8 +48,6 @@ class ActivityBestDetail : AppCompatActivity() {
         setSupportActionBar(toolbar)
         Objects.requireNonNull(supportActionBar)!!.setDisplayHomeAsUpEnabled(true)
 
-        Log.d("####", type)
-
         if (type == "Joara" || type == "Joara Nobless" || type == "Joara Premium") {
             setLayoutJoara()
         } else if (type == "Naver Today" || type == "Naver Challenge" || type == "Naver"){
@@ -58,6 +56,8 @@ class ActivityBestDetail : AppCompatActivity() {
             setLayoutKaKao()
         } else if (type == "Kakao Stage"){
             setLayoutKaKaoStage()
+        } else if (type == "Ridi"){
+            setLayoutRidi()
         }
 
         if(type == "Naver Today" || type == "Naver Challenge" || type == "Naver"){
@@ -275,6 +275,39 @@ class ActivityBestDetail : AppCompatActivity() {
         supportFragmentManager.commit {
             replace(R.id.llayoutWrap, mFragmentBestDetailComment)
         }
+    }
+
+    fun setLayoutRidi(){
+        Thread {
+            val doc: Document = Jsoup.connect(bookCode).get()
+
+           Log.d("####-1", doc.select(".header_info_wrap .StarRate_ParticipantCount").toString())
+            Log.d("####-2", doc.select(".thumbnail_image img").attr("src").toString())
+
+            runOnUiThread {
+                with(binding){
+                    Glide.with(context)
+                        .load("https:${doc.select(".thumbnail_image img").attr("src")}")
+                        .into(inclueBestDetail.iviewBookCover)
+
+                    bookTitle = doc.select(".header_info_wrap .info_title_wrap").text()
+                    inclueBestDetail.tviewTitle.text = bookTitle
+                    inclueBestDetail.tviewWriter.text = doc.select(".header_info_wrap .metadata metadata_writer").text()
+
+                    inclueBestDetail.tviewInfo1.text = doc.select(".header_info_wrap .info_category_wrap").text()
+                    inclueBestDetail.tviewInfo2.text =  doc.select(".header_info_wrap .StarRate_Score").text()
+                    inclueBestDetail.tviewInfo3.text =  doc.select(".header_info_wrap .StarRate_ParticipantCount").text()
+                    inclueBestDetail.tviewInfo4.text =  doc.select(".header_info_wrap").text()
+
+                    tviewIntro.text = doc.select(".introduce_paragraph .foldable").text()
+                }
+
+                mFragmentBestDetailBooks = FragmentBestDetailBooks(type, bookCode)
+                supportFragmentManager.commit {
+                    replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
+                }
+            }
+        }.start()
     }
 
 
