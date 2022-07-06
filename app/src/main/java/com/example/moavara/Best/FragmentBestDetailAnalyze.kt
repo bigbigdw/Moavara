@@ -162,6 +162,10 @@ class FragmentBestDetailAnalyze(private val platfrom: String, private val pos: I
                                 entryList2.add(BarEntry(num.toFloat(), BestRef.StrToInt(group.info4.replace("추천 수 : ", "")).toFloat()))
                                 entryList3.add(BarEntry(num.toFloat(), group.info5.replace("평점 : ", "").toFloat()))
                                 entryList4.add(Entry(num.toFloat(), group.number.toFloat()))
+                            } else if(platfrom == "Kakao Stage"){
+                                entryList.add(BarEntry(num.toFloat(), BestRef.StrToInt(group.info3.replace("조회 수 : ", "")).toFloat()))
+                                entryList2.add(BarEntry(num.toFloat(), BestRef.StrToInt(group.info4.replace("선호작 수 : ", "")).toFloat()))
+                                entryList4.add(Entry(num.toFloat(), group.number.toFloat()))
                             }
 
                             with(binding.includeRank) {
@@ -264,6 +268,9 @@ class FragmentBestDetailAnalyze(private val platfrom: String, private val pos: I
                         items.add(BestChart(dateList, entryList, "조회 수", "#ff7b22"))
                         items.add(BestChart(dateList, entryList2, "추천 수", "#4971EF"))
                         items.add(BestChart(dateList, entryList3, "평점", "#00d180"))
+                    } else if(platfrom == "Kakao Stage"){
+                        items.add(BestChart(dateList, entryList, "조회 수", "#ff7b22"))
+                        items.add(BestChart(dateList, entryList2, "선호작 수", "#4971EF"))
                     }
                     adapterChart!!.notifyDataSetChanged()
                 }

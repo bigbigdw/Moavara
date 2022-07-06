@@ -56,12 +56,14 @@ class ActivityBestDetail : AppCompatActivity() {
             setLayoutNaverToday()
         } else if (type == "Kakao"){
             setLayoutKaKao()
+        } else if (type == "Kakao Stage"){
+            setLayoutKaKaoStage()
         }
 
         if(type == "Naver Today" || type == "Naver Challenge" || type == "Naver"){
             binding.tabs.addTab(binding.tabs.newTab().setText("다른 작품"))
             binding.tabs.addTab(binding.tabs.newTab().setText("작품 분석"))
-        } else if(type == "Kakao") {
+        } else if(type == "Kakao" || type == "Kakao Stage") {
             binding.tabs.addTab(binding.tabs.newTab().setText("댓글"))
             binding.tabs.addTab(binding.tabs.newTab().setText("작품 분석"))
         } else {
@@ -74,7 +76,7 @@ class ActivityBestDetail : AppCompatActivity() {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 when(tab.position){
                     0->{
-                        if (type == "Joara" || type == "Joara Nobless" || type == "Joara Premium" || type == "Kakao") {
+                        if (type == "Joara" || type == "Joara Nobless" || type == "Joara Premium" || type == "Kakao" || type == "Kakao Stage") {
                             mFragmentBestDetailComment = FragmentBestDetailComment(type, bookCode)
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailComment)
@@ -92,7 +94,7 @@ class ActivityBestDetail : AppCompatActivity() {
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
                             }
-                        } else if (type == "Naver Today" || type == "Naver Challenge" || type == "Naver" || type == "Kakao") {
+                        } else if (type == "Naver Today" || type == "Naver Challenge" || type == "Naver" || type == "Kakao"|| type == "Kakao Stage") {
                             mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(type, intent.getIntExtra("POSITION", 0))
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
@@ -228,6 +230,42 @@ class ActivityBestDetail : AppCompatActivity() {
                             inclueBestDetail.tviewInfo4.text =  "댓글 수 : ${it.page_comment_count}"
 
                             tviewIntro.text =  it.description
+                        }
+                    }
+                }
+            })
+
+        mFragmentBestDetailComment = FragmentBestDetailComment(type, bookCode)
+        supportFragmentManager.commit {
+            replace(R.id.llayoutWrap, mFragmentBestDetailComment)
+        }
+    }
+
+    fun setLayoutKaKaoStage(){
+        val apiKakaoStage = RetrofitKaKao()
+
+        apiKakaoStage.getBestKakaoStageDetail(
+            bookCode,
+            object : RetrofitDataListener<KakaoStageBestBookResult> {
+                override fun onSuccess(data: KakaoStageBestBookResult) {
+
+                    with(binding){
+                        data.let { it ->
+                            Glide.with(context)
+                                .load(data.thumbnail.url)
+                                .into(inclueBestDetail.iviewBookCover)
+
+                            bookTitle = it.title
+
+                            inclueBestDetail.tviewTitle.text = bookTitle
+                            inclueBestDetail.tviewWriter.text = it.nickname.name
+
+                            inclueBestDetail.tviewInfo1.text = "총 ${it.publishedEpisodeCount}화"
+                            inclueBestDetail.tviewInfo2.text =  "선호작 수 : ${it.favoriteCount}"
+                            inclueBestDetail.tviewInfo3.text =  "조회 수 : ${it.viewCount}"
+                            inclueBestDetail.tviewInfo4.text =  "방문 수 : ${it.visitorCount}"
+
+                            tviewIntro.text =  it.synopsis
                         }
                     }
                 }

@@ -218,3 +218,65 @@ class BestKakaoBookDetailCommentList{
     @Expose
     var create_dt: String = ""
 }
+
+class KakaoStageBestBookResult {
+    @SerializedName("synopsis")
+    @Expose
+    var synopsis: String = ""
+
+    @SerializedName("title")
+    @Expose
+    var title: String = ""
+
+    @SerializedName("publishedEpisodeCount")
+    @Expose
+    var publishedEpisodeCount: String = ""
+
+    @SerializedName("viewCount")
+    @Expose
+    var viewCount: String = ""
+
+    @SerializedName("favoriteCount")
+    @Expose
+    var favoriteCount: String = ""
+
+    @SerializedName("visitorCount")
+    @Expose
+    var visitorCount: String = ""
+
+    @SerializedName("nickname")
+    @Expose
+    lateinit var  nickname: KakaoStageBestBookNickname
+
+    @SerializedName("thumbnail")
+    @Expose
+    lateinit var thumbnail: KakaoStageBestBookThumbnail
+}
+
+class KakaoStageBestBookNickname{
+    @SerializedName("name")
+    @Expose
+    var name: String = ""
+}
+
+class KakaoStageBestBookThumbnail{
+    @SerializedName("url")
+    @Expose
+    var url: String = ""
+}
+
+class KakaoStageBestBookCommentResult {
+    @SerializedName("content")
+    @Expose
+    lateinit var content: List<KakaoStageBestBookCommentContents>
+}
+
+class KakaoStageBestBookCommentContents{
+    @SerializedName("message")
+    @Expose
+    var message: String = ""
+
+    @SerializedName("createdAt")
+    @Expose
+    var createdAt: String = ""
+}

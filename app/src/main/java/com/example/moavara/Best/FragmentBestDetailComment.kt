@@ -50,10 +50,12 @@ class FragmentBestDetailComment(private val platfrom: String, private val bookCo
 
         Log.d("####-2", platfrom)
 
-        if(platfrom == "Joara" || platfrom == "Joara Nobless" || platfrom == "Joara Premium"){
+        if (platfrom == "Joara" || platfrom == "Joara Nobless" || platfrom == "Joara Premium") {
             getCommentsJoara()
-        } else if (platfrom == "Kakao"){
+        } else if (platfrom == "Kakao") {
             getCommentsKakao()
+        } else if (platfrom == "Kakao Stage") {
+            getCommentsKakaoStage()
         }
 
 
@@ -78,16 +80,16 @@ class FragmentBestDetailComment(private val platfrom: String, private val bookCo
                 if (response.isSuccessful) {
                     response.body()?.let { it ->
 
-                        if(it.status == "1" && it.comments != null){
-                            for(i in it.comments.indices){
+                        if (it.status == "1" && it.comments != null) {
+                            for (i in it.comments.indices) {
                                 items.add(
                                     BestComment(
                                         it.comments[i].comment,
                                         it.comments[i].created,
                                     )
                                 )
-                                adapterBestComment!!.notifyDataSetChanged()
                             }
+                            adapterBestComment!!.notifyDataSetChanged()
                         }
                     }
                 }
@@ -102,7 +104,7 @@ class FragmentBestDetailComment(private val platfrom: String, private val bookCo
 
     private fun getCommentsKakao() {
         val apiKakao = RetrofitKaKao()
-        val param : MutableMap<String?, Any> = HashMap()
+        val param: MutableMap<String?, Any> = HashMap()
 
         param["seriesid"] = bookCode
         param["orderby"] = 0
@@ -115,50 +117,51 @@ class FragmentBestDetailComment(private val platfrom: String, private val bookCo
                 override fun onSuccess(data: BestKakaoBookDetailComment) {
 
                     data.comment_list.let {
-                        for(i in it.indices){
+                        for (i in it.indices) {
                             items.add(
                                 BestComment(
                                     it[i].comment,
                                     it[i].create_dt,
                                 )
                             )
-                            adapterBestComment!!.notifyDataSetChanged()
                         }
+                        adapterBestComment!!.notifyDataSetChanged()
                     }
                 }
             })
+    }
 
+    private fun getCommentsKakaoStage() {
+        val apiKakaoStage = RetrofitKaKao()
+        val param: MutableMap<String?, Any> = HashMap()
 
-        val call: Call<JoaraBestDetailCommentsResult> = RetrofitJoara.getBookCommentJoa(param)
+        param["size"] = 20
+        param["sort"] = "cacheField.likeCount,desc"
+        param["sort"] = "id,desc"
+        param["page"] = 0
 
-        call.enqueue(object : Callback<JoaraBestDetailCommentsResult?> {
-            override fun onResponse(
-                call: Call<JoaraBestDetailCommentsResult?>,
-                response: Response<JoaraBestDetailCommentsResult?>
-            ) {
-                if (response.isSuccessful) {
-                    response.body()?.let { it ->
+        apiKakaoStage.getBestKakaoStageDetailComment(
+            bookCode,
+            "20",
+            "cacheField.likeCount,desc",
+            "id,desc",
+            "0",
+            object : RetrofitDataListener<KakaoStageBestBookCommentResult> {
+                override fun onSuccess(data: KakaoStageBestBookCommentResult) {
 
-                        if(it.status == "1" && it.comments != null){
-                            for(i in it.comments.indices){
-                                items.add(
-                                    BestComment(
-                                        it.comments[i].comment,
-                                        it.comments[i].created,
-                                    )
+                    data.content.let {
+                        for (i in it.indices) {
+                            items.add(
+                                BestComment(
+                                    it[i].message,
+                                    it[i].createdAt,
                                 )
-                                adapterBestComment!!.notifyDataSetChanged()
-                            }
+                            )
                         }
+                        adapterBestComment!!.notifyDataSetChanged()
                     }
                 }
-            }
-
-            override fun onFailure(call: Call<JoaraBestDetailCommentsResult?>, t: Throwable) {
-                Log.d("onFailure", "실패")
-            }
-        })
-
+            })
     }
 }
 
@@ -177,7 +180,8 @@ class AdapterBestOther(items: List<BestComment?>?) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = ItemBestDetailCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val view =
+            ItemBestDetailCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(view)
     }
 
@@ -193,7 +197,8 @@ class AdapterBestOther(items: List<BestComment?>?) :
                     .into(holder.binding.iView)
 
                 holder.binding.tviewTitle.text = item.comment
-                holder.binding.tviewDate.text = item.date.substring(4, 6) + "." + item.date.substring(6, 8)
+                holder.binding.tviewDate.text =
+                    item.date.substring(4, 6) + "." + item.date.substring(6, 8)
             }
 
         }

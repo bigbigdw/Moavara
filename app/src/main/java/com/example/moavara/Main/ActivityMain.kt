@@ -59,28 +59,9 @@ class ActivityMain : AppCompatActivity() {
         navController = Navigation.findNavController(this, R.id.navHostFragmentMain)
 
         toolbar.setOnClickListener {
-            WorkManager.getInstance().cancelAllWork()
-            val miningRef = mRootRef.child("Mining")
-            miningRef.setValue("NULL")
-            Toast.makeText(this, "WorkManager 해제됨", Toast.LENGTH_SHORT).show()
 
-            /* 처리해야할 작업에 관한 코드들 */
-//            Handler(Looper.getMainLooper()).postDelayed({
-//                Mining.runMining(applicationContext, "ALL")
-//                Log.d("MINING", "ALL")
-//            }, 1000) //1초 후 실행
-//            Handler(Looper.getMainLooper()).postDelayed({
-//                Mining.runMining(applicationContext, "ROMANCE")
-//                Log.d("MINING", "ROMANCE")
-//            }, 1000) //1초 후 실행
-//            Handler(Looper.getMainLooper()).postDelayed({
-//                Mining.runMining(applicationContext, "BL")
-//                Log.d("MINING", "BL")
-//            }, 1000) //1초 후 실행
-//            Handler(Looper.getMainLooper()).postDelayed({
-//                Mining.runMining(applicationContext, "FANTASY")
-//                Log.d("MINING", "FANTASY")
-//            }, 1000) //1초 후 실행
+            val intent = Intent(this@ActivityMain, ActivityAdmin::class.java)
+            startActivity(intent)
         }
 
         val navView = findViewById<BottomNavigationView>(R.id.nav_bottom)
@@ -88,34 +69,6 @@ class ActivityMain : AppCompatActivity() {
 
         FirebaseDatabase.getInstance().reference.child("Week").child(DBDate.DayString()).setValue(
             DBDate.DateMMDD())
-
-        Handler(Looper.getMainLooper()).postDelayed({
-
-            val mConstraints = Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build()
-
-            /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
-            val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(4, TimeUnit.HOURS)
-                .setConstraints(mConstraints)
-                .build()
-
-            val miningRef = FirebaseDatabase.getInstance().reference.child("Mining")
-            val workManager = WorkManager.getInstance()
-
-            miningRef.get().addOnSuccessListener {
-                if(it.value != null && it.value!! == "MINING"){
-                    Toast.makeText(this, "WorkManager 이미 존재함", Toast.LENGTH_SHORT).show()
-
-                } else {
-                    miningRef.setValue("MINING")
-
-                    workManager.enqueue(workRequest)
-                    FirebaseMessaging.getInstance().subscribeToTopic("all")
-                    Toast.makeText(this, "WorkManager 추가됨", Toast.LENGTH_SHORT).show()
-                }
-            }.addOnFailureListener{}
-        }, 1000) //1초 후 실행
 
         FirebaseDatabase.getInstance().reference.child("Week").get().addOnSuccessListener {
 
@@ -161,20 +114,9 @@ class ActivityMain : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // 클릭된 메뉴 아이템의 아이디 마다 when 구절로 클릭시 동작을 설정한다.
-        when (item.itemId) {
-            R.id.ActivitySearch -> {
-                val intent = Intent(this, ActivitySearch::class.java)
-                startActivity(intent)
-            }
-            R.id.ActivityUser -> {
-                val intent = Intent(this, ActivityUser::class.java)
-                startActivity(intent)
-            }
-            android.R.id.home -> {
-                finish()
-                return true
-            }
+        if (item.itemId == android.R.id.home) {
+            finish()
+            return true
         }
         return super.onOptionsItemSelected(item)
     }

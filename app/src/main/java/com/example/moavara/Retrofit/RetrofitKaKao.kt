@@ -13,7 +13,7 @@ class RetrofitKaKao {
     fun postSearchKakao(
         page: Int?,
         word: String?,
-        categoryUid: Int?
+        categoryUid: Int?,
     ): Call<SearchResultKakao?>? {
         return Retrofit.Builder()
             .baseUrl(HELPER.API_KAKAO)
@@ -47,27 +47,25 @@ class RetrofitKaKao {
             )
     }
 
-    //카카오 스테이지 베스트=
-//    fun getBestKakaoStage(
-//        adult: String?,
-//        dateRange: String?,
-//        genreIds: String?,
-//        recentHours: String?,
-//    ): Call<List<BestResultKakaoStageNovel>?>? {
-//        return Retrofit.Builder()
-//            .baseUrl(HELPER.API_KAKAO_STAGE)
-//            .addConverterFactory(GsonConverterFactory.create()).build()
-//            .create(ServiceSearchKakaoStage::class.java)
-//            .getRetrofit(
-//                adult,
-//                dateRange,
-//                genreIds,
-//                recentHours
-//            )
-//    }
-
+    //카카오 스테이지 베스트
     fun getBestKakaoStage(map: MutableMap<String?, Any>, dataListener: RetrofitDataListener<List<BestResultKakaoStageNovel>>) {
         apiKakaoStage.getBestKakaoStage(map).enqueue(baseCallback(dataListener))
+    }
+
+    fun getBestKakaoStageDetail(bookCode : String, dataListener: RetrofitDataListener<KakaoStageBestBookResult>) {
+        apiKakaoStage.getBestKakaoStageDetail(bookCode).enqueue(baseCallback(dataListener))
+    }
+
+    fun getBestKakaoStageDetailComment(
+        bookCode: String,
+        size: String,
+        sort: String,
+        sort2: String,
+        page: String,
+        dataListener: RetrofitDataListener<KakaoStageBestBookCommentResult>
+    ) {
+        apiKakaoStage.getBestKakaoStageDetailComment(bookCode, size, sort, sort2, page)
+            .enqueue(baseCallback(dataListener))
     }
 
     fun postKakaoBookDetail(map: MutableMap<String?, Any>, dataListener: RetrofitDataListener<BestKakaoBookDetail>) {
