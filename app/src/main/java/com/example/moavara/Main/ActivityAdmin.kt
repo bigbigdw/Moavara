@@ -18,7 +18,7 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.moavara.DataBase.DataBaseBestDay
-import com.example.moavara.Firebase.FirebaseWorkManager
+import com.example.moavara.Firebase.*
 import com.example.moavara.R
 import com.example.moavara.Search.ActivitySearch
 import com.example.moavara.User.ActivityUser
@@ -29,6 +29,10 @@ import com.example.moavara.databinding.ActivityMainBinding
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.activity_admin.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 class ActivityAdmin : AppCompatActivity() {
@@ -48,26 +52,43 @@ class ActivityAdmin : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
+        val mConstraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+
+        /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
+        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(4, TimeUnit.HOURS)
+            .setConstraints(mConstraints)
+            .build()
+
+        val miningRef = FirebaseDatabase.getInstance().reference.child("Mining")
+        val workManager = WorkManager.getInstance(applicationContext)
+
+        Handler(Looper.getMainLooper()).postDelayed({
+
+            miningRef.get().addOnSuccessListener {
+                if(it.value != null && it.value!! == "MINING"){
+                    Toast.makeText(this, "WorkManager 이미 존재함", Toast.LENGTH_SHORT).show()
+
+                } else {
+                    miningRef.setValue("MINING")
+
+                    workManager.enqueue(workRequest)
+                    FirebaseMessaging.getInstance().subscribeToTopic("all")
+                    Toast.makeText(this, "WorkManager 추가됨", Toast.LENGTH_SHORT).show()
+                }
+            }.addOnFailureListener{}
+        }, 1000) //1초 후 실행
+
+
         with(binding){
             llayoutBtn1.setOnClickListener{
                 WorkManager.getInstance().cancelAllWork()
-                val miningRef = mRootRef.child("Mining")
                 miningRef.setValue("NULL")
                 Toast.makeText(this@ActivityAdmin, "WorkManager 해제됨", Toast.LENGTH_SHORT).show()
             }
 
             llayoutBtn2.setOnClickListener{
-                val mConstraints = Constraints.Builder()
-                    .setRequiredNetworkType(NetworkType.CONNECTED)
-                    .build()
-
-                /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
-                val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(4, TimeUnit.HOURS)
-                    .setConstraints(mConstraints)
-                    .build()
-
-                val miningRef = FirebaseDatabase.getInstance().reference.child("Mining")
-                val workManager = WorkManager.getInstance()
 
                 miningRef.get().addOnSuccessListener {
                     if(it.value != null && it.value!! == "MINING"){
@@ -79,6 +100,7 @@ class ActivityAdmin : AppCompatActivity() {
                         workManager.enqueue(workRequest)
                         FirebaseMessaging.getInstance().subscribeToTopic("all")
                         Toast.makeText(this@ActivityAdmin, "WorkManager 추가됨", Toast.LENGTH_SHORT).show()
+                        postFCM()
                     }
                 }.addOnFailureListener{}
             }
@@ -493,7 +515,44 @@ class ActivityAdmin : AppCompatActivity() {
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    private fun postFCM() {
+
+        val fcmBody = DataFCMBody(
+            "/topics/all",
+            "high",
+            DataFCMBodyData("data", "body"),
+            DataFCMBodyNotification("모아바라", "베스트 리스트가 갱신되었습니다-0707", "default", "ic_stat_ic_notification"),
+        )
+
+        val call = Retrofit.Builder()
+            .baseUrl("https://fcm.googleapis.com")
+            .addConverterFactory(GsonConverterFactory.create()).build()
+            .create(FirebaseService::class.java)
+            .postRetrofit(
+                fcmBody
+            )!!
+
+        call.enqueue(object : Callback<FWorkManagerResult?> {
+            override fun onResponse(
+                call: Call<FWorkManagerResult?>,
+                response: retrofit2.Response<FWorkManagerResult?>
+            ) {
+                if (response.isSuccessful) {
+                    response.body()?.let { it ->
+                        Log.d("FCM", "성공");
+                    }
+                } else {
+                    Log.d("FCM", "실패2");
+                }
+            }
+
+            override fun onFailure(call: Call<FWorkManagerResult?>, t: Throwable) {
+                Log.d("FCM", "실패");
+            }
+        })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         return true
     }

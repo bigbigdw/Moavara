@@ -37,6 +37,21 @@ data class BookListDataBestToday (
     @PrimaryKey(autoGenerate = true) var id: Int = 0
 }
 
+@Entity
+data class BookListDataBestAnalyze (
+    var title: String = "",
+    var bookImg: String = "",
+    var bookCode: String = "",
+    var number: Int = 0,
+    var numberDiff: Int = 0,
+    var date: String = "",
+    var type: String = "",
+    var status: String = "",
+    var trophyCount: Int = 0,
+){
+    @PrimaryKey(autoGenerate = true) var id: Int = 0
+}
+
 data class TrophyInfo (
     var number: Int = 0,
     var numberDiff: Int = 0,

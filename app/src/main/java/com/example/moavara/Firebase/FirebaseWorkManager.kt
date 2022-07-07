@@ -12,9 +12,8 @@ import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) : Worker(context,
-    workerParams
-) {
+class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
+    Worker(context, workerParams) {
     override fun doWork(): Result {
         /* 처리해야할 작업에 관한 코드들 */
         Handler(Looper.getMainLooper()).postDelayed({
@@ -46,7 +45,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) : Wo
             "/topics/all",
             "high",
             DataFCMBodyData("data", "body"),
-            DataFCMBodyNotification("모아바라", "베스트 리스트가 갱신되었습니다-0702", "default", "ic_stat_ic_notification"),
+            DataFCMBodyNotification("모아바라", "베스트 리스트가 갱신되었습니다-0707", "default", "ic_stat_ic_notification"),
         )
 
         val call = Retrofit.Builder()

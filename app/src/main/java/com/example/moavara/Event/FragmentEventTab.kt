@@ -1,5 +1,7 @@
 package com.example.moavara.Event
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -287,6 +289,8 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
             val link = doc.select(".light .entries tbody tr td a").get(i).attr("href")
             val imgfile = doc.select(".light .entries tbody tr a img").get(i).attr("src")
             val title = doc.select(".light .entries .subject td a").get(i).text()
+
+            Log.d("####", "https://square.munpia.com${link}")
 
             requireActivity().runOnUiThread {
                 if (i % 2 != 1) {

@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.moavara.DataBase.BookListDataBestAnalyze
 import com.example.moavara.DataBase.BookListDataBestToday
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
@@ -44,6 +46,7 @@ class FragmentBestDetailAnalyze(private val platfrom: String, private val pos: I
 
     var status = ""
     var cate = ""
+    private val itemss = ArrayList<BookListDataBestAnalyze?>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -132,6 +135,17 @@ class FragmentBestDetailAnalyze(private val platfrom: String, private val pos: I
                         val group: BookListDataBestToday? = i.getValue(BookListDataBestToday::class.java)
                         if (group!!.title == (context as ActivityBestDetail).bookTitle) {
                             dateList.add(group.date)
+                            itemss.add(BookListDataBestAnalyze(
+                                group.title,
+                                group.bookImg,
+                                group.bookCode,
+                                group.number,
+                                group.numberDiff,
+                                group.date,
+                                group.type,
+                                group.status,
+                                group.trophyCount,
+                            ))
 
                             //BarEntry로 값 추가 후 리스트에 담는다
                             if(platfrom == "Joara" || platfrom == "Joara Nobless" || platfrom == "Joara Premium"){
@@ -252,6 +266,8 @@ class FragmentBestDetailAnalyze(private val platfrom: String, private val pos: I
                             num += 1
                         }
                     }
+
+                    Log.d("!!!!", itemss.toString())
 
                     mRootRef.child("best").child(platfrom).child(context?.getSharedPreferences("pref",
                         Context.MODE_PRIVATE

@@ -24,6 +24,9 @@ class FCM : FirebaseMessagingService() {
         if (remoteMessage.data.isNotEmpty()) {
             showNotification(remoteMessage.data["title"], remoteMessage.data["message"])
         }
+
+        Log.d("!!!!", remoteMessage.data["title"] as String)
+        Log.d("!!!!", remoteMessage.data["message"] as String)
     }
 
     @SuppressLint("RemoteViewLayout")

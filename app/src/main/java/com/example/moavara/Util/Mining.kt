@@ -1125,51 +1125,93 @@ object Mining {
         param["outAdult"] = "true"
         param["offset"] = "0"
 
-        apiMoonPia.postMoonPiaBest(
-            param,
-            object : RetrofitDataListener<BestMoonpiaResult> {
-                override fun onSuccess(data: BestMoonpiaResult) {
+        val yesterdayRef =
+            mRootRef.child("best").child("Munpia").child(cate).child("today").child(
+                DBDate.Yesterday()
+            )
 
-                    data.api?.items.let {
+        val itemsYesterday = ArrayList<BookListDataBestToday?>()
 
-                        val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Kakao Stage $cate")
-                            .allowMainThreadQueries().build()
-
-                        if (it != null) {
-                            for (i in it.indices) {
-                                MoonpiaRef["writerName"] = it[i].author
-                                MoonpiaRef["subject"] = it[i].nvTitle
-                                MoonpiaRef["bookImg"] = "https://cdn1.munpia.com${it[i].nvCover}"
-                                MoonpiaRef["bookCode"] = it[i].nvSrl
-                                MoonpiaRef["info1"] = "줄거리 : ${it[i].nvStory}"
-                                MoonpiaRef["info2"] = "베스트 시간 : ${it[i].nsrData?.hour}"
-                                MoonpiaRef["info3"] = "조회 수 : ${it[i].nsrData?.hit}"
-                                MoonpiaRef["info4"] = "방문 수 : ${it[i].nsrData?.number}"
-                                MoonpiaRef["info5"] = "선호작 수 : ${it[i].nsrData?.prefer}"
-                                MoonpiaRef["number"] = i
-                                MoonpiaRef["numberDiff"] = 0
-                                MoonpiaRef["date"] = DBDate.DateMMDD()
-                                MoonpiaRef["status"] = "NEW"
-                                MoonpiaRef["type"] = "Munpia"
-
-                                if(context is ActivityAdmin){
-                                    MoonpiaRef["trophyCount"] = 1
-//                                    if(context.isRoom){
-//                                        MoonpiaRef["trophyCount"] = bestDao.bestDao().countTrophy(it[i].nvTitle)
-//                                    } else {
-//                                        MoonpiaRef["trophyCount"] = 1
-//                                    }
-                                } else {
-                                    MoonpiaRef["trophyCount"] = 1
-                                }
-
-                                miningValue(MoonpiaRef, i, "Munpia", cate, context)
-                            }
-                        }
-                    }
-
+        yesterdayRef.addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+                    val group: BookListDataBestToday? =
+                        postSnapshot.getValue(BookListDataBestToday::class.java)
+                    itemsYesterday.add(
+                        BookListDataBestToday(
+                            group!!.writer,
+                            group.title,
+                            group.bookImg,
+                            group.bookCode,
+                            group.info1,
+                            group.info2,
+                            group.info3,
+                            group.info4,
+                            group.info5,
+                            group.number,
+                            group.numberDiff,
+                            group.date,
+                            group.type,
+                            group.status,
+                            group.trophyCount,
+                        )
+                    )
                 }
-            })
+
+                apiMoonPia.postMoonPiaBest(
+                    param,
+                    object : RetrofitDataListener<BestMoonpiaResult> {
+                        override fun onSuccess(data: BestMoonpiaResult) {
+
+                            data.api?.items.let {
+
+                                val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Kakao Stage $cate")
+                                    .allowMainThreadQueries().build()
+
+                                if (it != null) {
+                                    for (i in it.indices) {
+                                        MoonpiaRef["writerName"] = it[i].author
+                                        MoonpiaRef["subject"] = it[i].nvTitle
+                                        MoonpiaRef["bookImg"] = "https://cdn1.munpia.com${it[i].nvCover}"
+                                        MoonpiaRef["bookCode"] = it[i].nvSrl
+                                        MoonpiaRef["info1"] = "줄거리 : ${it[i].nvStory}"
+                                        MoonpiaRef["info2"] = "베스트 시간 : ${it[i].nsrData?.hour}"
+                                        MoonpiaRef["info3"] = "조회 수 : ${it[i].nsrData?.hit}"
+                                        MoonpiaRef["info4"] = "방문 수 : ${it[i].nsrData?.number}"
+                                        MoonpiaRef["info5"] = "선호작 수 : ${it[i].nsrData?.prefer}"
+                                        MoonpiaRef["number"] = i
+                                        MoonpiaRef["numberDiff"] = 0
+                                        MoonpiaRef["date"] = DBDate.DateMMDD()
+                                        MoonpiaRef["status"] = "NEW"
+                                        MoonpiaRef["type"] = "Munpia"
+                                        MoonpiaRef["numberDiff"] =
+                                            calculateNum(i, it[i].nvTitle, itemsYesterday).num
+                                        MoonpiaRef["date"] = DBDate.DateMMDD()
+                                        MoonpiaRef["status"] =
+                                            calculateNum(i, it[i].nvTitle, itemsYesterday).status
+
+                                        if(context is ActivityAdmin){
+                                            if (context.isRoom) {
+                                                MoonpiaRef["trophyCount"] = bestDao.bestDao().countTrophy(it[i].nvTitle)
+                                            } else {
+                                                MoonpiaRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0)
+                                            }
+                                        } else {
+                                            MoonpiaRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
+                                        }
+
+                                        miningValue(MoonpiaRef, i, "Munpia", cate, context)
+                                    }
+                                }
+                            }
+
+                        }
+                    })
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
     }
 
     fun RoomDB(context: Context, tabType: String, cate: String){

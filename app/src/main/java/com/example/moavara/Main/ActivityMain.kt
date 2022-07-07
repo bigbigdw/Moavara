@@ -2,28 +2,15 @@ package com.example.moavara.Main
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
-import androidx.room.Room
-import androidx.work.Constraints
-import androidx.work.NetworkType
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
-import com.example.moavara.Best.BottomDialogMain
-import com.example.moavara.DataBase.BookListDataBestToday
-import com.example.moavara.DataBase.DataBaseBestDay
-import com.example.moavara.Firebase.FirebaseWorkManager
-import com.example.moavara.Pick.ActivityPick
 import com.example.moavara.R
 import com.example.moavara.Search.ActivitySearch
 import com.example.moavara.Search.WeekendDate
@@ -31,12 +18,9 @@ import com.example.moavara.User.ActivityUser
 import com.example.moavara.Util.*
 import com.example.moavara.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.messaging.FirebaseMessaging
-import java.util.concurrent.TimeUnit
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.system.exitProcess
 
 
@@ -85,30 +69,54 @@ class ActivityMain : AppCompatActivity() {
             }
 
         }.addOnFailureListener{}
+
+        val parse_date: Date?
+        val date = "0707"
+        Log.d("!!!!-1", date)
+        val dateFormat1 = SimpleDateFormat("MMdd")
+
+        try {
+            parse_date = dateFormat1.parse(date)
+
+            val cal = Calendar.getInstance()
+            cal.time = parse_date
+            val month = cal[Calendar.MONTH]
+
+            Log.d("!!!!-2", month.toString())
+
+            val weekmonth = cal[Calendar.WEEK_OF_MONTH]
+            Log.d("!!!!-3", weekmonth.toString())
+
+            val day = cal[Calendar.DAY_OF_WEEK]
+            Log.d("!!!!-5", day.toString())
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
-    override fun onBackPressed() {
+//    override fun onBackPressed() {
+//
+//        val myAlertBuilder: AlertDialog.Builder = AlertDialog.Builder(this@ActivityMain)
+//        myAlertBuilder.setTitle("모아바라 종료")
+//        myAlertBuilder.setMessage("모아바라를 종료하시겠습니까?")
+//        myAlertBuilder.setPositiveButton(
+//            "예"
+//        ) { _, _ ->
+//
+//            finishAffinity();
+//            System.runFinalization();
+//            exitProcess(0);
+//        }
+//        myAlertBuilder.setNegativeButton(
+//            "아니요"
+//        ) { _, _ ->
+//        }
+//        // Alert를 생성해주고 보여주는 메소드(show를 선언해야 Alert가 생성됨)
+//        myAlertBuilder.show()
+//    }
 
-        val myAlertBuilder: AlertDialog.Builder = AlertDialog.Builder(this@ActivityMain)
-        myAlertBuilder.setTitle("모아바라 종료")
-        myAlertBuilder.setMessage("모아바라를 종료하시겠습니까?")
-        myAlertBuilder.setPositiveButton(
-            "예"
-        ) { _, _ ->
-
-            finishAffinity();
-            System.runFinalization();
-            exitProcess(0);
-        }
-        myAlertBuilder.setNegativeButton(
-            "아니요"
-        ) { _, _ ->
-        }
-        // Alert를 생성해주고 보여주는 메소드(show를 선언해야 Alert가 생성됨)
-        myAlertBuilder.show()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         return true
     }

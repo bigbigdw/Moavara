@@ -44,6 +44,7 @@
 
         <activity
             android:name=".Main.ActivityLogin"
+            android:noHistory="true"
             android:exported="true" />
 
         <activity
@@ -58,6 +59,7 @@
 
         <activity
             android:name="com.example.moavara.Main.ActivityGenre"
+            android:noHistory="true"
             android:exported="true">
         </activity>
 
@@ -75,6 +77,7 @@
 
         <activity
             android:name="com.example.moavara.Main.ActivitySplash"
+            android:noHistory="true"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -95,6 +98,7 @@
         <activity
             android:name="com.example.moavara.Main.ActivityAdmin"
             android:label=""
+            android:noHistory="true"
             android:exported="true">
         </activity>
 
