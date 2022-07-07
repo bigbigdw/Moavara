@@ -152,16 +152,16 @@ object Genre {
     fun setOneStoreGenre(str: String): String {
         return when {
             str == "BL" -> {
-                "fantasy"
+                "DP13043"
             }
             str == "FANTASY" -> {
-                "fantasy"
+                "DP13042"
             }
             str == "ROMANCE" -> {
-                "romance"
+                "DP13041"
             }
             else -> {
-                "fantasy"
+                "DP13044"
             }
         }
     }

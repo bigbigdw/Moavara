@@ -21,9 +21,14 @@ object Retrofit {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
+    private val retrofitOneStory = Retrofit.Builder()
+        .baseUrl(HELPER.API_ONESTORE)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
 
 
     val apiJoara: ApiJoara = retrofit.create(ApiJoara::class.java)
     val apiKakaoStage: ApiKakaoStage = retrofitKakaoStage.create(ApiKakaoStage::class.java)
     val apiKakao: ApiKakao = retrofitKakao.create(ApiKakao::class.java)
+    val apiOneStory: ApiOneStory = retrofitOneStory.create(ApiOneStory::class.java)
 }

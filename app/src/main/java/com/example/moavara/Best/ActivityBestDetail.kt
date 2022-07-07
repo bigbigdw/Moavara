@@ -58,12 +58,14 @@ class ActivityBestDetail : AppCompatActivity() {
             setLayoutKaKaoStage()
         } else if (type == "Ridi"){
             setLayoutRidi()
+        } else if (type == "OneStore"){
+            setLayoutOneStory()
         }
 
         if(type == "Naver Today" || type == "Naver Challenge" || type == "Naver"){
             binding.tabs.addTab(binding.tabs.newTab().setText("다른 작품"))
             binding.tabs.addTab(binding.tabs.newTab().setText("작품 분석"))
-        } else if(type == "Kakao" || type == "Kakao Stage") {
+        } else if(type == "Kakao" || type == "Kakao Stage" || type == "OneStore") {
             binding.tabs.addTab(binding.tabs.newTab().setText("댓글"))
             binding.tabs.addTab(binding.tabs.newTab().setText("작품 분석"))
         } else if(type == "Ridi") {
@@ -79,17 +81,12 @@ class ActivityBestDetail : AppCompatActivity() {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 when(tab.position){
                     0->{
-                        if (type == "Joara" || type == "Joara Nobless" || type == "Joara Premium" || type == "Kakao" || type == "Kakao Stage") {
+                        if (type == "Joara" || type == "Joara Nobless" || type == "Joara Premium" || type == "Kakao" || type == "Kakao Stage" || type == "OneStore") {
                             mFragmentBestDetailComment = FragmentBestDetailComment(type, bookCode)
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailComment)
                             }
-                        } else if (type == "Naver Today" || type == "Naver Challenge" || type == "Naver") {
-                            mFragmentBestDetailBooks = FragmentBestDetailBooks(type, bookCode)
-                            supportFragmentManager.commit {
-                                replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
-                            }
-                        } else if (type == "Ridi") {
+                        } else if (type == "Naver Today" || type == "Naver Challenge" || type == "Naver" || type == "Ridi") {
                             mFragmentBestDetailBooks = FragmentBestDetailBooks(type, bookCode)
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
@@ -102,7 +99,7 @@ class ActivityBestDetail : AppCompatActivity() {
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
                             }
-                        } else if (type == "Naver Today" || type == "Naver Challenge" || type == "Naver" || type == "Kakao"|| type == "Kakao Stage" || type == "Ridi") {
+                        } else if (type == "Naver Today" || type == "Naver Challenge" || type == "Naver" || type == "Kakao"|| type == "Kakao Stage" || type == "Ridi" || type == "OneStore") {
                             mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(type, intent.getIntExtra("POSITION", 0))
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
@@ -318,6 +315,47 @@ class ActivityBestDetail : AppCompatActivity() {
                 }
             }
         }.start()
+    }
+
+    fun setLayoutOneStory(){
+        val apiOnestory = RetrofitOnestore()
+        val param : MutableMap<String?, Any> = HashMap()
+
+        param["channelId"] = bookCode
+        param["bookpassYn"] = "N"
+
+        apiOnestory.getBestKakaoStageDetail(
+            bookCode,
+            param,
+            object : RetrofitDataListener<OnestoreBookDetail> {
+                override fun onSuccess(data: OnestoreBookDetail) {
+
+                    with(binding){
+                        data.params.let { it ->
+                            Glide.with(context)
+                                .load(it?.orgFilePos)
+                                .into(inclueBestDetail.iviewBookCover)
+
+                            bookTitle = it?.prodNm ?: ""
+
+                            inclueBestDetail.tviewTitle.text = bookTitle
+                            inclueBestDetail.tviewWriter.text = it?.artistNm
+
+                            inclueBestDetail.tviewInfo1.text = "별점 : ${it?.ratingAvgScore}점"
+                            inclueBestDetail.tviewInfo2.text =  "구독 수 : ${it?.pageViewTotal}"
+                            inclueBestDetail.tviewInfo3.text =  "총 ${it?.serialCount}화"
+                            inclueBestDetail.tviewInfo4.text =  "선호작 수 : ${it?.favoriteCount}"
+
+                            binding.llayoutIntro.visibility = View.GONE
+                        }
+                    }
+                }
+            })
+
+        mFragmentBestDetailComment = FragmentBestDetailComment(type, bookCode)
+        supportFragmentManager.commit {
+            replace(R.id.llayoutWrap, mFragmentBestDetailComment)
+        }
     }
 
 

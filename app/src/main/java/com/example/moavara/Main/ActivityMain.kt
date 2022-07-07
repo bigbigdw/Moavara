@@ -114,9 +114,20 @@ class ActivityMain : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            finish()
-            return true
+        // 클릭된 메뉴 아이템의 아이디 마다 when 구절로 클릭시 동작을 설정한다.
+        when (item.itemId) {
+            R.id.ActivitySearch -> {
+                val intent = Intent(this, ActivitySearch::class.java)
+                startActivity(intent)
+            }
+            R.id.ActivityUser -> {
+                val intent = Intent(this, ActivityUser::class.java)
+                startActivity(intent)
+            }
+            android.R.id.home -> {
+                finish()
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
     }

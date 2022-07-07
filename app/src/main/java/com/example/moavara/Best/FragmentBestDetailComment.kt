@@ -56,6 +56,8 @@ class FragmentBestDetailComment(private val platfrom: String, private val bookCo
             getCommentsKakao()
         } else if (platfrom == "Kakao Stage") {
             getCommentsKakaoStage()
+        } else if (platfrom == "OneStore") {
+            getCommentsOneStory()
         }
 
 
@@ -157,6 +159,38 @@ class FragmentBestDetailComment(private val platfrom: String, private val bookCo
                                     it[i].createdAt,
                                 )
                             )
+                        }
+                        adapterBestComment!!.notifyDataSetChanged()
+                    }
+                }
+            })
+    }
+
+    private fun getCommentsOneStory() {
+        val apiOnestory = RetrofitOnestore()
+        val param : MutableMap<String?, Any> = HashMap()
+
+        param["channelId"] = bookCode
+        param["offset"] = "1"
+        param["count"] = "1"
+        param["orderBy"] = "recommend"
+
+        apiOnestory.getOneStoryBookDetailComment(
+            bookCode,
+            param,
+            object : RetrofitDataListener<OnestoreBookDetailComment> {
+                override fun onSuccess(data: OnestoreBookDetailComment) {
+
+                    data.params?.commentList.let {
+                        if (it != null) {
+                            for (i in it.indices) {
+                                items.add(
+                                    BestComment(
+                                        it[i].commentDscr,
+                                        it[i].regDate,
+                                    )
+                                )
+                            }
                         }
                         adapterBestComment!!.notifyDataSetChanged()
                     }

@@ -514,7 +514,7 @@ object Mining {
             val OneStoryRef: MutableMap<String?, Any> = HashMap()
 
             val call: Call<OneStoreBookResult?>? =
-                RetrofitOnestore.getBestOneStore(Genre.setOneStoreGenre(cate))
+                RetrofitOnestore().getBestOneStore(Genre.setOneStoreGenre(cate))
 
             val yesterdayRef =
                 mRootRef.child("best").child("OneStore").child(cate).child("today").child(

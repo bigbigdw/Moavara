@@ -156,6 +156,11 @@ class FragmentBestDetailAnalyze(private val platfrom: String, private val pos: I
                                 entryList.add(BarEntry(num.toFloat(), group.info3.replace("평점 : ", "").replace("점","").toFloat()))
                                 entryList2.add(BarEntry(num.toFloat(), BestRef.StrToInt(group.info2.replace("추천 수 : ", "").replace("명","")).toFloat()))
                                 entryList4.add(Entry(num.toFloat(), group.number.toFloat()))
+                            } else if(platfrom == "OneStore"){
+                                entryList.add(BarEntry(num.toFloat(), group.info1.replace("조회 수 : ", "").toFloat()))
+                                entryList2.add(BarEntry(num.toFloat(), group.info2.replace("평점 : ", "").toFloat()))
+                                entryList3.add(BarEntry(num.toFloat(), group.info3.replace("댓글 수 : ", "").toFloat()))
+                                entryList4.add(Entry(num.toFloat(), group.number.toFloat()))
                             }
 
                             with(binding.includeRank) {
@@ -264,6 +269,10 @@ class FragmentBestDetailAnalyze(private val platfrom: String, private val pos: I
                     }   else if (platfrom == "Ridi"){
                         items.add(BestChart(dateList, entryList, "평점", "#ff7b22"))
                         items.add(BestChart(dateList, entryList2, "관심 수", "#4971EF"))
+                    }  else if(platfrom == "OneStore"){
+                        items.add(BestChart(dateList, entryList, "조회 수", "#ff7b22"))
+                        items.add(BestChart(dateList, entryList2, "평점", "#4971EF"))
+                        items.add(BestChart(dateList, entryList3, "댓글 수", "#00d180"))
                     }
                     adapterChart!!.notifyDataSetChanged()
                 }
