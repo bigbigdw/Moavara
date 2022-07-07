@@ -71,6 +71,9 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
                 "MrBlue" -> {
                     getEventMrBlue()
                 }
+                "Munpia" -> {
+                    getEventMunpia()
+                }
             }
         }.start()
 
@@ -274,6 +277,48 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
         }
     }
 
+    private fun getEventMunpia() {
+
+        val doc: Document = Jsoup.connect("https://square.munpia.com/event").get()
+        val MunpiaWrap: Elements = doc.select(".light .entries tbody tr a img")
+
+        for (i in MunpiaWrap.indices) {
+
+            val link = doc.select(".light .entries tbody tr td a").get(i).attr("href")
+            val imgfile = doc.select(".light .entries tbody tr a img").get(i).attr("src")
+            val title = doc.select(".light .entries .subject td a").get(i).text()
+
+            requireActivity().runOnUiThread {
+                if (i % 2 != 1) {
+                    itemsLeft.add(
+                        EventData(
+                            "https://square.munpia.com${link}",
+                            "https:${imgfile}",
+                            title,
+                            "",
+                            "",
+                            "Munpia"
+                        )
+                    )
+
+                    adapterLeft.notifyDataSetChanged()
+                } else {
+                    itemsRight.add(
+                        EventData(
+                            "https://www.munpia.com${link}",
+                            "https:${imgfile}",
+                            title,
+                            "",
+                            "",
+                            "Munpia"
+                        )
+                    )
+                    adapterRight.notifyDataSetChanged()
+                }
+            }
+        }
+    }
+
     private fun getEventOneStore() {
         val doc: Document = Jsoup.connect("https://onestory.co.kr/main/PN83003001").get()
         val ridiKeyword: Elements = doc.select("div .BannerSwiperItem")
@@ -363,6 +408,8 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
             Toast.makeText(requireContext(), "이벤트 페이지가 아닙니다.", Toast.LENGTH_SHORT).show()
         } else if (tabType == "OneStore") {
             Toast.makeText(requireContext(), "원스토어는 지원하지 않습니다.", Toast.LENGTH_SHORT).show()
+        }else if (tabType == "Munpia") {
+            Toast.makeText(requireContext(), "문피아는 지원하지 않습니다.", Toast.LENGTH_SHORT).show()
         }else if (tabType == "Kakao" && item.link.contains("kakaopage://exec?open_web_with_auth/store/event")) {
             Toast.makeText(requireContext(), "이벤트 페이지가 아닙니다.", Toast.LENGTH_SHORT).show()
         } else {

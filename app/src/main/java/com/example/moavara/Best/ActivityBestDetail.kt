@@ -364,10 +364,6 @@ class ActivityBestDetail : AppCompatActivity() {
         Thread {
             val doc: Document = Jsoup.connect("https://novel.munpia.com/${bookCode}" ).get()
 
-            Log.d("####-1", doc.select(".detail-box h2 a").text())
-            Log.d("####-2", doc.select(".detail-box h2 a span").text() + " ")
-            Log.d("####-3", doc.select(".detail-box h2 a").text().replace(doc.select(".detail-box h2 a span").text() + " ", ""))
-
             runOnUiThread {
 
                 with(binding){
