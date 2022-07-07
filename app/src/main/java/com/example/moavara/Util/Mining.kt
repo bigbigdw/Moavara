@@ -1181,13 +1181,10 @@ object Mining {
                                         MoonpiaRef["info4"] = "방문 수 : ${it[i].nsrData?.number}"
                                         MoonpiaRef["info5"] = "선호작 수 : ${it[i].nsrData?.prefer}"
                                         MoonpiaRef["number"] = i
-                                        MoonpiaRef["numberDiff"] = 0
                                         MoonpiaRef["date"] = DBDate.DateMMDD()
-                                        MoonpiaRef["status"] = "NEW"
                                         MoonpiaRef["type"] = "Munpia"
                                         MoonpiaRef["numberDiff"] =
                                             calculateNum(i, it[i].nvTitle, itemsYesterday).num
-                                        MoonpiaRef["date"] = DBDate.DateMMDD()
                                         MoonpiaRef["status"] =
                                             calculateNum(i, it[i].nvTitle, itemsYesterday).status
 
