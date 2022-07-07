@@ -44,8 +44,6 @@ class FragmentBestTabToday(private val tabType: String) :
 
         adapterToday = AdapterBestToday(items)
 
-
-
         getBookListToday()
 
         return view

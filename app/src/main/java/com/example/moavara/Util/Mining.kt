@@ -486,7 +486,11 @@ object Mining {
                                         RidiRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0)
                                     }
                                 } else {
-                                    RidiRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
+                                    try{
+                                        RidiRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
+                                    } catch (exception: IndexOutOfBoundsException){
+                                        RidiRef["trophyCount"] = 1
+                                    }
                                 }
 
                                 miningValue(RidiRef, i - 1, "Ridi", cate, context)

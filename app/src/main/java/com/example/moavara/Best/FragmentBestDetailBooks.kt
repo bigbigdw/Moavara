@@ -6,12 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.BookListDataBestToday
-import com.example.moavara.Retrofit.JoaraBestListResult
-import com.example.moavara.Retrofit.RetrofitJoara
+import com.example.moavara.R
+import com.example.moavara.Retrofit.*
+import com.example.moavara.Search.BestComment
 import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Param
 import com.example.moavara.Util.calculateNum
@@ -25,6 +27,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.ArrayList
+import java.util.HashMap
 
 class FragmentBestDetailBooks(private val platfrom: String, private val bookCode: String) :
     Fragment() {
@@ -54,6 +57,8 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
             getOthersJoa()
         }  else if (platfrom == "Naver Today"  || platfrom == "Naver Challenge") {
             getCommentsNaverToday()
+        }  else if (platfrom == "Ridi"){
+            getCommentsKakaoRidi()
         }
 
         return view
@@ -138,6 +143,36 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
             }
         }.start()
     }
+
+    private fun getCommentsKakaoRidi() {
+        Thread {
+            val doc: Document = Jsoup.connect(bookCode).get()
+            val other = doc.select(".book_macro_landscape")
+
+            requireActivity().runOnUiThread {
+                for (i in other.indices) {
+                    items.add(
+                        BookListDataBestToday(
+                            doc.select(".author_name_wrapper h4 .lang_kor").text(),
+                            doc.select(".title_text").text(),
+                            "https:${doc.select(".thumbnail").attr("data-src")}",
+                            "https://ridibooks.com/books${doc.select(".thumbnail_btn").attr("href")}",
+                            doc.select(".book_count .count_num").text(),
+                            doc.select(".RSGBookMetadata_StarRate .StarRate_ParticipantCount").text(),
+                            doc.select(".book_metadata_wrapper .meta_description").text(),
+                            doc.select(".rental_price_info").text(),
+                            doc.select(".buy_price_info").text(),
+                            0,
+                            0,
+                            "",
+                            ""
+                        )
+                    )
+                }
+                adapterBestOthers!!.notifyDataSetChanged()
+            }
+        }.start()
+    }
 }
 
 class AdapterBestComment(items: List<BookListDataBestToday?>?) :
@@ -167,7 +202,6 @@ class AdapterBestComment(items: List<BookListDataBestToday?>?) :
             if (item != null) {
                 Glide.with(holder.itemView.context)
                     .load(item.bookImg)
-                    .circleCrop()
                     .into(holder.binding.iview)
 
                 holder.binding.tviewTitle.text = item.title

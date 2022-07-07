@@ -66,6 +66,9 @@ class ActivityBestDetail : AppCompatActivity() {
         } else if(type == "Kakao" || type == "Kakao Stage") {
             binding.tabs.addTab(binding.tabs.newTab().setText("댓글"))
             binding.tabs.addTab(binding.tabs.newTab().setText("작품 분석"))
+        } else if(type == "Ridi") {
+            binding.tabs.addTab(binding.tabs.newTab().setText("다른 작품"))
+            binding.tabs.addTab(binding.tabs.newTab().setText("작품 분석"))
         } else {
             binding.tabs.addTab(binding.tabs.newTab().setText("댓글"))
             binding.tabs.addTab(binding.tabs.newTab().setText("다른 작품"))
@@ -86,6 +89,11 @@ class ActivityBestDetail : AppCompatActivity() {
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
                             }
+                        } else if (type == "Ridi") {
+                            mFragmentBestDetailBooks = FragmentBestDetailBooks(type, bookCode)
+                            supportFragmentManager.commit {
+                                replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
+                            }
                         }
                     }
                     1->{
@@ -94,7 +102,7 @@ class ActivityBestDetail : AppCompatActivity() {
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
                             }
-                        } else if (type == "Naver Today" || type == "Naver Challenge" || type == "Naver" || type == "Kakao"|| type == "Kakao Stage") {
+                        } else if (type == "Naver Today" || type == "Naver Challenge" || type == "Naver" || type == "Kakao"|| type == "Kakao Stage" || type == "Ridi") {
                             mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(type, intent.getIntExtra("POSITION", 0))
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
@@ -281,25 +289,27 @@ class ActivityBestDetail : AppCompatActivity() {
         Thread {
             val doc: Document = Jsoup.connect(bookCode).get()
 
-           Log.d("####-1", doc.select(".header_info_wrap .StarRate_ParticipantCount").toString())
-            Log.d("####-2", doc.select(".thumbnail_image img").attr("src").toString())
+            bookCode = "https://ridibooks.com${doc.select(".metadata_writer .author_detail_link").attr("href")}"
 
             runOnUiThread {
+
+                binding.llayoutIntro.visibility = View.GONE
+
                 with(binding){
                     Glide.with(context)
                         .load("https:${doc.select(".thumbnail_image img").attr("src")}")
                         .into(inclueBestDetail.iviewBookCover)
 
-                    bookTitle = doc.select(".header_info_wrap .info_title_wrap").text()
+                    bookTitle = doc.select(".header_info_wrap .info_title_wrap h3").text()
                     inclueBestDetail.tviewTitle.text = bookTitle
-                    inclueBestDetail.tviewWriter.text = doc.select(".header_info_wrap .metadata metadata_writer").text()
+                    inclueBestDetail.tviewWriter.text = doc.select(".metadata_writer .author_detail_link").text()
 
                     inclueBestDetail.tviewInfo1.text = doc.select(".header_info_wrap .info_category_wrap").text()
-                    inclueBestDetail.tviewInfo2.text =  doc.select(".header_info_wrap .StarRate_Score").text()
+                    inclueBestDetail.tviewInfo2.text =  "평점 : ${doc.select(".header_info_wrap .StarRate_Score").text()}"
                     inclueBestDetail.tviewInfo3.text =  doc.select(".header_info_wrap .StarRate_ParticipantCount").text()
-                    inclueBestDetail.tviewInfo4.text =  doc.select(".header_info_wrap").text()
+                    inclueBestDetail.tviewInfo4.text =  doc.select(".metadata_info_series_complete_wrap .metadata_item").text()
 
-                    tviewIntro.text = doc.select(".introduce_paragraph .foldable").text()
+                    tviewIntro.text = doc.select(".introduce_book .introduce_paragraph").text()
                 }
 
                 mFragmentBestDetailBooks = FragmentBestDetailBooks(type, bookCode)

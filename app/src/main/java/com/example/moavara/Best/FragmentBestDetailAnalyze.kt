@@ -5,27 +5,16 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
-import androidx.work.Constraints
-import androidx.work.NetworkType
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
 import com.example.moavara.DataBase.BookListDataBestToday
-import com.example.moavara.DataBase.DataBaseBestDay
-import com.example.moavara.Firebase.FirebaseWorkManager
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
-import com.example.moavara.Retrofit.JoaraBestListResult
-import com.example.moavara.Retrofit.RetrofitDataListener
 import com.example.moavara.Search.BestChart
 import com.example.moavara.Util.*
 import com.example.moavara.databinding.FragmentBestDetailAnalyzeBinding
@@ -40,11 +29,8 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.messaging.FirebaseMessaging
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 
 class FragmentBestDetailAnalyze(private val platfrom: String, private val pos: Int) :
@@ -166,6 +152,10 @@ class FragmentBestDetailAnalyze(private val platfrom: String, private val pos: I
                                 entryList.add(BarEntry(num.toFloat(), BestRef.StrToInt(group.info3.replace("조회 수 : ", "")).toFloat()))
                                 entryList2.add(BarEntry(num.toFloat(), BestRef.StrToInt(group.info4.replace("선호작 수 : ", "")).toFloat()))
                                 entryList4.add(Entry(num.toFloat(), group.number.toFloat()))
+                            }  else if (platfrom == "Ridi"){
+                                entryList.add(BarEntry(num.toFloat(), group.info3.replace("평점 : ", "").replace("점","").toFloat()))
+                                entryList2.add(BarEntry(num.toFloat(), BestRef.StrToInt(group.info2.replace("추천 수 : ", "").replace("명","")).toFloat()))
+                                entryList4.add(Entry(num.toFloat(), group.number.toFloat()))
                             }
 
                             with(binding.includeRank) {
@@ -271,6 +261,9 @@ class FragmentBestDetailAnalyze(private val platfrom: String, private val pos: I
                     } else if(platfrom == "Kakao Stage"){
                         items.add(BestChart(dateList, entryList, "조회 수", "#ff7b22"))
                         items.add(BestChart(dateList, entryList2, "선호작 수", "#4971EF"))
+                    }   else if (platfrom == "Ridi"){
+                        items.add(BestChart(dateList, entryList, "평점", "#ff7b22"))
+                        items.add(BestChart(dateList, entryList2, "관심 수", "#4971EF"))
                     }
                     adapterChart!!.notifyDataSetChanged()
                 }
