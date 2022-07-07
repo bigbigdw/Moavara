@@ -41,6 +41,7 @@ object Mining {
         getNaverChallenge(cate, context)
         getNaverBest(cate, context)
         getMrBlueBest(cate, context)
+        getMoonpiaBest(cate, context)
     }
 
     fun getMrBlueBest(cate: String, context: Context) {
@@ -1111,6 +1112,64 @@ object Mining {
             override fun onCancelled(databaseError: DatabaseError) {}
         })
 
+    }
+
+    fun getMoonpiaBest(cate: String, context: Context) {
+        val MoonpiaRef: MutableMap<String?, Any> = HashMap()
+
+        val apiMoonPia = RetrofitMoonPia()
+        val param : MutableMap<String?, Any> = HashMap()
+
+        param["section"] = "today"
+        param["exclusive"] = ""
+        param["outAdult"] = "true"
+        param["offset"] = "0"
+
+        apiMoonPia.postMoonPiaBest(
+            param,
+            object : RetrofitDataListener<BestMoonpiaResult> {
+                override fun onSuccess(data: BestMoonpiaResult) {
+
+                    data.api?.items.let {
+
+                        val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Kakao Stage $cate")
+                            .allowMainThreadQueries().build()
+
+                        if (it != null) {
+                            for (i in it.indices) {
+                                MoonpiaRef["writerName"] = it[i].author
+                                MoonpiaRef["subject"] = it[i].nvTitle
+                                MoonpiaRef["bookImg"] = "https://cdn1.munpia.com${it[i].nvCover}"
+                                MoonpiaRef["bookCode"] = it[i].nvSrl
+                                MoonpiaRef["info1"] = "줄거리 : ${it[i].nvStory}"
+                                MoonpiaRef["info2"] = "베스트 시간 : ${it[i].nsrData?.hour}"
+                                MoonpiaRef["info3"] = "조회 수 : ${it[i].nsrData?.hit}"
+                                MoonpiaRef["info4"] = "방문 수 : ${it[i].nsrData?.number}"
+                                MoonpiaRef["info5"] = "선호작 수 : ${it[i].nsrData?.prefer}"
+                                MoonpiaRef["number"] = i
+                                MoonpiaRef["numberDiff"] = 0
+                                MoonpiaRef["date"] = DBDate.DateMMDD()
+                                MoonpiaRef["status"] = "NEW"
+                                MoonpiaRef["type"] = "Munpia"
+
+                                if(context is ActivityAdmin){
+                                    MoonpiaRef["trophyCount"] = 1
+//                                    if(context.isRoom){
+//                                        MoonpiaRef["trophyCount"] = bestDao.bestDao().countTrophy(it[i].nvTitle)
+//                                    } else {
+//                                        MoonpiaRef["trophyCount"] = 1
+//                                    }
+                                } else {
+                                    MoonpiaRef["trophyCount"] = 1
+                                }
+
+                                miningValue(MoonpiaRef, i, "Munpia", cate, context)
+                            }
+                        }
+                    }
+
+                }
+            })
     }
 
     fun RoomDB(context: Context, tabType: String, cate: String){

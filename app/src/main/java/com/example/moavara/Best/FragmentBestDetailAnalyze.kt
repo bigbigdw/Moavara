@@ -115,6 +115,7 @@ class FragmentBestDetailAnalyze(private val platfrom: String, private val pos: I
                     val entryList2 = mutableListOf<BarEntry>()
                     val entryList3 = mutableListOf<BarEntry>()
                     val entryList4 = mutableListOf<Entry>()
+                    val entryList5 = mutableListOf<BarEntry>()
 
                     val sun = requireContext().getSharedPreferences("WEEK", AppCompatActivity.MODE_PRIVATE).getString("SUN", "")
                     val mon = requireContext().getSharedPreferences("WEEK", AppCompatActivity.MODE_PRIVATE).getString("MON", "")
@@ -160,6 +161,12 @@ class FragmentBestDetailAnalyze(private val platfrom: String, private val pos: I
                                 entryList.add(BarEntry(num.toFloat(), group.info1.replace("조회 수 : ", "").toFloat()))
                                 entryList2.add(BarEntry(num.toFloat(), group.info2.replace("평점 : ", "").toFloat()))
                                 entryList3.add(BarEntry(num.toFloat(), group.info3.replace("댓글 수 : ", "").toFloat()))
+                                entryList4.add(Entry(num.toFloat(), group.number.toFloat()))
+                            }  else if(platfrom == "Munpia"){
+                                entryList.add(BarEntry(num.toFloat(), group.info3.replace("조회 수 : ", "").toFloat()))
+                                entryList2.add(BarEntry(num.toFloat(), group.info4.replace("방문 수 : ", "").toFloat()))
+                                entryList3.add(BarEntry(num.toFloat(), group.info5.replace("선호작 수 : ", "").toFloat()))
+                                entryList5.add(BarEntry(num.toFloat(), group.info2.replace("베스트 시간 : ", "").toFloat()))
                                 entryList4.add(Entry(num.toFloat(), group.number.toFloat()))
                             }
 
@@ -273,6 +280,11 @@ class FragmentBestDetailAnalyze(private val platfrom: String, private val pos: I
                         items.add(BestChart(dateList, entryList, "조회 수", "#ff7b22"))
                         items.add(BestChart(dateList, entryList2, "평점", "#4971EF"))
                         items.add(BestChart(dateList, entryList3, "댓글 수", "#00d180"))
+                    }   else if(platfrom == "Munpia"){
+                        items.add(BestChart(dateList, entryList, "조회 수", "#ff7b22"))
+                        items.add(BestChart(dateList, entryList2, "평점", "#4971EF"))
+                        items.add(BestChart(dateList, entryList3, "댓글 수", "#00d180"))
+                        items.add(BestChart(dateList, entryList5, "베스트 시간", "#00d180"))
                     }
                     adapterChart!!.notifyDataSetChanged()
                 }

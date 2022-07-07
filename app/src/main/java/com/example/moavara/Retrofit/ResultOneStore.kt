@@ -108,3 +108,63 @@ class OnestoreBookDetailCommentContentsList {
     @Expose
     var regDate: String = ""
 }
+
+class BestMoonpiaResult {
+    @SerializedName("api")
+    @Expose
+    val api: BestMoonpiaContents? = null
+}
+
+class BestMoonpiaContents{
+    @SerializedName("items")
+    @Expose
+    val items: List<BestMoonpiaContentsItems>? = null
+}
+
+class BestMoonpiaContentsItems{
+    @SerializedName("author")
+    @Expose
+    var author: String = ""
+
+    @SerializedName("nvStory")
+    @Expose
+    var nvStory: String = ""
+
+    @SerializedName("nvSumEntryForGuest")
+    @Expose
+    var nvSumEntryForGuest: String = ""
+
+    @SerializedName("nvSrl")
+    @Expose
+    var nvSrl: String = ""
+
+    @SerializedName("nvCover")
+    @Expose
+    var nvCover: String = ""
+
+    @SerializedName("nvTitle")
+    @Expose
+    var nvTitle: String = ""
+
+    @SerializedName("nsrData")
+    @Expose
+    val nsrData: BestMoonpiaNsrData? = null
+}
+
+class BestMoonpiaNsrData {
+    @SerializedName("hit")
+    @Expose
+    var hit: String = ""
+
+    @SerializedName("hour")
+    @Expose
+    var hour: String = ""
+
+    @SerializedName("number")
+    @Expose
+    var number: String = ""
+
+    @SerializedName("prefer")
+    @Expose
+    var prefer: String = ""
+}

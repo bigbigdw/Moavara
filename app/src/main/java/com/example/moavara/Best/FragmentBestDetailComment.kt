@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -42,7 +43,7 @@ class FragmentBestDetailComment(private val platfrom: String, private val bookCo
     ): View {
         _binding = FragmentBestDetailTabsBinding.inflate(inflater, container, false)
         val view = binding.root
-        adapterBestComment = AdapterBestOther(items)
+        adapterBestComment = AdapterBestOther(platfrom , items)
 
         binding.rviewBest.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -58,6 +59,8 @@ class FragmentBestDetailComment(private val platfrom: String, private val bookCo
             getCommentsKakaoStage()
         } else if (platfrom == "OneStore") {
             getCommentsOneStory()
+        } else if (platfrom == "Munpia") {
+            getCommentsMunpia()
         }
 
 
@@ -168,7 +171,7 @@ class FragmentBestDetailComment(private val platfrom: String, private val bookCo
 
     private fun getCommentsOneStory() {
         val apiOnestory = RetrofitOnestore()
-        val param : MutableMap<String?, Any> = HashMap()
+        val param: MutableMap<String?, Any> = HashMap()
 
         param["channelId"] = bookCode
         param["offset"] = "1"
@@ -197,9 +200,31 @@ class FragmentBestDetailComment(private val platfrom: String, private val bookCo
                 }
             })
     }
+
+    fun getCommentsMunpia() {
+        Thread {
+            val doc: Document = Jsoup.connect("https://novel.munpia.com/${bookCode}").get()
+
+            val it = doc.select(".review .article-inner")
+
+            requireActivity().runOnUiThread {
+                for (i in it.indices) {
+                    items.add(
+                        BestComment(
+                            doc.select(".review .article-inner").get(i).text(),
+                            doc.select(".review .writer-area .date-de").get(1).text()
+                                .replace("· ", ""),
+                        )
+                    )
+                }
+                adapterBestComment!!.notifyDataSetChanged()
+            }
+        }.start()
+    }
+
 }
 
-class AdapterBestOther(items: List<BestComment?>?) :
+class AdapterBestOther(private var platfrom : String, items: List<BestComment?>?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var holder: ArrayList<BestComment?>? = items as ArrayList<BestComment?>?
 
@@ -231,8 +256,13 @@ class AdapterBestOther(items: List<BestComment?>?) :
                     .into(holder.binding.iView)
 
                 holder.binding.tviewTitle.text = item.comment
-                holder.binding.tviewDate.text =
-                    item.date.substring(4, 6) + "." + item.date.substring(6, 8)
+
+                if(platfrom == "Munpia"){
+                    holder.binding.tviewDate.text = item.date
+                } else {
+                    holder.binding.tviewDate.text =
+                        item.date.substring(4, 6) + "." + item.date.substring(6, 8)
+                }
             }
 
         }

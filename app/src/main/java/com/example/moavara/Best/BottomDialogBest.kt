@@ -86,7 +86,7 @@ class BottomDialogBest(
                 tviewInfo1.text = item.info1
                 tviewInfo2.text = item.info2
                 tviewInfo3.text = item.info3
-            } else if (tabType == "Kakao" || tabType == "Joara" || tabType == "Joara Premium" || tabType == "Joara Nobless") {
+            } else if (tabType == "Kakao" || tabType == "Joara" || tabType == "Joara Premium" || tabType == "Joara Nobless" || tabType == "Munpia") {
                 tviewInfo1.visibility = View.VISIBLE
                 tviewInfo2.visibility = View.VISIBLE
                 tviewInfo3.visibility = View.VISIBLE
@@ -209,6 +209,8 @@ class BottomDialogBest(
             item.bookCode
         } else if (tabType == "Joara" || tabType == "Joara Premium" || tabType == "Joara Nobless") {
             "https://www.joara.com/book/" + item.bookCode
+        }else if (tabType == "Munpia") {
+            "https://novel.munpia.com/${item.bookCode}"
         } else ""
 
     }

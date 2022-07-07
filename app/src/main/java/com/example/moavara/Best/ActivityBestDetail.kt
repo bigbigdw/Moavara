@@ -60,12 +60,14 @@ class ActivityBestDetail : AppCompatActivity() {
             setLayoutRidi()
         } else if (type == "OneStore"){
             setLayoutOneStory()
+        } else if (type == "Munpia"){
+            setLayoutMunpia()
         }
 
         if(type == "Naver Today" || type == "Naver Challenge" || type == "Naver"){
             binding.tabs.addTab(binding.tabs.newTab().setText("다른 작품"))
             binding.tabs.addTab(binding.tabs.newTab().setText("작품 분석"))
-        } else if(type == "Kakao" || type == "Kakao Stage" || type == "OneStore") {
+        } else if(type == "Kakao" || type == "Kakao Stage" || type == "OneStore" || type == "Munpia") {
             binding.tabs.addTab(binding.tabs.newTab().setText("댓글"))
             binding.tabs.addTab(binding.tabs.newTab().setText("작품 분석"))
         } else if(type == "Ridi") {
@@ -81,7 +83,7 @@ class ActivityBestDetail : AppCompatActivity() {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 when(tab.position){
                     0->{
-                        if (type == "Joara" || type == "Joara Nobless" || type == "Joara Premium" || type == "Kakao" || type == "Kakao Stage" || type == "OneStore") {
+                        if (type == "Joara" || type == "Joara Nobless" || type == "Joara Premium" || type == "Kakao" || type == "Kakao Stage" || type == "OneStore" || type == "Munpia") {
                             mFragmentBestDetailComment = FragmentBestDetailComment(type, bookCode)
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailComment)
@@ -99,7 +101,7 @@ class ActivityBestDetail : AppCompatActivity() {
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
                             }
-                        } else if (type == "Naver Today" || type == "Naver Challenge" || type == "Naver" || type == "Kakao"|| type == "Kakao Stage" || type == "Ridi" || type == "OneStore") {
+                        } else if (type == "Naver Today" || type == "Naver Challenge" || type == "Naver" || type == "Kakao"|| type == "Kakao Stage" || type == "Ridi" || type == "OneStore" || type == "Munpia") {
                             mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(type, intent.getIntExtra("POSITION", 0))
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
@@ -356,6 +358,41 @@ class ActivityBestDetail : AppCompatActivity() {
         supportFragmentManager.commit {
             replace(R.id.llayoutWrap, mFragmentBestDetailComment)
         }
+    }
+
+    fun setLayoutMunpia(){
+        Thread {
+            val doc: Document = Jsoup.connect("https://novel.munpia.com/${bookCode}" ).get()
+
+            Log.d("####-1", doc.select(".detail-box h2 a").text())
+            Log.d("####-2", doc.select(".detail-box h2 a span").text() + " ")
+            Log.d("####-3", doc.select(".detail-box h2 a").text().replace(doc.select(".detail-box h2 a span").text() + " ", ""))
+
+            runOnUiThread {
+
+                with(binding){
+                    Glide.with(context)
+                        .load("https:${doc.select(".cover-box img").attr("src")}")
+                        .into(inclueBestDetail.iviewBookCover)
+
+                    bookTitle = doc.select(".detail-box h2 a").text().replace(doc.select(".detail-box h2 a span").text() + " ", "")
+                    inclueBestDetail.tviewTitle.text = bookTitle
+                    inclueBestDetail.tviewWriter.text = doc.select(".member-trigger strong").text()
+
+                    inclueBestDetail.tviewInfo1.text = doc.select(".meta-path strong").text()
+                    inclueBestDetail.tviewInfo2.text =  "조회 수 : ${doc.select(".meta-etc dd").next().next().get(1).text()}"
+                    inclueBestDetail.tviewInfo3.text =  "추천 수 : ${doc.select(".meta-etc dd").next().next().get(2).text()}"
+                    inclueBestDetail.tviewInfo4.text =  doc.select(".meta-etc dt").next().get(2).text()
+
+                    tviewIntro.text = doc.select(".story").text()
+                }
+
+                mFragmentBestDetailComment = FragmentBestDetailComment(type, bookCode)
+                supportFragmentManager.commit {
+                    replace(R.id.llayoutWrap, mFragmentBestDetailComment)
+                }
+            }
+        }.start()
     }
 
 

@@ -31,7 +31,8 @@ object BestRef {
             "스테이지",
             "리디북스",
             "원스토리",
-            "미스터블루"
+            "문피아",
+//            "미스터블루"
         )
     }
 
@@ -47,7 +48,8 @@ object BestRef {
             "Kakao Stage",
             "Ridi",
             "OneStore",
-            "MrBlue"
+            "Munpia",
+//            "MrBlue"
         )
     }
 
