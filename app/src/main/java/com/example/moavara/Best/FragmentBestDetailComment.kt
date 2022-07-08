@@ -49,8 +49,6 @@ class FragmentBestDetailComment(private val platfrom: String, private val bookCo
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rviewBest.adapter = adapterBestComment
 
-        Log.d("####-2", platfrom)
-
         if (platfrom == "Joara" || platfrom == "Joara Nobless" || platfrom == "Joara Premium") {
             getCommentsJoara()
         } else if (platfrom == "Kakao") {
@@ -61,6 +59,8 @@ class FragmentBestDetailComment(private val platfrom: String, private val bookCo
             getCommentsOneStory()
         } else if (platfrom == "Munpia") {
             getCommentsMunpia()
+        }  else if (platfrom == "Toksoda"){
+            getCommentsToksoda()
         }
 
 
@@ -220,6 +220,37 @@ class FragmentBestDetailComment(private val platfrom: String, private val bookCo
                 adapterBestComment!!.notifyDataSetChanged()
             }
         }.start()
+    }
+
+    fun getCommentsToksoda(){
+        val apiToksoda = RetrofitToksoda()
+        val param : MutableMap<String?, Any> = HashMap()
+        param["brcd"] = bookCode
+        param["pageFuncName"] = "goCommentPage"
+        param["page"] = "1"
+        param["orderType"] = "DATE"
+        param["_"] = "1657265744730"
+
+        apiToksoda.getBestDetailComment(
+            param,
+            object : RetrofitDataListener<BestToksodaDetailCommentResult> {
+                override fun onSuccess(data: BestToksodaDetailCommentResult) {
+
+                    data.result?.commentList.let {
+                        if (it != null) {
+                            for (i in it.indices) {
+                                items.add(
+                                    BestComment(
+                                        it[i].cmntCntts,
+                                        it[i].rgstDtime,
+                                    )
+                                )
+                            }
+                        }
+                        adapterBestComment!!.notifyDataSetChanged()
+                    }
+                }
+            })
     }
 
 }

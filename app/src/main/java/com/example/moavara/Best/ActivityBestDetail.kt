@@ -30,6 +30,7 @@ class ActivityBestDetail : AppCompatActivity() {
     var type = ""
     var context = this
     var bookTitle = ""
+    var bookWriter = ""
     var chapter : List<JoaraBestChapter>? = null
     private lateinit var binding: ActivityBestDetailBinding
     private lateinit var mFragmentBestDetailAnalyze: FragmentBestDetailAnalyze
@@ -62,6 +63,8 @@ class ActivityBestDetail : AppCompatActivity() {
             setLayoutOneStory()
         } else if (type == "Munpia"){
             setLayoutMunpia()
+        } else if (type == "Toksoda"){
+            setLayoutToksoda()
         }
 
         if(type == "Naver Today" || type == "Naver Challenge" || type == "Naver"){
@@ -83,7 +86,7 @@ class ActivityBestDetail : AppCompatActivity() {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 when(tab.position){
                     0->{
-                        if (type == "Joara" || type == "Joara Nobless" || type == "Joara Premium" || type == "Kakao" || type == "Kakao Stage" || type == "OneStore" || type == "Munpia") {
+                        if (type == "Joara" || type == "Joara Nobless" || type == "Joara Premium" || type == "Kakao" || type == "Kakao Stage" || type == "OneStore" || type == "Munpia" || type == "Toksoda") {
                             mFragmentBestDetailComment = FragmentBestDetailComment(type, bookCode)
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailComment)
@@ -96,7 +99,7 @@ class ActivityBestDetail : AppCompatActivity() {
                         }
                     }
                     1->{
-                        if (type == "Joara" || type == "Joara Nobless" || type == "Joara Premium") {
+                        if (type == "Joara" || type == "Joara Nobless" || type == "Joara Premium" || type == "Toksoda") {
                             mFragmentBestDetailBooks = FragmentBestDetailBooks(type, bookCode)
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
@@ -389,6 +392,47 @@ class ActivityBestDetail : AppCompatActivity() {
                 }
             }
         }.start()
+    }
+
+    fun setLayoutToksoda(){
+        val apiToksoda = RetrofitToksoda()
+        val param : MutableMap<String?, Any> = HashMap()
+
+        param["brcd"] = bookCode
+        param["_"] = "1657265744728"
+
+        apiToksoda.getBestDetail(
+            param,
+            object : RetrofitDataListener<BestToksodaDetailResult> {
+                override fun onSuccess(data: BestToksodaDetailResult) {
+
+                    with(binding){
+                        data.result.let { it ->
+                            Glide.with(context)
+                                .load("https:${it?.imgPath}")
+                                .into(inclueBestDetail.iviewBookCover)
+
+                            bookTitle = it?.wrknm ?: ""
+                            bookWriter = it?.athrnm ?: ""
+
+                            inclueBestDetail.tviewTitle.text = bookTitle
+                            inclueBestDetail.tviewWriter.text = bookWriter
+
+                            inclueBestDetail.tviewInfo1.text = "장르 :  ${it?.lgctgrNm}"
+                            inclueBestDetail.tviewInfo2.text =  "구독 수 : ${it?.inqrCnt}"
+                            inclueBestDetail.tviewInfo3.text =  "관심 : ${it?.intrstCnt}"
+                            inclueBestDetail.tviewInfo4.text =  "선호작 수 : ${it?.goodCnt}"
+
+                            tviewIntro.text =  it?.lnIntro
+                        }
+                    }
+                }
+            })
+
+        mFragmentBestDetailComment = FragmentBestDetailComment(type, bookCode)
+        supportFragmentManager.commit {
+            replace(R.id.llayoutWrap, mFragmentBestDetailComment)
+        }
     }
 
 

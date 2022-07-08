@@ -86,7 +86,7 @@ class BottomDialogBest(
                 tviewInfo1.text = item.info1
                 tviewInfo2.text = item.info2
                 tviewInfo3.text = item.info3
-            } else if (tabType == "Kakao" || tabType == "Joara" || tabType == "Joara Premium" || tabType == "Joara Nobless" || tabType == "Munpia") {
+            } else if (tabType == "Kakao" || tabType == "Joara" || tabType == "Joara Premium" || tabType == "Joara Nobless" || tabType == "Munpia" || tabType == "Toksoda") {
                 tviewInfo1.visibility = View.VISIBLE
                 tviewInfo2.visibility = View.VISIBLE
                 tviewInfo3.visibility = View.VISIBLE
@@ -211,7 +211,11 @@ class BottomDialogBest(
             "https://www.joara.com/book/" + item.bookCode
         }else if (tabType == "Munpia") {
             "https://novel.munpia.com/${item.bookCode}"
-        } else ""
+        } else if (tabType == "Toksoda") {
+            "https://www.tocsoda.co.kr/product/productView?brcd=${item.bookCode}"
+        }else ""
+
+
 
     }
 

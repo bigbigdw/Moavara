@@ -42,6 +42,9 @@ object Mining {
         getNaverBest(cate, context)
         getMrBlueBest(cate, context)
         getMoonpiaBest(cate, context)
+        for (i in 1..5) {
+            getToksodaBest(cate, context, i)
+        }
     }
 
     fun getMrBlueBest(cate: String, context: Context) {
@@ -1166,7 +1169,7 @@ object Mining {
 
                             data.api?.items.let {
 
-                                val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Kakao Stage $cate")
+                                val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Munpia $cate")
                                     .allowMainThreadQueries().build()
 
                                 if (it != null) {
@@ -1209,6 +1212,59 @@ object Mining {
 
             override fun onCancelled(databaseError: DatabaseError) {}
         })
+    }
+
+    fun getToksodaBest(cate: String, context: Context, page: Int) {
+        val ToksodaRef: MutableMap<String?, Any> = HashMap()
+
+        val apiToksoda = RetrofitToksoda()
+        val param : MutableMap<String?, Any> = HashMap()
+
+        param["page"] = page
+        param["lgctgrCd"] = Genre.setToksodaGenre(cate)
+        param["mdctgrCd"] = "all"
+        param["rookieYn"] = "N"
+        param["over19Yn"] = "N"
+        param["type"] = "NEW"
+        param["freePblserlYn"] = "00431"
+        param["_"] = "1657262989944"
+
+        apiToksoda.getBestList(
+            param,
+            object : RetrofitDataListener<BestToksodaResult> {
+                override fun onSuccess(data: BestToksodaResult) {
+
+                    data.resultList?.let {
+
+                        val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Toksoda $cate")
+                            .allowMainThreadQueries().build()
+
+                        if (it != null) {
+                            for (i in it.indices) {
+                                ToksodaRef["writerName"] = it[i].athrnm
+                                ToksodaRef["subject"] = it[i].wrknm
+                                ToksodaRef["bookImg"] = "https:${it[i].imgPath}"
+                                ToksodaRef["bookCode"] = it[i].brcd
+                                ToksodaRef["info1"] = it[i].lnIntro
+                                ToksodaRef["info2"] = "총 ${it[i].whlEpsdCnt}화"
+                                ToksodaRef["info3"] = "조회 수 : ${it[i].inqrCnt}"
+                                ToksodaRef["info4"] = "장르 : ${it[i].lgctgrNm}"
+                                ToksodaRef["info5"] = "선호작 수 : ${it[i].intrstCnt}"
+                                ToksodaRef["number"] = i
+                                ToksodaRef["date"] = DBDate.DateMMDD()
+                                ToksodaRef["type"] = "Toksoda"
+                                ToksodaRef["numberDiff"] = 0
+                                ToksodaRef["status"] = "NEW"
+
+                                ToksodaRef["trophyCount"] = 1
+
+                                miningValue(ToksodaRef, (i + ((page - 1) * it.size)), "Toksoda", cate, context)
+                            }
+                        }
+                    }
+
+                }
+            })
     }
 
     fun RoomDB(context: Context, tabType: String, cate: String){

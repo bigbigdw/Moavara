@@ -168,3 +168,163 @@ class BestMoonpiaNsrData {
     @Expose
     var prefer: String = ""
 }
+
+class BestToksodaResult {
+    @SerializedName("resultList")
+    @Expose
+    val resultList: List<BestToksodaToksodaResultList>? = null
+}
+
+class BestToksodaToksodaResultList{
+    @SerializedName("athrnm")
+    @Expose
+    var athrnm: String = ""
+
+    @SerializedName("brcd")
+    @Expose
+    var brcd: String = ""
+
+    @SerializedName("wrknm")
+    @Expose
+    var wrknm: String = ""
+
+    @SerializedName("whlEpsdCnt")
+    @Expose
+    var whlEpsdCnt: String = ""
+
+    @SerializedName("lnIntro")
+    @Expose
+    var lnIntro: String = ""
+
+    @SerializedName("lgctgrNm")
+    @Expose
+    var lgctgrNm: String = ""
+
+    @SerializedName("inqrCnt")
+    @Expose
+    var inqrCnt: String = ""
+
+    @SerializedName("imgPath")
+    @Expose
+    var imgPath: String = ""
+
+    @SerializedName("intrstCnt")
+    @Expose
+    var intrstCnt: String = ""
+}
+
+class BestToksodaDetailResult {
+    @SerializedName("result")
+    @Expose
+    val result: BestToksodaDetailResultContents? = null
+}
+
+class BestToksodaDetailResultContents{
+    @SerializedName("athrnm")
+    @Expose
+    var athrnm: String = ""
+
+    @SerializedName("cmntCnt")
+    @Expose
+    var cmntCnt: String = ""
+
+    @SerializedName("goodCnt")
+    @Expose
+    var goodCnt: String = ""
+
+    @SerializedName("hashTagList")
+    @Expose
+    val hashTagList: List<BestToksodaDetailHashTagList>? = null
+
+    @SerializedName("imgPath")
+    @Expose
+    var imgPath: String = ""
+
+    @SerializedName("inqrCnt")
+    @Expose
+    var inqrCnt: String = ""
+
+    @SerializedName("intrstCnt")
+    @Expose
+    var intrstCnt: String = ""
+
+    @SerializedName("lnIntro")
+    @Expose
+    var lnIntro: String = ""
+
+    @SerializedName("wrknm")
+    @Expose
+    var wrknm: String = ""
+
+    @SerializedName("lgctgrNm")
+    @Expose
+    var lgctgrNm: String = ""
+}
+
+class BestToksodaDetailHashTagList {
+    @SerializedName("hashtagNm")
+    @Expose
+    var hashtagNm: String = ""
+}
+
+class BestToksodaDetailCommentResult {
+    @SerializedName("result")
+    @Expose
+    val result: BestToksodaDetailCommentContents? = null
+}
+
+class BestToksodaDetailCommentContents{
+    @SerializedName("commentList")
+    @Expose
+    val commentList: List<BestToksodaDetailCommentList>? = null
+}
+
+class BestToksodaDetailCommentList{
+    @SerializedName("cmntCntts")
+    @Expose
+    var cmntCntts: String = ""
+
+    @SerializedName("rgstDtime")
+    @Expose
+    var rgstDtime: String = ""
+}
+
+class BestToksodaSearchResult {
+    @SerializedName("resultList")
+    @Expose
+    val resultList: List<BestToksodaSearchList>? = null
+}
+
+class BestToksodaSearchList{
+    @SerializedName("BOOK_NM")
+    @Expose
+    var BOOK_NM: String = ""
+
+    @SerializedName("AUTHOR")
+    @Expose
+    var AUTHOR: String = ""
+
+    @SerializedName("HASHTAG_NM")
+    @Expose
+    var HASHTAG_NM: String = ""
+
+    @SerializedName("IMG_PATH")
+    @Expose
+    var IMG_PATH: String = ""
+
+    @SerializedName("BARCODE")
+    @Expose
+    var BARCODE: String = ""
+
+    @SerializedName("INTRO")
+    @Expose
+    var INTRO: String = ""
+
+    @SerializedName("LGCTGR_NM")
+    @Expose
+    var LGCTGR_NM: String = ""
+
+    @SerializedName("PUB_NM")
+    @Expose
+    var PUB_NM: String = ""
+}

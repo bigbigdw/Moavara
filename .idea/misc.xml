@@ -146,6 +146,7 @@
         <entry key="app/src/main/res/drawable/shape_btn_write_bottom.xml" value="0.1305" />
         <entry key="app/src/main/res/drawable/shape_dialog_login.xml" value="0.25" />
         <entry key="app/src/main/res/drawable/shape_write_process1.xml" value="0.1305" />
+        <entry key="app/src/main/res/layout/activity_admin.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_book_setting.xml" value="0.16944444444444445" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.24202127659574468" />

@@ -6,18 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.BookListDataBestToday
-import com.example.moavara.R
 import com.example.moavara.Retrofit.*
 import com.example.moavara.Search.BestComment
-import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Param
-import com.example.moavara.Util.calculateNum
-import com.example.moavara.Util.miningValue
 import com.example.moavara.databinding.FragmentBestDetailTabsBinding
 import com.example.moavara.databinding.ItemBestDetailOtherBinding
 import org.jsoup.Jsoup
@@ -58,7 +53,9 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
         }  else if (platfrom == "Naver Today"  || platfrom == "Naver Challenge") {
             getCommentsNaverToday()
         }  else if (platfrom == "Ridi"){
-            getCommentsKakaoRidi()
+            getCommentsRidi()
+        } else if (platfrom == "Toksoda"){
+            getBooksToksoda()
         }
 
         return view
@@ -144,7 +141,7 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
         }.start()
     }
 
-    private fun getCommentsKakaoRidi() {
+    private fun getCommentsRidi() {
         Thread {
             val doc: Document = Jsoup.connect(bookCode).get()
             val other = doc.select(".book_macro_landscape")
@@ -172,6 +169,58 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
                 adapterBestOthers!!.notifyDataSetChanged()
             }
         }.start()
+    }
+
+    private fun getBooksToksoda() {
+        val apiToksoda = RetrofitToksoda()
+        val param : MutableMap<String?, Any> = HashMap()
+
+        param["srchwrd"] = (context as ActivityBestDetail).bookWriter
+        param["keyword"] = (context as ActivityBestDetail).bookWriter
+        param["pageSize"] = "20"
+        param["pageIndex"] = "0"
+        param["ageGrade"] = "0"
+        param["lgctgrCd"] = ""
+        param["mdctgrCd"] = ""
+        param["searchType"] = "T"
+        param["sortType"] = "W"
+        param["prdtType"] = ""
+        param["eventYn"] = "N"
+        param["realSearchType"] = "N"
+        param["_"] = "1657267049443"
+
+        apiToksoda.getSearch(
+            param,
+            object : RetrofitDataListener<BestToksodaSearchResult> {
+                override fun onSuccess(data: BestToksodaSearchResult) {
+
+                    data.resultList.let {
+                        if (it != null) {
+                            for (i in it.indices) {
+                                items.add(
+                                    BookListDataBestToday(
+                                        it[i].AUTHOR,
+                                        it[i].BOOK_NM,
+                                        "https:${it[i].IMG_PATH}",
+                                        it[i].BARCODE,
+                                        it[i].INTRO,
+                                        "장르 : ${it[i].LGCTGR_NM}",
+                                        "유통사 : ${it[i].PUB_NM}",
+                                        "키워드 : ${it[i].HASHTAG_NM}",
+                                        "",
+                                        0,
+                                        0,
+                                        "",
+                                        ""
+                                    )
+                                )
+                            }
+
+                        }
+                        adapterBestOthers!!.notifyDataSetChanged()
+                    }
+                }
+            })
     }
 }
 

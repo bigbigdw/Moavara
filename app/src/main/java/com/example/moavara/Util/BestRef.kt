@@ -32,6 +32,7 @@ object BestRef {
             "리디북스",
             "원스토리",
             "문피아",
+            "톡소다",
 //            "미스터블루"
         )
     }
@@ -49,6 +50,7 @@ object BestRef {
             "Ridi",
             "OneStore",
             "Munpia",
+            "Toksoda",
 //            "MrBlue"
         )
     }

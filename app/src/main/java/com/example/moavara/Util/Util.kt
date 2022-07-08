@@ -112,6 +112,23 @@ object Genre {
         }
     }
 
+    fun setToksodaGenre(str: String): String {
+        return when {
+            str == "BL" -> {
+                "0008"
+            }
+            str == "FANTASY" -> {
+                "0011"
+            }
+            str == "ROMANCE" -> {
+                "0008"
+            }
+            else -> {
+                "0007"
+            }
+        }
+    }
+
     fun setNaverGenre(str: String): String {
         return when {
             str == "BL" -> {
