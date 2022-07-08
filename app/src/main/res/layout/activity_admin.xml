@@ -124,129 +124,154 @@
                         android:textSize="18dp" />
                 </LinearLayout>
 
-                <LinearLayout
+                <androidx.core.widget.NestedScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="22dp"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent"
+                    android:fillViewport="true">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="22dp"
+                        android:gravity="center_horizontal"
                         android:orientation="vertical">
 
                         <LinearLayout
-                            android:id="@+id/llayoutBtn1"
-                            android:layout_width="260dp"
-                            android:layout_height="56dp"
-                            android:layout_marginBottom="8dp"
-                            android:background="@drawable/selector_genre"
-                            android:gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:orientation="vertical">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="데이터 수집 중지"
-                                android:textColor="#EDE6FD"
-                                android:textSize="16dp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/llayoutBtn1"
+                                android:layout_width="260dp"
+                                android:layout_height="56dp"
+                                android:layout_marginBottom="8dp"
+                                android:background="@drawable/selector_genre"
+                                android:gravity="center"
+                                android:orientation="vertical">
 
-                        <LinearLayout
-                            android:id="@+id/llayout_btn2"
-                            android:layout_width="260dp"
-                            android:layout_height="56dp"
-                            android:layout_marginBottom="8dp"
-                            android:background="@drawable/selector_genre"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="데이터 수집 중지"
+                                    android:textColor="#EDE6FD"
+                                    android:textSize="16dp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="데이터 수집 재개"
-                                android:textColor="#EDE6FD"
-                                android:textSize="16dp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/llayout_btn2"
+                                android:layout_width="260dp"
+                                android:layout_height="56dp"
+                                android:layout_marginBottom="8dp"
+                                android:background="@drawable/selector_genre"
+                                android:gravity="center"
+                                android:orientation="vertical">
 
-                        <LinearLayout
-                            android:id="@+id/llayout_btn3"
-                            android:layout_width="260dp"
-                            android:layout_height="56dp"
-                            android:layout_marginBottom="8dp"
-                            android:background="@drawable/selector_genre"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="데이터 수집 재개"
+                                    android:textColor="#EDE6FD"
+                                    android:textSize="16dp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="데이터 갱신"
-                                android:textColor="#EDE6FD"
-                                android:textSize="16dp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/llayout_btn3"
+                                android:layout_width="260dp"
+                                android:layout_height="56dp"
+                                android:layout_marginBottom="8dp"
+                                android:background="@drawable/selector_genre"
+                                android:gravity="center"
+                                android:orientation="vertical">
 
-                        <LinearLayout
-                            android:id="@+id/llayout_btn4"
-                            android:layout_width="260dp"
-                            android:layout_height="56dp"
-                            android:layout_marginBottom="8dp"
-                            android:background="@drawable/selector_genre"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="데이터 갱신"
+                                    android:textColor="#EDE6FD"
+                                    android:textSize="16dp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Room"
-                                android:textColor="#EDE6FD"
-                                android:textSize="16dp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/llayout_btn4"
+                                android:layout_width="260dp"
+                                android:layout_height="56dp"
+                                android:layout_marginBottom="8dp"
+                                android:background="@drawable/selector_genre"
+                                android:gravity="center"
+                                android:orientation="vertical">
 
-                        <LinearLayout
-                            android:id="@+id/llayout_btn5"
-                            android:layout_width="260dp"
-                            android:layout_height="56dp"
-                            android:layout_marginBottom="8dp"
-                            android:background="@drawable/selector_genre"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Room"
+                                    android:textColor="#EDE6FD"
+                                    android:textSize="16dp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Room 초기화"
-                                android:textColor="#EDE6FD"
-                                android:textSize="16dp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/llayout_btn5"
+                                android:layout_width="260dp"
+                                android:layout_height="56dp"
+                                android:layout_marginBottom="8dp"
+                                android:background="@drawable/selector_genre"
+                                android:gravity="center"
+                                android:orientation="vertical">
 
-                        <LinearLayout
-                            android:id="@+id/llayout_btn7"
-                            android:layout_width="260dp"
-                            android:layout_height="56dp"
-                            android:layout_marginBottom="8dp"
-                            android:background="@drawable/selector_genre"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Room 초기화"
+                                    android:textColor="#EDE6FD"
+                                    android:textSize="16dp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Room 데이터 갱신"
-                                android:textColor="#EDE6FD"
-                                android:textSize="16dp"
-                                android:textStyle="bold" />
+                            <LinearLayout
+                                android:id="@+id/llayout_btn7"
+                                android:layout_width="260dp"
+                                android:layout_height="56dp"
+                                android:layout_marginBottom="8dp"
+                                android:background="@drawable/selector_genre"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Room 데이터 갱신"
+                                    android:textColor="#EDE6FD"
+                                    android:textSize="16dp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/llayout_btn8"
+                                android:layout_width="260dp"
+                                android:layout_height="56dp"
+                                android:layout_marginBottom="8dp"
+                                android:background="@drawable/selector_genre"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="푸시 보내기"
+                                    android:textColor="#EDE6FD"
+                                    android:textSize="16dp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+
                         </LinearLayout>
 
                     </LinearLayout>
-
-                </LinearLayout>
+                </androidx.core.widget.NestedScrollView>
 
             </LinearLayout>
 

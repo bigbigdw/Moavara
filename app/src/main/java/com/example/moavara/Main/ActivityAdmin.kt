@@ -11,13 +11,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.room.Room
 import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
-import com.example.moavara.DataBase.DataBaseBestDay
 import com.example.moavara.Firebase.*
 import com.example.moavara.R
 import com.example.moavara.Search.ActivitySearch
@@ -25,10 +22,8 @@ import com.example.moavara.User.ActivityUser
 import com.example.moavara.Util.Genre
 import com.example.moavara.Util.Mining
 import com.example.moavara.databinding.ActivityAdminBinding
-import com.example.moavara.databinding.ActivityMainBinding
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.messaging.FirebaseMessaging
-import kotlinx.android.synthetic.main.activity_admin.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Retrofit
@@ -36,7 +31,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 class ActivityAdmin : AppCompatActivity() {
-    var navController: NavController? = null
 
     var cate = "ALL"
     var status = ""
@@ -511,17 +505,25 @@ class ActivityAdmin : AppCompatActivity() {
                 }, 1000) //1초 후 실행
                 Toast.makeText(this@ActivityAdmin, "데이터 갱신 완료", Toast.LENGTH_SHORT).show()
             }
+
+            llayoutBtn8.setOnClickListener {
+                Toast.makeText(this@ActivityAdmin, "푸시 푸시 베이베", Toast.LENGTH_SHORT).show()
+                postFCM()
+            }
         }
 
     }
 
     private fun postFCM() {
 
+        val fcm = Intent(applicationContext, FCM::class.java)
+        startService(fcm)
+
         val fcmBody = DataFCMBody(
             "/topics/all",
             "high",
             DataFCMBodyData("data", "body"),
-            DataFCMBodyNotification("모아바라", "베스트 리스트가 갱신되었습니다-0707", "default", "ic_stat_ic_notification"),
+            DataFCMBodyNotification("모아바라", "예아 푸시푸시 베이베", "default", "ic_stat_ic_notification"),
         )
 
         val call = Retrofit.Builder()
@@ -539,15 +541,15 @@ class ActivityAdmin : AppCompatActivity() {
             ) {
                 if (response.isSuccessful) {
                     response.body()?.let { it ->
-                        Log.d("FCM", "성공");
+                        Log.d("@@@@FCM", "성공");
                     }
                 } else {
-                    Log.d("FCM", "실패2");
+                    Log.d("@@@@FCM", "실패2");
                 }
             }
 
             override fun onFailure(call: Call<FWorkManagerResult?>, t: Throwable) {
-                Log.d("FCM", "실패");
+                Log.d("@@@@FCM", "실패");
             }
         })
     }

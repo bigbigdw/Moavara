@@ -60,12 +60,17 @@ class FCM : FirebaseMessagingService() {
         builder =
             builder.setContent(getCustomDesign(title, message))
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationChannel =
-                NotificationChannel(channel_id, "베스트 수집", NotificationManager.IMPORTANCE_HIGH)
-            notificationChannel.setSound(uri, null)
-            notificationManager.createNotificationChannel(notificationChannel)
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            val notificationChannel =
+//                NotificationChannel(channel_id, "베스트 수집", NotificationManager.IMPORTANCE_HIGH)
+//            notificationChannel.setSound(uri, null)
+//            notificationManager.createNotificationChannel(notificationChannel)
+//        }
+
+        val notificationChannel =
+            NotificationChannel(channel_id, "베스트 수집", NotificationManager.IMPORTANCE_HIGH)
+        notificationChannel.setSound(uri, null)
+        notificationManager.createNotificationChannel(notificationChannel)
         notificationManager.notify(0, builder.build())
     }
 }
