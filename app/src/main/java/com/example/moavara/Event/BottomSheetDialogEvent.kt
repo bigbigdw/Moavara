@@ -286,34 +286,5 @@ class BottomSheetDialogEvent(
 
     }
 
-    fun getEventMunpia(){
-        val doc: Document = Jsoup.connect(item.link).get()
-
-        Log.d("####", item.link)
-        Log.d("####", doc.select(".event_area").attr("src"))
-
-//        if(doc.select(".event_area div img").size > 1){
-//            val mrBlue1 = doc.select(".event-html img").first()!!.absUrl("src")
-//
-//            requireActivity().runOnUiThread {
-//                Glide.with(mContext)
-//                    .load(mrBlue1.replace("http", "https"))
-//                    .into(binding.iview)
-//            }
-//        } else if(doc.select(".event-html img").size < 1) {
-//
-//            val mrBlue2 = doc.select(".event-visual img").first()!!.absUrl("src")
-//
-//            requireActivity().runOnUiThread {
-//                Glide.with(mContext)
-//                    .load(mrBlue2)
-//                    .into(binding.iview)
-//            }
-//        }
-
-        title = item.title
-
-    }
-
     override fun getTheme() = R.style.CustomBottomSheetDialogTheme
 }

@@ -328,3 +328,23 @@ class BestToksodaSearchList{
     @Expose
     var PUB_NM: String = ""
 }
+
+class BestBannerListResult {
+    @SerializedName("resultList")
+    @Expose
+    val resultList: List<BestBannerListContents>? = null
+}
+
+class BestBannerListContents{
+    @SerializedName("imgPath")
+    @Expose
+    var imgPath: String = ""
+
+    @SerializedName("linkInfo")
+    @Expose
+    var linkInfo: String = ""
+
+    @SerializedName("bnnrNm")
+    @Expose
+    var bnnrNm: String = ""
+}

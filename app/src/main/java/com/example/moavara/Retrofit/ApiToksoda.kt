@@ -16,4 +16,10 @@ interface ApiToksoda {
 
     @GET("common/search/smartmakerLCPOpen")
     fun getSearch(@QueryMap queryMap: MutableMap<String?, Any>): Call<BestToksodaSearchResult>
+
+    @GET("/banner/getBannerList")
+    fun getEventList(@QueryMap queryMap: MutableMap<String?, Any>): Call<BestBannerListResult>
+
+    @GET("/event/getEventDetail")
+    fun getEventDetail(@QueryMap queryMap: MutableMap<String?, Any>): Call<BestBannerListResult>
 }

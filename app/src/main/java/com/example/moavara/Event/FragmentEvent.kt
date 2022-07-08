@@ -44,6 +44,7 @@ class FragmentEvent: Fragment() {
         adapter.addFragment(FragmentEventTab("Ridi"), "리디북스")
 //        adapter.addFragment(FragmentEventTab("OneStore"), "원스토어")
         adapter.addFragment(FragmentEventTab("Munpia"), "문피아")
+        adapter.addFragment(FragmentEventTab("Toksoda"), "톡소다")
         adapter.addFragment(FragmentEventTab("MrBlue"), "미스터블루")
         viewPager!!.adapter = adapter
     }

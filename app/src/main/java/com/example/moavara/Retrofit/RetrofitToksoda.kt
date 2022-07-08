@@ -19,6 +19,8 @@ class RetrofitToksoda {
         apiToksoda.getSearch(map).enqueue(baseCallback(dataListener))
     }
 
-
+    fun getEventList(map: MutableMap<String?, Any>, dataListener: RetrofitDataListener<BestBannerListResult>) {
+        apiToksoda.getEventList(map).enqueue(baseCallback(dataListener))
+    }
 
 }

@@ -10,9 +10,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.moavara.Retrofit.JoaraEventResult
-import com.example.moavara.Retrofit.RetrofitJoara
+import com.bumptech.glide.Glide
+import com.example.moavara.Retrofit.*
 import com.example.moavara.Search.EventData
+import com.example.moavara.Util.Genre
 import com.example.moavara.databinding.FragmentEventTabBinding
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -75,6 +76,11 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
                 }
                 "Munpia" -> {
                     getEventMunpia()
+                } "Toksoda" -> {
+                    getEventToksoda("ALL")
+                    getEventToksoda("BL")
+                    getEventToksoda("FANTASY")
+                    getEventToksoda("ROMANCE")
                 }
             }
         }.start()
@@ -290,8 +296,6 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
             val imgfile = doc.select(".light .entries tbody tr a img").get(i).attr("src")
             val title = doc.select(".light .entries .subject td a").get(i).text()
 
-            Log.d("####", "https://square.munpia.com${link}")
-
             requireActivity().runOnUiThread {
                 if (i % 2 != 1) {
                     itemsLeft.add(
@@ -407,6 +411,64 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
         }
     }
 
+    fun getEventToksoda(cate : String){
+        val apiToksoda = RetrofitToksoda()
+        val param : MutableMap<String?, Any> = HashMap()
+        var num = 0
+
+        param["bnnrPstnCd"] = "00023"
+        param["bnnrClsfCd"] = "00320"
+        param["expsClsfCd"] = Genre.setToksodaGenre(cate)
+        param["fileNo"] = "1"
+        param["pageRowCount"] = "10"
+        param["_"] = "1657271613642"
+
+        apiToksoda.getEventList(
+            param,
+            object : RetrofitDataListener<BestBannerListResult> {
+                override fun onSuccess(data: BestBannerListResult) {
+
+                    for (item in data.resultList!!) {
+                        val imgfile = "https:${item.imgPath}"
+                        val link = "https://www.tocsoda.co.kr/event/eventDetail?eventmngSeq=${item.linkInfo}"
+                        val title = item.bnnrNm
+
+                        if (num % 2 != 1) {
+                            requireActivity().runOnUiThread {
+                                itemsLeft.add(
+                                    EventData(
+                                        link,
+                                        imgfile,
+                                        title,
+                                        "",
+                                        "",
+                                        "Toksoda"
+                                    )
+                                )
+                                adapterLeft.notifyDataSetChanged()
+                            }
+                        } else {
+                            requireActivity().runOnUiThread {
+                                itemsRight.add(
+                                    EventData(
+                                        link,
+                                        imgfile,
+                                        title,
+                                        "",
+                                        "",
+                                        "Toksoda"
+                                    )
+                                )
+                                adapterRight.notifyDataSetChanged()
+                            }
+                        }
+
+                        num += 1
+                    }
+                }
+            })
+    }
+
     private fun onClickEvent(item: EventData){
         if (tabType == "Joara" && !item.link.contains("joaralink://event?event_id=") && !item.link.contains("joaralink://notice?notice_id=")) {
             Toast.makeText(requireContext(), "이벤트 페이지가 아닙니다.", Toast.LENGTH_SHORT).show()
@@ -414,8 +476,12 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
             Toast.makeText(requireContext(), "원스토어는 지원하지 않습니다.", Toast.LENGTH_SHORT).show()
         }else if (tabType == "Munpia") {
             Toast.makeText(requireContext(), "문피아는 지원하지 않습니다.", Toast.LENGTH_SHORT).show()
-        }else if (tabType == "Kakao" && item.link.contains("kakaopage://exec?open_web_with_auth/store/event")) {
+        } else if (tabType == "Kakao" && item.link.contains("kakaopage://exec?open_web_with_auth/store/event")) {
             Toast.makeText(requireContext(), "이벤트 페이지가 아닙니다.", Toast.LENGTH_SHORT).show()
+        } else if (tabType == "Toksoda") {
+            Toast.makeText(requireContext(), "톡소다는 지원하지 않습니다.", Toast.LENGTH_SHORT).show()
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(item.link))
+            startActivity(intent)
         } else {
             val mBottomSheetDialogEvent =
                 BottomSheetDialogEvent(requireContext(), item, tabType)
