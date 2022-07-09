@@ -33,17 +33,13 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment() {
         _binding = FragmentBestMonthBinding.inflate(inflater, container, false)
         val view = binding.root
 
-
         cate = Genre.getGenre(requireContext()).toString()
         adapterMonth = AdapterBestMonth(itemMonth)
         adapterMonthDay = AdapterBestToday(ItemMonthDay)
 
-
         val mRootRef = FirebaseDatabase.getInstance().reference
-        val month =
-            mRootRef.child("best").child(tabType).child(cate).child("month").child(DBDate.Month())
-        val monthList =
-            mRootRef.child("best").child(tabType).child(cate).child("month").child(DBDate.Month())
+        val month = mRootRef.child("best").child(tabType).child(cate).child("month").child(DBDate.Month())
+        val monthList = mRootRef.child("best").child(tabType).child(cate).child("month").child(DBDate.Month())
 
         itemMonth.clear()
         getBestMonth(month)

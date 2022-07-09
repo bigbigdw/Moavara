@@ -1,8 +1,11 @@
 package com.example.moavara.Util
 
+import com.example.moavara.DataBase.BookListDataBest
+import com.example.moavara.DataBase.BookListDataBestAnalyze
 import com.example.moavara.DataBase.BookListDataBestToday
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import java.util.ArrayList
 
 object BestRef {
     private val mRootRef = FirebaseDatabase.getInstance().reference
@@ -130,8 +133,8 @@ object BestRef {
         }
     }
 
-    fun setBookListDataBestToday(ref: MutableMap<String?, Any>): BookListDataBestToday {
-        return BookListDataBestToday(
+    fun setBookListDataBestToday(ref: MutableMap<String?, Any>): BookListDataBest {
+        return BookListDataBest(
             ref["writerName"] as String,
             ref["subject"] as String,
             ref["bookImg"] as String,
@@ -147,6 +150,7 @@ object BestRef {
             ref["type"] as String,
             ref["status"] as String,
             ref["trophyCount"] as Int,
+            ref["data"] as ArrayList<BookListDataBestAnalyze>,
         )
     }
 }

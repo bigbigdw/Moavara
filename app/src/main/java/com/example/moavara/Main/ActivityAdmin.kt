@@ -11,14 +11,18 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
+import androidx.room.Room
 import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import com.example.moavara.DataBase.DataBaseBestDay
 import com.example.moavara.Firebase.*
 import com.example.moavara.R
 import com.example.moavara.Search.ActivitySearch
 import com.example.moavara.User.ActivityUser
+import com.example.moavara.Util.BestRef
+import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Genre
 import com.example.moavara.Util.Mining
 import com.example.moavara.databinding.ActivityAdminBinding
@@ -491,7 +495,7 @@ class ActivityAdmin : AppCompatActivity() {
                 Toast.makeText(this@ActivityAdmin, "Room 초기화 완료", Toast.LENGTH_SHORT).show()
             }
 
-            llayoutBtn7.setOnClickListener{
+            llayoutBtn6.setOnClickListener{
                 isRoom = true
 
                 /* 처리해야할 작업에 관한 코드들 */
@@ -514,9 +518,31 @@ class ActivityAdmin : AppCompatActivity() {
                 Toast.makeText(this@ActivityAdmin, "데이터 갱신 완료", Toast.LENGTH_SHORT).show()
             }
 
-            llayoutBtn8.setOnClickListener {
+            llayoutBtn7.setOnClickListener {
                 Toast.makeText(this@ActivityAdmin, "푸시 푸시 베이베", Toast.LENGTH_SHORT).show()
                 postFCM()
+            }
+
+            llayoutBtn8.setOnClickListener {
+//                val bestDao: DataBaseBestDay
+//
+//                bestDao = Room.databaseBuilder(
+//                    this@ActivityAdmin,
+//                    DataBaseBestDay::class.java,
+//                    "Joara ALL"
+//                ).allowMainThreadQueries().build()
+//
+//                val data = bestDao.bestDao().getRank("[나루토] 주인공에게 죽기")
+//
+//                Log.d("####", data.toString())
+//
+//                for (i in data.indices) {
+//                    BestRef.setBestRef("Joara", "ALL").child("today").child(DBDate.Day()).child("14")
+//                        .child("data").child(i.toString())
+//                        .setValue(data.get(i))
+//                }
+
+                Mining.RoomDBMining(this@ActivityAdmin, "Joara", "ALL")
             }
         }
 

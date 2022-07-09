@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.BookListDataBestToday
 import com.example.moavara.Retrofit.*
-import com.example.moavara.Search.BestComment
 import com.example.moavara.Util.Param
 import com.example.moavara.databinding.FragmentBestDetailTabsBinding
 import com.example.moavara.databinding.ItemBestDetailOtherBinding

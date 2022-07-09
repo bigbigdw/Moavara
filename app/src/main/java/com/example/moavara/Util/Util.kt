@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import com.example.moavara.DataBase.BestDao
+import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.DataBase.BookListDataBestToday
 import com.example.moavara.DataBase.DataBaseBestDay
 import com.example.moavara.Retrofit.*
@@ -292,25 +293,23 @@ fun miningValue(ref: MutableMap<String?, Any>, num: Int, type: String, cate: Str
 fun calculateNum(
     num: Int?,
     title: String?,
-    itemsYesterday: ArrayList<BookListDataBestToday?>
+    itemsYesterday: ArrayList<BookListDataBest>
 ): CalculNum {
 
     for (i in itemsYesterday) {
-        if (i != null) {
-            if (i.title == title) {
-                when {
-                    i.number < num!! -> {
-                        return CalculNum(num - i.number, "DOWN")
-                    }
-                    i.number > num -> {
-                        return CalculNum(num - i.number, "UP")
-                    }
-                    i.number == num -> {
-                        CalculNum(0, "-")
-                    }
-                    else -> {
-                        CalculNum(0, "NEW")
-                    }
+        if (i.title == title) {
+            when {
+                i.number < num!! -> {
+                    return CalculNum(num - i.number, "DOWN")
+                }
+                i.number > num -> {
+                    return CalculNum(num - i.number, "UP")
+                }
+                i.number == num -> {
+                    CalculNum(0, "-")
+                }
+                else -> {
+                    CalculNum(0, "NEW")
                 }
             }
         }

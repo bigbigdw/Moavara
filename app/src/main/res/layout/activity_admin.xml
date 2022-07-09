@@ -232,7 +232,7 @@
                             </LinearLayout>
 
                             <LinearLayout
-                                android:id="@+id/llayout_btn7"
+                                android:id="@+id/llayout_btn6"
                                 android:layout_width="260dp"
                                 android:layout_height="56dp"
                                 android:layout_marginBottom="8dp"
@@ -250,7 +250,7 @@
                             </LinearLayout>
 
                             <LinearLayout
-                                android:id="@+id/llayout_btn8"
+                                android:id="@+id/llayout_btn7"
                                 android:layout_width="260dp"
                                 android:layout_height="56dp"
                                 android:layout_marginBottom="8dp"
@@ -262,6 +262,24 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="푸시 보내기"
+                                    android:textColor="#EDE6FD"
+                                    android:textSize="16dp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/llayout_btn8"
+                                android:layout_width="260dp"
+                                android:layout_height="56dp"
+                                android:layout_marginBottom="8dp"
+                                android:background="@drawable/selector_genre"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="테스트"
                                     android:textColor="#EDE6FD"
                                     android:textSize="16dp"
                                     android:textStyle="bold" />

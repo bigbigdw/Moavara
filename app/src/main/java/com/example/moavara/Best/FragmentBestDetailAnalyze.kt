@@ -135,17 +135,6 @@ class FragmentBestDetailAnalyze(private val platfrom: String, private val pos: I
                         val group: BookListDataBestToday? = i.getValue(BookListDataBestToday::class.java)
                         if (group!!.title == (context as ActivityBestDetail).bookTitle) {
                             dateList.add(group.date)
-                            itemss.add(BookListDataBestAnalyze(
-                                group.title,
-                                group.bookImg,
-                                group.bookCode,
-                                group.number,
-                                group.numberDiff,
-                                group.date,
-                                group.type,
-                                group.status,
-                                group.trophyCount,
-                            ))
 
                             //BarEntry로 값 추가 후 리스트에 담는다
                             if(platfrom == "Joara" || platfrom == "Joara Nobless" || platfrom == "Joara Premium"){

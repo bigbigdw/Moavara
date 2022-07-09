@@ -79,7 +79,7 @@ class ActivityMain : AppCompatActivity() {
         }.addOnFailureListener{}
 
         val parse_date: Date?
-        val date = "0707"
+        val date = "0709"
         Log.d("!!!!-1", date)
         val dateFormat1 = SimpleDateFormat("MMdd")
 

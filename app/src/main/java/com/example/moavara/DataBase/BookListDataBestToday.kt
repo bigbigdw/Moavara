@@ -2,6 +2,7 @@ package com.example.moavara.DataBase
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.ArrayList
 
 @Entity
 data class DataEvent (
@@ -37,16 +38,34 @@ data class BookListDataBestToday (
     @PrimaryKey(autoGenerate = true) var id: Int = 0
 }
 
-@Entity
-data class BookListDataBestAnalyze (
+data class BookListDataBest (
+    var writer: String = "",
     var title: String = "",
     var bookImg: String = "",
     var bookCode: String = "",
+    var info1: String = "",
+    var info2: String = "",
+    var info3: String = "",
+    var info4: String = "",
+    var info5: String = "",
     var number: Int = 0,
     var numberDiff: Int = 0,
     var date: String = "",
     var type: String = "",
     var status: String = "",
+    var trophyCount: Int = 0,
+    var data: ArrayList<BookListDataBestAnalyze>? = null,
+    var memo: String = "",
+)
+
+@Entity
+data class BookListDataBestAnalyze (
+    var info1: String = "",
+    var info2: String = "",
+    var info3: String = "",
+    var number: Int = 0,
+    var numberDiff: Int = 0,
+    var date: String = "",
     var trophyCount: Int = 0,
 ){
     @PrimaryKey(autoGenerate = true) var id: Int = 0
