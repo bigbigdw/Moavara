@@ -1,6 +1,9 @@
 package com.example.moavara.Main
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -8,9 +11,11 @@ import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.NotificationCompat
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
+import androidx.work.WorkManager
 import com.example.moavara.R
 import com.example.moavara.Search.ActivitySearch
 import com.example.moavara.Search.WeekendDate
@@ -19,6 +24,7 @@ import com.example.moavara.Util.*
 import com.example.moavara.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.messaging.FirebaseMessaging
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.system.exitProcess
@@ -30,6 +36,8 @@ class ActivityMain : AppCompatActivity() {
     var cate = "ALL"
     var status = ""
     private lateinit var binding: ActivityMainBinding
+    var notificationManager: NotificationManager? = null
+    var notificationBuilder: NotificationCompat.Builder? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,28 +101,34 @@ class ActivityMain : AppCompatActivity() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+
+        registNotification()
     }
 
-//    override fun onBackPressed() {
-//
-//        val myAlertBuilder: AlertDialog.Builder = AlertDialog.Builder(this@ActivityMain)
-//        myAlertBuilder.setTitle("모아바라 종료")
-//        myAlertBuilder.setMessage("모아바라를 종료하시겠습니까?")
-//        myAlertBuilder.setPositiveButton(
-//            "예"
-//        ) { _, _ ->
-//
-//            finishAffinity();
-//            System.runFinalization();
-//            exitProcess(0);
-//        }
-//        myAlertBuilder.setNegativeButton(
-//            "아니요"
-//        ) { _, _ ->
-//        }
-//        // Alert를 생성해주고 보여주는 메소드(show를 선언해야 Alert가 생성됨)
-//        myAlertBuilder.show()
-//    }
+    fun registNotification(){
+        FirebaseMessaging.getInstance().subscribeToTopic("all")
+
+        // NotificationManager 객체 생성
+        notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+
+        // API Level 26 버전 이상부터는 NotificationChannel을 사용하여 NotificationCompat.Builder를 생성하기에 분기
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channelId = "모아바라"
+            val channelName = "모아바라 Best"
+            val channelDescription = "Channel One Description"
+
+            var notificationChannel: NotificationChannel? = null
+            // HeadsUp은 Importance를 High로 설정해야하기에 분기
+            // NotificationChannel 객체 생성
+            notificationChannel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
+
+            notificationChannel.description = channelDescription
+            // NotificationChannel이 등록된 Builder
+            // 이 Builder에 의해 만들어진 Notification은 이곳에 등록된 Channel에 의해 관리
+            notificationManager?.createNotificationChannel(notificationChannel)
+            notificationBuilder = NotificationCompat.Builder(this, channelId)
+        }
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)

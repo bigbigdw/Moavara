@@ -30,8 +30,6 @@ class FCM : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
 
-        showNotification("TITLE", "BODY")
-
         if (remoteMessage.data.isNotEmpty()) {
             showNotification(remoteMessage.data["title"], remoteMessage.data["message"])
         }
@@ -51,8 +49,8 @@ class FCM : FirebaseMessagingService() {
 
         // API Level 26 버전 이상부터는 NotificationChannel을 사용하여 NotificationCompat.Builder를 생성하기에 분기
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channelId = "one-channel"
-            val channelName = "Channel One"
+            val channelId = "모아바라"
+            val channelName = "모아바라 Best"
             val channelDescription = "Channel One Description"
 
             var notificationChannel: NotificationChannel? = null
