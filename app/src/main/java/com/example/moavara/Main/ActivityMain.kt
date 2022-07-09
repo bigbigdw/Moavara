@@ -107,7 +107,6 @@ class ActivityMain : AppCompatActivity() {
 
     fun registNotification(){
         FirebaseMessaging.getInstance().subscribeToTopic("all")
-
         // NotificationManager 객체 생성
         notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
