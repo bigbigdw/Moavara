@@ -40,8 +40,10 @@ object Mining {
         getNaverToday(cate, context)
         getNaverChallenge(cate, context)
         getNaverBest(cate, context)
-        getMrBlueBest(cate, context)
-        getMoonpiaBest(cate, context)
+//        getMrBlueBest(cate, context)
+        for (i in 1..5) {
+            getMoonpiaBest(cate, context, i)
+        }
         for (i in 1..5) {
             getToksodaBest(cate, context, i)
         }
@@ -124,7 +126,7 @@ object Mining {
                                 MrBlueRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
                             }
 
-                            miningValue(MrBlueRef, i, "MrBlue", cate, context)
+                            miningValue(MrBlueRef, i, "MrBlue", cate)
 
                         }
                     }
@@ -218,7 +220,7 @@ object Mining {
                                 }
                             }
 
-                            miningValue(NaverRef, i, "Naver Today", cate, context)
+                            miningValue(NaverRef, i, "Naver Today", cate)
 
                         }
                     }
@@ -310,7 +312,7 @@ object Mining {
                                 NaverRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
                             }
 
-                            miningValue(NaverRef, i, "Naver Challenge", cate, context)
+                            miningValue(NaverRef, i, "Naver Challenge", cate)
 
                         }
                     }
@@ -403,7 +405,7 @@ object Mining {
                                 NaverRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
                             }
 
-                            miningValue(NaverRef, i, "Naver", cate, context)
+                            miningValue(NaverRef, i, "Naver", cate)
 
                         }
                     }
@@ -497,7 +499,7 @@ object Mining {
                                     }
                                 }
 
-                                miningValue(RidiRef, i - 1, "Ridi", cate, context)
+                                miningValue(RidiRef, i - 1, "Ridi", cate)
                             }
                         }
                     }
@@ -606,7 +608,7 @@ object Mining {
                                             OneStoryRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
                                         }
 
-                                        miningValue(OneStoryRef, i, "OneStore", cate, context)
+                                        miningValue(OneStoryRef, i, "OneStore", cate)
 
                                     }
                                 }
@@ -712,7 +714,7 @@ object Mining {
                                         KakaoRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
                                     }
 
-                                    miningValue(KakaoRef, i, "Kakao Stage", cate, context)
+                                    miningValue(KakaoRef, i, "Kakao Stage", cate)
                                 }
                             }
 
@@ -806,7 +808,7 @@ object Mining {
                                         KakaoRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
                                     }
 
-                                    miningValue(KakaoRef, i, "Kakao", cate, context)
+                                    miningValue(KakaoRef, i, "Kakao", cate)
 
                                 }
                             }
@@ -910,7 +912,12 @@ object Mining {
                                     JoaraRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
                                 }
 
-                                miningValue(JoaraRef, (i + ((page - 1) * books.size)), "Joara", cate, context)
+                                miningValue(
+                                    JoaraRef,
+                                    (i + ((page - 1) * books.size)),
+                                    "Joara",
+                                    cate
+                                )
                             }
                         }
                     })
@@ -1008,7 +1015,12 @@ object Mining {
                                     JoaraRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
                                 }
 
-                                miningValue(JoaraRef, (i + ((page - 1) * books.size)), "Joara Premium", cate, context)
+                                miningValue(
+                                    JoaraRef,
+                                    (i + ((page - 1) * books.size)),
+                                    "Joara Premium",
+                                    cate
+                                )
                             }
                         }
                     })
@@ -1106,7 +1118,12 @@ object Mining {
                                     JoaraRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
                                 }
 
-                                miningValue(JoaraRef, (i + ((page - 1) * books.size)), "Joara Nobless", cate, context)
+                                miningValue(
+                                    JoaraRef,
+                                    (i + ((page - 1) * books.size)),
+                                    "Joara Nobless",
+                                    cate
+                                )
                             }
                         }
                     })
@@ -1117,7 +1134,7 @@ object Mining {
 
     }
 
-    fun getMoonpiaBest(cate: String, context: Context) {
+    fun getMoonpiaBest(cate: String, context: Context, num: Int) {
         val MoonpiaRef: MutableMap<String?, Any> = HashMap()
 
         val apiMoonPia = RetrofitMoonPia()
@@ -1126,10 +1143,10 @@ object Mining {
         param["section"] = "today"
         param["exclusive"] = ""
         param["outAdult"] = "true"
-        param["offset"] = "0"
+        param["offset"] = (num -1) * 25
 
         val yesterdayRef =
-            mRootRef.child("best").child("Munpia").child(cate).child("today").child(
+            mRootRef.child("best").child("Munpia").child("today").child(
                 DBDate.Yesterday()
             )
 
@@ -1169,7 +1186,7 @@ object Mining {
 
                             data.api?.items.let {
 
-                                val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Munpia $cate")
+                                val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Munpia")
                                     .allowMainThreadQueries().build()
 
                                 if (it != null) {
@@ -1201,7 +1218,7 @@ object Mining {
                                             MoonpiaRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
                                         }
 
-                                        miningValue(MoonpiaRef, i, "Munpia", cate, context)
+                                        miningValue(MoonpiaRef, i, "Munpia", cate)
                                     }
                                 }
                             }
@@ -1299,7 +1316,12 @@ object Mining {
                                         ToksodaRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
                                     }
 
-                                    miningValue(ToksodaRef, (i + ((page - 1) * it.size)), "Toksoda", cate, context)
+                                    miningValue(
+                                        ToksodaRef,
+                                        (i + ((page - 1) * it.size)),
+                                        "Toksoda",
+                                        cate
+                                    )
                                 }
                             }
 
@@ -1311,18 +1333,28 @@ object Mining {
         })
     }
 
-    fun RoomDB(context: Context, tabType: String, cate: String){
-        BestRef.setBestRef(tabType, cate).child("week-list")
+    fun RoomDB(context: Context, platform: String, cate: String){
+        BestRef.setBestRef(platform, cate).child("week-list")
             .addListenerForSingleValueEvent(object :
                 ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val bestDao: DataBaseBestDay
 
-                    val bestDao: DataBaseBestDay = Room.databaseBuilder(
-                        context,
-                        DataBaseBestDay::class.java,
-                        "$tabType $cate"
-                    )
-                        .allowMainThreadQueries().build()
+                    if(platform == "Munpia"){
+                        bestDao = Room.databaseBuilder(
+                            context,
+                            DataBaseBestDay::class.java,
+                            "$platform"
+                        )
+                            .allowMainThreadQueries().build()
+                    } else {
+                        bestDao = Room.databaseBuilder(
+                            context,
+                            DataBaseBestDay::class.java,
+                            "$platform $cate"
+                        )
+                            .allowMainThreadQueries().build()
+                    }
 
                     for (postSnapshot in dataSnapshot.children) {
                         val group: BookListDataBestToday? =

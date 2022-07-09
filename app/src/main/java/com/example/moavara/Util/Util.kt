@@ -264,9 +264,7 @@ object Genre {
 
 
 
-fun miningValue(ref: MutableMap<String?, Any>, num: Int, type: String, cate: String, context: Context) {
-
-//        BestRef.delBestRefWeekCompared(type, cate).removeValue()
+fun miningValue(ref: MutableMap<String?, Any>, num: Int, type: String, cate: String) {
 
     //Today
     BestRef.setBestRefToday(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
