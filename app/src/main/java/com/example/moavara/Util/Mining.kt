@@ -26,28 +26,28 @@ import java.util.HashMap
 
 object Mining {
     fun runMining(context: Context, cate: String) {
-        getRidiBest(cate, context)
-        getOneStoreBest(cate, context)
-        getKakaoBest(cate, context)
-        getKakaoStageBest(cate, context)
+//        getRidiBest(cate, context)
+//        getOneStoreBest(cate, context)
+//        getKakaoBest(cate, context)
+//        getKakaoStageBest(cate, context)
         for (i in 1..5) {
             getJoaraBest(context, cate, i)
         }
-        for (i in 1..5) {
-            getJoaraBestNobless(context, cate, i)
-        }
-        for (i in 1..5) {
-            getJoaraBestPremium(context, cate, i)
-        }
-        getNaverToday(cate, context)
-        getNaverChallenge(cate, context)
-        getNaverBest(cate, context)
-        for (i in 1..5) {
-            getMoonpiaBest(cate, context, i)
-        }
-        for (i in 1..5) {
-            getToksodaBest(cate, context, i)
-        }
+//        for (i in 1..5) {
+//            getJoaraBestNobless(context, cate, i)
+//        }
+//        for (i in 1..5) {
+//            getJoaraBestPremium(context, cate, i)
+//        }
+//        getNaverToday(cate, context)
+//        getNaverChallenge(cate, context)
+//        getNaverBest(cate, context)
+//        for (i in 1..5) {
+//            getMoonpiaBest(cate, context, i)
+//        }
+//        for (i in 1..5) {
+//            getToksodaBest(cate, context, i)
+//        }
     }
 
     fun getNaverToday(cate: String, context: Context) {
@@ -95,47 +95,57 @@ object Mining {
                             )
                         }
 
-                        val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Naver Today $cate")
+                        val bestDao: DataBaseBestDay = Room.databaseBuilder(
+                            context,
+                            DataBaseBestDay::class.java,
+                            "Naver Today $cate"
+                        )
                             .allowMainThreadQueries().build()
 
                         for (i in Naver.indices) {
 
                             val title = Naver.select(".tit")[i].text()
 
-                            if(context is ActivityAdmin){
-                                if(context.isRoom){
-                                    val data = bestDao.bestDao().getRank(title)
+                            if (context is ActivityAdmin) {
+                                if (context.isRoom) {
+                                    val data = bestDao.bestDao()
+                                        .getRank(Naver.select("a")[i].absUrl("href"))
 
                                     for (j in data.indices) {
-                                        dataList.add(BookListDataBestAnalyze(
-                                            data[j].info2,
-                                            data[j].info3,
-                                            data[j].info4,
-                                            data[j].number,
-                                            data[j].numberDiff,
-                                            data[j].date,
-                                            data[j].trophyCount,
-                                        ))
+                                        dataList.add(
+                                            BookListDataBestAnalyze(
+                                                data[j].info2,
+                                                data[j].info3,
+                                                data[j].info4,
+                                                data[j].number,
+                                                data[j].numberDiff,
+                                                data[j].date,
+                                                data[j].trophyCount,
+                                            )
+                                        )
                                     }
 
                                     NaverRef["trophyCount"] = dataList.size
                                 } else {
-                                    dataList = (itemsYesterday[i].data) as ArrayList<BookListDataBestAnalyze>
+                                    dataList =
+                                        (itemsYesterday[i].data) as ArrayList<BookListDataBestAnalyze>
                                     NaverRef["trophyCount"] = dataList.size
                                 }
 
                             } else {
                                 val data = itemsYesterday[i].data
 
-                                dataList.add(BookListDataBestAnalyze(
-                                    Naver[i].select(".num_total").next().first()!!.text(),
-                                    Naver.select(".count")[i].text(),
-                                    Naver.select(".score_area")[i].text(),
-                                    i,
-                                    calculateNum(i, title, itemsYesterday).num,
-                                    DBDate.DateMMDD(),
-                                    data?.size ?: 0,
-                                ))
+                                dataList.add(
+                                    BookListDataBestAnalyze(
+                                        Naver[i].select(".num_total").next().first()!!.text(),
+                                        Naver.select(".count")[i].text(),
+                                        Naver.select(".score_area")[i].text(),
+                                        i,
+                                        calculateNum(i, title, itemsYesterday).num,
+                                        DBDate.DateMMDD(),
+                                        data?.size ?: 0,
+                                    )
+                                )
 
                                 NaverRef["trophyCount"] = dataList.size
                             }
@@ -213,51 +223,62 @@ object Mining {
                                     group.type,
                                     group.status,
                                     group.trophyCount,
+                                    group.data
                                 )
                             )
                         }
 
-                        val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Naver Challenge $cate")
+                        val bestDao: DataBaseBestDay = Room.databaseBuilder(
+                            context,
+                            DataBaseBestDay::class.java,
+                            "Naver Challenge $cate"
+                        )
                             .allowMainThreadQueries().build()
 
                         for (i in Naver.indices) {
 
                             val title = Naver.select(".tit")[i].text()
 
-                            if(context is ActivityAdmin){
-                                if(context.isRoom){
-                                    val data = bestDao.bestDao().getRank(title)
+                            if (context is ActivityAdmin) {
+                                if (context.isRoom) {
+                                    val data = bestDao.bestDao()
+                                        .getRank(Naver.select("a")[i].absUrl("href"))
 
                                     for (j in data.indices) {
-                                        dataList.add(BookListDataBestAnalyze(
-                                            data[j].info2,
-                                            data[j].info3,
-                                            data[j].info4,
-                                            data[j].number,
-                                            data[j].numberDiff,
-                                            data[j].date,
-                                            data[j].trophyCount,
-                                        ))
+                                        dataList.add(
+                                            BookListDataBestAnalyze(
+                                                data[j].info2,
+                                                data[j].info3,
+                                                data[j].info4,
+                                                data[j].number,
+                                                data[j].numberDiff,
+                                                data[j].date,
+                                                data[j].trophyCount,
+                                            )
+                                        )
                                     }
 
                                     NaverRef["trophyCount"] = data.size
                                 } else {
-                                    dataList = (itemsYesterday[i].data) as ArrayList<BookListDataBestAnalyze>
+                                    dataList =
+                                        (itemsYesterday[i].data) as ArrayList<BookListDataBestAnalyze>
                                     NaverRef["trophyCount"] = dataList.size
                                 }
 
                             } else {
                                 val data = itemsYesterday[i].data
 
-                                dataList.add(BookListDataBestAnalyze(
-                                    Naver[i].select(".num_total").next().first()!!.text(),
-                                    Naver.select(".count")[i].text(),
-                                    Naver.select(".score_area")[i].text(),
-                                    i,
-                                    calculateNum(i, title, itemsYesterday).num,
-                                    DBDate.DateMMDD(),
-                                    data?.size ?: 0,
-                                ))
+                                dataList.add(
+                                    BookListDataBestAnalyze(
+                                        Naver[i].select(".num_total").next().first()!!.text(),
+                                        Naver.select(".count")[i].text(),
+                                        Naver.select(".score_area")[i].text(),
+                                        i,
+                                        calculateNum(i, title, itemsYesterday).num,
+                                        DBDate.DateMMDD(),
+                                        data?.size ?: 0,
+                                    )
+                                )
 
                                 NaverRef["trophyCount"] = dataList.size
                             }
@@ -335,50 +356,61 @@ object Mining {
                                     group.type,
                                     group.status,
                                     group.trophyCount,
+                                    group.data
                                 )
                             )
                         }
 
-                        val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Naver $cate")
+                        val bestDao: DataBaseBestDay = Room.databaseBuilder(
+                            context,
+                            DataBaseBestDay::class.java,
+                            "Naver $cate"
+                        )
                             .allowMainThreadQueries().build()
 
                         for (i in Naver.indices) {
 
                             val title = Naver.select(".tit")[i].text()
 
-                            if(context is ActivityAdmin){
-                                if(context.isRoom){
-                                    val data = bestDao.bestDao().getRank(title)
+                            if (context is ActivityAdmin) {
+                                if (context.isRoom) {
+                                    val data = bestDao.bestDao()
+                                        .getRank(Naver.select("a")[i].absUrl("href"))
 
                                     for (j in data.indices) {
-                                        dataList.add(BookListDataBestAnalyze(
-                                            data[j].info2,
-                                            data[j].info3,
-                                            data[j].info4,
-                                            data[j].number,
-                                            data[j].numberDiff,
-                                            data[j].date,
-                                            data[j].trophyCount,
-                                        ))
+                                        dataList.add(
+                                            BookListDataBestAnalyze(
+                                                data[j].info2,
+                                                data[j].info3,
+                                                data[j].info4,
+                                                data[j].number,
+                                                data[j].numberDiff,
+                                                data[j].date,
+                                                data[j].trophyCount,
+                                            )
+                                        )
                                     }
 
                                     NaverRef["trophyCount"] = dataList.size
                                 } else {
-                                    dataList = (itemsYesterday[i].data) as ArrayList<BookListDataBestAnalyze>
+                                    dataList =
+                                        (itemsYesterday[i].data) as ArrayList<BookListDataBestAnalyze>
                                     NaverRef["trophyCount"] = dataList.size
                                 }
                             } else {
                                 val data = itemsYesterday[i].data
 
-                                dataList.add(BookListDataBestAnalyze(
-                                    Naver[i].select(".num_total").next().first()!!.text(),
-                                    Naver.select(".count")[i].text(),
-                                    Naver.select(".score_area")[i].text(),
-                                    i,
-                                    calculateNum(i, title, itemsYesterday).num,
-                                    DBDate.DateMMDD(),
-                                    data?.size ?: 0,
-                                ))
+                                dataList.add(
+                                    BookListDataBestAnalyze(
+                                        Naver[i].select(".num_total").next().first()!!.text(),
+                                        Naver.select(".count")[i].text(),
+                                        Naver.select(".score_area")[i].text(),
+                                        i,
+                                        calculateNum(i, title, itemsYesterday).num,
+                                        DBDate.DateMMDD(),
+                                        data?.size ?: 0,
+                                    )
+                                )
 
                                 NaverRef["trophyCount"] = dataList.size
                             }
@@ -452,57 +484,66 @@ object Mining {
                                     group.type,
                                     group.status,
                                     group.trophyCount,
+                                    group.data
                                 )
                             )
                         }
 
-                        val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Ridi $cate")
-                            .allowMainThreadQueries().build()
+                        val bestDao: DataBaseBestDay =
+                            Room.databaseBuilder(context, DataBaseBestDay::class.java, "Ridi $cate")
+                                .allowMainThreadQueries().build()
 
                         for (i in Ridi.indices) {
-                            if(i > 0){
+                            if (i > 0) {
                                 val title = doc.select("div .title_link")[i].text()
 
-                                if(context is ActivityAdmin){
-                                    if(context.isRoom){
-                                        val data = bestDao.bestDao().getRank(title)
+                                if (context is ActivityAdmin) {
+                                    if (context.isRoom) {
+                                        val data = bestDao.bestDao()
+                                            .getRank(Ridi.select("a")[i].absUrl("href"))
 
                                         for (j in data.indices) {
 
-                                            dataList.add(BookListDataBestAnalyze(
-                                                data[j].info2,
-                                                data[j].info3,
-                                                "",
-                                                data[j].number,
-                                                data[j].numberDiff,
-                                                data[j].date,
-                                                data[j].trophyCount,
-                                            ))
+                                            dataList.add(
+                                                BookListDataBestAnalyze(
+                                                    data[j].info2,
+                                                    data[j].info3,
+                                                    "",
+                                                    data[j].number,
+                                                    data[j].numberDiff,
+                                                    data[j].date,
+                                                    data[j].trophyCount,
+                                                )
+                                            )
                                         }
 
                                         RidiRef["trophyCount"] = dataList.size
                                     } else {
-                                        dataList = (itemsYesterday[i].data) as ArrayList<BookListDataBestAnalyze>
+                                        dataList =
+                                            (itemsYesterday[i].data) as ArrayList<BookListDataBestAnalyze>
                                         RidiRef["trophyCount"] = dataList.size
                                     }
 
                                 } else {
                                     val data = itemsYesterday[i].data
 
-                                    dataList.add(BookListDataBestAnalyze(
-                                        "추천 수 : " + doc.select("span .StarRate_ParticipantCount")[i].text(),
-                                        "평점 : " + doc.select("span .StarRate_Score")[i].text(),
-                                        "",
-                                        i,
-                                        calculateNum(i, title, itemsYesterday).num,
-                                        DBDate.DateMMDD(),
-                                        data?.size ?: 0,
-                                    ))
+                                    dataList.add(
+                                        BookListDataBestAnalyze(
+                                            "추천 수 : " + doc.select("span .StarRate_ParticipantCount")[i].text(),
+                                            "평점 : " + doc.select("span .StarRate_Score")[i].text(),
+                                            "",
+                                            i,
+                                            calculateNum(i, title, itemsYesterday).num,
+                                            DBDate.DateMMDD(),
+                                            data?.size ?: 0,
+                                        )
+                                    )
 
                                     RidiRef["trophyCount"] = dataList.size
                                 }
 
-                                RidiRef["writerName"] = doc.select("div .author_detail_link")[i].text()
+                                RidiRef["writerName"] =
+                                    doc.select("div .author_detail_link")[i].text()
                                 RidiRef["subject"] = doc.select("div .title_link")[i].text()
                                 RidiRef["bookImg"] =
                                     Ridi.select(".thumbnail_image .thumbnail")[i].absUrl("data-src")
@@ -575,6 +616,7 @@ object Mining {
                                 group.type,
                                 group.status,
                                 group.trophyCount,
+                                group.data
                             )
                         )
                     }
@@ -589,46 +631,60 @@ object Mining {
                                 response.body()?.let { it ->
                                     val productList = it.params!!.productList
 
-                                    val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "OneStore $cate")
+                                    val bestDao: DataBaseBestDay = Room.databaseBuilder(
+                                        context,
+                                        DataBaseBestDay::class.java,
+                                        "OneStore $cate"
+                                    )
                                         .allowMainThreadQueries().build()
 
                                     for (i in productList!!.indices) {
 
-                                        if(context is ActivityAdmin){
-                                            if(context.isRoom){
-                                                val data = bestDao.bestDao().getRank(productList[i].prodNm)
+                                        if (context is ActivityAdmin) {
+                                            if (context.isRoom) {
+                                                val data =
+                                                    bestDao.bestDao().getRank(productList[i].prodId)
 
                                                 for (j in data.indices) {
 
-                                                    dataList.add(BookListDataBestAnalyze(
-                                                        data[j].info1,
-                                                        data[j].info2,
-                                                        data[j].info3,
-                                                        data[j].number,
-                                                        data[j].numberDiff,
-                                                        data[j].date,
-                                                        data[j].trophyCount,
-                                                    ))
+                                                    dataList.add(
+                                                        BookListDataBestAnalyze(
+                                                            data[j].info1,
+                                                            data[j].info2,
+                                                            data[j].info3,
+                                                            data[j].number,
+                                                            data[j].numberDiff,
+                                                            data[j].date,
+                                                            data[j].trophyCount,
+                                                        )
+                                                    )
                                                 }
 
                                                 OneStoryRef["trophyCount"] = dataList.size
                                             } else {
-                                                dataList = (itemsYesterday[i].data) as ArrayList<BookListDataBestAnalyze>
+                                                dataList =
+                                                    (itemsYesterday[i].data) as ArrayList<BookListDataBestAnalyze>
                                                 OneStoryRef["trophyCount"] = dataList.size
                                             }
 
                                         } else {
                                             val data = itemsYesterday[i].data
 
-                                            dataList.add(BookListDataBestAnalyze(
-                                                "조회 수 : " + productList[i].totalCount,
-                                                "평점 : " + productList[i].avgScore,
-                                                "댓글 수 : " + productList[i].commentCount,
-                                                i,
-                                                calculateNum(i, productList[i].prodNm, itemsYesterday).num,
-                                                DBDate.DateMMDD(),
-                                                data?.size ?: 0,
-                                            ))
+                                            dataList.add(
+                                                BookListDataBestAnalyze(
+                                                    "조회 수 : " + productList[i].totalCount,
+                                                    "평점 : " + productList[i].avgScore,
+                                                    "댓글 수 : " + productList[i].commentCount,
+                                                    i,
+                                                    calculateNum(
+                                                        i,
+                                                        productList[i].prodNm,
+                                                        itemsYesterday
+                                                    ).num,
+                                                    DBDate.DateMMDD(),
+                                                    data?.size ?: 0,
+                                                )
+                                            )
 
                                             OneStoryRef["trophyCount"] = dataList.size
                                         }
@@ -685,7 +741,7 @@ object Mining {
         val KakaoRef: MutableMap<String?, Any> = HashMap()
 
         val apiKakao = RetrofitKaKao()
-        val param : MutableMap<String?, Any> = HashMap()
+        val param: MutableMap<String?, Any> = HashMap()
 
         param["adult"] = "false"
         param["dateRange"] = "YESTERDAY"
@@ -723,6 +779,7 @@ object Mining {
                             group.type,
                             group.status,
                             group.trophyCount,
+                            group.data
                         )
                     )
                 }
@@ -736,47 +793,57 @@ object Mining {
 
                                 val list = it
 
-                                val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Kakao Stage $cate")
+                                val bestDao: DataBaseBestDay = Room.databaseBuilder(
+                                    context,
+                                    DataBaseBestDay::class.java,
+                                    "Kakao Stage $cate"
+                                )
                                     .allowMainThreadQueries().build()
 
                                 for (i in list.indices) {
                                     val novel = list[i].novel
 
-                                    if(context is ActivityAdmin){
-                                        if(context.isRoom){
-                                            val data = bestDao.bestDao().getRank(novel?.title ?: "")
+                                    if (context is ActivityAdmin) {
+                                        if (context.isRoom) {
+                                            val data = bestDao.bestDao()
+                                                .getRank(novel?.stageSeriesNumber ?: "")
 
                                             for (j in data.indices) {
 
-                                                dataList.add(BookListDataBestAnalyze(
-                                                    data[j].info2,
-                                                    data[j].info3,
-                                                    data[j].info4,
-                                                    data[j].number,
-                                                    data[j].numberDiff,
-                                                    data[j].date,
-                                                    data[j].trophyCount,
-                                                ))
+                                                dataList.add(
+                                                    BookListDataBestAnalyze(
+                                                        data[j].info2,
+                                                        data[j].info3,
+                                                        data[j].info4,
+                                                        data[j].number,
+                                                        data[j].numberDiff,
+                                                        data[j].date,
+                                                        data[j].trophyCount,
+                                                    )
+                                                )
                                             }
 
                                             KakaoRef["trophyCount"] = dataList.size
                                         } else {
-                                            dataList = (itemsYesterday[i].data) as ArrayList<BookListDataBestAnalyze>
+                                            dataList =
+                                                (itemsYesterday[i].data) as ArrayList<BookListDataBestAnalyze>
                                             KakaoRef["trophyCount"] = dataList.size
                                         }
 
                                     } else {
                                         val data = itemsYesterday[i].data
 
-                                        dataList.add(BookListDataBestAnalyze(
-                                            "총" + novel?.publishedEpisodeCount + " 화",
-                                            "조회 수 : " + novel?.viewCount,
-                                            "선호작 수 : " + novel?.visitorCount,
-                                            i,
-                                            calculateNum(i, novel?.title, itemsYesterday).num,
-                                            DBDate.DateMMDD(),
-                                            data?.size ?: 0,
-                                        ))
+                                        dataList.add(
+                                            BookListDataBestAnalyze(
+                                                "총" + novel?.publishedEpisodeCount + " 화",
+                                                "조회 수 : " + novel?.viewCount,
+                                                "선호작 수 : " + novel?.visitorCount,
+                                                i,
+                                                calculateNum(i, novel?.title, itemsYesterday).num,
+                                                DBDate.DateMMDD(),
+                                                data?.size ?: 0,
+                                            )
+                                        )
 
                                         KakaoRef["trophyCount"] = dataList.size
                                     }
@@ -847,6 +914,7 @@ object Mining {
                             group.type,
                             group.status,
                             group.trophyCount,
+                            group.data
                         )
                     )
                 }
@@ -862,46 +930,55 @@ object Mining {
                             response.body()?.let { it ->
                                 val list = it.list
 
-                                val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Kakao $cate")
+                                val bestDao: DataBaseBestDay = Room.databaseBuilder(
+                                    context,
+                                    DataBaseBestDay::class.java,
+                                    "Kakao $cate"
+                                )
                                     .allowMainThreadQueries().build()
 
                                 for (i in list!!.indices) {
 
-                                    if(context is ActivityAdmin){
-                                        if(context.isRoom){
-                                            val data = bestDao.bestDao().getRank(list[i].title)
+                                    if (context is ActivityAdmin) {
+                                        if (context.isRoom) {
+                                            val data = bestDao.bestDao().getRank(list[i].series_id)
 
                                             for (j in data.indices) {
 
-                                                dataList.add(BookListDataBestAnalyze(
-                                                    data[j].info3,
-                                                    data[j].info4,
-                                                    data[j].info5,
-                                                    data[j].number,
-                                                    data[j].numberDiff,
-                                                    data[j].date,
-                                                    data[j].trophyCount,
-                                                ))
+                                                dataList.add(
+                                                    BookListDataBestAnalyze(
+                                                        data[j].info3,
+                                                        data[j].info4,
+                                                        data[j].info5,
+                                                        data[j].number,
+                                                        data[j].numberDiff,
+                                                        data[j].date,
+                                                        data[j].trophyCount,
+                                                    )
+                                                )
                                             }
 
                                             KakaoRef["trophyCount"] = dataList.size
                                         } else {
-                                            dataList = (itemsYesterday[i].data) as ArrayList<BookListDataBestAnalyze>
+                                            dataList =
+                                                (itemsYesterday[i].data) as ArrayList<BookListDataBestAnalyze>
                                             KakaoRef["trophyCount"] = dataList.size
                                         }
 
                                     } else {
                                         val data = itemsYesterday[i].data
 
-                                        dataList.add(BookListDataBestAnalyze(
-                                            "조회 수 : " + list[i].read_count,
-                                            "추천 수 : " + list[i].like_count,
-                                            "평점 : " + list[i].rating,
-                                            i,
-                                            calculateNum(i, list[i].title, itemsYesterday).num,
-                                            DBDate.DateMMDD(),
-                                            data?.size ?: 0,
-                                        ))
+                                        dataList.add(
+                                            BookListDataBestAnalyze(
+                                                "조회 수 : " + list[i].read_count,
+                                                "추천 수 : " + list[i].like_count,
+                                                "평점 : " + list[i].rating,
+                                                i,
+                                                calculateNum(i, list[i].title, itemsYesterday).num,
+                                                DBDate.DateMMDD(),
+                                                data?.size ?: 0,
+                                            )
+                                        )
 
                                         KakaoRef["trophyCount"] = dataList.size
                                     }
@@ -962,125 +1039,73 @@ object Mining {
         param["store"] = ""
         param["category"] = Genre.setJoaraGenre(cate)
 
-        yesterdayRef.addListenerForSingleValueEvent(object :
-            ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (postSnapshot in dataSnapshot.children) {
-                    val group: BookListDataBest? =
-                        postSnapshot.getValue(BookListDataBest::class.java)
-                    itemsYesterday.add(
-                        BookListDataBest(
-                            group!!.writer,
-                            group.title,
-                            group.bookImg,
-                            group.bookCode,
-                            group.info1,
-                            group.info2,
-                            group.info3,
-                            group.info4,
-                            group.info5,
-                            group.number,
-                            group.numberDiff,
-                            group.date,
-                            group.type,
-                            group.status,
-                            group.trophyCount
-                        )
-                    )
-                }
+        apiJoara.getJoaraBookBest(
+            param,
+            object : RetrofitDataListener<JoaraBestListResult> {
+                override fun onSuccess(data: JoaraBestListResult) {
 
-                apiJoara.getJoaraBookBest(
-                    param,
-                    object : RetrofitDataListener<JoaraBestListResult> {
-                        override fun onSuccess(data: JoaraBestListResult) {
+                    val books = data.bookLists
+                    val bestDao: DataBaseBestDay = Room.databaseBuilder(
+                        context,
+                        DataBaseBestDay::class.java,
+                        "Joara $cate"
+                    ).allowMainThreadQueries().build()
 
-                            val books = data.bookLists
-                            val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Joara $cate")
-                                .allowMainThreadQueries().build()
+                    for (i in books!!.indices) {
 
-                            for (i in books!!.indices) {
+                        val data = bestDao.bestDao().getRank(books[i].bookCode)
 
-                                if(context is ActivityAdmin){
-                                    if(context.isRoom){
-                                        val data = bestDao.bestDao().getRank(books[i].subject)
-
-                                        for (j in data.indices) {
-
-                                            dataList.add(BookListDataBestAnalyze(
-                                                data[j].info3,
-                                                data[j].info4,
-                                                data[j].info5,
-                                                data[j].number,
-                                                data[j].numberDiff,
-                                                data[j].date,
-                                                data[j].trophyCount,
-                                            ))
-                                        }
-
-                                        JoaraRef["trophyCount"] = dataList.size
-                                    } else {
-                                        dataList = (itemsYesterday[i].data) as ArrayList<BookListDataBestAnalyze>
-                                        JoaraRef["trophyCount"] = dataList.size
-                                    }
-
-                                } else {
-                                    val data = itemsYesterday[i].data
-
-                                    dataList.add(BookListDataBestAnalyze(
-                                        "조회 수 : " + books[i].cntPageRead,
-                                        "선호작 수 : " + books[i].cntFavorite,
-                                        "추천 수 : " + books[i].cntRecom,
-                                        i,
-                                        calculateNum(i, books[i].subject, itemsYesterday).num,
-                                        DBDate.DateMMDD(),
-                                        data?.size ?: 0,
-                                    ))
-
-                                    JoaraRef["trophyCount"] = dataList.size
-                                }
-
-                                JoaraRef["writerName"] = books[i].writerName
-                                JoaraRef["subject"] = books[i].subject
-                                JoaraRef["bookImg"] = books[i].bookImg
-                                JoaraRef["bookCode"] = books[i].bookCode
-                                JoaraRef["info1"] = "줄거리 : " + books[i].intro
-                                JoaraRef["info2"] = "총 " + books[i].cntChapter + " 화"
-                                JoaraRef["info3"] = "조회 수 : " + books[i].cntPageRead
-                                JoaraRef["info4"] = "선호작 수 : " + books[i].cntFavorite
-                                JoaraRef["info5"] = "추천 수 : " + books[i].cntRecom
-                                JoaraRef["number"] = i
-                                JoaraRef["numberDiff"] =
-                                    calculateNum(i, books[i].subject, itemsYesterday).num
-                                JoaraRef["date"] = DBDate.DateMMDD()
-                                JoaraRef["status"] =
-                                    calculateNum(i, books[i].subject, itemsYesterday).status
-                                JoaraRef["type"] = "Joara"
-                                JoaraRef["data"] = dataList
-
-                                miningValue(
-                                    JoaraRef,
-                                    (i + ((page - 1) * books.size)),
-                                    "Joara",
-                                    cate
+                        for(item in data){
+                            dataList.add(
+                                BookListDataBestAnalyze(
+                                    item.info3,
+                                    item.info4,
+                                    item.info5,
+                                    item.number,
+                                    item.numberDiff,
+                                    item.date,
+                                    item.trophyCount,
                                 )
-                            }
+                            )
                         }
-                    })
-            }
 
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
+                        JoaraRef["trophyCount"] = dataList.size
+                        JoaraRef["writerName"] = books[i].writerName
+                        JoaraRef["subject"] = books[i].subject
+                        JoaraRef["bookImg"] = books[i].bookImg
+                        JoaraRef["bookCode"] = books[i].bookCode
+                        JoaraRef["info1"] = "줄거리 : " + books[i].intro
+                        JoaraRef["info2"] = "총 " + books[i].cntChapter + " 화"
+                        JoaraRef["info3"] = "조회 수 : " + books[i].cntPageRead
+                        JoaraRef["info4"] = "선호작 수 : " + books[i].cntFavorite
+                        JoaraRef["info5"] = "추천 수 : " + books[i].cntRecom
+                        JoaraRef["number"] = i
+                        JoaraRef["numberDiff"] = 0
+                        JoaraRef["date"] = DBDate.DateMMDD()
+                        JoaraRef["status"] =  ""
+                        JoaraRef["type"] = "Joara"
+                        JoaraRef["data"] = dataList
 
+                        miningValue(
+                            JoaraRef,
+                            (i + ((page - 1) * books.size)),
+                            "Joara",
+                            cate
+                        )
+                    }
+                }
+            })
 
 
     }
 
-    fun getJoaraBestPremium(context: Context, cate: String,  page: Int) {
+    fun getJoaraBestPremium(context: Context, cate: String, page: Int) {
 
         val JoaraRef: MutableMap<String?, Any> = HashMap()
 
         val yesterdayRef =
-            FirebaseDatabase.getInstance().reference.child("best").child("Joara Premium").child(cate)
+            FirebaseDatabase.getInstance().reference.child("best").child("Joara Premium")
+                .child(cate)
                 .child("today").child(
                     DBDate.Yesterday()
                 )
@@ -1119,6 +1144,7 @@ object Mining {
                             group.type,
                             group.status,
                             group.trophyCount,
+                            group.data
                         )
                     )
                 }
@@ -1130,45 +1156,54 @@ object Mining {
 
                             val books = data.bookLists
 
-                            val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Joara Premium $cate")
+                            val bestDao: DataBaseBestDay = Room.databaseBuilder(
+                                context,
+                                DataBaseBestDay::class.java,
+                                "Joara Premium $cate"
+                            )
                                 .allowMainThreadQueries().build()
 
                             for (i in books!!.indices) {
 
-                                if(context is ActivityAdmin){
-                                    if(context.isRoom){
-                                        val data = bestDao.bestDao().getRank(books[i].subject)
+                                if (context is ActivityAdmin) {
+                                    if (context.isRoom) {
+                                        val data = bestDao.bestDao().getRank(books[i].bookCode)
 
                                         for (j in data.indices) {
 
-                                            dataList.add(BookListDataBestAnalyze(
-                                                data[j].info3,
-                                                data[j].info4,
-                                                data[j].info5,
-                                                data[j].number,
-                                                data[j].numberDiff,
-                                                data[j].date,
-                                                data[j].trophyCount,
-                                            ))
+                                            dataList.add(
+                                                BookListDataBestAnalyze(
+                                                    data[j].info3,
+                                                    data[j].info4,
+                                                    data[j].info5,
+                                                    data[j].number,
+                                                    data[j].numberDiff,
+                                                    data[j].date,
+                                                    data[j].trophyCount,
+                                                )
+                                            )
                                         }
 
                                         JoaraRef["trophyCount"] = dataList.size
                                     } else {
-                                        dataList = (itemsYesterday[i].data) as ArrayList<BookListDataBestAnalyze>
+                                        dataList =
+                                            (itemsYesterday[i].data) as ArrayList<BookListDataBestAnalyze>
                                         JoaraRef["trophyCount"] = dataList.size
                                     }
                                 } else {
                                     val data = itemsYesterday[i].data
 
-                                    dataList.add(BookListDataBestAnalyze(
-                                        "조회 수 : " + books[i].cntPageRead,
-                                        "선호작 수 : " + books[i].cntFavorite,
-                                        "추천 수 : " + books[i].cntRecom,
-                                        i,
-                                        calculateNum(i, books[i].subject, itemsYesterday).num,
-                                        DBDate.DateMMDD(),
-                                        data?.size ?: 0,
-                                    ))
+                                    dataList.add(
+                                        BookListDataBestAnalyze(
+                                            "조회 수 : " + books[i].cntPageRead,
+                                            "선호작 수 : " + books[i].cntFavorite,
+                                            "추천 수 : " + books[i].cntRecom,
+                                            i,
+                                            calculateNum(i, books[i].subject, itemsYesterday).num,
+                                            DBDate.DateMMDD(),
+                                            data?.size ?: 0,
+                                        )
+                                    )
 
                                     JoaraRef["trophyCount"] = dataList.size
                                 }
@@ -1207,12 +1242,13 @@ object Mining {
 
     }
 
-    fun getJoaraBestNobless(context: Context, cate: String,  page: Int) {
+    fun getJoaraBestNobless(context: Context, cate: String, page: Int) {
 
         val JoaraRef: MutableMap<String?, Any> = HashMap()
 
         val yesterdayRef =
-            FirebaseDatabase.getInstance().reference.child("best").child("Joara Nobless").child(cate)
+            FirebaseDatabase.getInstance().reference.child("best").child("Joara Nobless")
+                .child(cate)
                 .child("today").child(
                     DBDate.Yesterday()
                 )
@@ -1251,6 +1287,7 @@ object Mining {
                             group.type,
                             group.status,
                             group.trophyCount,
+                            group.data
                         )
                     )
                 }
@@ -1262,45 +1299,54 @@ object Mining {
 
                             val books = data.bookLists
 
-                            val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Joara Nobless $cate")
+                            val bestDao: DataBaseBestDay = Room.databaseBuilder(
+                                context,
+                                DataBaseBestDay::class.java,
+                                "Joara Nobless $cate"
+                            )
                                 .allowMainThreadQueries().build()
 
                             for (i in books!!.indices) {
 
-                                if(context is ActivityAdmin){
-                                    if(context.isRoom){
-                                        val data = bestDao.bestDao().getRank(books[i].subject)
+                                if (context is ActivityAdmin) {
+                                    if (context.isRoom) {
+                                        val data = bestDao.bestDao().getRank(books[i].bookCode)
 
                                         for (j in data.indices) {
 
-                                            dataList.add(BookListDataBestAnalyze(
-                                                data[j].info3,
-                                                data[j].info4,
-                                                data[j].info5,
-                                                data[j].number,
-                                                data[j].numberDiff,
-                                                data[j].date,
-                                                data[j].trophyCount,
-                                            ))
+                                            dataList.add(
+                                                BookListDataBestAnalyze(
+                                                    data[j].info3,
+                                                    data[j].info4,
+                                                    data[j].info5,
+                                                    data[j].number,
+                                                    data[j].numberDiff,
+                                                    data[j].date,
+                                                    data[j].trophyCount,
+                                                )
+                                            )
                                         }
 
                                         JoaraRef["trophyCount"] = dataList.size
                                     } else {
-                                        dataList = (itemsYesterday[i].data) as ArrayList<BookListDataBestAnalyze>
+                                        dataList =
+                                            (itemsYesterday[i].data) as ArrayList<BookListDataBestAnalyze>
                                         JoaraRef["trophyCount"] = dataList.size
                                     }
                                 } else {
                                     val data = itemsYesterday[i].data
 
-                                    dataList.add(BookListDataBestAnalyze(
-                                        "조회 수 : " + books[i].cntPageRead,
-                                        "선호작 수 : " + books[i].cntFavorite,
-                                        "추천 수 : " + books[i].cntRecom,
-                                        i,
-                                        calculateNum(i, books[i].subject, itemsYesterday).num,
-                                        DBDate.DateMMDD(),
-                                        data?.size ?: 0,
-                                    ))
+                                    dataList.add(
+                                        BookListDataBestAnalyze(
+                                            "조회 수 : " + books[i].cntPageRead,
+                                            "선호작 수 : " + books[i].cntFavorite,
+                                            "추천 수 : " + books[i].cntRecom,
+                                            i,
+                                            calculateNum(i, books[i].subject, itemsYesterday).num,
+                                            DBDate.DateMMDD(),
+                                            data?.size ?: 0,
+                                        )
+                                    )
 
                                     JoaraRef["trophyCount"] = dataList.size
                                 }
@@ -1343,12 +1389,12 @@ object Mining {
         val MoonpiaRef: MutableMap<String?, Any> = HashMap()
 
         val apiMoonPia = RetrofitMoonPia()
-        val param : MutableMap<String?, Any> = HashMap()
+        val param: MutableMap<String?, Any> = HashMap()
 
         param["section"] = "today"
         param["exclusive"] = ""
         param["outAdult"] = "true"
-        param["offset"] = (num -1) * 25
+        param["offset"] = (num - 1) * 25
 
         val yesterdayRef =
             mRootRef.child("best").child("Munpia").child("today").child(
@@ -1381,6 +1427,7 @@ object Mining {
                             group.type,
                             group.status,
                             group.trophyCount,
+                            group.data
                         )
                     )
                 }
@@ -1392,54 +1439,68 @@ object Mining {
 
                             data.api?.items.let {
 
-                                val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Munpia")
+                                val bestDao: DataBaseBestDay = Room.databaseBuilder(
+                                    context,
+                                    DataBaseBestDay::class.java,
+                                    "Munpia"
+                                )
                                     .allowMainThreadQueries().build()
 
                                 if (it != null) {
                                     for (i in it.indices) {
 
-                                        if(context is ActivityAdmin){
-                                            if(context.isRoom){
-                                                val data = bestDao.bestDao().getRank(it[i].nvTitle)
+                                        if (context is ActivityAdmin) {
+                                            if (context.isRoom) {
+                                                val data = bestDao.bestDao().getRank(it[i].nvSrl)
 
                                                 for (j in data.indices) {
 
-                                                    dataList.add(BookListDataBestAnalyze(
-                                                        data[j].info3,
-                                                        data[j].info4,
-                                                        data[j].info5,
-                                                        data[j].number,
-                                                        data[j].numberDiff,
-                                                        data[j].date,
-                                                        data[j].trophyCount,
-                                                    ))
+                                                    dataList.add(
+                                                        BookListDataBestAnalyze(
+                                                            data[j].info3,
+                                                            data[j].info4,
+                                                            data[j].info5,
+                                                            data[j].number,
+                                                            data[j].numberDiff,
+                                                            data[j].date,
+                                                            data[j].trophyCount,
+                                                        )
+                                                    )
                                                 }
 
                                                 MoonpiaRef["trophyCount"] = dataList.size
                                             } else {
-                                                dataList = (itemsYesterday[i].data) as ArrayList<BookListDataBestAnalyze>
+                                                dataList =
+                                                    (itemsYesterday[i].data) as ArrayList<BookListDataBestAnalyze>
                                                 MoonpiaRef["trophyCount"] = dataList.size
                                             }
 
                                         } else {
                                             val data = itemsYesterday[i].data
 
-                                            dataList.add(BookListDataBestAnalyze(
-                                                "조회 수 : ${it[i].nsrData?.hit}",
-                                                "방문 수 : ${it[i].nsrData?.number}",
-                                                "선호작 수 : ${it[i].nsrData?.prefer}",
-                                                i,
-                                                calculateNum(i, it[i].nvTitle, itemsYesterday).num,
-                                                DBDate.DateMMDD(),
-                                                data?.size ?: 0,
-                                            ))
+                                            dataList.add(
+                                                BookListDataBestAnalyze(
+                                                    "조회 수 : ${it[i].nsrData?.hit}",
+                                                    "방문 수 : ${it[i].nsrData?.number}",
+                                                    "선호작 수 : ${it[i].nsrData?.prefer}",
+                                                    i,
+                                                    calculateNum(
+                                                        i,
+                                                        it[i].nvTitle,
+                                                        itemsYesterday
+                                                    ).num,
+                                                    DBDate.DateMMDD(),
+                                                    data?.size ?: 0,
+                                                )
+                                            )
 
                                             MoonpiaRef["trophyCount"] = dataList.size
                                         }
 
                                         MoonpiaRef["writerName"] = it[i].author
                                         MoonpiaRef["subject"] = it[i].nvTitle
-                                        MoonpiaRef["bookImg"] = "https://cdn1.munpia.com${it[i].nvCover}"
+                                        MoonpiaRef["bookImg"] =
+                                            "https://cdn1.munpia.com${it[i].nvCover}"
                                         MoonpiaRef["bookCode"] = it[i].nvSrl
                                         MoonpiaRef["info1"] = "줄거리 : ${it[i].nvStory}"
                                         MoonpiaRef["info2"] = "베스트 시간 : ${it[i].nsrData?.hour}"
@@ -1472,7 +1533,7 @@ object Mining {
         val ToksodaRef: MutableMap<String?, Any> = HashMap()
 
         val apiToksoda = RetrofitToksoda()
-        val param : MutableMap<String?, Any> = HashMap()
+        val param: MutableMap<String?, Any> = HashMap()
 
         param["page"] = page
         param["lgctgrCd"] = Genre.setToksodaGenre(cate)
@@ -1514,6 +1575,7 @@ object Mining {
                             group.type,
                             group.status,
                             group.trophyCount,
+                            group.data
                         )
                     )
                 }
@@ -1525,46 +1587,55 @@ object Mining {
 
                             data.resultList?.let {
 
-                                val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Toksoda $cate")
+                                val bestDao: DataBaseBestDay = Room.databaseBuilder(
+                                    context,
+                                    DataBaseBestDay::class.java,
+                                    "Toksoda $cate"
+                                )
                                     .allowMainThreadQueries().build()
 
                                 for (i in it.indices) {
 
-                                    if(context is ActivityAdmin){
-                                        if(context.isRoom){
-                                            val data = bestDao.bestDao().getRank(it[i].wrknm)
+                                    if (context is ActivityAdmin) {
+                                        if (context.isRoom) {
+                                            val data = bestDao.bestDao().getRank(it[i].brcd)
 
                                             for (j in data.indices) {
 
-                                                dataList.add(BookListDataBestAnalyze(
-                                                    data[j].info3,
-                                                    data[j].info4,
-                                                    data[j].info5,
-                                                    data[j].number,
-                                                    data[j].numberDiff,
-                                                    data[j].date,
-                                                    data[j].trophyCount,
-                                                ))
+                                                dataList.add(
+                                                    BookListDataBestAnalyze(
+                                                        data[j].info3,
+                                                        data[j].info4,
+                                                        data[j].info5,
+                                                        data[j].number,
+                                                        data[j].numberDiff,
+                                                        data[j].date,
+                                                        data[j].trophyCount,
+                                                    )
+                                                )
                                             }
 
                                             ToksodaRef["trophyCount"] = dataList.size
                                         } else {
-                                            dataList = (itemsYesterday[i].data) as ArrayList<BookListDataBestAnalyze>
+                                            dataList =
+                                                (itemsYesterday[i].data) as ArrayList<BookListDataBestAnalyze>
                                             ToksodaRef["trophyCount"] = dataList.size
                                         }
 
                                     } else {
                                         val data = itemsYesterday[i].data
 
-                                        dataList.add(BookListDataBestAnalyze(
-                                            "조회 수 : ${it[i].inqrCnt}",
-                                            "장르 : ${it[i].lgctgrNm}",
-                                            "선호작 수 : ${it[i].intrstCnt}",
-                                            i,
-                                            calculateNum(i, it[i].wrknm, itemsYesterday).num,
-                                            DBDate.DateMMDD(),
-                                            data?.size ?: 0,
-                                        ))
+                                        dataList.add(
+                                            BookListDataBestAnalyze(
+                                                "조회 수 : ${it[i].inqrCnt}",
+                                                "장르 : ${it[i].lgctgrNm}",
+                                                "선호작 수 : ${it[i].intrstCnt}",
+                                                i,
+                                                calculateNum(i, it[i].wrknm, itemsYesterday).num,
+                                                DBDate.DateMMDD(),
+                                                data?.size ?: 0,
+                                            )
+                                        )
 
                                         ToksodaRef["trophyCount"] = dataList.size
                                     }
@@ -1581,8 +1652,10 @@ object Mining {
                                     ToksodaRef["number"] = i
                                     ToksodaRef["date"] = DBDate.DateMMDD()
                                     ToksodaRef["type"] = "Toksoda"
-                                    ToksodaRef["numberDiff"] = calculateNum(i, it[i].wrknm, itemsYesterday).num
-                                    ToksodaRef["status"] = calculateNum(i, it[i].wrknm, itemsYesterday).status
+                                    ToksodaRef["numberDiff"] =
+                                        calculateNum(i, it[i].wrknm, itemsYesterday).num
+                                    ToksodaRef["status"] =
+                                        calculateNum(i, it[i].wrknm, itemsYesterday).status
                                     ToksodaRef["data"] = dataList
 
                                     miningValue(
@@ -1602,14 +1675,14 @@ object Mining {
         })
     }
 
-    fun RoomDB(context: Context, platform: String, cate: String){
+    fun RoomDB(context: Context, platform: String, cate: String) {
         BestRef.setBestRef(platform, cate).child("week-list")
             .addListenerForSingleValueEvent(object :
                 ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val bestDao: DataBaseBestDay
 
-                    if(platform == "Munpia"){
+                    if (platform == "Munpia") {
                         bestDao = Room.databaseBuilder(
                             context,
                             DataBaseBestDay::class.java,
@@ -1654,54 +1727,7 @@ object Mining {
             })
     }
 
-    fun RoomDBMining(context: Context, platform: String, cate: String){
-        val bestDao: DataBaseBestDay
-        var num = 0
-
-        bestDao = Room.databaseBuilder(
-            context,
-            DataBaseBestDay::class.java,
-            "${platform} ${cate}"
-        ).allowMainThreadQueries().build()
-
-        BestRef.getBestRefToday(platform, cate).addListenerForSingleValueEvent(object :
-            ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-
-                for (postSnapshot in dataSnapshot.children) {
-                    val group: BookListDataBest? =
-                        postSnapshot.getValue(BookListDataBest::class.java)
-
-                    val data = bestDao.bestDao().getRank(group?.title ?: "")
-
-                    for (j in data.indices) {
-                        var dataResult : BookListDataBestAnalyze? = null
-
-                        if(platform == "Joara"){
-                            dataResult = BookListDataBestAnalyze(
-                                data[j].info3,
-                                data[j].info4,
-                                data[j].info5,
-                                data[j].number,
-                                data[j].numberDiff,
-                                data[j].date,
-                                data[j].trophyCount,
-                            )
-                        }
-
-                        BestRef.setBestRef("Joara", "ALL").child("today").child(DBDate.Day()).child(num.toString())
-                            .child("data").child(j.toString())
-                            .setValue(dataResult)
-                    }
-
-                    num += 1
-                }
-            }
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
-    }
-
-    fun RoomDBRemove(context: Context, tabType: String, cate: String){
+    fun RoomDBRemove(context: Context, tabType: String, cate: String) {
         val bestDao: DataBaseBestDay = Room.databaseBuilder(
             context,
             DataBaseBestDay::class.java,

@@ -542,7 +542,7 @@ class ActivityAdmin : AppCompatActivity() {
 //                        .setValue(data.get(i))
 //                }
 
-                Mining.RoomDBMining(this@ActivityAdmin, "Joara", "ALL")
+
             }
         }
 
