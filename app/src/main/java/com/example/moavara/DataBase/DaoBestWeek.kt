@@ -5,8 +5,8 @@ import androidx.room.*
 @Dao
 interface BestDao {
 
-    @Query("SELECT * FROM BookListDataBestToday WHERE title = :title")
-    fun getRank(title: String): List<BookListDataBestToday>
+    @Query("SELECT * FROM BookListDataBestToday WHERE bookCode = :bookCode")
+    fun getRank(bookCode: String): List<BookListDataBestToday>
 
     @Query("SELECT number FROM BookListDataBestToday WHERE type = :type AND title = :title GROUP BY type")
     fun findName(type: String, title: String): Int
