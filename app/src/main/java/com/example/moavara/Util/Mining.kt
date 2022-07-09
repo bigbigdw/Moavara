@@ -1229,42 +1229,86 @@ object Mining {
         param["freePblserlYn"] = "00431"
         param["_"] = "1657262989944"
 
-        apiToksoda.getBestList(
-            param,
-            object : RetrofitDataListener<BestToksodaResult> {
-                override fun onSuccess(data: BestToksodaResult) {
+        val yesterdayRef =
+            mRootRef.child("best").child("Toksoda").child(cate).child("today").child(
+                DBDate.Yesterday()
+            )
 
-                    data.resultList?.let {
+        val itemsYesterday = ArrayList<BookListDataBestToday?>()
 
-                        val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Toksoda $cate")
-                            .allowMainThreadQueries().build()
-
-                        if (it != null) {
-                            for (i in it.indices) {
-                                ToksodaRef["writerName"] = it[i].athrnm
-                                ToksodaRef["subject"] = it[i].wrknm
-                                ToksodaRef["bookImg"] = "https:${it[i].imgPath}"
-                                ToksodaRef["bookCode"] = it[i].brcd
-                                ToksodaRef["info1"] = it[i].lnIntro
-                                ToksodaRef["info2"] = "총 ${it[i].whlEpsdCnt}화"
-                                ToksodaRef["info3"] = "조회 수 : ${it[i].inqrCnt}"
-                                ToksodaRef["info4"] = "장르 : ${it[i].lgctgrNm}"
-                                ToksodaRef["info5"] = "선호작 수 : ${it[i].intrstCnt}"
-                                ToksodaRef["number"] = i
-                                ToksodaRef["date"] = DBDate.DateMMDD()
-                                ToksodaRef["type"] = "Toksoda"
-                                ToksodaRef["numberDiff"] = 0
-                                ToksodaRef["status"] = "NEW"
-
-                                ToksodaRef["trophyCount"] = 1
-
-                                miningValue(ToksodaRef, (i + ((page - 1) * it.size)), "Toksoda", cate, context)
-                            }
-                        }
-                    }
-
+        yesterdayRef.addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+                    val group: BookListDataBestToday? =
+                        postSnapshot.getValue(BookListDataBestToday::class.java)
+                    itemsYesterday.add(
+                        BookListDataBestToday(
+                            group!!.writer,
+                            group.title,
+                            group.bookImg,
+                            group.bookCode,
+                            group.info1,
+                            group.info2,
+                            group.info3,
+                            group.info4,
+                            group.info5,
+                            group.number,
+                            group.numberDiff,
+                            group.date,
+                            group.type,
+                            group.status,
+                            group.trophyCount,
+                        )
+                    )
                 }
-            })
+
+                apiToksoda.getBestList(
+                    param,
+                    object : RetrofitDataListener<BestToksodaResult> {
+                        override fun onSuccess(data: BestToksodaResult) {
+
+                            data.resultList?.let {
+
+                                val bestDao: DataBaseBestDay = Room.databaseBuilder(context, DataBaseBestDay::class.java, "Toksoda $cate")
+                                    .allowMainThreadQueries().build()
+
+                                for (i in it.indices) {
+                                    ToksodaRef["writerName"] = it[i].athrnm
+                                    ToksodaRef["subject"] = it[i].wrknm
+                                    ToksodaRef["bookImg"] = "https:${it[i].imgPath}"
+                                    ToksodaRef["bookCode"] = it[i].brcd
+                                    ToksodaRef["info1"] = it[i].lnIntro
+                                    ToksodaRef["info2"] = "총 ${it[i].whlEpsdCnt}화"
+                                    ToksodaRef["info3"] = "조회 수 : ${it[i].inqrCnt}"
+                                    ToksodaRef["info4"] = "장르 : ${it[i].lgctgrNm}"
+                                    ToksodaRef["info5"] = "선호작 수 : ${it[i].intrstCnt}"
+                                    ToksodaRef["number"] = i
+                                    ToksodaRef["date"] = DBDate.DateMMDD()
+                                    ToksodaRef["type"] = "Toksoda"
+                                    ToksodaRef["numberDiff"] = calculateNum(i, it[i].wrknm, itemsYesterday).num
+                                    ToksodaRef["status"] = calculateNum(i, it[i].wrknm, itemsYesterday).status
+
+                                    if(context is ActivityAdmin){
+                                        if (context.isRoom) {
+                                            ToksodaRef["trophyCount"] = bestDao.bestDao().countTrophy(it[i].wrknm)
+                                        } else {
+                                            ToksodaRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0)
+                                        }
+                                    } else {
+                                        ToksodaRef["trophyCount"] = (itemsYesterday[i]?.trophyCount ?: 0) + 1
+                                    }
+
+                                    miningValue(ToksodaRef, (i + ((page - 1) * it.size)), "Toksoda", cate, context)
+                                }
+                            }
+
+                        }
+                    })
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
     }
 
     fun RoomDB(context: Context, tabType: String, cate: String){
