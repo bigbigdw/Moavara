@@ -63,11 +63,11 @@ object BestRef {
     }
 
 
-    fun setBestRefWeekList(type: String, genre: String): DatabaseReference {
-        if(type == "Munpia"){
-            return setBestRefMunpia(type).child("week-list")
+    fun setBestRefWeekList(platform: String, genre: String): DatabaseReference {
+        if(platform == "Munpia"){
+            return setBestRefMunpia(platform).child("week-list")
         } else {
-            return setBestRef(type, genre).child("week-list")
+            return setBestRef(platform, genre).child("week-list")
         }
     }
 

@@ -15,25 +15,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
     Worker(context, workerParams) {
     override fun doWork(): Result {
-        /* 처리해야할 작업에 관한 코드들 */
-        Handler(Looper.getMainLooper()).postDelayed({
-            Mining.runMining(applicationContext, "ALL")
-            Log.d("MINING", "ALL")
-        }, 1000) //1초 후 실행
-        Handler(Looper.getMainLooper()).postDelayed({
-            Mining.runMining(applicationContext, "ROMANCE")
-            Log.d("MINING", "ROMANCE")
-        }, 1000) //1초 후 실행
-        Handler(Looper.getMainLooper()).postDelayed({
-            Mining.runMining(applicationContext, "BL")
-            Log.d("MINING", "BL")
-        }, 1000) //1초 후 실행
-        Handler(Looper.getMainLooper()).postDelayed({
-            Mining.runMining(applicationContext, "FANTASY")
-            Log.d("MINING", "FANTASY")
-        }, 1000) //1초 후 실행
 
-
+        Mining.runMining(applicationContext)
         postFCM()
 
         return Result.success()
