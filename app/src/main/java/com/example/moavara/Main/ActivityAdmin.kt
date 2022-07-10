@@ -10,28 +10,29 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.navigation.NavController
-import androidx.room.Room
 import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
-import com.example.moavara.DataBase.DataBaseBestDay
+import com.example.moavara.DataBase.BookListDataBest
+import com.example.moavara.DataBase.BookListDataBestAnalyze
+import com.example.moavara.DataBase.BookListDataBestToday
 import com.example.moavara.Firebase.*
 import com.example.moavara.R
 import com.example.moavara.Search.ActivitySearch
 import com.example.moavara.User.ActivityUser
-import com.example.moavara.Util.BestRef
-import com.example.moavara.Util.DBDate
-import com.example.moavara.Util.Genre
-import com.example.moavara.Util.Mining
+import com.example.moavara.Util.*
 import com.example.moavara.databinding.ActivityAdminBinding
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.messaging.FirebaseMessaging
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.ArrayList
 import java.util.concurrent.TimeUnit
 
 class ActivityAdmin : AppCompatActivity() {
@@ -55,7 +56,7 @@ class ActivityAdmin : AppCompatActivity() {
             .build()
 
         /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
-        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(4, TimeUnit.HOURS)
+        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(2, TimeUnit.HOURS)
             .setConstraints(mConstraints)
             .build()
 
@@ -64,18 +65,18 @@ class ActivityAdmin : AppCompatActivity() {
 
         Handler(Looper.getMainLooper()).postDelayed({
 
-//            miningRef.get().addOnSuccessListener {
-//                if(it.value != null && it.value!! == "MINING"){
-//                    Toast.makeText(this, "WorkManager 이미 존재함", Toast.LENGTH_SHORT).show()
-//
-//                } else {
-//                    miningRef.setValue("MINING")
-//
-//                    workManager.enqueue(workRequest)
-//                    FirebaseMessaging.getInstance().subscribeToTopic("all")
-//                    Toast.makeText(this, "WorkManager 추가됨", Toast.LENGTH_SHORT).show()
-//                }
-//            }.addOnFailureListener{}
+            miningRef.get().addOnSuccessListener {
+                if(it.value != null && it.value!! != "NULL"){
+                    Toast.makeText(this, "WorkManager 이미 존재함", Toast.LENGTH_SHORT).show()
+
+                } else {
+                    miningRef.setValue("ALL")
+
+                    workManager.enqueue(workRequest)
+                    FirebaseMessaging.getInstance().subscribeToTopic("all")
+                    Toast.makeText(this, "WorkManager 추가됨", Toast.LENGTH_SHORT).show()
+                }
+            }.addOnFailureListener{}
         }, 1000) //1초 후 실행
 
 
@@ -89,24 +90,48 @@ class ActivityAdmin : AppCompatActivity() {
             llayoutBtn2.setOnClickListener{
 
                 miningRef.get().addOnSuccessListener {
-                    if(it.value != null && it.value!! == "MINING"){
+                    if(it.value != null && it.value!! != "NULL"){
                         Toast.makeText(this@ActivityAdmin, "WorkManager 이미 존재함", Toast.LENGTH_SHORT).show()
 
                     } else {
-                        miningRef.setValue("MINING")
+                        miningRef.setValue("ALL")
 
                         workManager.enqueue(workRequest)
                         FirebaseMessaging.getInstance().subscribeToTopic("all")
                         Toast.makeText(this@ActivityAdmin, "WorkManager 추가됨", Toast.LENGTH_SHORT).show()
-                        postFCM()
                     }
                 }.addOnFailureListener{}
             }
 
             llayoutBtn3.setOnClickListener{
                 isRoom = false
-                Mining.runMining(this@ActivityAdmin)
-                Toast.makeText(this@ActivityAdmin, "데이터 갱신 완료", Toast.LENGTH_SHORT).show()
+
+                miningRef.get().addOnSuccessListener {
+                    if(it.value != null && it.value != "NULL"){
+
+                        if(it.value == "ALL"){
+                            Mining.runMining(this@ActivityAdmin, "ALL")
+                            Toast.makeText(applicationContext, "장르 : 전체", Toast.LENGTH_SHORT).show()
+                            miningRef.setValue("BL")
+                        } else if (it.value == "BL") {
+                            Mining.runMining(this@ActivityAdmin, "BL")
+                            Toast.makeText(applicationContext, "장르 : BL", Toast.LENGTH_SHORT).show()
+                            miningRef.setValue("FANTASY")
+                        } else if (it.value == "FANTASY") {
+                            Mining.runMining(this@ActivityAdmin, "FANTASY")
+                            Toast.makeText(applicationContext, "장르 : 판타지", Toast.LENGTH_SHORT).show()
+                            miningRef.setValue("ROMANCE")
+                        } else if (it.value == "ROMANCE") {
+                            Mining.runMining(this@ActivityAdmin, "ROMANCE")
+                            Toast.makeText(applicationContext, "장르 : 로맨스", Toast.LENGTH_SHORT).show()
+                            miningRef.setValue("ALL")
+                        }
+                    } else {
+                        miningRef.setValue("ALL")
+                        Toast.makeText(applicationContext, "장르 : 전체", Toast.LENGTH_SHORT).show()
+                    }
+                }.addOnFailureListener{}
+
             }
 
             llayoutBtn4.setOnClickListener {
@@ -480,8 +505,32 @@ class ActivityAdmin : AppCompatActivity() {
 
             llayoutBtn6.setOnClickListener{
                 isRoom = true
-                Mining.runMining(this@ActivityAdmin)
-                Toast.makeText(this@ActivityAdmin, "데이터 갱신 완료", Toast.LENGTH_SHORT).show()
+
+                miningRef.get().addOnSuccessListener {
+                    if(it.value != null && it.value!! != "NULL"){
+
+                        if(it.value == "ALL"){
+                            Mining.runMining(this@ActivityAdmin, "ALL")
+                            Toast.makeText(applicationContext, "장르 : 전체", Toast.LENGTH_SHORT).show()
+                            miningRef.setValue("BL")
+                        } else if (it.value == "BL") {
+                            Mining.runMining(this@ActivityAdmin, "BL")
+                            Toast.makeText(applicationContext, "장르 : BL", Toast.LENGTH_SHORT).show()
+                            miningRef.setValue("FANTASY")
+                        } else if (it.value == "FANTASY") {
+                            Mining.runMining(this@ActivityAdmin, "FANTASY")
+                            Toast.makeText(applicationContext, "장르 : 판타지", Toast.LENGTH_SHORT).show()
+                            miningRef.setValue("ROMANCE")
+                        } else if (it.value == "ROMANCE") {
+                            Mining.runMining(this@ActivityAdmin, "ROMANCE")
+                            Toast.makeText(applicationContext, "장르 : 로맨스", Toast.LENGTH_SHORT).show()
+                            miningRef.setValue("ALL")
+                        }
+                    } else {
+                        miningRef.setValue("ALL")
+                        Toast.makeText(applicationContext, "장르 : 전체", Toast.LENGTH_SHORT).show()
+                    }
+                }.addOnFailureListener{}
             }
 
             llayoutBtn7.setOnClickListener {

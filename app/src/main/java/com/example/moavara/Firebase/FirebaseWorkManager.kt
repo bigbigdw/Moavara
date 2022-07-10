@@ -1,12 +1,15 @@
 package com.example.moavara.Firebase
 
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
+import android.widget.Toast
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.example.moavara.Util.Mining
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Retrofit
@@ -16,19 +19,45 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
     Worker(context, workerParams) {
     override fun doWork(): Result {
 
-        Mining.runMining(applicationContext)
-        postFCM()
+        val miningRef = FirebaseDatabase.getInstance().reference.child("Mining")
+
+        miningRef.get().addOnSuccessListener {
+            if(it.value != null && it.value!! != "NULL"){
+
+                if(it.value == "ALL"){
+                    Mining.runMining(applicationContext, "ALL")
+                    Toast.makeText(applicationContext, "장르 : 전체", Toast.LENGTH_SHORT).show()
+                    miningRef.setValue("BL")
+                } else if (it.value == "BL") {
+                    Mining.runMining(applicationContext, "BL")
+                    Toast.makeText(applicationContext, "장르 : BL", Toast.LENGTH_SHORT).show()
+                    miningRef.setValue("FANTASY")
+                } else if (it.value == "FANTASY") {
+                    Mining.runMining(applicationContext, "FANTASY")
+                    Toast.makeText(applicationContext, "장르 : 판타지", Toast.LENGTH_SHORT).show()
+                    miningRef.setValue("ROMANCE")
+                } else if (it.value == "ROMANCE") {
+                    Mining.runMining(applicationContext, "ROMANCE")
+                    Toast.makeText(applicationContext, "장르 : 로맨스", Toast.LENGTH_SHORT).show()
+                    miningRef.setValue("ALL")
+                }
+            } else {
+                miningRef.setValue("ALL")
+                Toast.makeText(applicationContext, "장르 : 전체", Toast.LENGTH_SHORT).show()
+            }
+            postFCM(it.value as String)
+        }.addOnFailureListener{}
 
         return Result.success()
     }
 
-    private fun postFCM() {
+    private fun postFCM(value: String) {
 
         val fcmBody = DataFCMBody(
             "/topics/all",
             "high",
             DataFCMBodyData("data", "body"),
-            DataFCMBodyNotification("모아바라", "베스트 리스트가 갱신되었습니다-0707", "default", "ic_stat_ic_notification"),
+            DataFCMBodyNotification("모아바라", "베스트 리스트가 갱신되었습니다-0710 $value", "default", "ic_stat_ic_notification"),
         )
 
         val call = Retrofit.Builder()

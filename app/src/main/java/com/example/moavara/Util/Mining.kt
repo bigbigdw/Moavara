@@ -23,231 +23,63 @@ import java.net.SocketTimeoutException
 import java.util.*
 
 object Mining {
-    fun runMining(context: Context) {
+    fun runMining(context: Context, genre: String) {
 
         val Ridi1 = Thread {
-            getRidiBest("ALL")
+            getRidiBest(genre)
         }
         Ridi1.start()
 
-        val Ridi2 = Thread {
-            getRidiBest("BL")
-        }
-        Ridi2.start()
-
-        val Ridi3 = Thread {
-            getRidiBest("FANTASY")
-        }
-        Ridi3.start()
-
-        val Ridi4 = Thread {
-            getRidiBest("ROMANCE")
-        }
-        Ridi4.start()
-
         val OneStore1 = Thread {
-            getOneStoreBest("ALL")
+            getOneStoreBest(genre)
         }
         OneStore1.start()
 
-        val OneStore2 = Thread {
-            getOneStoreBest("BL")
-        }
-        OneStore2.start()
-
-        val OneStore3 = Thread {
-            getOneStoreBest("FANTASY")
-        }
-        OneStore3.start()
-
-        val OneStore4 = Thread {
-            getOneStoreBest("BL")
-        }
-        OneStore4.start()
-
         val Kakao1 = Thread {
-            getKakaoBest("ROMANCE")
+            getKakaoBest(genre)
         }
         Kakao1.start()
 
-        val Kakao2 = Thread {
-            getKakaoBest("ROMANCE")
-        }
-        Kakao2.start()
-
-        val Kakao3 = Thread {
-            getKakaoBest("BL")
-        }
-        Kakao3.start()
-
-        val Kakao4 = Thread {
-            getKakaoBest("FANTASY")
-        }
-        Kakao4.start()
-
         val KakaoStage1 = Thread {
-            getKakaoStageBest("ALL")
+            getKakaoStageBest(genre)
         }
         KakaoStage1.start()
 
-        val KakaoStage2 = Thread {
-            getKakaoStageBest("BL")
-        }
-        KakaoStage2.start()
-
-        val KakaoStage3 = Thread {
-            getKakaoStageBest("FANTASY")
-        }
-        KakaoStage3.start()
-
-        val KakaoStage4 = Thread {
-            getKakaoStageBest("ROMANCE")
-        }
-        KakaoStage4.start()
-
         val Joara1 = Thread {
             for (i in 1..5) {
-                getJoaraBest(context, "ALL", i)
+                getJoaraBest(context, genre, i)
             }
         }
         Joara1.start()
 
-        val Joara2 = Thread {
-            for (i in 1..5) {
-                getJoaraBest(context, "ROMANCE", i)
-            }
-        }
-        Joara2.start()
-
-        val Joara3 = Thread {
-            for (i in 1..5) {
-                getJoaraBest(context, "BL", i)
-            }
-        }
-        Joara3.start()
-
-        val Joara4 = Thread {
-            for (i in 1..5) {
-                getJoaraBest(context, "FANTASY", i)
-            }
-        }
-        Joara4.start()
-
         val JoaraNobless1 = Thread {
             for (i in 1..5) {
-                getJoaraBestNobless(context, "ALL", i)
+                getJoaraBestNobless(context, genre, i)
             }
         }
         JoaraNobless1.start()
 
-        val JoaraNobless2 = Thread {
-            for (i in 1..5) {
-                getJoaraBestNobless(context, "BL", i)
-            }
-        }
-        JoaraNobless2.start()
-
-        val JoaraNobless3 = Thread {
-            for (i in 1..5) {
-                getJoaraBestNobless(context, "FANTASY", i)
-            }
-        }
-        JoaraNobless3.start()
-
-        val JoaraNobless4 = Thread {
-            for (i in 1..5) {
-                getJoaraBestNobless(context, "ROMANCE", i)
-            }
-        }
-        JoaraNobless4.start()
-
         val JoaraPremium1 = Thread {
             for (i in 1..5) {
-                getJoaraBestPremium(context, "ALL", i)
+                getJoaraBestPremium(context, genre, i)
             }
         }
         JoaraPremium1.start()
 
-        val JoaraPremium2 = Thread {
-            for (i in 1..5) {
-                getJoaraBestPremium(context, "BL", i)
-            }
-        }
-        JoaraPremium2.start()
-
-        val JoaraPremium3 = Thread {
-            for (i in 1..5) {
-                getJoaraBestPremium(context, "FANTASY", i)
-            }
-        }
-        JoaraPremium3.start()
-
-        val JoaraPremium4 = Thread {
-            for (i in 1..5) {
-                getJoaraBestPremium(context, "ROMANCE", i)
-            }
-        }
-        JoaraPremium4.start()
-
         val NaverToday1 = Thread {
-            getNaverToday("ALL")
+            getNaverToday(genre)
         }
         NaverToday1.start()
 
-        val NaverToday2 = Thread {
-            getNaverToday("ROMANCE")
-        }
-        NaverToday2.start()
-
-        val NaverToday3 = Thread {
-            getNaverToday("BL")
-        }
-        NaverToday3.start()
-
-        val NaverToday4 = Thread {
-            getNaverToday("FANTASY")
-        }
-        NaverToday4.start()
-
         val NaverChallenge1 = Thread {
-            getNaverChallenge("ALL")
+            getNaverChallenge(genre)
         }
         NaverChallenge1.start()
 
-        val NaverChallenge2 = Thread {
-            getNaverChallenge("ROMANCE")
-        }
-        NaverChallenge2.start()
-
-        val NaverChallenge3 = Thread {
-            getNaverChallenge("BL")
-        }
-        NaverChallenge3.start()
-
-        val NaverChallenge4 = Thread {
-            getNaverChallenge("FANTASY")
-        }
-        NaverChallenge4.start()
-
         val NaverBest1 = Thread {
-            getNaverBest("ALL")
+            getNaverBest(genre)
         }
         NaverBest1.start()
-
-        val NaverBest2 = Thread {
-            getNaverBest("ROMANCE")
-        }
-        NaverBest2.start()
-
-        val NaverBest3 = Thread {
-            getNaverBest("BL")
-        }
-        NaverBest3.start()
-
-        val NaverBest4 = Thread {
-            getNaverBest("FANTASY")
-        }
-        NaverBest4.start()
 
         val Moonpia = Thread {
             for (i in 1..5) {
@@ -258,134 +90,47 @@ object Mining {
 
         val Toksoda1 = Thread {
             for (i in 1..5) {
-                getToksodaBest("ALL", i)
+                getToksodaBest(genre, i)
             }
         }
         Toksoda1.start()
 
-        val Toksoda2 = Thread {
-            for (i in 1..5) {
-                getToksodaBest("ROMANCE", i)
-            }
-        }
-        Toksoda2.start()
-
-        val Toksoda3 = Thread {
-            for (i in 1..5) {
-                getToksodaBest("BL", i)
-            }
-        }
-        Toksoda3.start()
-
-        val Toksoda4 = Thread {
-            for (i in 1..5) {
-                getToksodaBest("FANTASY", i)
-            }
-        }
-        Toksoda4.start()
-
         try {
             Ridi1.join()
             Log.d("####MINING", "리디1 완료")
-            Ridi2.join()
-            Log.d("####MINING", "리디2 완료")
-            Ridi3.join()
-            Log.d("####MINING", "리디3 완료")
-            Ridi4.join()
-            Log.d("####MINING", "리디4 완료")
 
             OneStore1.join()
             Log.d("####MINING", "원스토어1 완료")
-            OneStore2.join()
-            Log.d("####MINING", "원스토어2 완료")
-            OneStore3.join()
-            Log.d("####MINING", "원스토어3 완료")
-            OneStore4.join()
-            Log.d("####MINING", "원스토어4 완료")
 
             Kakao1.join()
             Log.d("####MINING", "카카오1 완료")
-            Kakao2.join()
-            Log.d("####MINING", "카카오2 완료")
-            Kakao3.join()
-            Log.d("####MINING", "카카오3 완료")
-            Kakao4.join()
-            Log.d("####MINING", "카카오4 완료")
 
             KakaoStage1.join()
             Log.d("####MINING", "카카오 스테이지1 완료")
-            KakaoStage2.join()
-            Log.d("####MINING", "카카오 스테이지2 완료")
-            KakaoStage3.join()
-            Log.d("####MINING", "카카오 스테이지3 완료")
-            KakaoStage4.join()
-            Log.d("####MINING", "카카오 스테이지4 완료")
 
             Joara1.join()
             Log.d("####MINING", "조아라1 완료")
-            Joara2.join()
-            Log.d("####MINING", "조아라2 완료")
-            Joara3.join()
-            Log.d("####MINING", "조아라3 완료")
-            Joara4.join()
-            Log.d("####MINING", "조아라4 완료")
 
             JoaraNobless1.join()
             Log.d("####MINING", "조아라 노블레스1 완료")
-            JoaraNobless2.join()
-            Log.d("####MINING", "조아라 노블레스2 완료")
-            JoaraNobless3.join()
-            Log.d("####MINING", "조아라 노블레스3 완료")
-            JoaraNobless4.join()
-            Log.d("####MINING", "조아라 노블레스4 완료")
 
             JoaraPremium1.join()
             Log.d("####MINING", "조아라 프리미엄1 완료")
-            JoaraPremium2.join()
-            Log.d("####MINING", "조아라 프리미엄2 완료")
-            JoaraPremium3.join()
-            Log.d("####MINING", "조아라 프리미엄3 완료")
-            JoaraPremium4.join()
-            Log.d("####MINING", "조아라 프리미엄4 완료")
 
             NaverToday1.join()
             Log.d("####MINING", "네이버 투데이1 완료")
-            NaverToday2.join()
-            Log.d("####MINING", "네이버 투데이2 완료")
-            NaverToday3.join()
-            Log.d("####MINING", "네이버 투데이3 완료")
-            NaverToday4.join()
-            Log.d("####MINING", "네이버 투데이4 완료")
 
             NaverChallenge1.join()
             Log.d("####MINING", "네이버 챌린지1 완료")
-            NaverChallenge2.join()
-            Log.d("####MINING", "네이버 챌린지2 완료")
-            NaverChallenge3.join()
-            Log.d("####MINING", "네이버 챌린지3 완료")
-            NaverChallenge4.join()
-            Log.d("####MINING", "네이버 챌린지4 완료")
 
             NaverBest1.join()
             Log.d("####MINING", "네이버1 완료")
-            NaverBest2.join()
-            Log.d("####MINING", "네이버2 완료")
-            NaverBest3.join()
-            Log.d("####MINING", "네이버3 완료")
-            NaverBest4.join()
-            Log.d("####MINING", "네이버4 완료")
 
             Moonpia.join()
             Log.d("####MINING", "문피아 완료")
 
             Toksoda1.join()
             Log.d("####MINING", "톡소다1 완료")
-            Toksoda2.join()
-            Log.d("####MINING", "톡소다2 완료")
-            Toksoda3.join()
-            Log.d("####MINING", "톡소다3 완료")
-            Toksoda4.join()
-            Log.d("####MINING", "톡소다4 완료")
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
