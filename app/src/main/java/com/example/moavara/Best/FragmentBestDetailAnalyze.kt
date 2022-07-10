@@ -13,8 +13,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
+import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.DataBase.BookListDataBestAnalyze
 import com.example.moavara.DataBase.BookListDataBestToday
+import com.example.moavara.DataBase.DataBaseBestDay
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
 import com.example.moavara.Search.BestChart

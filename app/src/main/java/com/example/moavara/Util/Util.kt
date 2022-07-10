@@ -264,8 +264,6 @@ object Genre {
 
 fun miningValue(ref: MutableMap<String?, Any>, num: Int, platform: String, genre: String) {
 
-    BestRef.setBookData(platform, num, genre).setValue(ref["data"] as ArrayList<BookListDataBestAnalyze>)
-
     //Today
     BestRef.setBestRefToday(platform, num, genre).setValue(BestRef.setBookListDataBestToday(ref))
 
