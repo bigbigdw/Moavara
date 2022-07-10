@@ -4,10 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
-import com.example.moavara.DataBase.BestDao
-import com.example.moavara.DataBase.BookListDataBest
-import com.example.moavara.DataBase.BookListDataBestToday
-import com.example.moavara.DataBase.DataBaseBestDay
+import com.example.moavara.DataBase.*
 import com.example.moavara.Retrofit.*
 import com.example.moavara.Search.CalculNum
 import com.google.firebase.database.*
@@ -265,28 +262,30 @@ object Genre {
 
 
 
-fun miningValue(ref: MutableMap<String?, Any>, num: Int, type: String, cate: String) {
+fun miningValue(ref: MutableMap<String?, Any>, num: Int, platform: String, genre: String) {
+
+    BestRef.setBookData(platform, num, genre).setValue(ref["data"] as ArrayList<BookListDataBestAnalyze>)
 
     //Today
-    BestRef.setBestRefToday(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
+    BestRef.setBestRefToday(platform, num, genre).setValue(BestRef.setBookListDataBestToday(ref))
 
     //Week
     if (num < 10) {
-        BestRef.setBestRefWeek(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
+        BestRef.setBestRefWeek(platform, num, genre).setValue(BestRef.setBookListDataBestToday(ref))
     }
 
-    BestRef.setBestRefWeekCompared(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
+    BestRef.setBestRefWeekCompared(platform, num, genre).setValue(BestRef.setBookListDataBestToday(ref))
 
 
     //Month - Week
     if (num == 0) {
         //Month - Day
-        BestRef.setBestRefMonthWeek(type, cate).setValue(BestRef.setBookListDataBestToday(ref))
+        BestRef.setBestRefMonthWeek(platform, genre).setValue(BestRef.setBookListDataBestToday(ref))
         //Month
-        BestRef.setBestRefMonth(type, cate).setValue(BestRef.setBookListDataBestToday(ref))
+        BestRef.setBestRefMonth(platform, genre).setValue(BestRef.setBookListDataBestToday(ref))
     }
 
-    BestRef.setBestRefMonthDay(type, num, cate).setValue(BestRef.setBookListDataBestToday(ref))
+    BestRef.setBestRefMonthDay(platform, num, genre).setValue(BestRef.setBookListDataBestToday(ref))
 
 }
 

@@ -79,6 +79,14 @@ object BestRef {
         }
     }
 
+    fun setBookData(type: String, num: Int, genre: String): DatabaseReference {
+        if(type == "Munpia"){
+            return setBestRefMunpia(type).child("today BookData").child(num.toString())
+        } else {
+            return setBestRef(type, genre).child("today BookData").child(num.toString())
+        }
+    }
+
     fun setBestRefToday(type: String, num: Int, genre: String): DatabaseReference {
         if(type == "Munpia"){
             return setBestRefMunpia(type).child("today").child(DBDate.Day()).child(num.toString())

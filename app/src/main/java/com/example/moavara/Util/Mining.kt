@@ -21,8 +21,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.net.SocketTimeoutException
-import java.util.ArrayList
-import java.util.HashMap
+import java.util.*
+import kotlin.Comparator
 
 object Mining {
     fun runMining(context: Context, cate: String) {
@@ -106,8 +106,12 @@ object Mining {
 
                             val title = Naver.select(".tit")[i].text()
 
-                            val data = bestDao.bestDao().getRank(Naver.select("a")[i].absUrl("href"))
-                            var dataList = ArrayList<BookListDataBestAnalyze>()
+                            val data =
+                                bestDao.bestDao().getRank(Naver.select("a")[i].absUrl("href"))
+                            val cmpAsc: Comparator<BookListDataBestToday> =
+                                Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
+                            Collections.sort(data, cmpAsc)
+                            val dataList = ArrayList<BookListDataBestAnalyze>()
 
                             for (j in data.indices) {
                                 dataList.add(
@@ -213,7 +217,11 @@ object Mining {
 
                             val title = Naver.select(".tit")[i].text()
 
-                            val data = bestDao.bestDao().getRank(Naver.select("a")[i].absUrl("href"))
+                            val data =
+                                bestDao.bestDao().getRank(Naver.select("a")[i].absUrl("href"))
+                            val cmpAsc: Comparator<BookListDataBestToday> =
+                                Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
+                            Collections.sort(data, cmpAsc)
                             val dataList = ArrayList<BookListDataBestAnalyze>()
 
                             for (j in data.indices) {
@@ -319,7 +327,12 @@ object Mining {
 
                             val title = Naver.select(".tit")[i].text()
 
-                            val data = bestDao.bestDao().getRank(Naver.select("a")[i].absUrl("href"))
+                            val data =
+                                bestDao.bestDao().getRank(Naver.select("a")[i].absUrl("href"))
+                            val cmpAsc: Comparator<BookListDataBestToday> =
+                                Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
+                            Collections.sort(data, cmpAsc)
+
                             val dataList = ArrayList<BookListDataBestAnalyze>()
 
                             for (j in data.indices) {
@@ -418,10 +431,13 @@ object Mining {
                         for (i in Ridi.indices) {
                             if (i > 0) {
                                 val title = doc.select("div .title_link")[i].text()
-
-                                val data = bestDao.bestDao()
-                                    .getRank(Ridi.select("a")[i].absUrl("href"))
                                 val dataList = ArrayList<BookListDataBestAnalyze>()
+
+                                val data = bestDao.bestDao().getRank(Ridi.select("a")[i].absUrl("href"))
+
+                                val cmpAsc: Comparator<BookListDataBestToday> =
+                                    Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
+                                Collections.sort(data, cmpAsc)
 
                                 for (j in data.indices) {
                                     dataList.add(
@@ -436,6 +452,7 @@ object Mining {
                                         )
                                     )
                                 }
+
 
                                 RidiRef["trophyCount"] = dataList.size
 
@@ -536,8 +553,10 @@ object Mining {
 
                                     for (i in productList!!.indices) {
 
-                                        val data =
-                                            bestDao.bestDao().getRank(productList[i].prodId)
+                                        val data =bestDao.bestDao().getRank(productList[i].prodId)
+                                        val cmpAsc: Comparator<BookListDataBestToday> =
+                                            Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
+                                        Collections.sort(data, cmpAsc)
                                         val dataList = ArrayList<BookListDataBestAnalyze>()
 
                                         for (j in data.indices) {
@@ -669,8 +688,10 @@ object Mining {
                                 for (i in list.indices) {
                                     val novel = list[i].novel
 
-                                    val data = bestDao.bestDao()
-                                        .getRank(novel?.stageSeriesNumber ?: "")
+                                    val data = bestDao.bestDao().getRank(novel?.stageSeriesNumber ?: "")
+                                    val cmpAsc: Comparator<BookListDataBestToday> =
+                                        Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
+                                    Collections.sort(data, cmpAsc)
                                     val dataList = ArrayList<BookListDataBestAnalyze>()
 
                                     for (j in data.indices) {
@@ -780,7 +801,10 @@ object Mining {
                                 for (i in list!!.indices) {
 
                                     val data = bestDao.bestDao().getRank(list[i].series_id)
-                                    var dataList = ArrayList<BookListDataBestAnalyze>()
+                                    val cmpAsc: Comparator<BookListDataBestToday> =
+                                        Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
+                                    Collections.sort(data, cmpAsc)
+                                    val dataList = ArrayList<BookListDataBestAnalyze>()
 
                                     for (item in data) {
                                         dataList.add(
@@ -896,6 +920,9 @@ object Mining {
                             for (i in books!!.indices) {
 
                                 val data = bestDao.bestDao().getRank(books[i].bookCode)
+                                val cmpAsc: Comparator<BookListDataBestToday> =
+                                    Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
+                                Collections.sort(data, cmpAsc)
                                 val dataList = ArrayList<BookListDataBestAnalyze>()
 
                                 for (item in data) {
@@ -1014,7 +1041,10 @@ object Mining {
                             for (i in books!!.indices) {
 
                                 val data = bestDao.bestDao().getRank(books[i].bookCode)
-                                var dataList = ArrayList<BookListDataBestAnalyze>()
+                                val cmpAsc: Comparator<BookListDataBestToday> =
+                                    Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
+                                Collections.sort(data, cmpAsc)
+                                val dataList = ArrayList<BookListDataBestAnalyze>()
 
                                 for (item in data) {
                                     dataList.add(
@@ -1132,7 +1162,10 @@ object Mining {
                             for (i in books!!.indices) {
 
                                 val data = bestDao.bestDao().getRank(books[i].bookCode)
-                                var dataList = ArrayList<BookListDataBestAnalyze>()
+                                val cmpAsc: Comparator<BookListDataBestToday> =
+                                    Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
+                                Collections.sort(data, cmpAsc)
+                                val dataList = ArrayList<BookListDataBestAnalyze>()
 
                                 for (j in data.indices) {
                                     dataList.add(
@@ -1248,6 +1281,9 @@ object Mining {
                                     for (i in it.indices) {
 
                                         val data = bestDao.bestDao().getRank(it[i].nvSrl)
+                                        val cmpAsc: Comparator<BookListDataBestToday> =
+                                            Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
+                                        Collections.sort(data, cmpAsc)
                                         val dataList = ArrayList<BookListDataBestAnalyze>()
 
                                         for (j in data.indices) {
@@ -1365,6 +1401,9 @@ object Mining {
                                 for (i in it.indices) {
 
                                     val data = bestDao.bestDao().getRank(it[i].brcd)
+                                    val cmpAsc: Comparator<BookListDataBestToday> =
+                                        Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
+                                    Collections.sort(data, cmpAsc)
                                     val dataList = ArrayList<BookListDataBestAnalyze>()
 
                                     for (j in data.indices) {
@@ -1469,6 +1508,8 @@ object Mining {
                 override fun onCancelled(databaseError: DatabaseError) {}
             })
     }
+
+
 
     fun RoomDBRemove(context: Context, tabType: String, cate: String) {
         val bestDao: DataBaseBestDay = Room.databaseBuilder(

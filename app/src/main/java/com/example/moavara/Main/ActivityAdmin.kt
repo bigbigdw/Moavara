@@ -108,19 +108,19 @@ class ActivityAdmin : AppCompatActivity() {
 
                 /* 처리해야할 작업에 관한 코드들 */
                 Handler(Looper.getMainLooper()).postDelayed({
-                    Mining.runMining(applicationContext, "ALL")
+                    Mining.runMining(this@ActivityAdmin, "ALL")
                     Log.d("MINING", "ALL")
                 }, 1000) //1초 후 실행
                 Handler(Looper.getMainLooper()).postDelayed({
-                    Mining.runMining(applicationContext, "ROMANCE")
+                    Mining.runMining(this@ActivityAdmin, "ROMANCE")
                     Log.d("MINING", "ROMANCE")
                 }, 1000) //1초 후 실행
                 Handler(Looper.getMainLooper()).postDelayed({
-                    Mining.runMining(applicationContext, "BL")
+                    Mining.runMining(this@ActivityAdmin, "BL")
                     Log.d("MINING", "BL")
                 }, 1000) //1초 후 실행
                 Handler(Looper.getMainLooper()).postDelayed({
-                    Mining.runMining(applicationContext, "FANTASY")
+                    Mining.runMining(this@ActivityAdmin, "FANTASY")
                     Log.d("MINING", "FANTASY")
                 }, 1000) //1초 후 실행
                 Toast.makeText(this@ActivityAdmin, "데이터 갱신 완료", Toast.LENGTH_SHORT).show()
@@ -500,19 +500,19 @@ class ActivityAdmin : AppCompatActivity() {
 
                 /* 처리해야할 작업에 관한 코드들 */
                 Handler(Looper.getMainLooper()).postDelayed({
-                    Mining.runMining(applicationContext, "ALL")
+                    Mining.runMining(this@ActivityAdmin, "ALL")
                     Log.d("MINING", "ALL")
                 }, 1000) //1초 후 실행
                 Handler(Looper.getMainLooper()).postDelayed({
-                    Mining.runMining(applicationContext, "ROMANCE")
+                    Mining.runMining(this@ActivityAdmin, "ROMANCE")
                     Log.d("MINING", "ROMANCE")
                 }, 1000) //1초 후 실행
                 Handler(Looper.getMainLooper()).postDelayed({
-                    Mining.runMining(applicationContext, "BL")
+                    Mining.runMining(this@ActivityAdmin, "BL")
                     Log.d("MINING", "BL")
                 }, 1000) //1초 후 실행
                 Handler(Looper.getMainLooper()).postDelayed({
-                    Mining.runMining(applicationContext, "FANTASY")
+                    Mining.runMining(this@ActivityAdmin, "FANTASY")
                     Log.d("MINING", "FANTASY")
                 }, 1000) //1초 후 실행
                 Toast.makeText(this@ActivityAdmin, "데이터 갱신 완료", Toast.LENGTH_SHORT).show()
