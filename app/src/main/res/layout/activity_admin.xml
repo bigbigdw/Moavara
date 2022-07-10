@@ -94,6 +94,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
+                android:paddingBottom="60dp"
                 android:visibility="visible"
                 tools:visibility="visible">
 
@@ -279,7 +280,63 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="테스트"
+                                    android:text="장르 무관 최신화"
+                                    android:textColor="#EDE6FD"
+                                    android:textSize="16dp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/llayout_btn9"
+                                android:layout_width="260dp"
+                                android:layout_height="56dp"
+                                android:layout_marginBottom="8dp"
+                                android:background="@drawable/selector_genre"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="판타지 최신화"
+                                    android:textColor="#EDE6FD"
+                                    android:textSize="16dp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:id="@+id/llayout_btn10"
+                                android:layout_width="260dp"
+                                android:layout_height="56dp"
+                                android:layout_marginBottom="8dp"
+                                android:background="@drawable/selector_genre"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="BL 최신화"
+                                    android:textColor="#EDE6FD"
+                                    android:textSize="16dp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:id="@+id/llayout_btn11"
+                                android:layout_width="260dp"
+                                android:layout_height="56dp"
+                                android:layout_marginBottom="8dp"
+                                android:background="@drawable/selector_genre"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="로맨스 최신화"
                                     android:textColor="#EDE6FD"
                                     android:textSize="16dp"
                                     android:textStyle="bold" />

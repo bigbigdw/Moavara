@@ -539,25 +539,23 @@ class ActivityAdmin : AppCompatActivity() {
             }
 
             llayoutBtn8.setOnClickListener {
-//                val bestDao: DataBaseBestDay
-//
-//                bestDao = Room.databaseBuilder(
-//                    this@ActivityAdmin,
-//                    DataBaseBestDay::class.java,
-//                    "Joara ALL"
-//                ).allowMainThreadQueries().build()
-//
-//                val data = bestDao.bestDao().getRank("[나루토] 주인공에게 죽기")
-//
-//                Log.d("####", data.toString())
-//
-//                for (i in data.indices) {
-//                    BestRef.setBestRef("Joara", "ALL").child("today").child(DBDate.Day()).child("14")
-//                        .child("data").child(i.toString())
-//                        .setValue(data.get(i))
-//                }
+                Mining.runMining(this@ActivityAdmin, "ALL")
+                Toast.makeText(applicationContext, "장르 : 전체", Toast.LENGTH_SHORT).show()
+            }
 
+            llayoutBtn9.setOnClickListener {
+                Mining.runMining(this@ActivityAdmin, "FANTASY")
+                Toast.makeText(applicationContext, "장르 : 판타지", Toast.LENGTH_SHORT).show()
+            }
 
+            llayoutBtn10.setOnClickListener {
+                Mining.runMining(this@ActivityAdmin, "BL")
+                Toast.makeText(applicationContext, "장르 : BL", Toast.LENGTH_SHORT).show()
+            }
+
+            llayoutBtn11.setOnClickListener {
+                Mining.runMining(this@ActivityAdmin, "ROMANCE")
+                Toast.makeText(applicationContext, "장르 : 로맨스", Toast.LENGTH_SHORT).show()
             }
         }
 
