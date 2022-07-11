@@ -221,7 +221,7 @@ class AdapterBestRankList(
             with(holder.binding){
                 if (items.sun != null) {
                     tviewDate1.text = items.sun!!.date.substring(3)
-                    if (items.sun?.date?.toInt() == DBDate.DayInt()) {
+                    if (items.sun?.date == DBDate.DateMMDD()) {
                         iviewBookImg1.setImageResource(R.drawable.ic_best_gn_24px)
                     } else {
                         iviewBookImg1.setImageResource(R.drawable.ic_best_vt_24px)
@@ -235,7 +235,7 @@ class AdapterBestRankList(
 
                 if (items.mon != null) {
                     tviewDate2.text = items.mon!!.date.substring(3)
-                    if (items.mon?.date?.toInt() == DBDate.DayInt()) {
+                    if (items.mon?.date == DBDate.DateMMDD()) {
                         iviewBookImg2.setImageResource(R.drawable.ic_best_gn_24px)
                     } else {
                         iviewBookImg2.setImageResource(R.drawable.ic_best_vt_24px)
@@ -249,7 +249,7 @@ class AdapterBestRankList(
 
                 if (items.tue != null) {
                     tviewDate3.text = items.tue!!.date.substring(3)
-                    if (items.mon?.date?.toInt() == DBDate.DayInt()) {
+                    if (items.mon?.date == DBDate.DateMMDD()) {
                         iviewBookImg3.setImageResource(R.drawable.ic_best_gn_24px)
                     } else {
                         iviewBookImg3.setImageResource(R.drawable.ic_best_vt_24px)
@@ -263,7 +263,7 @@ class AdapterBestRankList(
 
                 if (items.wed != null) {
                     tviewDate4.text = items.wed!!.date.substring(3)
-                    if (items.wed?.date?.toInt() == DBDate.DayInt()) {
+                    if (items.wed?.date == DBDate.DateMMDD()) {
                         iviewBookImg4.setImageResource(R.drawable.ic_best_gn_24px)
                     } else {
                         iviewBookImg4.setImageResource(R.drawable.ic_best_vt_24px)
@@ -277,7 +277,7 @@ class AdapterBestRankList(
 
                 if (items.thur != null) {
                     tviewDate5.text = items.thur!!.date.substring(3)
-                    if (items.thur?.date?.toInt() == DBDate.DayInt()) {
+                    if (items.thur?.date == DBDate.DateMMDD()) {
                         iviewBookImg5.setImageResource(R.drawable.ic_best_gn_24px)
                     } else {
                         iviewBookImg5.setImageResource(R.drawable.ic_best_vt_24px)
@@ -291,7 +291,7 @@ class AdapterBestRankList(
 
                 if (items.fri != null) {
                     tviewDate6.text = items.fri!!.date.substring(3)
-                    if (items.fri?.date?.toInt() == DBDate.DayInt()) {
+                    if (items.fri?.date == DBDate.DateMMDD()) {
                         iviewBookImg6.setImageResource(R.drawable.ic_best_gn_24px)
                     } else {
                         iviewBookImg6.setImageResource(R.drawable.ic_best_vt_24px)
@@ -305,7 +305,7 @@ class AdapterBestRankList(
 
                 if (items.sat != null) {
                     tviewDate7.text = items.sat!!.date.substring(3)
-                    if (items.sat?.date?.toInt() == DBDate.DayInt()) {
+                    if (items.sat?.date == DBDate.DateMMDD()) {
                         iviewBookImg7.setImageResource(R.drawable.ic_best_gn_24px)
                     } else {
                         iviewBookImg7.setImageResource(R.drawable.ic_best_vt_24px)

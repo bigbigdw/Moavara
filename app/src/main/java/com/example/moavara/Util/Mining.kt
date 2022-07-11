@@ -985,8 +985,8 @@ object Mining {
                                                         group.info3,
                                                         group.info4,
                                                         group.info5,
-                                                        group.number,
-                                                        group.numberDiff,
+                                                        i,
+                                                        calculateNum(i, books[i].subject, itemsYesterday).num,
                                                         group.date,
                                                         group.trophyCount,
                                                     )

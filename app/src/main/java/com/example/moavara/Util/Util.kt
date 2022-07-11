@@ -336,10 +336,10 @@ fun calculateNum(
                     return CalculNum(num - i.number, "UP")
                 }
                 i.number == num -> {
-                    CalculNum(0, "-")
+                    return CalculNum(0, "-")
                 }
                 else -> {
-                    CalculNum(0, "NEW")
+                    return CalculNum(0, "NEW")
                 }
             }
         }
