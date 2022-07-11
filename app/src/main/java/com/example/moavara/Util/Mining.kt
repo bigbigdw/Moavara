@@ -204,6 +204,10 @@ object Mining {
                                     }
                                 }
 
+                                val cmpAsc: java.util.Comparator<BookListDataBestAnalyze> =
+                                    Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
+                                Collections.sort(dataList, cmpAsc)
+
                                 NaverRef["trophyCount"] = dataList.size
 
                                 NaverRef["writerName"] = Naver.select(".author")[i].text()
@@ -309,6 +313,10 @@ object Mining {
                                     }
                                 }
 
+                                val cmpAsc: java.util.Comparator<BookListDataBestAnalyze> =
+                                    Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
+                                Collections.sort(dataList, cmpAsc)
+
                                 NaverRef["trophyCount"] = dataList.size
 
                                 NaverRef["writerName"] = Naver.select(".author")[i].text()
@@ -412,6 +420,10 @@ object Mining {
                                     }
                                 }
 
+                                val cmpAsc: java.util.Comparator<BookListDataBestAnalyze> =
+                                    Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
+                                Collections.sort(dataList, cmpAsc)
+
                                 NaverRef["trophyCount"] = dataList.size
 
                                 NaverRef["writerName"] = Naver.select(".author")[i].text()
@@ -512,6 +524,10 @@ object Mining {
                                             )
                                         }
                                     }
+
+                                    val cmpAsc: java.util.Comparator<BookListDataBestAnalyze> =
+                                        Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
+                                    Collections.sort(dataList, cmpAsc)
 
                                     RidiRef["trophyCount"] = dataList.size
 
@@ -629,6 +645,10 @@ object Mining {
                                                         )
                                                     }
                                                 }
+
+                                                val cmpAsc: java.util.Comparator<BookListDataBestAnalyze> =
+                                                    Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
+                                                Collections.sort(dataList, cmpAsc)
 
                                                 OneStoryRef["trophyCount"] = dataList.size
 
@@ -763,6 +783,10 @@ object Mining {
                                                 }
                                             }
 
+                                            val cmpAsc: java.util.Comparator<BookListDataBestAnalyze> =
+                                                Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
+                                            Collections.sort(dataList, cmpAsc)
+
                                             KakaoRef["trophyCount"] = dataList.size
 
 
@@ -874,6 +898,10 @@ object Mining {
                                                     )
                                                 }
                                             }
+
+                                            val cmpAsc: java.util.Comparator<BookListDataBestAnalyze> =
+                                                Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
+                                            Collections.sort(dataList, cmpAsc)
 
                                             KakaoRef["trophyCount"] = dataList.size
 
@@ -993,6 +1021,10 @@ object Mining {
                                                 )
                                             }
                                         }
+
+                                        val cmpAsc: java.util.Comparator<BookListDataBestAnalyze> =
+                                            Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
+                                        Collections.sort(dataList, cmpAsc)
 
                                         JoaraRef["trophyCount"] = dataList.size
 
@@ -1116,6 +1148,10 @@ object Mining {
                                             }
                                         }
 
+                                        val cmpAsc: java.util.Comparator<BookListDataBestAnalyze> =
+                                            Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
+                                        Collections.sort(dataList, cmpAsc)
+
                                         JoaraRef["trophyCount"] = dataList.size
 
                                         JoaraRef["writerName"] = books[i].writerName
@@ -1237,6 +1273,10 @@ object Mining {
                                             }
                                         }
 
+                                        val cmpAsc: java.util.Comparator<BookListDataBestAnalyze> =
+                                            Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
+                                        Collections.sort(dataList, cmpAsc)
+
                                         JoaraRef["trophyCount"] = dataList.size
 
                                         JoaraRef["writerName"] = books[i].writerName
@@ -1355,6 +1395,10 @@ object Mining {
                                                         )
                                                     }
                                                 }
+
+                                                val cmpAsc: java.util.Comparator<BookListDataBestAnalyze> =
+                                                    Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
+                                                Collections.sort(dataList, cmpAsc)
 
                                                 MoonpiaRef["trophyCount"] = dataList.size
 
@@ -1475,6 +1519,10 @@ object Mining {
                                                     )
                                                 }
                                             }
+
+                                            val cmpAsc: java.util.Comparator<BookListDataBestAnalyze> =
+                                                Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
+                                            Collections.sort(dataList, cmpAsc)
 
                                             ToksodaRef["trophyCount"] = dataList.size
 
