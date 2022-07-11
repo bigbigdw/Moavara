@@ -1394,14 +1394,14 @@ object Mining {
         })
     }
 
-    fun getToksodaBest(cate: String, page: Int) {
+    fun getToksodaBest(genre: String, page: Int) {
         val ToksodaRef: MutableMap<String?, Any> = HashMap()
 
         val apiToksoda = RetrofitToksoda()
         val param: MutableMap<String?, Any> = HashMap()
 
         param["page"] = page
-        param["lgctgrCd"] = Genre.setToksodaGenre(cate)
+        param["lgctgrCd"] = Genre.setToksodaGenre(genre)
         param["mdctgrCd"] = "all"
         param["rookieYn"] = "N"
         param["over19Yn"] = "N"
@@ -1410,7 +1410,7 @@ object Mining {
         param["_"] = "1657262989944"
 
         val yesterdayRef =
-            mRootRef.child("best").child("Toksoda").child(cate).child("today").child(
+            mRootRef.child("best").child("Toksoda").child(genre).child("today").child(
                 DBDate.Yesterday()
             )
 
@@ -1455,7 +1455,7 @@ object Mining {
 
                                     val dataList = ArrayList<BookListDataBestAnalyze>()
 
-                                    BestRef.setBestRefWeekList("Toksoda", cate).addListenerForSingleValueEvent(object :
+                                    BestRef.setBestRefWeekList("Toksoda", genre).addListenerForSingleValueEvent(object :
                                         ValueEventListener {
                                         override fun onDataChange(dataSnapshot: DataSnapshot) {
 
@@ -1500,7 +1500,7 @@ object Mining {
                                                 ToksodaRef,
                                                 (i + ((page - 1) * it.size)),
                                                 "Toksoda",
-                                                cate
+                                                genre
                                             )
                                         }
 

@@ -18,8 +18,8 @@ object BestRef {
         } else return str.toInt()
     }
 
-    fun setBestRef(type: String, genre: String): DatabaseReference {
-        return mRootRef.child("best").child(type).child(genre)
+    fun setBestRef(platform: String, genre: String): DatabaseReference {
+        return mRootRef.child("best").child(platform).child(genre)
     }
 
     fun setBestRefMunpia(type: String): DatabaseReference {
@@ -95,11 +95,11 @@ object BestRef {
         }
     }
 
-    fun getBestRefToday(type: String, genre: String): DatabaseReference {
-        if(type == "Munpia"){
-            return setBestRefMunpia(type).child("today").child(DBDate.Day())
+    fun getBestRefToday(platform: String, genre: String): DatabaseReference {
+        if(platform == "Munpia"){
+            return setBestRefMunpia(platform).child("today").child(DBDate.Day())
         } else {
-            return setBestRef(type, genre).child("today").child(DBDate.Day())
+            return setBestRef(platform, genre).child("today").child(DBDate.Day())
         }
     }
 
