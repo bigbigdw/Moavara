@@ -58,16 +58,18 @@ class FragmentBestDetailRank(
 
             for(itemData in item){
                 val itemDate = DBDate.getDateData(itemData.date)
-                if (itemDate?.week == 1) {
-                    getItemMonthList(itemDate, itemData, itemMonthList1)
-                } else if (itemDate?.week == 2) {
-                    getItemMonthList(itemDate, itemData, itemMonthList2)
-                }  else if (itemDate?.week == 3) {
-                    getItemMonthList(itemDate, itemData, itemMonthList3)
-                }  else if (itemDate?.week == 4) {
-                    getItemMonthList(itemDate, itemData, itemMonthList4)
-                }  else if (itemDate?.week == 5) {
-                    getItemMonthList(itemDate, itemData, itemMonthList5)
+                if(itemDate?.month == DBDate.Month().toInt()){
+                    if (itemDate.week == 1) {
+                        getItemMonthList(itemDate, itemData, itemMonthList1)
+                    } else if (itemDate.week == 2) {
+                        getItemMonthList(itemDate, itemData, itemMonthList2)
+                    }  else if (itemDate.week == 3) {
+                        getItemMonthList(itemDate, itemData, itemMonthList3)
+                    }  else if (itemDate.week == 4) {
+                        getItemMonthList(itemDate, itemData, itemMonthList4)
+                    }  else if (itemDate.week == 5) {
+                        getItemMonthList(itemDate, itemData, itemMonthList5)
+                    }
                 }
             }
 
@@ -219,18 +221,25 @@ class AdapterBestRankList(
             with(holder.binding){
                 if (items.sun != null) {
                     tviewDate1.text = items.sun!!.date.substring(3)
-                    iviewBookImg1.setImageResource(R.drawable.ic_best_vt_24px)
+                    if (items.sun?.date?.toInt() == DBDate.DayInt()) {
+                        iviewBookImg1.setImageResource(R.drawable.ic_best_gn_24px)
+                    } else {
+                        iviewBookImg1.setImageResource(R.drawable.ic_best_vt_24px)
+                    }
                     tview1.visibility = View.VISIBLE
                     tview1.text = "${items.sun!!.number}등"
                 } else {
                     iviewBookImg1.setImageResource(R.drawable.ic_best_gr_24px)
-                    iviewBookImg1.visibility = View.GONE
                     tview1.visibility = View.GONE
                 }
 
                 if (items.mon != null) {
                     tviewDate2.text = items.mon!!.date.substring(3)
-                    iviewBookImg2.setImageResource(R.drawable.ic_best_vt_24px)
+                    if (items.mon?.date?.toInt() == DBDate.DayInt()) {
+                        iviewBookImg2.setImageResource(R.drawable.ic_best_gn_24px)
+                    } else {
+                        iviewBookImg2.setImageResource(R.drawable.ic_best_vt_24px)
+                    }
                     tview2.visibility = View.VISIBLE
                     tview2.text = "${items.tue!!.number}등"
                 } else {
@@ -240,7 +249,11 @@ class AdapterBestRankList(
 
                 if (items.tue != null) {
                     tviewDate3.text = items.tue!!.date.substring(3)
-                    iviewBookImg3.setImageResource(R.drawable.ic_best_vt_24px)
+                    if (items.mon?.date?.toInt() == DBDate.DayInt()) {
+                        iviewBookImg3.setImageResource(R.drawable.ic_best_gn_24px)
+                    } else {
+                        iviewBookImg3.setImageResource(R.drawable.ic_best_vt_24px)
+                    }
                     tview3.visibility = View.VISIBLE
                     tview3.text = "${items.tue!!.number}등"
                 } else {
@@ -250,9 +263,13 @@ class AdapterBestRankList(
 
                 if (items.wed != null) {
                     tviewDate4.text = items.wed!!.date.substring(3)
-                    iviewBookImg4.setImageResource(R.drawable.ic_best_vt_24px)
-                    tview3.visibility = View.VISIBLE
-                    tview3.text = "${items.wed!!.number}등"
+                    if (items.wed?.date?.toInt() == DBDate.DayInt()) {
+                        iviewBookImg4.setImageResource(R.drawable.ic_best_gn_24px)
+                    } else {
+                        iviewBookImg4.setImageResource(R.drawable.ic_best_vt_24px)
+                    }
+                    tview4.visibility = View.VISIBLE
+                    tview4.text = "${items.wed!!.number}등"
                 } else {
                     iviewBookImg4.setImageResource(R.drawable.ic_best_gr_24px)
                     tview4.visibility = View.GONE
@@ -260,9 +277,13 @@ class AdapterBestRankList(
 
                 if (items.thur != null) {
                     tviewDate5.text = items.thur!!.date.substring(3)
-                    iviewBookImg5.setImageResource(R.drawable.ic_best_vt_24px)
-                    tview3.visibility = View.VISIBLE
-                    tview3.text = "${items.thur!!.number}등"
+                    if (items.thur?.date?.toInt() == DBDate.DayInt()) {
+                        iviewBookImg5.setImageResource(R.drawable.ic_best_gn_24px)
+                    } else {
+                        iviewBookImg5.setImageResource(R.drawable.ic_best_vt_24px)
+                    }
+                    tview5.visibility = View.VISIBLE
+                    tview5.text = "${items.thur!!.number}등"
                 } else {
                     iviewBookImg5.setImageResource(R.drawable.ic_best_gr_24px)
                     tview5.visibility = View.GONE
@@ -270,9 +291,13 @@ class AdapterBestRankList(
 
                 if (items.fri != null) {
                     tviewDate6.text = items.fri!!.date.substring(3)
-                    iviewBookImg6.setImageResource(R.drawable.ic_best_vt_24px)
-                    tview3.visibility = View.VISIBLE
-                    tview3.text = "${items.fri!!.number}등"
+                    if (items.fri?.date?.toInt() == DBDate.DayInt()) {
+                        iviewBookImg6.setImageResource(R.drawable.ic_best_gn_24px)
+                    } else {
+                        iviewBookImg6.setImageResource(R.drawable.ic_best_vt_24px)
+                    }
+                    tview6.visibility = View.VISIBLE
+                    tview6.text = "${items.fri!!.number}등"
                 } else {
                     iviewBookImg6.setImageResource(R.drawable.ic_best_gr_24px)
                     tview6.visibility = View.GONE
@@ -280,9 +305,13 @@ class AdapterBestRankList(
 
                 if (items.sat != null) {
                     tviewDate7.text = items.sat!!.date.substring(3)
-                    iviewBookImg7.setImageResource(R.drawable.ic_best_vt_24px)
-                    tview3.visibility = View.VISIBLE
-                    tview3.text = "${items.sat!!.number}등"
+                    if (items.sat?.date?.toInt() == DBDate.DayInt()) {
+                        iviewBookImg7.setImageResource(R.drawable.ic_best_gn_24px)
+                    } else {
+                        iviewBookImg7.setImageResource(R.drawable.ic_best_vt_24px)
+                    }
+                    tview7.visibility = View.VISIBLE
+                    tview7.text = "${items.sat!!.number}등"
                 } else {
                     iviewBookImg7.setImageResource(R.drawable.ic_best_gr_24px)
                     tview7.visibility = View.GONE

@@ -81,11 +81,8 @@ object DBDate {
 
 
     fun getDateData(date : String) : TrophyInfo?{
-        var trophyInfo : TrophyInfo
-
         val parse_date: Date?
         val date = "2022${date.replace("-","")}"
-        Log.d("!!!!-1", date)
         val dateFormat1 = SimpleDateFormat("yyyyMMdd")
 
         try {
