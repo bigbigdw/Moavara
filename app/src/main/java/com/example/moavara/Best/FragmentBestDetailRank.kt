@@ -71,7 +71,7 @@ class FragmentBestDetailRank(
                 }
             }
 
-            Log.d("####", itemMonthList1.mon.toString())
+            Log.d("####", itemMonthList1.sat.toString())
 
             itemMonthList1.let { itemMonth.add(it) }
             itemMonthList2.let { itemMonth.add(it) }
