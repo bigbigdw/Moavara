@@ -23,12 +23,11 @@ class FragmentBestDetailRank(
 
     private lateinit var adapterMonth: AdapterBestRankList
     private val itemMonth = ArrayList<BestRankListWeekend>()
-    private var itemMonthList1 : BestRankListWeekend? = null
-    private var itemMonthList2 : BestRankListWeekend? = null
-    private var itemMonthList3 : BestRankListWeekend? = null
-    private var itemMonthList4 : BestRankListWeekend? = null
-    private var itemMonthList5 : BestRankListWeekend? = null
-    private val itemTrophy = ArrayList<TrophyInfo>()
+    private var itemMonthList1 = BestRankListWeekend()
+    private var itemMonthList2 = BestRankListWeekend()
+    private var itemMonthList3 = BestRankListWeekend()
+    private var itemMonthList4 = BestRankListWeekend()
+    private var itemMonthList5 = BestRankListWeekend()
     private var _binding: FragmentBestDetailRankBinding? = null
     private val binding get() = _binding!!
 
@@ -60,25 +59,25 @@ class FragmentBestDetailRank(
             for(itemData in item){
                 val itemDate = DBDate.getDateData(itemData.date)
                 if (itemDate?.week == 1) {
-                    itemMonthList1 = getItemMonthList(itemDate, itemData)
+                    getItemMonthList(itemDate, itemData, itemMonthList1)
                 } else if (itemDate?.week == 2) {
-                    itemMonthList2 = getItemMonthList(itemDate, itemData)
+                    getItemMonthList(itemDate, itemData, itemMonthList2)
                 }  else if (itemDate?.week == 3) {
-                    itemMonthList3 = getItemMonthList(itemDate, itemData)
+                    getItemMonthList(itemDate, itemData, itemMonthList3)
                 }  else if (itemDate?.week == 4) {
-                    itemMonthList4 = getItemMonthList(itemDate, itemData)
+                    getItemMonthList(itemDate, itemData, itemMonthList4)
                 }  else if (itemDate?.week == 5) {
-                    itemMonthList5 = getItemMonthList(itemDate, itemData)
+                    getItemMonthList(itemDate, itemData, itemMonthList5)
                 }
             }
 
-            Log.d("####", itemMonthList2.toString())
+            Log.d("####", itemMonthList1.mon.toString())
 
-            itemMonthList1?.let { itemMonth.add(it) }
-            itemMonthList2?.let { itemMonth.add(it) }
-            itemMonthList3?.let { itemMonth.add(it) }
-            itemMonthList4?.let { itemMonth.add(it) }
-            itemMonthList5?.let { itemMonth.add(it) }
+            itemMonthList1.let { itemMonth.add(it) }
+            itemMonthList2.let { itemMonth.add(it) }
+            itemMonthList3.let { itemMonth.add(it) }
+            itemMonthList4.let { itemMonth.add(it) }
+            itemMonthList5.let { itemMonth.add(it) }
             adapterMonth.notifyDataSetChanged()
 
 
@@ -87,30 +86,26 @@ class FragmentBestDetailRank(
 
     fun getItemMonthList(
         trophyInfo: TrophyInfo,
-        item: BookListDataBestAnalyze
-    ): BestRankListWeekend? {
-
-        Log.d("####-3", trophyInfo.toString())
-        Log.d("####-4", item.toString())
-        val bestRankListWeekend : BestRankListWeekend? = null
+        item: BookListDataBestAnalyze,
+        itemMonthList: BestRankListWeekend
+    ) {
 
         if (trophyInfo.date == 1) {
-            bestRankListWeekend?.sun = item
+            itemMonthList.sun = item
         } else if (trophyInfo.date == 2) {
-            bestRankListWeekend?.mon = item
+            itemMonthList.mon = item
         }  else if (trophyInfo.date == 3) {
-            bestRankListWeekend?.tue = item
+            itemMonthList.tue = item
         }  else if (trophyInfo.date == 4) {
-            bestRankListWeekend?.wed = item
+            itemMonthList.wed = item
         }  else if (trophyInfo.date == 5) {
-            bestRankListWeekend?.thur = item
+            itemMonthList.thur = item
         }  else if (trophyInfo.date == 6) {
-            bestRankListWeekend?.fri = item
+            itemMonthList.fri = item
         }  else if (trophyInfo.date == 7) {
-            bestRankListWeekend?.sat = item
+            itemMonthList.sat = item
         }
-        Log.d("####-2", bestRankListWeekend.toString())
-        return bestRankListWeekend
+
     }
 
     private fun getRankList(data: ArrayList<BookListDataBestAnalyze>) {
@@ -224,79 +219,73 @@ class AdapterBestRankList(
             with(holder.binding){
                 if (items.sun != null) {
                     tviewDate1.text = items.sun!!.date.substring(3)
-                    iviewBookImg1.visibility = View.VISIBLE
                     iviewBookImg1.setImageResource(R.drawable.ic_best_vt_24px)
                     tview1.visibility = View.VISIBLE
-                    tview1.text = "${items.sun!!.number}등\n(${items.sun!!.numberDiff})"
+                    tview1.text = "${items.sun!!.number}등"
                 } else {
+                    iviewBookImg1.setImageResource(R.drawable.ic_best_gr_24px)
                     iviewBookImg1.visibility = View.GONE
                     tview1.visibility = View.GONE
                 }
 
                 if (items.mon != null) {
                     tviewDate2.text = items.mon!!.date.substring(3)
-                    iviewBookImg2.visibility = View.VISIBLE
                     iviewBookImg2.setImageResource(R.drawable.ic_best_vt_24px)
                     tview2.visibility = View.VISIBLE
-                    tview2.text = "${items.mon!!.number}등\n(${items.mon!!.numberDiff})"
+                    tview2.text = "${items.tue!!.number}등"
                 } else {
-                    iviewBookImg2.visibility = View.GONE
+                    iviewBookImg2.setImageResource(R.drawable.ic_best_gr_24px)
                     tview2.visibility = View.GONE
                 }
 
                 if (items.tue != null) {
                     tviewDate3.text = items.tue!!.date.substring(3)
-                    iviewBookImg3.visibility = View.VISIBLE
                     iviewBookImg3.setImageResource(R.drawable.ic_best_vt_24px)
                     tview3.visibility = View.VISIBLE
-                    tview3.text = "${items.tue!!.number}등\n(${items.tue!!.numberDiff})"
+                    tview3.text = "${items.tue!!.number}등"
                 } else {
-                    iviewBookImg3.visibility = View.GONE
+                    iviewBookImg3.setImageResource(R.drawable.ic_best_gr_24px)
                     tview3.visibility = View.GONE
                 }
 
                 if (items.wed != null) {
                     tviewDate4.text = items.wed!!.date.substring(3)
-                    iviewBookImg4.visibility = View.VISIBLE
                     iviewBookImg4.setImageResource(R.drawable.ic_best_vt_24px)
                     tview3.visibility = View.VISIBLE
-                    tview3.text = "${items.wed!!.number}등\n(${items.wed!!.numberDiff})"
+                    tview3.text = "${items.wed!!.number}등"
                 } else {
-                    iviewBookImg4.visibility = View.GONE
-                    tview3.visibility = View.GONE
+                    iviewBookImg4.setImageResource(R.drawable.ic_best_gr_24px)
+                    tview4.visibility = View.GONE
                 }
 
                 if (items.thur != null) {
                     tviewDate5.text = items.thur!!.date.substring(3)
-                    iviewBookImg5.visibility = View.VISIBLE
                     iviewBookImg5.setImageResource(R.drawable.ic_best_vt_24px)
                     tview3.visibility = View.VISIBLE
-                    tview3.text = "${items.thur!!.number}등\n(${items.thur!!.numberDiff})"
+                    tview3.text = "${items.thur!!.number}등"
                 } else {
-                    iviewBookImg5.visibility = View.GONE
-                    tview3.visibility = View.GONE
+                    iviewBookImg5.setImageResource(R.drawable.ic_best_gr_24px)
+                    tview5.visibility = View.GONE
                 }
 
                 if (items.fri != null) {
                     tviewDate6.text = items.fri!!.date.substring(3)
-                    iviewBookImg6.visibility = View.VISIBLE
                     iviewBookImg6.setImageResource(R.drawable.ic_best_vt_24px)
                     tview3.visibility = View.VISIBLE
-                    tview3.text = "${items.fri!!.number}등\n(${items.fri!!.numberDiff})"
+                    tview3.text = "${items.fri!!.number}등"
                 } else {
-                    iviewBookImg6.visibility = View.GONE
-                    tview3.visibility = View.GONE
+                    iviewBookImg6.setImageResource(R.drawable.ic_best_gr_24px)
+                    tview6.visibility = View.GONE
                 }
 
                 if (items.sat != null) {
                     tviewDate7.text = items.sat!!.date.substring(3)
-                    iviewBookImg7.visibility = View.VISIBLE
                     iviewBookImg7.setImageResource(R.drawable.ic_best_vt_24px)
                     tview3.visibility = View.VISIBLE
-                    tview3.text = "${items.sat!!.number}등\n(${items.sat!!.numberDiff})"
+                    tview3.text = "${items.sat!!.number}등"
                 } else {
-                    iviewBookImg7.visibility = View.GONE
-                    tview3.visibility = View.GONE
+                    iviewBookImg7.setImageResource(R.drawable.ic_best_gr_24px)
+                    tview7.visibility = View.GONE
                 }
             }
         }
