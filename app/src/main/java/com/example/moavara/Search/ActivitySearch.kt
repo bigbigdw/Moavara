@@ -3,6 +3,7 @@ package com.example.moavara.Search
 import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.example.moavara.R
@@ -42,8 +43,8 @@ class ActivitySearch : AppCompatActivity() {
             fm!!
         ) {
         private val tabTitles = intArrayOf(
-            R.string.search_tab1,
-            R.string.search_tab2,
+            R.string.app_name,
+            R.string.app_name,
             R.string.app_name,
         )
 
