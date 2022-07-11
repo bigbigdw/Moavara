@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.moavara.DataBase.BookListDataBestToday
+import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.Search.BookListDataBestWeekend
 import com.example.moavara.Util.DBDate
@@ -109,10 +109,15 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
         })
 
     }
-    private fun findBook(item: BookListDataBestToday?) {
+    private fun findBook(item: BookListDataBest?) {
         if (item != null) {
             if (adapterWeek!!.getSelectedBook() == item.title) {
-                val mBottomDialogBest = BottomDialogBest(requireContext(), item, tabType, cate, item.number)
+                val mBottomDialogBest = BottomDialogBest(
+                    requireContext(),
+                    item,
+                    tabType,
+                    item.number
+                )
                 fragmentManager?.let { mBottomDialogBest.show(it, null) }
                 adapterWeek!!.setSelectedBook("")
             } else {

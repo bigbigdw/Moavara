@@ -1,7 +1,10 @@
 package com.example.moavara.Search
 
+import com.example.moavara.DataBase.BookListDataBest
+import com.example.moavara.DataBase.BookListDataBestAnalyze
 import com.example.moavara.DataBase.BookListDataBestToday
 import com.github.mikephil.charting.data.BarEntry
+import java.util.ArrayList
 
 
 class BookListData(
@@ -38,13 +41,13 @@ class WeekendDate(
 
 
 class BookListDataBestWeekend(
-    var sun: BookListDataBestToday? = null,
-    var mon: BookListDataBestToday? = null,
-    var tue: BookListDataBestToday? = null,
-    var wed: BookListDataBestToday? = null,
-    var thur: BookListDataBestToday? = null,
-    var fri: BookListDataBestToday? = null,
-    var sat: BookListDataBestToday? = null,
+    var sun: BookListDataBest? = null,
+    var mon: BookListDataBest? = null,
+    var tue: BookListDataBest? = null,
+    var wed: BookListDataBest? = null,
+    var thur: BookListDataBest? = null,
+    var fri: BookListDataBest? = null,
+    var sat: BookListDataBest? = null,
 )
 
 class CalculNum(
@@ -109,6 +112,7 @@ data class UserPickBook(
     var type: String = "",
     var status: String = "",
     var trophyCount: Int = 0,
+    var data: ArrayList<BookListDataBestAnalyze>? = null,
     var memo: String = "",
 )
 

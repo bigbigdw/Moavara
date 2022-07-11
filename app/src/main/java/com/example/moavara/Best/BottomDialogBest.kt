@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.net.Uri
+import android.os.Build.VERSION_CODES.P
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,6 +13,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.example.moavara.DataBase.BookListDataBest
+import com.example.moavara.DataBase.BookListDataBestAnalyze
 import com.example.moavara.DataBase.BookListDataBestToday
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
@@ -23,13 +26,13 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import kotlinx.android.synthetic.main.include_rank.*
 
 class BottomDialogBest(
     private val mContext: Context,
-    private val item: BookListDataBestToday,
+    private val item: BookListDataBest,
     private val tabType: String,
-    private val cate: String,
-    private val pos : Int
+    private val pos: Int
 ) :
     BottomSheetDialogFragment() {
 
@@ -46,8 +49,6 @@ class BottomDialogBest(
     ): View {
         _binding = BottomDialogBestBinding.inflate(inflater, container, false)
         val view = binding.root
-        var trophyNum = 0
-
 
         mRootRef.child("best").child(tabType).child(context?.getSharedPreferences("pref", MODE_PRIVATE)?.getString("GENRE", "") ?: "").child("week-list").child(DBDate.Week() + ((DBDate.DayInt() * 1000) + pos).toString()).child("trophyCount")
 
@@ -137,7 +138,7 @@ class BottomDialogBest(
                 }
             }
 
-            ranklist()
+            item.data?.let { getRankList(it) }
 
             llayoutBtnLeft.setOnClickListener {
 
@@ -215,114 +216,87 @@ class BottomDialogBest(
             "https://www.tocsoda.co.kr/product/productView?brcd=${item.bookCode}"
         }else ""
 
-
-
     }
 
     override fun getTheme() = R.style.CustomBottomSheetDialogTheme
 
-    private fun ranklist() {
+    fun getRankList(data : ArrayList<BookListDataBestAnalyze>){
+        for(item in data){
+            val itemDate = DBDate.getDateData(item.date)
 
-        val rank = ArrayList<String>()
+            with(binding.includeRank) {
+                if (itemDate != null) {
+                    if(itemDate.week == DBDate.Week().toInt()){
+                        when{
+                            itemDate.date == 1 -> {
+                                tviewRank1.visibility = View.VISIBLE
 
-        BestRef.setBestRefWeekList(tabType, cate).get().addOnSuccessListener {
-            for (i in it.children) {
-
-                val group: BookListDataBestToday? = i.getValue(BookListDataBestToday::class.java)
-
-                if (group!!.title == item.title) {
-
-                    rank.add(group.number.toString())
-
-                    mRootRef.child("Week").get().addOnSuccessListener {
-
-                        val week: WeekendDate? = it.getValue(WeekendDate::class.java)
-
-                        with(binding.includeRank) {
-                            when {
-                                week!!.sun == group.date -> {
-                                    tviewRank1.visibility = View.VISIBLE
-                                    iviewRank1.setImageResource(R.drawable.ic_best_vt_24px)
-                                    tviewRank1.text = (group.number + 1).toString()
-                                }
-                                week.mon == group.date -> {
-                                    tviewRank2.visibility = View.VISIBLE
-                                    iviewRank2.setImageResource(R.drawable.ic_best_vt_24px)
-                                    tviewRank2.text = (group.number + 1).toString()
-                                }
-                                week.tue == group.date -> {
-                                    tviewRank3.visibility = View.VISIBLE
-                                    iviewRank3.setImageResource(R.drawable.ic_best_vt_24px)
-                                    tviewRank3.text = (group.number + 1).toString()
-
-                                }
-                                week.wed == group.date -> {
-                                    tviewRank4.visibility = View.VISIBLE
-                                    iviewRank4.setImageResource(R.drawable.ic_best_vt_24px)
-                                    tviewRank4.text = (group.number + 1).toString()
-                                }
-                                week.thur == group.date -> {
-                                    tviewRank5.visibility = View.VISIBLE
-                                    iviewRank5.setImageResource(R.drawable.ic_best_vt_24px)
-                                    tviewRank5.text = (group.number + 1).toString()
-
-                                }
-                                week.fri == group.date -> {
-                                    tviewRank6.visibility = View.VISIBLE
-                                    iviewRank6.setImageResource(R.drawable.ic_best_vt_24px)
-                                    tviewRank6.text = (group.number + 1).toString()
-
-                                }
-                                week.sat == group.date -> {
-                                    tviewRank7.visibility = View.VISIBLE
-                                    iviewRank7.setImageResource(R.drawable.ic_best_vt_24px)
-                                    tviewRank7.text = (group.number + 1).toString()
-                                }
-                            }
-
-                            when {
-                                week!!.sun == DBDate.DateMMDD() -> {
-                                    tviewRank1.visibility = View.VISIBLE
+                                if(itemDate.date == DBDate.DayInt()){
                                     iviewRank1.setImageResource(R.drawable.ic_best_gn_24px)
-                                    tviewRank1.text = (pos + 1).toString()
+                                } else {
+                                    iviewRank1.setImageResource(R.drawable.ic_best_vt_24px)
                                 }
-                                week.mon == DBDate.DateMMDD() -> {
-                                    tviewRank2.visibility = View.VISIBLE
+                                tviewRank1.text = (item.number + 1).toString()
+                            }
+                            itemDate.date == 2 -> {
+                                tviewRank2.visibility = View.VISIBLE
+                                if(itemDate.date == DBDate.DayInt()){
                                     iviewRank2.setImageResource(R.drawable.ic_best_gn_24px)
-                                    tviewRank2.text = (pos + 1).toString()
+                                } else {
+                                    iviewRank2.setImageResource(R.drawable.ic_best_vt_24px)
                                 }
-                                week.tue == DBDate.DateMMDD() -> {
-                                    tviewRank3.visibility = View.VISIBLE
+                                tviewRank2.text = (item.number + 1).toString()
+                                Log.d("@@@@", "HIHI")
+                            }
+                            itemDate.date == 3 -> {
+                                tviewRank3.visibility = View.VISIBLE
+                                if(itemDate.date == DBDate.DayInt()){
                                     iviewRank3.setImageResource(R.drawable.ic_best_gn_24px)
-                                    tviewRank3.text = (pos + 1).toString()
+                                } else {
+                                    iviewRank3.setImageResource(R.drawable.ic_best_vt_24px)
                                 }
-                                week.wed == DBDate.DateMMDD() -> {
-                                    tviewRank4.visibility = View.VISIBLE
+                                tviewRank3.text = (item.number + 1).toString()
+                            }
+                            itemDate.date == 4 -> {
+                                tviewRank4.visibility = View.VISIBLE
+                                if(itemDate.date == DBDate.DayInt()){
                                     iviewRank4.setImageResource(R.drawable.ic_best_gn_24px)
-                                    tviewRank4.text = (pos + 1).toString()
+                                } else {
+                                    iviewRank4.setImageResource(R.drawable.ic_best_vt_24px)
                                 }
-                                week.thur == DBDate.DateMMDD() -> {
-                                    tviewRank5.visibility = View.VISIBLE
+                                tviewRank4.text = (item.number + 1).toString()
+                            }
+                            itemDate.date == 5 -> {
+                                tviewRank5.visibility = View.VISIBLE
+                                if(itemDate.date == DBDate.DayInt()){
                                     iviewRank5.setImageResource(R.drawable.ic_best_gn_24px)
-                                    tviewRank5.text = (pos + 1).toString()
+                                } else {
+                                    iviewRank5.setImageResource(R.drawable.ic_best_vt_24px)
                                 }
-                                week.fri == DBDate.DateMMDD() -> {
-                                    tviewRank6.visibility = View.VISIBLE
+                                tviewRank5.text = (item.number + 1).toString()
+                            }
+                            itemDate.date == 6 -> {
+                                tviewRank6.visibility = View.VISIBLE
+                                if(itemDate.date == DBDate.DayInt()){
                                     iviewRank6.setImageResource(R.drawable.ic_best_gn_24px)
-                                    tviewRank6.text = (pos + 1).toString()
+                                } else {
+                                    iviewRank6.setImageResource(R.drawable.ic_best_vt_24px)
                                 }
-                                week.sat == DBDate.DateMMDD() -> {
-                                    tviewRank7.visibility = View.VISIBLE
+                                tviewRank6.text = (item.number + 1).toString()
+                            }
+                            itemDate.date == 7 -> {
+                                tviewRank7.visibility = View.VISIBLE
+                                if(itemDate.date == DBDate.DayInt()){
                                     iviewRank7.setImageResource(R.drawable.ic_best_gn_24px)
-                                    tviewRank7.text = (pos + 1).toString()
+                                } else {
+                                    iviewRank7.setImageResource(R.drawable.ic_best_vt_24px)
                                 }
+                                tviewRank7.text = (item.number + 1).toString()
                             }
                         }
-                    }.addOnFailureListener{}
-
+                    }
                 }
             }
-
-        }.addOnFailureListener {}
+        }
     }
 }

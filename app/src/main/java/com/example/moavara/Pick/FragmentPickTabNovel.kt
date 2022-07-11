@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moavara.Best.BottomDialogBest
-import com.example.moavara.DataBase.BookListDataBestToday
+import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.Search.UserPickBook
 import com.example.moavara.Util.Genre
@@ -22,7 +22,7 @@ class FragmentPickTabNovel : Fragment() {
 
     private lateinit var adapter: AdapterPickNovel
     private var cate = ""
-    private val items = ArrayList<BookListDataBestToday>()
+    private val items = ArrayList<BookListDataBest>()
 
     private var _binding: FragmentPickTabBinding? = null
     private val binding get() = _binding!!
@@ -63,7 +63,7 @@ class FragmentPickTabNovel : Fragment() {
                     val group: UserPickBook? =
                         postSnapshot.getValue(UserPickBook::class.java)
                     items.add(
-                        BookListDataBestToday(
+                        BookListDataBest(
                             group!!.writer,
                             group.title,
                             group.bookImg,
@@ -79,6 +79,7 @@ class FragmentPickTabNovel : Fragment() {
                             group.type,
                             group.status,
                             group.trophyCount,
+                            group.data,
                             group.memo
                         )
                     )
@@ -90,9 +91,9 @@ class FragmentPickTabNovel : Fragment() {
 
         adapter.setOnItemClickListener(object : AdapterPickNovel.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int, type : String) {
-                val item: BookListDataBestToday = adapter.getItem(position)
+                val item: BookListDataBest = adapter.getItem(position)
 
-                val data = BookListDataBestToday(
+                val data = BookListDataBest(
                     item.writer,
                     item.title,
                     item.bookImg,
@@ -108,11 +109,17 @@ class FragmentPickTabNovel : Fragment() {
                     item.type,
                     item.status,
                     item.trophyCount,
+                    item.data,
                     adapter.getMemoEdit()
                 )
 
                 if(type == "Img"){
-                    val mBottomDialogBest = BottomDialogBest(requireContext(), data, item.status, cate, item.number)
+                    val mBottomDialogBest = BottomDialogBest(
+                        requireContext(),
+                        data,
+                        item.status,
+                        item.number
+                    )
                     fragmentManager?.let { mBottomDialogBest.show(it, null) }
                 } else if(type == "Confirm"){
 

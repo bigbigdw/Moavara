@@ -64,21 +64,23 @@ class FragmentSearchTab : Fragment() {
         cover = root.findViewById(R.id.LoadingLayout)
         blank = root.findViewById(R.id.BlankLayout)
 
-        tabviewmodel!!.text.observe(viewLifecycleOwner, { tabNum: String? ->
+        tabviewmodel!!.text.observe(viewLifecycleOwner) { tabNum: String? ->
             when (tabNum) {
                 "TAB1" -> {
                     searchJoara(page)
                     searchType = "조아라"
-                    adapter!!.setOnItemClickListener(object : AdapterBookSearch.OnItemClickListener {
+                    adapter!!.setOnItemClickListener(object :
+                        AdapterBookSearch.OnItemClickListener {
                         override fun onItemClick(v: View?, position: Int, value: String?) {
                             val item: BookListData? = adapter!!.getItem(position)
                         }
                     })
                 }
                 "TAB2" -> {
-                    searchKakao(page-1)
+                    searchKakao(page - 1)
                     searchType = "카카오"
-                    adapter!!.setOnItemClickListener(object : AdapterBookSearch.OnItemClickListener {
+                    adapter!!.setOnItemClickListener(object :
+                        AdapterBookSearch.OnItemClickListener {
                         override fun onItemClick(v: View?, position: Int, value: String?) {
                             val item: BookListData? = adapter!!.getItem(position)
                         }
@@ -87,7 +89,7 @@ class FragmentSearchTab : Fragment() {
                 "TAB3" -> {
                 }
             }
-        })
+        }
 
         recyclerView!!.addOnScrollListener(recyclerViewScroll)
 

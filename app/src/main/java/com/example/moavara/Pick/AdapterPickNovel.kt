@@ -9,12 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.DataBase.BookListDataBestToday
 import com.example.moavara.databinding.ItemPickEventBinding
 
-class AdapterPickNovel (items: List<BookListDataBestToday>) :
+class AdapterPickNovel (items: List<BookListDataBest>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var itemsList: ArrayList<BookListDataBestToday> = items as ArrayList<BookListDataBestToday>
+    var itemsList: ArrayList<BookListDataBest> = items as ArrayList<BookListDataBest>
     var memo = ""
 
     interface OnItemClickListener {
@@ -74,7 +75,7 @@ class AdapterPickNovel (items: List<BookListDataBestToday>) :
         return if (itemsList == null) 0 else itemsList.size
     }
 
-    fun editItem(items: BookListDataBestToday, position: Int) {
+    fun editItem(items: BookListDataBest, position: Int) {
         itemsList[position] = items
         notifyItemChanged(position)
     }
@@ -147,7 +148,7 @@ class AdapterPickNovel (items: List<BookListDataBestToday>) :
         }
     }
 
-    fun getItem(position: Int): BookListDataBestToday {
+    fun getItem(position: Int): BookListDataBest {
         return itemsList[position]
     }
 

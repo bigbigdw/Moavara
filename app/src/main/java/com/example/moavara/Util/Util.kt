@@ -78,6 +78,43 @@ object DBDate {
     fun Month(): String {
         return Calendar.getInstance().get(Calendar.MONTH).toString()
     }
+
+
+    fun getDateData(date : String) : TrophyInfo?{
+        var trophyInfo : TrophyInfo
+
+        val parse_date: Date?
+        val date = "2022${date.replace("-","")}"
+        Log.d("!!!!-1", date)
+        val dateFormat1 = SimpleDateFormat("yyyyMMdd")
+
+        try {
+            parse_date = dateFormat1.parse(date)
+
+            val cal = Calendar.getInstance()
+            cal.time = parse_date
+            val month = cal[Calendar.MONTH]
+
+            Log.d("!!!!-2", month.toString())
+
+            val weekmonth = cal[Calendar.WEEK_OF_MONTH]
+            Log.d("!!!!-3", weekmonth.toString())
+
+            val day = cal[Calendar.DAY_OF_WEEK]
+            Log.d("!!!!-5", day.toString())
+
+            return TrophyInfo(
+                month,
+                weekmonth,
+                day
+            )
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return null
+    }
 }
 
 
@@ -255,7 +292,6 @@ object Genre {
             }
         }
     }
-
 }
 
 

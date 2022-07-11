@@ -78,29 +78,7 @@ class ActivityMain : AppCompatActivity() {
 
         }.addOnFailureListener{}
 
-        val parse_date: Date?
-        val date = "0709"
-        Log.d("!!!!-1", date)
-        val dateFormat1 = SimpleDateFormat("MMdd")
 
-        try {
-            parse_date = dateFormat1.parse(date)
-
-            val cal = Calendar.getInstance()
-            cal.time = parse_date
-            val month = cal[Calendar.MONTH]
-
-            Log.d("!!!!-2", month.toString())
-
-            val weekmonth = cal[Calendar.WEEK_OF_MONTH]
-            Log.d("!!!!-3", weekmonth.toString())
-
-            val day = cal[Calendar.DAY_OF_WEEK]
-            Log.d("!!!!-5", day.toString())
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
 
         registNotification()
     }
@@ -116,7 +94,7 @@ class ActivityMain : AppCompatActivity() {
             val channelName = "모아바라 Best"
             val channelDescription = "Channel One Description"
 
-            var notificationChannel: NotificationChannel? = null
+            val notificationChannel: NotificationChannel?
             // HeadsUp은 Importance를 High로 설정해야하기에 분기
             // NotificationChannel 객체 생성
             notificationChannel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)

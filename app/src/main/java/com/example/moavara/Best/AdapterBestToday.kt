@@ -6,12 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.DataBase.BookListDataBestToday
 import com.example.moavara.databinding.ItemBooklistBestTodayBinding
 
-class AdapterBestToday(items: List<BookListDataBestToday?>?) :
+class AdapterBestToday(items: List<BookListDataBest?>?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var holder: ArrayList<BookListDataBestToday?>? = items as ArrayList<BookListDataBestToday?>?
+    var holder: ArrayList<BookListDataBest?>? = items as ArrayList<BookListDataBest?>?
 
     interface OnItemClickListener {
         fun onItemClick(v: View?, position: Int)
@@ -86,7 +87,7 @@ class AdapterBestToday(items: List<BookListDataBestToday?>?) :
 
     }
 
-    fun getItem(position: Int): BookListDataBestToday? {
+    fun getItem(position: Int): BookListDataBest? {
         return holder!![position]
     }
 

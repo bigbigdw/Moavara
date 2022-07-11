@@ -1,13 +1,12 @@
 package com.example.moavara.Best
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.moavara.DataBase.BookListDataBestToday
+import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.R
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.Genre
@@ -23,7 +22,7 @@ class FragmentBestTabToday(private val tabType: String) :
 
     private var adapterToday: AdapterBestToday? = null
 
-    private val items = ArrayList<BookListDataBestToday?>()
+    private val items = ArrayList<BookListDataBest?>()
     var status = ""
     lateinit var root: View
     var genre = ""
@@ -41,7 +40,6 @@ class FragmentBestTabToday(private val tabType: String) :
         root = inflater.inflate(R.layout.fragment_best_tab_today, container, false)
 
         adapterToday = AdapterBestToday(items)
-        Log.d("####-2", "${tabType} ${genre}")
         getBookListToday()
 
         return view
@@ -56,13 +54,11 @@ class FragmentBestTabToday(private val tabType: String) :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (postSnapshot in dataSnapshot.children) {
-                    val group: BookListDataBestToday? =
-                        postSnapshot.getValue(BookListDataBestToday::class.java)
-
-                    Log.d("####-2", "${tabType} ${group}")
+                    val group: BookListDataBest? =
+                        postSnapshot.getValue(BookListDataBest::class.java)
 
                     items.add(
-                        BookListDataBestToday(
+                        BookListDataBest(
                             group!!.writer,
                             group.title,
                             group.bookImg,
@@ -78,21 +74,27 @@ class FragmentBestTabToday(private val tabType: String) :
                             group.type,
                             group.status,
                             group.trophyCount,
+                            group.data,
+                            group.memo
                         )
                     )
 
                 }
                 adapterToday!!.notifyDataSetChanged()
-                Log.d("####-2", "${tabType} ${items.size}")
             }
             override fun onCancelled(databaseError: DatabaseError) {}
         })
 
         adapterToday?.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
-                val item: BookListDataBestToday? = adapterToday!!.getItem(position)
+                val item: BookListDataBest? = adapterToday!!.getItem(position)
 
-                val mBottomDialogBest = BottomDialogBest(requireContext(), item!!, tabType, genre, position)
+                val mBottomDialogBest = BottomDialogBest(
+                    requireContext(),
+                    item!!,
+                    tabType,
+                    position
+                )
 
                 fragmentManager?.let { mBottomDialogBest.show(it, null) }
             }

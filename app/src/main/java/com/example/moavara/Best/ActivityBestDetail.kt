@@ -9,6 +9,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.commit
 import androidx.room.Room
 import com.bumptech.glide.Glide
+import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.DataBase.DataBaseBestDay
 import com.example.moavara.R
 import com.example.moavara.Retrofit.*
@@ -32,6 +33,7 @@ class ActivityBestDetail : AppCompatActivity() {
     var bookTitle = ""
     var bookWriter = ""
     var chapter : List<JoaraBestChapter>? = null
+    var pos = 0
     private lateinit var binding: ActivityBestDetailBinding
     private lateinit var mFragmentBestDetailAnalyze: FragmentBestDetailAnalyze
     private lateinit var mFragmentBestDetailBooks: FragmentBestDetailBooks
@@ -44,10 +46,11 @@ class ActivityBestDetail : AppCompatActivity() {
 
         bookCode = intent.getStringExtra("BookCode") ?: ""
         type = intent.getStringExtra("Type") ?: ""
+        pos = intent.getIntExtra("POSITION", 0)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
-        Objects.requireNonNull(supportActionBar)!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         if (type == "Joara" || type == "Joara Nobless" || type == "Joara Premium") {
             setLayoutJoara()

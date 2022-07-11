@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.moavara.DataBase.BookListDataBestToday
+import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.Search.BookListDataBestWeekend
 import com.example.moavara.databinding.ItemBooklistBestMonthBinding
 import java.util.ArrayList
@@ -126,7 +126,7 @@ class AdapterBestMonth(
         }
     }
 
-    private fun isSelectBook(items : BookListDataBestToday?, llayout : LinearLayout){
+    private fun isSelectBook(items : BookListDataBest?, llayout : LinearLayout){
         if (selected != "" && getSelectedBook() != items!!.bookCode) {
             llayout.visibility = View.VISIBLE
         } else {

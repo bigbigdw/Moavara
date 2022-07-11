@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.moavara.DataBase.BookListDataBestToday
+import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.Search.BookListDataBestWeekend
 import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Genre
@@ -19,7 +19,7 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment() {
 
     private lateinit var adapterMonth: AdapterBestMonth
     private val itemMonth = ArrayList<BookListDataBestWeekend>()
-    private val ItemMonthDay = ArrayList<BookListDataBestToday>()
+    private val ItemMonthDay = ArrayList<BookListDataBest>()
     private var adapterMonthDay: AdapterBestToday? = null
 
     private var _binding: FragmentBestMonthBinding? = null
@@ -72,11 +72,11 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment() {
 
                             for (postSnapshot in it.children) {
 
-                                val group: BookListDataBestToday? =
-                                    postSnapshot.getValue(BookListDataBestToday::class.java)
+                                val group: BookListDataBest? =
+                                    postSnapshot.getValue(BookListDataBest::class.java)
 
                                 ItemMonthDay.add(
-                                    BookListDataBestToday(
+                                    BookListDataBest(
                                         group!!.writer,
                                         group.title,
                                         group.bookImg,
@@ -104,9 +104,14 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment() {
 
         adapterMonthDay!!.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
-                val item: BookListDataBestToday? = adapterMonthDay!!.getItem(position)
+                val item: BookListDataBest? = adapterMonthDay!!.getItem(position)
 
-                val mBottomDialogBest = BottomDialogBest(requireContext(), item!!, tabType, cate, position)
+                val mBottomDialogBest = BottomDialogBest(
+                    requireContext(),
+                    item!!,
+                    tabType,
+                    position
+                )
                 fragmentManager?.let { mBottomDialogBest.show(it, null) }
 
             }
