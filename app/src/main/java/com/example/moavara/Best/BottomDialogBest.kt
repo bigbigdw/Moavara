@@ -215,7 +215,6 @@ class BottomDialogBest(
         } else if (tabType == "Toksoda") {
             "https://www.tocsoda.co.kr/product/productView?brcd=${item.bookCode}"
         }else ""
-
     }
 
     override fun getTheme() = R.style.CustomBottomSheetDialogTheme
@@ -246,7 +245,6 @@ class BottomDialogBest(
                                     iviewRank2.setImageResource(R.drawable.ic_best_vt_24px)
                                 }
                                 tviewRank2.text = (item.number + 1).toString()
-                                Log.d("@@@@", "HIHI")
                             }
                             itemDate.date == 3 -> {
                                 tviewRank3.visibility = View.VISIBLE

@@ -41,30 +41,29 @@
                     android:layout_height="wrap_content">
 
                     <LinearLayout
-                        android:id="@+id/llayoutNull1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="#26292E"
                         android:gravity="center_horizontal|center_vertical"
-                        android:orientation="horizontal">
+                        android:orientation="vertical">
 
                         <ImageView
+                            android:id="@+id/iviewBookImg1"
                             android:layout_width="25dp"
                             android:layout_height="25dp"
+                            android:layout_marginBottom="4dp"
                             android:adjustViewBounds="true"
                             android:contentDescription="@string/TODO"
                             android:scaleType="fitXY"
                             app:srcCompat="@drawable/ic_best_gr_24px" />
-                    </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/iview_BookImg1"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:adjustViewBounds="true"
-                        android:contentDescription="@string/TODO"
-                        android:scaleType="fitXY"
-                        app:srcCompat="@drawable/booktest" />
+                        <TextView
+                            android:id="@+id/tview1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="100등"
+                            android:textColor="#FFFFFF" />
+                    </LinearLayout>
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -74,14 +73,6 @@
                         android:scaleType="fitXY"
                         android:visibility="invisible"
                         app:srcCompat="@drawable/booktest" />
-
-                    <LinearLayout
-                        android:id="@+id/llayout_Cover1"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="#B3000000"
-                        android:orientation="vertical"
-                        android:visibility="gone" />
 
                 </RelativeLayout>
 
@@ -115,32 +106,33 @@
                     android:layout_height="wrap_content">
 
                     <LinearLayout
-                        android:id="@+id/llayoutNull2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="#26292E"
                         android:gravity="center_horizontal|center_vertical"
-                        android:orientation="horizontal"
+                        android:orientation="vertical"
                         tools:visibility="visible">
 
                         <ImageView
+                            android:id="@+id/iviewBookImg2"
                             android:layout_width="25dp"
                             android:layout_height="25dp"
+                            android:layout_marginBottom="4dp"
                             android:adjustViewBounds="true"
                             android:contentDescription="@string/TODO"
                             android:scaleType="fitXY"
                             app:srcCompat="@drawable/ic_best_gr_24px" />
+
+                        <TextView
+                            android:id="@+id/tview2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="100등"
+                            android:textColor="#FFFFFF" />
+
                     </LinearLayout>
 
                     <ImageView
-                        android:id="@+id/iview_BookImg2"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:adjustViewBounds="true"
-                        android:contentDescription="@string/TODO"
-                        android:scaleType="fitXY" />
-
-                    <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:adjustViewBounds="true"
@@ -148,23 +140,6 @@
                         android:scaleType="fitXY"
                         android:visibility="invisible"
                         app:srcCompat="@drawable/booktest" />
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:adjustViewBounds="true"
-                        android:contentDescription="@string/TODO"
-                        android:scaleType="fitXY"
-                        android:visibility="invisible"
-                        app:srcCompat="@drawable/booktest" />
-
-                    <LinearLayout
-                        android:id="@+id/llayout_Cover2"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="#B3000000"
-                        android:orientation="vertical"
-                        android:visibility="gone" />
 
                 </RelativeLayout>
 
@@ -198,30 +173,31 @@
                     android:layout_height="wrap_content">
 
                     <LinearLayout
-                        android:id="@+id/llayoutNull3"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="#26292E"
                         android:gravity="center_horizontal|center_vertical"
-                        android:orientation="horizontal"
+                        android:orientation="vertical"
                         tools:visibility="visible">
 
                         <ImageView
+                            android:id="@+id/iviewBookImg3"
                             android:layout_width="25dp"
                             android:layout_height="25dp"
+                            android:layout_marginBottom="4dp"
                             android:adjustViewBounds="true"
                             android:contentDescription="@string/TODO"
                             android:scaleType="fitXY"
                             app:srcCompat="@drawable/ic_best_gr_24px" />
-                    </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/iview_BookImg3"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:adjustViewBounds="true"
-                        android:contentDescription="@string/TODO"
-                        android:scaleType="fitXY" />
+                        <TextView
+                            android:id="@+id/tview3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="100등"
+                            android:textColor="#FFFFFF" />
+
+                    </LinearLayout>
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -231,14 +207,6 @@
                         android:scaleType="fitXY"
                         android:visibility="invisible"
                         app:srcCompat="@drawable/booktest" />
-
-                    <LinearLayout
-                        android:id="@+id/llayout_Cover3"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="#B3000000"
-                        android:orientation="vertical"
-                        android:visibility="gone" />
 
                 </RelativeLayout>
 
@@ -272,30 +240,31 @@
                     android:layout_height="wrap_content">
 
                     <LinearLayout
-                        android:id="@+id/llayoutNull4"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="#26292E"
                         android:gravity="center_horizontal|center_vertical"
-                        android:orientation="horizontal"
+                        android:orientation="vertical"
                         tools:visibility="visible">
 
                         <ImageView
+                            android:id="@+id/iviewBookImg4"
                             android:layout_width="25dp"
                             android:layout_height="25dp"
+                            android:layout_marginBottom="4dp"
                             android:adjustViewBounds="true"
                             android:contentDescription="@string/TODO"
                             android:scaleType="fitXY"
                             app:srcCompat="@drawable/ic_best_gr_24px" />
-                    </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/iview_BookImg4"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:adjustViewBounds="true"
-                        android:contentDescription="@string/TODO"
-                        android:scaleType="fitXY" />
+                        <TextView
+                            android:id="@+id/tview4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="100등"
+                            android:textColor="#FFFFFF" />
+
+                    </LinearLayout>
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -305,14 +274,6 @@
                         android:scaleType="fitXY"
                         android:visibility="invisible"
                         app:srcCompat="@drawable/booktest" />
-
-                    <LinearLayout
-                        android:id="@+id/llayout_Cover4"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="#B3000000"
-                        android:orientation="vertical"
-                        android:visibility="gone" />
 
                 </RelativeLayout>
 
@@ -346,30 +307,31 @@
                     android:layout_height="wrap_content">
 
                     <LinearLayout
-                        android:id="@+id/llayoutNull5"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="#26292E"
                         android:gravity="center_horizontal|center_vertical"
-                        android:orientation="horizontal"
+                        android:orientation="vertical"
                         tools:visibility="visible">
 
                         <ImageView
+                            android:id="@+id/iviewBookImg5"
                             android:layout_width="25dp"
                             android:layout_height="25dp"
+                            android:layout_marginBottom="4dp"
                             android:adjustViewBounds="true"
                             android:contentDescription="@string/TODO"
                             android:scaleType="fitXY"
                             app:srcCompat="@drawable/ic_best_gr_24px" />
-                    </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/iview_BookImg5"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:adjustViewBounds="true"
-                        android:contentDescription="@string/TODO"
-                        android:scaleType="fitXY" />
+                        <TextView
+                            android:id="@+id/tview5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="100등"
+                            android:textColor="#FFFFFF" />
+
+                    </LinearLayout>
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -379,14 +341,6 @@
                         android:scaleType="fitXY"
                         android:visibility="invisible"
                         app:srcCompat="@drawable/booktest" />
-
-                    <LinearLayout
-                        android:id="@+id/llayout_Cover5"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="#B3000000"
-                        android:orientation="vertical"
-                        android:visibility="gone" />
 
                 </RelativeLayout>
 
@@ -420,30 +374,31 @@
                     android:layout_height="wrap_content">
 
                     <LinearLayout
-                        android:id="@+id/llayoutNull6"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="#26292E"
                         android:gravity="center_horizontal|center_vertical"
-                        android:orientation="horizontal"
+                        android:orientation="vertical"
                         tools:visibility="visible">
 
                         <ImageView
+                            android:id="@+id/iviewBookImg6"
                             android:layout_width="25dp"
                             android:layout_height="25dp"
+                            android:layout_marginBottom="4dp"
                             android:adjustViewBounds="true"
                             android:contentDescription="@string/TODO"
                             android:scaleType="fitXY"
                             app:srcCompat="@drawable/ic_best_gr_24px" />
-                    </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/iview_BookImg6"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:adjustViewBounds="true"
-                        android:contentDescription="@string/TODO"
-                        android:scaleType="fitXY" />
+                        <TextView
+                            android:id="@+id/tview6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="100등"
+                            android:textColor="#FFFFFF" />
+
+                    </LinearLayout>
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -453,14 +408,6 @@
                         android:scaleType="fitXY"
                         android:visibility="invisible"
                         app:srcCompat="@drawable/booktest" />
-
-                    <LinearLayout
-                        android:id="@+id/llayout_Cover6"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="#B3000000"
-                        android:orientation="vertical"
-                        android:visibility="gone" />
 
                 </RelativeLayout>
 
@@ -494,30 +441,31 @@
                     android:layout_height="wrap_content">
 
                     <LinearLayout
-                        android:id="@+id/llayoutNull7"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="#26292E"
                         android:gravity="center_horizontal|center_vertical"
-                        android:orientation="horizontal"
+                        android:orientation="vertical"
                         tools:visibility="visible">
 
                         <ImageView
+                            android:id="@+id/iviewBookImg7"
                             android:layout_width="25dp"
                             android:layout_height="25dp"
+                            android:layout_marginBottom="4dp"
                             android:adjustViewBounds="true"
                             android:contentDescription="@string/TODO"
                             android:scaleType="fitXY"
                             app:srcCompat="@drawable/ic_best_gr_24px" />
-                    </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/iview_BookImg7"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:adjustViewBounds="true"
-                        android:contentDescription="@string/TODO"
-                        android:scaleType="fitXY" />
+                        <TextView
+                            android:id="@+id/tview7"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="100등"
+                            android:textColor="#FFFFFF" />
+
+                    </LinearLayout>
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -527,14 +475,6 @@
                         android:scaleType="fitXY"
                         android:visibility="invisible"
                         app:srcCompat="@drawable/booktest" />
-
-                    <LinearLayout
-                        android:id="@+id/llayout_Cover7"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="#B3000000"
-                        android:orientation="vertical"
-                        android:visibility="gone" />
 
                 </RelativeLayout>
 

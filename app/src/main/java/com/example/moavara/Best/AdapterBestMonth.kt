@@ -202,11 +202,6 @@ class AdapterBestMonth(
     }
 
 
-    fun setSelectedBook(bookcode: String) {
-        selected = bookcode
-    }
-
-
     fun getSelectedBook(): String? {
         return selected
     }

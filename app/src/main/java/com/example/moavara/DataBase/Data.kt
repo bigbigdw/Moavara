@@ -39,6 +39,16 @@ class WeekendDate(
     var sat: String = "",
 )
 
+class BestRankListWeekend(
+    var sun: BookListDataBestAnalyze? = null,
+    var mon: BookListDataBestAnalyze? = null,
+    var tue: BookListDataBestAnalyze? = null,
+    var wed: BookListDataBestAnalyze? = null,
+    var thur: BookListDataBestAnalyze? = null,
+    var fri: BookListDataBestAnalyze? = null,
+    var sat: BookListDataBestAnalyze? = null,
+    var mode: String = ""
+)
 
 class BookListDataBestWeekend(
     var sun: BookListDataBest? = null,

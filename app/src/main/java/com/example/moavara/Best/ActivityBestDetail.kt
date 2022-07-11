@@ -1,43 +1,54 @@
 package com.example.moavara.Best
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.commit
-import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.BookListDataBest
-import com.example.moavara.DataBase.DataBaseBestDay
+import com.example.moavara.DataBase.BookListDataBestAnalyze
+import com.example.moavara.DataBase.BookListDataBestToday
+import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
 import com.example.moavara.Retrofit.*
 import com.example.moavara.Util.*
 import com.example.moavara.databinding.ActivityBestDetailBinding
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import org.jsoup.select.Elements
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class ActivityBestDetail : AppCompatActivity() {
 
     var bookCode = ""
-    var type = ""
+    var platfrom = ""
     var context = this
     var bookTitle = ""
     var bookWriter = ""
     var chapter : List<JoaraBestChapter>? = null
     var pos = 0
+    var genre = ""
+    var UID = ""
+    var userInfo = mRootRef.child("User")
     private lateinit var binding: ActivityBestDetailBinding
     private lateinit var mFragmentBestDetailAnalyze: FragmentBestDetailAnalyze
     private lateinit var mFragmentBestDetailBooks: FragmentBestDetailBooks
     private lateinit var mFragmentBestDetailComment: FragmentBestDetailComment
+    private lateinit var mFragmentBestDetailRank: FragmentBestDetailRank
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,79 +56,169 @@ class ActivityBestDetail : AppCompatActivity() {
         setContentView(binding.root)
 
         bookCode = intent.getStringExtra("BookCode") ?: ""
-        type = intent.getStringExtra("Type") ?: ""
+        platfrom = intent.getStringExtra("Type") ?: ""
         pos = intent.getIntExtra("POSITION", 0)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        genre = Genre.getGenre(this).toString()
 
-        if (type == "Joara" || type == "Joara Nobless" || type == "Joara Premium") {
+        UID = context.getSharedPreferences("pref", MODE_PRIVATE)
+            ?.getString("UID", "").toString()
+
+        BestRef.getBestRefToday(platfrom, genre).child(pos.toString()).addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val group: BookListDataBest? = dataSnapshot.getValue(BookListDataBest::class.java)
+
+                runOnUiThread {
+                    setLayout(group?.data)
+
+                    with(binding){
+                        llayoutBtnLeft.setOnClickListener {
+
+                            val group = BookListDataBestToday(
+                                group!!.writer,
+                                group.title,
+                                group.bookImg,
+                                group.bookCode,
+                                group.info1,
+                                group.info2,
+                                group.info3,
+                                group.info4,
+                                group.info5,
+                                group.number,
+                                group.numberDiff,
+                                group.date,
+                                platfrom,
+                                group.status,
+                                group.trophyCount,
+                            )
+
+                            userInfo.child(UID).child("book").addListenerForSingleValueEvent(object :
+                                ValueEventListener {
+                                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                    userInfo.child(UID).child("book").child(dataSnapshot.childrenCount.toString()).setValue(group)
+                                }
+                                override fun onCancelled(databaseError: DatabaseError) {}
+                            })
+
+                            Toast.makeText(this@ActivityBestDetail, "Pick 성공!", Toast.LENGTH_SHORT).show()
+                        }
+
+                        llayoutBtnRight.setOnClickListener {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getUrl(group?.bookCode ?: "")))
+                            startActivity(intent)
+                        }
+                    }
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
+
+
+    }
+
+    private fun getUrl(bookCode: String): String {
+
+        return if (platfrom == "MrBlue") {
+            "https://www.mrblue.com/novel/${bookCode}"
+        } else if (platfrom == "Naver Today" || platfrom == "Naver Challenge" || platfrom == "Naver" || platfrom == "Ridi") {
+            bookCode
+        } else if (platfrom == "Kakao Stage") {
+            "https://pagestage.kakao.com/novels/${bookCode}"
+        } else if (platfrom == "Kakao") {
+            "https://page.kakao.com/home?seriesId=${bookCode}"
+        } else if (platfrom == "OneStore") {
+            "https://onestory.co.kr/detail/${bookCode}"
+        } else if (platfrom == "Joara" || platfrom == "Joara Premium" || platfrom == "Joara Nobless") {
+            "https://www.joara.com/book/${bookCode}"
+        }else if (platfrom == "Munpia") {
+            "https://novel.munpia.com/${bookCode}"
+        } else if (platfrom == "Toksoda") {
+            "https://www.tocsoda.co.kr/product/productView?brcd=${bookCode}"
+        }else ""
+    }
+
+    fun setLayout(data: ArrayList<BookListDataBestAnalyze>?) {
+        if (platfrom == "Joara" || platfrom == "Joara Nobless" || platfrom == "Joara Premium") {
             setLayoutJoara()
-        } else if (type == "Naver Today" || type == "Naver Challenge" || type == "Naver"){
+        } else if (platfrom == "Naver Today" || platfrom == "Naver Challenge" || platfrom == "Naver"){
             setLayoutNaverToday()
-        } else if (type == "Kakao"){
+        } else if (platfrom == "Kakao"){
             setLayoutKaKao()
-        } else if (type == "Kakao Stage"){
+        } else if (platfrom == "Kakao Stage"){
             setLayoutKaKaoStage()
-        } else if (type == "Ridi"){
+        } else if (platfrom == "Ridi"){
             setLayoutRidi()
-        } else if (type == "OneStore"){
+        } else if (platfrom == "OneStore"){
             setLayoutOneStory()
-        } else if (type == "Munpia"){
+        } else if (platfrom == "Munpia"){
             setLayoutMunpia()
-        } else if (type == "Toksoda"){
+        } else if (platfrom == "Toksoda"){
             setLayoutToksoda()
         }
 
-        if(type == "Naver Today" || type == "Naver Challenge" || type == "Naver"){
+        if(platfrom == "Naver Today" || platfrom == "Naver Challenge" || platfrom == "Naver"){
             binding.tabs.addTab(binding.tabs.newTab().setText("다른 작품"))
             binding.tabs.addTab(binding.tabs.newTab().setText("작품 분석"))
-        } else if(type == "Kakao" || type == "Kakao Stage" || type == "OneStore" || type == "Munpia") {
+            binding.tabs.addTab(binding.tabs.newTab().setText("랭크"))
+        } else if(platfrom == "Kakao" || platfrom == "Kakao Stage" || platfrom == "OneStore" || platfrom == "Munpia") {
             binding.tabs.addTab(binding.tabs.newTab().setText("댓글"))
             binding.tabs.addTab(binding.tabs.newTab().setText("작품 분석"))
-        } else if(type == "Ridi") {
+            binding.tabs.addTab(binding.tabs.newTab().setText("랭크"))
+        } else if(platfrom == "Ridi") {
             binding.tabs.addTab(binding.tabs.newTab().setText("다른 작품"))
             binding.tabs.addTab(binding.tabs.newTab().setText("작품 분석"))
+            binding.tabs.addTab(binding.tabs.newTab().setText("랭크"))
         } else {
             binding.tabs.addTab(binding.tabs.newTab().setText("댓글"))
             binding.tabs.addTab(binding.tabs.newTab().setText("다른 작품"))
             binding.tabs.addTab(binding.tabs.newTab().setText("작품 분석"))
+            binding.tabs.addTab(binding.tabs.newTab().setText("랭크"))
         }
 
         binding.tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 when(tab.position){
                     0->{
-                        if (type == "Joara" || type == "Joara Nobless" || type == "Joara Premium" || type == "Kakao" || type == "Kakao Stage" || type == "OneStore" || type == "Munpia" || type == "Toksoda") {
-                            mFragmentBestDetailComment = FragmentBestDetailComment(type, bookCode)
+                        if (platfrom == "Joara" || platfrom == "Joara Nobless" || platfrom == "Joara Premium" || platfrom == "Kakao" || platfrom == "Kakao Stage" || platfrom == "OneStore" || platfrom == "Munpia" || platfrom == "Toksoda") {
+                            mFragmentBestDetailComment = FragmentBestDetailComment(platfrom, bookCode)
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailComment)
                             }
-                        } else if (type == "Naver Today" || type == "Naver Challenge" || type == "Naver" || type == "Ridi") {
-                            mFragmentBestDetailBooks = FragmentBestDetailBooks(type, bookCode)
+                        } else if (platfrom == "Naver Today" || platfrom == "Naver Challenge" || platfrom == "Naver" || platfrom == "Ridi") {
+                            mFragmentBestDetailBooks = FragmentBestDetailBooks(platfrom, bookCode)
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
                             }
                         }
                     }
                     1->{
-                        if (type == "Joara" || type == "Joara Nobless" || type == "Joara Premium" || type == "Toksoda") {
-                            mFragmentBestDetailBooks = FragmentBestDetailBooks(type, bookCode)
+                        if (platfrom == "Joara" || platfrom == "Joara Nobless" || platfrom == "Joara Premium" || platfrom == "Toksoda") {
+                            mFragmentBestDetailBooks = FragmentBestDetailBooks(platfrom, bookCode)
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
                             }
-                        } else if (type == "Naver Today" || type == "Naver Challenge" || type == "Naver" || type == "Kakao"|| type == "Kakao Stage" || type == "Ridi" || type == "OneStore" || type == "Munpia") {
-                            mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(type, intent.getIntExtra("POSITION", 0))
+                        } else if (platfrom == "Naver Today" || platfrom == "Naver Challenge" || platfrom == "Naver" || platfrom == "Kakao"|| platfrom == "Kakao Stage" || platfrom == "Ridi" || platfrom == "OneStore" || platfrom == "Munpia") {
+                            mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(platfrom, data)
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
                             }
                         }
                     }
                     2->{
-                        mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(type, intent.getIntExtra("POSITION", 0))
+                        mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(platfrom, data)
                         supportFragmentManager.commit {
                             replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
+                        }
+                    }
+                    3->{
+                        mFragmentBestDetailRank = FragmentBestDetailRank(platfrom, data)
+                        supportFragmentManager.commit {
+                            replace(R.id.llayoutWrap, mFragmentBestDetailRank)
                         }
                     }
                 }
@@ -164,7 +265,7 @@ class ActivityBestDetail : AppCompatActivity() {
                         }
                     }
 
-                    mFragmentBestDetailComment = FragmentBestDetailComment(type, bookCode)
+                    mFragmentBestDetailComment = FragmentBestDetailComment(platfrom, bookCode)
                     supportFragmentManager.commit {
                         replace(R.id.llayoutWrap, mFragmentBestDetailComment)
                     }
@@ -189,7 +290,7 @@ class ActivityBestDetail : AppCompatActivity() {
                         .load(doc.select(".section_area_info .pic img").attr("src"))
                         .into(inclueBestDetail.iviewBookCover)
 
-                    if(type == "Naver Challenge" || type == "Naver"){
+                    if(platfrom == "Naver Challenge" || platfrom == "Naver"){
                         inclueBestDetail.llayoutWrap2.visibility = View.GONE
                     } else {
                         inclueBestDetail.llayoutWrap2.visibility = View.VISIBLE
@@ -207,7 +308,7 @@ class ActivityBestDetail : AppCompatActivity() {
                     tviewIntro.text = doc.select(".section_area_info .dsc").text()
                 }
 
-                mFragmentBestDetailBooks = FragmentBestDetailBooks(type, bookCode)
+                mFragmentBestDetailBooks = FragmentBestDetailBooks(platfrom, bookCode)
                 supportFragmentManager.commit {
                     replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
                 }
@@ -248,7 +349,7 @@ class ActivityBestDetail : AppCompatActivity() {
                 }
             })
 
-        mFragmentBestDetailComment = FragmentBestDetailComment(type, bookCode)
+        mFragmentBestDetailComment = FragmentBestDetailComment(platfrom, bookCode)
         supportFragmentManager.commit {
             replace(R.id.llayoutWrap, mFragmentBestDetailComment)
         }
@@ -284,7 +385,7 @@ class ActivityBestDetail : AppCompatActivity() {
                 }
             })
 
-        mFragmentBestDetailComment = FragmentBestDetailComment(type, bookCode)
+        mFragmentBestDetailComment = FragmentBestDetailComment(platfrom, bookCode)
         supportFragmentManager.commit {
             replace(R.id.llayoutWrap, mFragmentBestDetailComment)
         }
@@ -317,7 +418,7 @@ class ActivityBestDetail : AppCompatActivity() {
                     tviewIntro.text = doc.select(".introduce_book .introduce_paragraph").text()
                 }
 
-                mFragmentBestDetailBooks = FragmentBestDetailBooks(type, bookCode)
+                mFragmentBestDetailBooks = FragmentBestDetailBooks(platfrom, bookCode)
                 supportFragmentManager.commit {
                     replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
                 }
@@ -360,7 +461,7 @@ class ActivityBestDetail : AppCompatActivity() {
                 }
             })
 
-        mFragmentBestDetailComment = FragmentBestDetailComment(type, bookCode)
+        mFragmentBestDetailComment = FragmentBestDetailComment(platfrom, bookCode)
         supportFragmentManager.commit {
             replace(R.id.llayoutWrap, mFragmentBestDetailComment)
         }
@@ -389,7 +490,7 @@ class ActivityBestDetail : AppCompatActivity() {
                     tviewIntro.text = doc.select(".story").text()
                 }
 
-                mFragmentBestDetailComment = FragmentBestDetailComment(type, bookCode)
+                mFragmentBestDetailComment = FragmentBestDetailComment(platfrom, bookCode)
                 supportFragmentManager.commit {
                     replace(R.id.llayoutWrap, mFragmentBestDetailComment)
                 }
@@ -432,7 +533,7 @@ class ActivityBestDetail : AppCompatActivity() {
                 }
             })
 
-        mFragmentBestDetailComment = FragmentBestDetailComment(type, bookCode)
+        mFragmentBestDetailComment = FragmentBestDetailComment(platfrom, bookCode)
         supportFragmentManager.commit {
             replace(R.id.llayoutWrap, mFragmentBestDetailComment)
         }

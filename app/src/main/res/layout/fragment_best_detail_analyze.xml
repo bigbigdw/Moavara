@@ -8,11 +8,6 @@
     android:background="#1E1E20"
     android:orientation="vertical">
 
-    <include
-        android:id="@+id/includeRank"
-        layout="@layout/include_rank"
-        android:animateLayoutChanges="true" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rViewChartJoara"
         android:layout_width="match_parent"
@@ -24,17 +19,5 @@
         android:layout_height="wrap_content">
 
     </androidx.recyclerview.widget.RecyclerView>
-
-    <HorizontalScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-        </LinearLayout>
-    </HorizontalScrollView>
 
 </LinearLayout>

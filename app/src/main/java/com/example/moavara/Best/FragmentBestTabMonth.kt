@@ -152,7 +152,7 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment() {
                         )
                     )
                 }
-                adapterMonth!!.notifyDataSetChanged()
+                adapterMonth.notifyDataSetChanged()
             }
 
         }.addOnFailureListener {}
