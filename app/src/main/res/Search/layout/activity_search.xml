@@ -1,150 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <LinearLayout
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="60dp"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingRight="16dp">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/BookAppBar"
+        <EditText
+            android:id="@+id/etext_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#f9f9f9"
-            android:theme="@style/AppTheme.AppBarOverlay">
+            android:background="@null"
+            android:ems="10"
+            android:hint="@string/Search_Text1"
+            android:imeOptions="actionSearch"
+            android:inputType="textPersonName" />
 
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:contentScrim="#4971EF"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+    </LinearLayout>
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_collapseMode="parallax">
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/post_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#4971EF"
+        app:itemBackground="@android:color/transparent"
+        app:itemIconTint="#00d180"
+        app:itemTextColor="#0df0df"
+        app:tabGravity="start"
+        app:tabIndicatorColor="#A5C500"
+        app:tabMode="scrollable"
+        app:tabSelectedTextColor="#A5C500"
+        app:tabTextColor="#ffffff">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+    </com.google.android.material.tabs.TabLayout>
 
-                        <LinearLayout
-                            android:id="@+id/BookDetail_CollapseWrap"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="55dp"
-                            android:background="#4971EF"
-                            android:orientation="vertical"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <include
-                                layout="@layout/collapse_search_detail"
-                                android:animateLayoutChanges="true" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="8dp"
-                                android:background="#4971EF"
-                                android:orientation="horizontal"
-                                android:paddingStart="16dp"
-                                android:paddingTop="16dp"
-                                android:paddingEnd="16dp"
-                                android:paddingBottom="40dp">
-
-                                <TextView
-                                    android:id="@+id/BookDetailIntro"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:breakStrategy="high_quality"
-                                    android:ellipsize="end"
-                                    android:fontFamily="@font/noto_sans"
-                                    android:text="@string/Common_BookIntro"
-                                    android:textColor="#4971EF"
-                                    android:textSize="14sp" />
-                            </LinearLayout>
-
-                        </LinearLayout>
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </FrameLayout>
-
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="55dp"
-                    android:background="#4971EF"
-                    app:layout_collapseMode="pin"
-                    app:popupTheme="@style/AppTheme.PopupOverlay">
-
-                </androidx.appcompat.widget.Toolbar>
-
-                <TextView
-                    android:id="@+id/BookTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="55dp"
-                    android:ellipsize="end"
-                    android:ems="10"
-                    android:gravity="center"
-                    android:maxEms="10"
-                    android:maxLines="1"
-                    android:text="#4971EF"
-                    android:textColor="#ffffff"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:layout_collapseMode="pin" />
-
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textColor="#4971EF"
-            android:orientation="vertical"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#4971EF"
-                app:itemBackground="@android:color/transparent"
-                app:itemIconTint="#4971EF"
-                app:itemTextColor="#4971EF"
-                app:tabIndicatorColor="#A5C500"
-                app:tabMode="fixed"
-                app:tabSelectedTextColor="#A5C500"
-                app:tabTextColor="#ffffff" />
-
-            <androidx.core.widget.NestedScrollView
-                android:id="@+id/View"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fillViewport="true">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <androidx.viewpager.widget.ViewPager
-                        android:id="@+id/view_pager"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="#4971EF"
-                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-                </LinearLayout>
-            </androidx.core.widget.NestedScrollView>
-
-        </LinearLayout>
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </LinearLayout>
-
