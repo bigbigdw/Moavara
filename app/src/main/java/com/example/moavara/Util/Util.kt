@@ -112,6 +112,16 @@ object DBDate {
 
         return null
     }
+
+    fun getYesterday(date : String) : Int {
+        val date = "2022${date.replace("-","")}"
+        return (date.toInt() - 1)
+    }
+
+    fun getToday(date : String) : Int {
+        val date = "2022${date.replace("-","")}"
+        return (date.toInt())
+    }
 }
 
 
@@ -342,6 +352,27 @@ fun calculateNum(
                     return CalculNum(0, "NEW")
                 }
             }
+        }
+    }
+    return CalculNum(0, "-")
+}
+
+fun calculateNumDiff(
+    num: Int,
+    numYesterday: Int
+): CalculNum {
+    when {
+        numYesterday < num -> {
+            return CalculNum(num - numYesterday, "DOWN")
+        }
+        numYesterday > num -> {
+            return CalculNum(num - numYesterday, "UP")
+        }
+        numYesterday == num -> {
+            return CalculNum(0, "-")
+        }
+        else -> {
+            return CalculNum(0, "NEW")
         }
     }
     return CalculNum(0, "-")

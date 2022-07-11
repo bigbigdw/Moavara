@@ -235,9 +235,21 @@ object Mining {
                                 NaverRef["info4"] = Naver.select(".score_area")[i].text()
                                 NaverRef["info5"] = ""
                                 NaverRef["number"] = i
-                                NaverRef["numberDiff"] = calculateNum(i, title, itemsYesterday).num
+
+                                if(dataList.size != 0){
+                                    if(DBDate.getToday(dataList[dataList.size -1].date) - DBDate.getYesterday(dataList[dataList.size -1].date) == 1){
+                                        NaverRef["numberDiff"] = calculateNum(i, title, itemsYesterday).num
+                                        NaverRef["status"] = calculateNum(i, title, itemsYesterday).status
+                                    } else {
+                                        NaverRef["numberDiff"] = 0
+                                        NaverRef["status"] = "NEW"
+                                    }
+                                } else {
+                                    NaverRef["numberDiff"] = 0
+                                    NaverRef["status"] = "NEW"
+                                }
+
                                 NaverRef["date"] = DBDate.DateMMDD()
-                                NaverRef["status"] = calculateNum(i, title, itemsYesterday).status
                                 NaverRef["type"] = "Naver Today"
                                 NaverRef["data"] = dataList
 

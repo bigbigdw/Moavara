@@ -78,8 +78,6 @@ class ActivityMain : AppCompatActivity() {
 
         }.addOnFailureListener{}
 
-
-
         registNotification()
     }
 
