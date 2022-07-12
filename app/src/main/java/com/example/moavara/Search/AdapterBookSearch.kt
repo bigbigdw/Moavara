@@ -1,6 +1,7 @@
 package com.example.moavara.Search
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,12 +13,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.moavara.DataBase.BookListDataBestAnalyze
 import com.example.moavara.R
-import java.util.ArrayList
+import java.util.*
+import kotlin.Comparator
+import kotlin.collections.ArrayList
 
 
-class AdapterBookSearch(private val mContext: Context, items: List<BookListData?>?) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var listData: ArrayList<BookListData?>?
+class AdapterBookSearch(private val mContext: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    var listData = ArrayList<BookListData>()
 
     interface OnItemClickListener {
         fun onItemClick(v: View?, position: Int, value: String?)
@@ -138,15 +142,16 @@ class AdapterBookSearch(private val mContext: Context, items: List<BookListData?
         }
     }
 
-    fun setItems(items: List<BookListData?>?) {
-        listData = items as ArrayList<BookListData?>?
+    fun setItems(items: ArrayList<BookListData>) {
+        val cmpAsc: java.util.Comparator<BookListData> =
+            Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
+        Collections.sort(items, cmpAsc)
+        Log.d("####_!!!",items.toString())
+        listData.addAll(items)
+        Log.d("####_!!!","HIHI")
     }
 
-    fun getItem(position: Int): BookListData? {
-        return listData!![position]
-    }
-
-    init {
-        listData = items as ArrayList<BookListData?>?
+    fun getItem(position: Int): BookListData {
+        return listData[position]
     }
 }

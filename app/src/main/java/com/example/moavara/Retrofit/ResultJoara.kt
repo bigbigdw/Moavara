@@ -259,56 +259,56 @@ class JoaraKeyWordCntValue {
 class JoaraBooksValue {
     @SerializedName("writer_name")
     @Expose
-    var writer_name: String? = null
+    var writer_name: String = ""
 
     @SerializedName("subject")
     @Expose
-    var subject: String? = null
+    var subject: String = ""
 
     @SerializedName("book_img")
-    var book_img: String? = null
+    var book_img: String = ""
 
     @SerializedName("is_adult")
     @Expose
-    var isAdult: String? = null
+    var isAdult: String = ""
 
     @SerializedName("is_finish")
     @Expose
-    var isFinish: String? = null
+    var isFinish: String = ""
 
     @SerializedName("is_premium")
     @Expose
-    var isPremium: String? = null
+    var isPremium: String = ""
 
     @SerializedName("is_nobless")
     @Expose
-    var isNobless: String? = null
+    var isNobless: String = ""
 
     @SerializedName("intro")
     @Expose
-    var intro: String? = null
+    var intro: String = ""
 
     @SerializedName("is_favorite")
     @Expose
-    var isFavorite: String? = null
+    var isFavorite: String = ""
 
     @SerializedName("cnt_page_read")
     @Expose
-    var cntPageRead: String? = null
+    var cntPageRead: String = ""
 
     @SerializedName("cnt_recom")
     @Expose
-    var cntRecom: String? = null
+    var cntRecom: String = ""
 
     @SerializedName("cnt_favorite")
     @Expose
-    var cntFavorite: String? = null
+    var cntFavorite: String = ""
 
     @SerializedName("bookCode")
     @Expose
-    var bookCode: String? = null
+    var bookCode: String = ""
 
     @SerializedName("category_ko_name")
     @Expose
-    var categoryKoName: String? = null
+    var categoryKoName: String = ""
 }

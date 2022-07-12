@@ -135,6 +135,8 @@
         <entry key="app/src/main/res/Search/layout/activity_search.xml" value="0.1" />
         <entry key="app/src/main/res/Search/layout/activity_search_detail.xml" value="0.20677083333333332" />
         <entry key="app/src/main/res/Search/layout/collapse_best_detail.xml" value="0.1921875" />
+        <entry key="app/src/main/res/Search/layout/fragment_search.xml" value="0.1" />
+        <entry key="app/src/main/res/Search/layout/fragment_searchtab.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/selector_bottom_navigation.xml" value="0.243" />
         <entry key="app/src/main/res/drawable/selector_dialog_login.xml" value="0.1305" />
         <entry key="app/src/main/res/drawable/selector_dialog_login_btn.xml" value="0.33" />

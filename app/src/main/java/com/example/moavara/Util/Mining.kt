@@ -238,8 +238,8 @@ object Mining {
 
                                 if(dataList.size != 0){
                                     if(DBDate.getToday(dataList[dataList.size -1].date) - DBDate.getYesterday(dataList[dataList.size -1].date) == 1){
-                                        NaverRef["numberDiff"] = calculateNum(i, title, itemsYesterday).num
-                                        NaverRef["status"] = calculateNum(i, title, itemsYesterday).status
+                                        NaverRef["numberDiff"] = calculateNumDiff(i, dataList[dataList.size -1].number).num
+                                        NaverRef["status"] = calculateNumDiff(i, dataList[dataList.size -1].number).status
                                     } else {
                                         NaverRef["numberDiff"] = 0
                                         NaverRef["status"] = "NEW"
@@ -357,6 +357,19 @@ object Mining {
                                     Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
                                 Collections.sort(dataList, cmpAsc)
 
+                                if(dataList.size != 0){
+                                    if(DBDate.getToday(dataList[dataList.size -1].date) - DBDate.getYesterday(dataList[dataList.size -1].date) == 1){
+                                        NaverRef["numberDiff"] = calculateNumDiff(i, dataList[dataList.size -1].number).num
+                                        NaverRef["status"] = calculateNumDiff(i, dataList[dataList.size -1].number).status
+                                    } else {
+                                        NaverRef["numberDiff"] = 0
+                                        NaverRef["status"] = "NEW"
+                                    }
+                                } else {
+                                    NaverRef["numberDiff"] = 0
+                                    NaverRef["status"] = "NEW"
+                                }
+
                                 NaverRef["trophyCount"] = dataList.size
 
                                 NaverRef["writerName"] = Naver.select(".author")[i].text()
@@ -370,9 +383,7 @@ object Mining {
                                 NaverRef["info4"] = Naver.select(".score_area")[i].text()
                                 NaverRef["info5"] = ""
                                 NaverRef["number"] = i
-                                NaverRef["numberDiff"] = calculateNum(i, title, itemsYesterday).num
                                 NaverRef["date"] = DBDate.DateMMDD()
-                                NaverRef["status"] = calculateNum(i, title, itemsYesterday).status
                                 NaverRef["type"] = "Naver Challenge"
                                 NaverRef["data"] = dataList
 
@@ -478,6 +489,19 @@ object Mining {
                                     Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
                                 Collections.sort(dataList, cmpAsc)
 
+                                if(dataList.size != 0){
+                                    if(DBDate.getToday(dataList[dataList.size -1].date) - DBDate.getYesterday(dataList[dataList.size -1].date) == 1){
+                                        NaverRef["numberDiff"] = calculateNumDiff(i, dataList[dataList.size -1].number).num
+                                        NaverRef["status"] = calculateNumDiff(i, dataList[dataList.size -1].number).status
+                                    } else {
+                                        NaverRef["numberDiff"] = 0
+                                        NaverRef["status"] = "NEW"
+                                    }
+                                } else {
+                                    NaverRef["numberDiff"] = 0
+                                    NaverRef["status"] = "NEW"
+                                }
+
                                 NaverRef["trophyCount"] = dataList.size
 
                                 NaverRef["writerName"] = Naver.select(".author")[i].text()
@@ -491,9 +515,7 @@ object Mining {
                                 NaverRef["info4"] = Naver.select(".score_area")[i].text()
                                 NaverRef["info5"] = ""
                                 NaverRef["number"] = i
-                                NaverRef["numberDiff"] = calculateNum(i, title, itemsYesterday).num
                                 NaverRef["date"] = DBDate.DateMMDD()
-                                NaverRef["status"] = calculateNum(i, title, itemsYesterday).status
                                 NaverRef["type"] = "Naver"
                                 NaverRef["data"] = dataList
 
@@ -599,6 +621,19 @@ object Mining {
 
                                     RidiRef["trophyCount"] = dataList.size
 
+                                    if(dataList.size != 0){
+                                        if(DBDate.getToday(dataList[dataList.size -1].date) - DBDate.getYesterday(dataList[dataList.size -1].date) == 1){
+                                            RidiRef["numberDiff"] = calculateNumDiff(i, dataList[dataList.size -1].number).num
+                                            RidiRef["status"] = calculateNumDiff(i, dataList[dataList.size -1].number).status
+                                        } else {
+                                            RidiRef["numberDiff"] = 0
+                                            RidiRef["status"] = "NEW"
+                                        }
+                                    } else {
+                                        RidiRef["numberDiff"] = 0
+                                        RidiRef["status"] = "NEW"
+                                    }
+
                                     RidiRef["writerName"] =
                                         doc.select("div .author_detail_link")[i].text()
                                     RidiRef["subject"] = doc.select("div .title_link")[i].text()
@@ -613,9 +648,7 @@ object Mining {
                                     RidiRef["info4"] = ""
                                     RidiRef["info5"] = ""
                                     RidiRef["number"] = i
-                                    RidiRef["numberDiff"] = calculateNum(i, title, itemsYesterday).num
                                     RidiRef["date"] = DBDate.DateMMDD()
-                                    RidiRef["status"] = calculateNum(i, title, itemsYesterday).status
                                     RidiRef["type"] = "Ridi"
                                     RidiRef["data"] = dataList
 
@@ -736,6 +769,19 @@ object Mining {
                                                     Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
                                                 Collections.sort(dataList, cmpAsc)
 
+                                                if(dataList.size != 0){
+                                                    if(DBDate.getToday(dataList[dataList.size -1].date) - DBDate.getYesterday(dataList[dataList.size -1].date) == 1){
+                                                        OneStoryRef["numberDiff"] = calculateNumDiff(i, dataList[dataList.size -1].number).num
+                                                        OneStoryRef["status"] = calculateNumDiff(i, dataList[dataList.size -1].number).status
+                                                    } else {
+                                                        OneStoryRef["numberDiff"] = 0
+                                                        OneStoryRef["status"] = "NEW"
+                                                    }
+                                                } else {
+                                                    OneStoryRef["numberDiff"] = 0
+                                                    OneStoryRef["status"] = "NEW"
+                                                }
+
                                                 OneStoryRef["trophyCount"] = dataList.size
 
                                                 OneStoryRef["writerName"] = productList[i].artistNm
@@ -750,18 +796,7 @@ object Mining {
                                                 OneStoryRef["info4"] = " "
                                                 OneStoryRef["info5"] = " "
                                                 OneStoryRef["number"] = i
-                                                OneStoryRef["numberDiff"] =
-                                                    calculateNum(
-                                                        i,
-                                                        productList[i].prodNm,
-                                                        itemsYesterday
-                                                    ).num
                                                 OneStoryRef["date"] = DBDate.DateMMDD()
-                                                OneStoryRef["status"] = calculateNum(
-                                                    i,
-                                                    productList[i].prodNm,
-                                                    itemsYesterday
-                                                ).status
 
                                                 OneStoryRef["type"] = "OneStore"
                                                 OneStoryRef["data"] = dataList
@@ -889,6 +924,18 @@ object Mining {
 
                                             KakaoRef["trophyCount"] = dataList.size
 
+                                            if(dataList.size != 0){
+                                                if(DBDate.getToday(dataList[dataList.size -1].date) - DBDate.getYesterday(dataList[dataList.size -1].date) == 1){
+                                                    KakaoRef["numberDiff"] = calculateNumDiff(i, dataList[dataList.size -1].number).num
+                                                    KakaoRef["status"] = calculateNumDiff(i, dataList[dataList.size -1].number).status
+                                                } else {
+                                                    KakaoRef["numberDiff"] = 0
+                                                    KakaoRef["status"] = "NEW"
+                                                }
+                                            } else {
+                                                KakaoRef["numberDiff"] = 0
+                                                KakaoRef["status"] = "NEW"
+                                            }
 
                                             KakaoRef["writerName"] = novel!!.nickname!!.name
                                             KakaoRef["subject"] = novel.title
@@ -900,11 +947,7 @@ object Mining {
                                             KakaoRef["info4"] = "선호작 수 : " + novel.visitorCount
                                             KakaoRef["info5"] = ""
                                             KakaoRef["number"] = i
-                                            KakaoRef["numberDiff"] =
-                                                calculateNum(i, novel.title, itemsYesterday).num
                                             KakaoRef["date"] = DBDate.DateMMDD()
-                                            KakaoRef["status"] =
-                                                calculateNum(i, novel.title, itemsYesterday).status
                                             KakaoRef["type"] = "Kakao Stage"
                                             KakaoRef["data"] = dataList
 
@@ -1019,6 +1062,19 @@ object Mining {
 
                                             KakaoRef["trophyCount"] = dataList.size
 
+                                            if(dataList.size != 0){
+                                                if(DBDate.getToday(dataList[dataList.size -1].date) - DBDate.getYesterday(dataList[dataList.size -1].date) == 1){
+                                                    KakaoRef["numberDiff"] = calculateNumDiff(i, dataList[dataList.size -1].number).num
+                                                    KakaoRef["status"] = calculateNumDiff(i, dataList[dataList.size -1].number).status
+                                                } else {
+                                                    KakaoRef["numberDiff"] = 0
+                                                    KakaoRef["status"] = "NEW"
+                                                }
+                                            } else {
+                                                KakaoRef["numberDiff"] = 0
+                                                KakaoRef["status"] = "NEW"
+                                            }
+
                                             KakaoRef["writerName"] = list[i].author
                                             KakaoRef["subject"] = list[i].title
                                             KakaoRef["bookImg"] =
@@ -1030,11 +1086,7 @@ object Mining {
                                             KakaoRef["info4"] = "추천 수 : " + list[i].like_count
                                             KakaoRef["info5"] = "평점 : " + list[i].rating
                                             KakaoRef["number"] = i
-                                            KakaoRef["numberDiff"] =
-                                                calculateNum(i, list[i].title, itemsYesterday).num
                                             KakaoRef["date"] = DBDate.DateMMDD()
-                                            KakaoRef["status"] =
-                                                calculateNum(i, list[i].title, itemsYesterday).status
                                             KakaoRef["type"] = "Kakao"
                                             KakaoRef["data"] = dataList
                                             miningValue(KakaoRef, i, "Kakao", cate)
@@ -1156,6 +1208,19 @@ object Mining {
 
                                         JoaraRef["trophyCount"] = dataList.size
 
+                                        if(dataList.size != 0){
+                                            if(DBDate.getToday(dataList[dataList.size -1].date) - DBDate.getYesterday(dataList[dataList.size -1].date) == 1){
+                                                JoaraRef["numberDiff"] = calculateNumDiff(i, dataList[dataList.size -1].number).num
+                                                JoaraRef["status"] = calculateNumDiff(i, dataList[dataList.size -1].number).status
+                                            } else {
+                                                JoaraRef["numberDiff"] = 0
+                                                JoaraRef["status"] = "NEW"
+                                            }
+                                        } else {
+                                            JoaraRef["numberDiff"] = 0
+                                            JoaraRef["status"] = "NEW"
+                                        }
+
                                         JoaraRef["writerName"] = books[i].writerName
                                         JoaraRef["subject"] = books[i].subject
                                         JoaraRef["bookImg"] = books[i].bookImg
@@ -1166,11 +1231,7 @@ object Mining {
                                         JoaraRef["info4"] = "선호작 수 : " + books[i].cntFavorite
                                         JoaraRef["info5"] = "추천 수 : " + books[i].cntRecom
                                         JoaraRef["number"] = i
-                                        JoaraRef["numberDiff"] =
-                                            calculateNum(i, books[i].subject, itemsYesterday).num
                                         JoaraRef["date"] = DBDate.DateMMDD()
-                                        JoaraRef["status"] =
-                                            calculateNum(i, books[i].subject, itemsYesterday).status
                                         JoaraRef["type"] = "Joara Premium"
                                         JoaraRef["data"] = dataList
 
@@ -1294,6 +1355,19 @@ object Mining {
                                             Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
                                         Collections.sort(dataList, cmpAsc)
 
+                                        if(dataList.size != 0){
+                                            if(DBDate.getToday(dataList[dataList.size -1].date) - DBDate.getYesterday(dataList[dataList.size -1].date) == 1){
+                                                JoaraRef["numberDiff"] = calculateNumDiff(i, dataList[dataList.size -1].number).num
+                                                JoaraRef["status"] = calculateNumDiff(i, dataList[dataList.size -1].number).status
+                                            } else {
+                                                JoaraRef["numberDiff"] = 0
+                                                JoaraRef["status"] = "NEW"
+                                            }
+                                        } else {
+                                            JoaraRef["numberDiff"] = 0
+                                            JoaraRef["status"] = "NEW"
+                                        }
+
                                         JoaraRef["trophyCount"] = dataList.size
 
                                         JoaraRef["writerName"] = books[i].writerName
@@ -1306,11 +1380,7 @@ object Mining {
                                         JoaraRef["info4"] = "선호작 수 : " + books[i].cntFavorite
                                         JoaraRef["info5"] = "추천 수 : " + books[i].cntRecom
                                         JoaraRef["number"] = i
-                                        JoaraRef["numberDiff"] =
-                                            calculateNum(i, books[i].subject, itemsYesterday).num
                                         JoaraRef["date"] = DBDate.DateMMDD()
-                                        JoaraRef["status"] =
-                                            calculateNum(i, books[i].subject, itemsYesterday).status
                                         JoaraRef["type"] = "Joara Premium"
                                         JoaraRef["data"] = dataList
 
@@ -1435,6 +1505,19 @@ object Mining {
 
                                         JoaraRef["trophyCount"] = dataList.size
 
+                                        if(dataList.size != 0){
+                                            if(DBDate.getToday(dataList[dataList.size -1].date) - DBDate.getYesterday(dataList[dataList.size -1].date) == 1){
+                                                JoaraRef["numberDiff"] = calculateNumDiff(i, dataList[dataList.size -1].number).num
+                                                JoaraRef["status"] = calculateNumDiff(i, dataList[dataList.size -1].number).status
+                                            } else {
+                                                JoaraRef["numberDiff"] = 0
+                                                JoaraRef["status"] = "NEW"
+                                            }
+                                        } else {
+                                            JoaraRef["numberDiff"] = 0
+                                            JoaraRef["status"] = "NEW"
+                                        }
+
                                         JoaraRef["writerName"] = books[i].writerName
                                         JoaraRef["subject"] = books[i].subject
                                         JoaraRef["bookImg"] = books[i].bookImg
@@ -1445,11 +1528,7 @@ object Mining {
                                         JoaraRef["info4"] = "선호작 수 : " + books[i].cntFavorite
                                         JoaraRef["info5"] = "추천 수 : " + books[i].cntRecom
                                         JoaraRef["number"] = i
-                                        JoaraRef["numberDiff"] =
-                                            calculateNum(i, books[i].subject, itemsYesterday).num
                                         JoaraRef["date"] = DBDate.DateMMDD()
-                                        JoaraRef["status"] =
-                                            calculateNum(i, books[i].subject, itemsYesterday).status
                                         JoaraRef["type"] = "Joara Nobless"
                                         JoaraRef["data"] = dataList
 
@@ -1572,6 +1651,19 @@ object Mining {
 
                                                 MoonpiaRef["trophyCount"] = dataList.size
 
+                                                if(dataList.size != 0){
+                                                    if(DBDate.getToday(dataList[dataList.size -1].date) - DBDate.getYesterday(dataList[dataList.size -1].date) == 1){
+                                                        MoonpiaRef["numberDiff"] = calculateNumDiff(i, dataList[dataList.size -1].number).num
+                                                        MoonpiaRef["status"] = calculateNumDiff(i, dataList[dataList.size -1].number).status
+                                                    } else {
+                                                        MoonpiaRef["numberDiff"] = 0
+                                                        MoonpiaRef["status"] = "NEW"
+                                                    }
+                                                } else {
+                                                    MoonpiaRef["numberDiff"] = 0
+                                                    MoonpiaRef["status"] = "NEW"
+                                                }
+
                                                 MoonpiaRef["writerName"] = it[i].author
                                                 MoonpiaRef["subject"] = it[i].nvTitle
                                                 MoonpiaRef["bookImg"] =
@@ -1585,10 +1677,6 @@ object Mining {
                                                 MoonpiaRef["number"] = i
                                                 MoonpiaRef["date"] = DBDate.DateMMDD()
                                                 MoonpiaRef["type"] = "Munpia"
-                                                MoonpiaRef["numberDiff"] =
-                                                    calculateNum(i, it[i].nvTitle, itemsYesterday).num
-                                                MoonpiaRef["status"] =
-                                                    calculateNum(i, it[i].nvTitle, itemsYesterday).status
                                                 MoonpiaRef["data"] = dataList
 
                                                 miningValue(MoonpiaRef, i, "Munpia", "")
@@ -1710,6 +1798,19 @@ object Mining {
 
                                             ToksodaRef["trophyCount"] = dataList.size
 
+                                            if(dataList.size != 0){
+                                                if(DBDate.getToday(dataList[dataList.size -1].date) - DBDate.getYesterday(dataList[dataList.size -1].date) == 1){
+                                                    ToksodaRef["numberDiff"] = calculateNumDiff(i, dataList[dataList.size -1].number).num
+                                                    ToksodaRef["status"] = calculateNumDiff(i, dataList[dataList.size -1].number).status
+                                                } else {
+                                                    ToksodaRef["numberDiff"] = 0
+                                                    ToksodaRef["status"] = "NEW"
+                                                }
+                                            } else {
+                                                ToksodaRef["numberDiff"] = 0
+                                                ToksodaRef["status"] = "NEW"
+                                            }
+
                                             ToksodaRef["writerName"] = it[i].athrnm
                                             ToksodaRef["subject"] = it[i].wrknm
                                             ToksodaRef["bookImg"] = "https:${it[i].imgPath}"
@@ -1722,10 +1823,6 @@ object Mining {
                                             ToksodaRef["number"] = i
                                             ToksodaRef["date"] = DBDate.DateMMDD()
                                             ToksodaRef["type"] = "Toksoda"
-                                            ToksodaRef["numberDiff"] =
-                                                calculateNum(i, it[i].wrknm, itemsYesterday).num
-                                            ToksodaRef["status"] =
-                                                calculateNum(i, it[i].wrknm, itemsYesterday).status
                                             ToksodaRef["data"] = dataList
 
                                             miningValue(

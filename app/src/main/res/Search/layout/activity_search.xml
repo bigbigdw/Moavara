@@ -1,51 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:gravity="center_vertical"
-        android:paddingStart="16dp"
-        android:paddingRight="16dp">
+
 
         <EditText
             android:id="@+id/etext_search"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
             android:ems="10"
             android:hint="@string/Search_Text1"
             android:imeOptions="actionSearch"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            tools:layout_conversion_absoluteHeight="24dp"
+            tools:layout_editor_absoluteY="18dp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_conversion_absoluteWidth="379dp" />
 
-    </LinearLayout>
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/post_tab"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#4971EF"
-        app:itemBackground="@android:color/transparent"
-        app:itemIconTint="#00d180"
-        app:itemTextColor="#0df0df"
-        app:tabGravity="start"
-        app:tabIndicatorColor="#A5C500"
-        app:tabMode="scrollable"
-        app:tabSelectedTextColor="#A5C500"
-        app:tabTextColor="#ffffff">
-
-    </com.google.android.material.tabs.TabLayout>
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/view_pager"
+    <LinearLayout
+        android:id="@+id/viewFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:orientation="horizontal"></LinearLayout>
+
 
 </LinearLayout>
