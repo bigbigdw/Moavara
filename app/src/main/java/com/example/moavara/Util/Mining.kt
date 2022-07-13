@@ -190,31 +190,17 @@ object Mining {
                                 for (weekItem in dataSnapshot.children) {
                                     val group: BookListDataBestToday? = weekItem.getValue(BookListDataBestToday::class.java)
                                     if (group!!.title == title) {
-                                        if(group.number == 0){
-                                            dataList.add(
-                                                BookListDataBestAnalyze(
-                                                    group.info2,
-                                                    group.info3,
-                                                    group.info4,
-                                                    i,
-                                                    calculateNum(i, title, itemsYesterday).num,
-                                                    group.date,
-                                                    group.trophyCount,
-                                                )
+                                        dataList.add(
+                                            BookListDataBestAnalyze(
+                                                group.info3,
+                                                group.info4,
+                                                group.info5,
+                                                group.number,
+                                                group.numberDiff,
+                                                group.date,
+                                                group.trophyCount,
                                             )
-                                        } else {
-                                            dataList.add(
-                                                BookListDataBestAnalyze(
-                                                    group.info2,
-                                                    group.info3,
-                                                    group.info4,
-                                                    group.number,
-                                                    group.numberDiff,
-                                                    group.date,
-                                                    group.trophyCount,
-                                                )
-                                            )
-                                        }
+                                        )
                                     }
                                 }
 
@@ -325,31 +311,17 @@ object Mining {
                                 for (weekItem in dataSnapshot.children) {
                                     val group: BookListDataBestToday? = weekItem.getValue(BookListDataBestToday::class.java)
                                     if (group!!.title == title) {
-                                        if(group.number == 0){
-                                            dataList.add(
-                                                BookListDataBestAnalyze(
-                                                    group.info2,
-                                                    group.info3,
-                                                    group.info4,
-                                                    i,
-                                                    calculateNum(i, title, itemsYesterday).num,
-                                                    group.date,
-                                                    group.trophyCount,
-                                                )
+                                        dataList.add(
+                                            BookListDataBestAnalyze(
+                                                group.info3,
+                                                group.info4,
+                                                group.info5,
+                                                group.number,
+                                                group.numberDiff,
+                                                group.date,
+                                                group.trophyCount,
                                             )
-                                        } else {
-                                            dataList.add(
-                                                BookListDataBestAnalyze(
-                                                    group.info2,
-                                                    group.info3,
-                                                    group.info4,
-                                                    group.number,
-                                                    group.numberDiff,
-                                                    group.date,
-                                                    group.trophyCount,
-                                                )
-                                            )
-                                        }
+                                        )
                                     }
                                 }
 
@@ -457,31 +429,17 @@ object Mining {
                                 for (weekItem in dataSnapshot.children) {
                                     val group: BookListDataBestToday? = weekItem.getValue(BookListDataBestToday::class.java)
                                     if (group!!.title == title) {
-                                        if(group.number == 0){
-                                            dataList.add(
-                                                BookListDataBestAnalyze(
-                                                    group.info2,
-                                                    group.info3,
-                                                    group.info4,
-                                                    i,
-                                                    calculateNum(i, title, itemsYesterday).num,
-                                                    group.date,
-                                                    group.trophyCount,
-                                                )
+                                        dataList.add(
+                                            BookListDataBestAnalyze(
+                                                group.info3,
+                                                group.info4,
+                                                group.info5,
+                                                group.number,
+                                                group.numberDiff,
+                                                group.date,
+                                                group.trophyCount,
                                             )
-                                        } else {
-                                            dataList.add(
-                                                BookListDataBestAnalyze(
-                                                    group.info2,
-                                                    group.info3,
-                                                    group.info4,
-                                                    group.number,
-                                                    group.numberDiff,
-                                                    group.date,
-                                                    group.trophyCount,
-                                                )
-                                            )
-                                        }
+                                        )
                                     }
                                 }
 
@@ -587,31 +545,17 @@ object Mining {
                                     for (weekItem in dataSnapshot.children) {
                                         val group: BookListDataBestToday? = weekItem.getValue(BookListDataBestToday::class.java)
                                         if (group!!.title == title) {
-                                            if(group.number == 0){
-                                                dataList.add(
-                                                    BookListDataBestAnalyze(
-                                                        group.info2,
-                                                        group.info3,
-                                                        "",
-                                                        i,
-                                                        calculateNum(i, title, itemsYesterday).num,
-                                                        group.date,
-                                                        group.trophyCount,
-                                                    )
+                                            dataList.add(
+                                                BookListDataBestAnalyze(
+                                                    group.info3,
+                                                    group.info4,
+                                                    group.info5,
+                                                    group.number,
+                                                    group.numberDiff,
+                                                    group.date,
+                                                    group.trophyCount,
                                                 )
-                                            } else {
-                                                dataList.add(
-                                                    BookListDataBestAnalyze(
-                                                        group.info2,
-                                                        group.info3,
-                                                        "",
-                                                        group.number,
-                                                        group.numberDiff,
-                                                        group.date,
-                                                        group.trophyCount,
-                                                    )
-                                                )
-                                            }
+                                            )
                                         }
                                     }
 
@@ -733,35 +677,17 @@ object Mining {
                                                 for (weekItem in dataSnapshot.children) {
                                                     val group: BookListDataBestToday? = weekItem.getValue(BookListDataBestToday::class.java)
                                                     if (group!!.title == productList[i].prodNm) {
-                                                        if(group.number == 0){
-                                                            dataList.add(
-                                                                BookListDataBestAnalyze(
-                                                                    group.info1,
-                                                                    group.info2,
-                                                                    group.info3,
-                                                                    i,
-                                                                    calculateNum(
-                                                                        i,
-                                                                        productList[i].prodNm,
-                                                                        itemsYesterday
-                                                                    ).num,
-                                                                    group.date,
-                                                                    group.trophyCount,
-                                                                )
+                                                        dataList.add(
+                                                            BookListDataBestAnalyze(
+                                                                group.info3,
+                                                                group.info4,
+                                                                group.info5,
+                                                                group.number,
+                                                                group.numberDiff,
+                                                                group.date,
+                                                                group.trophyCount,
                                                             )
-                                                        } else {
-                                                            dataList.add(
-                                                                BookListDataBestAnalyze(
-                                                                    group.info1,
-                                                                    group.info2,
-                                                                    group.info3,
-                                                                    group.number,
-                                                                    group.numberDiff,
-                                                                    group.date,
-                                                                    group.trophyCount,
-                                                                )
-                                                            )
-                                                        }
+                                                        )
                                                     }
                                                 }
 
@@ -890,31 +816,17 @@ object Mining {
                                             for (weekItem in dataSnapshot.children) {
                                                 val group: BookListDataBestToday? = weekItem.getValue(BookListDataBestToday::class.java)
                                                 if (group!!.title == novel?.title) {
-                                                    if(group.number == 0){
-                                                        dataList.add(
-                                                            BookListDataBestAnalyze(
-                                                                group.info2,
-                                                                group.info3,
-                                                                group.info4,
-                                                                i,
-                                                                calculateNum(i, novel.title, itemsYesterday).num,
-                                                                group.date,
-                                                                group.trophyCount,
-                                                            )
+                                                    dataList.add(
+                                                        BookListDataBestAnalyze(
+                                                            group.info3,
+                                                            group.info4,
+                                                            group.info5,
+                                                            group.number,
+                                                            group.numberDiff,
+                                                            group.date,
+                                                            group.trophyCount,
                                                         )
-                                                    } else {
-                                                        dataList.add(
-                                                            BookListDataBestAnalyze(
-                                                                group.info2,
-                                                                group.info3,
-                                                                group.info4,
-                                                                group.number,
-                                                                group.numberDiff,
-                                                                group.date,
-                                                                group.trophyCount,
-                                                            )
-                                                        )
-                                                    }
+                                                    )
                                                 }
                                             }
 
@@ -1028,31 +940,17 @@ object Mining {
                                             for (weekItem in dataSnapshot.children) {
                                                 val group: BookListDataBestToday? = weekItem.getValue(BookListDataBestToday::class.java)
                                                 if (group!!.title == list[i].title) {
-                                                    if(group.number == 0){
-                                                        dataList.add(
-                                                            BookListDataBestAnalyze(
-                                                                group.info3,
-                                                                group.info4,
-                                                                group.info5,
-                                                                i,
-                                                                calculateNum(i, list[i].title, itemsYesterday).num,
-                                                                group.date,
-                                                                group.trophyCount,
-                                                            )
+                                                    dataList.add(
+                                                        BookListDataBestAnalyze(
+                                                            group.info3,
+                                                            group.info4,
+                                                            group.info5,
+                                                            group.number,
+                                                            group.numberDiff,
+                                                            group.date,
+                                                            group.trophyCount,
                                                         )
-                                                    } else {
-                                                        dataList.add(
-                                                            BookListDataBestAnalyze(
-                                                                group.info2,
-                                                                group.info3,
-                                                                group.info4,
-                                                                group.number,
-                                                                group.numberDiff,
-                                                                group.date,
-                                                                group.trophyCount,
-                                                            )
-                                                        )
-                                                    }
+                                                    )
                                                 }
                                             }
 
@@ -1174,31 +1072,17 @@ object Mining {
                                         for (weekItem in dataSnapshot.children) {
                                             val group: BookListDataBestToday? = weekItem.getValue(BookListDataBestToday::class.java)
                                             if (group!!.title == books[i].subject) {
-                                                if(group.number == 0){
-                                                    dataList.add(
-                                                        BookListDataBestAnalyze(
-                                                            group.info3,
-                                                            group.info4,
-                                                            group.info5,
-                                                            i,
-                                                            calculateNum(i, books[i].subject, itemsYesterday).num,
-                                                            group.date,
-                                                            group.trophyCount,
-                                                        )
+                                                dataList.add(
+                                                    BookListDataBestAnalyze(
+                                                        group.info3,
+                                                        group.info4,
+                                                        group.info5,
+                                                        group.number,
+                                                        group.numberDiff,
+                                                        group.date,
+                                                        group.trophyCount,
                                                     )
-                                                } else {
-                                                    dataList.add(
-                                                        BookListDataBestAnalyze(
-                                                            group.info3,
-                                                            group.info4,
-                                                            group.info5,
-                                                            group.number,
-                                                            group.numberDiff,
-                                                            group.date,
-                                                            group.trophyCount,
-                                                        )
-                                                    )
-                                                }
+                                                )
                                             }
                                         }
 
@@ -1232,7 +1116,7 @@ object Mining {
                                         JoaraRef["info5"] = "추천 수 : " + books[i].cntRecom
                                         JoaraRef["number"] = i
                                         JoaraRef["date"] = DBDate.DateMMDD()
-                                        JoaraRef["type"] = "Joara Premium"
+                                        JoaraRef["type"] = "Joara"
                                         JoaraRef["data"] = dataList
 
                                         miningValue(
@@ -1323,31 +1207,17 @@ object Mining {
                                         for (weekItem in dataSnapshot.children) {
                                             val group: BookListDataBestToday? = weekItem.getValue(BookListDataBestToday::class.java)
                                             if (group!!.title == books[i].subject) {
-                                                if(group.number == 0){
-                                                    dataList.add(
-                                                        BookListDataBestAnalyze(
-                                                            group.info3,
-                                                            group.info4,
-                                                            group.info5,
-                                                            i,
-                                                            calculateNum(i, books[i].subject, itemsYesterday).num,
-                                                            group.date,
-                                                            group.trophyCount,
-                                                        )
+                                                dataList.add(
+                                                    BookListDataBestAnalyze(
+                                                        group.info3,
+                                                        group.info4,
+                                                        group.info5,
+                                                        group.number,
+                                                        group.numberDiff,
+                                                        group.date,
+                                                        group.trophyCount,
                                                     )
-                                                } else {
-                                                    dataList.add(
-                                                        BookListDataBestAnalyze(
-                                                            group.info3,
-                                                            group.info4,
-                                                            group.info5,
-                                                            group.number,
-                                                            group.numberDiff,
-                                                            group.date,
-                                                            group.trophyCount,
-                                                        )
-                                                    )
-                                                }
+                                                )
                                             }
                                         }
 
@@ -1471,31 +1341,17 @@ object Mining {
                                         for (weekItem in dataSnapshot.children) {
                                             val group: BookListDataBestToday? = weekItem.getValue(BookListDataBestToday::class.java)
                                             if (group!!.title == books[i].subject) {
-                                                if(group.number == 0){
-                                                    dataList.add(
-                                                        BookListDataBestAnalyze(
-                                                            group.info3,
-                                                            group.info4,
-                                                            group.info5,
-                                                            i,
-                                                            calculateNum(i, books[i].subject, itemsYesterday).num,
-                                                            group.date,
-                                                            group.trophyCount,
-                                                        )
+                                                dataList.add(
+                                                    BookListDataBestAnalyze(
+                                                        group.info3,
+                                                        group.info4,
+                                                        group.info5,
+                                                        group.number,
+                                                        group.numberDiff,
+                                                        group.date,
+                                                        group.trophyCount,
                                                     )
-                                                } else {
-                                                    dataList.add(
-                                                        BookListDataBestAnalyze(
-                                                            group.info3,
-                                                            group.info4,
-                                                            group.info5,
-                                                            group.number,
-                                                            group.numberDiff,
-                                                            group.date,
-                                                            group.trophyCount,
-                                                        )
-                                                    )
-                                                }
+                                                )
                                             }
                                         }
 
@@ -1617,31 +1473,17 @@ object Mining {
                                                 for (weekItem in dataSnapshot.children) {
                                                     val group: BookListDataBestToday? = weekItem.getValue(BookListDataBestToday::class.java)
                                                     if (group!!.title == it[i].nvTitle) {
-                                                        if(group.number == 0){
-                                                            dataList.add(
-                                                                BookListDataBestAnalyze(
-                                                                    group.info3,
-                                                                    group.info4,
-                                                                    group.info5,
-                                                                    i,
-                                                                    calculateNum(i, it[i].nvTitle, itemsYesterday).num,
-                                                                    group.date,
-                                                                    group.trophyCount,
-                                                                )
+                                                        dataList.add(
+                                                            BookListDataBestAnalyze(
+                                                                group.info3,
+                                                                group.info4,
+                                                                group.info5,
+                                                                group.number,
+                                                                group.numberDiff,
+                                                                group.date,
+                                                                group.trophyCount,
                                                             )
-                                                        } else {
-                                                            dataList.add(
-                                                                BookListDataBestAnalyze(
-                                                                    group.info3,
-                                                                    group.info4,
-                                                                    group.info5,
-                                                                    group.number,
-                                                                    group.numberDiff,
-                                                                    group.date,
-                                                                    group.trophyCount,
-                                                                )
-                                                            )
-                                                        }
+                                                        )
                                                     }
                                                 }
 
@@ -1764,31 +1606,17 @@ object Mining {
                                             for (weekItem in dataSnapshot.children) {
                                                 val group: BookListDataBestToday? = weekItem.getValue(BookListDataBestToday::class.java)
                                                 if (group!!.title == it[i].wrknm) {
-                                                    if(group.number == 0){
-                                                        dataList.add(
-                                                            BookListDataBestAnalyze(
-                                                                group.info3,
-                                                                group.info4,
-                                                                group.info5,
-                                                                i,
-                                                                calculateNum(i, it[i].wrknm, itemsYesterday).num,
-                                                                group.date,
-                                                                group.trophyCount,
-                                                            )
+                                                    dataList.add(
+                                                        BookListDataBestAnalyze(
+                                                            group.info3,
+                                                            group.info4,
+                                                            group.info5,
+                                                            group.number,
+                                                            group.numberDiff,
+                                                            group.date,
+                                                            group.trophyCount,
                                                         )
-                                                    } else {
-                                                        dataList.add(
-                                                            BookListDataBestAnalyze(
-                                                                group.info3,
-                                                                group.info4,
-                                                                group.info5,
-                                                                group.number,
-                                                                group.numberDiff,
-                                                                group.date,
-                                                                group.trophyCount,
-                                                            )
-                                                        )
-                                                    }
+                                                    )
                                                 }
                                             }
 
@@ -1853,15 +1681,15 @@ object Mining {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val bestDao: DataBaseBestDay
 
-                    if (platform == "Munpia") {
-                        bestDao = Room.databaseBuilder(
+                    bestDao = if (platform == "Munpia") {
+                        Room.databaseBuilder(
                             context,
                             DataBaseBestDay::class.java,
                             "$platform"
                         ).allowMainThreadQueries().build()
 
                     } else {
-                        bestDao = Room.databaseBuilder(
+                        Room.databaseBuilder(
                             context,
                             DataBaseBestDay::class.java,
                             "$platform $cate"

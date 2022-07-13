@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.moavara.Retrofit.JoaraBoardResult
 import com.example.moavara.Retrofit.RetrofitJoara
 import com.example.moavara.Search.CommunityBoard
@@ -30,6 +31,7 @@ class FragmentBoard :
 
     var status = ""
     var cate = ""
+    var page = 1
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,18 +41,20 @@ class FragmentBoard :
         val view = binding.root
         adapterCommunity = AdapterCommunity(items)
 
-        binding.rviewBest.layoutManager =
+        binding.rview.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        binding.rviewBest.adapter = adapterCommunity
+        binding.rview.adapter = adapterCommunity
 
-        getBoard()
+        getBoard(page)
+        binding.rview.addOnScrollListener(recyclerViewScroll)
 
         return view
     }
 
-    private fun getBoard() {
+    private fun getBoard(page : Int) {
         val param = Param.getItemAPI(context)
         param["board"] = "free"
+        param["page"] = page
 
         val call: Call<JoaraBoardResult> = RetrofitJoara.getBoardListJoa(param)
 
@@ -97,6 +101,16 @@ class FragmentBoard :
             }
         })
 
+    }
+
+    private var recyclerViewScroll: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            if(!recyclerView.canScrollVertically(1)) {
+                page++
+                getBoard(page)
+            }
+        }
     }
 }
 

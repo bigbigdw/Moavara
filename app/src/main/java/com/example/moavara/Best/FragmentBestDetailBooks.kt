@@ -43,9 +43,9 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
         val view = binding.root
         adapterBestOthers = AdapterBestComment(items)
 
-        binding.rviewBest.layoutManager =
+        binding.rview.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        binding.rviewBest.adapter = adapterBestOthers
+        binding.rview.adapter = adapterBestOthers
 
         if(platfrom == "Joara" || platfrom == "Joara Nobless" || platfrom == "Joara Premium"){
             getOthersJoa()

@@ -330,33 +330,6 @@ fun miningValue(ref: MutableMap<String?, Any>, num: Int, platform: String, genre
 
 }
 
-fun calculateNum(
-    num: Int?,
-    title: String?,
-    itemsYesterday: ArrayList<BookListDataBest>
-): CalculNum {
-
-    for (i in itemsYesterday) {
-        if (i.title == title) {
-            when {
-                i.number < num!! -> {
-                    return CalculNum(num - i.number, "DOWN")
-                }
-                i.number > num -> {
-                    return CalculNum(num - i.number, "UP")
-                }
-                i.number == num -> {
-                    return CalculNum(0, "-")
-                }
-                else -> {
-                    return CalculNum(0, "NEW")
-                }
-            }
-        }
-    }
-    return CalculNum(0, "-")
-}
-
 fun calculateNumDiff(
     num: Int,
     numYesterday: Int

@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.example.moavara.Retrofit.*
 import com.example.moavara.Search.EventData
 import com.example.moavara.Util.Genre
@@ -292,9 +291,9 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
 
         for (i in MunpiaWrap.indices) {
 
-            val link = doc.select(".light .entries tbody tr td a").get(i).attr("href")
-            val imgfile = doc.select(".light .entries tbody tr a img").get(i).attr("src")
-            val title = doc.select(".light .entries .subject td a").get(i).text()
+            val link = doc.select(".light .entries tbody tr td a")[i].attr("href")
+            val imgfile = doc.select(".light .entries tbody tr a img")[i].attr("src")
+            val title = doc.select(".light .entries .subject td a")[i].text()
 
             requireActivity().runOnUiThread {
                 if (i % 2 != 1) {

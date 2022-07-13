@@ -1,5 +1,12 @@
 package com.example.moavara.Community
 
+import android.graphics.Color
+import android.graphics.Typeface
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +15,7 @@ import com.bumptech.glide.Glide
 import com.example.moavara.R
 import com.example.moavara.Search.CommunityBoard
 import com.example.moavara.databinding.ItemCommunityBinding
-import java.util.ArrayList
+
 
 class AdapterCommunity(items: List<CommunityBoard?>?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -40,12 +47,38 @@ class AdapterCommunity(items: List<CommunityBoard?>?) :
                     .circleCrop()
                     .into(holder.binding.iView)
 
-                holder.binding.tviewTitle.text = item.title
+                if(item.title.contains("조아라")){
+                    val title = SpannableStringBuilder(item.title)
+                    title.applyingTextColor(
+                        "조아라",
+                        "#844DF3"
+                    )
+                    holder.binding.tviewTitle.text = title
+                } else {
+                    holder.binding.tviewTitle.text = item.title
+                }
+
                 holder.binding.tviewDate.text = item.date
             }
 
         }
     }
+
+    /**
+     * 텍스트 문자중 일부를 컬러 텍스트로 변경
+     * @param str 변경 문자
+     * @param color 변경할 색
+     * */
+    fun SpannableStringBuilder.applyingTextColor(str: String, color: String) {
+        this.setSpan(
+
+            ForegroundColorSpan(Color.parseColor(color)),
+            indexOf(str),
+            indexOf(str) + str.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+    }
+
 
     override fun getItemCount(): Int {
         return if (holder == null) 0 else holder!!.size
