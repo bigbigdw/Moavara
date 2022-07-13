@@ -1,6 +1,5 @@
 package com.example.moavara.Retrofit
 
-import com.example.moavara.ETC.HELPER
 import com.example.moavara.Retrofit.Api.ApiOneStory
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -11,7 +10,7 @@ class RetrofitOnestore {
 
     fun getBestOneStore(categoryId : String? ): Call<OneStoreBookResult?>? {
         return Retrofit.Builder()
-            .baseUrl(HELPER.API_ONESTORE)
+            .baseUrl("https://onestory.co.kr")
             .addConverterFactory(GsonConverterFactory.create()).build()
             .create(ApiOneStory::class.java)
             .getRetrofit(

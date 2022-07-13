@@ -1,6 +1,5 @@
 package com.example.moavara.Retrofit
 
-import com.example.moavara.ETC.HELPER
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -16,7 +15,7 @@ class RetrofitKaKao {
         categoryUid: Int?,
     ): Call<SearchResultKakao?>? {
         return Retrofit.Builder()
-            .baseUrl(HELPER.API_KAKAO)
+            .baseUrl("https://api2-page.kakao.com")
             .addConverterFactory(GsonConverterFactory.create()).build()
             .create(ServiceSearchKakao::class.java)
             .postRetrofit(
@@ -35,7 +34,7 @@ class RetrofitKaKao {
         bm: String?,
     ): Call<BestResultKakao?>? {
         return Retrofit.Builder()
-            .baseUrl(HELPER.API_KAKAO)
+            .baseUrl("https://api2-page.kakao.com")
             .addConverterFactory(GsonConverterFactory.create()).build()
             .create(KaKaoBestService::class.java)
             .getRetrofit(

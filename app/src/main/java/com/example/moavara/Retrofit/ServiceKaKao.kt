@@ -1,13 +1,12 @@
 package com.example.moavara.Retrofit
 
-import com.example.moavara.ETC.API
 import retrofit2.Call
 import retrofit2.http.*
 
 
 //카카오 베스트
 interface KaKaoBestService {
-    @GET(API.BEST_BOOK_KAKAO)
+    @GET("/api/v2/store/day_of_week_top/list")
     fun getRetrofit(
         @Query("category") category: String?,
         @Query("subcategory") subcategory: String?,

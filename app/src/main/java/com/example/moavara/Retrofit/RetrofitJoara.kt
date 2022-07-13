@@ -1,9 +1,5 @@
 package com.example.moavara.Retrofit
 
-import com.example.moavara.ETC.HELPER
-import retrofit2.Call
-import retrofit2.converter.gson.GsonConverterFactory
-
 class RetrofitJoara {
     private val apiJoara = Retrofit.apiJoara
 
