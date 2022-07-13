@@ -3,7 +3,6 @@ package com.example.moavara.Event
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,13 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moavara.Retrofit.*
 import com.example.moavara.Search.EventData
 import com.example.moavara.Util.Genre
+import com.example.moavara.Util.Param
 import com.example.moavara.databinding.FragmentEventTabBinding
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.util.*
 
 class FragmentEventTab(private val tabType: String) : Fragment() {
@@ -105,60 +102,54 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
 
     private fun getEventJoara() {
 
-        val call: Call<JoaraEventResult?>? =
-            RetrofitJoara.getJoaraEvent("0", "app_home_top_banner", "0")
+        val apiJoara = RetrofitJoara()
+        val param = Param.getItemAPI(context)
+        param["page"] = "0"
+        param["banner_type"] = "app_home_top_banner"
+        param["category"] = "0"
 
-        call!!.enqueue(object : Callback<JoaraEventResult?> {
-            override fun onResponse(
-                call: Call<JoaraEventResult?>,
-                response: Response<JoaraEventResult?>
-            ) {
+        apiJoara.getJoaraEvent(
+            param,
+            object : RetrofitDataListener<JoaraEventResult> {
+                override fun onSuccess(it: JoaraEventResult) {
 
-                if (response.isSuccessful) {
-                    response.body()?.let { it ->
-                        val banner = it.banner
+                    val banner = it.banner
 
-                        for (i in banner!!.indices) {
+                    for (i in banner!!.indices) {
 
-                            val idx = banner[i].joaralink
-                            val imgfile = banner[i].imgfile
+                        val idx = banner[i].joaralink
+                        val imgfile = banner[i].imgfile
 
 
-                            if (i % 2 == 1) {
-                                itemsRight.add(
-                                    EventData(
-                                        idx,
-                                        imgfile,
-                                        "",
-                                        "",
-                                        "",
-                                        "Joara"
-                                    )
+                        if (i % 2 == 1) {
+                            itemsRight.add(
+                                EventData(
+                                    idx,
+                                    imgfile,
+                                    "",
+                                    "",
+                                    "",
+                                    "Joara"
                                 )
-                            } else {
-                                itemsLeft.add(
-                                    EventData(
-                                        idx,
-                                        imgfile,
-                                        "",
-                                        "",
-                                        "",
-                                        "Joara"
-                                    )
+                            )
+                        } else {
+                            itemsLeft.add(
+                                EventData(
+                                    idx,
+                                    imgfile,
+                                    "",
+                                    "",
+                                    "",
+                                    "Joara"
                                 )
-                            }
+                            )
                         }
                     }
 
                     adapterLeft.notifyDataSetChanged()
                     adapterRight.notifyDataSetChanged()
                 }
-            }
-
-            override fun onFailure(call: Call<JoaraEventResult?>, t: Throwable) {
-                Log.d("onFailure", "실패")
-            }
-        })
+            })
     }
 
     private fun getEventNaver() {

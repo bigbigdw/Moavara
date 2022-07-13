@@ -1,5 +1,6 @@
-package com.example.moavara.Retrofit
+package com.example.moavara.Retrofit.Api
 
+import com.example.moavara.Retrofit.*
 import retrofit2.Call
 import retrofit2.http.*
 

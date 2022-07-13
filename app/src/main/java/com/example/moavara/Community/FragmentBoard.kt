@@ -3,21 +3,16 @@ package com.example.moavara.Community
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moavara.Retrofit.JoaraBoardResult
-import com.example.moavara.Retrofit.RetrofitJoara
+import com.example.moavara.Retrofit.*
 import com.example.moavara.Search.CommunityBoard
 import com.example.moavara.Util.Param
 import com.example.moavara.databinding.FragmentBestDetailTabsBinding
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.util.ArrayList
 
 class FragmentBoard :
@@ -52,41 +47,31 @@ class FragmentBoard :
     }
 
     private fun getBoard(page : Int) {
+        val apiJoara = RetrofitJoara()
         val param = Param.getItemAPI(context)
         param["board"] = "free"
         param["page"] = page
 
-        val call: Call<JoaraBoardResult> = RetrofitJoara.getBoardListJoa(param)
+        apiJoara.getBoardListJoa(
+            param,
+            object : RetrofitDataListener<JoaraBoardResult> {
+                override fun onSuccess(it: JoaraBoardResult) {
 
-        call.enqueue(object : Callback<JoaraBoardResult?> {
-            override fun onResponse(
-                call: Call<JoaraBoardResult?>,
-                response: Response<JoaraBoardResult?>
-            ) {
-                if (response.isSuccessful) {
-                    response.body()?.let { it ->
-
-                        if (it.status == "1" && it.boards != null) {
-                            for (i in it.boards.indices) {
-                                val date = it.boards[i].created
-                                items.add(
-                                    CommunityBoard(
-                                        it.boards[i].title,
-                                        it.boards[i].nid,
-                                        date.substring(4, 6) + "." + date.substring(6, 8),
-                                    )
+                    if (it.status == "1" && it.boards != null) {
+                        for (i in it.boards.indices) {
+                            val date = it.boards[i].created
+                            items.add(
+                                CommunityBoard(
+                                    it.boards[i].title,
+                                    it.boards[i].nid,
+                                    date.substring(4, 6) + "." + date.substring(6, 8),
                                 )
-                                adapterCommunity!!.notifyDataSetChanged()
-                            }
+                            )
+                            adapterCommunity!!.notifyDataSetChanged()
                         }
                     }
                 }
-            }
-
-            override fun onFailure(call: Call<JoaraBoardResult?>, t: Throwable) {
-                Log.d("onFailure", "실패")
-            }
-        })
+            })
 
         adapterCommunity?.setOnItemClickListener(object : AdapterCommunity.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {

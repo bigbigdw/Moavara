@@ -29,10 +29,18 @@
         android:label=""
         tools:layout="@layout/fragment_best_tab_today" />
 
-    <activity
-        android:id="@+id/ActivityNews"
-        android:name="com.example.moavara.News.ActivityNews"
+<!--    <activity-->
+<!--        android:id="@+id/ActivityNews"-->
+<!--        android:name="com.example.moavara.News.ActivityNews"-->
+<!--        android:label=""-->
+<!--        tools:layout="@layout/activity_news" />-->
+
+    <fragment
+        android:id="@+id/Fragment_EventDetail"
+        android:name="com.example.moavara.Event.FragmentLogin"
         android:label=""
-        tools:layout="@layout/activity_news" />
+        tools:layout="@layout/fragment_best_tab_today" />
+
+
 
 </navigation>

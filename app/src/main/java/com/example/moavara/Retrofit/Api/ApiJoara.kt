@@ -1,12 +1,14 @@
-package com.example.moavara.Retrofit
+package com.example.moavara.Retrofit.Api
 
 import com.example.moavara.ETC.API
 import com.example.moavara.ETC.HELPER
+import com.example.moavara.Retrofit.*
 import retrofit2.Call
 import retrofit2.http.*
 
-//조아라 검색
-interface ServiceSearchJoara {
+
+interface ApiJoara {
+
     @GET("v1/search/query_bc_v2.joa" + HELPER.ETC)
     fun getRetrofit(
         @Query("page") page: Int?,
@@ -15,7 +17,7 @@ interface ServiceSearchJoara {
         @Query("search") search: String?,
         @Query("kind") kind: String?,
         @Query("category") category: String?,
-        @Query("min_chapter") min_chapter: String?,
+        @Query("min_chapter") min_chapter:  String?,
         @Query("max_chapter") max_chapter: String?,
         @Query("interval") interval: String?,
         @Query("orderby") orderby: String?,
@@ -24,32 +26,21 @@ interface ServiceSearchJoara {
         @Query("expr_point") expr_point: String?,
         @Query("score_point") score_point: String?,
     ): Call<JoaraSearchResult?>?
-}
 
-//조아라 이벤트
-//조아라 이벤트 상세
-interface JoaraEventService {
-    @GET(API.EVENT_JOA + HELPER.ETC)
-    fun getRetrofit(
-        @Query("page") page: String?,
-        @Query("banner_type") banner_type: String?,
-        @Query("category") category: String?,
-    ): Call<JoaraEventResult?>?
+    @GET("v1/search/query_bc_v2.joa")
+    fun getSearch(@QueryMap queryMap: MutableMap<String?, Any>): Call<JoaraSearchResult>
 
-    @GET(API.EVENT_DETAIL_JOA + HELPER.ETC)
-    fun getEventDetail(
-        @Query("event_id") event_id: String?,
-    ): Call<JoaraEventDetailResult?>?
+    @GET("v1/banner/home_banner.joa")
+    fun getJoaraEvent(@QueryMap queryMap: MutableMap<String?, Any>): Call<JoaraEventResult>
 
-    @GET(API.NOTICE_DETAIL_JOA + HELPER.ETC)
-    fun getNoticeDetail(
-        @Query("notice_id") notice_id: String?,
-    ): Call<JoaraNoticeDetailResult?>?
-}
+    @GET("v1/board/event_detail.joa")
+    fun getEventDetail(@QueryMap queryMap: MutableMap<String?, Any>): Call<JoaraEventDetailResult>
 
+    @GET("v1/board/notice_detail.joa")
+    fun getNoticeDetail(@QueryMap queryMap: MutableMap<String?, Any>): Call<JoaraNoticeDetailResult>
 
-//조아라 베스트
-interface JoaraBestService {
+    @GET("v1/best/book.joa")
+    fun getJoaraBookBest(@QueryMap queryMap: MutableMap<String?, Any>): Call<JoaraBestListResult>
 
     @GET("v1/book/detail.joa")
     fun getBookDetail(@QueryMap queryMap: MutableMap<String?, Any>): Call<JoaraBestDetailResult>
@@ -62,5 +53,5 @@ interface JoaraBestService {
 
     @GET("v1/board/board_list.joa")
     fun getBoardListJoa(@QueryMap queryMap: MutableMap<String?, Any>): Call<JoaraBoardResult>
-}
 
+}

@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,13 +14,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.moavara.Main.mRootRef
-import com.example.moavara.Retrofit.JoaraEventDetailResult
-import com.example.moavara.Retrofit.JoaraNoticeDetailResult
-import com.example.moavara.Retrofit.RetrofitJoara
 import com.example.moavara.R
+import com.example.moavara.Retrofit.*
 import com.example.moavara.Search.EventData
 import com.example.moavara.Search.UserPickEvent
 import com.example.moavara.Util.Genre
+import com.example.moavara.Util.Param
 import com.example.moavara.databinding.BottomDialogEventBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.database.DataSnapshot
@@ -29,9 +27,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class BottomSheetDialogEvent(
     private val mContext: Context,
@@ -209,78 +204,59 @@ class BottomSheetDialogEvent(
         binding.wView.getSettings().setJavaScriptEnabled(true)
 
         if(item.link.contains("joaralink://event?event_id=")){
-            val call: Call<JoaraEventDetailResult?>? =
-                RetrofitJoara.getJoaraEventDetail(
-                    item.link.replace(
-                        "joaralink://event?event_id=",
-                        ""
-                    )
-                )
 
-            call!!.enqueue(object : Callback<JoaraEventDetailResult?> {
-                override fun onResponse(
-                    call: Call<JoaraEventDetailResult?>,
-                    response: Response<JoaraEventDetailResult?>
-                ) {
+            val apiJoara = RetrofitJoara()
+            val param = Param.getItemAPI(context)
+            param["event_id"] = item.link.replace(
+                "joaralink://event?event_id=",
+                ""
+            )
 
-                    if (response.isSuccessful) {
-                        response.body()?.let { it ->
-                            val content = it.event!!.content
+            apiJoara.getJoaraEventDetail(
+                param,
+                object : RetrofitDataListener<JoaraEventDetailResult> {
+                    override fun onSuccess(it: JoaraEventDetailResult) {
+                        val content = it.event!!.content
 
-                            title = it.event.title
+                        title = it.event.title
 
 
-                            binding.wView.loadDataWithBaseURL(
-                                null,
-                                content.replace("http", "https"),
-                                "text/html; charset=utf-8",
-                                "base64",
-                                null
-                            )
-                        }
+                        binding.wView.loadDataWithBaseURL(
+                            null,
+                            content.replace("http", "https"),
+                            "text/html; charset=utf-8",
+                            "base64",
+                            null
+                        )
                     }
-                }
+                })
 
-                override fun onFailure(call: Call<JoaraEventDetailResult?>, t: Throwable) {
-                    Log.d("onFailure", "실패")
-                }
-            })
         } else {
-            val call: Call<JoaraNoticeDetailResult?>? =
-                RetrofitJoara.getJoaraNoticeDetail(
-                    item.link.replace(
-                        "joaralink://notice?notice_id=",
-                        ""
-                    )
-                )
+            val apiJoara = RetrofitJoara()
+            val param = Param.getItemAPI(context)
+            param["notice_id"] = item.link.replace(
+                "joaralink://notice?notice_id=",
+                ""
+            )
 
-            call!!.enqueue(object : Callback<JoaraNoticeDetailResult?> {
-                override fun onResponse(
-                    call: Call<JoaraNoticeDetailResult?>,
-                    response: Response<JoaraNoticeDetailResult?>
-                ) {
+            apiJoara.getNoticeDetail(
+                param,
+                object : RetrofitDataListener<JoaraNoticeDetailResult> {
+                    override fun onSuccess(it: JoaraNoticeDetailResult) {
 
-                    if (response.isSuccessful) {
-                        response.body()?.let { it ->
-                            val content = it.notice!!.content
+                        val content = it.notice!!.content
 
-                            title = it.notice.title
+                        title = it.notice.title
 
-                            binding.wView.loadDataWithBaseURL(
-                                null,
-                                content.replace("<br />", ""),
-                                "text/html; charset=utf-8",
-                                "base64",
-                                null
-                            )
-                        }
+                        binding.wView.loadDataWithBaseURL(
+                            null,
+                            content.replace("<br />", ""),
+                            "text/html; charset=utf-8",
+                            "base64",
+                            null
+                        )
                     }
-                }
-
-                override fun onFailure(call: Call<JoaraNoticeDetailResult?>, t: Throwable) {
-                    Log.d("onFailure", "실패")
-                }
-            })
+                })
         }
 
 

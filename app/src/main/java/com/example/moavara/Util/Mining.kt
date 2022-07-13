@@ -1018,7 +1018,7 @@ object Mining {
 
         val itemsYesterday = ArrayList<BookListDataBest>()
 
-        val apiJoara = RetrofitJoara2()
+        val apiJoara = RetrofitJoara()
         val param = Param.getItemAPI(context)
 
         param["page"] = page.toString()
@@ -1153,7 +1153,7 @@ object Mining {
 
         val itemsYesterday = ArrayList<BookListDataBest>()
 
-        val apiJoara = RetrofitJoara2()
+        val apiJoara = RetrofitJoara()
         val param = Param.getItemAPI(context)
 
         param["page"] = page.toString()
@@ -1287,7 +1287,7 @@ object Mining {
 
         val itemsYesterday = ArrayList<BookListDataBest>()
 
-        val apiJoara = RetrofitJoara2()
+        val apiJoara = RetrofitJoara()
         val param = Param.getItemAPI(context)
 
         param["page"] = page.toString()

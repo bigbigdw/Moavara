@@ -1,12 +1,10 @@
 package com.example.moavara.Best
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -18,9 +16,6 @@ import com.example.moavara.databinding.FragmentBestDetailTabsBinding
 import com.example.moavara.databinding.ItemBestDetailCommentBinding
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.util.ArrayList
 import java.util.HashMap
 
@@ -68,6 +63,7 @@ class FragmentBestDetailComment(private val platfrom: String, private val bookCo
     }
 
     private fun getCommentsJoara() {
+        val apiJoara = RetrofitJoara()
         val param = Param.getItemAPI(context)
         param["book_code"] = bookCode
         param["category"] = "1"
@@ -75,36 +71,24 @@ class FragmentBestDetailComment(private val platfrom: String, private val bookCo
         param["orderby"] = "redate"
         param["offset"] = "20"
 
-        val call: Call<JoaraBestDetailCommentsResult> = RetrofitJoara.getBookCommentJoa(param)
+        apiJoara.getBookCommentJoa(
+            param,
+            object : RetrofitDataListener<JoaraBestDetailCommentsResult> {
+                override fun onSuccess(it: JoaraBestDetailCommentsResult) {
 
-        call.enqueue(object : Callback<JoaraBestDetailCommentsResult?> {
-            override fun onResponse(
-                call: Call<JoaraBestDetailCommentsResult?>,
-                response: Response<JoaraBestDetailCommentsResult?>
-            ) {
-                if (response.isSuccessful) {
-                    response.body()?.let { it ->
-
-                        if (it.status == "1" && it.comments != null) {
-                            for (i in it.comments.indices) {
-                                items.add(
-                                    BestComment(
-                                        it.comments[i].comment,
-                                        it.comments[i].created,
-                                    )
+                    if (it.status == "1" && it.comments != null) {
+                        for (i in it.comments.indices) {
+                            items.add(
+                                BestComment(
+                                    it.comments[i].comment,
+                                    it.comments[i].created,
                                 )
-                            }
-                            adapterBestComment!!.notifyDataSetChanged()
+                            )
                         }
+                        adapterBestComment!!.notifyDataSetChanged()
                     }
                 }
-            }
-
-            override fun onFailure(call: Call<JoaraBestDetailCommentsResult?>, t: Throwable) {
-                Log.d("onFailure", "실패")
-            }
-        })
-
+            })
     }
 
     private fun getCommentsKakao() {

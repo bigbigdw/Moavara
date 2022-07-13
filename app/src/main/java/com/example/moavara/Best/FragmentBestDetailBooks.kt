@@ -1,7 +1,6 @@
 package com.example.moavara.Best
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,17 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.BookListDataBestToday
 import com.example.moavara.Retrofit.*
-import com.example.moavara.Util.Param
+import com.example.moavara.Util.*
 import com.example.moavara.databinding.FragmentBestDetailTabsBinding
 import com.example.moavara.databinding.ItemBestDetailOtherBinding
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.util.ArrayList
-import java.util.HashMap
+import java.util.*
 
 class FragmentBestDetailBooks(private val platfrom: String, private val bookCode: String) :
     Fragment() {
@@ -61,53 +56,42 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
     }
 
     private fun getOthersJoa() {
+        val apiJoara = RetrofitJoara()
         val param = Param.getItemAPI(context)
         param["book_code"] = bookCode
         param["category"] = "1"
         param["orderby"] = "redate"
         param["offset"] = "25"
 
-        val call: Call<JoaraBestListResult> = RetrofitJoara.getBookOtherJoa(param)
+        apiJoara.getBookOtherJoa(
+            param,
+            object : RetrofitDataListener<JoaraBestListResult> {
+                override fun onSuccess(data: JoaraBestListResult) {
 
-        call.enqueue(object : Callback<JoaraBestListResult?> {
-            override fun onResponse(
-                call: Call<JoaraBestListResult?>,
-                response: Response<JoaraBestListResult?>
-            ) {
-                if (response.isSuccessful) {
-                    response.body()?.let { it ->
-
-                        if(it.bookLists != null){
-                            for(i in it.bookLists.indices){
-                                items.add(
-                                    BookListDataBestToday(
-                                        it.bookLists[i].writerName,
-                                        it.bookLists[i].subject,
-                                        it.bookLists[i].bookImg,
-                                        it.bookLists[i].bookCode,
-                                        "줄거리 : " + it.bookLists[i].intro,
-                                        "총 " + it.bookLists[i].cntChapter + " 화",
-                                        "조회 수 : " + it.bookLists[i].cntPageRead,
-                                        "선호작 수 : " + it.bookLists[i].cntFavorite,
-                                        "추천 수 : " + it.bookLists[i].cntRecom,
-                                        0,
-                                        0,
-                                        "",
-                                        ""
-                                    )
+                    if(data.bookLists != null){
+                        for(i in data.bookLists.indices){
+                            items.add(
+                                BookListDataBestToday(
+                                    data.bookLists[i].writerName,
+                                    data.bookLists[i].subject,
+                                    data.bookLists[i].bookImg,
+                                    data.bookLists[i].bookCode,
+                                    "줄거리 : " + data.bookLists[i].intro,
+                                    "총 " + data.bookLists[i].cntChapter + " 화",
+                                    "조회 수 : " + data.bookLists[i].cntPageRead,
+                                    "선호작 수 : " + data.bookLists[i].cntFavorite,
+                                    "추천 수 : " + data.bookLists[i].cntRecom,
+                                    0,
+                                    0,
+                                    "",
+                                    ""
                                 )
-                            }
-                            adapterBestOthers!!.notifyDataSetChanged()
+                            )
                         }
+                        adapterBestOthers!!.notifyDataSetChanged()
                     }
                 }
-            }
-
-            override fun onFailure(call: Call<JoaraBestListResult?>, t: Throwable) {
-                Log.d("onFailure", "실패")
-            }
-        })
-
+            })
     }
 
     fun getCommentsNaverToday(){

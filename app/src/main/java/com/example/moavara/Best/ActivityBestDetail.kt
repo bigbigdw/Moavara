@@ -3,7 +3,6 @@ package com.example.moavara.Best
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -25,9 +24,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -229,39 +225,34 @@ class ActivityBestDetail : AppCompatActivity() {
     }
 
     fun setLayoutJoara(){
+        val apiJoara = RetrofitJoara()
         val JoaraRef = Param.getItemAPI(this)
         JoaraRef["book_code"] = bookCode
         JoaraRef["category"] = "1"
 
-        val call: Call<JoaraBestDetailResult> = RetrofitJoara.getBookDetailJoa(JoaraRef)
+        apiJoara.getBookDetailJoa(
+            JoaraRef,
+            object : RetrofitDataListener<JoaraBestDetailResult> {
+                override fun onSuccess(it: JoaraBestDetailResult) {
 
-        call.enqueue(object : Callback<JoaraBestDetailResult?> {
-            override fun onResponse(
-                call: Call<JoaraBestDetailResult?>,
-                response: Response<JoaraBestDetailResult?>
-            ) {
-                if (response.isSuccessful) {
-                    response.body()?.let { it ->
+                    with(binding){
+                        if(it.status == "1" && it.book != null){
+                            Glide.with(context)
+                                .load(it.book.bookImg)
+                                .into(inclueBestDetail.iviewBookCover)
 
-                        with(binding){
-                            if(it.status == "1" && it.book != null){
-                                Glide.with(context)
-                                    .load(it.book.bookImg)
-                                    .into(inclueBestDetail.iviewBookCover)
+                            bookTitle = it.book.subject
+                            chapter = it.book.chapter
 
-                                bookTitle = it.book.subject
-                                chapter = it.book.chapter
+                            inclueBestDetail.tviewTitle.text = bookTitle
+                            inclueBestDetail.tviewWriter.text = it.book.writerName
 
-                                inclueBestDetail.tviewTitle.text = bookTitle
-                                inclueBestDetail.tviewWriter.text = it.book.writerName
+                            inclueBestDetail.tviewInfo1.text = "총 " + it.book.cntChapter + " 화"
+                            inclueBestDetail.tviewInfo2.text =  "선호작 수 : " + it.book.cntFavorite
+                            inclueBestDetail.tviewInfo3.text =  "조회 수 : " + it.book.cntPageRead
+                            inclueBestDetail.tviewInfo4.text =  "추천 수 : " + it.book.cntRecom
 
-                                inclueBestDetail.tviewInfo1.text = "총 " + it.book.cntChapter + " 화"
-                                inclueBestDetail.tviewInfo2.text =  "선호작 수 : " + it.book.cntFavorite
-                                inclueBestDetail.tviewInfo3.text =  "조회 수 : " + it.book.cntPageRead
-                                inclueBestDetail.tviewInfo4.text =  "추천 수 : " + it.book.cntRecom
-
-                                tviewIntro.text =  it.book.intro
-                            }
+                            tviewIntro.text =  it.book.intro
                         }
                     }
 
@@ -270,12 +261,7 @@ class ActivityBestDetail : AppCompatActivity() {
                         replace(R.id.llayoutWrap, mFragmentBestDetailComment)
                     }
                 }
-            }
-
-            override fun onFailure(call: Call<JoaraBestDetailResult?>, t: Throwable) {
-                Log.d("onFailure", "실패")
-            }
-        })
+            })
     }
 
     fun setLayoutNaverToday(){

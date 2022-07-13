@@ -56,7 +56,7 @@ class ActivityAdmin : AppCompatActivity() {
             .build()
 
         /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
-        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(1, TimeUnit.HOURS)
+        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(30, TimeUnit.MINUTES)
             .setConstraints(mConstraints)
             .build()
 
@@ -110,19 +110,19 @@ class ActivityAdmin : AppCompatActivity() {
                     if(it.value != null && it.value != "NULL"){
 
                         if(it.value == "ALL"){
-                            Mining.runMining(this@ActivityAdmin, "ALL")
+                            Mining.runMining(applicationContext, "ALL")
                             Toast.makeText(applicationContext, "장르 : 전체", Toast.LENGTH_SHORT).show()
                             miningRef.setValue("BL")
                         } else if (it.value == "BL") {
-                            Mining.runMining(this@ActivityAdmin, "BL")
+                            Mining.runMining(applicationContext, "BL")
                             Toast.makeText(applicationContext, "장르 : BL", Toast.LENGTH_SHORT).show()
                             miningRef.setValue("FANTASY")
                         } else if (it.value == "FANTASY") {
-                            Mining.runMining(this@ActivityAdmin, "FANTASY")
+                            Mining.runMining(applicationContext, "FANTASY")
                             Toast.makeText(applicationContext, "장르 : 판타지", Toast.LENGTH_SHORT).show()
                             miningRef.setValue("ROMANCE")
                         } else if (it.value == "ROMANCE") {
-                            Mining.runMining(this@ActivityAdmin, "ROMANCE")
+                            Mining.runMining(applicationContext, "ROMANCE")
                             Toast.makeText(applicationContext, "장르 : 로맨스", Toast.LENGTH_SHORT).show()
                             miningRef.setValue("ALL")
                         }
@@ -534,27 +534,27 @@ class ActivityAdmin : AppCompatActivity() {
             }
 
             llayoutBtn7.setOnClickListener {
-                Toast.makeText(this@ActivityAdmin, "푸시 푸시 베이베", Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "푸시 푸시 베이베", Toast.LENGTH_SHORT).show()
                 postFCM()
             }
 
             llayoutBtn8.setOnClickListener {
-                Mining.runMining(this@ActivityAdmin, "ALL")
+                Mining.runMining(applicationContext, "ALL")
                 Toast.makeText(applicationContext, "장르 : 전체", Toast.LENGTH_SHORT).show()
             }
 
             llayoutBtn9.setOnClickListener {
-                Mining.runMining(this@ActivityAdmin, "FANTASY")
+                Mining.runMining(applicationContext, "FANTASY")
                 Toast.makeText(applicationContext, "장르 : 판타지", Toast.LENGTH_SHORT).show()
             }
 
             llayoutBtn10.setOnClickListener {
-                Mining.runMining(this@ActivityAdmin, "BL")
+                Mining.runMining(applicationContext, "BL")
                 Toast.makeText(applicationContext, "장르 : BL", Toast.LENGTH_SHORT).show()
             }
 
             llayoutBtn11.setOnClickListener {
-                Mining.runMining(this@ActivityAdmin, "ROMANCE")
+                Mining.runMining(applicationContext, "ROMANCE")
                 Toast.makeText(applicationContext, "장르 : 로맨스", Toast.LENGTH_SHORT).show()
             }
         }

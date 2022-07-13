@@ -33,7 +33,7 @@ class ActivityNews : AppCompatActivity() {
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
-        Objects.requireNonNull(supportActionBar)!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         adapter = AdapterNews(items)
 
@@ -58,7 +58,7 @@ class ActivityNews : AppCompatActivity() {
                             "조아라 유튜브 개설에 대한 이야기가 한 번 씩 있었는데요.(신입 지원자들 이력서에도) 여러가지 현실적으로 힘든 점은 있겠지만, 고민해봐야할 부분인 것 같습니다.",
                 )
             )
-            adapter!!.notifyDataSetChanged()
+            adapter.notifyDataSetChanged()
         }
 
 

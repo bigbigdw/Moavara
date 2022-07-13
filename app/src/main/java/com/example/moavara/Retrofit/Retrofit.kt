@@ -1,6 +1,7 @@
 package com.example.moavara.Retrofit
 
 import com.example.moavara.ETC.HELPER
+import com.example.moavara.Retrofit.Api.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

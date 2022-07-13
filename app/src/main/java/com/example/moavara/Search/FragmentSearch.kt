@@ -8,15 +8,11 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moavara.Retrofit.JoaraSearchResult
-import com.example.moavara.Retrofit.RetrofitJoara
-import com.example.moavara.Retrofit.RetrofitKaKao
-import com.example.moavara.Retrofit.SearchResultKakao
 import com.example.moavara.R
-import com.example.moavara.Util.TabViewModel
+import com.example.moavara.Retrofit.*
+import com.example.moavara.Util.Param
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -75,72 +71,82 @@ class FragmentSearch : Fragment() {
         return root
     }
 
-    fun searchJoara(page: Int?) {
+    fun searchJoara(page: Int) {
+        val apiJoara = RetrofitJoara()
+        val param = Param.getItemAPI(context)
+        param["page"] = page
+        param["query"] = "사랑"
+        param["collection"] = ""
+        param["search"] = ""
+        param["kind"] = ""
+        param["category"] = ""
+        param["min_chapter"] = ""
+        param["max_chapter"] = ""
+        param["interval"] = ""
+        param["orderby"] = ""
+        param["except_query"] = ""
+        param["except_search"] = ""
+        param["expr_point"] = ""
+        param["score_point"] = "1"
 
-        RetrofitJoara.getSearchJoara(
-            page,"사랑", "", "", "", "", "", "", "", "", "", "", "30|25|25|15|15|15|0.5",
-            "1",
-        )!!.enqueue(object : Callback<JoaraSearchResult?> {
-            override fun onResponse(
-                call: Call<JoaraSearchResult?>,
-                response: Response<JoaraSearchResult?>
-            ) {
-                Log.d("####", "2")
-                test.add("2")
-                Log.d("#######-2", test.toString())
-                if (response.isSuccessful) {
+        apiJoara.getSearchJoara(
+            param,
+            object : RetrofitDataListener<JoaraSearchResult> {
+                override fun onSuccess(it: JoaraSearchResult) {
+
+                    Log.d("####", "2")
+                    test.add("2")
+                    Log.d("#######-2", test.toString())
                     cover!!.visibility = View.GONE
                     blank!!.visibility = View.GONE
 
-                    response.body()?.let { it ->
+                    val books = it.books
+                    val status = it.status
+                    val all = it.joaraSearchTotalCnt?.keyword_cntJoara?.all
+                    val intro = it.joaraSearchTotalCnt?.keyword_cntJoara?.intro
+                    val keyword = it.joaraSearchTotalCnt?.keyword_cntJoara?.keyword
+                    val subject = it.joaraSearchTotalCnt?.keyword_cntJoara?.subject
+                    val writerNickname = it.joaraSearchTotalCnt?.keyword_cntJoara?.subject
 
-                        val books = it.books
-                        val status = it.status
-                        val all = it.joaraSearchTotalCnt?.keyword_cntJoara?.all
-                        val intro = it.joaraSearchTotalCnt?.keyword_cntJoara?.intro
-                        val keyword = it.joaraSearchTotalCnt?.keyword_cntJoara?.keyword
-                        val subject = it.joaraSearchTotalCnt?.keyword_cntJoara?.subject
-                        val writerNickname = it.joaraSearchTotalCnt?.keyword_cntJoara?.subject
+                    if (books != null) {
+                        for (i in books.indices) {
 
-                        if (books != null) {
-                            for (i in books.indices) {
+                            val writerName = books[i].writer_name
+                            val subject = books[i].subject
+                            val bookImg = books[i].book_img
+                            val isAdult = books[i].isAdult
+                            val isFinish = books[i].isFinish
+                            val isPremium = books[i].isPremium
+                            val isNobless = books[i].isNobless
+                            val intro = books[i].intro
+                            val isFavorite = books[i].isFavorite
+                            val cntPageRead = books[i].cntPageRead
+                            val cntRecom = books[i].cntRecom
+                            val cntFavorite = books[i].cntFavorite
+                            val bookCode = books[i].bookCode
+                            val categoryKoName = books[i].categoryKoName
 
-                                val writerName = books[i].writer_name
-                                val subject = books[i].subject
-                                val bookImg = books[i].book_img
-                                val isAdult = books[i].isAdult
-                                val isFinish = books[i].isFinish
-                                val isPremium = books[i].isPremium
-                                val isNobless = books[i].isNobless
-                                val intro = books[i].intro
-                                val isFavorite = books[i].isFavorite
-                                val cntPageRead = books[i].cntPageRead
-                                val cntRecom = books[i].cntRecom
-                                val cntFavorite = books[i].cntFavorite
-                                val bookCode = books[i].bookCode
-                                val categoryKoName = books[i].categoryKoName
-
-                                searchItems.add(
-                                    BookListData(
-                                        "조아라",
-                                        subject,
-                                        bookImg,
-                                        isAdult,
-                                        isFinish,
-                                        isPremium,
-                                        isNobless,
-                                        intro,
-                                        isFavorite,
-                                        cntPageRead,
-                                        cntRecom,
-                                        cntFavorite,
-                                        bookCode,
-                                        categoryKoName
-                                    )
+                            searchItems.add(
+                                BookListData(
+                                    "조아라",
+                                    subject,
+                                    bookImg,
+                                    isAdult,
+                                    isFinish,
+                                    isPremium,
+                                    isNobless,
+                                    intro,
+                                    isFavorite,
+                                    cntPageRead,
+                                    cntRecom,
+                                    cntFavorite,
+                                    bookCode,
+                                    categoryKoName
                                 )
-                            }
+                            )
                         }
                     }
+
                     adapter?.setItems(searchItems)
                     adapter!!.notifyDataSetChanged()
                     if (page == 1) {
@@ -148,12 +154,7 @@ class FragmentSearch : Fragment() {
                         recyclerView!!.adapter = adapter
                     }
                 }
-            }
-
-            override fun onFailure(call: Call<JoaraSearchResult?>, t: Throwable) {
-                Log.d("onFailure", "실패")
-            }
-        })
+            })
     }
 
     fun searchKakao(page: Int?) {
