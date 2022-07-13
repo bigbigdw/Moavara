@@ -14,25 +14,19 @@ import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
-import com.example.moavara.DataBase.BookListDataBest
-import com.example.moavara.DataBase.BookListDataBestAnalyze
-import com.example.moavara.DataBase.BookListDataBestToday
 import com.example.moavara.Firebase.*
 import com.example.moavara.R
 import com.example.moavara.Search.ActivitySearch
 import com.example.moavara.User.ActivityUser
-import com.example.moavara.Util.*
+import com.example.moavara.Util.Genre
+import com.example.moavara.Util.Mining
 import com.example.moavara.databinding.ActivityAdminBinding
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.messaging.FirebaseMessaging
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.ArrayList
 import java.util.concurrent.TimeUnit
 
 class ActivityAdmin : AppCompatActivity() {
@@ -56,7 +50,7 @@ class ActivityAdmin : AppCompatActivity() {
             .build()
 
         /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
-        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(30, TimeUnit.MINUTES)
+        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(1, TimeUnit.HOURS)
             .setConstraints(mConstraints)
             .build()
 
