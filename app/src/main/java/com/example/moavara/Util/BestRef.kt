@@ -40,7 +40,7 @@ object BestRef {
             "원스토리",
             "문피아",
             "톡소다",
-//            "미스터블루"
+            "미스터블루"
         )
     }
 
@@ -58,7 +58,7 @@ object BestRef {
             "OneStore",
             "Munpia",
             "Toksoda",
-//            "MrBlue"
+            "MrBlue"
         )
     }
 

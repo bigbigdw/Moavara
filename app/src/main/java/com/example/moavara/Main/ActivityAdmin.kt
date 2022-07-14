@@ -524,6 +524,7 @@ class ActivityAdmin : AppCompatActivity() {
                         miningRef.setValue("ALL")
                         Toast.makeText(applicationContext, "장르 : 전체", Toast.LENGTH_SHORT).show()
                     }
+
                 }.addOnFailureListener{}
             }
 
@@ -550,6 +551,11 @@ class ActivityAdmin : AppCompatActivity() {
             llayoutBtn11.setOnClickListener {
                 Mining.runMining(applicationContext, "ROMANCE")
                 Toast.makeText(applicationContext, "장르 : 로맨스", Toast.LENGTH_SHORT).show()
+            }
+
+            llayoutBtn12.setOnClickListener {
+                Mining.runMiningEvent(applicationContext)
+                Toast.makeText(applicationContext, "이벤트 최신화", Toast.LENGTH_SHORT).show()
             }
         }
 

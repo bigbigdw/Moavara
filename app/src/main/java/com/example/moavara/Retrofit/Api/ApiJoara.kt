@@ -34,4 +34,13 @@ interface ApiJoara {
     @GET("v1/board/board_list.joa")
     fun getBoardListJoa(@QueryMap queryMap: MutableMap<String?, Any>): Call<JoaraBoardResult>
 
+    @FormUrlEncoded
+    @POST("v1/user/auth.joa")
+    fun postLogin(@FieldMap queryMap: MutableMap<String?, Any>): Call<JoaraLoginResult>
+
+    @GET("v1/board/notice_list.joa")
+    fun getNoticeList(@QueryMap queryMap: MutableMap<String?, Any>): Call<JoaraNoticeResult>
+
+    @GET("v1/board/event.joa")
+    fun getJoaraEventList(@QueryMap queryMap: MutableMap<String?, Any>): Call<JoaraEventsResult>
 }

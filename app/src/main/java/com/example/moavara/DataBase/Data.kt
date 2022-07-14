@@ -4,6 +4,8 @@ import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.DataBase.BookListDataBestAnalyze
 import com.example.moavara.DataBase.BookListDataBestToday
 import com.github.mikephil.charting.data.BarEntry
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 import java.util.ArrayList
 
 
@@ -63,6 +65,20 @@ class BookListDataBestWeekend(
 class CalculNum(
     var num: Int = 0,
     var status: String = ""
+)
+
+class EventDetailData(
+    var title: String = "",
+    var imgFile: String = "",
+    var wDate: String = "",
+    var sDate: String = "",
+    var cntRead: String = "",
+    var chart: BestChart? = null
+)
+
+class EventDetailDataMining(
+    var date: String = "",
+    var cntRead: String = "",
 )
 
 class EventData(

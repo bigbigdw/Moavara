@@ -39,4 +39,16 @@ class RetrofitJoara {
         apiJoara.getSearch(map).enqueue(baseCallback(dataListener))
     }
 
+    fun postLogin(map: MutableMap<String?, Any>, dataListener: RetrofitDataListener<JoaraLoginResult>) {
+        apiJoara.postLogin(map).enqueue(baseCallback(dataListener))
+    }
+
+    fun getNoticeList(map: MutableMap<String?, Any>, dataListener: RetrofitDataListener<JoaraNoticeResult>) {
+        apiJoara.getNoticeList(map).enqueue(baseCallback(dataListener))
+    }
+
+    fun getJoaraEventList(map: MutableMap<String?, Any>, dataListener: RetrofitDataListener<JoaraEventsResult>) {
+        apiJoara.getJoaraEventList(map).enqueue(baseCallback(dataListener))
+    }
+
 }

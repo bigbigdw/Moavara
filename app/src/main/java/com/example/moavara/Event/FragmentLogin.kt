@@ -11,7 +11,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.moavara.DataBase.BookListDataBestToday
+import com.example.moavara.Main.ActivityMain
+import com.example.moavara.Retrofit.JoaraBestListResult
+import com.example.moavara.Retrofit.JoaraLoginResult
+import com.example.moavara.Retrofit.RetrofitDataListener
+import com.example.moavara.Retrofit.RetrofitJoara
+import com.example.moavara.Util.Param
 import com.example.moavara.databinding.FragmentLoginBinding
+import com.facebook.login.LoginResult
 import retrofit2.Call
 import retrofit2.Callback
 import java.util.*
@@ -76,70 +84,36 @@ class FragmentLogin: Fragment() {
                 val idCheck = IDtext.editText?.text.toString()
                 val pwCheck = PWtext.editText?.text.toString()
 
-//                RetrofitObject.postLogin(idCheck,pwCheck, this)!!.enqueue(object :
-//                    Callback<LoginResult?> {
-//                    override fun onResponse(
-//                        call: Call<LoginResult?>,
-//                        response: retrofit2.Response<LoginResult?>
-//                    ) {
-//                        if (response.isSuccessful) {
-//
-//                            response.body()?.let { it ->
-//                                val status = it.status
-//                                val message = it.message
-//                                val nickname = it.user?.nickname
-//                                val token = it.user?.token
-//                                val mana = it.user?.mana
-//                                val expireCash = it.user?.expireCash
-//                                val cash = it.user?.cash
-//                                val manuscriptCoupon = it.user?.manuscriptCoupon
-//                                val supportCoupon = it.user?.supportCoupon
-//                                val memberId = it.user?.memberId
-//                                val profile = it.user?.profile
-//                                val grade = it.user?.grade
-//
-//                                if(status.equals("1")){
-//
-//                                    savePreferences("TOKEN", token!!)
-//                                    savePreferences("NICKNAME", nickname!!)
-//                                    savePreferences("MANA", mana!!)
-//                                    savePreferences("EXPIRECASH", expireCash!!)
-//                                    savePreferences("CASH", cash!!)
-//                                    savePreferences("MANUSCRIPTCOUPON", manuscriptCoupon!!)
-//                                    savePreferences("SUPPORTCOUPON", supportCoupon!!)
-//                                    savePreferences("MEMBERID", memberId!!)
-//                                    savePreferences("STATUS", status!!)
-//                                    savePreferences("PROFILEIMG", profile!!)
-//                                    savePreferences("GRADE", grade!!)
-//
-//                                    val intent = Intent(context, ActivityMain::class.java)
-//                                    intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-//                                    startActivityIfNeeded(intent, 0)
-//                                    finish()
-//
-//                                } else {
-//                                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-//                                }
-//                            }
-//                        } else {
-//                            Toast.makeText(context, "로그인에 실패하였습니다", Toast.LENGTH_SHORT).show()
-//                        }
-//                    }
-//
-//                    override fun onFailure(call: Call<LoginResult?>, t: Throwable) {
-//                        Toast.makeText(applicationContext, loginFailMsg, Toast.LENGTH_SHORT).show()
-//                    }
-//                })
+                val apiJoara = RetrofitJoara()
+                val param = Param.getItemAPI(context)
+//                param["member_id"] = idCheck
+//                param["passwd"] = pwCheck
+                param["member_id"] = "bigbigdw"
+                param["passwd"] = "!ms47kdnt53"
 
+                apiJoara.postLogin(
+                    param,
+                    object : RetrofitDataListener<JoaraLoginResult> {
+                        override fun onSuccess(it: JoaraLoginResult) {
+
+                            Log.d("####", "HIHI")
+
+                            val token = it.user?.token
+                            savePreferences("TOKEN", token!!)
+
+                            val intent = Intent(context, ActivityEventDetail::class.java)
+                            context?.startActivity(intent)
+                        }
+                    })
             }
         }
     }
 
     fun savePreferences(value: String, token: String) {
-//        val pref = getSharedPreferences("LOGIN", AppCompatActivity.MODE_PRIVATE)
-//        val editor = pref.edit()
-//        editor.putString(value, token)
-//        editor.apply()
+        val pref = context?.getSharedPreferences("LOGIN", AppCompatActivity.MODE_PRIVATE)
+        val editor = pref?.edit()
+        editor?.putString(value, token)
+        editor?.apply()
     }
 
 

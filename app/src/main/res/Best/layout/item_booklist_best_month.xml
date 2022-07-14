@@ -54,7 +54,7 @@
                             android:adjustViewBounds="true"
                             android:contentDescription="@string/TODO"
                             android:scaleType="fitXY"
-                            app:srcCompat="@drawable/ic_best_gr_24px" />
+                            app:srcCompat="@drawable/ic_launcher_gray" />
                     </LinearLayout>
 
                     <ImageView
@@ -129,7 +129,7 @@
                             android:adjustViewBounds="true"
                             android:contentDescription="@string/TODO"
                             android:scaleType="fitXY"
-                            app:srcCompat="@drawable/ic_best_gr_24px" />
+                            app:srcCompat="@drawable/ic_launcher_gray" />
                     </LinearLayout>
 
                     <ImageView
@@ -212,7 +212,7 @@
                             android:adjustViewBounds="true"
                             android:contentDescription="@string/TODO"
                             android:scaleType="fitXY"
-                            app:srcCompat="@drawable/ic_best_gr_24px" />
+                            app:srcCompat="@drawable/ic_launcher_gray" />
                     </LinearLayout>
 
                     <ImageView
@@ -286,7 +286,7 @@
                             android:adjustViewBounds="true"
                             android:contentDescription="@string/TODO"
                             android:scaleType="fitXY"
-                            app:srcCompat="@drawable/ic_best_gr_24px" />
+                            app:srcCompat="@drawable/ic_launcher_gray" />
                     </LinearLayout>
 
                     <ImageView
@@ -360,7 +360,7 @@
                             android:adjustViewBounds="true"
                             android:contentDescription="@string/TODO"
                             android:scaleType="fitXY"
-                            app:srcCompat="@drawable/ic_best_gr_24px" />
+                            app:srcCompat="@drawable/ic_launcher_gray" />
                     </LinearLayout>
 
                     <ImageView
@@ -434,7 +434,7 @@
                             android:adjustViewBounds="true"
                             android:contentDescription="@string/TODO"
                             android:scaleType="fitXY"
-                            app:srcCompat="@drawable/ic_best_gr_24px" />
+                            app:srcCompat="@drawable/ic_launcher_gray" />
                     </LinearLayout>
 
                     <ImageView
@@ -508,7 +508,7 @@
                             android:adjustViewBounds="true"
                             android:contentDescription="@string/TODO"
                             android:scaleType="fitXY"
-                            app:srcCompat="@drawable/ic_best_gr_24px" />
+                            app:srcCompat="@drawable/ic_launcher_gray" />
                     </LinearLayout>
 
                     <ImageView

@@ -3,6 +3,87 @@ package com.example.moavara.Retrofit
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
+class JoaraNoticeResult {
+
+    @SerializedName("notices")
+    @Expose
+    val notices: ArrayList<JoaraNoticeListResult>? = null
+}
+
+class JoaraNoticeListResult {
+    @SerializedName("cnt_comment")
+    @Expose
+    val cnt_comment: String = ""
+
+    @SerializedName("cnt_read")
+    @Expose
+    val cnt_read: String = ""
+
+    @SerializedName("nid")
+    @Expose
+    val nid: String = ""
+
+    @SerializedName("wdate")
+    @Expose
+    val wdate: String = ""
+
+    @SerializedName("title")
+    @Expose
+    val title: String = ""
+}
+
+class JoaraEventsResult {
+
+    @SerializedName("data")
+    @Expose
+    val data: ArrayList<JoaraEventListResult>? = null
+}
+
+class JoaraEventListResult {
+    @SerializedName("e_date")
+    @Expose
+    val e_date: String = ""
+
+    @SerializedName("cnt_read")
+    @Expose
+    val cnt_read: String = ""
+
+    @SerializedName("ingimg")
+    @Expose
+    val ingimg: String = ""
+
+    @SerializedName("idx")
+    @Expose
+    val idx: String = ""
+
+    @SerializedName("s_date")
+    @Expose
+    val s_date: String = ""
+
+    @SerializedName("title")
+    @Expose
+    val title: String = ""
+}
+
+
+class JoaraLoginResult {
+    @SerializedName("status")
+    @Expose
+    val status: Int = 0
+
+    @SerializedName("user")
+    @Expose
+    val user: JoaraLoginUserResult? = null
+}
+
+class JoaraLoginUserResult{
+    @SerializedName("token")
+    @Expose
+    val token: String = ""
+}
+
+
+
 class JoaraBoardResult {
     @SerializedName("status")
     @Expose

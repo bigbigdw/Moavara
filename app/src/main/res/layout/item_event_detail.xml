@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llayoutWrap"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp">
+
+
+        <LinearLayout
+            android:layout_width="131dp"
+            android:layout_height="82dp"
+            android:layout_marginEnd="15dp"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ex_event_detail" />
+
+            <LinearLayout
+                android:id="@+id/llayoutNull"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#26292E"
+                android:gravity="center_horizontal|center_vertical"
+                android:orientation="horizontal"
+                tools:visibility="visible">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/TODO"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/ic_launcher_gray" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tviewTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:breakStrategy="high_quality"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/noto_sans_bold"
+                    android:textColor="#F44336"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    tools:text="asdasdads" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tviewEDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:breakStrategy="high_quality"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/noto_sans"
+                        android:maxLines="1"
+                        android:textColor="#2196F3"
+                        android:textSize="12sp"
+                        android:visibility="visible"
+                        tools:text="asdsadasda" />
+
+                    <TextView
+                        android:id="@+id/tviewSDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|center_vertical"
+                        android:layout_weight="1"
+                        android:breakStrategy="high_quality"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/noto_sans"
+                        android:maxLines="1"
+                        android:textColor="#FFC107"
+                        android:textSize="12sp"
+                        tools:text="asdasdasdas" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tviewCntRead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:breakStrategy="high_quality"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/noto_sans"
+                    android:maxLines="1"
+                    android:textColor="#8BC34A"
+                    android:textSize="12sp"
+                    android:visibility="visible"
+                    tools:text="asdsadasda" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#F44336"
+        android:orientation="vertical">
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/bar_chart"
+            android:layout_marginTop="14dp"
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
+    </LinearLayout>
+
+
+</LinearLayout>
