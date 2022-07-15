@@ -8,6 +8,8 @@ import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.DataBase.BookListDataBestAnalyze
 import com.example.moavara.DataBase.BookListDataBestToday
 import com.example.moavara.DataBase.DataBaseBestDay
+import com.example.moavara.Main.ActivityAdmin
+import com.example.moavara.Main.mRootRef
 import com.example.moavara.Retrofit.*
 import com.example.moavara.Search.EventDetailDataMining
 import com.google.firebase.database.DataSnapshot
@@ -172,6 +174,11 @@ object Mining {
         }
         Toksoda1.start()
 
+        val MrBlue = Thread {
+            getMrBlueBest(genre)
+        }
+        MrBlue.start()
+
         try {
             Ridi.join()
             Log.d("####MINING", "리디1 완료")
@@ -208,9 +215,108 @@ object Mining {
 
             Toksoda1.join()
             Log.d("####MINING", "톡소다1 완료")
+
+            MrBlue.join()
+            Log.d("####MINING", "미스터 블루 완료")
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
+    }
+
+    fun getMrBlueBest(cate: String) {
+        Thread {
+
+            try {
+                val doc: Document =
+                    Jsoup.connect(Genre.setMrBlueGenre(cate)).post()
+                val MrBlue: Elements = doc.select(".list-box ul li")
+                val MrBlueRef: MutableMap<String?, Any> = HashMap()
+
+                BestRef.setBestRefWeekList("MrBlue", cate).addListenerForSingleValueEvent(object :
+                    ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                        for (i in MrBlue.indices) {
+
+                            val title = MrBlue.select(".tit > a")[i].attr("title")
+                            val dataList = ArrayList<BookListDataBestAnalyze>()
+
+                            for (weekItem in dataSnapshot.children) {
+                                val group: BookListDataBestToday? =
+                                    weekItem.getValue(BookListDataBestToday::class.java)
+                                if (group != null) {
+                                    if (group.title == title) {
+                                        dataList.add(
+                                            BookListDataBestAnalyze(
+                                                group.info3,
+                                                group.info4,
+                                                group.info5,
+                                                group.number,
+                                                group.numberDiff,
+                                                group.date,
+                                                group.trophyCount,
+                                            )
+                                        )
+                                    }
+                                }
+                            }
+
+                            val cmpAsc: Comparator<BookListDataBestAnalyze> =
+                                Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
+                            Collections.sort(dataList, cmpAsc)
+
+                            if (dataList.size != 0) {
+                                if (DBDate.getToday(dataList[dataList.size - 1].date) - DBDate.getYesterday(
+                                        dataList[dataList.size - 1].date
+                                    ) == 1
+                                ) {
+                                    MrBlueRef["numberDiff"] =
+                                        calculateNumDiff(i, dataList[dataList.size - 1].number).num
+                                    MrBlueRef["status"] = calculateNumDiff(
+                                        i,
+                                        dataList[dataList.size - 1].number
+                                    ).status
+                                } else {
+                                    MrBlueRef["numberDiff"] = 0
+                                    MrBlueRef["status"] = "NEW"
+                                }
+                                MrBlueRef["trophyCount"] = dataList.size
+                            } else {
+                                MrBlueRef["numberDiff"] = 0
+                                MrBlueRef["status"] = "NEW"
+                                MrBlueRef["trophyCount"] = 0
+                            }
+
+                            MrBlueRef["writerName"] =
+                                MrBlue.select(".txt-box .name > a")[i].attr("title")
+                            MrBlueRef["subject"] = title
+                            MrBlueRef["bookImg"] = MrBlue.select(".img img")[i].absUrl("src")
+                            MrBlueRef["bookCode"] = MrBlue.select(".txt-box a")[i].absUrl("href")
+                            MrBlueRef["info1"] =
+                                MrBlue.select(".txt-box .name > a")[i].absUrl("href")
+                            MrBlueRef["info2"] = " "
+                            MrBlueRef["info3"] = " "
+                            MrBlueRef["info4"] = " "
+                            MrBlueRef["info5"] = " "
+                            MrBlueRef["number"] = i
+                            MrBlueRef["date"] = DBDate.DateMMDD()
+                            MrBlueRef["data"] = dataList
+                            MrBlueRef["type"] = "MrBlue"
+
+                            miningValue(MrBlueRef, i, "MrBlue", cate)
+
+                        }
+                    }
+
+                    override fun onCancelled(databaseError: DatabaseError) {}
+                })
+
+
+            } catch (exception: SocketTimeoutException) {
+                Log.d("EXCEPTION", "MRBLUE")
+            }
+        }.start()
+
     }
 
     fun getNaverToday(cate: String) {
