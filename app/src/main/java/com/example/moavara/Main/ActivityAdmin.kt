@@ -557,6 +557,13 @@ class ActivityAdmin : AppCompatActivity() {
                 Mining.runMiningEvent(applicationContext)
                 Toast.makeText(applicationContext, "이벤트 최신화", Toast.LENGTH_SHORT).show()
             }
+
+            llayoutBtn13.setOnClickListener {
+                for (i in 1..5) {
+                    Mining.getMoonpiaBest(i)
+                }
+                Toast.makeText(applicationContext, "작품 개별 최신화", Toast.LENGTH_SHORT).show()
+            }
         }
 
     }

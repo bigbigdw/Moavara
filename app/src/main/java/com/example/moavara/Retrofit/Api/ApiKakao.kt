@@ -6,6 +6,9 @@ import retrofit2.http.*
 
 
 interface ApiKakao {
+    @GET("/api/v2/store/day_of_week_top/list")
+    fun getKakaoBest(@QueryMap queryMap: MutableMap<String?, Any>): Call<BestResultKakao>
+
     @FormUrlEncoded
     @POST("api/v6/store/home")
     fun postKakaoBookDetail(@FieldMap queryMap: MutableMap<String?, Any>): Call<BestKakaoBookDetail>
@@ -16,9 +19,6 @@ interface ApiKakao {
 }
 
 interface ApiKakaoStage {
-
-    @GET("/api/v2/store/day_of_week_top/list")
-    fun getKakaoBest(@QueryMap queryMap: MutableMap<String?, Any>): Call<BestResultKakao>
 
     @GET("ranking/realtime")
     fun getBestKakaoStage(@QueryMap queryMap: MutableMap<String?, Any>): Call<List<BestResultKakaoStageNovel>>

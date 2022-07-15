@@ -10,7 +10,7 @@ class RetrofitKaKao {
 
     //카카오 스테이지 베스트
     fun getKakaoBest(map: MutableMap<String?, Any>, dataListener: RetrofitDataListener<BestResultKakao>) {
-        apiKakaoStage.getKakaoBest(map).enqueue(baseCallback(dataListener))
+        apiKakao.getKakaoBest(map).enqueue(baseCallback(dataListener))
     }
 
     //카카오 스테이지 베스트

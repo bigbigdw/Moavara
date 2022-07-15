@@ -190,20 +190,20 @@ object Genre {
         }
     }
 
-    fun setRidiGenre(str: String): String {
+    fun setRidiGenre(str: String, page : Int): String {
         return when {
             str == "BL" -> {
-                "https://ridibooks.com/bestsellers/bl-webnovel?order=daily&rent=n&adult=n&adult_exclude=y"
+                "https://ridibooks.com/bestsellers/bl-webnovel?order=daily&rent=n&adult=n&adult_exclude=y&page=${page}"
             }
             str == "FANTASY" -> {
-                "https://ridibooks.com/bestsellers/fantasy_serial?order=daily"
+                "https://ridibooks.com/bestsellers/fantasy_serial?order=daily&page=${page}"
             }
             str == "ROMANCE" -> {
-                "https://ridibooks.com/bestsellers/romance_serial?rent=n&adult=n&adult_exclude=y&order=daily"
+                "https://ridibooks.com/bestsellers/romance_serial?rent=n&adult=n&adult_exclude=y&order=daily&page=${page}"
             }
             else -> {
                 //로맨스
-                "https://ridibooks.com/bestsellers/romance_serial?rent=n&adult=n&adult_exclude=y&order=daily"
+                "https://ridibooks.com/bestsellers/romance_serial?rent=n&adult=n&adult_exclude=y&order=daily&page=${page}"
             }
         }
     }
@@ -286,16 +286,16 @@ object Genre {
     fun setKakaoStageGenre(str: String): String {
         return when {
             str == "BL" -> {
-                "6"
+                "6,7"
             }
             str == "FANTASY" -> {
-                "1"
+                "1,2,3"
             }
             str == "ROMANCE" -> {
-                "4"
+                "4,5"
             }
             else -> {
-                "7"
+                "6,7,1,2,3,4,5"
             }
         }
     }

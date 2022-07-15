@@ -11,6 +11,7 @@ import com.example.moavara.DataBase.DataBaseBestDay
 import com.example.moavara.Main.ActivityAdmin
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.Retrofit.*
+import com.example.moavara.Retrofit.Retrofit.apiKakaoStage
 import com.example.moavara.Search.EventDetailDataMining
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -105,19 +106,23 @@ object Mining {
     fun runMining(context: Context, genre: String) {
 
         val Ridi = Thread {
-            getRidiBest(genre)
+            for (i in 1..3) {
+                getRidiBest(genre, i)
+            }
         }
         Ridi.start()
 
-        val OneStore1 = Thread {
+        val OneStore = Thread {
             getOneStoreBest(genre)
         }
-        OneStore1.start()
+        OneStore.start()
 
-        val Kakao1 = Thread {
-            getKakaoBest(genre)
+        val Kakao = Thread {
+            for (i in 1..4) {
+                getKakaoBest(genre, i)
+            }
         }
-        Kakao1.start()
+        Kakao.start()
 
         val KakaoStage1 = Thread {
             getKakaoStageBest(genre)
@@ -155,10 +160,10 @@ object Mining {
         }
         NaverChallenge1.start()
 
-        val NaverBest1 = Thread {
+        val NaverBest = Thread {
             getNaverBest(genre)
         }
-        NaverBest1.start()
+        NaverBest.start()
 
         val Moonpia = Thread {
             for (i in 1..5) {
@@ -183,10 +188,10 @@ object Mining {
             Ridi.join()
             Log.d("####MINING", "리디1 완료")
 
-            OneStore1.join()
+            OneStore.join()
             Log.d("####MINING", "원스토어1 완료")
 
-            Kakao1.join()
+            Kakao.join()
             Log.d("####MINING", "카카오1 완료")
 
             KakaoStage1.join()
@@ -207,7 +212,7 @@ object Mining {
             NaverChallenge1.join()
             Log.d("####MINING", "네이버 챌린지1 완료")
 
-            NaverBest1.join()
+            NaverBest.join()
             Log.d("####MINING", "네이버1 완료")
 
             Moonpia.join()
@@ -590,10 +595,10 @@ object Mining {
         }
     }
 
-    fun getRidiBest(cate: String) {
+    fun getRidiBest(cate: String, page : Int) {
         try {
             val doc: Document =
-                Jsoup.connect(Genre.setRidiGenre(cate)).post()
+                Jsoup.connect(Genre.setRidiGenre(cate, page)).post()
             val Ridi: Elements = doc.select(".book_thumbnail_wrapper")
             val RidiRef: MutableMap<String?, Any> = HashMap()
 
@@ -671,7 +676,7 @@ object Mining {
                             RidiRef["type"] = "Ridi"
                             RidiRef["data"] = dataList
 
-                            miningValue(RidiRef, i - 1, "Ridi", cate)
+                            miningValue(RidiRef, (i + ((page - 1) * Ridi.size)), "Ridi", cate)
 
                         }
                     }
@@ -891,18 +896,18 @@ object Mining {
             })
     }
 
-    fun getKakaoBest(cate: String) {
-        val apiKakaoStage = RetrofitKaKao()
+    fun getKakaoBest(cate: String, page: Int) {
+        val apiKakao = RetrofitKaKao()
         val param: MutableMap<String?, Any> = HashMap()
         val KakaoRef: MutableMap<String?, Any> = HashMap()
 
         param["category"] = "11"
         param["subcategory"] = "0"
-        param["page"] = "0"
-        param["day"] = "A"
+        param["page"] = page
+        param["day"] = "2"
         param["bm"] = "A"
 
-        apiKakaoStage.getKakaoBest(
+        apiKakao.getKakaoBest(
             param,
             object : RetrofitDataListener<BestResultKakao> {
                 override fun onSuccess(it: BestResultKakao) {
@@ -978,7 +983,7 @@ object Mining {
                                     KakaoRef["date"] = DBDate.DateMMDD()
                                     KakaoRef["type"] = "Kakao"
                                     KakaoRef["data"] = dataList
-                                    miningValue(KakaoRef, i, "Kakao", cate)
+                                    miningValue(KakaoRef, (i + ((page - 1) * list.size)), "Kakao", cate)
                                 }
                             }
 
@@ -1303,7 +1308,7 @@ object Mining {
 
     }
 
-    fun getMoonpiaBest(num: Int) {
+    fun getMoonpiaBest(page: Int) {
         val MoonpiaRef: MutableMap<String?, Any> = HashMap()
 
         val apiMoonPia = RetrofitMoonPia()
@@ -1312,13 +1317,12 @@ object Mining {
         param["section"] = "today"
         param["exclusive"] = ""
         param["outAdult"] = "true"
-        param["offset"] = (num - 1) * 25
+        param["offset"] = (page - 1) * 25
 
         apiMoonPia.postMoonPiaBest(
             param,
             object : RetrofitDataListener<BestMoonpiaResult> {
                 override fun onSuccess(data: BestMoonpiaResult) {
-
 
                     val dataList = ArrayList<BookListDataBestAnalyze>()
 
@@ -1392,7 +1396,7 @@ object Mining {
                                             MoonpiaRef["type"] = "Munpia"
                                             MoonpiaRef["data"] = dataList
 
-                                            miningValue(MoonpiaRef, i, "Munpia", "")
+                                            miningValue(MoonpiaRef, (i + ((page - 1) * it.size)), "Munpia", "")
                                         }
                                     }
                                 }

@@ -360,6 +360,24 @@
                                     android:textStyle="bold" />
                             </LinearLayout>
 
+                            <LinearLayout
+                                android:id="@+id/llayout_btn13"
+                                android:layout_width="260dp"
+                                android:layout_height="56dp"
+                                android:layout_marginBottom="8dp"
+                                android:background="@drawable/selector_genre"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="작품 개별 최신화"
+                                    android:textColor="#EDE6FD"
+                                    android:textSize="16dp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
 
                         </LinearLayout>
 
