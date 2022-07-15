@@ -8,42 +8,14 @@ class RetrofitKaKao {
     private val apiKakaoStage = com.example.moavara.Retrofit.Retrofit.apiKakaoStage
     private val apiKakao = com.example.moavara.Retrofit.Retrofit.apiKakao
 
-    //카카오 검색
-    fun postSearchKakao(
-        page: Int?,
-        word: String?,
-        categoryUid: Int?,
-    ): Call<SearchResultKakao?>? {
-        return Retrofit.Builder()
-            .baseUrl("https://api2-page.kakao.com")
-            .addConverterFactory(GsonConverterFactory.create()).build()
-            .create(ServiceSearchKakao::class.java)
-            .postRetrofit(
-                page,
-                word,
-                categoryUid
-            )
+    //카카오 스테이지 베스트
+    fun getKakaoBest(map: MutableMap<String?, Any>, dataListener: RetrofitDataListener<BestResultKakao>) {
+        apiKakaoStage.getKakaoBest(map).enqueue(baseCallback(dataListener))
     }
 
-    //카카오 베스트
-    fun getBestKakao(
-        category: String?,
-        subcategory: String?,
-        page: String?,
-        day: String?,
-        bm: String?,
-    ): Call<BestResultKakao?>? {
-        return Retrofit.Builder()
-            .baseUrl("https://api2-page.kakao.com")
-            .addConverterFactory(GsonConverterFactory.create()).build()
-            .create(KaKaoBestService::class.java)
-            .getRetrofit(
-                category,
-                subcategory,
-                page,
-                day,
-                bm
-            )
+    //카카오 스테이지 베스트
+    fun postKakaoSearch(map: MutableMap<String?, Any>, dataListener: RetrofitDataListener<SearchResultKakao>) {
+        apiKakaoStage.postKakaoSearch(map).enqueue(baseCallback(dataListener))
     }
 
     //카카오 스테이지 베스트
@@ -74,7 +46,5 @@ class RetrofitKaKao {
     fun postKakaoBookDetailComment(map: MutableMap<String?, Any>, dataListener: RetrofitDataListener<BestKakaoBookDetailComment>) {
         apiKakao.postKakaoBookDetailComment(map).enqueue(baseCallback(dataListener))
     }
-
-
 }
 

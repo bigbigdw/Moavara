@@ -12,12 +12,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moavara.R
 import com.example.moavara.Retrofit.*
+import com.example.moavara.Retrofit.Retrofit.apiJoara
 import com.example.moavara.Util.Param
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.ArrayList
-
+import java.util.HashMap
 
 
 class FragmentSearch : Fragment() {
@@ -157,69 +158,66 @@ class FragmentSearch : Fragment() {
             })
     }
 
-    fun searchKakao(page: Int?) {
-        RetrofitKaKao().postSearchKakao(
-            page,"사랑",11)!!.enqueue(object : Callback<SearchResultKakao?> {
-            override fun onResponse(
-                call: Call<SearchResultKakao?>,
-                response: Response<SearchResultKakao?>
-            ) {
-                Log.d("####", "4")
-                test.add("4")
-                Log.d("#######-3", test.toString())
-                if (response.isSuccessful) {
+    fun searchKakao(page: Int) {
+        val apiKakao = RetrofitKaKao()
+        val param : MutableMap<String?, Any> = HashMap()
+        param["page"] = page
+        param["word"] = "사랑"
+        param["category_uid"] = 11
+
+        apiKakao.postKakaoSearch(
+            param,
+            object : RetrofitDataListener<SearchResultKakao> {
+                override fun onSuccess(it: SearchResultKakao) {
+
+                    Log.d("####", "4")
+                    test.add("4")
+                    Log.d("#######-3", test.toString())
                     cover!!.visibility = View.GONE
                     blank!!.visibility = View.GONE
 
-                    response.body()?.let { it ->
+                    val results = it.results
 
-                        val results = it.results
+                    if (results != null) {
+                        for (i in results.indices) {
+                            val items = results[i].items
 
-                        if (results != null) {
-                            for (i in results.indices) {
-                                val items = results[i].items
+                            for (j in items!!.indices) {
+                                val author = items[j].author
+                                val image_url = "https://dn-img-page.kakao.com/download/resource?kid=" + items[j].image_url
+                                val publisher_name = items[j].publisher_name
+                                val sub_category = items[j].sub_category
+                                val title = items[j].title
 
-                                    for (j in items!!.indices) {
-                                        val author = items[j].author
-                                        val image_url = "https://dn-img-page.kakao.com/download/resource?kid=" + items[j].image_url
-                                        val publisher_name = items[j].publisher_name
-                                        val sub_category = items[j].sub_category
-                                        val title = items[j].title
-
-                                        searchItems.add(
-                                            BookListData(
-                                                "카카오",
-                                                title,
-                                                image_url,
-                                                "isAdult",
-                                                "isFinish",
-                                                "isPremium",
-                                                "isNobless",
-                                                publisher_name,
-                                                "isFavorite",
-                                                "cntPageRead",
-                                                "cntRecom",
-                                                "cntFavorite",
-                                                "bookCode",
-                                                sub_category,
-                                            )
-                                        )
-                                    }
-                                }
+                                searchItems.add(
+                                    BookListData(
+                                        "카카오",
+                                        title,
+                                        image_url,
+                                        "isAdult",
+                                        "isFinish",
+                                        "isPremium",
+                                        "isNobless",
+                                        publisher_name,
+                                        "isFavorite",
+                                        "cntPageRead",
+                                        "cntRecom",
+                                        "cntFavorite",
+                                        "bookCode",
+                                        sub_category,
+                                    )
+                                )
                             }
+                        }
                     }
+
                     adapter!!.notifyDataSetChanged()
                     if (page == 0) {
                         recyclerView!!.layoutManager = linearLayoutManager
                         recyclerView!!.adapter = adapter
                     }
                 }
-            }
-
-            override fun onFailure(call: Call<SearchResultKakao?>, t: Throwable) {
-                Log.d("onFailure", "실패")
-            }
-        })
+            })
     }
 
     private var recyclerViewScroll: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {

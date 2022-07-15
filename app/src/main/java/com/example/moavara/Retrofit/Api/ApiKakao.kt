@@ -17,6 +17,9 @@ interface ApiKakao {
 
 interface ApiKakaoStage {
 
+    @GET("/api/v2/store/day_of_week_top/list")
+    fun getKakaoBest(@QueryMap queryMap: MutableMap<String?, Any>): Call<BestResultKakao>
+
     @GET("ranking/realtime")
     fun getBestKakaoStage(@QueryMap queryMap: MutableMap<String?, Any>): Call<List<BestResultKakaoStageNovel>>
 
@@ -25,4 +28,16 @@ interface ApiKakaoStage {
 
     @GET("novels/{bookcode}/comments")
     fun getBestKakaoStageDetailComment(@Path("bookcode") id: String, @Query("size") size: String, @Query("sort") sort: String, @Query("sort") sort2: String, @Query("page") page: String): Call<KakaoStageBestBookCommentResult>
+
+    @FormUrlEncoded
+    @POST("/api/v5/store/search")
+    fun postKakaoSearch(
+        @Field("page") page: Int?,
+        @Field("word") word: String?,
+        @Field("category_uid") category_uid: Int?,
+    ): Call<SearchResultKakao?>?
+
+    @FormUrlEncoded
+    @POST("/api/v5/store/search")
+    fun postKakaoSearch(@FieldMap queryMap: MutableMap<String?, Any>): Call<SearchResultKakao>
 }

@@ -17,9 +17,6 @@ import com.google.firebase.database.ValueEventListener
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.net.SocketTimeoutException
 import java.util.*
 
@@ -29,7 +26,7 @@ object Mining {
         getEventJoara(context)
     }
 
-    private fun getNoticeJoara(context : Context) {
+    private fun getNoticeJoara(context: Context) {
 
         val apiJoara = RetrofitJoara()
         val param = Param.getItemAPI(context)
@@ -49,12 +46,13 @@ object Mining {
 
                     if (data != null) {
                         for (item in data) {
-                            EventRef.child(DBDate.Week() + ((DBDate.DayInt() * 1000) + num).toString()).setValue(
-                                EventDetailDataMining(
-                                    DBDate.DateMMDD(),
-                                    item.cnt_read,
+                            EventRef.child(DBDate.Week() + ((DBDate.DayInt() * 1000) + num).toString())
+                                .setValue(
+                                    EventDetailDataMining(
+                                        DBDate.DateMMDD(),
+                                        item.cnt_read,
+                                    )
                                 )
-                            )
                         }
                         num += 1
                     }
@@ -62,7 +60,7 @@ object Mining {
             })
     }
 
-    private fun getEventJoara(context : Context) {
+    private fun getEventJoara(context: Context) {
 
         val apiJoara = RetrofitJoara()
         val param = Param.getItemAPI(context)
@@ -86,12 +84,13 @@ object Mining {
                     if (data != null) {
                         for (item in data) {
                             for (item in data) {
-                                EventRef.child(DBDate.Week() + ((DBDate.DayInt() * 1000) + num).toString()).setValue(
-                                    EventDetailDataMining(
-                                        DBDate.DateMMDD(),
-                                        item.cnt_read,
+                                EventRef.child(DBDate.Week() + ((DBDate.DayInt() * 1000) + num).toString())
+                                    .setValue(
+                                        EventDetailDataMining(
+                                            DBDate.DateMMDD(),
+                                            item.cnt_read,
+                                        )
                                     )
-                                )
                             }
                             num += 1
                         }
@@ -113,65 +112,65 @@ object Mining {
         }
         OneStore1.start()
 
-//        val Kakao1 = Thread {
-//            getKakaoBest(genre)
-//        }
-//        Kakao1.start()
-//
-//        val KakaoStage1 = Thread {
-//            getKakaoStageBest(genre)
-//        }
-//        KakaoStage1.start()
-//
-//        val Joara1 = Thread {
-//            for (i in 1..5) {
-//                getJoaraBest(context, genre, i)
-//            }
-//        }
-//        Joara1.start()
-//
-//        val JoaraNobless1 = Thread {
-//            for (i in 1..5) {
-//                getJoaraBestNobless(context, genre, i)
-//            }
-//        }
-//        JoaraNobless1.start()
-//
-//        val JoaraPremium1 = Thread {
-//            for (i in 1..5) {
-//                getJoaraBestPremium(context, genre, i)
-//            }
-//        }
-//        JoaraPremium1.start()
-//
-//        val NaverToday1 = Thread {
-//            getNaverToday(genre)
-//        }
-//        NaverToday1.start()
-//
-//        val NaverChallenge1 = Thread {
-//            getNaverChallenge(genre)
-//        }
-//        NaverChallenge1.start()
-//
-//        val NaverBest1 = Thread {
-//            getNaverBest(genre)
-//        }
-//        NaverBest1.start()
-//
-//        val Moonpia = Thread {
-//            for (i in 1..5) {
-//                getMoonpiaBest(i)
-//            }
-//        }
-//        Moonpia.start()
-//
-//        val Toksoda1 = Thread {
-//            for (i in 1..5) {
-//                getToksodaBest(genre, i)
-//            }
-//        }
-//        Toksoda1.start()
+        val Kakao1 = Thread {
+            getKakaoBest(genre)
+        }
+        Kakao1.start()
+
+        val KakaoStage1 = Thread {
+            getKakaoStageBest(genre)
+        }
+        KakaoStage1.start()
+
+        val Joara1 = Thread {
+            for (i in 1..5) {
+                getJoaraBest(context, genre, i)
+            }
+        }
+        Joara1.start()
+
+        val JoaraNobless1 = Thread {
+            for (i in 1..5) {
+                getJoaraBestNobless(context, genre, i)
+            }
+        }
+        JoaraNobless1.start()
+
+        val JoaraPremium1 = Thread {
+            for (i in 1..5) {
+                getJoaraBestPremium(context, genre, i)
+            }
+        }
+        JoaraPremium1.start()
+
+        val NaverToday1 = Thread {
+            getNaverToday(genre)
+        }
+        NaverToday1.start()
+
+        val NaverChallenge1 = Thread {
+            getNaverChallenge(genre)
+        }
+        NaverChallenge1.start()
+
+        val NaverBest1 = Thread {
+            getNaverBest(genre)
+        }
+        NaverBest1.start()
+
+        val Moonpia = Thread {
+            for (i in 1..5) {
+                getMoonpiaBest(i)
+            }
+        }
+        Moonpia.start()
+
+        val Toksoda1 = Thread {
+            for (i in 1..5) {
+                getToksodaBest(genre, i)
+            }
+        }
+        Toksoda1.start()
 
         try {
             Ridi.join()
@@ -180,35 +179,35 @@ object Mining {
             OneStore1.join()
             Log.d("####MINING", "원스토어1 완료")
 
-//            Kakao1.join()
-//            Log.d("####MINING", "카카오1 완료")
-//
-//            KakaoStage1.join()
-//            Log.d("####MINING", "카카오 스테이지1 완료")
-//
-//            Joara1.join()
-//            Log.d("####MINING", "조아라1 완료")
-//
-//            JoaraNobless1.join()
-//            Log.d("####MINING", "조아라 노블레스1 완료")
-//
-//            JoaraPremium1.join()
-//            Log.d("####MINING", "조아라 프리미엄1 완료")
-//
-//            NaverToday1.join()
-//            Log.d("####MINING", "네이버 투데이1 완료")
-//
-//            NaverChallenge1.join()
-//            Log.d("####MINING", "네이버 챌린지1 완료")
-//
-//            NaverBest1.join()
-//            Log.d("####MINING", "네이버1 완료")
-//
-//            Moonpia.join()
-//            Log.d("####MINING", "문피아 완료")
-//
-//            Toksoda1.join()
-//            Log.d("####MINING", "톡소다1 완료")
+            Kakao1.join()
+            Log.d("####MINING", "카카오1 완료")
+
+            KakaoStage1.join()
+            Log.d("####MINING", "카카오 스테이지1 완료")
+
+            Joara1.join()
+            Log.d("####MINING", "조아라1 완료")
+
+            JoaraNobless1.join()
+            Log.d("####MINING", "조아라 노블레스1 완료")
+
+            JoaraPremium1.join()
+            Log.d("####MINING", "조아라 프리미엄1 완료")
+
+            NaverToday1.join()
+            Log.d("####MINING", "네이버 투데이1 완료")
+
+            NaverChallenge1.join()
+            Log.d("####MINING", "네이버 챌린지1 완료")
+
+            NaverBest1.join()
+            Log.d("####MINING", "네이버1 완료")
+
+            Moonpia.join()
+            Log.d("####MINING", "문피아 완료")
+
+            Toksoda1.join()
+            Log.d("####MINING", "톡소다1 완료")
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
@@ -231,7 +230,8 @@ object Mining {
                             val dataList = ArrayList<BookListDataBestAnalyze>()
 
                             for (weekItem in dataSnapshot.children) {
-                                val group: BookListDataBestToday? = weekItem.getValue(BookListDataBestToday::class.java)
+                                val group: BookListDataBestToday? =
+                                    weekItem.getValue(BookListDataBestToday::class.java)
                                 if (group != null) {
                                     if (group.title == title) {
                                         dataList.add(
@@ -500,8 +500,9 @@ object Mining {
                             val title = doc.select("div .title_link")[i].text()
                             val dataList = ArrayList<BookListDataBestAnalyze>()
 
-                            for(weekItem in dataSnapshot.children){
-                                val group: BookListDataBestToday? = weekItem.getValue(BookListDataBestToday::class.java)
+                            for (weekItem in dataSnapshot.children) {
+                                val group: BookListDataBestToday? =
+                                    weekItem.getValue(BookListDataBestToday::class.java)
 
                                 if (group != null) {
                                     if (group.title == title) {
@@ -581,111 +582,102 @@ object Mining {
         try {
             val OneStoryRef: MutableMap<String?, Any> = HashMap()
 
-            val call: Call<OneStoreBookResult?>? =
-                RetrofitOnestore().getBestOneStore(Genre.setOneStoreGenre(cate))
+            val apiOneStory = RetrofitOnestore()
+            val param: MutableMap<String?, Any> = HashMap()
 
-            call!!.enqueue(object : Callback<OneStoreBookResult?> {
-                override fun onResponse(
-                    call: Call<OneStoreBookResult?>,
-                    response: Response<OneStoreBookResult?>
-                ) {
+            param["menuId"] = Genre.setOneStoreGenre(cate)
 
-                    if (response.isSuccessful) {
-                        response.body()?.let { it ->
-                            val productList = it.params!!.productList
-                            val dataList = ArrayList<BookListDataBestAnalyze>()
-                            ArrayList<BookListDataBestToday>()
+            apiOneStory.getBestOneStore(
+                param,
+                object : RetrofitDataListener<OneStoreBookResult> {
+                    override fun onSuccess(it: OneStoreBookResult) {
 
-                            BestRef.setBestRefWeekList("OneStore", cate)
-                                .addListenerForSingleValueEvent(object :
-                                    ValueEventListener {
-                                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        val productList = it.params?.productList
+                        val dataList = ArrayList<BookListDataBestAnalyze>()
+                        ArrayList<BookListDataBestToday>()
 
-                                        for (i in productList!!.indices) {
+                        BestRef.setBestRefWeekList("OneStore", cate)
+                            .addListenerForSingleValueEvent(object :
+                                ValueEventListener {
+                                override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                                            for (weekItem in dataSnapshot.children) {
-                                                val group: BookListDataBestToday? =
-                                                    weekItem.getValue(BookListDataBestToday::class.java)
-                                                if (group!!.title == productList[i].prodNm) {
-                                                    dataList.add(
-                                                        BookListDataBestAnalyze(
-                                                            group.info3,
-                                                            group.info4,
-                                                            group.info5,
-                                                            group.number,
-                                                            group.numberDiff,
-                                                            group.date,
-                                                            group.trophyCount,
-                                                        )
+                                    for (i in productList!!.indices) {
+
+                                        for (weekItem in dataSnapshot.children) {
+                                            val group: BookListDataBestToday? =
+                                                weekItem.getValue(BookListDataBestToday::class.java)
+                                            if (group!!.title == productList[i].prodNm) {
+                                                dataList.add(
+                                                    BookListDataBestAnalyze(
+                                                        group.info3,
+                                                        group.info4,
+                                                        group.info5,
+                                                        group.number,
+                                                        group.numberDiff,
+                                                        group.date,
+                                                        group.trophyCount,
                                                     )
-                                                }
+                                                )
                                             }
+                                        }
 
-                                            val cmpAsc: Comparator<BookListDataBestAnalyze> =
-                                                Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
-                                            Collections.sort(dataList, cmpAsc)
+                                        val cmpAsc: Comparator<BookListDataBestAnalyze> =
+                                            Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
+                                        Collections.sort(dataList, cmpAsc)
 
-                                            if (dataList.size != 0) {
-                                                if (DBDate.getToday(dataList[dataList.size - 1].date) - DBDate.getYesterday(
-                                                        dataList[dataList.size - 1].date
-                                                    ) == 1
-                                                ) {
-                                                    OneStoryRef["numberDiff"] = calculateNumDiff(
-                                                        i,
-                                                        dataList[dataList.size - 1].number
-                                                    ).num
-                                                    OneStoryRef["status"] = calculateNumDiff(
-                                                        i,
-                                                        dataList[dataList.size - 1].number
-                                                    ).status
-                                                } else {
-                                                    OneStoryRef["numberDiff"] = 0
-                                                    OneStoryRef["status"] = "NEW"
-                                                }
+                                        if (dataList.size != 0) {
+                                            if (DBDate.getToday(dataList[dataList.size - 1].date) - DBDate.getYesterday(
+                                                    dataList[dataList.size - 1].date
+                                                ) == 1
+                                            ) {
+                                                OneStoryRef["numberDiff"] = calculateNumDiff(
+                                                    i,
+                                                    dataList[dataList.size - 1].number
+                                                ).num
+                                                OneStoryRef["status"] = calculateNumDiff(
+                                                    i,
+                                                    dataList[dataList.size - 1].number
+                                                ).status
                                             } else {
                                                 OneStoryRef["numberDiff"] = 0
                                                 OneStoryRef["status"] = "NEW"
                                             }
-
-                                            OneStoryRef["trophyCount"] = dataList.size
-
-                                            OneStoryRef["writerName"] = productList[i].artistNm
-                                            OneStoryRef["subject"] = productList[i].prodNm
-                                            OneStoryRef["bookImg"] =
-                                                "https://img.onestore.co.kr/thumbnails/img_sac/224_320_F10_95/" + productList[i].thumbnailImageUrl
-                                            OneStoryRef["bookCode"] = productList[i].prodId
-                                            OneStoryRef["info1"] =
-                                                "조회 수 : " + productList[i].totalCount
-                                            OneStoryRef["info2"] = "평점 : " + productList[i].avgScore
-                                            OneStoryRef["info3"] =
-                                                "댓글 수 : " + productList[i].commentCount
-                                            OneStoryRef["info4"] = " "
-                                            OneStoryRef["info5"] = " "
-                                            OneStoryRef["number"] = i
-                                            OneStoryRef["date"] = DBDate.DateMMDD()
-
-                                            OneStoryRef["type"] = "OneStore"
-                                            OneStoryRef["data"] = dataList
-
-                                            miningValue(OneStoryRef, i, "OneStore", cate)
-
+                                        } else {
+                                            OneStoryRef["numberDiff"] = 0
+                                            OneStoryRef["status"] = "NEW"
                                         }
 
+                                        OneStoryRef["trophyCount"] = dataList.size
+
+                                        OneStoryRef["writerName"] = productList[i].artistNm
+                                        OneStoryRef["subject"] = productList[i].prodNm
+                                        OneStoryRef["bookImg"] =
+                                            "https://img.onestore.co.kr/thumbnails/img_sac/224_320_F10_95/" + productList[i].thumbnailImageUrl
+                                        OneStoryRef["bookCode"] = productList[i].prodId
+                                        OneStoryRef["info1"] =
+                                            "조회 수 : " + productList[i].totalCount
+                                        OneStoryRef["info2"] = "평점 : " + productList[i].avgScore
+                                        OneStoryRef["info3"] =
+                                            "댓글 수 : " + productList[i].commentCount
+                                        OneStoryRef["info4"] = " "
+                                        OneStoryRef["info5"] = " "
+                                        OneStoryRef["number"] = i
+                                        OneStoryRef["date"] = DBDate.DateMMDD()
+
+                                        OneStoryRef["type"] = "OneStore"
+                                        OneStoryRef["data"] = dataList
+
+                                        miningValue(OneStoryRef, i, "OneStore", cate)
 
                                     }
 
-                                    override fun onCancelled(databaseError: DatabaseError) {}
-                                })
 
+                                }
 
-                        }
+                                override fun onCancelled(databaseError: DatabaseError) {}
+                            })
                     }
-                }
-
-                override fun onFailure(call: Call<OneStoreBookResult?>, t: Throwable) {
-                    Log.d("onFailure", "실패")
-                }
-            })
+                })
         } catch (exception: SocketTimeoutException) {
             Log.d("EXCEPTION", "ONESTORE")
         }
@@ -711,14 +703,14 @@ object Mining {
 
                         val list = it
 
-                        for (i in list.indices) {
-                            val novel = list[i].novel
-                            val dataList = ArrayList<BookListDataBestAnalyze>()
+                        BestRef.setBestRefWeekList("Kakao Stage", cate)
+                            .addListenerForSingleValueEvent(object :
+                                ValueEventListener {
+                                override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                            BestRef.setBestRefWeekList("Kakao Stage", cate)
-                                .addListenerForSingleValueEvent(object :
-                                    ValueEventListener {
-                                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                    for (i in list.indices) {
+                                        val novel = list[i].novel
+                                        val dataList = ArrayList<BookListDataBestAnalyze>()
 
                                         for (weekItem in dataSnapshot.children) {
                                             val group: BookListDataBestToday? =
@@ -782,10 +774,11 @@ object Mining {
 
                                         miningValue(KakaoRef, i, "Kakao Stage", cate)
                                     }
+                                }
 
-                                    override fun onCancelled(databaseError: DatabaseError) {}
-                                })
-                        }
+                                override fun onCancelled(databaseError: DatabaseError) {}
+                            })
+
                     }
 
                 }
@@ -793,105 +786,102 @@ object Mining {
     }
 
     fun getKakaoBest(cate: String) {
+        val apiKakaoStage = RetrofitKaKao()
+        val param: MutableMap<String?, Any> = HashMap()
         val KakaoRef: MutableMap<String?, Any> = HashMap()
 
-        val call: Call<BestResultKakao?>? = RetrofitKaKao().getBestKakao("11", "0", "0", "2", "A")
+        param["category"] = "11"
+        param["subcategory"] = "0"
+        param["page"] = "0"
+        param["day"] = "A"
+        param["bm"] = "A"
 
-        call!!.enqueue(object : Callback<BestResultKakao?> {
-            override fun onResponse(
-                call: Call<BestResultKakao?>,
-                response: Response<BestResultKakao?>
-            ) {
+        apiKakaoStage.getKakaoBest(
+            param,
+            object : RetrofitDataListener<BestResultKakao> {
+                override fun onSuccess(it: BestResultKakao) {
 
-                if (response.isSuccessful) {
-                    response.body()?.let { it ->
-                        val list = it.list
+                    val list = it.list
 
-                        for (i in list!!.indices) {
+                    BestRef.setBestRefWeekList("Kakao", cate)
+                        .addListenerForSingleValueEvent(object :
+                            ValueEventListener {
+                            override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                            val dataList = ArrayList<BookListDataBestAnalyze>()
+                                for (i in list!!.indices) {
 
-                            BestRef.setBestRefWeekList("Kakao", cate)
-                                .addListenerForSingleValueEvent(object :
-                                    ValueEventListener {
-                                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                    val dataList = ArrayList<BookListDataBestAnalyze>()
 
-                                        for (weekItem in dataSnapshot.children) {
-                                            val group: BookListDataBestToday? =
-                                                weekItem.getValue(BookListDataBestToday::class.java)
-                                            if (group!!.title == list[i].title) {
-                                                dataList.add(
-                                                    BookListDataBestAnalyze(
-                                                        group.info3,
-                                                        group.info4,
-                                                        group.info5,
-                                                        group.number,
-                                                        group.numberDiff,
-                                                        group.date,
-                                                        group.trophyCount,
-                                                    )
+                                    for (weekItem in dataSnapshot.children) {
+                                        val group: BookListDataBestToday? =
+                                            weekItem.getValue(BookListDataBestToday::class.java)
+                                        if (group!!.title == list[i].title) {
+                                            dataList.add(
+                                                BookListDataBestAnalyze(
+                                                    group.info3,
+                                                    group.info4,
+                                                    group.info5,
+                                                    group.number,
+                                                    group.numberDiff,
+                                                    group.date,
+                                                    group.trophyCount,
                                                 )
-                                            }
+                                            )
                                         }
+                                    }
 
-                                        val cmpAsc: Comparator<BookListDataBestAnalyze> =
-                                            Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
-                                        Collections.sort(dataList, cmpAsc)
+                                    val cmpAsc: Comparator<BookListDataBestAnalyze> =
+                                        Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
+                                    Collections.sort(dataList, cmpAsc)
 
-                                        KakaoRef["trophyCount"] = dataList.size
+                                    KakaoRef["trophyCount"] = dataList.size
 
-                                        if (dataList.size != 0) {
-                                            if (DBDate.getToday(dataList[dataList.size - 1].date) - DBDate.getYesterday(
-                                                    dataList[dataList.size - 1].date
-                                                ) == 1
-                                            ) {
-                                                KakaoRef["numberDiff"] = calculateNumDiff(
-                                                    i,
-                                                    dataList[dataList.size - 1].number
-                                                ).num
-                                                KakaoRef["status"] = calculateNumDiff(
-                                                    i,
-                                                    dataList[dataList.size - 1].number
-                                                ).status
-                                            } else {
-                                                KakaoRef["numberDiff"] = 0
-                                                KakaoRef["status"] = "NEW"
-                                            }
+                                    if (dataList.size != 0) {
+                                        if (DBDate.getToday(dataList[dataList.size - 1].date) - DBDate.getYesterday(
+                                                dataList[dataList.size - 1].date
+                                            ) == 1
+                                        ) {
+                                            KakaoRef["numberDiff"] = calculateNumDiff(
+                                                i,
+                                                dataList[dataList.size - 1].number
+                                            ).num
+                                            KakaoRef["status"] = calculateNumDiff(
+                                                i,
+                                                dataList[dataList.size - 1].number
+                                            ).status
                                         } else {
                                             KakaoRef["numberDiff"] = 0
                                             KakaoRef["status"] = "NEW"
                                         }
-
-                                        KakaoRef["writerName"] = list[i].author
-                                        KakaoRef["subject"] = list[i].title
-                                        KakaoRef["bookImg"] =
-                                            "https://dn-img-page.kakao.com/download/resource?kid=" + list[i].image
-                                        KakaoRef["bookCode"] = list[i].series_id
-                                        KakaoRef["info1"] = "줄거리 : " + list[i].description
-                                        KakaoRef["info2"] = "부제 : " + list[i].caption
-                                        KakaoRef["info3"] = "조회 수 : " + list[i].read_count
-                                        KakaoRef["info4"] = "추천 수 : " + list[i].like_count
-                                        KakaoRef["info5"] = "평점 : " + list[i].rating
-                                        KakaoRef["number"] = i
-                                        KakaoRef["date"] = DBDate.DateMMDD()
-                                        KakaoRef["type"] = "Kakao"
-                                        KakaoRef["data"] = dataList
-                                        miningValue(KakaoRef, i, "Kakao", cate)
+                                    } else {
+                                        KakaoRef["numberDiff"] = 0
+                                        KakaoRef["status"] = "NEW"
                                     }
 
-                                    override fun onCancelled(databaseError: DatabaseError) {}
-                                })
-                        }
-                    }
+                                    KakaoRef["writerName"] = list[i].author
+                                    KakaoRef["subject"] = list[i].title
+                                    KakaoRef["bookImg"] =
+                                        "https://dn-img-page.kakao.com/download/resource?kid=" + list[i].image
+                                    KakaoRef["bookCode"] = list[i].series_id
+                                    KakaoRef["info1"] = "줄거리 : " + list[i].description
+                                    KakaoRef["info2"] = "부제 : " + list[i].caption
+                                    KakaoRef["info3"] = "조회 수 : " + list[i].read_count
+                                    KakaoRef["info4"] = "추천 수 : " + list[i].like_count
+                                    KakaoRef["info5"] = "평점 : " + list[i].rating
+                                    KakaoRef["number"] = i
+                                    KakaoRef["date"] = DBDate.DateMMDD()
+                                    KakaoRef["type"] = "Kakao"
+                                    KakaoRef["data"] = dataList
+                                    miningValue(KakaoRef, i, "Kakao", cate)
+                                }
+                            }
+
+                            override fun onCancelled(databaseError: DatabaseError) {}
+                        })
+
+
                 }
-            }
-
-            override fun onFailure(call: Call<BestResultKakao?>, t: Throwable) {
-                Log.d("onFailure", "실패")
-            }
-        })
-
-
+            })
     }
 
     fun getJoaraBest(context: Context, cate: String, page: Int) {
@@ -911,14 +901,14 @@ object Mining {
 
                     val books = data.bookLists
 
-                    for (i in books!!.indices) {
+                    BestRef.setBestRefWeekList("Joara", cate)
+                        .addListenerForSingleValueEvent(object :
+                            ValueEventListener {
+                            override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                        val dataList = ArrayList<BookListDataBestAnalyze>()
+                                for (i in books!!.indices) {
 
-                        BestRef.setBestRefWeekList("Joara", cate)
-                            .addListenerForSingleValueEvent(object :
-                                ValueEventListener {
-                                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                    val dataList = ArrayList<BookListDataBestAnalyze>()
 
                                     for (weekItem in dataSnapshot.children) {
                                         val group: BookListDataBestToday? =
@@ -987,10 +977,12 @@ object Mining {
                                         cate
                                     )
                                 }
+                            }
 
-                                override fun onCancelled(databaseError: DatabaseError) {}
-                            })
-                    }
+                            override fun onCancelled(databaseError: DatabaseError) {}
+                        })
+
+
                 }
             })
     }
@@ -1014,14 +1006,14 @@ object Mining {
 
                     val books = data.bookLists
 
-                    for (i in books!!.indices) {
+                    BestRef.setBestRefWeekList("Joara Premium", cate)
+                        .addListenerForSingleValueEvent(object :
+                            ValueEventListener {
+                            override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                        val dataList = ArrayList<BookListDataBestAnalyze>()
+                                for (i in books!!.indices) {
 
-                        BestRef.setBestRefWeekList("Joara Premium", cate)
-                            .addListenerForSingleValueEvent(object :
-                                ValueEventListener {
-                                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                    val dataList = ArrayList<BookListDataBestAnalyze>()
 
                                     for (weekItem in dataSnapshot.children) {
                                         val group: BookListDataBestToday? =
@@ -1090,10 +1082,10 @@ object Mining {
                                         cate
                                     )
                                 }
+                            }
 
-                                override fun onCancelled(databaseError: DatabaseError) {}
-                            })
-                    }
+                            override fun onCancelled(databaseError: DatabaseError) {}
+                        })
                 }
             })
 
@@ -1118,14 +1110,14 @@ object Mining {
 
                     val books = data.bookLists
 
-                    for (i in books!!.indices) {
+                    BestRef.setBestRefWeekList("Joara Nobless", cate)
+                        .addListenerForSingleValueEvent(object :
+                            ValueEventListener {
+                            override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                        val dataList = ArrayList<BookListDataBestAnalyze>()
+                                for (i in books!!.indices) {
 
-                        BestRef.setBestRefWeekList("Joara Nobless", cate)
-                            .addListenerForSingleValueEvent(object :
-                                ValueEventListener {
-                                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                    val dataList = ArrayList<BookListDataBestAnalyze>()
 
                                     for (weekItem in dataSnapshot.children) {
                                         val group: BookListDataBestToday? =
@@ -1194,10 +1186,12 @@ object Mining {
                                         cate
                                     )
                                 }
+                            }
 
-                                override fun onCancelled(databaseError: DatabaseError) {}
-                            })
-                    }
+                            override fun onCancelled(databaseError: DatabaseError) {}
+                        })
+
+
                 }
             })
 
@@ -1219,18 +1213,18 @@ object Mining {
             object : RetrofitDataListener<BestMoonpiaResult> {
                 override fun onSuccess(data: BestMoonpiaResult) {
 
-                    data.api?.items.let {
 
-                        if (it != null) {
-                            for (i in it.indices) {
+                    val dataList = ArrayList<BookListDataBestAnalyze>()
 
-                                val dataList = ArrayList<BookListDataBestAnalyze>()
+                    BestRef.setBestRefWeekList("Munpia", "")
+                        .addListenerForSingleValueEvent(object :
+                            ValueEventListener {
+                            override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                                BestRef.setBestRefWeekList("Munpia", "")
-                                    .addListenerForSingleValueEvent(object :
-                                        ValueEventListener {
-                                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                data.api?.items.let {
 
+                                    if (it != null) {
+                                        for (i in it.indices) {
                                             for (weekItem in dataSnapshot.children) {
                                                 val group: BookListDataBestToday? =
                                                     weekItem.getValue(BookListDataBestToday::class.java)
@@ -1294,13 +1288,14 @@ object Mining {
 
                                             miningValue(MoonpiaRef, i, "Munpia", "")
                                         }
+                                    }
+                                }
 
-                                        override fun onCancelled(databaseError: DatabaseError) {}
-                                    })
+
                             }
-                        }
-                    }
 
+                            override fun onCancelled(databaseError: DatabaseError) {}
+                        })
                 }
             })
     }
@@ -1325,17 +1320,14 @@ object Mining {
             object : RetrofitDataListener<BestToksodaResult> {
                 override fun onSuccess(data: BestToksodaResult) {
 
-                    data.resultList?.let {
+                    val dataList = ArrayList<BookListDataBestAnalyze>()
 
-                        for (i in it.indices) {
-
-                            val dataList = ArrayList<BookListDataBestAnalyze>()
-
-                            BestRef.setBestRefWeekList("Toksoda", genre)
-                                .addListenerForSingleValueEvent(object :
-                                    ValueEventListener {
-                                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-
+                    BestRef.setBestRefWeekList("Toksoda", genre)
+                        .addListenerForSingleValueEvent(object :
+                            ValueEventListener {
+                            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                data.resultList?.let {
+                                    for (i in it.indices) {
                                         for (weekItem in dataSnapshot.children) {
                                             val group: BookListDataBestToday? =
                                                 weekItem.getValue(BookListDataBestToday::class.java)
@@ -1403,12 +1395,11 @@ object Mining {
                                             genre
                                         )
                                     }
+                                }
+                            }
 
-                                    override fun onCancelled(databaseError: DatabaseError) {}
-                                })
-                        }
-                    }
-
+                            override fun onCancelled(databaseError: DatabaseError) {}
+                        })
                 }
             })
     }

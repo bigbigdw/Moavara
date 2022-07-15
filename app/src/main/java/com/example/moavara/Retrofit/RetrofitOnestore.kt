@@ -8,14 +8,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 class RetrofitOnestore {
     private val apiOneStory = com.example.moavara.Retrofit.Retrofit.apiOneStory
 
-    fun getBestOneStore(categoryId : String? ): Call<OneStoreBookResult?>? {
-        return Retrofit.Builder()
-            .baseUrl("https://onestory.co.kr")
-            .addConverterFactory(GsonConverterFactory.create()).build()
-            .create(ApiOneStory::class.java)
-            .getRetrofit(
-                categoryId
-            )
+    fun getBestOneStore(map: MutableMap<String?, Any>, dataListener: RetrofitDataListener<OneStoreBookResult>) {
+        apiOneStory.getBestOneStore(map).enqueue(baseCallback(dataListener))
     }
 
     fun getBestKakaoStageDetail(id: String, map: MutableMap<String?, Any>, dataListener: RetrofitDataListener<OnestoreBookDetail>) {
