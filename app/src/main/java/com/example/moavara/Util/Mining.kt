@@ -113,7 +113,9 @@ object Mining {
         Ridi.start()
 
         val OneStore = Thread {
-            getOneStoreBest(genre)
+            for (i in 1..4) {
+                getOneStoreBest(genre, i)
+            }
         }
         OneStore.start()
 
@@ -150,10 +152,10 @@ object Mining {
         }
         JoaraPremium1.start()
 
-        val NaverToday1 = Thread {
+        val NaverToday = Thread {
             getNaverToday(genre)
         }
-        NaverToday1.start()
+        NaverToday.start()
 
         val NaverChallenge1 = Thread {
             getNaverChallenge(genre)
@@ -166,7 +168,7 @@ object Mining {
         NaverBest.start()
 
         val Moonpia = Thread {
-            for (i in 1..5) {
+            for (i in 1..4) {
                 getMoonpiaBest(i)
             }
         }
@@ -206,7 +208,7 @@ object Mining {
             JoaraPremium1.join()
             Log.d("####MINING", "조아라 프리미엄1 완료")
 
-            NaverToday1.join()
+            NaverToday.join()
             Log.d("####MINING", "네이버 투데이1 완료")
 
             NaverChallenge1.join()
@@ -689,7 +691,7 @@ object Mining {
         }
     }
 
-    fun getOneStoreBest(cate: String) {
+    fun getOneStoreBest(cate: String, page: Int) {
         try {
             val OneStoryRef: MutableMap<String?, Any> = HashMap()
 
@@ -697,6 +699,13 @@ object Mining {
             val param: MutableMap<String?, Any> = HashMap()
 
             param["menuId"] = Genre.setOneStoreGenre(cate)
+             if(page == 1){
+                param["startKey"] = "0/0"
+            }else if(page == 2){
+                param["startKey"] = "57/0"
+            } else if(page == 3){
+                param["startKey"] = "120/0"
+            }
 
             apiOneStory.getBestOneStore(
                 param,
@@ -704,7 +713,7 @@ object Mining {
                     override fun onSuccess(it: OneStoreBookResult) {
 
                         val productList = it.params?.productList
-                        val dataList = ArrayList<BookListDataBestAnalyze>()
+
                         ArrayList<BookListDataBestToday>()
 
                         BestRef.setBestRefWeekList("OneStore", cate)
@@ -713,6 +722,8 @@ object Mining {
                                 override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                                     for (i in productList!!.indices) {
+
+                                        val dataList = ArrayList<BookListDataBestAnalyze>()
 
                                         for (weekItem in dataSnapshot.children) {
                                             val group: BookListDataBestToday? =
@@ -778,7 +789,7 @@ object Mining {
                                         OneStoryRef["type"] = "OneStore"
                                         OneStoryRef["data"] = dataList
 
-                                        miningValue(OneStoryRef, i, "OneStore", cate)
+                                        miningValue(OneStoryRef, (i + ((page - 1) * productList.size)), "OneStore", cate)
 
                                     }
 
@@ -1430,14 +1441,15 @@ object Mining {
             object : RetrofitDataListener<BestToksodaResult> {
                 override fun onSuccess(data: BestToksodaResult) {
 
-                    val dataList = ArrayList<BookListDataBestAnalyze>()
-
                     BestRef.setBestRefWeekList("Toksoda", genre)
                         .addListenerForSingleValueEvent(object :
                             ValueEventListener {
                             override fun onDataChange(dataSnapshot: DataSnapshot) {
                                 data.resultList?.let {
                                     for (i in it.indices) {
+
+                                        val dataList = ArrayList<BookListDataBestAnalyze>()
+
                                         for (weekItem in dataSnapshot.children) {
                                             val group: BookListDataBestToday? =
                                                 weekItem.getValue(BookListDataBestToday::class.java)

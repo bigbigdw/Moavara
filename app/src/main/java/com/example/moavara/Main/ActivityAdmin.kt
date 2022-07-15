@@ -559,8 +559,8 @@ class ActivityAdmin : AppCompatActivity() {
             }
 
             llayoutBtn13.setOnClickListener {
-                for (i in 1..5) {
-                    Mining.getMoonpiaBest(i)
+                for (i in 1..3) {
+                    Mining.getOneStoreBest("ALL", i)
                 }
                 Toast.makeText(applicationContext, "작품 개별 최신화", Toast.LENGTH_SHORT).show()
             }
