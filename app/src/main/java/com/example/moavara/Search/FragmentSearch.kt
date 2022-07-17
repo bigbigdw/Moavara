@@ -1,16 +1,18 @@
 package com.example.moavara.Search
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.moavara.Retrofit.*
 import com.example.moavara.Util.Param
 import com.example.moavara.databinding.FragmentSearchBinding
+import java.util.*
 
 
 class FragmentSearch : Fragment() {
@@ -20,9 +22,11 @@ class FragmentSearch : Fragment() {
     var linearLayoutManager: LinearLayoutManager? = null
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
+    private var joaraOffset = 20
+    private var kakaoStageOffset = 25
 
     private val test = ArrayList<String?>()
-    var text = ""
+    var text = "사랑"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,17 +37,31 @@ class FragmentSearch : Fragment() {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        linearLayoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-
-
-        adapter = AdapterBookSearch(requireContext())
-
         with(binding){
-            rviewSearch.addOnScrollListener(recyclerViewScroll)
 
-            text = etextSearch.text.toString()
+//            rviewSearch.addOnScrollListener(recyclerViewScroll)
+            etextSearch.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(text: CharSequence, start: Int, count: Int, after: Int) {
+                    Log.d("idtext", "beforeTextChanged")
+                }
+
+                override fun onTextChanged(text: CharSequence, start: Int, before: Int, count: Int) {
+                    Log.d("idtext", "onTextChanged")
+                }
+
+                override fun afterTextChanged(s: Editable) {
+                    text = s.toString()
+                }
+            })
 
             btnSearch.setOnClickListener {
+                adapter = AdapterBookSearch(searchItems)
+                rviewSearch.adapter = adapter
+                rviewSearch.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+
+                llayoutSearch.visibility = View.GONE
+                llayoutResult.visibility = View.VISIBLE
+
                 Log.d("####", "1")
                 test.add("1")
                 searchJoara(page, text)
@@ -53,6 +71,8 @@ class FragmentSearch : Fragment() {
                 Log.d("####", "5")
                 test.add("5")
                 Log.d("#######", test.toString())
+                Log.d("####", "6")
+
             }
         }
 
@@ -97,6 +117,10 @@ class FragmentSearch : Fragment() {
                     val writerNickname = it.joaraSearchTotalCnt?.keyword_cntJoara?.subject
 
                     if (books != null) {
+                        joaraOffset = books.size
+                    }
+
+                    if (books != null) {
                         for (i in books.indices) {
 
                             val writerName = books[i].writer_name
@@ -135,16 +159,14 @@ class FragmentSearch : Fragment() {
                         }
                     }
 
-                    adapter?.setItems(searchItems)
-                    adapter!!.notifyDataSetChanged()
-                    with(binding){
-                        if (page == 1) {
-                            rviewSearch.layoutManager = linearLayoutManager
-                            rviewSearch.adapter = adapter
-                        }
-                    }
+                    val cmpAsc: Comparator<BookListData> =
+                        Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
+                    Collections.sort(searchItems, cmpAsc)
+
+                    Log.d("@@@@", searchItems.size.toString())
 
 
+                    adapter?.notifyDataSetChanged()
                 }
             })
     }
@@ -168,9 +190,18 @@ class FragmentSearch : Fragment() {
                     val results = it.results
 
                     if (results != null) {
-                        val items = results[2].items
+                        var items: List<KakaoBookItem>? = null
 
-                        Log.d("!!!!",results.toString())
+                        if(page == 0){
+                            items = results[2].items
+                        } else {
+                            items = results[0].items
+                        }
+
+                        if (items != null) {
+                            kakaoStageOffset = items.size
+                        }
+
 
                         if (items != null) {
                             for (j in items.indices) {
@@ -202,26 +233,25 @@ class FragmentSearch : Fragment() {
                         }
                     }
 
-                    adapter!!.notifyDataSetChanged()
                     with(binding){
-                        if (page == 0) {
-                            rviewSearch.layoutManager = linearLayoutManager
-                            rviewSearch.adapter = adapter
-                        }
+                        blank.root.visibility = View.GONE
+                        rviewSearch.visibility = View.VISIBLE
                     }
                 }
             })
     }
 
-    private var recyclerViewScroll: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-            if(!recyclerView.canScrollVertically(1)) {
-                page++
-
-                searchJoara(page, text)
-                searchKakao(page-1, text)
-            }
-        }
-    }
+//    private var recyclerViewScroll: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
+//        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//            super.onScrolled(recyclerView, dx, dy)
+//            if(!recyclerView.canScrollVertically(1)) {
+//                if(joaraOffset == 20 && kakaoStageOffset == 25){
+//                    page++
+//
+//                    searchJoara(page, text)
+//                    searchKakao(page-1, text)
+//                }
+//            }
+//        }
+//    }
 }

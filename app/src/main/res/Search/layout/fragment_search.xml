@@ -17,6 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <include
+            android:id="@+id/blank"
             layout="@layout/etc_blank"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -34,7 +35,6 @@
             android:id="@+id/rviewSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="60dp"
             android:paddingStart="16dp"
             android:paddingTop="16dp"
             android:paddingEnd="0dp" />
@@ -52,42 +52,59 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:context=".Search.FragmentSearch">
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/shape_outline_gray"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:fillViewport="true">
 
-            <EditText
-                android:id="@+id/etextSearch"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@null"
-                android:ems="10"
-                android:hint="@string/Search_Text1"
-                android:imeOptions="actionSearch"
-                android:inputType="textPersonName" />
-        </LinearLayout>
+                android:gravity="center"
+                android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="125dp"
-            android:layout_height="125dp"
-            android:layout_marginTop="14dp"
-            android:src="@drawable/likeit_4" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_outline_gray"
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="검색검색"
-            android:textAlignment="center" />
+                    <EditText
+                        android:id="@+id/etextSearch"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:ems="10"
+                        android:hint="@string/Search_Text1"
+                        android:imeOptions="actionSearch"
+                        android:inputType="text"
+                        android:text="메모라이즈"
+                        android:textColor="#FFFFFF"
+                        android:textColorHint="#673AB7" />
+                </LinearLayout>
 
-        <Button
-            android:id="@+id/btnSearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:text="@string/Search_Text3" />
+                <ImageView
+                    android:layout_width="125dp"
+                    android:layout_height="125dp"
+                    android:layout_marginTop="14dp"
+                    android:src="@drawable/likeit_4" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="검색검색"
+                    android:textAlignment="center" />
+
+                <Button
+                    android:id="@+id/btnSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:background="#3F51B5"
+                    android:text="@string/Search_Text3" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
 
     </LinearLayout>
 

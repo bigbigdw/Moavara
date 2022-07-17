@@ -5,26 +5,22 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moavara.R
 import com.example.moavara.Retrofit.*
 import com.example.moavara.Util.Param
+import com.example.moavara.databinding.FragmentSearchBinding
+import kotlinx.android.synthetic.main.fragment_search.*
 
 class FragmentSearchBookcode : Fragment() {
     private var adapter : AdapterBookSearch? = null
     private val searchItems = ArrayList<BookListData>()
     var linearLayoutManager: LinearLayoutManager? = null
-    var recyclerView: RecyclerView? = null
-    var btnSearchDtail: AppCompatButton? = null
     var page = 1
 
-    var wrap: LinearLayout? = null
-    var cover: LinearLayout? = null
-    var blank: LinearLayout? = null
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
 
     private val test = ArrayList<String?>()
 
@@ -34,15 +30,10 @@ class FragmentSearchBookcode : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val root = inflater.inflate(R.layout.fragment_searchtab, container, false)
-        recyclerView = root.findViewById(R.id.rview_Search)
-        btnSearchDtail = root.findViewById(R.id.Btn_SearchDetail)
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        val view = binding.root
 
         linearLayoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-
-        wrap = root.findViewById(R.id.TabWrap)
-        cover = root.findViewById(R.id.LoadingLayout)
-        blank = root.findViewById(R.id.BlankLayout)
 
         Log.d("####", "1")
         test.add("1")
@@ -53,11 +44,13 @@ class FragmentSearchBookcode : Fragment() {
         Log.d("####", "5")
         test.add("5")
         Log.d("#######", test.toString())
-        adapter = AdapterBookSearch(requireContext())
+        adapter = AdapterBookSearch(searchItems)
 
-        recyclerView!!.addOnScrollListener(recyclerViewScroll)
+        with(binding){
+            rviewSearch.addOnScrollListener(recyclerViewScroll)
+        }
 
-        return root
+        return view
     }
 
     fun searchJoara(page: Int) {
@@ -86,8 +79,6 @@ class FragmentSearchBookcode : Fragment() {
                     Log.d("####", "2")
                     test.add("2")
                     Log.d("#######-2", test.toString())
-                    cover!!.visibility = View.GONE
-                    blank!!.visibility = View.GONE
 
                     val books = it.books
                     val status = it.status
@@ -136,11 +127,12 @@ class FragmentSearchBookcode : Fragment() {
                         }
                     }
 
-                    adapter?.setItems(searchItems)
                     adapter!!.notifyDataSetChanged()
-                    if (page == 1) {
-                        recyclerView!!.layoutManager = linearLayoutManager
-                        recyclerView!!.adapter = adapter
+                    with(binding){
+                        if (page == 1) {
+                            rviewSearch.layoutManager = linearLayoutManager
+                            rviewSearch.adapter = adapter
+                        }
                     }
                 }
             })
@@ -161,8 +153,6 @@ class FragmentSearchBookcode : Fragment() {
                     Log.d("####", "4")
                     test.add("4")
                     Log.d("#######-3", test.toString())
-                    cover!!.visibility = View.GONE
-                    blank!!.visibility = View.GONE
 
                     val results = it.results
 
@@ -203,8 +193,8 @@ class FragmentSearchBookcode : Fragment() {
 
                     adapter!!.notifyDataSetChanged()
                     if (page == 0) {
-                        recyclerView!!.layoutManager = linearLayoutManager
-                        recyclerView!!.adapter = adapter
+                        rviewSearch.layoutManager = linearLayoutManager
+                        rviewSearch.adapter = adapter
                     }
                 }
             })
@@ -214,7 +204,6 @@ class FragmentSearchBookcode : Fragment() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
             if(!recyclerView.canScrollVertically(1)) {
-                cover!!.visibility = View.VISIBLE
                 page++
 
                 searchJoara(page)

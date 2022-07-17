@@ -55,6 +55,7 @@
 
         <activity
             android:name="com.example.moavara.Search.ActivitySearch"
+            android:windowSoftInputMode="adjustResize"
             android:exported="true">
         </activity>
 

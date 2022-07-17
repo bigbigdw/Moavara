@@ -1,18 +1,15 @@
 package com.example.moavara.Search
 
-import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moavara.databinding.ItemSearchBinding
-import java.util.*
 
 
-class AdapterBookSearch(private val mContext: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var listData = ArrayList<BookListData>()
+class AdapterBookSearch(items: List<BookListData>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    var holder: ArrayList<BookListData> = items as ArrayList<BookListData>
 
     interface OnItemClickListener {
         fun onItemClick(v: View?, position: Int, value: String?)
@@ -32,23 +29,25 @@ class AdapterBookSearch(private val mContext: Context) : RecyclerView.Adapter<Re
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is MainBookViewHolder) {
 
-            with(holder.binding){
-                val item = listData[position]
-                Glide.with(holder.itemView.context)
-                    .load(item.bookImg)
-                    .into(iview)
+            val item =  this.holder[position]
 
-                tviewTitle.text = listData[position].title
-                tviewWriter.text = listData[position].writer
-                tviewIntro.text = listData[position].intro
-                tviewInfo1.text = listData[position].bookCode
-                tviewInfo2.text = listData[position].isFav
+            with(holder.binding){
+
+                Glide.with(holder.itemView.context)
+                        .load(item.bookImg)
+                        .into(iview)
+
+                tviewTitle.text = item.title
+                tviewWriter.text = item.writer
+                tviewIntro.text = item.intro
+                tviewInfo1.text = item.bookCode
+                tviewInfo2.text = item.isFav
             }
         }
     }
 
     override fun getItemCount(): Int {
-        return listData.size
+        return holder.size
     }
 
     inner class MainBookViewHolder internal constructor(val binding: ItemSearchBinding) :
@@ -56,16 +55,7 @@ class AdapterBookSearch(private val mContext: Context) : RecyclerView.Adapter<Re
 
     }
 
-    fun setItems(items: ArrayList<BookListData>) {
-        val cmpAsc: Comparator<BookListData> =
-            Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
-        Collections.sort(items, cmpAsc)
-        Log.d("####_!!!",items.toString())
-        listData.addAll(items)
-        Log.d("####_!!!","HIHI")
-    }
-
     fun getItem(position: Int): BookListData {
-        return listData[position]
+        return holder[position]
     }
 }
