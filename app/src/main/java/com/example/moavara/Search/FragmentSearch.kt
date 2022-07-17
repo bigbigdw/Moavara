@@ -163,9 +163,6 @@ class FragmentSearch : Fragment() {
                         Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
                     Collections.sort(searchItems, cmpAsc)
 
-                    Log.d("@@@@", searchItems.size.toString())
-
-
                     adapter?.notifyDataSetChanged()
                 }
             })

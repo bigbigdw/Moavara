@@ -1,6 +1,7 @@
 package com.example.moavara.Search
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
@@ -13,6 +14,7 @@ import com.example.moavara.databinding.ActivitySearchBinding
 class ActivitySearch : AppCompatActivity() {
 
     private lateinit var mFragmentSearch: FragmentSearch
+    private lateinit var mFragmentSearchBookcode: FragmentSearchBookcode
     private lateinit var adapterType: AdapterType
     private val typeItems = ArrayList<BestType>()
     var pos = 0
@@ -60,6 +62,24 @@ class ActivitySearch : AppCompatActivity() {
                 adapterType.setSelectedBtn(position)
                 pos = position
                 adapterType.notifyDataSetChanged()
+
+                if (item != null) {
+                    Log.d("@@@@", item.type ?: "HIHI")
+                }
+
+                if (item != null) {
+                    if(item.type == "Keyword"){
+                        mFragmentSearch = FragmentSearch()
+                        supportFragmentManager.commit {
+                            replace(R.id.llayoutWrap, mFragmentSearch)
+                        }
+                    } else {
+                        mFragmentSearchBookcode = FragmentSearchBookcode(item.type ?: "")
+                        supportFragmentManager.commit {
+                            replace(R.id.llayoutWrap, mFragmentSearchBookcode)
+                        }
+                    }
+                }
             }
         })
     }

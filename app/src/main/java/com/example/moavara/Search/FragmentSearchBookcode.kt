@@ -1,214 +1,103 @@
 package com.example.moavara.Search
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.moavara.Retrofit.*
+import com.bumptech.glide.Glide
+import com.example.moavara.Retrofit.JoaraBestDetailResult
+import com.example.moavara.Retrofit.RetrofitDataListener
+import com.example.moavara.Retrofit.RetrofitJoara
 import com.example.moavara.Util.Param
-import com.example.moavara.databinding.FragmentSearchBinding
-import kotlinx.android.synthetic.main.fragment_search.*
+import com.example.moavara.databinding.FragmentSearchBookcodeBinding
 
-class FragmentSearchBookcode : Fragment() {
-    private var adapter : AdapterBookSearch? = null
-    private val searchItems = ArrayList<BookListData>()
-    var linearLayoutManager: LinearLayoutManager? = null
-    var page = 1
+class FragmentSearchBookcode(private var platform: String) : Fragment() {
 
-    private var _binding: FragmentSearchBinding? = null
+    private var _binding: FragmentSearchBookcodeBinding? = null
     private val binding get() = _binding!!
-
-    private val test = ArrayList<String?>()
+    var bookCode = ""
+    lateinit var searchUnit: Unit
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
-        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        _binding = FragmentSearchBookcodeBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        linearLayoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-
-        Log.d("####", "1")
-        test.add("1")
-        searchJoara(page)
-        Log.d("####", "3")
-        test.add("3")
-        searchKakao(page - 1)
-        Log.d("####", "5")
-        test.add("5")
-        Log.d("#######", test.toString())
-        adapter = AdapterBookSearch(searchItems)
-
         with(binding){
-            rviewSearch.addOnScrollListener(recyclerViewScroll)
+
+            Log.d("@@@@", platform)
+
+            etextSearch.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(text: CharSequence, start: Int, count: Int, after: Int) {
+                    Log.d("idtext", "beforeTextChanged")
+                }
+
+                override fun onTextChanged(text: CharSequence, start: Int, before: Int, count: Int) {
+                    Log.d("idtext", "onTextChanged")
+                }
+
+                override fun afterTextChanged(s: Editable) {
+                    bookCode = s.toString()
+                }
+            })
+
+            if(platform == "Joara"){
+                tviewSearch.text = "https://www.joara.com/book/"
+//                searchUnit = setLayoutJoara()
+            }
+
+            btnSearch.setOnClickListener {
+                setLayoutJoara()
+            }
+
+
         }
 
         return view
     }
 
-    fun searchJoara(page: Int) {
+    fun setLayoutJoara(){
         val apiJoara = RetrofitJoara()
-        val param = Param.getItemAPI(context)
-        param["page"] = page
-        param["query"] = "사랑"
-        param["collection"] = ""
-        param["search"] = "subject"
-        param["kind"] = ""
-        param["category"] = ""
-        param["min_chapter"] = ""
-        param["max_chapter"] = ""
-        param["interval"] = ""
-        param["orderby"] = ""
-        param["except_query"] = ""
-        param["except_search"] = ""
-        param["expr_point"] = ""
-        param["score_point"] = "1"
+        val JoaraRef = Param.getItemAPI(requireContext())
+        JoaraRef["book_code"] = bookCode
+        JoaraRef["category"] = "0"
 
-        apiJoara.getSearchJoara(
-            param,
-            object : RetrofitDataListener<JoaraSearchResult> {
-                override fun onSuccess(it: JoaraSearchResult) {
+        apiJoara.getBookDetailJoa(
+            JoaraRef,
+            object : RetrofitDataListener<JoaraBestDetailResult> {
+                override fun onSuccess(it: JoaraBestDetailResult) {
 
-                    Log.d("####", "2")
-                    test.add("2")
-                    Log.d("#######-2", test.toString())
-
-                    val books = it.books
-                    val status = it.status
-                    val all = it.joaraSearchTotalCnt?.keyword_cntJoara?.all
-                    val intro = it.joaraSearchTotalCnt?.keyword_cntJoara?.intro
-                    val keyword = it.joaraSearchTotalCnt?.keyword_cntJoara?.keyword
-                    val subject = it.joaraSearchTotalCnt?.keyword_cntJoara?.subject
-                    val writerNickname = it.joaraSearchTotalCnt?.keyword_cntJoara?.subject
-
-                    if (books != null) {
-                        for (i in books.indices) {
-
-                            val writerName = books[i].writer_name
-                            val subject = books[i].subject
-                            val bookImg = books[i].book_img
-                            val isAdult = books[i].isAdult
-                            val isFinish = books[i].isFinish
-                            val isPremium = books[i].isPremium
-                            val isNobless = books[i].isNobless
-                            val intro = books[i].intro
-                            val isFavorite = books[i].isFavorite
-                            val cntPageRead = books[i].cntPageRead
-                            val cntRecom = books[i].cntRecom
-                            val cntFavorite = books[i].cntFavorite
-                            val bookCode = books[i].bookCode
-                            val categoryKoName = books[i].categoryKoName
-
-                            searchItems.add(
-                                BookListData(
-                                    "조아라",
-                                    subject,
-                                    bookImg,
-                                    isAdult,
-                                    isFinish,
-                                    isPremium,
-                                    isNobless,
-                                    intro,
-                                    isFavorite,
-                                    cntPageRead,
-                                    cntRecom,
-                                    cntFavorite,
-                                    bookCode,
-                                    categoryKoName
-                                )
-                            )
-                        }
-                    }
-
-                    adapter!!.notifyDataSetChanged()
                     with(binding){
-                        if (page == 1) {
-                            rviewSearch.layoutManager = linearLayoutManager
-                            rviewSearch.adapter = adapter
+                        llayoutSearch.visibility = View.GONE
+                        llayoutResult.visibility = View.VISIBLE
+                        if(it.status == "1" && it.book != null){
+                            Glide.with(requireContext())
+                                .load(it.book.bookImg)
+                                .into(searchResult.iviewBookCover)
+
+                            searchResult.tviewTitle.text = it.book.subject
+                            searchResult.tviewWriter.text = it.book.writerName
+
+                            searchResult.tviewInfo1.text = "총 " + it.book.cntChapter + " 화"
+                            searchResult.tviewInfo2.text =  "선호작 수 : " + it.book.cntFavorite
+                            searchResult.tviewInfo3.text =  "조회 수 : " + it.book.cntPageRead
+                            searchResult.tviewInfo4.text =  "추천 수 : " + it.book.cntRecom
+
                         }
                     }
                 }
             })
     }
 
-    fun searchKakao(page: Int) {
-        val apiKakao = RetrofitKaKao()
-        val param : MutableMap<String?, Any> = HashMap()
-        param["page"] = page
-        param["word"] = "사랑"
-        param["category_uid"] = 11
 
-        apiKakao.postKakaoSearch(
-            param,
-            object : RetrofitDataListener<SearchResultKakao> {
-                override fun onSuccess(it: SearchResultKakao) {
 
-                    Log.d("####", "4")
-                    test.add("4")
-                    Log.d("#######-3", test.toString())
 
-                    val results = it.results
-
-                    if (results != null) {
-                        val items = results[2].items
-
-                        Log.d("!!!!",results.toString())
-
-                        if (items != null) {
-                            for (j in items.indices) {
-                                val author = items[j].author
-                                val image_url = "https://dn-img-page.kakao.com/download/resource?kid=" + items[j].image_url
-                                val publisher_name = items[j].publisher_name
-                                val sub_category = items[j].sub_category
-                                val title = items[j].title
-
-                                searchItems.add(
-                                    BookListData(
-                                        "카카오",
-                                        title,
-                                        image_url,
-                                        "isAdult",
-                                        "isFinish",
-                                        "isPremium",
-                                        "isNobless",
-                                        publisher_name,
-                                        "isFavorite",
-                                        "cntPageRead",
-                                        "cntRecom",
-                                        "cntFavorite",
-                                        "bookCode",
-                                        sub_category,
-                                    )
-                                )
-                            }
-                        }
-                    }
-
-                    adapter!!.notifyDataSetChanged()
-                    if (page == 0) {
-                        rviewSearch.layoutManager = linearLayoutManager
-                        rviewSearch.adapter = adapter
-                    }
-                }
-            })
-    }
-
-    private var recyclerViewScroll: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-            if(!recyclerView.canScrollVertically(1)) {
-                page++
-
-                searchJoara(page)
-                searchKakao(page-1)
-            }
-        }
-    }
 }

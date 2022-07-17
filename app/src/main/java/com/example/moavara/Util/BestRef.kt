@@ -45,8 +45,6 @@ object BestRef {
     fun typeList(): List<String> {
         return listOf(
             "Joara",
-            "Joara Nobless",
-            "Joara Premium",
             "Naver Today",
             "Naver Challenge",
             "Naver",
@@ -64,8 +62,6 @@ object BestRef {
         return listOf(
             "통합 검색",
             "조아라",
-            "노블레스",
-            "프리미엄",
             "네이버시리즈",
             "챌린지리그",
             "베스트리그",
