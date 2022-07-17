@@ -8,10 +8,7 @@ import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.DataBase.BookListDataBestAnalyze
 import com.example.moavara.DataBase.BookListDataBestToday
 import com.example.moavara.DataBase.DataBaseBestDay
-import com.example.moavara.Main.ActivityAdmin
-import com.example.moavara.Main.mRootRef
 import com.example.moavara.Retrofit.*
-import com.example.moavara.Retrofit.Retrofit.apiKakaoStage
 import com.example.moavara.Search.EventDetailDataMining
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -110,119 +107,120 @@ object Mining {
                 getRidiBest(genre, i)
             }
         }
-        Ridi.start()
 
         val OneStore = Thread {
             for (i in 1..4) {
                 getOneStoreBest(genre, i)
             }
         }
-        OneStore.start()
 
         val Kakao = Thread {
             for (i in 1..4) {
                 getKakaoBest(genre, i)
             }
         }
-        Kakao.start()
 
         val KakaoStage1 = Thread {
             getKakaoStageBest(genre)
         }
-        KakaoStage1.start()
 
         val Joara1 = Thread {
             for (i in 1..5) {
                 getJoaraBest(context, genre, i)
             }
         }
-        Joara1.start()
 
         val JoaraNobless1 = Thread {
             for (i in 1..5) {
                 getJoaraBestNobless(context, genre, i)
             }
         }
-        JoaraNobless1.start()
 
         val JoaraPremium1 = Thread {
             for (i in 1..5) {
                 getJoaraBestPremium(context, genre, i)
             }
         }
-        JoaraPremium1.start()
 
         val NaverToday = Thread {
             getNaverToday(genre)
         }
-        NaverToday.start()
 
         val NaverChallenge1 = Thread {
             getNaverChallenge(genre)
         }
-        NaverChallenge1.start()
 
         val NaverBest = Thread {
             getNaverBest(genre)
         }
-        NaverBest.start()
 
         val Moonpia = Thread {
             for (i in 1..4) {
                 getMoonpiaBest(i)
             }
         }
-        Moonpia.start()
 
         val Toksoda1 = Thread {
             for (i in 1..5) {
                 getToksodaBest(genre, i)
             }
         }
-        Toksoda1.start()
 
         val MrBlue = Thread {
             getMrBlueBest(genre)
         }
-        MrBlue.start()
+
 
         try {
-            Ridi.join()
+            Ridi.start()
             Log.d("####MINING", "리디1 완료")
+            Ridi.join()
 
+            OneStore.start()
             OneStore.join()
             Log.d("####MINING", "원스토어1 완료")
 
+            Kakao.start()
             Kakao.join()
             Log.d("####MINING", "카카오1 완료")
 
+            KakaoStage1.start()
             KakaoStage1.join()
             Log.d("####MINING", "카카오 스테이지1 완료")
 
+            Joara1.start()
             Joara1.join()
             Log.d("####MINING", "조아라1 완료")
 
+            JoaraNobless1.start()
             JoaraNobless1.join()
             Log.d("####MINING", "조아라 노블레스1 완료")
 
+            JoaraPremium1.start()
             JoaraPremium1.join()
             Log.d("####MINING", "조아라 프리미엄1 완료")
 
+            NaverToday.start()
             NaverToday.join()
             Log.d("####MINING", "네이버 투데이1 완료")
 
+            NaverChallenge1.start()
             NaverChallenge1.join()
             Log.d("####MINING", "네이버 챌린지1 완료")
 
+            NaverBest.start()
             NaverBest.join()
             Log.d("####MINING", "네이버1 완료")
 
+            Moonpia.start()
             Moonpia.join()
             Log.d("####MINING", "문피아 완료")
 
+            Toksoda1.start()
             Toksoda1.join()
             Log.d("####MINING", "톡소다1 완료")
 
+            MrBlue.start()
             MrBlue.join()
             Log.d("####MINING", "미스터 블루 완료")
         } catch (e: InterruptedException) {
@@ -1335,8 +1333,6 @@ object Mining {
             object : RetrofitDataListener<BestMoonpiaResult> {
                 override fun onSuccess(data: BestMoonpiaResult) {
 
-                    val dataList = ArrayList<BookListDataBestAnalyze>()
-
                     BestRef.setBestRefWeekList("Munpia", "")
                         .addListenerForSingleValueEvent(object :
                             ValueEventListener {
@@ -1346,6 +1342,9 @@ object Mining {
 
                                     if (it != null) {
                                         for (i in it.indices) {
+
+                                            val dataList = ArrayList<BookListDataBestAnalyze>()
+
                                             for (weekItem in dataSnapshot.children) {
                                                 val group: BookListDataBestToday? =
                                                     weekItem.getValue(BookListDataBestToday::class.java)

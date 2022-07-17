@@ -6,44 +6,40 @@ import android.widget.Toast
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.example.moavara.Util.Mining
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
+class FirebaseWorkManager(private var context: Context, workerParams: WorkerParameters) :
     Worker(context, workerParams) {
-    override fun doWork(): Result {
+    val miningRef = FirebaseDatabase.getInstance().reference.child("Mining")
 
-        val miningRef = FirebaseDatabase.getInstance().reference.child("Mining")
+    override fun doWork(): Result {
 
         miningRef.get().addOnSuccessListener {
             if(it.value != null && it.value!! != "NULL"){
 
-                if(it.value == "ALL"){
-                    Mining.runMining(applicationContext, "ALL")
-                    Toast.makeText(applicationContext, "장르 : 전체", Toast.LENGTH_SHORT).show()
-                    miningRef.setValue("BL")
-                } else if (it.value == "BL") {
-                    Mining.runMining(applicationContext, "BL")
-                    Toast.makeText(applicationContext, "장르 : BL", Toast.LENGTH_SHORT).show()
-                    miningRef.setValue("FANTASY")
-                } else if (it.value == "FANTASY") {
-                    Mining.runMining(applicationContext, "FANTASY")
-                    Toast.makeText(applicationContext, "장르 : 판타지", Toast.LENGTH_SHORT).show()
-                    miningRef.setValue("ROMANCE")
-                } else if (it.value == "ROMANCE") {
-                    Mining.runMining(applicationContext, "ROMANCE")
-                    Toast.makeText(applicationContext, "장르 : 로맨스", Toast.LENGTH_SHORT).show()
-                    miningRef.setValue("ALL")
-                }
+                Thread{
+                    if(it.value == "ALL"){
+                        Mining.runMining(applicationContext, "ALL")
+                        miningRef.setValue("BL")
+                    } else if (it.value == "BL") {
+                        Mining.runMining(applicationContext, "BL")
+                        miningRef.setValue("FANTASY")
+                    } else if (it.value == "FANTASY") {
+                        Mining.runMining(applicationContext, "FANTASY")
+                        miningRef.setValue("ROMANCE")
+                    } else if (it.value == "ROMANCE") {
+                        Mining.runMining(applicationContext, "ROMANCE")
+                        miningRef.setValue("ALL")
+                    }
+                }.start()
+
             } else {
                 miningRef.setValue("ALL")
-                Toast.makeText(applicationContext, "장르 : 전체", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "장르 : 전체", Toast.LENGTH_SHORT).show()
             }
             postFCM(it.value as String)
         }.addOnFailureListener{}
