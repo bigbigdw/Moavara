@@ -1,9 +1,5 @@
 package com.example.moavara.Retrofit
 
-import retrofit2.Call
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-
 class RetrofitKaKao {
     private val apiKakaoStage = com.example.moavara.Retrofit.Retrofit.apiKakaoStage
     private val apiKakao = com.example.moavara.Retrofit.Retrofit.apiKakao
@@ -15,7 +11,7 @@ class RetrofitKaKao {
 
     //카카오 스테이지 베스트
     fun postKakaoSearch(map: MutableMap<String?, Any>, dataListener: RetrofitDataListener<SearchResultKakao>) {
-        apiKakaoStage.postKakaoSearch(map).enqueue(baseCallback(dataListener))
+        apiKakao.postKakaoSearch(map).enqueue(baseCallback(dataListener))
     }
 
     //카카오 스테이지 베스트

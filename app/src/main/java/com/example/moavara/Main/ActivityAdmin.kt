@@ -19,6 +19,7 @@ import com.example.moavara.Firebase.*
 import com.example.moavara.R
 import com.example.moavara.Search.ActivitySearch
 import com.example.moavara.User.ActivityUser
+import com.example.moavara.Util.ActivityTest
 import com.example.moavara.Util.Genre
 import com.example.moavara.Util.Mining
 import com.example.moavara.databinding.ActivityAdminBinding
@@ -51,7 +52,7 @@ class ActivityAdmin : AppCompatActivity() {
             .build()
 
         /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
-        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(30, TimeUnit.MINUTES)
+        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(1, TimeUnit.HOURS)
             .setConstraints(mConstraints)
             .build()
 
@@ -589,6 +590,12 @@ class ActivityAdmin : AppCompatActivity() {
                         Toast.makeText(applicationContext, "작품 개별 최신화", Toast.LENGTH_SHORT).show()
                     }
                 }.start()
+            }
+
+            llayoutBtn14.setOnClickListener {
+
+                val intent = Intent(this@ActivityAdmin, ActivityTest::class.java)
+                startActivity(intent)
             }
         }
 

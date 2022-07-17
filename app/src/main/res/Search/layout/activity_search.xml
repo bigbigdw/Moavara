@@ -1,33 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#1E1E20"
     android:orientation="vertical">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#0D0E10"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-
-        <EditText
-            android:id="@+id/etext_search"
-            android:layout_width="wrap_content"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@null"
-            android:ems="10"
-            android:hint="@string/Search_Text1"
-            android:imeOptions="actionSearch"
-            android:inputType="textPersonName"
-            tools:layout_conversion_absoluteHeight="24dp"
-            tools:layout_editor_absoluteY="18dp"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_conversion_absoluteWidth="379dp" />
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <ImageView
+                android:id="@+id/HomeImg"
+                android:layout_width="110dp"
+                android:layout_height="22dp"
+                android:contentDescription="@string/TODO"
+                app:srcCompat="@drawable/moabara_logo" />
+
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
-        android:id="@+id/viewFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"></LinearLayout>
+        android:layout_height="wrap_content"
+        android:background="#0D0E10"
+        android:gravity="bottom"
+        android:paddingLeft="16dp"
+        android:orientation="horizontal">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:text="검색"
+            android:textColor="#EDE6FD"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rviewType"
+        android:layout_marginStart="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp" />
+
+    <LinearLayout
+        android:id="@+id/llayoutWrap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
 
 </LinearLayout>

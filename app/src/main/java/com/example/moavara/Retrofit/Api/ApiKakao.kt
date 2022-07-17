@@ -16,6 +16,10 @@ interface ApiKakao {
     @FormUrlEncoded
     @POST("api/v7/store/community/list/comment")
     fun postKakaoBookDetailComment(@FieldMap queryMap: MutableMap<String?, Any>): Call<BestKakaoBookDetailComment>
+
+    @FormUrlEncoded
+    @POST("/api/v5/store/search")
+    fun postKakaoSearch(@FieldMap queryMap: MutableMap<String?, Any>): Call<SearchResultKakao>
 }
 
 interface ApiKakaoStage {
@@ -29,15 +33,5 @@ interface ApiKakaoStage {
     @GET("novels/{bookcode}/comments")
     fun getBestKakaoStageDetailComment(@Path("bookcode") id: String, @Query("size") size: String, @Query("sort") sort: String, @Query("sort") sort2: String, @Query("page") page: String): Call<KakaoStageBestBookCommentResult>
 
-    @FormUrlEncoded
-    @POST("/api/v5/store/search")
-    fun postKakaoSearch(
-        @Field("page") page: Int?,
-        @Field("word") word: String?,
-        @Field("category_uid") category_uid: Int?,
-    ): Call<SearchResultKakao?>?
 
-    @FormUrlEncoded
-    @POST("/api/v5/store/search")
-    fun postKakaoSearch(@FieldMap queryMap: MutableMap<String?, Any>): Call<SearchResultKakao>
 }

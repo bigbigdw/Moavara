@@ -19,7 +19,7 @@
     <item
         android:id="@+id/Fragment_EventDetail"
         android:icon="@drawable/ic_news_vt_24px"
-        android:title="프로모션" />
+        android:title="뉴스" />
 
     <item
         android:id="@+id/Fragment_Community"

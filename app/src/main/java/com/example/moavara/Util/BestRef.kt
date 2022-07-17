@@ -2,10 +2,8 @@ package com.example.moavara.Util
 
 import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.DataBase.BookListDataBestAnalyze
-import com.example.moavara.DataBase.BookListDataBestToday
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import java.util.ArrayList
 
 object BestRef {
     private val mRootRef = FirebaseDatabase.getInstance().reference
@@ -46,6 +44,44 @@ object BestRef {
 
     fun typeList(): List<String> {
         return listOf(
+            "Joara",
+            "Joara Nobless",
+            "Joara Premium",
+            "Naver Today",
+            "Naver Challenge",
+            "Naver",
+            "Kakao",
+            "Kakao Stage",
+            "Ridi",
+            "OneStore",
+            "Munpia",
+            "Toksoda",
+            "MrBlue"
+        )
+    }
+
+    fun typeListTitleSearch(): List<String> {
+        return listOf(
+            "통합 검색",
+            "조아라",
+            "노블레스",
+            "프리미엄",
+            "네이버시리즈",
+            "챌린지리그",
+            "베스트리그",
+            "카카오페이지",
+            "스테이지",
+            "리디북스",
+            "원스토리",
+            "문피아",
+            "톡소다",
+            "미스터블루"
+        )
+    }
+
+    fun typeListSearch(): List<String> {
+        return listOf(
+            "Keyword",
             "Joara",
             "Joara Nobless",
             "Joara Premium",

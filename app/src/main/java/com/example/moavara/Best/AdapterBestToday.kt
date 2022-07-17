@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.BookListDataBest
-import com.example.moavara.DataBase.BookListDataBestToday
 import com.example.moavara.databinding.ItemBooklistBestTodayBinding
 
 class AdapterBestToday(items: List<BookListDataBest?>?) :
@@ -47,7 +46,7 @@ class AdapterBestToday(items: List<BookListDataBest?>?) :
 
                 when {
                     item.status == "UP" -> {
-                        tviewNum.text =  "+ ${item.numberDiff?.times(-1)} (${item.trophyCount})"
+                        tviewNum.text =  "+ ${item.numberDiff.times(-1)} (${item.trophyCount})"
                         tviewNum.setTextColor(Color.parseColor("#02A247"));
                     }
                     item.status == "DOWN" -> {

@@ -1,49 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:padding="28dp"
-    tools:context=".Search.FragmentSearch">
+    android:layout_height="match_parent">
+
 
     <LinearLayout
+        android:id="@+id/llayoutResult"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/shape_outline_gray"
-        android:padding="16dp"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <EditText
-            android:id="@+id/etext_search"
+        <include
+            layout="@layout/etc_blank"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            tools:visibility="gone" />
+
+        <include
+            layout="@layout/loading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            tools:visibility="gone" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rviewSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@null"
-            android:ems="10"
-            android:hint="@string/Search_Text1"
-            android:imeOptions="actionSearch"
-            android:inputType="textPersonName" />
+            android:layout_marginBottom="60dp"
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="0dp" />
+
     </LinearLayout>
 
-    <ImageView
-        android:layout_width="125dp"
-        android:layout_height="125dp"
-        android:layout_marginTop="14dp"
-        android:src="@drawable/likeit_4" />
-
-    <TextView
+    <LinearLayout
+        android:id="@+id/llayoutSearch"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/Search_Text2"
-        android:textAlignment="center" />
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="28dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:context=".Search.FragmentSearch">
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:text="@string/Search_Text3" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_outline_gray"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-</LinearLayout>
+            <EditText
+                android:id="@+id/etextSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:ems="10"
+                android:hint="@string/Search_Text1"
+                android:imeOptions="actionSearch"
+                android:inputType="textPersonName" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="125dp"
+            android:layout_height="125dp"
+            android:layout_marginTop="14dp"
+            android:src="@drawable/likeit_4" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="검색검색"
+            android:textAlignment="center" />
+
+        <Button
+            android:id="@+id/btnSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="@string/Search_Text3" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -111,19 +110,25 @@ class FragmentBest : Fragment() {
 
                 when (type) {
                     "Today" -> {
-                        mFragmentBestTabToday = FragmentBestTabToday(item!!.type!!)
+                        if (item != null) {
+                            mFragmentBestTabToday = FragmentBestTabToday(item.type?: "")
+                        }
                         childFragmentManager.commit {
                             replace(R.id.llayoutWrap, mFragmentBestTabToday)
                         }
                     }
                     "Weekend" -> {
-                        mFragmentBestTabWeekend = FragmentBestTabWeekend(item!!.type!!)
+                        if (item != null) {
+                            mFragmentBestTabWeekend = FragmentBestTabWeekend(item.type?: "")
+                        }
                         childFragmentManager.commit {
                             replace(R.id.llayoutWrap, mFragmentBestTabWeekend)
                         }
                     }
                     "Month" -> {
-                        mFragmentBestTabMonth = FragmentBestTabMonth(item!!.type!!)
+                        if (item != null) {
+                            mFragmentBestTabMonth = FragmentBestTabMonth(item.type?: "")
+                        }
                         childFragmentManager.commit {
                             replace(R.id.llayoutWrap, mFragmentBestTabMonth)
                         }
