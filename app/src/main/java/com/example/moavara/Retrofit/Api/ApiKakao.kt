@@ -33,5 +33,6 @@ interface ApiKakaoStage {
     @GET("novels/{bookcode}/comments")
     fun getBestKakaoStageDetailComment(@Path("bookcode") id: String, @Query("size") size: String, @Query("sort") sort: String, @Query("sort") sort2: String, @Query("page") page: String): Call<KakaoStageBestBookCommentResult>
 
-
+    @GET("search")
+    fun getSearchKakaoStage(@QueryMap queryMap: MutableMap<String?, Any>): Call<KakaoStageSearchResult>
 }

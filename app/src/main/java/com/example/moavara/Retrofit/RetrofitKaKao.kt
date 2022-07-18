@@ -23,6 +23,10 @@ class RetrofitKaKao {
         apiKakaoStage.getBestKakaoStageDetail(bookCode).enqueue(baseCallback(dataListener))
     }
 
+    fun getSearchKakaoStage(map: MutableMap<String?, Any>, dataListener: RetrofitDataListener<KakaoStageSearchResult>) {
+        apiKakaoStage.getSearchKakaoStage(map).enqueue(baseCallback(dataListener))
+    }
+
     fun getBestKakaoStageDetailComment(
         bookCode: String,
         size: String,

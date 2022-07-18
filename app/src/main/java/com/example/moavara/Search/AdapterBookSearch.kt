@@ -39,9 +39,9 @@ class AdapterBookSearch(items: List<BookListData>) : RecyclerView.Adapter<Recycl
 
                 tviewTitle.text = item.title
                 tviewWriter.text = item.writer
-                tviewIntro.text = item.intro
-                tviewInfo1.text = item.bookCode
-                tviewInfo2.text = item.isFav
+                tviewIntro.text = item.info1
+                tviewInfo1.text = item.info2
+                tviewInfo2.text = item.info3
             }
         }
     }

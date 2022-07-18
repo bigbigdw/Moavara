@@ -72,6 +72,7 @@ class FragmentSearch : Fragment() {
                 test.add("5")
                 Log.d("#######", test.toString())
                 Log.d("####", "6")
+                searchKakaoStage(text)
 
             }
         }
@@ -109,12 +110,6 @@ class FragmentSearch : Fragment() {
                     Log.d("#######-2", test.toString())
 
                     val books = it.books
-                    val status = it.status
-                    val all = it.joaraSearchTotalCnt?.keyword_cntJoara?.all
-                    val intro = it.joaraSearchTotalCnt?.keyword_cntJoara?.intro
-                    val keyword = it.joaraSearchTotalCnt?.keyword_cntJoara?.keyword
-                    val subject = it.joaraSearchTotalCnt?.keyword_cntJoara?.subject
-                    val writerNickname = it.joaraSearchTotalCnt?.keyword_cntJoara?.subject
 
                     if (books != null) {
                         joaraOffset = books.size
@@ -122,38 +117,16 @@ class FragmentSearch : Fragment() {
 
                     if (books != null) {
                         for (i in books.indices) {
-
-                            val writerName = books[i].writer_name
-                            val subject = books[i].subject
-                            val bookImg = books[i].book_img
-                            val isAdult = books[i].isAdult
-                            val isFinish = books[i].isFinish
-                            val isPremium = books[i].isPremium
-                            val isNobless = books[i].isNobless
-                            val intro = books[i].intro
-                            val isFavorite = books[i].isFavorite
-                            val cntPageRead = books[i].cntPageRead
-                            val cntRecom = books[i].cntRecom
-                            val cntFavorite = books[i].cntFavorite
-                            val bookCode = books[i].bookCode
-                            val categoryKoName = books[i].categoryKoName
-
                             searchItems.add(
                                 BookListData(
                                     "조아라",
-                                    subject,
-                                    bookImg,
-                                    isAdult,
-                                    isFinish,
-                                    isPremium,
-                                    isNobless,
-                                    intro,
-                                    isFavorite,
-                                    cntPageRead,
-                                    cntRecom,
-                                    cntFavorite,
-                                    bookCode,
-                                    categoryKoName
+                                    books[i].subject,
+                                    books[i].writer_name,
+                                    books[i].book_img,
+                                    books[i].bookCode,
+                                    "선호작 수 : ${books[i].cntFavorite}",
+                                    "조회 수 : ${books[i].cntPageRead}",
+                                    "추천 수 : ${books[i].cntRecom}",
                                 )
                             )
                         }
@@ -202,32 +175,60 @@ class FragmentSearch : Fragment() {
 
                         if (items != null) {
                             for (j in items.indices) {
-                                val author = items[j].author
-                                val image_url = "https://dn-img-page.kakao.com/download/resource?kid=" + items[j].image_url
-                                val publisher_name = items[j].publisher_name
-                                val sub_category = items[j].sub_category
-                                val title = items[j].title
-
                                 searchItems.add(
                                     BookListData(
                                         "카카오",
-                                        title,
-                                        image_url,
-                                        "isAdult",
-                                        "isFinish",
-                                        "isPremium",
-                                        "isNobless",
-                                        publisher_name,
-                                        "isFavorite",
-                                        "cntPageRead",
-                                        "cntRecom",
-                                        "cntFavorite",
-                                        "bookCode",
-                                        sub_category,
+                                        items[j].title,
+                                        items[j].author,
+                                        "https://dn-img-page.kakao.com/download/resource?kid=" + items[j].image_url,
+                                        items[j].id,
+                                        "출판사 : ${items[j].publisher_name}",
+                                        "장르 : ${items[j].sub_category}",
+                                        "조회수 : ${items[j].read_count}",
                                     )
                                 )
                             }
                         }
+                    }
+
+                    with(binding){
+                        blank.root.visibility = View.GONE
+                        rviewSearch.visibility = View.VISIBLE
+                    }
+                }
+            })
+    }
+
+    fun searchKakaoStage(text: String)  {
+        val apiKakaoStage = RetrofitKaKao()
+        val param : MutableMap<String?, Any> = HashMap()
+        param["genreIds"] = "1,2,3,4,5,6,7"
+        param["keyword"] = text
+        param["size"] = 20
+        param["adult"] = "false"
+        param["kakaopageSeries"] = "true"
+        param["page"] = 0
+
+        apiKakaoStage.getSearchKakaoStage(
+            param,
+            object : RetrofitDataListener<KakaoStageSearchResult> {
+                override fun onSuccess(it: KakaoStageSearchResult) {
+
+                    val results = it.content
+
+                    for(items in results){
+                        searchItems.add(
+                            BookListData(
+                                "카카오 스테이지",
+                                items.title,
+                                items.nickname.name,
+                                items.thumbnail.url,
+                                items.stageSeriesNumber,
+                                "관심 : ${items.favoriteCount}",
+                                "조회 : ${items.viewCount}",
+                                "총 ${items.publishedEpisodeCount} 화",
+                            )
+                        )
                     }
 
                     with(binding){

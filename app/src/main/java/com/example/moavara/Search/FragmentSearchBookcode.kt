@@ -2,25 +2,27 @@ package com.example.moavara.Search
 
 import android.os.Bundle
 import android.text.Editable
+import android.text.TextUtils.replace
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import com.bumptech.glide.Glide
-import com.example.moavara.Retrofit.JoaraBestDetailResult
-import com.example.moavara.Retrofit.RetrofitDataListener
-import com.example.moavara.Retrofit.RetrofitJoara
+import com.example.moavara.Best.FragmentBestDetailComment
+import com.example.moavara.R
+import com.example.moavara.Retrofit.*
 import com.example.moavara.Util.Param
 import com.example.moavara.databinding.FragmentSearchBookcodeBinding
+import java.util.HashMap
 
 class FragmentSearchBookcode(private var platform: String) : Fragment() {
 
     private var _binding: FragmentSearchBookcodeBinding? = null
     private val binding get() = _binding!!
     var bookCode = ""
-    lateinit var searchUnit: Unit
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,8 +34,6 @@ class FragmentSearchBookcode(private var platform: String) : Fragment() {
         val view = binding.root
 
         with(binding){
-
-            Log.d("@@@@", platform)
 
             etextSearch.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(text: CharSequence, start: Int, count: Int, after: Int) {
@@ -50,15 +50,22 @@ class FragmentSearchBookcode(private var platform: String) : Fragment() {
             })
 
             if(platform == "Joara"){
-                tviewSearch.text = "https://www.joara.com/book/"
-//                searchUnit = setLayoutJoara()
+                tviewSearch.text = "https://www.joara.com/book/1452405"
+            } else if (platform == "Kakao") {
+                tviewSearch.text = "https://page.kakao.com/home?seriesId=57530778"
+            } else if (platform == "Kakao") {
+                tviewSearch.text = "https://page.kakao.com/home?seriesId=49902709"
             }
 
             btnSearch.setOnClickListener {
-                setLayoutJoara()
+                if(platform == "Joara"){
+                    setLayoutJoara()
+                } else if (platform == "Kakao") {
+                    setLayoutKaKao()
+                }  else if (platform == "Kakao Stage") {
+                    setLayoutKaKaoStage()
+                }
             }
-
-
         }
 
         return view
@@ -78,6 +85,7 @@ class FragmentSearchBookcode(private var platform: String) : Fragment() {
                     with(binding){
                         llayoutSearch.visibility = View.GONE
                         llayoutResult.visibility = View.VISIBLE
+
                         if(it.status == "1" && it.book != null){
                             Glide.with(requireContext())
                                 .load(it.book.bookImg)
@@ -97,7 +105,65 @@ class FragmentSearchBookcode(private var platform: String) : Fragment() {
             })
     }
 
+    fun setLayoutKaKao(){
+        val apiKakao = RetrofitKaKao()
+        val param : MutableMap<String?, Any> = HashMap()
+        param["seriesid"] = bookCode
 
+        apiKakao.postKakaoBookDetail(
+            param,
+            object : RetrofitDataListener<BestKakaoBookDetail> {
+                override fun onSuccess(data: BestKakaoBookDetail) {
+
+                    with(binding){
+                        llayoutSearch.visibility = View.GONE
+                        llayoutResult.visibility = View.VISIBLE
+
+                        data.home?.let { it ->
+                            Glide.with(requireContext())
+                                .load("https://dn-img-page.kakao.com/download/resource?kid=${it.land_thumbnail_url}")
+                                .into(searchResult.iviewBookCover)
+
+                            searchResult.tviewTitle.text = it.title
+                            searchResult.tviewWriter.text = it.author_name
+
+                            searchResult.tviewInfo1.text = "총 ${it.open_counts}화"
+                            searchResult.tviewInfo2.text =  "장르 : ${it.sub_category}"
+                            searchResult.tviewInfo3.text =  "조회 수 : ${it.read_count}"
+                            searchResult.tviewInfo4.text =  "댓글 수 : ${it.page_comment_count}"
+
+                        }
+                    }
+                }
+            })
+    }
+
+    fun setLayoutKaKaoStage(){
+        val apiKakaoStage = RetrofitKaKao()
+
+        apiKakaoStage.getBestKakaoStageDetail(
+            bookCode,
+            object : RetrofitDataListener<KakaoStageBestBookResult> {
+                override fun onSuccess(data: KakaoStageBestBookResult) {
+
+                    with(binding){
+                        data.let { it ->
+                            Glide.with(requireContext())
+                                .load(data.thumbnail.url)
+                                .into(searchResult.iviewBookCover)
+
+                            searchResult.tviewTitle.text = it.title
+                            searchResult.tviewWriter.text = it.nickname.name
+
+                            searchResult.tviewInfo1.text = "총 ${it.publishedEpisodeCount}화"
+                            searchResult.tviewInfo2.text =  "선호작 수 : ${it.favoriteCount}"
+                            searchResult.tviewInfo3.text =  "조회 수 : ${it.viewCount}"
+                            searchResult.tviewInfo4.text =  "방문 수 : ${it.visitorCount}"
+                        }
+                    }
+                }
+            })
+    }
 
 
 }

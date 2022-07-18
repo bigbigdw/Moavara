@@ -23,6 +23,10 @@ class KakaoBookItem {
     @Expose
     var author: String = ""
 
+    @SerializedName("id")
+    @Expose
+    var id: String = ""
+
     @SerializedName("image_url")
     @Expose
     var image_url: String = ""
@@ -34,6 +38,10 @@ class KakaoBookItem {
     @SerializedName("sub_category")
     @Expose
     var sub_category: String = ""
+
+    @SerializedName("read_count")
+    @Expose
+    var read_count: String = ""
 
     @SerializedName("title")
     @Expose
@@ -147,7 +155,7 @@ class BestKakaoBookDetail {
     val notice: BestKakaoBookDetailNotice? = null
 }
 
-class BestKakaoBookDetailNotice{
+class BestKakaoBookDetailNotice {
     @SerializedName("create_dt")
     @Expose
     var create_dt: String = ""
@@ -206,10 +214,10 @@ class BestKakaoBookDetailHome {
 class BestKakaoBookDetailComment {
     @SerializedName("comment_list")
     @Expose
-    lateinit var comment_list : ArrayList<BestKakaoBookDetailCommentList>
+    lateinit var comment_list: ArrayList<BestKakaoBookDetailCommentList>
 }
 
-class BestKakaoBookDetailCommentList{
+class BestKakaoBookDetailCommentList {
     @SerializedName("comment")
     @Expose
     var comment: String = ""
@@ -246,20 +254,20 @@ class KakaoStageBestBookResult {
 
     @SerializedName("nickname")
     @Expose
-    lateinit var  nickname: KakaoStageBestBookNickname
+    lateinit var nickname: KakaoStageBestBookNickname
 
     @SerializedName("thumbnail")
     @Expose
     lateinit var thumbnail: KakaoStageBestBookThumbnail
 }
 
-class KakaoStageBestBookNickname{
+class KakaoStageBestBookNickname {
     @SerializedName("name")
     @Expose
     var name: String = ""
 }
 
-class KakaoStageBestBookThumbnail{
+class KakaoStageBestBookThumbnail {
     @SerializedName("url")
     @Expose
     var url: String = ""
@@ -271,7 +279,7 @@ class KakaoStageBestBookCommentResult {
     lateinit var content: List<KakaoStageBestBookCommentContents>
 }
 
-class KakaoStageBestBookCommentContents{
+class KakaoStageBestBookCommentContents {
     @SerializedName("message")
     @Expose
     var message: String = ""
@@ -279,4 +287,40 @@ class KakaoStageBestBookCommentContents{
     @SerializedName("createdAt")
     @Expose
     var createdAt: String = ""
+}
+
+class KakaoStageSearchResult {
+    @SerializedName("content")
+    @Expose
+    lateinit var content: List<KakaoStageSearchContents>
+}
+
+class KakaoStageSearchContents {
+    @SerializedName("title")
+    @Expose
+    var title: String = ""
+
+    @SerializedName("nickname")
+    @Expose
+    lateinit var nickname: KakaoBestStageNickNameResult
+
+    @SerializedName("thumbnail")
+    @Expose
+    lateinit var thumbnail: KakaoBestStageThumbnailResult
+
+    @SerializedName("favoriteCount")
+    @Expose
+    var favoriteCount: String = ""
+
+    @SerializedName("viewCount")
+    @Expose
+    var viewCount: String = ""
+
+    @SerializedName("publishedEpisodeCount")
+    @Expose
+    var publishedEpisodeCount: String = ""
+
+    @SerializedName("stageSeriesNumber")
+    @Expose
+    var stageSeriesNumber: String = ""
 }

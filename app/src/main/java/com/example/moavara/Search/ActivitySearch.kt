@@ -46,7 +46,7 @@ class ActivitySearch : AppCompatActivity() {
             rviewType.adapter = adapterType
         }
 
-        for(i in BestRef.typeList().indices){
+        for(i in BestRef.typeListSearch().indices){
             typeItems.add(
                 BestType(
                     BestRef.typeListTitleSearch()[i],
