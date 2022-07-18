@@ -582,7 +582,7 @@ class ActivityAdmin : AppCompatActivity() {
 
                 Thread{
                     for (i in 1..3) {
-                        Mining.getOneStoreBest("ALL", i)
+                        Mining.getOneStoreBest("ALL", i, this@ActivityAdmin)
                     }
 
                     runOnUiThread {

@@ -104,24 +104,24 @@ object Mining {
 
         val Ridi = Thread {
             for (i in 1..3) {
-                getRidiBest(genre, i)
+                getRidiBest(genre, i, context)
             }
         }
 
         val OneStore = Thread {
             for (i in 1..4) {
-                getOneStoreBest(genre, i)
+                getOneStoreBest(genre, i, context)
             }
         }
 
         val Kakao = Thread {
             for (i in 1..4) {
-                getKakaoBest(genre, i)
+                getKakaoBest(genre, i, context)
             }
         }
 
         val KakaoStage1 = Thread {
-            getKakaoStageBest(genre)
+            getKakaoStageBest(genre, context)
         }
 
         val Joara1 = Thread {
@@ -143,31 +143,31 @@ object Mining {
         }
 
         val NaverToday = Thread {
-            getNaverToday(genre)
+            getNaverToday(genre, context)
         }
 
         val NaverChallenge1 = Thread {
-            getNaverChallenge(genre)
+            getNaverChallenge(genre, context)
         }
 
         val NaverBest = Thread {
-            getNaverBest(genre)
+            getNaverBest(genre, context)
         }
 
         val Moonpia = Thread {
             for (i in 1..4) {
-                getMoonpiaBest(i)
+                getMoonpiaBest(i, context)
             }
         }
 
         val Toksoda1 = Thread {
             for (i in 1..5) {
-                getToksodaBest(genre, i)
+                getToksodaBest(genre, i, context)
             }
         }
 
         val MrBlue = Thread {
-            getMrBlueBest(genre)
+            getMrBlueBest(genre, context)
         }
 
 
@@ -228,7 +228,7 @@ object Mining {
         }
     }
 
-    fun getMrBlueBest(cate: String) {
+    fun getMrBlueBest(cate: String, context: Context) {
         Thread {
 
             try {
@@ -271,16 +271,12 @@ object Mining {
                             Collections.sort(dataList, cmpAsc)
 
                             if (dataList.size != 0) {
-                                if (DBDate.getToday(dataList[dataList.size - 1].date) - DBDate.getYesterday(
-                                        dataList[dataList.size - 1].date
-                                    ) == 1
-                                ) {
-                                    MrBlueRef["numberDiff"] =
-                                        calculateNumDiff(i, dataList[dataList.size - 1].number).num
-                                    MrBlueRef["status"] = calculateNumDiff(
-                                        i,
-                                        dataList[dataList.size - 1].number
-                                    ).status
+                                val today = DBDate.getToday(dataList[dataList.size - 1].date)
+                                val yesterday = DBDate.getYesterday(dataList[dataList.size - 1].date)
+
+                                if ((today - yesterday) == 1) {
+                                    MrBlueRef["numberDiff"] = calculateNumDiff(i,dataList[dataList.size - 1].number).num
+                                    MrBlueRef["status"] = calculateNumDiff(i, dataList[dataList.size - 1].number).status
                                 } else {
                                     MrBlueRef["numberDiff"] = 0
                                     MrBlueRef["status"] = "NEW"
@@ -324,7 +320,7 @@ object Mining {
 
     }
 
-    fun getNaverToday(cate: String) {
+    fun getNaverToday(cate: String, context: Context) {
         try {
             val doc: Document =
                 Jsoup.connect(Genre.setNaverTodayGenre(cate)).post()
@@ -379,10 +375,10 @@ object Mining {
                             NaverRef["number"] = i
 
                             if (dataList.size != 0) {
-                                if (DBDate.getToday(dataList[dataList.size - 1].date) - DBDate.getYesterday(
-                                        dataList[dataList.size - 1].date
-                                    ) == 1
-                                ) {
+                                val today = DBDate.getToday(dataList[dataList.size - 1].date)
+                                val yesterday = DBDate.getYesterday(dataList[dataList.size - 1].date)
+
+                                if ((today - yesterday) == 1) {
                                     NaverRef["numberDiff"] =
                                         calculateNumDiff(i, dataList[dataList.size - 1].number).num
                                     NaverRef["status"] = calculateNumDiff(
@@ -417,7 +413,7 @@ object Mining {
 
     }
 
-    fun getNaverChallenge(cate: String) {
+    fun getNaverChallenge(cate: String, context: Context) {
         try {
             val doc: Document =
                 Jsoup.connect(Genre.setNaverChallengeGenre(cate)).post()
@@ -459,10 +455,10 @@ object Mining {
                             Collections.sort(dataList, cmpAsc)
 
                             if (dataList.size != 0) {
-                                if (DBDate.getToday(dataList[dataList.size - 1].date) - DBDate.getYesterday(
-                                        dataList[dataList.size - 1].date
-                                    ) == 1
-                                ) {
+                                val today = DBDate.getToday(dataList[dataList.size - 1].date)
+                                val yesterday = DBDate.getYesterday(dataList[dataList.size - 1].date)
+
+                                if ((today - yesterday) == 1) {
                                     NaverRef["numberDiff"] =
                                         calculateNumDiff(i, dataList[dataList.size - 1].number).num
                                     NaverRef["status"] = calculateNumDiff(
@@ -508,7 +504,7 @@ object Mining {
         }
     }
 
-    fun getNaverBest(cate: String) {
+    fun getNaverBest(cate: String, context: Context) {
         try {
 
             val doc: Document =
@@ -548,10 +544,10 @@ object Mining {
                         Collections.sort(dataList, cmpAsc)
 
                         if (dataList.size != 0) {
-                            if (DBDate.getToday(dataList[dataList.size - 1].date) - DBDate.getYesterday(
-                                    dataList[dataList.size - 1].date
-                                ) == 1
-                            ) {
+                            val today = DBDate.getToday(dataList[dataList.size - 1].date)
+                            val yesterday = DBDate.getYesterday(dataList[dataList.size - 1].date)
+
+                            if ((today - yesterday) == 1) {
                                 NaverRef["numberDiff"] =
                                     calculateNumDiff(i, dataList[dataList.size - 1].number).num
                                 NaverRef["status"] =
@@ -595,7 +591,7 @@ object Mining {
         }
     }
 
-    fun getRidiBest(cate: String, page : Int) {
+    fun getRidiBest(cate: String, page: Int, context: Context) {
         try {
             val doc: Document =
                 Jsoup.connect(Genre.setRidiGenre(cate, page)).post()
@@ -689,7 +685,7 @@ object Mining {
         }
     }
 
-    fun getOneStoreBest(cate: String, page: Int) {
+    fun getOneStoreBest(cate: String, page: Int, context: Context) {
         try {
             val OneStoryRef: MutableMap<String?, Any> = HashMap()
 
@@ -746,18 +742,12 @@ object Mining {
                                         Collections.sort(dataList, cmpAsc)
 
                                         if (dataList.size != 0) {
-                                            if (DBDate.getToday(dataList[dataList.size - 1].date) - DBDate.getYesterday(
-                                                    dataList[dataList.size - 1].date
-                                                ) == 1
-                                            ) {
-                                                OneStoryRef["numberDiff"] = calculateNumDiff(
-                                                    i,
-                                                    dataList[dataList.size - 1].number
-                                                ).num
-                                                OneStoryRef["status"] = calculateNumDiff(
-                                                    i,
-                                                    dataList[dataList.size - 1].number
-                                                ).status
+                                            val today = DBDate.getToday(dataList[dataList.size - 1].date)
+                                            val yesterday = DBDate.getYesterday(dataList[dataList.size - 1].date)
+
+                                            if ((today - yesterday) == 1) {
+                                                OneStoryRef["numberDiff"] =  calculateNumDiff(i,dataList[dataList.size - 1].number).num
+                                                OneStoryRef["status"] = calculateNumDiff(i, dataList[dataList.size - 1].number).status
                                             } else {
                                                 OneStoryRef["numberDiff"] = 0
                                                 OneStoryRef["status"] = "NEW"
@@ -803,7 +793,7 @@ object Mining {
         }
     }
 
-    fun getKakaoStageBest(cate: String) {
+    fun getKakaoStageBest(cate: String, context: Context) {
         val KakaoRef: MutableMap<String?, Any> = HashMap()
 
         val apiKakao = RetrofitKaKao()
@@ -857,10 +847,10 @@ object Mining {
                                         KakaoRef["trophyCount"] = dataList.size
 
                                         if (dataList.size != 0) {
-                                            if (DBDate.getToday(dataList[dataList.size - 1].date) - DBDate.getYesterday(
-                                                    dataList[dataList.size - 1].date
-                                                ) == 1
-                                            ) {
+                                            val today = DBDate.getToday(dataList[dataList.size - 1].date)
+                                            val yesterday = DBDate.getYesterday(dataList[dataList.size - 1].date)
+
+                                            if ((today - yesterday) == 1) {
                                                 KakaoRef["numberDiff"] = calculateNumDiff(
                                                     i,
                                                     dataList[dataList.size - 1].number
@@ -905,7 +895,7 @@ object Mining {
             })
     }
 
-    fun getKakaoBest(cate: String, page: Int) {
+    fun getKakaoBest(cate: String, page: Int, context: Context) {
         val apiKakao = RetrofitKaKao()
         val param: MutableMap<String?, Any> = HashMap()
         val KakaoRef: MutableMap<String?, Any> = HashMap()
@@ -957,10 +947,10 @@ object Mining {
                                     KakaoRef["trophyCount"] = dataList.size
 
                                     if (dataList.size != 0) {
-                                        if (DBDate.getToday(dataList[dataList.size - 1].date) - DBDate.getYesterday(
-                                                dataList[dataList.size - 1].date
-                                            ) == 1
-                                        ) {
+                                        val today = DBDate.getToday(dataList[dataList.size - 1].date)
+                                        val yesterday = DBDate.getYesterday(dataList[dataList.size - 1].date)
+
+                                        if ((today - yesterday) == 1) {
                                             KakaoRef["numberDiff"] = calculateNumDiff(
                                                 i,
                                                 dataList[dataList.size - 1].number
@@ -1055,10 +1045,10 @@ object Mining {
                                     JoaraRef["trophyCount"] = dataList.size
 
                                     if (dataList.size != 0) {
-                                        if (DBDate.getToday(dataList[dataList.size - 1].date) - DBDate.getYesterday(
-                                                dataList[dataList.size - 1].date
-                                            ) == 1
-                                        ) {
+                                        val today = DBDate.getToday(dataList[dataList.size - 1].date)
+                                        val yesterday = DBDate.getYesterday(dataList[dataList.size - 1].date)
+
+                                        if ((today - yesterday) == 1) {
                                             JoaraRef["numberDiff"] = calculateNumDiff(
                                                 i,
                                                 dataList[dataList.size - 1].number
@@ -1158,10 +1148,10 @@ object Mining {
                                     Collections.sort(dataList, cmpAsc)
 
                                     if (dataList.size != 0) {
-                                        if (DBDate.getToday(dataList[dataList.size - 1].date) - DBDate.getYesterday(
-                                                dataList[dataList.size - 1].date
-                                            ) == 1
-                                        ) {
+                                        val today = DBDate.getToday(dataList[dataList.size - 1].date)
+                                        val yesterday = DBDate.getYesterday(dataList[dataList.size - 1].date)
+
+                                        if ((today - yesterday) == 1) {
                                             JoaraRef["numberDiff"] = calculateNumDiff(
                                                 i,
                                                 dataList[dataList.size - 1].number
@@ -1264,10 +1254,10 @@ object Mining {
                                     JoaraRef["trophyCount"] = dataList.size
 
                                     if (dataList.size != 0) {
-                                        if (DBDate.getToday(dataList[dataList.size - 1].date) - DBDate.getYesterday(
-                                                dataList[dataList.size - 1].date
-                                            ) == 1
-                                        ) {
+                                        val today = DBDate.getToday(dataList[dataList.size - 1].date)
+                                        val yesterday = DBDate.getYesterday(dataList[dataList.size - 1].date)
+
+                                        if ((today - yesterday) == 1) {
                                             JoaraRef["numberDiff"] = calculateNumDiff(
                                                 i,
                                                 dataList[dataList.size - 1].number
@@ -1317,7 +1307,7 @@ object Mining {
 
     }
 
-    fun getMoonpiaBest(page: Int) {
+    fun getMoonpiaBest(page: Int, context: Context) {
         val MoonpiaRef: MutableMap<String?, Any> = HashMap()
 
         val apiMoonPia = RetrofitMoonPia()
@@ -1370,10 +1360,10 @@ object Mining {
                                             MoonpiaRef["trophyCount"] = dataList.size
 
                                             if (dataList.size != 0) {
-                                                if (DBDate.getToday(dataList[dataList.size - 1].date) - DBDate.getYesterday(
-                                                        dataList[dataList.size - 1].date
-                                                    ) == 1
-                                                ) {
+                                                val today = DBDate.getToday(dataList[dataList.size - 1].date)
+                                                val yesterday = DBDate.getYesterday(dataList[dataList.size - 1].date)
+
+                                                if ((today - yesterday) == 1) {
                                                     MoonpiaRef["numberDiff"] = calculateNumDiff(
                                                         i,
                                                         dataList[dataList.size - 1].number
@@ -1420,7 +1410,7 @@ object Mining {
             })
     }
 
-    fun getToksodaBest(genre: String, page: Int) {
+    fun getToksodaBest(genre: String, page: Int, context: Context) {
         val ToksodaRef: MutableMap<String?, Any> = HashMap()
 
         val apiToksoda = RetrofitToksoda()
@@ -1474,10 +1464,10 @@ object Mining {
                                         ToksodaRef["trophyCount"] = dataList.size
 
                                         if (dataList.size != 0) {
-                                            if (DBDate.getToday(dataList[dataList.size - 1].date) - DBDate.getYesterday(
-                                                    dataList[dataList.size - 1].date
-                                                ) == 1
-                                            ) {
+                                            val today = DBDate.getToday(dataList[dataList.size - 1].date)
+                                            val yesterday = DBDate.getYesterday(dataList[dataList.size - 1].date)
+
+                                            if ((today - yesterday) == 1) {
                                                 ToksodaRef["numberDiff"] = calculateNumDiff(
                                                     i,
                                                     dataList[dataList.size - 1].number

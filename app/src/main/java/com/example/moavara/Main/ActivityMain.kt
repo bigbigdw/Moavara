@@ -42,8 +42,7 @@ class ActivityMain : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     var notificationManager: NotificationManager? = null
     var notificationBuilder: NotificationCompat.Builder? = null
-    val miningRef = FirebaseDatabase.getInstance().reference.child("Mining")
-    val workManager = WorkManager.getInstance(applicationContext)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,6 +93,9 @@ class ActivityMain : AppCompatActivity() {
         val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(1, TimeUnit.HOURS)
             .setConstraints(mConstraints)
             .build()
+
+        val miningRef = FirebaseDatabase.getInstance().reference.child("Mining")
+        val workManager = WorkManager.getInstance(applicationContext)
 
         Handler(Looper.getMainLooper()).postDelayed({
 

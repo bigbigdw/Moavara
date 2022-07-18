@@ -111,6 +111,14 @@ object BestRef {
         }
     }
 
+    fun getBestRefWeekCompared(type: String, num: Int, genre: String): DatabaseReference {
+        if(type == "Munpia"){
+            return setBestRefMunpia(type).child("week-list")
+        } else {
+            return setBestRef(type, genre).child("week-list")
+        }
+    }
+
     fun setBookData(type: String, num: Int, genre: String): DatabaseReference {
         if(type == "Munpia"){
             return setBestRefMunpia(type).child("today BookData").child(num.toString())

@@ -3,11 +3,8 @@ package com.example.moavara.Util
 import android.content.Context
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.room.Room
-import com.example.moavara.DataBase.*
-import com.example.moavara.Retrofit.*
+import com.example.moavara.DataBase.TrophyInfo
 import com.example.moavara.Search.CalculNum
-import com.google.firebase.database.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -306,6 +303,8 @@ object Genre {
 
 
 fun miningValue(ref: MutableMap<String?, Any>, num: Int, platform: String, genre: String) {
+
+//    BestRef.getBestRefWeekCompared(platform, num, genre).removeValue()
 
     //Today
     BestRef.setBestRefToday(platform, num, genre).setValue(BestRef.setBookListDataBestToday(ref))
