@@ -11,8 +11,8 @@ import java.util.ArrayList
 
 class BookListData(
     var platform: String = "",
-    var writer: String = "",
     var title: String = "",
+    var writer: String = "",
     var bookImg: String = "",
     var bookCode: String = "",
     var info1: String = "",

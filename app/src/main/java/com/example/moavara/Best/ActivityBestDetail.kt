@@ -31,7 +31,7 @@ import kotlin.collections.ArrayList
 class ActivityBestDetail : AppCompatActivity() {
 
     var bookCode = ""
-    var platfrom = ""
+    var platform = ""
     var context = this
     var bookTitle = ""
     var bookWriter = ""
@@ -52,7 +52,7 @@ class ActivityBestDetail : AppCompatActivity() {
         setContentView(binding.root)
 
         bookCode = intent.getStringExtra("BookCode") ?: ""
-        platfrom = intent.getStringExtra("Type") ?: ""
+        platform = intent.getStringExtra("Type") ?: ""
         pos = intent.getIntExtra("POSITION", 0)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
@@ -63,7 +63,7 @@ class ActivityBestDetail : AppCompatActivity() {
         UID = context.getSharedPreferences("pref", MODE_PRIVATE)
             ?.getString("UID", "").toString()
 
-        BestRef.getBestRefToday(platfrom, genre).child(pos.toString()).addListenerForSingleValueEvent(object :
+        BestRef.getBestRefToday(platform, genre).child(pos.toString()).addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val group: BookListDataBest? = dataSnapshot.getValue(BookListDataBest::class.java)
@@ -87,7 +87,7 @@ class ActivityBestDetail : AppCompatActivity() {
                                 group.number,
                                 group.numberDiff,
                                 group.date,
-                                platfrom,
+                                platform,
                                 group.status,
                                 group.trophyCount,
                             )
@@ -119,53 +119,53 @@ class ActivityBestDetail : AppCompatActivity() {
 
     private fun getUrl(bookCode: String): String {
 
-        return if (platfrom == "MrBlue") {
+        return if (platform == "MrBlue") {
             "https://www.mrblue.com/novel/${bookCode}"
-        } else if (platfrom == "Naver Today" || platfrom == "Naver Challenge" || platfrom == "Naver" || platfrom == "Ridi") {
+        } else if (platform == "Naver Today" || platform == "Naver Challenge" || platform == "Naver" || platform == "Ridi") {
             bookCode
-        } else if (platfrom == "Kakao Stage") {
+        } else if (platform == "Kakao Stage") {
             "https://pagestage.kakao.com/novels/${bookCode}"
-        } else if (platfrom == "Kakao") {
+        } else if (platform == "Kakao") {
             "https://page.kakao.com/home?seriesId=${bookCode}"
-        } else if (platfrom == "OneStore") {
+        } else if (platform == "OneStore") {
             "https://onestory.co.kr/detail/${bookCode}"
-        } else if (platfrom == "Joara" || platfrom == "Joara Premium" || platfrom == "Joara Nobless") {
+        } else if (platform == "Joara" || platform == "Joara Premium" || platform == "Joara Nobless") {
             "https://www.joara.com/book/${bookCode}"
-        }else if (platfrom == "Munpia") {
+        }else if (platform == "Munpia") {
             "https://novel.munpia.com/${bookCode}"
-        } else if (platfrom == "Toksoda") {
+        } else if (platform == "Toksoda") {
             "https://www.tocsoda.co.kr/product/productView?brcd=${bookCode}"
         }else ""
     }
 
     fun setLayout(data: ArrayList<BookListDataBestAnalyze>?) {
-        if (platfrom == "Joara" || platfrom == "Joara Nobless" || platfrom == "Joara Premium") {
+        if (platform == "Joara" || platform == "Joara Nobless" || platform == "Joara Premium") {
             setLayoutJoara()
-        } else if (platfrom == "Naver Today" || platfrom == "Naver Challenge" || platfrom == "Naver"){
+        } else if (platform == "Naver Today" || platform == "Naver Challenge" || platform == "Naver"){
             setLayoutNaverToday()
-        } else if (platfrom == "Kakao"){
+        } else if (platform == "Kakao"){
             setLayoutKaKao()
-        } else if (platfrom == "Kakao Stage"){
+        } else if (platform == "Kakao Stage"){
             setLayoutKaKaoStage()
-        } else if (platfrom == "Ridi"){
+        } else if (platform == "Ridi"){
             setLayoutRidi()
-        } else if (platfrom == "OneStore"){
+        } else if (platform == "OneStore"){
             setLayoutOneStory()
-        } else if (platfrom == "Munpia"){
+        } else if (platform == "Munpia"){
             setLayoutMunpia()
-        } else if (platfrom == "Toksoda"){
+        } else if (platform == "Toksoda"){
             setLayoutToksoda()
         }
 
-        if(platfrom == "Naver Today" || platfrom == "Naver Challenge" || platfrom == "Naver"){
+        if(platform == "Naver Today" || platform == "Naver Challenge" || platform == "Naver"){
             binding.tabs.addTab(binding.tabs.newTab().setText("다른 작품"))
             binding.tabs.addTab(binding.tabs.newTab().setText("작품 분석"))
             binding.tabs.addTab(binding.tabs.newTab().setText("랭크"))
-        } else if(platfrom == "Kakao" || platfrom == "Kakao Stage" || platfrom == "OneStore" || platfrom == "Munpia") {
+        } else if(platform == "Kakao" || platform == "Kakao Stage" || platform == "OneStore" || platform == "Munpia") {
             binding.tabs.addTab(binding.tabs.newTab().setText("댓글"))
             binding.tabs.addTab(binding.tabs.newTab().setText("작품 분석"))
             binding.tabs.addTab(binding.tabs.newTab().setText("랭크"))
-        } else if(platfrom == "Ridi") {
+        } else if(platform == "Ridi") {
             binding.tabs.addTab(binding.tabs.newTab().setText("다른 작품"))
             binding.tabs.addTab(binding.tabs.newTab().setText("작품 분석"))
             binding.tabs.addTab(binding.tabs.newTab().setText("랭크"))
@@ -180,39 +180,39 @@ class ActivityBestDetail : AppCompatActivity() {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 when(tab.position){
                     0->{
-                        if (platfrom == "Joara" || platfrom == "Joara Nobless" || platfrom == "Joara Premium" || platfrom == "Kakao" || platfrom == "Kakao Stage" || platfrom == "OneStore" || platfrom == "Munpia" || platfrom == "Toksoda") {
-                            mFragmentBestDetailComment = FragmentBestDetailComment(platfrom, bookCode)
+                        if (platform == "Joara" || platform == "Joara Nobless" || platform == "Joara Premium" || platform == "Kakao" || platform == "Kakao Stage" || platform == "OneStore" || platform == "Munpia" || platform == "Toksoda") {
+                            mFragmentBestDetailComment = FragmentBestDetailComment(platform, bookCode)
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailComment)
                             }
-                        } else if (platfrom == "Naver Today" || platfrom == "Naver Challenge" || platfrom == "Naver" || platfrom == "Ridi") {
-                            mFragmentBestDetailBooks = FragmentBestDetailBooks(platfrom, bookCode)
+                        } else if (platform == "Naver Today" || platform == "Naver Challenge" || platform == "Naver" || platform == "Ridi") {
+                            mFragmentBestDetailBooks = FragmentBestDetailBooks(platform, bookCode)
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
                             }
                         }
                     }
                     1->{
-                        if (platfrom == "Joara" || platfrom == "Joara Nobless" || platfrom == "Joara Premium" || platfrom == "Toksoda") {
-                            mFragmentBestDetailBooks = FragmentBestDetailBooks(platfrom, bookCode)
+                        if (platform == "Joara" || platform == "Joara Nobless" || platform == "Joara Premium" || platform == "Toksoda") {
+                            mFragmentBestDetailBooks = FragmentBestDetailBooks(platform, bookCode)
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
                             }
-                        } else if (platfrom == "Naver Today" || platfrom == "Naver Challenge" || platfrom == "Naver" || platfrom == "Kakao"|| platfrom == "Kakao Stage" || platfrom == "Ridi" || platfrom == "OneStore" || platfrom == "Munpia") {
-                            mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(platfrom, data)
+                        } else if (platform == "Naver Today" || platform == "Naver Challenge" || platform == "Naver" || platform == "Kakao"|| platform == "Kakao Stage" || platform == "Ridi" || platform == "OneStore" || platform == "Munpia") {
+                            mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(platform, data)
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
                             }
                         }
                     }
                     2->{
-                        mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(platfrom, data)
+                        mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(platform, data)
                         supportFragmentManager.commit {
                             replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
                         }
                     }
                     3->{
-                        mFragmentBestDetailRank = FragmentBestDetailRank(platfrom, data)
+                        mFragmentBestDetailRank = FragmentBestDetailRank(platform, data)
                         supportFragmentManager.commit {
                             replace(R.id.llayoutWrap, mFragmentBestDetailRank)
                         }
@@ -256,7 +256,7 @@ class ActivityBestDetail : AppCompatActivity() {
                         }
                     }
 
-                    mFragmentBestDetailComment = FragmentBestDetailComment(platfrom, bookCode)
+                    mFragmentBestDetailComment = FragmentBestDetailComment(platform, bookCode)
                     supportFragmentManager.commit {
                         replace(R.id.llayoutWrap, mFragmentBestDetailComment)
                     }
@@ -276,7 +276,7 @@ class ActivityBestDetail : AppCompatActivity() {
                         .load(doc.select(".section_area_info .pic img").attr("src"))
                         .into(inclueBestDetail.iviewBookCover)
 
-                    if(platfrom == "Naver Challenge" || platfrom == "Naver"){
+                    if(platform == "Naver Challenge" || platform == "Naver"){
                         inclueBestDetail.llayoutWrap2.visibility = View.GONE
                     } else {
                         inclueBestDetail.llayoutWrap2.visibility = View.VISIBLE
@@ -294,7 +294,7 @@ class ActivityBestDetail : AppCompatActivity() {
                     tviewIntro.text = doc.select(".section_area_info .dsc").text()
                 }
 
-                mFragmentBestDetailBooks = FragmentBestDetailBooks(platfrom, bookCode)
+                mFragmentBestDetailBooks = FragmentBestDetailBooks(platform, bookCode)
                 supportFragmentManager.commit {
                     replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
                 }
@@ -335,7 +335,7 @@ class ActivityBestDetail : AppCompatActivity() {
                 }
             })
 
-        mFragmentBestDetailComment = FragmentBestDetailComment(platfrom, bookCode)
+        mFragmentBestDetailComment = FragmentBestDetailComment(platform, bookCode)
         supportFragmentManager.commit {
             replace(R.id.llayoutWrap, mFragmentBestDetailComment)
         }
@@ -371,7 +371,7 @@ class ActivityBestDetail : AppCompatActivity() {
                 }
             })
 
-        mFragmentBestDetailComment = FragmentBestDetailComment(platfrom, bookCode)
+        mFragmentBestDetailComment = FragmentBestDetailComment(platform, bookCode)
         supportFragmentManager.commit {
             replace(R.id.llayoutWrap, mFragmentBestDetailComment)
         }
@@ -404,7 +404,7 @@ class ActivityBestDetail : AppCompatActivity() {
                     tviewIntro.text = doc.select(".introduce_book .introduce_paragraph").text()
                 }
 
-                mFragmentBestDetailBooks = FragmentBestDetailBooks(platfrom, bookCode)
+                mFragmentBestDetailBooks = FragmentBestDetailBooks(platform, bookCode)
                 supportFragmentManager.commit {
                     replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
                 }
@@ -447,7 +447,7 @@ class ActivityBestDetail : AppCompatActivity() {
                 }
             })
 
-        mFragmentBestDetailComment = FragmentBestDetailComment(platfrom, bookCode)
+        mFragmentBestDetailComment = FragmentBestDetailComment(platform, bookCode)
         supportFragmentManager.commit {
             replace(R.id.llayoutWrap, mFragmentBestDetailComment)
         }
@@ -476,7 +476,7 @@ class ActivityBestDetail : AppCompatActivity() {
                     tviewIntro.text = doc.select(".story").text()
                 }
 
-                mFragmentBestDetailComment = FragmentBestDetailComment(platfrom, bookCode)
+                mFragmentBestDetailComment = FragmentBestDetailComment(platform, bookCode)
                 supportFragmentManager.commit {
                     replace(R.id.llayoutWrap, mFragmentBestDetailComment)
                 }
@@ -519,7 +519,7 @@ class ActivityBestDetail : AppCompatActivity() {
                 }
             })
 
-        mFragmentBestDetailComment = FragmentBestDetailComment(platfrom, bookCode)
+        mFragmentBestDetailComment = FragmentBestDetailComment(platform, bookCode)
         supportFragmentManager.commit {
             replace(R.id.llayoutWrap, mFragmentBestDetailComment)
         }

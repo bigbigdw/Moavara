@@ -11,11 +11,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.bumptech.glide.Glide
+import com.example.moavara.Best.FragmentBestDetailBooks
 import com.example.moavara.Best.FragmentBestDetailComment
 import com.example.moavara.R
 import com.example.moavara.Retrofit.*
 import com.example.moavara.Util.Param
 import com.example.moavara.databinding.FragmentSearchBookcodeBinding
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 import java.util.HashMap
 
 class FragmentSearchBookcode(private var platform: String) : Fragment() {
@@ -53,7 +56,7 @@ class FragmentSearchBookcode(private var platform: String) : Fragment() {
                 tviewSearch.text = "https://www.joara.com/book/1452405"
             } else if (platform == "Kakao") {
                 tviewSearch.text = "https://page.kakao.com/home?seriesId=57530778"
-            } else if (platform == "Kakao") {
+            } else if (platform == "Kakao Stage") {
                 tviewSearch.text = "https://page.kakao.com/home?seriesId=49902709"
             }
 
@@ -64,6 +67,8 @@ class FragmentSearchBookcode(private var platform: String) : Fragment() {
                     setLayoutKaKao()
                 }  else if (platform == "Kakao Stage") {
                     setLayoutKaKaoStage()
+                }  else if (platform == "Naver Today" || platform == "Naver Challenge" || platform == "Naver"){
+                    setLayoutNaverToday()
                 }
             }
         }
@@ -147,7 +152,10 @@ class FragmentSearchBookcode(private var platform: String) : Fragment() {
                 override fun onSuccess(data: KakaoStageBestBookResult) {
 
                     with(binding){
-                        data.let { it ->
+                        llayoutSearch.visibility = View.GONE
+                        llayoutResult.visibility = View.VISIBLE
+
+                        data.let {
                             Glide.with(requireContext())
                                 .load(data.thumbnail.url)
                                 .into(searchResult.iviewBookCover)
@@ -163,6 +171,34 @@ class FragmentSearchBookcode(private var platform: String) : Fragment() {
                     }
                 }
             })
+    }
+
+    fun setLayoutNaverToday(){
+        Thread {
+            val doc: Document = Jsoup.connect(bookCode).post()
+
+            bookCode = "https://novel.naver.com/${doc.select(".writer a").first()!!.attr("href")}"
+
+            requireActivity().runOnUiThread {
+                with(binding){
+                    llayoutSearch.visibility = View.GONE
+                    llayoutResult.visibility = View.VISIBLE
+
+                    Glide.with(requireContext())
+                        .load(doc.select(".section_area_info .pic img").attr("src"))
+                        .into(searchResult.iviewBookCover)
+
+                    searchResult.tviewTitle.text = doc.select(".book_title").text()
+                    searchResult.tviewWriter.text = doc.select(".writer").text()
+
+                    searchResult.tviewInfo1.text = doc.select(".info_book .like").text()
+                    searchResult.tviewInfo2.text =  doc.select(".info_book .download").text()
+                    searchResult.tviewInfo3.text =  doc.select(".info_book .publish").text()
+                    searchResult.tviewInfo4.text =  "장르 : ${doc.select(".info_book .genre").text()}"
+                }
+
+            }
+        }.start()
     }
 
 
