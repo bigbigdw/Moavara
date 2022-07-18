@@ -45,7 +45,7 @@
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Search/layout/bottomsheet_process.xml" value="0.12037037037037036" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Search/layout/fragment_search.xml" value="0.1425925925925926" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Search/layout/fragment_searchtab.xml" value="0.25" />
-        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Search/layout/item_search.xml" value="0.1388888888888889" />
+        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Search/layout/item_search.xml" value="0.33" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/drawable/selector_genre.xml" value="0.134" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/drawable/selector_genre_upper.xml" value="0.191" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/drawable/selector_item_type_off.xml" value="0.134" />
@@ -85,6 +85,7 @@
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_login.xml" value="0.3081761006289308" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_pick.xml" value="0.1" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_search.xml" value="0.2505399568034557" />
+        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_search_bookcode.xml" value="0.44533558463486705" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_test.xml" value="0.15925925925925927" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/include_rank.xml" value="0.32344763670064874" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/item_best_ranklist.xml" value="0.5" />

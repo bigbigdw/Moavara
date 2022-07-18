@@ -12,11 +12,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moavara.Retrofit.*
 import com.example.moavara.Util.Param
 import com.example.moavara.databinding.FragmentSearchBinding
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
+import org.jsoup.select.Elements
 import java.util.*
 
 
 class FragmentSearch : Fragment() {
-    private var adapter : AdapterBookSearch? = null
+    private var adapter: AdapterBookSearch? = null
     private val searchItems = ArrayList<BookListData>()
     var page = 1
     var linearLayoutManager: LinearLayoutManager? = null
@@ -37,15 +40,25 @@ class FragmentSearch : Fragment() {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        with(binding){
+        with(binding) {
 
 //            rviewSearch.addOnScrollListener(recyclerViewScroll)
             etextSearch.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(text: CharSequence, start: Int, count: Int, after: Int) {
+                override fun beforeTextChanged(
+                    text: CharSequence,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
                     Log.d("idtext", "beforeTextChanged")
                 }
 
-                override fun onTextChanged(text: CharSequence, start: Int, before: Int, count: Int) {
+                override fun onTextChanged(
+                    text: CharSequence,
+                    start: Int,
+                    before: Int,
+                    count: Int
+                ) {
                     Log.d("idtext", "onTextChanged")
                 }
 
@@ -57,7 +70,8 @@ class FragmentSearch : Fragment() {
             btnSearch.setOnClickListener {
                 adapter = AdapterBookSearch(searchItems)
                 rviewSearch.adapter = adapter
-                rviewSearch.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+                rviewSearch.layoutManager =
+                    LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
 
                 llayoutSearch.visibility = View.GONE
                 llayoutResult.visibility = View.VISIBLE
@@ -67,13 +81,15 @@ class FragmentSearch : Fragment() {
                 searchJoara(page, text)
                 Log.d("####", "3")
                 test.add("3")
+                searchKakaoStage(text)
                 searchKakao(page - 1, text)
                 Log.d("####", "5")
                 test.add("5")
                 Log.d("#######", test.toString())
                 Log.d("####", "6")
-                searchKakaoStage(text)
-
+                searchNaver(text, "Naver")
+                searchNaver(text, "Naver Challenge")
+                searchNaver(text, "Naver Today")
             }
         }
 
@@ -82,7 +98,7 @@ class FragmentSearch : Fragment() {
         return view
     }
 
-    fun searchJoara(page: Int, text : String) {
+    fun searchJoara(page: Int, text: String) {
         val apiJoara = RetrofitJoara()
         val param = Param.getItemAPI(context)
         param["page"] = page
@@ -130,20 +146,25 @@ class FragmentSearch : Fragment() {
                                 )
                             )
                         }
+
+                        val cmpAsc: Comparator<BookListData> =
+                            Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
+                        Collections.sort(searchItems, cmpAsc)
+
+                        adapter?.notifyDataSetChanged()
+
+                        with(binding) {
+                            blank.root.visibility = View.GONE
+                            rviewSearch.visibility = View.VISIBLE
+                        }
                     }
-
-                    val cmpAsc: Comparator<BookListData> =
-                        Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
-                    Collections.sort(searchItems, cmpAsc)
-
-                    adapter?.notifyDataSetChanged()
                 }
             })
     }
 
-    fun searchKakao(page: Int, text : String)  {
+    fun searchKakao(page: Int, text: String) {
         val apiKakao = RetrofitKaKao()
-        val param : MutableMap<String?, Any> = HashMap()
+        val param: MutableMap<String?, Any> = HashMap()
         param["page"] = page
         param["word"] = text
         param["category_uid"] = 11
@@ -162,7 +183,7 @@ class FragmentSearch : Fragment() {
                     if (results != null) {
                         var items: List<KakaoBookItem>? = null
 
-                        if(page == 0){
+                        if (page == 0) {
                             items = results[2].items
                         } else {
                             items = results[0].items
@@ -191,7 +212,7 @@ class FragmentSearch : Fragment() {
                         }
                     }
 
-                    with(binding){
+                    with(binding) {
                         blank.root.visibility = View.GONE
                         rviewSearch.visibility = View.VISIBLE
                     }
@@ -199,9 +220,9 @@ class FragmentSearch : Fragment() {
             })
     }
 
-    fun searchKakaoStage(text: String)  {
+    fun searchKakaoStage(text: String) {
         val apiKakaoStage = RetrofitKaKao()
-        val param : MutableMap<String?, Any> = HashMap()
+        val param: MutableMap<String?, Any> = HashMap()
         param["genreIds"] = "1,2,3,4,5,6,7"
         param["keyword"] = text
         param["size"] = 20
@@ -216,7 +237,7 @@ class FragmentSearch : Fragment() {
 
                     val results = it.content
 
-                    for(items in results){
+                    for (items in results) {
                         searchItems.add(
                             BookListData(
                                 "카카오 스테이지",
@@ -230,13 +251,50 @@ class FragmentSearch : Fragment() {
                             )
                         )
                     }
-
-                    with(binding){
-                        blank.root.visibility = View.GONE
-                        rviewSearch.visibility = View.VISIBLE
-                    }
                 }
             })
+    }
+
+    fun searchNaver(text: String, platform : String){
+        Thread {
+            var doc: Document? = null
+            var title = ""
+
+            if(platform == "Naver"){
+                doc = Jsoup.connect("https://novel.naver.com/search?keyword=${text}&section=webnovel&target=novel").post()
+                title = "네이버 시리즈"
+            } else if(platform == "Naver Today") {
+                doc = Jsoup.connect("https://novel.naver.com/search?keyword=${text}&section=best&target=novel").post()
+                title = "네이버 베스트"
+            } else if(platform == "Naver Challenge") {
+                doc = Jsoup.connect("https://novel.naver.com/search?keyword=${text}&section=challenge&target=novel").post()
+                title = "네이버 챌린지"
+            }
+
+            val Naver: Elements = (doc?.select(".srch_cont .list_type2 li") ?: "") as Elements
+
+            requireActivity().runOnUiThread {
+                with(binding){
+                    blank.root.visibility = View.GONE
+                    rviewSearch.visibility = View.VISIBLE
+                }
+
+                for (items in Naver) {
+                    searchItems.add(
+                        BookListData(
+                            title,
+                            items.select(".ellipsis").text(),
+                            items.select(".league").text(),
+                            items.select("div img").attr("src"),
+                            items.select("a").attr("href"),
+                            items.select(".bullet_comp").text(),
+                            "",
+                            "",
+                        )
+                    )
+                }
+            }
+        }.start()
     }
 
 //    private var recyclerViewScroll: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {

@@ -37,11 +37,12 @@ class AdapterBookSearch(items: List<BookListData>) : RecyclerView.Adapter<Recycl
                         .load(item.bookImg)
                         .into(iview)
 
-                tviewTitle.text = "${item.title} ${item.platform}"
+                tviewTitle.text = item.title
                 tviewWriter.text = item.writer
-                tviewIntro.text = item.info1
-                tviewInfo1.text = item.info2
-                tviewInfo2.text = item.info3
+                tviewInfo1.text = item.info1
+                tviewInfo2.text = item.info2
+                tviewInfo3.text = item.info3
+                tviewPlatform.text = item.platform
             }
         }
     }

@@ -38,6 +38,19 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/tviewPlatform"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:breakStrategy="high_quality"
+            android:ellipsize="end"
+            android:fontFamily="@font/noto_sans"
+            android:maxLines="3"
+            android:text="@string/Common_BookIntro"
+            android:textColor="#767676"
+            android:textSize="14sp"
+            tools:text="123123123123" />
+
+        <TextView
             android:id="@+id/tviewTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,13 +63,14 @@
             android:textColor="#ffffff"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:visibility="visible" />
+            android:visibility="visible"
+            tools:text="123123123123" />
 
         <TextView
             android:id="@+id/tviewWriter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="4dp"
             android:breakStrategy="high_quality"
             android:ellipsize="end"
             android:fontFamily="@font/noto_sans"
@@ -64,45 +78,51 @@
             android:text="@string/Common_BookWriter"
             android:textColor="#ffffff"
             android:textSize="12sp"
-            android:visibility="visible" />
+            android:visibility="visible"
+            tools:text="123123123123" />
 
         <TextView
             android:id="@+id/tviewInfo1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="4dp"
             android:breakStrategy="high_quality"
             android:ellipsize="end"
             android:fontFamily="@font/noto_sans"
             android:maxLines="1"
             android:text="@string/Common_BookWriter"
             android:textColor="#ffffff"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            tools:text="123123123123" />
 
         <TextView
             android:id="@+id/tviewInfo2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="4dp"
             android:breakStrategy="high_quality"
             android:ellipsize="end"
             android:fontFamily="@font/noto_sans"
             android:maxLines="1"
             android:text="@string/Common_BookWriter"
             android:textColor="#ffffff"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            tools:text="123123123123" />
 
         <TextView
-            android:id="@+id/tviewIntro"
-            android:layout_width="match_parent"
+            android:id="@+id/tviewInfo3"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
             android:breakStrategy="high_quality"
             android:ellipsize="end"
             android:fontFamily="@font/noto_sans"
-            android:maxLines="3"
-            android:text="@string/Common_BookIntro"
-            android:textColor="#767676"
-            android:textSize="14sp" />
+            android:maxLines="1"
+            android:text="@string/Common_BookWriter"
+            android:textColor="#ffffff"
+            android:textSize="12sp"
+            tools:text="123123123123" />
+
     </LinearLayout>
 
 

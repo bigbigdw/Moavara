@@ -2,24 +2,18 @@ package com.example.moavara.Search
 
 import android.os.Bundle
 import android.text.Editable
-import android.text.TextUtils.replace
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
 import com.bumptech.glide.Glide
-import com.example.moavara.Best.FragmentBestDetailBooks
-import com.example.moavara.Best.FragmentBestDetailComment
-import com.example.moavara.R
 import com.example.moavara.Retrofit.*
 import com.example.moavara.Util.Param
 import com.example.moavara.databinding.FragmentSearchBookcodeBinding
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import java.util.HashMap
 
 class FragmentSearchBookcode(private var platform: String) : Fragment() {
 
@@ -58,6 +52,12 @@ class FragmentSearchBookcode(private var platform: String) : Fragment() {
                 tviewSearch.text = "https://page.kakao.com/home?seriesId=57530778"
             } else if (platform == "Kakao Stage") {
                 tviewSearch.text = "https://page.kakao.com/home?seriesId=49902709"
+            }  else if (platform == "Naver") {
+                tviewSearch.text = "https://novel.naver.com/webnovel/list?novelId=252934"
+            }  else if (platform == "Naver Challenge") {
+                tviewSearch.text = "https://novel.naver.com/challenge/list?novelId=75595"
+            }  else if (platform == "Naver Today") {
+                tviewSearch.text = "https://novel.naver.com/best/list?novelId=268129"
             }
 
             btnSearch.setOnClickListener {
@@ -175,31 +175,37 @@ class FragmentSearchBookcode(private var platform: String) : Fragment() {
 
     fun setLayoutNaverToday(){
         Thread {
-            val doc: Document = Jsoup.connect(bookCode).post()
+            var doc: Document? = null
 
-            bookCode = "https://novel.naver.com/${doc.select(".writer a").first()!!.attr("href")}"
+            if(platform == "Naver"){
+                doc = Jsoup.connect("https://novel.naver.com/webnovel/list?novelId=${bookCode}").post()
+            } else if(platform == "Naver Today") {
+                doc = Jsoup.connect("https://novel.naver.com/best/list?novelId=${bookCode}").post()
+            } else if(platform == "Naver Challenge") {
+                doc = Jsoup.connect("https://novel.naver.com/challenge/list?novelId=${bookCode}").post()
+            }
 
             requireActivity().runOnUiThread {
                 with(binding){
                     llayoutSearch.visibility = View.GONE
                     llayoutResult.visibility = View.VISIBLE
 
-                    Glide.with(requireContext())
-                        .load(doc.select(".section_area_info .pic img").attr("src"))
-                        .into(searchResult.iviewBookCover)
+                    if(doc != null){
+                        Glide.with(requireContext())
+                            .load(doc.select(".section_area_info .pic img").attr("src"))
+                            .into(searchResult.iviewBookCover)
 
-                    searchResult.tviewTitle.text = doc.select(".book_title").text()
-                    searchResult.tviewWriter.text = doc.select(".writer").text()
+                        searchResult.tviewTitle.text = doc.select(".book_title").text()
+                        searchResult.tviewWriter.text = doc.select(".writer").text()
 
-                    searchResult.tviewInfo1.text = doc.select(".info_book .like").text()
-                    searchResult.tviewInfo2.text =  doc.select(".info_book .download").text()
-                    searchResult.tviewInfo3.text =  doc.select(".info_book .publish").text()
-                    searchResult.tviewInfo4.text =  "장르 : ${doc.select(".info_book .genre").text()}"
+                        searchResult.tviewInfo1.text = doc.select(".info_book .like").text()
+                        searchResult.tviewInfo2.text =  doc.select(".info_book .download").text()
+                        searchResult.tviewInfo3.text =  doc.select(".info_book .publish").text()
+                        searchResult.tviewInfo4.text =  "장르 : ${doc.select(".info_book .genre").text()}"
+                    }
                 }
 
             }
         }.start()
     }
-
-
 }
