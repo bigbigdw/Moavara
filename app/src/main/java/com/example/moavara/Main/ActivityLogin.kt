@@ -150,7 +150,6 @@ class ActivityLogin : AppCompatActivity() {
                 } else {
                     // 틀렸을 때
                     Toast.makeText(this, task.exception?.message, Toast.LENGTH_SHORT).show()
-                    Log.d("####", task.exception?.message.toString())
                 }
             }
     }

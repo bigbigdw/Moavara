@@ -2,11 +2,7 @@ package com.example.moavara.Search
 
 import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.DataBase.BookListDataBestAnalyze
-import com.example.moavara.DataBase.BookListDataBestToday
 import com.github.mikephil.charting.data.BarEntry
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
-import java.util.ArrayList
 
 
 class BookListData(

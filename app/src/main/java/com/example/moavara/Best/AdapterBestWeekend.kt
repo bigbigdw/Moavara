@@ -1,27 +1,19 @@
 package com.example.moavara.Best
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBestWeekend
-import com.example.moavara.databinding.ItemBooklistBestTodayBinding
 import com.example.moavara.databinding.ItemBooklistBestWeekendBinding
-import java.util.ArrayList
 
 class AdapterBestWeekend(
-    private val mContext: Context,
     items:
-    ArrayList<BookListDataBestWeekend?>,
+    ArrayList<BookListDataBestWeekend>,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var item: ArrayList<BookListDataBestWeekend?> = items
+    var item: ArrayList<BookListDataBestWeekend> = items
     var selected: String? = ""
     var num: Int? = 0
 

@@ -129,17 +129,25 @@ object BestRef {
 
     fun setBestData(platform: String, num: Int, genre: String): DatabaseReference {
         if(platform == "Munpia"){
-            return setBestRefMunpia(platform).child("Data").child(DBDate.Month()).child(DBDate.Week()).child(DBDate.DayString()).child(num.toString())
+            return setBestRefMunpia(platform).child("Data").child(DBDate.Month()).child(DBDate.Week()).child(DBDate.DayInt().toString()).child(num.toString())
         } else {
-            return setBestRef(platform, genre).child("Data").child(DBDate.Month()).child(DBDate.Week()).child(DBDate.DayString()).child(num.toString())
+            return setBestRef(platform, genre).child("Data").child(DBDate.Month()).child(DBDate.Week()).child(DBDate.DayInt().toString()).child(num.toString())
         }
     }
 
     fun getBestDataToday(platform: String, genre: String): DatabaseReference {
         if(platform == "Munpia"){
-            return setBestRefMunpia(platform).child("Data").child(DBDate.Month()).child(DBDate.Week()).child(DBDate.DayString())
+            return setBestRefMunpia(platform).child("Data").child(DBDate.Month()).child(DBDate.Week()).child(DBDate.DayInt().toString())
         } else {
-            return setBestRef(platform, genre).child("Data").child(DBDate.Month()).child(DBDate.Week()).child(DBDate.DayString())
+            return setBestRef(platform, genre).child("Data").child(DBDate.Month()).child(DBDate.Week()).child(DBDate.DayInt().toString())
+        }
+    }
+
+    fun getBestDataWeek(platform: String, genre: String): DatabaseReference {
+        if(platform == "Munpia"){
+            return setBestRefMunpia(platform).child("Data").child(DBDate.Month()).child(DBDate.Week())
+        } else {
+            return setBestRef(platform, genre).child("Data").child(DBDate.Month()).child(DBDate.Week())
         }
     }
 

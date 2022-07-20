@@ -1,29 +1,31 @@
 package com.example.moavara.Best
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moavara.DataBase.BookListDataBest
-import com.example.moavara.Main.mRootRef
 import com.example.moavara.Search.BookListDataBestWeekend
-import com.example.moavara.Util.DBDate
+import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.Genre
 import com.example.moavara.databinding.FragmentBestWeekendBinding
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 
 
 class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
 
     private var adapterWeek: AdapterBestWeekend? = null
-    private val itemWeek = ArrayList<BookListDataBestWeekend?>()
+    private val itemWeek = ArrayList<BookListDataBestWeekend>()
+    private val item = BookListDataBestWeekend()
+    private val itemDay = ArrayList<BookListDataBest>()
 
     lateinit var root: View
-    var cate = ""
-    var week = mRootRef.child("Best").child(tabType).child(cate).child("week")
+    var genre = ""
 
     private var _binding: FragmentBestWeekendBinding? = null
     private val binding get() = _binding!!
@@ -35,11 +37,10 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
         _binding = FragmentBestWeekendBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        cate = Genre.getGenre(requireContext()).toString()
-        week = FirebaseDatabase.getInstance().reference.child("Best").child(tabType).child(cate).child("week").child(DBDate.Week())
+        genre = Genre.getGenre(requireContext()).toString()
 
-        adapterWeek = AdapterBestWeekend(requireContext(), itemWeek)
-        getBestWeekList(week)
+        adapterWeek = AdapterBestWeekend(itemWeek)
+        getBestWeekList()
 
         binding.rviewBest.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -48,32 +49,48 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
         return view
     }
 
-    private fun getBestWeekList(bestRef: DatabaseReference) {
+    private fun getBestWeekList() {
 
-//        bestRef.child("4")
+        for (num in 0..9) {
+            BestRef.getBestDataWeek(tabType, genre).addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-        bestRef.get().addOnSuccessListener {
+                    val weekItem = BookListDataBestWeekend()
 
-            for (i in it.children) {
-                val group: BookListDataBestWeekend? =
-                    i.getValue(BookListDataBestWeekend::class.java)
+                    for (day in 1..6) {
+                        val item: BookListDataBest? =
+                            dataSnapshot.child(day.toString()).child(num.toString())
+                                .getValue(BookListDataBest::class.java)
 
-                itemWeek.add(
-                    BookListDataBestWeekend(
-                        group!!.sun,
-                        group.mon,
-                        group.tue,
-                        group.wed,
-                        group.thur,
-                        group.fri,
-                        group.sat,
-                    )
-                )
+                        if (day == 1) {
+                            weekItem.sun = item
+                        } else if (day == 2) {
+                            weekItem.mon = item
+                        } else if (day == 3) {
+                            weekItem.tue = item
+                        } else if (day == 4) {
+                            weekItem.wed = item
+                        } else if (day == 5) {
+                            weekItem.thur = item
+                        } else if (day == 6) {
+                            weekItem.fri = item
+                        } else if (day == 7) {
+                            weekItem.sat = item
+                        }
 
-                adapterWeek!!.notifyDataSetChanged()
-            }
+                        Log.d("####", item?.title.toString())
+                    }
 
-        }.addOnFailureListener {}
+                    Log.d("@@@@", weekItem.wed.toString())
+
+                    itemWeek.add(weekItem)
+                    adapterWeek?.notifyDataSetChanged()
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {}
+            })
+        }
 
         adapterWeek!!.setOnItemClickListener(object : AdapterBestWeekend.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int, value: String?) {

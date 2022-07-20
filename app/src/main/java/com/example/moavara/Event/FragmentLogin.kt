@@ -8,21 +8,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.example.moavara.DataBase.BookListDataBestToday
-import com.example.moavara.Main.ActivityMain
-import com.example.moavara.Retrofit.JoaraBestListResult
 import com.example.moavara.Retrofit.JoaraLoginResult
 import com.example.moavara.Retrofit.RetrofitDataListener
 import com.example.moavara.Retrofit.RetrofitJoara
 import com.example.moavara.Util.Param
 import com.example.moavara.databinding.FragmentLoginBinding
-import com.facebook.login.LoginResult
-import retrofit2.Call
-import retrofit2.Callback
-import java.util.*
 
 class FragmentLogin: Fragment() {
 
@@ -95,8 +87,6 @@ class FragmentLogin: Fragment() {
                     param,
                     object : RetrofitDataListener<JoaraLoginResult> {
                         override fun onSuccess(it: JoaraLoginResult) {
-
-                            Log.d("####", "HIHI")
 
                             val token = it.user?.token
                             savePreferences("TOKEN", token!!)

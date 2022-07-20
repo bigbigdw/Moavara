@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.moavara.Best.BottomDialogBest
 import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.DataBase.BookListDataBestToday
 import com.example.moavara.Main.mRootRef
@@ -112,13 +111,13 @@ class FragmentPickTabNovel : Fragment() {
                 )
 
                 if(type == "Img"){
-                    val mBottomDialogBest = BottomDialogBest(
-                        requireContext(),
-                        data,
-                        item.status,
-                        item.number
-                    )
-                    fragmentManager?.let { mBottomDialogBest.show(it, null) }
+//                    val mBottomDialogBest = BottomDialogBest(
+//                        requireContext(),
+//                        data,
+//                        item.status,
+//                        item.number
+//                    )
+//                    fragmentManager?.let { mBottomDialogBest.show(it, null) }
                 } else if(type == "Confirm"){
 
                     adapter.editItem(data, position)

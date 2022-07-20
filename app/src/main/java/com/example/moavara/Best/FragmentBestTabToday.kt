@@ -82,16 +82,16 @@ class FragmentBestTabToday(private val tabType: String) :
 
         adapterToday?.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
-                val item: BookListDataBest? = adapterToday!!.getItem(position)
+                val item: BookListDataBest? = adapterToday?.getItem(position)
 
-//                val mBottomDialogBest = BottomDialogBest(
-//                    requireContext(),
-//                    item!!,
-//                    tabType,
-//                    position
-//                )
-//
-//                fragmentManager?.let { mBottomDialogBest.show(it, null) }
+                val mBottomDialogBest = BottomDialogBest(
+                    requireContext(),
+                    item,
+                    tabType,
+                    position
+                )
+
+                fragmentManager?.let { mBottomDialogBest.show(it, null) }
             }
         })
     }

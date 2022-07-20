@@ -1,7 +1,6 @@
 package com.example.moavara.Util
 
 import android.content.Context
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.moavara.DataBase.TrophyInfo
 import com.example.moavara.Search.CalculNum
@@ -79,7 +78,7 @@ object DBDate {
 
     fun getDateData(date : String) : TrophyInfo?{
         val parse_date: Date?
-        val date = "2022${date.replace("-","")}"
+        val date = date.replace("-","")
         val dateFormat1 = SimpleDateFormat("yyyyMMdd")
 
         try {
@@ -89,13 +88,9 @@ object DBDate {
             cal.time = parse_date
             val month = cal[Calendar.MONTH]
 
-            Log.d("!!!!-2", month.toString())
-
             val weekmonth = cal[Calendar.WEEK_OF_MONTH]
-            Log.d("!!!!-3", weekmonth.toString())
 
             val day = cal[Calendar.DAY_OF_WEEK]
-            Log.d("!!!!-5", day.toString())
 
             return TrophyInfo(
                 month,
@@ -111,12 +106,10 @@ object DBDate {
     }
 
     fun getYesterday(date : String) : Int {
-        val date = "2022${date.replace("-","")}"
         return (date.toInt() - 1)
     }
 
     fun getToday(date : String) : Int {
-        val date = "2022${date.replace("-","")}"
         return (date.toInt())
     }
 }
