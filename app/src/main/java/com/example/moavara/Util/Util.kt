@@ -12,6 +12,10 @@ object DBDate {
 
     var status = ""
 
+    fun Date(): Int {
+        return Calendar.getInstance().get(Calendar.DATE)
+    }
+
     fun DayInt(): Int {
         return Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
     }
@@ -75,10 +79,13 @@ object DBDate {
         return Calendar.getInstance().get(Calendar.MONTH).toString()
     }
 
+    fun Year(): String {
+        return Calendar.getInstance().get(Calendar.YEAR).toString()
+    }
+
 
     fun getDateData(date : String) : TrophyInfo?{
         val parse_date: Date?
-        val date = date.replace("-","")
         val dateFormat1 = SimpleDateFormat("yyyyMMdd")
 
         try {
@@ -289,10 +296,6 @@ object Genre {
         }
     }
 }
-
-
-
-
 
 fun miningValue(ref: MutableMap<String?, Any>, num: Int, platform: String, genre: String) {
 

@@ -151,6 +151,14 @@ object BestRef {
         }
     }
 
+    fun getBestDataMonth(platform: String, genre: String): DatabaseReference {
+        if(platform == "Munpia"){
+            return setBestRefMunpia(platform).child("Data").child(DBDate.Month())
+        } else {
+            return setBestRef(platform, genre).child("Data").child(DBDate.Month())
+        }
+    }
+
     fun setBookListDataBest(ref: MutableMap<String?, Any>): BookListDataBest {
         return BookListDataBest(
             ref["writerName"] as String,

@@ -1,6 +1,7 @@
 package com.example.moavara.Best
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,11 +9,12 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.Search.BookListDataBestWeekend
-import com.example.moavara.Util.DBDate
+import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.Genre
 import com.example.moavara.databinding.FragmentBestMonthBinding
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 
 
 class FragmentBestTabMonth(private val tabType: String) : Fragment() {
@@ -24,7 +26,7 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment() {
 
     private var _binding: FragmentBestMonthBinding? = null
     private val binding get() = _binding!!
-    var cate = ""
+    var genre = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,128 +35,130 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment() {
         _binding = FragmentBestMonthBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        cate = Genre.getGenre(requireContext()).toString()
+        genre = Genre.getGenre(requireContext()).toString()
         adapterMonth = AdapterBestMonth(itemMonth)
         adapterMonthDay = AdapterBestToday(ItemMonthDay)
 
-        val mRootRef = FirebaseDatabase.getInstance().reference
-        val month = mRootRef.child("Best").child(tabType).child(cate).child("month").child(DBDate.Month())
-        val monthList = mRootRef.child("Best").child(tabType).child(cate).child("month").child(DBDate.Month())
-
         itemMonth.clear()
-        getBestMonth(month)
+        getBestMonth()
 
-        with(binding){
+        with(binding) {
             rviewBestMonth.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             rviewBestMonth.adapter = adapterMonth
 
             adapterMonth.setOnItemClickListener(object : AdapterBestMonth.OnItemClickListener {
-                override fun onItemClick(v: View?, position: Int, value: String?) {
-
+                override fun onItemClick(v: View, position: Int, value: String) {
                     ItemMonthDay.clear()
-                    val item = adapterMonth.getItem(position)
 
-                    monthList.child((position + 1).toString()).child(value!!).child("day").get()
-                        .addOnSuccessListener {
+                    Log.d("####", "position = $position value = $value")
 
-                            rviewBestMonthDay.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                    BestRef.getBestDataMonth(tabType, genre).child((position + 1).toString())
+                        .child(value).addListenerForSingleValueEvent(object :
+                        ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                            rviewBestMonthDay.layoutManager =
+                                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                             rviewBestMonthDay.adapter = adapterMonthDay
 
-                            if(it.childrenCount > 0){
+                            if (dataSnapshot.childrenCount > 0) {
 
-                                if(llayoutMonthDetail.visibility == View.GONE){
+                                if (llayoutMonthDetail.visibility == View.GONE) {
                                     llayoutMonthDetail.visibility = View.VISIBLE
                                 }
                             } else {
                                 llayoutMonthDetail.visibility = View.GONE
                             }
 
-                            for (postSnapshot in it.children) {
-
+                            for (postSnapshot in dataSnapshot.children) {
                                 val group: BookListDataBest? =
                                     postSnapshot.getValue(BookListDataBest::class.java)
 
-                                ItemMonthDay.add(
-                                    BookListDataBest(
-                                        group!!.writer,
-                                        group.title,
-                                        group.bookImg,
-                                        group.bookCode,
-                                        group.info1,
-                                        group.info2,
-                                        group.info3,
-                                        group.info4,
-                                        group.info5,
-                                        group.number,
-                                        group.date,
-                                        group.status,
+                                if (group != null) {
+                                    ItemMonthDay.add(
+                                        BookListDataBest(
+                                            group.writer,
+                                            group.title,
+                                            group.bookImg,
+                                            group.bookCode,
+                                            group.info1,
+                                            group.info2,
+                                            group.info3,
+                                            group.info4,
+                                            group.info5,
+                                            group.number,
+                                            group.date,
+                                            group.type,
+                                            group.status,
+                                            group.data,
+                                            group.memo
+                                        )
                                     )
-                                )
-                                adapterMonthDay!!.notifyDataSetChanged()
+                                }
+
                             }
+                            adapterMonthDay?.notifyDataSetChanged()
+                        }
 
-                        }.addOnFailureListener {}
-
+                        override fun onCancelled(databaseError: DatabaseError) {}
+                    })
                 }
 
             })
         }
 
-        adapterMonthDay!!.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
+        adapterMonthDay?.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
-                val item: BookListDataBest? = adapterMonthDay!!.getItem(position)
+                val item: BookListDataBest? = adapterMonthDay?.getItem(position)
 
-//                val mBottomDialogBest = BottomDialogBest(
-//                    requireContext(),
-//                    item!!,
-//                    tabType,
-//                    position
-//                )
-//                fragmentManager?.let { mBottomDialogBest.show(it, null) }
-
+                val mBottomDialogBest = BottomDialogBest(
+                    requireContext(),
+                    item,
+                    tabType,
+                    position
+                )
+                fragmentManager?.let { mBottomDialogBest.show(it, null) }
             }
         })
 
         return view
     }
 
-    private fun getBestMonth(bestRef: DatabaseReference) {
+    private fun getBestMonth() {
 
-        bestRef.get().addOnSuccessListener {
+        for (week in 1..5) {
+            BestRef.getBestDataMonth(tabType, genre).child(week.toString())
+                .addListenerForSingleValueEvent(object :
+                    ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-            for (i in 1..5) {
-                if (it.child(i.toString()).value != null) {
-                    val group: BookListDataBestWeekend? =
-                        it.child(i.toString()).getValue(BookListDataBestWeekend::class.java)
-                    itemMonth.add(
-                        BookListDataBestWeekend(
-                            group!!.sun,
-                            group.mon,
-                            group.tue,
-                            group.wed,
-                            group.thur,
-                            group.fri,
-                            group.sat,
-                        )
-                    )
-                } else {
-                    itemMonth.add(
-                        BookListDataBestWeekend(
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                        )
-                    )
-                }
-                adapterMonth.notifyDataSetChanged()
-            }
+                        val weekItem = BookListDataBestWeekend()
 
-        }.addOnFailureListener {}
+                        for (day in 1..7) {
+                            val item: BookListDataBest? =
+                                dataSnapshot.child(day.toString()).child("0")
+                                    .getValue(BookListDataBest::class.java)
+
+                            when (day) {
+                                1 -> weekItem.sun = item
+                                2 -> weekItem.mon = item
+                                3 -> weekItem.tue = item
+                                4 -> weekItem.wed = item
+                                5 -> weekItem.thur = item
+                                6 -> weekItem.fri = item
+                                7 -> weekItem.sat = item
+                            }
+                        }
+
+                        itemMonth.add(weekItem)
+                        adapterMonth.notifyDataSetChanged()
+
+                    }
+
+                    override fun onCancelled(databaseError: DatabaseError) {}
+                })
+        }
 
     }
 }

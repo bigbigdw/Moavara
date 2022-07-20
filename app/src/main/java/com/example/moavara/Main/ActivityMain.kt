@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -109,6 +110,11 @@ class ActivityMain : AppCompatActivity() {
 //                }
 //            }.addOnFailureListener{}
 //        }, 1000) //1초 후 실행
+
+        Log.d("####", DBDate.Year())
+        Log.d("####", DBDate.Month())
+        Log.d("####", DBDate.Date().toString())
+        Log.d("####", "${DBDate.Year()}0${DBDate.Month().toInt() + 1}${DBDate.Date()}")
     }
 
     fun registNotification(){

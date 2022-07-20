@@ -1,7 +1,6 @@
 package com.example.moavara.Best
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,8 +20,6 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
 
     private var adapterWeek: AdapterBestWeekend? = null
     private val itemWeek = ArrayList<BookListDataBestWeekend>()
-    private val item = BookListDataBestWeekend()
-    private val itemDay = ArrayList<BookListDataBest>()
 
     lateinit var root: View
     var genre = ""
@@ -78,11 +75,7 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
                         } else if (num == 7) {
                             weekItem.sat = item
                         }
-
-                        Log.d("####", item?.title.toString())
                     }
-
-                    Log.d("@@@@", weekItem.wed.toString())
 
                     itemWeek.add(weekItem)
                     adapterWeek?.notifyDataSetChanged()
@@ -92,31 +85,31 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
             })
         }
 
-        adapterWeek!!.setOnItemClickListener(object : AdapterBestWeekend.OnItemClickListener {
+        adapterWeek?.setOnItemClickListener(object : AdapterBestWeekend.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int, value: String?) {
-                val item: BookListDataBestWeekend? = adapterWeek!!.getItem(position)
+                val item: BookListDataBestWeekend? = adapterWeek?.getItem(position)
 
                 when {
                     value.equals("sun") -> {
-                        findBook(item!!.sun)
+                        findBook(item?.sun)
                     }
                     value.equals("mon") -> {
-                        findBook(item!!.mon)
+                        findBook(item?.mon)
                     }
                     value.equals("tue") -> {
-                        findBook(item!!.tue)
+                        findBook(item?.tue)
                     }
                     value.equals("wed") -> {
-                        findBook(item!!.wed)
+                        findBook(item?.wed)
                     }
                     value.equals("thur") -> {
-                        findBook(item!!.thur)
+                        findBook(item?.thur)
                     }
                     value.equals("fri") -> {
-                        findBook(item!!.fri)
+                        findBook(item?.fri)
                     }
                     value.equals("sat") -> {
-                        findBook(item!!.sat)
+                        findBook(item?.sat)
                     }
                 }
 
@@ -128,15 +121,15 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
     }
     private fun findBook(item: BookListDataBest?) {
         if (item != null) {
-            if (adapterWeek!!.getSelectedBook() == item.title) {
-//                val mBottomDialogBest = BottomDialogBest(
-//                    requireContext(),
-//                    item,
-//                    tabType,
-//                    item.number
-//                )
-//                fragmentManager?.let { mBottomDialogBest.show(it, null) }
-//                adapterWeek!!.setSelectedBook("")
+            if (adapterWeek?.getSelectedBook() == item.title) {
+                val mBottomDialogBest = BottomDialogBest(
+                    requireContext(),
+                    item,
+                    tabType,
+                    item.number
+                )
+                fragmentManager?.let { mBottomDialogBest.show(it, null) }
+                adapterWeek!!.setSelectedBook("")
             } else {
                 adapterWeek!!.setSelectedBook(item.title)
             }
