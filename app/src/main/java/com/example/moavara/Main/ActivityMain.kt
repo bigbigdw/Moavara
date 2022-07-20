@@ -5,11 +5,8 @@ import android.app.NotificationManager
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.NotificationCompat
@@ -97,21 +94,21 @@ class ActivityMain : AppCompatActivity() {
         val miningRef = FirebaseDatabase.getInstance().reference.child("Mining")
         val workManager = WorkManager.getInstance(applicationContext)
 
-        Handler(Looper.getMainLooper()).postDelayed({
-
-            miningRef.get().addOnSuccessListener {
-                if(it.value != null && it.value!! != "NULL"){
-                    Toast.makeText(this, "WorkManager 이미 존재함", Toast.LENGTH_SHORT).show()
-
-                } else {
-                    miningRef.setValue("ALL")
-
-                    workManager.enqueue(workRequest)
-                    FirebaseMessaging.getInstance().subscribeToTopic("all")
-                    Toast.makeText(this, "WorkManager 추가됨", Toast.LENGTH_SHORT).show()
-                }
-            }.addOnFailureListener{}
-        }, 1000) //1초 후 실행
+//        Handler(Looper.getMainLooper()).postDelayed({
+//
+//            miningRef.get().addOnSuccessListener {
+//                if(it.value != null && it.value!! != "NULL"){
+//                    Toast.makeText(this, "WorkManager 이미 존재함", Toast.LENGTH_SHORT).show()
+//
+//                } else {
+//                    miningRef.setValue("ALL")
+//
+//                    workManager.enqueue(workRequest)
+//                    FirebaseMessaging.getInstance().subscribeToTopic("all")
+//                    Toast.makeText(this, "WorkManager 추가됨", Toast.LENGTH_SHORT).show()
+//                }
+//            }.addOnFailureListener{}
+//        }, 1000) //1초 후 실행
     }
 
     fun registNotification(){

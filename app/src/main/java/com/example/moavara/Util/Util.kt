@@ -68,7 +68,7 @@ object DBDate {
 
     fun DateMMDD(): String {
         val currentTime: Date = Calendar.getInstance().time
-        val format = SimpleDateFormat("MM-dd")
+        val format = SimpleDateFormat("YYYYMMdd")
         return format.format(currentTime).toString()
     }
 
@@ -223,7 +223,6 @@ object Genre {
     }
 
 
-
     fun setNaverTodayGenre(str: String): String {
         return when {
             str == "BL" -> {
@@ -304,28 +303,11 @@ object Genre {
 
 fun miningValue(ref: MutableMap<String?, Any>, num: Int, platform: String, genre: String) {
 
-//    BestRef.getBestRefWeekCompared(platform, num, genre).removeValue()
+    BestRef.setBookCode(platform, genre, ref["bookCode"] as String, num).setValue(BestRef.setBookListDataBestAnalyze(ref))
 
-    //Today
-    BestRef.setBestRefToday(platform, num, genre).setValue(BestRef.setBookListDataBestToday(ref))
+    BestRef.setBestData(platform, num, genre).setValue(BestRef.setBookListDataBest(ref))
 
-    //Week
-    if (num < 10) {
-        BestRef.setBestRefWeek(platform, num, genre).setValue(BestRef.setBookListDataBestToday(ref))
-    }
-
-    BestRef.setBestRefWeekCompared(platform, num, genre).setValue(BestRef.setBookListDataBestToday(ref))
-
-
-    //Month - Week
-    if (num == 0) {
-        //Month - Day
-        BestRef.setBestRefMonthWeek(platform, genre).setValue(BestRef.setBookListDataBestToday(ref))
-        //Month
-        BestRef.setBestRefMonth(platform, genre).setValue(BestRef.setBookListDataBestToday(ref))
-    }
-
-    BestRef.setBestRefMonthDay(platform, num, genre).setValue(BestRef.setBookListDataBestToday(ref))
+    Mining.SetBookCodeData(platform, genre, ref["bookCode"] as String)
 
 }
 

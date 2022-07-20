@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
-import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.DataBase.BookListDataBestAnalyze
 import com.example.moavara.DataBase.BookListDataBestToday
 import com.example.moavara.DataBase.DataBaseBestDay
@@ -124,19 +123,19 @@ object Mining {
             getKakaoStageBest(genre, context)
         }
 
-        val Joara1 = Thread {
+        val Joara = Thread {
             for (i in 1..5) {
                 getJoaraBest(context, genre, i)
             }
         }
 
-        val JoaraNobless1 = Thread {
+        val JoaraNobless = Thread {
             for (i in 1..5) {
                 getJoaraBestNobless(context, genre, i)
             }
         }
 
-        val JoaraPremium1 = Thread {
+        val JoaraPremium = Thread {
             for (i in 1..5) {
                 getJoaraBestPremium(context, genre, i)
             }
@@ -172,57 +171,57 @@ object Mining {
 
 
         try {
-            Ridi.start()
-            Log.d("####MINING", "리디1 완료")
-            Ridi.join()
+//            Ridi.start()
+//            Log.d("####MINING", "리디1 완료")
+//            Ridi.join()
+//
+//            OneStore.start()
+//            OneStore.join()
+//            Log.d("####MINING", "원스토어1 완료")
+//
+//            Kakao.start()
+//            Kakao.join()
+//            Log.d("####MINING", "카카오1 완료")
+//
+//            KakaoStage1.start()
+//            KakaoStage1.join()
+//            Log.d("####MINING", "카카오 스테이지1 완료")
 
-            OneStore.start()
-            OneStore.join()
-            Log.d("####MINING", "원스토어1 완료")
-
-            Kakao.start()
-            Kakao.join()
-            Log.d("####MINING", "카카오1 완료")
-
-            KakaoStage1.start()
-            KakaoStage1.join()
-            Log.d("####MINING", "카카오 스테이지1 완료")
-
-            Joara1.start()
-            Joara1.join()
+            Joara.start()
+            Joara.join()
             Log.d("####MINING", "조아라1 완료")
 
-            JoaraNobless1.start()
-            JoaraNobless1.join()
+            JoaraNobless.start()
+            JoaraNobless.join()
             Log.d("####MINING", "조아라 노블레스1 완료")
 
-            JoaraPremium1.start()
-            JoaraPremium1.join()
+            JoaraPremium.start()
+            JoaraPremium.join()
             Log.d("####MINING", "조아라 프리미엄1 완료")
 
-            NaverToday.start()
-            NaverToday.join()
-            Log.d("####MINING", "네이버 투데이1 완료")
-
-            NaverChallenge1.start()
-            NaverChallenge1.join()
-            Log.d("####MINING", "네이버 챌린지1 완료")
-
-            NaverBest.start()
-            NaverBest.join()
-            Log.d("####MINING", "네이버1 완료")
-
-            Moonpia.start()
-            Moonpia.join()
-            Log.d("####MINING", "문피아 완료")
-
-            Toksoda1.start()
-            Toksoda1.join()
-            Log.d("####MINING", "톡소다1 완료")
-
-            MrBlue.start()
-            MrBlue.join()
-            Log.d("####MINING", "미스터 블루 완료")
+//            NaverToday.start()
+//            NaverToday.join()
+//            Log.d("####MINING", "네이버 투데이1 완료")
+//
+//            NaverChallenge1.start()
+//            NaverChallenge1.join()
+//            Log.d("####MINING", "네이버 챌린지1 완료")
+//
+//            NaverBest.start()
+//            NaverBest.join()
+//            Log.d("####MINING", "네이버1 완료")
+//
+//            Moonpia.start()
+//            Moonpia.join()
+//            Log.d("####MINING", "문피아 완료")
+//
+//            Toksoda1.start()
+//            Toksoda1.join()
+//            Log.d("####MINING", "톡소다1 완료")
+//
+//            MrBlue.start()
+//            MrBlue.join()
+//            Log.d("####MINING", "미스터 블루 완료")
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
@@ -257,9 +256,7 @@ object Mining {
                                                 group.info4,
                                                 group.info5,
                                                 group.number,
-                                                group.numberDiff,
                                                 group.date,
-                                                group.trophyCount,
                                             )
                                         )
                                     }
@@ -272,11 +269,16 @@ object Mining {
 
                             if (dataList.size != 0) {
                                 val today = DBDate.getToday(dataList[dataList.size - 1].date)
-                                val yesterday = DBDate.getYesterday(dataList[dataList.size - 1].date)
+                                val yesterday =
+                                    DBDate.getYesterday(dataList[dataList.size - 1].date)
 
                                 if ((today - yesterday) == 1) {
-                                    MrBlueRef["numberDiff"] = calculateNumDiff(i,dataList[dataList.size - 1].number).num
-                                    MrBlueRef["status"] = calculateNumDiff(i, dataList[dataList.size - 1].number).status
+                                    MrBlueRef["numberDiff"] =
+                                        calculateNumDiff(i, dataList[dataList.size - 1].number).num
+                                    MrBlueRef["status"] = calculateNumDiff(
+                                        i,
+                                        dataList[dataList.size - 1].number
+                                    ).status
                                 } else {
                                     MrBlueRef["numberDiff"] = 0
                                     MrBlueRef["status"] = "NEW"
@@ -327,7 +329,7 @@ object Mining {
             val Naver: Elements = doc.select(".ranking_wrap_left .list_ranking li")
             val NaverRef: MutableMap<String?, Any> = HashMap()
 
-            BestRef.setBestRefWeekList("Naver Today", cate)
+            BestRef.setBestRefWeekList("Naver_Today", cate)
                 .addListenerForSingleValueEvent(object :
                     ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -347,9 +349,7 @@ object Mining {
                                                 group.info4,
                                                 group.info5,
                                                 group.number,
-                                                group.numberDiff,
                                                 group.date,
-                                                group.trophyCount,
                                             )
                                         )
                                     }
@@ -376,7 +376,8 @@ object Mining {
 
                             if (dataList.size != 0) {
                                 val today = DBDate.getToday(dataList[dataList.size - 1].date)
-                                val yesterday = DBDate.getYesterday(dataList[dataList.size - 1].date)
+                                val yesterday =
+                                    DBDate.getYesterday(dataList[dataList.size - 1].date)
 
                                 if ((today - yesterday) == 1) {
                                     NaverRef["numberDiff"] =
@@ -395,10 +396,10 @@ object Mining {
                             }
 
                             NaverRef["date"] = DBDate.DateMMDD()
-                            NaverRef["type"] = "Naver Today"
+                            NaverRef["type"] = "Naver_Today"
                             NaverRef["data"] = dataList
 
-                            miningValue(NaverRef, i, "Naver Today", cate)
+                            miningValue(NaverRef, i, "Naver_Today", cate)
 
                         }
                     }
@@ -420,7 +421,7 @@ object Mining {
             val Naver: Elements = doc.select(".ranking_wrap_left .list_ranking li")
             val NaverRef: MutableMap<String?, Any> = HashMap()
 
-            BestRef.setBestRefWeekList("Naver Challenge", cate)
+            BestRef.setBestRefWeekList("Naver_Challenge", cate)
                 .addListenerForSingleValueEvent(object :
                     ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -441,9 +442,7 @@ object Mining {
                                                 group.info4,
                                                 group.info5,
                                                 group.number,
-                                                group.numberDiff,
                                                 group.date,
-                                                group.trophyCount,
                                             )
                                         )
                                     }
@@ -456,7 +455,8 @@ object Mining {
 
                             if (dataList.size != 0) {
                                 val today = DBDate.getToday(dataList[dataList.size - 1].date)
-                                val yesterday = DBDate.getYesterday(dataList[dataList.size - 1].date)
+                                val yesterday =
+                                    DBDate.getYesterday(dataList[dataList.size - 1].date)
 
                                 if ((today - yesterday) == 1) {
                                     NaverRef["numberDiff"] =
@@ -488,10 +488,10 @@ object Mining {
                             NaverRef["info5"] = ""
                             NaverRef["number"] = i
                             NaverRef["date"] = DBDate.DateMMDD()
-                            NaverRef["type"] = "Naver Challenge"
+                            NaverRef["type"] = "Naver_Challenge"
                             NaverRef["data"] = dataList
 
-                            miningValue(NaverRef, i, "Naver Challenge", cate)
+                            miningValue(NaverRef, i, "Naver_Challenge", cate)
                         }
                     }
 
@@ -531,9 +531,7 @@ object Mining {
                                         group.info4,
                                         group.info5,
                                         group.number,
-                                        group.numberDiff,
                                         group.date,
-                                        group.trophyCount,
                                     )
                                 )
                             }
@@ -619,9 +617,7 @@ object Mining {
                                                 group.info4,
                                                 group.info5,
                                                 group.number,
-                                                group.numberDiff,
                                                 group.date,
-                                                group.trophyCount,
                                             )
                                         )
                                     }
@@ -693,11 +689,11 @@ object Mining {
             val param: MutableMap<String?, Any> = HashMap()
 
             param["menuId"] = Genre.setOneStoreGenre(cate)
-             if(page == 1){
+            if (page == 1) {
                 param["startKey"] = "0/0"
-            }else if(page == 2){
+            } else if (page == 2) {
                 param["startKey"] = "57/0"
-            } else if(page == 3){
+            } else if (page == 3) {
                 param["startKey"] = "120/0"
             }
 
@@ -729,9 +725,7 @@ object Mining {
                                                         group.info4,
                                                         group.info5,
                                                         group.number,
-                                                        group.numberDiff,
                                                         group.date,
-                                                        group.trophyCount,
                                                     )
                                                 )
                                             }
@@ -742,12 +736,20 @@ object Mining {
                                         Collections.sort(dataList, cmpAsc)
 
                                         if (dataList.size != 0) {
-                                            val today = DBDate.getToday(dataList[dataList.size - 1].date)
-                                            val yesterday = DBDate.getYesterday(dataList[dataList.size - 1].date)
+                                            val today =
+                                                DBDate.getToday(dataList[dataList.size - 1].date)
+                                            val yesterday =
+                                                DBDate.getYesterday(dataList[dataList.size - 1].date)
 
                                             if ((today - yesterday) == 1) {
-                                                OneStoryRef["numberDiff"] =  calculateNumDiff(i,dataList[dataList.size - 1].number).num
-                                                OneStoryRef["status"] = calculateNumDiff(i, dataList[dataList.size - 1].number).status
+                                                OneStoryRef["numberDiff"] = calculateNumDiff(
+                                                    i,
+                                                    dataList[dataList.size - 1].number
+                                                ).num
+                                                OneStoryRef["status"] = calculateNumDiff(
+                                                    i,
+                                                    dataList[dataList.size - 1].number
+                                                ).status
                                             } else {
                                                 OneStoryRef["numberDiff"] = 0
                                                 OneStoryRef["status"] = "NEW"
@@ -777,7 +779,12 @@ object Mining {
                                         OneStoryRef["type"] = "OneStore"
                                         OneStoryRef["data"] = dataList
 
-                                        miningValue(OneStoryRef, (i + ((page - 1) * productList.size)), "OneStore", cate)
+                                        miningValue(
+                                            OneStoryRef,
+                                            (i + ((page - 1) * productList.size)),
+                                            "OneStore",
+                                            cate
+                                        )
 
                                     }
 
@@ -813,7 +820,7 @@ object Mining {
 
                         val list = it
 
-                        BestRef.setBestRefWeekList("Kakao Stage", cate)
+                        BestRef.setBestRefWeekList("Kakao_Stage", cate)
                             .addListenerForSingleValueEvent(object :
                                 ValueEventListener {
                                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -832,9 +839,7 @@ object Mining {
                                                         group.info4,
                                                         group.info5,
                                                         group.number,
-                                                        group.numberDiff,
                                                         group.date,
-                                                        group.trophyCount,
                                                     )
                                                 )
                                             }
@@ -847,8 +852,10 @@ object Mining {
                                         KakaoRef["trophyCount"] = dataList.size
 
                                         if (dataList.size != 0) {
-                                            val today = DBDate.getToday(dataList[dataList.size - 1].date)
-                                            val yesterday = DBDate.getYesterday(dataList[dataList.size - 1].date)
+                                            val today =
+                                                DBDate.getToday(dataList[dataList.size - 1].date)
+                                            val yesterday =
+                                                DBDate.getYesterday(dataList[dataList.size - 1].date)
 
                                             if ((today - yesterday) == 1) {
                                                 KakaoRef["numberDiff"] = calculateNumDiff(
@@ -879,10 +886,10 @@ object Mining {
                                         KakaoRef["info5"] = ""
                                         KakaoRef["number"] = i
                                         KakaoRef["date"] = DBDate.DateMMDD()
-                                        KakaoRef["type"] = "Kakao Stage"
+                                        KakaoRef["type"] = "Kakao_Stage"
                                         KakaoRef["data"] = dataList
 
-                                        miningValue(KakaoRef, i, "Kakao Stage", cate)
+                                        miningValue(KakaoRef, i, "Kakao_Stage", cate)
                                     }
                                 }
 
@@ -932,9 +939,7 @@ object Mining {
                                                     group.info4,
                                                     group.info5,
                                                     group.number,
-                                                    group.numberDiff,
                                                     group.date,
-                                                    group.trophyCount,
                                                 )
                                             )
                                         }
@@ -947,8 +952,10 @@ object Mining {
                                     KakaoRef["trophyCount"] = dataList.size
 
                                     if (dataList.size != 0) {
-                                        val today = DBDate.getToday(dataList[dataList.size - 1].date)
-                                        val yesterday = DBDate.getYesterday(dataList[dataList.size - 1].date)
+                                        val today =
+                                            DBDate.getToday(dataList[dataList.size - 1].date)
+                                        val yesterday =
+                                            DBDate.getYesterday(dataList[dataList.size - 1].date)
 
                                         if ((today - yesterday) == 1) {
                                             KakaoRef["numberDiff"] = calculateNumDiff(
@@ -982,7 +989,12 @@ object Mining {
                                     KakaoRef["date"] = DBDate.DateMMDD()
                                     KakaoRef["type"] = "Kakao"
                                     KakaoRef["data"] = dataList
-                                    miningValue(KakaoRef, (i + ((page - 1) * list.size)), "Kakao", cate)
+                                    miningValue(
+                                        KakaoRef,
+                                        (i + ((page - 1) * list.size)),
+                                        "Kakao",
+                                        cate
+                                    )
                                 }
                             }
 
@@ -1011,88 +1023,32 @@ object Mining {
 
                     val books = data.bookLists
 
-                    BestRef.setBestRefWeekList("Joara", cate)
-                        .addListenerForSingleValueEvent(object :
-                            ValueEventListener {
-                            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (i in books!!.indices) {
 
-                                for (i in books!!.indices) {
+                        JoaraRef["trophyCount"] = 0
+                        JoaraRef["writerName"] = books[i].writerName
+                        JoaraRef["subject"] = books[i].subject
+                        JoaraRef["bookImg"] = books[i].bookImg
+                        JoaraRef["bookCode"] = books[i].bookCode
+                        JoaraRef["info1"] = "줄거리 : " + books[i].intro
+                        JoaraRef["info2"] = "총 " + books[i].cntChapter + " 화"
+                        JoaraRef["info3"] = "조회 수 : " + books[i].cntPageRead
+                        JoaraRef["info4"] = "선호작 수 : " + books[i].cntFavorite
+                        JoaraRef["info5"] = "추천 수 : " + books[i].cntRecom
+                        JoaraRef["number"] = i
+                        JoaraRef["date"] = DBDate.DateMMDD()
+                        JoaraRef["type"] = "Joara"
+                        JoaraRef["data"] = ""
+                        JoaraRef["numberDiff"] = 0
+                        JoaraRef["status"] = "NEW"
 
-                                    val dataList = ArrayList<BookListDataBestAnalyze>()
-
-                                    for (weekItem in dataSnapshot.children) {
-                                        val group: BookListDataBestToday? =
-                                            weekItem.getValue(BookListDataBestToday::class.java)
-                                        if (group!!.title == books[i].subject) {
-                                            dataList.add(
-                                                BookListDataBestAnalyze(
-                                                    group.info3,
-                                                    group.info4,
-                                                    group.info5,
-                                                    group.number,
-                                                    group.numberDiff,
-                                                    group.date,
-                                                    group.trophyCount,
-                                                )
-                                            )
-                                        }
-                                    }
-
-                                    val cmpAsc: Comparator<BookListDataBestAnalyze> =
-                                        Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
-                                    Collections.sort(dataList, cmpAsc)
-
-                                    JoaraRef["trophyCount"] = dataList.size
-
-                                    if (dataList.size != 0) {
-                                        val today = DBDate.getToday(dataList[dataList.size - 1].date)
-                                        val yesterday = DBDate.getYesterday(dataList[dataList.size - 1].date)
-
-                                        if ((today - yesterday) == 1) {
-                                            JoaraRef["numberDiff"] = calculateNumDiff(
-                                                i,
-                                                dataList[dataList.size - 1].number
-                                            ).num
-                                            JoaraRef["status"] = calculateNumDiff(
-                                                i,
-                                                dataList[dataList.size - 1].number
-                                            ).status
-                                        } else {
-                                            JoaraRef["numberDiff"] = 0
-                                            JoaraRef["status"] = "NEW"
-                                        }
-                                    } else {
-                                        JoaraRef["numberDiff"] = 0
-                                        JoaraRef["status"] = "NEW"
-                                    }
-
-                                    JoaraRef["writerName"] = books[i].writerName
-                                    JoaraRef["subject"] = books[i].subject
-                                    JoaraRef["bookImg"] = books[i].bookImg
-                                    JoaraRef["bookCode"] = books[i].bookCode
-                                    JoaraRef["info1"] = "줄거리 : " + books[i].intro
-                                    JoaraRef["info2"] = "총 " + books[i].cntChapter + " 화"
-                                    JoaraRef["info3"] = "조회 수 : " + books[i].cntPageRead
-                                    JoaraRef["info4"] = "선호작 수 : " + books[i].cntFavorite
-                                    JoaraRef["info5"] = "추천 수 : " + books[i].cntRecom
-                                    JoaraRef["number"] = i
-                                    JoaraRef["date"] = DBDate.DateMMDD()
-                                    JoaraRef["type"] = "Joara"
-                                    JoaraRef["data"] = dataList
-
-                                    miningValue(
-                                        JoaraRef,
-                                        (i + ((page - 1) * books.size)),
-                                        "Joara",
-                                        cate
-                                    )
-                                }
-                            }
-
-                            override fun onCancelled(databaseError: DatabaseError) {}
-                        })
-
-
+                        miningValue(
+                            JoaraRef,
+                            (i + ((page - 1) * books.size)),
+                            "Joara",
+                            cate
+                        )
+                    }
                 }
             })
     }
@@ -1116,86 +1072,32 @@ object Mining {
 
                     val books = data.bookLists
 
-                    BestRef.setBestRefWeekList("Joara Premium", cate)
-                        .addListenerForSingleValueEvent(object :
-                            ValueEventListener {
-                            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (i in books!!.indices) {
 
-                                for (i in books!!.indices) {
+                        JoaraRef["trophyCount"] = 0
+                        JoaraRef["numberDiff"] = 0
+                        JoaraRef["status"] = "NEW"
+                        JoaraRef["writerName"] = books[i].writerName
+                        JoaraRef["subject"] = books[i].subject
+                        JoaraRef["bookImg"] = books[i].bookImg
+                        JoaraRef["bookCode"] = books[i].bookCode
+                        JoaraRef["info1"] = "줄거리 : " + books[i].intro
+                        JoaraRef["info2"] = "총 " + books[i].cntChapter + " 화"
+                        JoaraRef["info3"] = "조회 수 : " + books[i].cntPageRead
+                        JoaraRef["info4"] = "선호작 수 : " + books[i].cntFavorite
+                        JoaraRef["info5"] = "추천 수 : " + books[i].cntRecom
+                        JoaraRef["number"] = i
+                        JoaraRef["date"] = DBDate.DateMMDD()
+                        JoaraRef["type"] = "Joara_Nobless"
+                        JoaraRef["data"] = ""
 
-                                    val dataList = ArrayList<BookListDataBestAnalyze>()
-
-                                    for (weekItem in dataSnapshot.children) {
-                                        val group: BookListDataBestToday? =
-                                            weekItem.getValue(BookListDataBestToday::class.java)
-                                        if (group!!.title == books[i].subject) {
-                                            dataList.add(
-                                                BookListDataBestAnalyze(
-                                                    group.info3,
-                                                    group.info4,
-                                                    group.info5,
-                                                    group.number,
-                                                    group.numberDiff,
-                                                    group.date,
-                                                    group.trophyCount,
-                                                )
-                                            )
-                                        }
-                                    }
-
-                                    val cmpAsc: Comparator<BookListDataBestAnalyze> =
-                                        Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
-                                    Collections.sort(dataList, cmpAsc)
-
-                                    if (dataList.size != 0) {
-                                        val today = DBDate.getToday(dataList[dataList.size - 1].date)
-                                        val yesterday = DBDate.getYesterday(dataList[dataList.size - 1].date)
-
-                                        if ((today - yesterday) == 1) {
-                                            JoaraRef["numberDiff"] = calculateNumDiff(
-                                                i,
-                                                dataList[dataList.size - 1].number
-                                            ).num
-                                            JoaraRef["status"] = calculateNumDiff(
-                                                i,
-                                                dataList[dataList.size - 1].number
-                                            ).status
-                                        } else {
-                                            JoaraRef["numberDiff"] = 0
-                                            JoaraRef["status"] = "NEW"
-                                        }
-                                    } else {
-                                        JoaraRef["numberDiff"] = 0
-                                        JoaraRef["status"] = "NEW"
-                                    }
-
-                                    JoaraRef["trophyCount"] = dataList.size
-
-                                    JoaraRef["writerName"] = books[i].writerName
-                                    JoaraRef["subject"] = books[i].subject
-                                    JoaraRef["bookImg"] = books[i].bookImg
-                                    JoaraRef["bookCode"] = books[i].bookCode
-                                    JoaraRef["info1"] = "줄거리 : " + books[i].intro
-                                    JoaraRef["info2"] = "총 " + books[i].cntChapter + " 화"
-                                    JoaraRef["info3"] = "조회 수 : " + books[i].cntPageRead
-                                    JoaraRef["info4"] = "선호작 수 : " + books[i].cntFavorite
-                                    JoaraRef["info5"] = "추천 수 : " + books[i].cntRecom
-                                    JoaraRef["number"] = i
-                                    JoaraRef["date"] = DBDate.DateMMDD()
-                                    JoaraRef["type"] = "Joara Premium"
-                                    JoaraRef["data"] = dataList
-
-                                    miningValue(
-                                        JoaraRef,
-                                        (i + ((page - 1) * books.size)),
-                                        "Joara Premium",
-                                        cate
-                                    )
-                                }
-                            }
-
-                            override fun onCancelled(databaseError: DatabaseError) {}
-                        })
+                        miningValue(
+                            JoaraRef,
+                            (i + ((page - 1) * books.size)),
+                            "Joara_Premium",
+                            cate
+                        )
+                    }
                 }
             })
 
@@ -1220,87 +1122,32 @@ object Mining {
 
                     val books = data.bookLists
 
-                    BestRef.setBestRefWeekList("Joara Nobless", cate)
-                        .addListenerForSingleValueEvent(object :
-                            ValueEventListener {
-                            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (i in books!!.indices) {
 
-                                for (i in books!!.indices) {
+                        JoaraRef["trophyCount"] = 0
+                        JoaraRef["numberDiff"] = 0
+                        JoaraRef["status"] = "NEW"
+                        JoaraRef["writerName"] = books[i].writerName
+                        JoaraRef["subject"] = books[i].subject
+                        JoaraRef["bookImg"] = books[i].bookImg
+                        JoaraRef["bookCode"] = books[i].bookCode
+                        JoaraRef["info1"] = "줄거리 : " + books[i].intro
+                        JoaraRef["info2"] = "총 " + books[i].cntChapter + " 화"
+                        JoaraRef["info3"] = "조회 수 : " + books[i].cntPageRead
+                        JoaraRef["info4"] = "선호작 수 : " + books[i].cntFavorite
+                        JoaraRef["info5"] = "추천 수 : " + books[i].cntRecom
+                        JoaraRef["number"] = i
+                        JoaraRef["date"] = DBDate.DateMMDD()
+                        JoaraRef["type"] = "Joara_Nobless"
+                        JoaraRef["data"] = ""
 
-                                    val dataList = ArrayList<BookListDataBestAnalyze>()
-
-                                    for (weekItem in dataSnapshot.children) {
-                                        val group: BookListDataBestToday? =
-                                            weekItem.getValue(BookListDataBestToday::class.java)
-                                        if (group!!.title == books[i].subject) {
-                                            dataList.add(
-                                                BookListDataBestAnalyze(
-                                                    group.info3,
-                                                    group.info4,
-                                                    group.info5,
-                                                    group.number,
-                                                    group.numberDiff,
-                                                    group.date,
-                                                    group.trophyCount,
-                                                )
-                                            )
-                                        }
-                                    }
-
-                                    val cmpAsc: Comparator<BookListDataBestAnalyze> =
-                                        Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
-                                    Collections.sort(dataList, cmpAsc)
-
-                                    JoaraRef["trophyCount"] = dataList.size
-
-                                    if (dataList.size != 0) {
-                                        val today = DBDate.getToday(dataList[dataList.size - 1].date)
-                                        val yesterday = DBDate.getYesterday(dataList[dataList.size - 1].date)
-
-                                        if ((today - yesterday) == 1) {
-                                            JoaraRef["numberDiff"] = calculateNumDiff(
-                                                i,
-                                                dataList[dataList.size - 1].number
-                                            ).num
-                                            JoaraRef["status"] = calculateNumDiff(
-                                                i,
-                                                dataList[dataList.size - 1].number
-                                            ).status
-                                        } else {
-                                            JoaraRef["numberDiff"] = 0
-                                            JoaraRef["status"] = "NEW"
-                                        }
-                                    } else {
-                                        JoaraRef["numberDiff"] = 0
-                                        JoaraRef["status"] = "NEW"
-                                    }
-
-                                    JoaraRef["writerName"] = books[i].writerName
-                                    JoaraRef["subject"] = books[i].subject
-                                    JoaraRef["bookImg"] = books[i].bookImg
-                                    JoaraRef["bookCode"] = books[i].bookCode
-                                    JoaraRef["info1"] = "줄거리 : " + books[i].intro
-                                    JoaraRef["info2"] = "총 " + books[i].cntChapter + " 화"
-                                    JoaraRef["info3"] = "조회 수 : " + books[i].cntPageRead
-                                    JoaraRef["info4"] = "선호작 수 : " + books[i].cntFavorite
-                                    JoaraRef["info5"] = "추천 수 : " + books[i].cntRecom
-                                    JoaraRef["number"] = i
-                                    JoaraRef["date"] = DBDate.DateMMDD()
-                                    JoaraRef["type"] = "Joara Nobless"
-                                    JoaraRef["data"] = dataList
-
-                                    miningValue(
-                                        JoaraRef,
-                                        (i + ((page - 1) * books.size)),
-                                        "Joara Nobless",
-                                        cate
-                                    )
-                                }
-                            }
-
-                            override fun onCancelled(databaseError: DatabaseError) {}
-                        })
-
+                        miningValue(
+                            JoaraRef,
+                            (i + ((page - 1) * books.size)),
+                            "Joara_Nobless",
+                            cate
+                        )
+                    }
 
                 }
             })
@@ -1345,9 +1192,7 @@ object Mining {
                                                             group.info4,
                                                             group.info5,
                                                             group.number,
-                                                            group.numberDiff,
                                                             group.date,
-                                                            group.trophyCount,
                                                         )
                                                     )
                                                 }
@@ -1360,8 +1205,10 @@ object Mining {
                                             MoonpiaRef["trophyCount"] = dataList.size
 
                                             if (dataList.size != 0) {
-                                                val today = DBDate.getToday(dataList[dataList.size - 1].date)
-                                                val yesterday = DBDate.getYesterday(dataList[dataList.size - 1].date)
+                                                val today =
+                                                    DBDate.getToday(dataList[dataList.size - 1].date)
+                                                val yesterday =
+                                                    DBDate.getYesterday(dataList[dataList.size - 1].date)
 
                                                 if ((today - yesterday) == 1) {
                                                     MoonpiaRef["numberDiff"] = calculateNumDiff(
@@ -1396,7 +1243,12 @@ object Mining {
                                             MoonpiaRef["type"] = "Munpia"
                                             MoonpiaRef["data"] = dataList
 
-                                            miningValue(MoonpiaRef, (i + ((page - 1) * it.size)), "Munpia", "")
+                                            miningValue(
+                                                MoonpiaRef,
+                                                (i + ((page - 1) * it.size)),
+                                                "Munpia",
+                                                ""
+                                            )
                                         }
                                     }
                                 }
@@ -1449,9 +1301,7 @@ object Mining {
                                                         group.info4,
                                                         group.info5,
                                                         group.number,
-                                                        group.numberDiff,
                                                         group.date,
-                                                        group.trophyCount,
                                                     )
                                                 )
                                             }
@@ -1464,8 +1314,10 @@ object Mining {
                                         ToksodaRef["trophyCount"] = dataList.size
 
                                         if (dataList.size != 0) {
-                                            val today = DBDate.getToday(dataList[dataList.size - 1].date)
-                                            val yesterday = DBDate.getYesterday(dataList[dataList.size - 1].date)
+                                            val today =
+                                                DBDate.getToday(dataList[dataList.size - 1].date)
+                                            val yesterday =
+                                                DBDate.getYesterday(dataList[dataList.size - 1].date)
 
                                             if ((today - yesterday) == 1) {
                                                 ToksodaRef["numberDiff"] = calculateNumDiff(
@@ -1515,56 +1367,32 @@ object Mining {
             })
     }
 
-    fun RoomDB(context: Context, platform: String, cate: String) {
-        BestRef.setBestRef(platform, cate).child("week-list")
+    fun SetBookCodeData(platform: String, genre: String, bookCode: String) {
+
+        val result: ArrayList<BookListDataBestAnalyze>? = null
+        var num = 0
+
+        BestRef.getBookCode(platform, genre).child(bookCode)
             .addListenerForSingleValueEvent(object :
                 ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val bestDao: DataBaseBestDay
 
-                    bestDao = if (platform == "Munpia") {
-                        Room.databaseBuilder(
-                            context,
-                            DataBaseBestDay::class.java,
-                            "$platform"
-                        ).allowMainThreadQueries().build()
+//                    java.lang.ClassCastException: java.util.HashMap cannot be cast to java.util.ArrayList
+//                    var hi = dataSnapshot.value as ArrayList<BookListDataBestAnalyze>
+//
+//                  Log.d("####", hi[0].toString())
 
-                    } else {
-                        Room.databaseBuilder(
-                            context,
-                            DataBaseBestDay::class.java,
-                            "$platform $cate"
-                        )
-                            .allowMainThreadQueries().build()
-                    }
-
-                    for (postSnapshot in dataSnapshot.children) {
-                        val group: BookListDataBest? =
-                            postSnapshot.getValue(BookListDataBest::class.java)
-                        bestDao.bestDao().insert(
-                            BookListDataBestToday(
-                                group!!.writer,
-                                group.title,
-                                group.bookImg,
-                                group.bookCode,
-                                group.info1,
-                                group.info2,
-                                group.info3,
-                                group.info4,
-                                group.info5,
-                                group.number,
-                                group.numberDiff,
-                                group.date,
-                                group.type,
-                                group.status,
-                                group.trophyCount,
-                            )
-                        )
-                    }
+//                    for (keyItem in dataSnapshot.children) {
+//                        val group: BookListDataBestAnalyze? = keyItem.getValue(BookListDataBestAnalyze::class.java)
+//                    }
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {}
             })
+    }
+
+    fun RoomDB(context: Context, platform: String, cate: String) {
+
     }
 
 

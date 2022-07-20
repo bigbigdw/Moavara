@@ -50,13 +50,13 @@ class FragmentSearchBookcode(private var platform: String) : Fragment() {
                 tviewSearch.text = "https://www.joara.com/book/1452405"
             } else if (platform == "Kakao") {
                 tviewSearch.text = "https://page.kakao.com/home?seriesId=57530778"
-            } else if (platform == "Kakao Stage") {
+            } else if (platform == "Kakao_Stage") {
                 tviewSearch.text = "https://page.kakao.com/home?seriesId=49902709"
             }  else if (platform == "Naver") {
                 tviewSearch.text = "https://novel.naver.com/webnovel/list?novelId=252934"
-            }  else if (platform == "Naver Challenge") {
+            }  else if (platform == "Naver_Challenge") {
                 tviewSearch.text = "https://novel.naver.com/challenge/list?novelId=75595"
-            }  else if (platform == "Naver Today") {
+            }  else if (platform == "Naver_Today") {
                 tviewSearch.text = "https://novel.naver.com/best/list?novelId=268129"
             }
 
@@ -65,9 +65,9 @@ class FragmentSearchBookcode(private var platform: String) : Fragment() {
                     setLayoutJoara()
                 } else if (platform == "Kakao") {
                     setLayoutKaKao()
-                }  else if (platform == "Kakao Stage") {
+                }  else if (platform == "Kakao_Stage") {
                     setLayoutKaKaoStage()
-                }  else if (platform == "Naver Today" || platform == "Naver Challenge" || platform == "Naver"){
+                }  else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver"){
                     setLayoutNaverToday()
                 }
             }
@@ -179,9 +179,9 @@ class FragmentSearchBookcode(private var platform: String) : Fragment() {
 
             if(platform == "Naver"){
                 doc = Jsoup.connect("https://novel.naver.com/webnovel/list?novelId=${bookCode}").post()
-            } else if(platform == "Naver Today") {
+            } else if(platform == "Naver_Today") {
                 doc = Jsoup.connect("https://novel.naver.com/best/list?novelId=${bookCode}").post()
-            } else if(platform == "Naver Challenge") {
+            } else if(platform == "Naver_Challenge") {
                 doc = Jsoup.connect("https://novel.naver.com/challenge/list?novelId=${bookCode}").post()
             }
 

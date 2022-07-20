@@ -88,8 +88,8 @@ class FragmentSearch : Fragment() {
                 Log.d("#######", test.toString())
                 Log.d("####", "6")
                 searchNaver(text, "Naver")
-                searchNaver(text, "Naver Challenge")
-                searchNaver(text, "Naver Today")
+                searchNaver(text, "Naver_Challenge")
+                searchNaver(text, "Naver_Today")
             }
         }
 
@@ -263,10 +263,10 @@ class FragmentSearch : Fragment() {
             if(platform == "Naver"){
                 doc = Jsoup.connect("https://novel.naver.com/search?keyword=${text}&section=webnovel&target=novel").post()
                 title = "네이버 시리즈"
-            } else if(platform == "Naver Today") {
+            } else if(platform == "Naver_Today") {
                 doc = Jsoup.connect("https://novel.naver.com/search?keyword=${text}&section=best&target=novel").post()
                 title = "네이버 베스트"
-            } else if(platform == "Naver Challenge") {
+            } else if(platform == "Naver_Challenge") {
                 doc = Jsoup.connect("https://novel.naver.com/search?keyword=${text}&section=challenge&target=novel").post()
                 title = "네이버 챌린지"
             }

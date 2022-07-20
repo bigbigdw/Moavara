@@ -11,8 +11,8 @@ import com.example.moavara.Search.BookListDataBestWeekend
 import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Genre
 import com.example.moavara.databinding.FragmentBestMonthBinding
-import com.google.firebase.database.*
-import java.util.*
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 
 class FragmentBestTabMonth(private val tabType: String) : Fragment() {
@@ -38,8 +38,8 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment() {
         adapterMonthDay = AdapterBestToday(ItemMonthDay)
 
         val mRootRef = FirebaseDatabase.getInstance().reference
-        val month = mRootRef.child("best").child(tabType).child(cate).child("month").child(DBDate.Month())
-        val monthList = mRootRef.child("best").child(tabType).child(cate).child("month").child(DBDate.Month())
+        val month = mRootRef.child("Best").child(tabType).child(cate).child("month").child(DBDate.Month())
+        val monthList = mRootRef.child("Best").child(tabType).child(cate).child("month").child(DBDate.Month())
 
         itemMonth.clear()
         getBestMonth(month)
@@ -87,7 +87,6 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment() {
                                         group.info4,
                                         group.info5,
                                         group.number,
-                                        group.numberDiff,
                                         group.date,
                                         group.status,
                                     )
@@ -106,13 +105,13 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment() {
             override fun onItemClick(v: View?, position: Int) {
                 val item: BookListDataBest? = adapterMonthDay!!.getItem(position)
 
-                val mBottomDialogBest = BottomDialogBest(
-                    requireContext(),
-                    item!!,
-                    tabType,
-                    position
-                )
-                fragmentManager?.let { mBottomDialogBest.show(it, null) }
+//                val mBottomDialogBest = BottomDialogBest(
+//                    requireContext(),
+//                    item!!,
+//                    tabType,
+//                    position
+//                )
+//                fragmentManager?.let { mBottomDialogBest.show(it, null) }
 
             }
         })

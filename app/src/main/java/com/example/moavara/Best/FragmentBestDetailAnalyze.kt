@@ -2,19 +2,15 @@ package com.example.moavara.Best
 
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.DataBase.BookListDataBestAnalyze
-import com.example.moavara.R
 import com.example.moavara.Search.BestChart
-import com.example.moavara.Util.*
+import com.example.moavara.Util.BestRef
 import com.example.moavara.databinding.FragmentBestDetailAnalyzeBinding
 import com.example.moavara.databinding.ItemBestDetailAnalysisBinding
 import com.github.mikephil.charting.components.Legend
@@ -22,14 +18,8 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
-import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
-import java.util.*
-import kotlin.collections.ArrayList
 
 class FragmentBestDetailAnalyze(
     private val platfrom: String,
@@ -56,7 +46,7 @@ class FragmentBestDetailAnalyze(
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rViewChart.adapter = adapterChart
 
-        if (platfrom == "Joara" || platfrom == "Joara Nobless" || platfrom == "Joara Premium") {
+        if (platfrom == "Joara" || platfrom == "Joara_Nobless" || platfrom == "Joara_Premium") {
             binding.rViewChartJoara.visibility = View.VISIBLE
             getAnalyzeJoara()
         }
@@ -111,7 +101,7 @@ class FragmentBestDetailAnalyze(
             for(item in item){
                 dateList.add(item.date)
                 //BarEntry로 값 추가 후 리스트에 담는다
-                if (platfrom == "Kakao Stage" || platfrom == "Ridi" || platfrom == "Toksoda") {
+                if (platfrom == "Kakao_Stage" || platfrom == "Ridi" || platfrom == "Toksoda") {
                     entryList.add(BarEntry(num.toFloat(), convertData(1, item.info1)))
                     entryList2.add(BarEntry(num.toFloat(), convertData(2, item.info2)))
                 } else {
@@ -123,12 +113,12 @@ class FragmentBestDetailAnalyze(
             }
 
             when (platfrom) {
-                "Joara", "Joara Nobless", "Joara Premium" -> {
+                "Joara", "Joara_Nobless", "Joara_Premium" -> {
                     items.add(BestChart(dateList, entryList, "조회 수", "#ff7b22"))
                     items.add(BestChart(dateList, entryList2, "선호작 수", "#4971EF"))
                     items.add(BestChart(dateList, entryList3, "추천 수", "#00d180"))
                 }
-                "Naver Today", "Naver Challenge", "Naver" -> {
+                "Naver_Today", "Naver_Challenge", "Naver" -> {
                     items.add(BestChart(dateList, entryList, "조회 수", "#ff7b22"))
                     items.add(BestChart(dateList, entryList2, "관심 수", "#4971EF"))
                     items.add(BestChart(dateList, entryList3, "별점", "#00d180"))
@@ -138,7 +128,7 @@ class FragmentBestDetailAnalyze(
                     items.add(BestChart(dateList, entryList2, "추천 수", "#4971EF"))
                     items.add(BestChart(dateList, entryList3, "평점", "#00d180"))
                 }
-                "Kakao Stage" -> {
+                "Kakao_Stage" -> {
                     items.add(BestChart(dateList, entryList, "조회 수", "#ff7b22"))
                     items.add(BestChart(dateList, entryList2, "선호작 수", "#4971EF"))
                 }
@@ -166,7 +156,7 @@ class FragmentBestDetailAnalyze(
     }
 
     fun convertData(num : Int, data : String) : Float{
-        if(platfrom == "Joara" || platfrom == "Joara Nobless" || platfrom == "Joara Premium"){
+        if(platfrom == "Joara" || platfrom == "Joara_Nobless" || platfrom == "Joara_Premium"){
             if(num == 1){
                 return data.replace("조회 수 : ", "").toFloat()
             } else if(num == 2){
@@ -174,7 +164,7 @@ class FragmentBestDetailAnalyze(
             } else {
                 return data.replace("추천 수 : ", "").toFloat()
             }
-        } else if (platfrom == "Naver Today" || platfrom == "Naver Challenge" || platfrom == "Naver") {
+        } else if (platfrom == "Naver_Today" || platfrom == "Naver_Challenge" || platfrom == "Naver") {
             if(num == 1){
                 return BestRef.StrToInt(data.replace("조회 ", "")).toFloat()
             } else if(num == 2){
@@ -190,7 +180,7 @@ class FragmentBestDetailAnalyze(
             } else {
                 return data.replace("평점 : ", "").toFloat()
             }
-        } else if (platfrom == "Kakao Stage") {
+        } else if (platfrom == "Kakao_Stage") {
             if(num == 1){
                 return BestRef.StrToInt(data.replace("조회 수 : ", "")).toFloat()
             } else if(num == 2){

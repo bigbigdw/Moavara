@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moavara.DataBase.BookListDataBest
-import com.example.moavara.R
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.Genre
 import com.example.moavara.databinding.FragmentBestTabTodayBinding
@@ -36,7 +35,6 @@ class FragmentBestTabToday(private val tabType: String) :
         val view = binding.root
 
         genre = Genre.getGenre(requireContext()).toString()
-        root = inflater.inflate(R.layout.fragment_best_tab_today, container, false)
 
         adapterToday = AdapterBestToday(items)
         getBookListToday()
@@ -49,7 +47,7 @@ class FragmentBestTabToday(private val tabType: String) :
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rviewBest.adapter = adapterToday
 
-        BestRef.getBestRefToday(tabType, genre).addListenerForSingleValueEvent(object :
+        BestRef.getBestDataToday(tabType, genre).addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (postSnapshot in dataSnapshot.children) {
@@ -68,18 +66,16 @@ class FragmentBestTabToday(private val tabType: String) :
                             group.info4,
                             group.info5,
                             group.number,
-                            group.numberDiff,
                             group.date,
                             group.type,
                             group.status,
-                            group.trophyCount,
                             group.data,
                             group.memo
                         )
                     )
 
                 }
-                adapterToday!!.notifyDataSetChanged()
+                adapterToday?.notifyDataSetChanged()
             }
             override fun onCancelled(databaseError: DatabaseError) {}
         })
@@ -88,14 +84,14 @@ class FragmentBestTabToday(private val tabType: String) :
             override fun onItemClick(v: View?, position: Int) {
                 val item: BookListDataBest? = adapterToday!!.getItem(position)
 
-                val mBottomDialogBest = BottomDialogBest(
-                    requireContext(),
-                    item!!,
-                    tabType,
-                    position
-                )
-
-                fragmentManager?.let { mBottomDialogBest.show(it, null) }
+//                val mBottomDialogBest = BottomDialogBest(
+//                    requireContext(),
+//                    item!!,
+//                    tabType,
+//                    position
+//                )
+//
+//                fragmentManager?.let { mBottomDialogBest.show(it, null) }
             }
         })
     }

@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moavara.Best.BottomDialogBest
 import com.example.moavara.DataBase.BookListDataBest
+import com.example.moavara.DataBase.BookListDataBestToday
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.Search.UserPickBook
 import com.example.moavara.Util.Genre
@@ -74,11 +75,9 @@ class FragmentPickTabNovel : Fragment() {
                             group.info4,
                             group.info5,
                             group.number,
-                            group.numberDiff,
                             group.date,
                             group.type,
                             group.status,
-                            group.trophyCount,
                             group.data,
                             group.memo
                         )
@@ -91,9 +90,9 @@ class FragmentPickTabNovel : Fragment() {
 
         adapter.setOnItemClickListener(object : AdapterPickNovel.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int, type : String) {
-                val item: BookListDataBest = adapter.getItem(position)
+                val item: BookListDataBestToday = adapter.getItem(position)
 
-                val data = BookListDataBest(
+                val data = BookListDataBestToday(
                     item.writer,
                     item.title,
                     item.bookImg,
@@ -109,7 +108,6 @@ class FragmentPickTabNovel : Fragment() {
                     item.type,
                     item.status,
                     item.trophyCount,
-                    item.data,
                     adapter.getMemoEdit()
                 )
 
@@ -129,7 +127,7 @@ class FragmentPickTabNovel : Fragment() {
                     Toast.makeText(requireContext(), "수정되었습니다", Toast.LENGTH_SHORT).show()
                 }  else if(type == "Delete"){
 //                    dbPickEvent.bestDao().deleteItem(item.bookCode)
-                    items.remove(item)
+//                    items.remove(item)
                     adapter.notifyItemRemoved(position)
 
                     Toast.makeText(requireContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show()

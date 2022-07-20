@@ -46,15 +46,15 @@ class AdapterBestToday(items: List<BookListDataBest?>?) :
 
                 when {
                     item.status == "UP" -> {
-                        tviewNum.text =  "+ ${item.numberDiff.times(-1)} (${item.trophyCount})"
+//                        tviewNum.text =  "+ ${item.numberDiff.times(-1)} (${item.trophyCount})"
                         tviewNum.setTextColor(Color.parseColor("#02A247"));
                     }
                     item.status == "DOWN" -> {
-                        tviewNum.text = "- ${item.numberDiff} (${item.trophyCount})"
+//                        tviewNum.text = "- ${item.numberDiff} (${item.trophyCount})"
                         tviewNum.setTextColor(Color.parseColor("#FF2C00"));
                     }
                     item.status == "-" -> {
-                        tviewNum.text =  "(${item.trophyCount})"
+//                        tviewNum.text =  "(${item.trophyCount})"
                         tviewNum.setTextColor(Color.parseColor("#eeeeee"));
                     }
                     else -> {

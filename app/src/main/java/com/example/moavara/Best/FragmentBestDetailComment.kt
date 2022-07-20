@@ -16,8 +16,6 @@ import com.example.moavara.databinding.FragmentBestDetailTabsBinding
 import com.example.moavara.databinding.ItemBestDetailCommentBinding
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import java.util.ArrayList
-import java.util.HashMap
 
 
 class FragmentBestDetailComment(private val platfrom: String, private val bookCode: String) :
@@ -44,11 +42,11 @@ class FragmentBestDetailComment(private val platfrom: String, private val bookCo
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rview.adapter = adapterBestComment
 
-        if (platfrom == "Joara" || platfrom == "Joara Nobless" || platfrom == "Joara Premium") {
+        if (platfrom == "Joara" || platfrom == "Joara_Nobless" || platfrom == "Joara_Premium") {
             getCommentsJoara()
         } else if (platfrom == "Kakao") {
             getCommentsKakao()
-        } else if (platfrom == "Kakao Stage") {
+        } else if (platfrom == "Kakao_Stage") {
             getCommentsKakaoStage()
         } else if (platfrom == "OneStore") {
             getCommentsOneStory()

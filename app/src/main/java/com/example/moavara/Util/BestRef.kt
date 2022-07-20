@@ -17,11 +17,11 @@ object BestRef {
     }
 
     fun setBestRef(platform: String, genre: String): DatabaseReference {
-        return mRootRef.child("best").child(platform).child(genre)
+        return mRootRef.child("Best").child(platform).child(genre)
     }
 
     fun setBestRefMunpia(type: String): DatabaseReference {
-        return mRootRef.child("best").child(type)
+        return mRootRef.child("Best").child(type)
     }
 
     fun typeListTitle(): List<String> {
@@ -45,13 +45,13 @@ object BestRef {
     fun typeList(): List<String> {
         return listOf(
             "Joara",
-            "Joara Nobless",
-            "Joara Premium",
-            "Naver Today",
-            "Naver Challenge",
+            "Joara_Nobless",
+            "Joara_Premium",
+            "Naver_Today",
+            "Naver_Challenge",
             "Naver",
             "Kakao",
-            "Kakao Stage",
+            "Kakao_Stage",
             "Ridi",
             "OneStore",
             "Munpia",
@@ -81,11 +81,11 @@ object BestRef {
         return listOf(
             "Keyword",
             "Joara",
-            "Naver Today",
-            "Naver Challenge",
+            "Naver_Today",
+            "Naver_Challenge",
             "Naver",
             "Kakao",
-            "Kakao Stage",
+            "Kakao_Stage",
             "Ridi",
             "OneStore",
             "Munpia",
@@ -103,85 +103,47 @@ object BestRef {
         }
     }
 
-    fun setBestRefWeekCompared(type: String, num: Int, genre: String): DatabaseReference {
+    fun setBookCode(type: String, genre: String, bookCode : String, num : Int): DatabaseReference {
         if(type == "Munpia"){
-            return setBestRefMunpia(type).child("week-list").child(DBDate.Week() + ((DBDate.DayInt() * 1000) + num).toString())
+            return setBestRefMunpia(type).child("BookCode").child(bookCode).child(DBDate.DateMMDD())
         } else {
-            return setBestRef(type, genre).child("week-list").child(DBDate.Week() + ((DBDate.DayInt() * 1000) + num).toString())
+            return setBestRef(type, genre).child("BookCode").child(bookCode).child(DBDate.DateMMDD())
         }
     }
 
-    fun getBestRefWeekCompared(type: String, num: Int, genre: String): DatabaseReference {
-        if(type == "Munpia"){
-            return setBestRefMunpia(type).child("week-list")
+    fun getBookCode(platform: String, genre: String): DatabaseReference {
+        if(platform == "Munpia"){
+            return setBestRefMunpia(platform).child("BookCode")
         } else {
-            return setBestRef(type, genre).child("week-list")
-        }
-    }
-
-    fun setBookData(type: String, num: Int, genre: String): DatabaseReference {
-        if(type == "Munpia"){
-            return setBestRefMunpia(type).child("today BookData").child(num.toString())
-        } else {
-            return setBestRef(type, genre).child("today BookData").child(num.toString())
-        }
-    }
-
-    fun setBestRefToday(type: String, num: Int, genre: String): DatabaseReference {
-        if(type == "Munpia"){
-            return setBestRefMunpia(type).child("today").child(DBDate.Day()).child(num.toString())
-        } else {
-            return setBestRef(type, genre).child("today").child(DBDate.Day()).child(num.toString())
+            return setBestRef(platform, genre).child("BookCode")
         }
     }
 
     fun getBestRefToday(platform: String, genre: String): DatabaseReference {
         if(platform == "Munpia"){
-            return setBestRefMunpia(platform).child("today").child(DBDate.Day())
+            return setBestRefMunpia(platform).child("today").child(DBDate.DayInt().toString())
         } else {
-            return setBestRef(platform, genre).child("today").child(DBDate.Day())
+            return setBestRef(platform, genre).child("today").child(DBDate.DayInt().toString())
         }
     }
 
-    fun setBestRefWeek(type: String, num: Int, genre: String): DatabaseReference {
-        if(type == "Munpia"){
-            return setBestRefMunpia(type).child("week").child(DBDate.Week()).child(num.toString()).child(DBDate.DayString())
+    fun setBestData(platform: String, num: Int, genre: String): DatabaseReference {
+        if(platform == "Munpia"){
+            return setBestRefMunpia(platform).child("Data").child(DBDate.Month()).child(DBDate.Week()).child(DBDate.DayString()).child(num.toString())
         } else {
-            return setBestRef(type, genre).child("week").child(DBDate.Week()).child(num.toString()).child(DBDate.DayString())
+            return setBestRef(platform, genre).child("Data").child(DBDate.Month()).child(DBDate.Week()).child(DBDate.DayString()).child(num.toString())
         }
     }
 
-    fun setBestRefMonthWeek(type: String, genre: String): DatabaseReference {
-        if(type == "Munpia"){
-            return setBestRefMunpia(type).child("month").child(DBDate.Month()).child(DBDate.Week())
-                .child(DBDate.DayString())
+    fun getBestDataToday(platform: String, genre: String): DatabaseReference {
+        if(platform == "Munpia"){
+            return setBestRefMunpia(platform).child("Data").child(DBDate.Month()).child(DBDate.Week()).child(DBDate.DayString())
         } else {
-            return setBestRef(type, genre).child("month").child(DBDate.Month()).child(DBDate.Week())
-                .child(DBDate.DayString())
+            return setBestRef(platform, genre).child("Data").child(DBDate.Month()).child(DBDate.Week()).child(DBDate.DayString())
         }
     }
 
-    fun setBestRefMonthDay(type: String, num: Int, genre: String): DatabaseReference {
-        if(type == "Munpia"){
-            return setBestRefMunpia(type).child("month").child(DBDate.Month()).child(DBDate.Week())
-                .child(DBDate.DayString()).child("day").child(num.toString())
-        } else {
-            return setBestRef(type, genre).child("month").child(DBDate.Month()).child(DBDate.Week())
-                .child(DBDate.DayString()).child("day").child(num.toString())
-        }
-    }
-
-    fun setBestRefMonth(type: String, genre: String): DatabaseReference {
-        if(type == "Munpia"){
-            return setBestRefMunpia(type).child("month").child(DBDate.Month()).child(DBDate.Week())
-                .child(DBDate.DayString())
-        } else {
-            return setBestRef(type, genre).child("month").child(DBDate.Month()).child(DBDate.Week())
-                .child(DBDate.DayString())
-        }
-    }
-
-    fun setBookListDataBestToday(ref: MutableMap<String?, Any>): BookListDataBest {
+    fun setBookListDataBest(ref: MutableMap<String?, Any>): BookListDataBest {
         return BookListDataBest(
             ref["writerName"] as String,
             ref["subject"] as String,
@@ -193,12 +155,19 @@ object BestRef {
             ref["info4"] as String,
             ref["info5"] as String,
             ref["number"] as Int,
-            ref["numberDiff"] as Int,
             ref["date"] as String,
             ref["type"] as String,
             ref["status"] as String,
-            ref["trophyCount"] as Int,
-            ref["data"] as ArrayList<BookListDataBestAnalyze>,
+        )
+    }
+
+    fun setBookListDataBestAnalyze(ref: MutableMap<String?, Any>): BookListDataBestAnalyze {
+        return BookListDataBestAnalyze(
+            ref["info3"] as String,
+            ref["info4"] as String,
+            ref["info5"] as String,
+            ref["number"] as Int,
+            ref["date"] as String,
         )
     }
 }

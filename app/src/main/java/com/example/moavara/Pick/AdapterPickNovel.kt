@@ -15,7 +15,7 @@ import com.example.moavara.databinding.ItemPickEventBinding
 
 class AdapterPickNovel (items: List<BookListDataBest>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var itemsList: ArrayList<BookListDataBest> = items as ArrayList<BookListDataBest>
+    var itemsList: ArrayList<BookListDataBestToday> = items as ArrayList<BookListDataBestToday>
     var memo = ""
 
     interface OnItemClickListener {
@@ -75,7 +75,7 @@ class AdapterPickNovel (items: List<BookListDataBest>) :
         return if (itemsList == null) 0 else itemsList.size
     }
 
-    fun editItem(items: BookListDataBest, position: Int) {
+    fun editItem(items: BookListDataBestToday, position: Int) {
         itemsList[position] = items
         notifyItemChanged(position)
     }
@@ -148,7 +148,7 @@ class AdapterPickNovel (items: List<BookListDataBest>) :
         }
     }
 
-    fun getItem(position: Int): BookListDataBest {
+    fun getItem(position: Int): BookListDataBestToday {
         return itemsList[position]
     }
 

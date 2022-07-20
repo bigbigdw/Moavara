@@ -10,13 +10,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.BookListDataBestToday
 import com.example.moavara.Retrofit.*
-import com.example.moavara.Util.*
+import com.example.moavara.Util.Param
 import com.example.moavara.databinding.FragmentBestDetailTabsBinding
 import com.example.moavara.databinding.ItemBestDetailOtherBinding
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
-import java.util.*
 
 class FragmentBestDetailBooks(private val platfrom: String, private val bookCode: String) :
     Fragment() {
@@ -42,9 +41,9 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rview.adapter = adapterBestOthers
 
-        if(platfrom == "Joara" || platfrom == "Joara Nobless" || platfrom == "Joara Premium"){
+        if(platfrom == "Joara" || platfrom == "Joara_Nobless" || platfrom == "Joara_Premium"){
             getOthersJoa()
-        }  else if (platfrom == "Naver Today"  || platfrom == "Naver Challenge") {
+        }  else if (platfrom == "Naver_Today"  || platfrom == "Naver_Challenge") {
             getCommentsNaverToday()
         }  else if (platfrom == "Ridi"){
             getCommentsRidi()

@@ -12,8 +12,8 @@ import com.example.moavara.Search.BookListDataBestWeekend
 import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Genre
 import com.example.moavara.databinding.FragmentBestWeekendBinding
-import com.google.firebase.database.*
-import kotlin.collections.ArrayList
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 
 class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
@@ -23,7 +23,7 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
 
     lateinit var root: View
     var cate = ""
-    var week = mRootRef.child("best").child(tabType).child(cate).child("week")
+    var week = mRootRef.child("Best").child(tabType).child(cate).child("week")
 
     private var _binding: FragmentBestWeekendBinding? = null
     private val binding get() = _binding!!
@@ -36,7 +36,7 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
         val view = binding.root
 
         cate = Genre.getGenre(requireContext()).toString()
-        week = FirebaseDatabase.getInstance().reference.child("best").child(tabType).child(cate).child("week").child(DBDate.Week())
+        week = FirebaseDatabase.getInstance().reference.child("Best").child(tabType).child(cate).child("week").child(DBDate.Week())
 
         adapterWeek = AdapterBestWeekend(requireContext(), itemWeek)
         getBestWeekList(week)
@@ -112,14 +112,14 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
     private fun findBook(item: BookListDataBest?) {
         if (item != null) {
             if (adapterWeek!!.getSelectedBook() == item.title) {
-                val mBottomDialogBest = BottomDialogBest(
-                    requireContext(),
-                    item,
-                    tabType,
-                    item.number
-                )
-                fragmentManager?.let { mBottomDialogBest.show(it, null) }
-                adapterWeek!!.setSelectedBook("")
+//                val mBottomDialogBest = BottomDialogBest(
+//                    requireContext(),
+//                    item,
+//                    tabType,
+//                    item.number
+//                )
+//                fragmentManager?.let { mBottomDialogBest.show(it, null) }
+//                adapterWeek!!.setSelectedBook("")
             } else {
                 adapterWeek!!.setSelectedBook(item.title)
             }
