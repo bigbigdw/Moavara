@@ -2,9 +2,12 @@ package com.example.moavara.Main
 
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.DialogLoginAlertBinding
 
 class DialogLogin(
@@ -24,6 +27,22 @@ class DialogLogin(
         window!!.attributes = layoutParams
         binding = DialogLoginAlertBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val body = GradientDrawable().apply {
+            setColor(Color.parseColor("#3E424B"))
+            shape = GradientDrawable.RECTANGLE
+            cornerRadius = 15f.dpToPx()
+        }
+
+        binding.llayoutBodyInner.background = body
+
+        val bgBtnEnable = GradientDrawable().apply {
+            setColor(Color.parseColor("#844DF3"))
+            shape = GradientDrawable.RECTANGLE
+            cornerRadii = floatArrayOf(0f,0f,0f,0f, 50f.dpToPx(), 15f.dpToPx(), 15f.dpToPx(), 15f.dpToPx())
+        }
+
+        binding.btnEnable.background = bgBtnEnable
 
         binding.cbox.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked){

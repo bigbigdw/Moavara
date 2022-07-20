@@ -98,7 +98,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="43dp"
-                android:background="@drawable/selector_genre"
+                android:background="#0D0E10"
                 android:gravity="center"
                 android:orientation="vertical">
 

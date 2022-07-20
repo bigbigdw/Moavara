@@ -2,11 +2,13 @@ package com.example.moavara.Main
 
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
-import android.widget.TextView
+import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.DialogLoginConfirmBinding
 
 class DialogConfirmLogin(
@@ -21,8 +23,6 @@ class DialogConfirmLogin(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-
         //다이얼로그 밖의 화면은 흐리게 만들어줌
         val layoutParams = WindowManager.LayoutParams()
         layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
@@ -30,6 +30,30 @@ class DialogConfirmLogin(
         window!!.attributes = layoutParams
         binding = DialogLoginConfirmBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val body = GradientDrawable().apply {
+            setColor(Color.parseColor("#3E424B"))
+            shape = GradientDrawable.RECTANGLE
+            cornerRadius = 15f.dpToPx()
+        }
+
+        binding.llayoutBodyInner.background = body
+
+        val btnLeftBG = GradientDrawable().apply {
+            setColor(Color.parseColor("#6E7686"))
+            shape = GradientDrawable.RECTANGLE
+            cornerRadii = floatArrayOf(0f, 0f, 0f, 0f, 0f, 0f, 15f.dpToPx(), 15f.dpToPx())
+        }
+
+        binding.btnLeft.background = btnLeftBG
+
+        val btnRightBG = GradientDrawable().apply {
+            setColor(Color.parseColor("#844DF3"))
+            shape = GradientDrawable.RECTANGLE
+            cornerRadii = floatArrayOf(0f, 0f, 0f, 0f, 15f.dpToPx(), 15f.dpToPx(), 0f, 0f)
+        }
+
+        binding.btnRight.background = btnRightBG
 
         binding.tviewBody.text = textBody
 

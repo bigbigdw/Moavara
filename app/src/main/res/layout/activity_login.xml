@@ -7,10 +7,11 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/llayoutUpper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@drawable/selector_genre_upper"
+        android:background="#121212"
         android:gravity="bottom|center_horizontal"
         android:orientation="vertical">
 
@@ -35,7 +36,7 @@
             android:layout_height="56dp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="36dp"
-            android:background="@drawable/selector_main_login_btn"
+            android:background="#844DF3"
             android:gravity="center"
             android:orientation="horizontal"
             android:padding="16dp">
@@ -44,6 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="8dp"
+                android:fontFamily="@font/pretendardvariable"
                 android:text="Google로 로그인"
                 android:textColor="#EDE6FD"
                 android:textSize="16sp" />
@@ -56,6 +58,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
+        android:fontFamily="@font/pretendardvariable"
         android:text="조아라 구글계정만 가입이 가능합니다. \n다른 계정으로 가입 시 임의로 삭제될 수 있습니다."
         android:textAlignment="center"
         android:textColor="#898989"
@@ -78,6 +81,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="23dp"
+                android:fontFamily="@font/pretendardvariable"
                 android:text="© Joara Corp"
                 android:textAlignment="center"
                 android:textColor="#898989"

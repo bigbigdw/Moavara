@@ -63,19 +63,19 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
                             dataSnapshot.child(day.toString()).child(num.toString())
                                 .getValue(BookListDataBest::class.java)
 
-                        if (day == 1) {
+                        if (num == 1) {
                             weekItem.sun = item
-                        } else if (day == 2) {
+                        } else if (num == 2) {
                             weekItem.mon = item
-                        } else if (day == 3) {
+                        } else if (num == 3) {
                             weekItem.tue = item
-                        } else if (day == 4) {
+                        } else if (num == 4) {
                             weekItem.wed = item
-                        } else if (day == 5) {
+                        } else if (num == 5) {
                             weekItem.thur = item
-                        } else if (day == 6) {
+                        } else if (num == 6) {
                             weekItem.fri = item
-                        } else if (day == 7) {
+                        } else if (num == 7) {
                             weekItem.sat = item
                         }
 

@@ -9,9 +9,8 @@ import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.databinding.ItemBooklistBestTodayBinding
 
-class AdapterBestToday(items: List<BookListDataBest?>?) :
+class AdapterBestToday(private var holder: List<BookListDataBest>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var holder: ArrayList<BookListDataBest?>? = items as ArrayList<BookListDataBest?>?
 
     interface OnItemClickListener {
         fun onItemClick(v: View?, position: Int)
@@ -31,42 +30,41 @@ class AdapterBestToday(items: List<BookListDataBest?>?) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is MainBookViewHolder) {
 
-            val item = this.holder!![position]
-
-
+            val item = this.holder[position]
 
             with(holder.binding){
                 Glide.with(holder.itemView.context)
-                    .load(item!!.bookImg)
+                    .load(item.bookImg)
                     .circleCrop()
                     .into(ivewBookImg)
 
                 tviewIndex.text = (position + 1).toString()
                 tviewTitle.text = item.title
-
-                when {
-                    item.status == "UP" -> {
-//                        tviewNum.text =  "+ ${item.numberDiff.times(-1)} (${item.trophyCount})"
+                when (item.status) {
+                    "UP" -> {
+            //                        tviewNum.text =  "+ ${item.numberDiff.times(-1)} (${item.trophyCount})"
                         tviewNum.setTextColor(Color.parseColor("#02A247"));
                     }
-                    item.status == "DOWN" -> {
-//                        tviewNum.text = "- ${item.numberDiff} (${item.trophyCount})"
+                    "DOWN" -> {
+            //                        tviewNum.text = "- ${item.numberDiff} (${item.trophyCount})"
                         tviewNum.setTextColor(Color.parseColor("#FF2C00"));
                     }
-                    item.status == "-" -> {
-//                        tviewNum.text =  "(${item.trophyCount})"
+                    "-" -> {
+            //                        tviewNum.text =  "(${item.trophyCount})"
                         tviewNum.setTextColor(Color.parseColor("#eeeeee"));
                     }
                     else -> {
                         tviewNum.text = "NEW"
                     }
                 }
+
+
             }
         }
     }
 
     override fun getItemCount(): Int {
-        return if (holder == null) 0 else holder!!.size
+        return holder.size
     }
 
     inner class MainBookViewHolder internal constructor(val binding: ItemBooklistBestTodayBinding) :
@@ -86,8 +84,8 @@ class AdapterBestToday(items: List<BookListDataBest?>?) :
 
     }
 
-    fun getItem(position: Int): BookListDataBest? {
-        return holder!![position]
+    fun getItem(position: Int): BookListDataBest {
+        return holder[position]
     }
 
 }

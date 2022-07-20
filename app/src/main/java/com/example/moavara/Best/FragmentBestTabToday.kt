@@ -20,7 +20,7 @@ class FragmentBestTabToday(private val tabType: String) :
 
     private var adapterToday: AdapterBestToday? = null
 
-    private val items = ArrayList<BookListDataBest?>()
+    private val items = ArrayList<BookListDataBest>()
     var status = ""
     lateinit var root: View
     var genre = ""
@@ -54,25 +54,27 @@ class FragmentBestTabToday(private val tabType: String) :
                     val group: BookListDataBest? =
                         postSnapshot.getValue(BookListDataBest::class.java)
 
-                    items.add(
-                        BookListDataBest(
-                            group!!.writer,
-                            group.title,
-                            group.bookImg,
-                            group.bookCode,
-                            group.info1,
-                            group.info2,
-                            group.info3,
-                            group.info4,
-                            group.info5,
-                            group.number,
-                            group.date,
-                            group.type,
-                            group.status,
-                            group.data,
-                            group.memo
+                    if (group != null) {
+                        items.add(
+                            BookListDataBest(
+                                group.writer,
+                                group.title,
+                                group.bookImg,
+                                group.bookCode,
+                                group.info1,
+                                group.info2,
+                                group.info3,
+                                group.info4,
+                                group.info5,
+                                group.number,
+                                group.date,
+                                group.type,
+                                group.status,
+                                group.data,
+                                group.memo
+                            )
                         )
-                    )
+                    }
 
                 }
                 adapterToday?.notifyDataSetChanged()

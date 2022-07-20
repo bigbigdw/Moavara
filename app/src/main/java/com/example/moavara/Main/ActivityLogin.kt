@@ -3,16 +3,15 @@ package com.example.moavara.Main
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.room.Room
-import com.example.moavara.DataBase.DataBaseBestDay
 import com.example.moavara.R
 import com.example.moavara.Search.UserInfo
 import com.example.moavara.Util.DBDate
+import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.ActivityLoginBinding
 import com.facebook.CallbackManager
 import com.google.android.gms.auth.api.Auth
@@ -26,6 +25,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import kotlinx.android.synthetic.main.activity_genre.*
 
 class ActivityLogin : AppCompatActivity() {
     private var auth: FirebaseAuth? = null
@@ -44,8 +44,25 @@ class ActivityLogin : AppCompatActivity() {
         setContentView(binding.root)
 
         with(binding) {
+            val llayoutUpperBG = GradientDrawable().apply {
+                setColor(Color.parseColor("#121212"))
+                shape = GradientDrawable.RECTANGLE
+                cornerRadii = floatArrayOf(0f,0f,0f,0f, 50f.dpToPx(), 50f.dpToPx(), 50f.dpToPx(), 50f.dpToPx())
+            }
+
+            llayoutUpper.background = llayoutUpperBG
+
+            val btnLoginBG = GradientDrawable().apply {
+                setColor(Color.parseColor("#844DF3"))
+                shape = GradientDrawable.RECTANGLE
+                cornerRadius = 100f.dpToPx()
+            }
+
+            btnLogin.background = btnLoginBG
+
             // 구글 로그인 버튼
             btnLogin.setOnClickListener { googleLogin() }
+
 
             // 로그인 버튼
             btnRegister.setOnClickListener {

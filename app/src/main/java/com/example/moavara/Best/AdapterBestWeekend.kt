@@ -9,11 +9,9 @@ import com.example.moavara.Search.BookListDataBestWeekend
 import com.example.moavara.databinding.ItemBooklistBestWeekendBinding
 
 class AdapterBestWeekend(
-    items:
-    ArrayList<BookListDataBestWeekend>,
+    private var items: ArrayList<BookListDataBestWeekend>,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var item: ArrayList<BookListDataBestWeekend> = items
     var selected: String? = ""
     var num: Int? = 0
 
@@ -35,7 +33,7 @@ class AdapterBestWeekend(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is HolderBestWeekend) {
 
-            val items = item[position]
+            val items = items[position]
 
             with(holder.binding){
                 if (items!!.sun != null) {
@@ -147,7 +145,7 @@ class AdapterBestWeekend(
     }
 
     override fun getItemCount(): Int {
-        return item.size
+        return items.size
     }
 
     inner class HolderBestWeekend internal constructor(val binding: ItemBooklistBestWeekendBinding) :
@@ -209,8 +207,8 @@ class AdapterBestWeekend(
 
     }
 
-    fun getItem(position: Int): BookListDataBestWeekend? {
-        return item[position]
+    fun getItem(position: Int): BookListDataBestWeekend {
+        return items[position]
     }
 
     fun setSelectedBook(title: String) {

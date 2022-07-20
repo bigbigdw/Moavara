@@ -5,18 +5,19 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.moavara.R
+import com.example.moavara.User.ActivityGuide
 import com.example.moavara.Util.Genre
+import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.ActivityGenreBinding
 import com.google.firebase.auth.FirebaseAuth
-import java.util.*
+import kotlinx.android.synthetic.main.activity_genre.*
 
 
 class ActivityGenre : AppCompatActivity() {
@@ -40,6 +41,33 @@ class ActivityGenre : AppCompatActivity() {
 
         with(binding){
 
+            val llayoutUpperBG = GradientDrawable().apply {
+                setColor(Color.parseColor("#121212"))
+                shape = GradientDrawable.RECTANGLE
+                cornerRadii = floatArrayOf(0f,0f,0f,0f, 50f.dpToPx(), 50f.dpToPx(), 50f.dpToPx(), 50f.dpToPx())
+            }
+
+            llayoutUpper.background = llayoutUpperBG
+
+            val llayout_btnBG = GradientDrawable().apply {
+                setColor(Color.parseColor("#0D0E10"))
+                shape = GradientDrawable.RECTANGLE
+                cornerRadius = 100f.dpToPx()
+                setStroke(2f.dpToPx().toInt(), Color.parseColor("#773E424B"))
+            }
+
+            val llayout_btnOnBG = GradientDrawable().apply {
+                setColor(Color.parseColor("#0D0E10"))
+                shape = GradientDrawable.RECTANGLE
+                cornerRadius = 100f.dpToPx()
+                setStroke(2f.dpToPx().toInt(), Color.parseColor("#844DF3"))
+            }
+
+            llayout_btn1.background = llayout_btnBG
+            llayout_btn2.background = llayout_btnBG
+            llayout_btn3.background = llayout_btnBG
+            llayout_btn4.background = llayout_btnBG
+
             if(mode == "USER" && UID != ""){
                 llayoutNickname.visibility = View.GONE
                 llayoutNickname.visibility = View.GONE
@@ -48,20 +76,20 @@ class ActivityGenre : AppCompatActivity() {
                 llayoutGenre.visibility = View.VISIBLE
 
                 if(Genre.getGenre(context).toString() == "FANTASY"){
-                    llayoutBtn1.setBackgroundResource(R.drawable.selector_genre_on)
+                    llayoutBtn1.background = llayout_btnOnBG
                 } else if(Genre.getGenre(context).toString() == "ROMANCE"){
-                    llayoutBtn2.setBackgroundResource(R.drawable.selector_genre_on)
+                    llayoutBtn2.background = llayout_btnOnBG
                 }
                 else if(Genre.getGenre(context).toString() == "ALL"){
-                    llayoutBtn3.setBackgroundResource(R.drawable.selector_genre_on)
+                    llayoutBtn3.background = llayout_btnOnBG
                 }
                 else if(Genre.getGenre(context).toString() == "BL"){
-                    llayoutBtn4.setBackgroundResource(R.drawable.selector_genre_on)
+                    llayoutBtn4.background = llayout_btnOnBG
                 }
 
                 tviewTitle.text = "환영합니다."
                 tviewUserName.visibility = View.VISIBLE
-                tviewUserName.text = context.getSharedPreferences("pref", androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE)?.getString("NICKNAME", "")
+                tviewUserName.text = context.getSharedPreferences("pref", MODE_PRIVATE)?.getString("NICKNAME", "")
                 tviewUserName2.text = " 님"
 
                 llayoutNickname.visibility = View.GONE
@@ -125,10 +153,10 @@ class ActivityGenre : AppCompatActivity() {
                     startActivity(novelIntent)
                 } else {
                     genre = "FANTASY"
-                    llayoutBtn1.setBackgroundResource(R.drawable.selector_genre_on)
-                    llayoutBtn2.setBackgroundResource(R.drawable.selector_genre)
-                    llayoutBtn3.setBackgroundResource(R.drawable.selector_genre)
-                    llayoutBtn4.setBackgroundResource(R.drawable.selector_genre)
+                    llayoutBtn1.background = llayout_btnOnBG
+                    llayoutBtn2.background = llayout_btnBG
+                    llayoutBtn3.background = llayout_btnBG
+                    llayoutBtn4.background = llayout_btnBG
                     userInfo.child(UID).child("Genre").setValue("FANTASY")
                     llayoutBtnGenre.setBackgroundColor(Color.parseColor("#844DF3"))
                 }
@@ -145,10 +173,10 @@ class ActivityGenre : AppCompatActivity() {
                 } else {
                     genre = "ROMANCE"
                     userInfo.child(UID).child("Genre").setValue("ROMANCE")
-                    llayoutBtn1.setBackgroundResource(R.drawable.selector_genre)
-                    llayoutBtn2.setBackgroundResource(R.drawable.selector_genre_on)
-                    llayoutBtn3.setBackgroundResource(R.drawable.selector_genre)
-                    llayoutBtn4.setBackgroundResource(R.drawable.selector_genre)
+                    llayoutBtn1.background = llayout_btnBG
+                    llayoutBtn2.background = llayout_btnOnBG
+                    llayoutBtn3.background = llayout_btnBG
+                    llayoutBtn4.background = llayout_btnBG
                     llayoutBtnGenre.setBackgroundColor(Color.parseColor("#844DF3"))
                 }
             }
@@ -162,10 +190,10 @@ class ActivityGenre : AppCompatActivity() {
                     startActivity(novelIntent)
                 } else {
                     genre = "ALL"
-                    llayoutBtn1.setBackgroundResource(R.drawable.selector_genre)
-                    llayoutBtn2.setBackgroundResource(R.drawable.selector_genre)
-                    llayoutBtn3.setBackgroundResource(R.drawable.selector_genre_on)
-                    llayoutBtn4.setBackgroundResource(R.drawable.selector_genre)
+                    llayoutBtn1.background = llayout_btnBG
+                    llayoutBtn2.background = llayout_btnBG
+                    llayoutBtn3.background = llayout_btnOnBG
+                    llayoutBtn4.background = llayout_btnBG
                     llayoutBtnGenre.setBackgroundColor(Color.parseColor("#844DF3"))
                 }
             }
@@ -179,10 +207,10 @@ class ActivityGenre : AppCompatActivity() {
                     startActivity(novelIntent)
                 } else {
                     genre = "BL"
-                    llayoutBtn1.setBackgroundResource(R.drawable.selector_genre)
-                    llayoutBtn2.setBackgroundResource(R.drawable.selector_genre)
-                    llayoutBtn3.setBackgroundResource(R.drawable.selector_genre)
-                    llayoutBtn4.setBackgroundResource(R.drawable.selector_genre_on)
+                    llayoutBtn1.background = llayout_btnBG
+                    llayoutBtn2.background = llayout_btnBG
+                    llayoutBtn3.background = llayout_btnBG
+                    llayoutBtn4.background = llayout_btnOnBG
                     llayoutBtnGenre.setBackgroundColor(Color.parseColor("#844DF3"))
                 }
             }
@@ -203,7 +231,7 @@ class ActivityGenre : AppCompatActivity() {
                         val rightListener = View.OnClickListener { v: View? ->
 
                             savePreferences("NICKNAME", etviewNickname.text.toString())
-                            val intent = Intent(context, ActivityMain::class.java)
+                            val intent = Intent(context, ActivityGuide::class.java)
                             Toast.makeText(context, "모아바라에 오신것을 환영합니다", Toast.LENGTH_SHORT).show()
                             startActivity(intent)
                         }

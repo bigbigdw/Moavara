@@ -19,9 +19,11 @@
             android:layout_height="match_parent">
 
             <LinearLayout
+
+                android:id="@+id/llayoutUpper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selector_genre_upper"
+                android:background="#121212"
                 android:gravity="bottom|center_horizontal"
                 android:orientation="vertical"
                 app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +32,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selector_genre_upper"
                     android:gravity="center_horizontal|center_vertical"
                     android:orientation="vertical">
 
@@ -38,6 +39,7 @@
                         android:id="@+id/imageView"
                         android:layout_width="72dp"
                         android:layout_height="72dp"
+                        android:layout_marginTop="163dp"
                         android:contentDescription="@string/TODO"
                         android:src="@mipmap/ic_launcher" />
 
@@ -46,6 +48,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
+                        android:fontFamily="@font/pretendardvariable"
                         android:text="Welcome"
                         android:textAlignment="center"
                         android:textColor="#EDE6FD"
@@ -60,6 +63,7 @@
                             android:id="@+id/tviewUserName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/pretendardvariable"
                             android:text="모아바라"
                             android:textAlignment="center"
                             android:textColor="#844DF3"
@@ -71,6 +75,7 @@
                             android:id="@+id/tviewUserName2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/pretendardvariable"
                             android:text="모아바라에 오신것을 환영합니다."
                             android:textAlignment="center"
                             android:textColor="#EDE6FD"
@@ -101,6 +106,7 @@
                             android:id="@+id/tviewGenre"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/pretendardvariable"
                             android:text="장르"
                             android:textAlignment="center"
                             android:textColor="#844DF3"
@@ -110,6 +116,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/pretendardvariable"
                             android:text="를 선택해주세요"
                             android:textAlignment="center"
                             android:textColor="#EDE6FD"
@@ -133,13 +140,14 @@
                                 android:layout_width="260dp"
                                 android:layout_height="56dp"
                                 android:layout_marginBottom="8dp"
-                                android:background="@drawable/selector_genre"
+                                android:background="#0D0E10"
                                 android:gravity="center"
                                 android:orientation="vertical">
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:fontFamily="@font/pretendardvariable"
                                     android:text="판타지"
                                     android:textColor="#EDE6FD"
                                     android:textSize="16dp"
@@ -151,13 +159,14 @@
                                 android:layout_width="260dp"
                                 android:layout_height="56dp"
                                 android:layout_marginBottom="8dp"
-                                android:background="@drawable/selector_genre"
+                                android:background="#0D0E10"
                                 android:gravity="center"
                                 android:orientation="vertical">
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:fontFamily="@font/pretendardvariable"
                                     android:text="로맨스"
                                     android:textColor="#EDE6FD"
                                     android:textSize="16dp"
@@ -169,13 +178,14 @@
                                 android:layout_width="260dp"
                                 android:layout_height="56dp"
                                 android:layout_marginBottom="8dp"
-                                android:background="@drawable/selector_genre"
+                                android:background="#0D0E10"
                                 android:gravity="center"
                                 android:orientation="vertical">
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:fontFamily="@font/pretendardvariable"
                                     android:text="장르 무관"
                                     android:textColor="#EDE6FD"
                                     android:textSize="16dp"
@@ -187,13 +197,14 @@
                                 android:layout_width="260dp"
                                 android:layout_height="56dp"
                                 android:layout_marginBottom="8dp"
-                                android:background="@drawable/selector_genre"
+                                android:background="#0D0E10"
                                 android:gravity="center"
                                 android:orientation="vertical">
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:fontFamily="@font/pretendardvariable"
                                     android:text="BL"
                                     android:textColor="#EDE6FD"
                                     android:textSize="16dp"
@@ -226,6 +237,7 @@
                         android:backgroundTint="#844DF3"
                         android:cursorVisible="@null"
                         android:ems="10"
+                        android:fontFamily="@font/pretendardvariable"
                         android:hint="닉네임을 입력해 주세요"
                         android:inputType="textPersonName"
                         android:paddingStart="12dp"
@@ -254,6 +266,7 @@
                     android:layout_width="wrap_content"
 
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendardvariable"
                     android:text="다음으로"
                     android:textAlignment="center"
                     android:textColor="#EDE6FD"
@@ -276,6 +289,7 @@
                     android:id="@+id/tviewBtnGenre"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendardvariable"
                     android:text="다음으로"
                     android:textAlignment="center"
                     android:textColor="#EDE6FD"

@@ -12,11 +12,11 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:id="@+id/linearLayout3"
+            android:id="@+id/llayoutBodyInner"
             android:layout_width="260dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="-40dp"
-            android:background="@drawable/selector_dialog_login"
+            android:background="#3E424B"
             android:gravity="center"
             android:minWidth="260dp"
             android:minHeight="260dp"
@@ -91,7 +91,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:layout_weight="1"
-                        android:background="@drawable/selector_dialog_login_confirm_a"
+                        android:background="#6E7686"
                         android:text="뒤로가기"
                         android:textColor="#EDE6FD"
                         android:textSize="14dp"
@@ -105,7 +105,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:layout_weight="1"
-                        android:background="@drawable/selector_dialog_login_confirm_b"
+                        android:background="#844DF3"
                         android:text="확인"
                         android:textColor="#EDE6FD"
                         android:textSize="14dp"
