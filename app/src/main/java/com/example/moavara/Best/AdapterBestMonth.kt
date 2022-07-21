@@ -1,5 +1,6 @@
 package com.example.moavara.Best
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,8 +8,10 @@ import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.BookListDataBest
+import com.example.moavara.Search.BookListDataBestMonthNum
 import com.example.moavara.Search.BookListDataBestWeekend
 import com.example.moavara.Util.DBDate
+import com.example.moavara.Util.DBDate.getMonthDates
 import com.example.moavara.databinding.ItemBooklistBestMonthBinding
 
 class AdapterBestMonth(
@@ -39,15 +42,74 @@ class AdapterBestMonth(
 
             val items = item[position]
 
+            val date = DBDate.getDateData(monthDate)
+
+            if (date != null) {
+                Log.d("@@@@", date.date.toString())
+            }
+
             with(holder.binding){
+
+                val monthNum = date?.let { DBDate.setMonthNum(it.date) }
+                if (monthNum != null) {
+                    val dateNum = getMonthDates(monthNum, position)
+                    tviewDate1.text = dateNum.sun.toString()
+                    tviewDate2.text = dateNum.mon.toString()
+                    tviewDate3.text = dateNum.tue.toString()
+                    tviewDate4.text = dateNum.wed.toString()
+                    tviewDate5.text = dateNum.thur.toString()
+                    tviewDate6.text = dateNum.fri.toString()
+                    tviewDate7.text = dateNum.sat.toString()
+                }
+                if(tviewDate1.text == "0"){
+                    tviewDate1.visibility = View.INVISIBLE
+                } else {
+                    tviewDate1.visibility = View.VISIBLE
+                }
+
+                if(tviewDate2.text == "0"){
+                    tviewDate2.visibility = View.INVISIBLE
+                } else {
+                    tviewDate2.visibility = View.VISIBLE
+                }
+
+                if(tviewDate3.text == "0"){
+                    tviewDate3.visibility = View.INVISIBLE
+                } else {
+                    tviewDate3.visibility = View.VISIBLE
+                }
+
+                if(tviewDate4.text == "0"){
+                    tviewDate4.visibility = View.INVISIBLE
+                } else {
+                    tviewDate4.visibility = View.VISIBLE
+                }
+
+                if(tviewDate5.text == "0"){
+                    tviewDate5.visibility = View.INVISIBLE
+                } else {
+                    tviewDate5.visibility = View.VISIBLE
+                }
+
+                if(tviewDate6.text == "0"){
+                    tviewDate6.visibility = View.INVISIBLE
+                } else {
+                    tviewDate6.visibility = View.VISIBLE
+                }
+
+                if(tviewDate7.text == "0"){
+                    tviewDate7.visibility = View.INVISIBLE
+                } else {
+                    tviewDate7.visibility = View.VISIBLE
+                }
+
                 if (items.sun != null) {
                     Glide.with(holder.itemView.context)
                         .load(items.sun?.bookImg)
                         .into(iviewBookImg1)
-
-                    tviewDate1.text = items.sun?.date?.substring(3) ?: ""
                     isSelectBook(items.sun, llayoutCover1)
                     iviewBookImg1.visibility = View.VISIBLE
+
                 } else {
                     iviewBookImg1.visibility = View.GONE
                 }
@@ -57,7 +119,6 @@ class AdapterBestMonth(
                         .load(items.mon?.bookImg)
                         .into(iviewBookImg2)
 
-                    tviewDate2.text = items.mon?.date?.substring(3) ?: ""
                     isSelectBook(items.mon, llayoutCover2)
                     iviewBookImg2.visibility = View.VISIBLE
                 } else {
@@ -69,7 +130,6 @@ class AdapterBestMonth(
                         .load(items.tue?.bookImg)
                         .into(iviewBookImg3)
 
-                    tviewDate3.text = items.tue?.date?.substring(3) ?: ""
                     isSelectBook(items.tue, llayoutCover3)
                     iviewBookImg3.visibility = View.VISIBLE
                 } else {
@@ -81,7 +141,6 @@ class AdapterBestMonth(
                         .load(items.wed?.bookImg)
                         .into(iviewBookImg4)
 
-                    tviewDate4.text = items.wed?.date?.substring(3) ?: ""
                     isSelectBook(items.wed, llayoutCover4)
                     iviewBookImg4.visibility = View.VISIBLE
                 } else {
@@ -93,7 +152,6 @@ class AdapterBestMonth(
                         .load(items.thur?.bookImg)
                         .into(iviewBookImg5)
 
-                    tviewDate5.text = items.thur?.date?.substring(3) ?: ""
                     isSelectBook(items.thur, llayoutCover5)
                     iviewBookImg5.visibility = View.VISIBLE
                 } else {
@@ -105,7 +163,6 @@ class AdapterBestMonth(
                         .load(items.fri?.bookImg)
                         .into(iviewBookImg6)
 
-                    tviewDate6.text = items.fri?.date?.substring(3) ?: ""
                     isSelectBook(items.fri, llayoutCover6)
                     iviewBookImg6.visibility = View.VISIBLE
                 } else {
@@ -117,7 +174,6 @@ class AdapterBestMonth(
                         .load(items.sat?.bookImg)
                         .into(iviewBookImg7)
 
-                    tviewDate7.text = items.sat?.date?.substring(3) ?: ""
                     isSelectBook(items.sat, llayoutCover7)
                     iviewBookImg7.visibility = View.VISIBLE
                 } else {
@@ -196,57 +252,6 @@ class AdapterBestMonth(
             }
         }
 
-    }
-
-    fun getMonthDates(day : String, firstDate : Int, position: Int) : Int{
-        if (firstDate == 1) {
-            if(position == 1){
-                return 1
-            } else if(position == 2){
-                return 8
-            }  else if(position == 3){
-                return 15
-            }  else if(position == 4){
-                return 22
-            }  else if(position == 5){
-                return 29
-            }
-        } else if (firstDate == 2) {
-            if(position == 1){
-                return 2
-            } else if(position == 2){
-                return 9
-            }  else if(position == 3){
-                return 16
-            }  else if(position == 4){
-                return 23
-            }  else if(position == 5){
-                return 30
-            }
-        } else if (firstDate == 3) {
-            if(position == 1){
-                return 3
-            } else if(position == 2){
-                return 10
-            }  else if(position == 3){
-                return 17
-            }  else if(position == 4){
-                return 24
-            }  else if(position == 5){
-                return 31
-            }
-        } else if (firstDate == 4) {
-            return 2
-        } else if (firstDate == 5) {
-            return 2
-        } else if (firstDate == 6) {
-            return 2
-        } else if (firstDate == 7) {
-            return 2
-        } else {
-            return 0
-        }
-        return 0
     }
 
     fun getItem(position: Int): BookListDataBestWeekend? {

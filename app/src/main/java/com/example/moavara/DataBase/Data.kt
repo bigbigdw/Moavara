@@ -52,6 +52,16 @@ class BookListDataBestWeekend(
     var sat: BookListDataBest? = null,
 )
 
+class BookListDataBestMonthNum(
+    var sun: Int = 0,
+    var mon: Int = 0,
+    var tue: Int = 0,
+    var wed: Int = 0,
+    var thur: Int = 0,
+    var fri: Int = 0,
+    var sat: Int = 0,
+)
+
 class CalculNum(
     var num: Int = 0,
     var status: String = ""

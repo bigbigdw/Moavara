@@ -3,6 +3,7 @@ package com.example.moavara.Util
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import com.example.moavara.DataBase.TrophyInfo
+import com.example.moavara.Search.BookListDataBestMonthNum
 import com.example.moavara.Search.CalculNum
 import java.text.SimpleDateFormat
 import java.util.*
@@ -118,6 +119,128 @@ object DBDate {
 
     fun getToday(date : String) : Int {
         return (date.toInt())
+    }
+
+    fun setMonthNum(date : Int) : BookListDataBestMonthNum {
+        val bookListDataBestMonthNum = BookListDataBestMonthNum()
+
+        if(date == 1){
+            return BookListDataBestMonthNum(1,2,3,4,5,6,7)
+        } else if (date == 2) {
+            return BookListDataBestMonthNum(7,1,2,3,4,5,6)
+        } else if (date == 3) {
+            return BookListDataBestMonthNum(6, 7,1,2,3,4,5)
+        }  else if (date == 4) {
+            return BookListDataBestMonthNum(5,6, 7,1,2,3,4)
+        }  else if (date == 5) {
+            return BookListDataBestMonthNum(4, 5,6, 7,1,2,3)
+        }  else if (date == 6) {
+            return BookListDataBestMonthNum(3, 4, 5,6, 7,1,2)
+        }  else if (date == 7) {
+            return BookListDataBestMonthNum(2, 3, 4, 5,6, 7,1)
+        }
+
+        return bookListDataBestMonthNum
+    }
+
+    fun getMonthDates(date: BookListDataBestMonthNum, position: Int) : BookListDataBestMonthNum {
+        if (date.sun == 1) {
+            if (position == 0) {
+                return BookListDataBestMonthNum(1, 2, 3, 4, 5, 6, 7)
+            } else if (position == 1) {
+                return BookListDataBestMonthNum(8, 9, 10, 11, 12, 13, 14)
+            } else if (position == 2) {
+                return BookListDataBestMonthNum(15, 16, 17, 18, 19, 20, 21)
+            } else if (position == 3) {
+                return BookListDataBestMonthNum(22, 23, 24, 25, 26, 27, 28)
+            } else if (position == 4) {
+                return BookListDataBestMonthNum(29, 30, 31, 0, 0, 0, 0)
+            }
+            return date
+        } else if (date.mon == 1) {
+            if (position == 0) {
+                return BookListDataBestMonthNum(0, 1, 2, 3, 4, 5, 6)
+            } else if (position == 1) {
+                return BookListDataBestMonthNum(7, 8, 9, 10, 11, 12, 13)
+            } else if (position == 2) {
+                return BookListDataBestMonthNum(14, 15, 16, 17, 18, 19, 20)
+            } else if (position == 3) {
+                return BookListDataBestMonthNum(21, 22, 23, 24, 25, 26, 27)
+            } else if (position == 4) {
+                return BookListDataBestMonthNum(28, 29, 30, 31, 0, 0, 0)
+            }
+            return date
+        } else if (date.tue == 1) {
+            if (position == 0) {
+                return BookListDataBestMonthNum(0, 0, 1, 2, 3, 4, 5)
+            } else if (position == 1) {
+                return BookListDataBestMonthNum(6, 7, 8, 9, 10, 11, 12)
+            } else if (position == 2) {
+                return BookListDataBestMonthNum(13, 14, 15, 16, 17, 18, 19)
+            } else if (position == 3) {
+                return BookListDataBestMonthNum(20, 21, 22, 23, 24, 25, 26)
+            } else if (position == 4) {
+                return BookListDataBestMonthNum(27, 28, 29, 30, 31, 0, 0)
+            }
+            return date
+        } else if (date.wed == 1) {
+            if (position == 0) {
+                return BookListDataBestMonthNum(0, 0, 0, 1, 2, 3, 4)
+            } else if (position == 1) {
+                return BookListDataBestMonthNum(5, 6, 7, 8, 9, 10, 11)
+            } else if (position == 2) {
+                return BookListDataBestMonthNum(12, 13, 14, 15, 16, 17, 18)
+            } else if (position == 3) {
+                return BookListDataBestMonthNum(19, 20, 21, 22, 23, 24, 25)
+            } else if (position == 4) {
+                return BookListDataBestMonthNum(26, 27, 28, 29, 30, 31, 0)
+            }
+            return date
+        } else if (date.thur == 1) {
+            if (position == 0) {
+                return BookListDataBestMonthNum(0, 0, 0, 0, 1, 2, 3)
+            } else if (position == 1) {
+                return BookListDataBestMonthNum(4, 5, 6, 7, 8, 9, 10)
+            } else if (position == 2) {
+                return BookListDataBestMonthNum(11, 12, 13, 14, 15, 16, 17)
+            } else if (position == 3) {
+                return BookListDataBestMonthNum(18, 19, 20, 21, 22, 23, 24)
+            } else if (position == 4) {
+                return BookListDataBestMonthNum(25, 26, 27, 28, 29, 30, 31)
+            }
+            return date
+        } else if (date.fri == 1) {
+            if (position == 0) {
+                return BookListDataBestMonthNum(0, 0, 0, 0, 0, 1, 2)
+            } else if (position == 1) {
+                return BookListDataBestMonthNum(3, 4, 5, 6, 7, 8, 9)
+            } else if (position == 2) {
+                return BookListDataBestMonthNum(10, 11, 12, 13, 14, 15, 16)
+            } else if (position == 3) {
+                return BookListDataBestMonthNum(17, 18, 19, 20, 21, 22, 23)
+            } else if (position == 4) {
+                return BookListDataBestMonthNum(24, 25, 26, 27, 28, 29, 30)
+            } else if (position == 5) {
+                return BookListDataBestMonthNum(31, 0, 0, 0, 0, 0, 0)
+            }
+            return date
+        }  else if (date.sat == 1) {
+            if (position == 0) {
+                return BookListDataBestMonthNum(0, 0, 0, 0, 0, 0, 1)
+            } else if (position == 1) {
+                return BookListDataBestMonthNum(2, 3, 4, 5, 6, 7, 8)
+            } else if (position == 2) {
+                return BookListDataBestMonthNum(9, 10, 11, 12, 13, 14, 15)
+            } else if (position == 3) {
+                return BookListDataBestMonthNum(16, 17, 18, 19, 20, 21, 22)
+            } else if (position == 4) {
+                return BookListDataBestMonthNum(23, 24, 25, 26, 27, 28, 29)
+            } else if (position == 5) {
+                return BookListDataBestMonthNum(30, 31, 0, 0, 0, 0, 0)
+            }
+            return date
+        }
+        return date
     }
 }
 
