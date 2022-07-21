@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.DataBase.BookListDataBestAnalyze
+import com.example.moavara.R
 import com.example.moavara.databinding.ItemBooklistBestTodayBinding
 
 class AdapterBestToday(
@@ -44,25 +45,28 @@ class AdapterBestToday(
 
                 tviewIndex.text = (position + 1).toString()
                 tviewTitle.text = item.title
-                when (item.status) {
-                    "UP" -> {
-            //                        tviewNum.text =  "+ ${item.numberDiff.times(-1)} (${item.trophyCount})"
-                        tviewNum.setTextColor(Color.parseColor("#02A247"));
+
+                if(bookCodeItems.size > 0){
+                    if(bookCodeItems[position].number > 0){
+                        tviewNum.text =  "${bookCodeItems[position].number}(${bookCodeItems[position].trophyCount})"
+                        tviewNum.setTextColor(Color.parseColor("#02BC77"))
+                        iviewArrow.setImageResource(R.drawable.ic_arrow_drop_up_24px)
+                        iviewArrow.visibility = View.VISIBLE
+                    } else if(bookCodeItems[position].number == 0){
+                        tviewNum.text =  "(${bookCodeItems[position].trophyCount})"
+                        tviewNum.setTextColor(Color.parseColor("#EDE6FD"))
+                        iviewArrow.visibility = View.GONE
+                    } else if(bookCodeItems[position].number < 0){
+                        tviewNum.text =  "${bookCodeItems[position].number}(${bookCodeItems[position].trophyCount})"
+                        tviewNum.setTextColor(Color.parseColor("#FF2366"))
+                        iviewArrow.setImageResource(R.drawable.ic_arrow_drop_down_24px)
+                        iviewArrow.visibility = View.VISIBLE
                     }
-                    "DOWN" -> {
-            //                        tviewNum.text = "- ${item.numberDiff} (${item.trophyCount})"
-                        tviewNum.setTextColor(Color.parseColor("#FF2C00"));
-                    }
-                    "-" -> {
-            //                        tviewNum.text =  "(${item.trophyCount})"
-                        tviewNum.setTextColor(Color.parseColor("#eeeeee"));
-                    }
-                    else -> {
-                        tviewNum.text = "NEW"
-                    }
+                } else {
+                    tviewNum.text = "NEW"
+                    tviewNum.setTextColor(Color.parseColor("#844DF3"))
+                    iviewArrow.visibility = View.GONE
                 }
-
-
             }
         }
     }

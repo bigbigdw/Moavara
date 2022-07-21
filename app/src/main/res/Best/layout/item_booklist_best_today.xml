@@ -26,7 +26,7 @@
     <LinearLayout
         android:id="@+id/BestWrap"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="56dp"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="0dp"
         android:background="@drawable/shape_book_best_day_text"
@@ -54,29 +54,46 @@
 
             <TextView
                 android:id="@+id/tview_Title"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:breakStrategy="high_quality"
+                android:layout_weight="8"
                 android:ellipsize="end"
                 android:fontFamily="@font/pretendardvariable"
                 android:maxLines="1"
                 android:textColor="#F6F6F8"
                 android:textSize="18dp"
                 android:textStyle="bold"
-                tools:text="Common_BookTitle" />
+                tools:text="Common_BookTitleCommon_BookTitle" />
 
-            <TextView
-                android:id="@+id/tview_Num"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="12dp"
-                android:fontFamily="@font/pretendardvariable"
-                android:textColor="#F6F6F8"
-                android:textSize="12dp"
-                android:textStyle="bold"
-                tools:text="1" />
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:layout_weight="1"
+                android:gravity="center_vertical|end"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iviewArrow"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginLeft="4dp"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/shape_book_best_day_cover"
+                    android:contentDescription="@string/TODO" />
+
+                <TextView
+                    android:id="@+id/tview_Num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/pretendardvariable"
+                    android:textColor="#F6F6F8"
+                    android:textSize="12dp"
+                    android:textStyle="bold"
+                    tools:text="1" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>

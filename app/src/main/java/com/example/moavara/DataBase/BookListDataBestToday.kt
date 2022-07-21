@@ -138,6 +138,7 @@ data class BookListDataBestAnalyze (
     var info3: String = "",
     var number: Int = 0,
     var date: String = "",
+    var trophyCount: Int = 0,
 )
 
 data class TrophyInfo (
