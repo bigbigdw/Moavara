@@ -233,81 +233,87 @@ class BottomDialogBest(
                     ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
 
+                        val items = ArrayList<BookListDataBestAnalyze>()
+
                         for (keyItem in dataSnapshot.children) {
                             val group: BookListDataBestAnalyze? =
                                 keyItem.getValue(BookListDataBestAnalyze::class.java)
 
+                            if (group != null) {
+                                items.add(group)
+                            }
+                        }
+
+                        for(group in items){
                             with(binding.includeRank) {
-                                if (group != null) {
-                                    var itemDate = DBDate.getDateData(group.date)
+                                val itemDate = DBDate.getDateData(group.date)
 
-                                    if (itemDate != null) {
-                                        if (itemDate.week == DBDate.Week().toInt()) {
-                                            when {
-                                                itemDate.date == 1 -> {
-                                                    tviewRank1.visibility = View.VISIBLE
+                                if (itemDate != null) {
+                                    if (itemDate.week == DBDate.Week().toInt()) {
+                                        when {
+                                            itemDate.date == 1 -> {
+                                                tviewRank1.visibility = View.VISIBLE
 
-                                                    if (itemDate.date == DBDate.DayInt()) {
-                                                        iviewRank1.setImageResource(R.drawable.ic_best_gn_24px)
-                                                    } else {
-                                                        iviewRank1.setImageResource(R.drawable.ic_best_vt_24px)
-                                                    }
-                                                    tviewRank1.text = (item.number + 1).toString()
+                                                if (itemDate.date == DBDate.DayInt()) {
+                                                    iviewRank1.setImageResource(R.drawable.ic_best_gn_24px)
+                                                } else {
+                                                    iviewRank1.setImageResource(R.drawable.ic_best_vt_24px)
                                                 }
-                                                itemDate.date == 2 -> {
-                                                    tviewRank2.visibility = View.VISIBLE
-                                                    if (itemDate.date == DBDate.DayInt()) {
-                                                        iviewRank2.setImageResource(R.drawable.ic_best_gn_24px)
-                                                    } else {
-                                                        iviewRank2.setImageResource(R.drawable.ic_best_vt_24px)
-                                                    }
-                                                    tviewRank2.text = (item.number + 1).toString()
+                                                tviewRank1.text = (item.number + 1).toString()
+                                            }
+                                            itemDate.date == 2 -> {
+                                                tviewRank2.visibility = View.VISIBLE
+                                                if (itemDate.date == DBDate.DayInt()) {
+                                                    iviewRank2.setImageResource(R.drawable.ic_best_gn_24px)
+                                                } else {
+                                                    iviewRank2.setImageResource(R.drawable.ic_best_vt_24px)
                                                 }
-                                                itemDate.date == 3 -> {
-                                                    tviewRank3.visibility = View.VISIBLE
-                                                    if (itemDate.date == DBDate.DayInt()) {
-                                                        iviewRank3.setImageResource(R.drawable.ic_best_gn_24px)
-                                                    } else {
-                                                        iviewRank3.setImageResource(R.drawable.ic_best_vt_24px)
-                                                    }
-                                                    tviewRank3.text = (item.number + 1).toString()
+                                                tviewRank2.text = (item.number + 1).toString()
+                                            }
+                                            itemDate.date == 3 -> {
+                                                tviewRank3.visibility = View.VISIBLE
+                                                if (itemDate.date == DBDate.DayInt()) {
+                                                    iviewRank3.setImageResource(R.drawable.ic_best_gn_24px)
+                                                } else {
+                                                    iviewRank3.setImageResource(R.drawable.ic_best_vt_24px)
                                                 }
-                                                itemDate.date == 4 -> {
-                                                    tviewRank4.visibility = View.VISIBLE
-                                                    if (itemDate.date == DBDate.DayInt()) {
-                                                        iviewRank4.setImageResource(R.drawable.ic_best_gn_24px)
-                                                    } else {
-                                                        iviewRank4.setImageResource(R.drawable.ic_best_vt_24px)
-                                                    }
-                                                    tviewRank4.text = (item.number + 1).toString()
+                                                tviewRank3.text = (item.number + 1).toString()
+                                            }
+                                            itemDate.date == 4 -> {
+                                                tviewRank4.visibility = View.VISIBLE
+                                                if (itemDate.date == DBDate.DayInt()) {
+                                                    iviewRank4.setImageResource(R.drawable.ic_best_gn_24px)
+                                                } else {
+                                                    iviewRank4.setImageResource(R.drawable.ic_best_vt_24px)
                                                 }
-                                                itemDate.date == 5 -> {
-                                                    tviewRank5.visibility = View.VISIBLE
-                                                    if (itemDate.date == DBDate.DayInt()) {
-                                                        iviewRank5.setImageResource(R.drawable.ic_best_gn_24px)
-                                                    } else {
-                                                        iviewRank5.setImageResource(R.drawable.ic_best_vt_24px)
-                                                    }
-                                                    tviewRank5.text = (item.number + 1).toString()
+                                                tviewRank4.text = (item.number + 1).toString()
+                                            }
+                                            itemDate.date == 5 -> {
+                                                tviewRank5.visibility = View.VISIBLE
+                                                if (itemDate.date == DBDate.DayInt()) {
+                                                    iviewRank5.setImageResource(R.drawable.ic_best_gn_24px)
+                                                } else {
+                                                    iviewRank5.setImageResource(R.drawable.ic_best_vt_24px)
                                                 }
-                                                itemDate.date == 6 -> {
-                                                    tviewRank6.visibility = View.VISIBLE
-                                                    if (itemDate.date == DBDate.DayInt()) {
-                                                        iviewRank6.setImageResource(R.drawable.ic_best_gn_24px)
-                                                    } else {
-                                                        iviewRank6.setImageResource(R.drawable.ic_best_vt_24px)
-                                                    }
-                                                    tviewRank6.text = (item.number + 1).toString()
+                                                tviewRank5.text = (item.number + 1).toString()
+                                            }
+                                            itemDate.date == 6 -> {
+                                                tviewRank6.visibility = View.VISIBLE
+                                                if (itemDate.date == DBDate.DayInt()) {
+                                                    iviewRank6.setImageResource(R.drawable.ic_best_gn_24px)
+                                                } else {
+                                                    iviewRank6.setImageResource(R.drawable.ic_best_vt_24px)
                                                 }
-                                                itemDate.date == 7 -> {
-                                                    tviewRank7.visibility = View.VISIBLE
-                                                    if (itemDate.date == DBDate.DayInt()) {
-                                                        iviewRank7.setImageResource(R.drawable.ic_best_gn_24px)
-                                                    } else {
-                                                        iviewRank7.setImageResource(R.drawable.ic_best_vt_24px)
-                                                    }
-                                                    tviewRank7.text = (item.number + 1).toString()
+                                                tviewRank6.text = (item.number + 1).toString()
+                                            }
+                                            itemDate.date == 7 -> {
+                                                tviewRank7.visibility = View.VISIBLE
+                                                if (itemDate.date == DBDate.DayInt()) {
+                                                    iviewRank7.setImageResource(R.drawable.ic_best_gn_24px)
+                                                } else {
+                                                    iviewRank7.setImageResource(R.drawable.ic_best_vt_24px)
                                                 }
+                                                tviewRank7.text = (item.number + 1).toString()
                                             }
                                         }
                                     }

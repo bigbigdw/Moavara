@@ -140,8 +140,9 @@ class FragmentBestTabToday(private val tabType: String) :
                                 lastItem.info1,
                                 lastItem.info2,
                                 lastItem.info3,
-                                moreLastItem.number - lastItem.number,
+                                lastItem.number,
                                 lastItem.date,
+                                moreLastItem.number - lastItem.number,
                                 bookCodes.size
                             )
                         )
@@ -160,6 +161,7 @@ class FragmentBestTabToday(private val tabType: String) :
                                     group.info3,
                                     group.number,
                                     group.date,
+                                    0,
                                     1
                                 )
                             )

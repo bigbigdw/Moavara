@@ -47,17 +47,17 @@ class AdapterBestToday(
                 tviewTitle.text = item.title
 
                 if(bookCodeItems.size > 0){
-                    if(bookCodeItems[position].number > 0){
-                        tviewNum.text =  "${bookCodeItems[position].number}(${bookCodeItems[position].trophyCount})"
+                    if(bookCodeItems[position].numberDiff > 0){
+                        tviewNum.text =  "${bookCodeItems[position].numberDiff}(${bookCodeItems[position].trophyCount})"
                         tviewNum.setTextColor(Color.parseColor("#02BC77"))
                         iviewArrow.setImageResource(R.drawable.ic_arrow_drop_up_24px)
                         iviewArrow.visibility = View.VISIBLE
-                    } else if(bookCodeItems[position].number == 0){
+                    } else if(bookCodeItems[position].numberDiff == 0){
                         tviewNum.text =  "(${bookCodeItems[position].trophyCount})"
                         tviewNum.setTextColor(Color.parseColor("#EDE6FD"))
                         iviewArrow.visibility = View.GONE
-                    } else if(bookCodeItems[position].number < 0){
-                        tviewNum.text =  "${bookCodeItems[position].number}(${bookCodeItems[position].trophyCount})"
+                    } else if(bookCodeItems[position].numberDiff < 0){
+                        tviewNum.text =  "${bookCodeItems[position].numberDiff}(${bookCodeItems[position].trophyCount})"
                         tviewNum.setTextColor(Color.parseColor("#FF2366"))
                         iviewArrow.setImageResource(R.drawable.ic_arrow_drop_down_24px)
                         iviewArrow.visibility = View.VISIBLE

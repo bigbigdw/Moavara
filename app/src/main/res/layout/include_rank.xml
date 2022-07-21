@@ -26,11 +26,12 @@
                 android:layout_height="32dp"
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
+                android:fontFamily="@font/pretendardvariable"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="일"
                 android:textAlignment="center"
                 android:textColor="#FDFDFD"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <ImageView
@@ -49,12 +50,13 @@
                 android:layout_height="32dp"
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
-                
+
+                android:fontFamily="@font/pretendardvariable"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="14위"
                 android:textAlignment="center"
                 android:textColor="#FDFDFD"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:visibility="invisible"
                 tools:visibility="visible" />
@@ -74,12 +76,13 @@
                 android:layout_height="32dp"
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
-                
+
+                android:fontFamily="@font/pretendardvariable"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="월"
                 android:textAlignment="center"
                 android:textColor="#FDFDFD"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <ImageView
@@ -98,12 +101,13 @@
                 android:layout_height="32dp"
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
-                
+
+                android:fontFamily="@font/pretendardvariable"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="14위"
                 android:textAlignment="center"
                 android:textColor="#FDFDFD"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:visibility="invisible"
                 tools:visibility="visible" />
@@ -123,12 +127,13 @@
                 android:layout_height="32dp"
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
-                
+
+                android:fontFamily="@font/pretendardvariable"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="화"
                 android:textAlignment="center"
                 android:textColor="#FDFDFD"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <ImageView
@@ -147,12 +152,13 @@
                 android:layout_height="32dp"
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
-                
+
+                android:fontFamily="@font/pretendardvariable"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="14위"
                 android:textAlignment="center"
                 android:textColor="#FDFDFD"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:visibility="invisible"
                 tools:visibility="visible" />
@@ -172,12 +178,13 @@
                 android:layout_height="32dp"
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
-                
+
+                android:fontFamily="@font/pretendardvariable"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="수"
                 android:textAlignment="center"
                 android:textColor="#FDFDFD"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <ImageView
@@ -196,12 +203,13 @@
                 android:layout_height="32dp"
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
-                
+
+                android:fontFamily="@font/pretendardvariable"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="14위"
                 android:textAlignment="center"
                 android:textColor="#FDFDFD"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:visibility="invisible"
                 tools:visibility="visible" />
@@ -221,12 +229,13 @@
                 android:layout_height="32dp"
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
-                
+
+                android:fontFamily="@font/pretendardvariable"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="목"
                 android:textAlignment="center"
                 android:textColor="#FDFDFD"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <ImageView
@@ -245,12 +254,13 @@
                 android:layout_height="32dp"
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
-                
+
+                android:fontFamily="@font/pretendardvariable"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="14위"
                 android:textAlignment="center"
                 android:textColor="#FDFDFD"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:visibility="invisible"
                 tools:visibility="visible" />
@@ -270,12 +280,13 @@
                 android:layout_height="32dp"
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
-                
+
+                android:fontFamily="@font/pretendardvariable"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="금"
                 android:textAlignment="center"
                 android:textColor="#FDFDFD"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <ImageView
@@ -294,12 +305,13 @@
                 android:layout_height="32dp"
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
-                
+
+                android:fontFamily="@font/pretendardvariable"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="14위"
                 android:textAlignment="center"
                 android:textColor="#FDFDFD"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:visibility="invisible"
                 tools:visibility="visible" />
@@ -319,12 +331,13 @@
                 android:layout_height="32dp"
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
-                
+
+                android:fontFamily="@font/pretendardvariable"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="토"
                 android:textAlignment="center"
                 android:textColor="#FDFDFD"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <ImageView
@@ -343,12 +356,13 @@
                 android:layout_height="32dp"
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
-                
+
+                android:fontFamily="@font/pretendardvariable"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="14위"
                 android:textAlignment="center"
                 android:textColor="#FDFDFD"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:visibility="invisible"
                 tools:visibility="visible" />

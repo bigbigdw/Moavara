@@ -426,8 +426,6 @@ fun miningValue(ref: MutableMap<String?, Any>, num: Int, platform: String, genre
 
     BestRef.setBestData(platform, num, genre).setValue(BestRef.setBookListDataBest(ref))
 
-    Mining.SetBookCodeData(platform, genre, ref["bookCode"] as String)
-
 }
 
 fun calculateNumDiff(

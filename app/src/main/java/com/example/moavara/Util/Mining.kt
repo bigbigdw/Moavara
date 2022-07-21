@@ -1035,7 +1035,7 @@ object Mining {
                         JoaraRef["info3"] = "조회 수 : " + books[i].cntPageRead
                         JoaraRef["info4"] = "선호작 수 : " + books[i].cntFavorite
                         JoaraRef["info5"] = "추천 수 : " + books[i].cntRecom
-                        JoaraRef["number"] = i
+                        JoaraRef["number"] = i + (page - 1)
                         JoaraRef["date"] = DBDate.DateMMDD()
                         JoaraRef["type"] = "Joara"
                         JoaraRef["data"] = ""
@@ -1086,7 +1086,7 @@ object Mining {
                         JoaraRef["info3"] = "조회 수 : " + books[i].cntPageRead
                         JoaraRef["info4"] = "선호작 수 : " + books[i].cntFavorite
                         JoaraRef["info5"] = "추천 수 : " + books[i].cntRecom
-                        JoaraRef["number"] = i
+                        JoaraRef["number"] = i + (page - 1)
                         JoaraRef["date"] = DBDate.DateMMDD()
                         JoaraRef["type"] = "Joara_Nobless"
                         JoaraRef["data"] = ""
@@ -1136,7 +1136,7 @@ object Mining {
                         JoaraRef["info3"] = "조회 수 : " + books[i].cntPageRead
                         JoaraRef["info4"] = "선호작 수 : " + books[i].cntFavorite
                         JoaraRef["info5"] = "추천 수 : " + books[i].cntRecom
-                        JoaraRef["number"] = i
+                        JoaraRef["number"] = i + (page - 1)
                         JoaraRef["date"] = DBDate.DateMMDD()
                         JoaraRef["type"] = "Joara_Nobless"
                         JoaraRef["data"] = ""
