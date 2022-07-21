@@ -70,7 +70,6 @@ class FragmentBestTabToday(private val tabType: String) :
                                 group.date,
                                 group.type,
                                 group.status,
-                                group.data,
                                 group.memo
                             )
                         )

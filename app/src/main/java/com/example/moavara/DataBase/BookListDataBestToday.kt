@@ -52,7 +52,6 @@ data class BookListDataBest (
     var date: String = "",
     var type: String = "",
     var status: String = "",
-    var data: ArrayList<BookListDataBestAnalyze>? = null,
     var memo: String = "",
 )
 

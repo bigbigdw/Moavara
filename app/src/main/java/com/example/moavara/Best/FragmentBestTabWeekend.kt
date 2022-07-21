@@ -1,6 +1,7 @@
 package com.example.moavara.Best
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,11 +38,12 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
         genre = Genre.getGenre(requireContext()).toString()
 
         adapterWeek = AdapterBestWeekend(itemWeek)
-        getBestWeekList()
 
         binding.rviewBest.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rviewBest.adapter = adapterWeek
+
+        getBestWeekList()
 
         return view
     }
@@ -55,24 +57,24 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
 
                     val weekItem = BookListDataBestWeekend()
 
-                    for (day in 1..6) {
+                    for (day in 1..7) {
                         val item: BookListDataBest? =
                             dataSnapshot.child(day.toString()).child(num.toString())
                                 .getValue(BookListDataBest::class.java)
 
-                        if (num == 1) {
+                        if (day == 1) {
                             weekItem.sun = item
-                        } else if (num == 2) {
+                        } else if (day == 2) {
                             weekItem.mon = item
-                        } else if (num == 3) {
+                        } else if (day == 3) {
                             weekItem.tue = item
-                        } else if (num == 4) {
+                        } else if (day == 4) {
                             weekItem.wed = item
-                        } else if (num == 5) {
+                        } else if (day == 5) {
                             weekItem.thur = item
-                        } else if (num == 6) {
+                        } else if (day == 6) {
                             weekItem.fri = item
-                        } else if (num == 7) {
+                        } else if (day == 7) {
                             weekItem.sat = item
                         }
                     }
@@ -113,7 +115,7 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
                     }
                 }
 
-                adapterWeek!!.notifyDataSetChanged()
+                adapterWeek?.notifyDataSetChanged()
 
             }
         })

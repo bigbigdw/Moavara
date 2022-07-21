@@ -48,61 +48,63 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment() {
             rviewBestMonth.adapter = adapterMonth
 
             adapterMonth.setOnItemClickListener(object : AdapterBestMonth.OnItemClickListener {
-                override fun onItemClick(v: View, position: Int, value: String) {
+
+                override fun onItemClick(v: View?, position: Int, value: String?) {
                     ItemMonthDay.clear()
 
                     Log.d("####", "position = $position value = $value")
 
-                    BestRef.getBestDataMonth(tabType, genre).child((position + 1).toString())
-                        .child(value).addListenerForSingleValueEvent(object :
-                        ValueEventListener {
-                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (value != null) {
+                        BestRef.getBestDataMonth(tabType, genre).child((position + 1).toString())
+                            .child(value).addListenerForSingleValueEvent(object :
+                                ValueEventListener {
+                                override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                            rviewBestMonthDay.layoutManager =
-                                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                            rviewBestMonthDay.adapter = adapterMonthDay
+                                    rviewBestMonthDay.layoutManager =
+                                        LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                                    rviewBestMonthDay.adapter = adapterMonthDay
 
-                            if (dataSnapshot.childrenCount > 0) {
+                                    if (dataSnapshot.childrenCount > 0) {
 
-                                if (llayoutMonthDetail.visibility == View.GONE) {
-                                    llayoutMonthDetail.visibility = View.VISIBLE
+                                        if (llayoutMonthDetail.visibility == View.GONE) {
+                                            llayoutMonthDetail.visibility = View.VISIBLE
+                                        }
+                                    } else {
+                                        llayoutMonthDetail.visibility = View.GONE
+                                    }
+
+                                    for (postSnapshot in dataSnapshot.children) {
+                                        val group: BookListDataBest? =
+                                            postSnapshot.getValue(BookListDataBest::class.java)
+
+                                        if (group != null) {
+                                            ItemMonthDay.add(
+                                                BookListDataBest(
+                                                    group.writer,
+                                                    group.title,
+                                                    group.bookImg,
+                                                    group.bookCode,
+                                                    group.info1,
+                                                    group.info2,
+                                                    group.info3,
+                                                    group.info4,
+                                                    group.info5,
+                                                    group.number,
+                                                    group.date,
+                                                    group.type,
+                                                    group.status,
+                                                    group.memo
+                                                )
+                                            )
+                                        }
+
+                                    }
+                                    adapterMonthDay?.notifyDataSetChanged()
                                 }
-                            } else {
-                                llayoutMonthDetail.visibility = View.GONE
-                            }
 
-                            for (postSnapshot in dataSnapshot.children) {
-                                val group: BookListDataBest? =
-                                    postSnapshot.getValue(BookListDataBest::class.java)
-
-                                if (group != null) {
-                                    ItemMonthDay.add(
-                                        BookListDataBest(
-                                            group.writer,
-                                            group.title,
-                                            group.bookImg,
-                                            group.bookCode,
-                                            group.info1,
-                                            group.info2,
-                                            group.info3,
-                                            group.info4,
-                                            group.info5,
-                                            group.number,
-                                            group.date,
-                                            group.type,
-                                            group.status,
-                                            group.data,
-                                            group.memo
-                                        )
-                                    )
-                                }
-
-                            }
-                            adapterMonthDay?.notifyDataSetChanged()
-                        }
-
-                        override fun onCancelled(databaseError: DatabaseError) {}
-                    })
+                                override fun onCancelled(databaseError: DatabaseError) {}
+                            })
+                    }
                 }
 
             })

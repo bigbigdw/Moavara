@@ -36,7 +36,7 @@ class AdapterBestWeekend(
             val items = items[position]
 
             with(holder.binding){
-                if (items!!.sun != null) {
+                if (items.sun != null) {
                     Glide.with(holder.itemView.context)
                         .load(items.sun!!.bookImg)
                         .into(iviewBookImg1)

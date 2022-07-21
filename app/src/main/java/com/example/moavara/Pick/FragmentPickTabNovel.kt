@@ -77,7 +77,6 @@ class FragmentPickTabNovel : Fragment() {
                             group.date,
                             group.type,
                             group.status,
-                            group.data,
                             group.memo
                         )
                     )
