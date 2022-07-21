@@ -44,10 +44,6 @@ class AdapterBestMonth(
 
             val date = DBDate.getDateData(monthDate)
 
-            if (date != null) {
-                Log.d("@@@@", date.date.toString())
-            }
-
             with(holder.binding){
 
                 val monthNum = date?.let { DBDate.setMonthNum(it.date) }
@@ -204,49 +200,49 @@ class AdapterBestMonth(
                 cviewWrap1.setOnClickListener { v: View? ->
                     val pos = adapterPosition
                     if (pos != RecyclerView.NO_POSITION) {
-                        listener?.onItemClick(v, pos, "sun")
+                        listener?.onItemClick(v, pos, "1")
                     }
                 }
 
                 cviewWrap2.setOnClickListener { v: View? ->
                     val pos = adapterPosition
                     if (pos != RecyclerView.NO_POSITION) {
-                        listener?.onItemClick(v, pos, "mon")
+                        listener?.onItemClick(v, pos, "2")
                     }
                 }
 
                 cviewWrap3.setOnClickListener { v: View? ->
                     val pos = adapterPosition
                     if (pos != RecyclerView.NO_POSITION) {
-                        listener?.onItemClick(v, pos, "tue")
+                        listener?.onItemClick(v, pos, "3")
                     }
                 }
 
                 cviewWrap4.setOnClickListener { v: View? ->
                     val pos = adapterPosition
                     if (pos != RecyclerView.NO_POSITION) {
-                        listener?.onItemClick(v, pos, "wed")
+                        listener?.onItemClick(v, pos, "4")
                     }
                 }
 
                 cviewWrap5.setOnClickListener { v: View? ->
                     val pos = adapterPosition
                     if (pos != RecyclerView.NO_POSITION) {
-                        listener?.onItemClick(v, pos, "thur")
+                        listener?.onItemClick(v, pos, "5")
                     }
                 }
 
                 cviewWrap6.setOnClickListener { v: View? ->
                     val pos = adapterPosition
                     if (pos != RecyclerView.NO_POSITION) {
-                        listener?.onItemClick(v, pos, "fri")
+                        listener?.onItemClick(v, pos, "6")
                     }
                 }
 
                 cviewWrap7.setOnClickListener { v: View? ->
                     val pos = adapterPosition
                     if (pos != RecyclerView.NO_POSITION) {
-                        listener?.onItemClick(v, pos, "sat")
+                        listener?.onItemClick(v, pos, "7")
                     }
                 }
             }

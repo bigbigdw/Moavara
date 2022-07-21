@@ -52,8 +52,6 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment() {
                 override fun onItemClick(v: View?, position: Int, value: String?) {
                     ItemMonthDay.clear()
 
-                    Log.d("####", "position = $position value = $value")
-
                     if (value != null) {
                         BestRef.getBestDataMonth(tabType, genre).child((position + 1).toString())
                             .child(value).addListenerForSingleValueEvent(object :
