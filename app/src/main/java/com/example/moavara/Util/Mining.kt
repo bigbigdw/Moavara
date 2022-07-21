@@ -103,7 +103,7 @@ object Mining {
 
         val Ridi = Thread {
             for (i in 1..3) {
-                getRidiBest(genre, i, context)
+                getRidiBest(genre, i)
             }
         }
 
@@ -171,21 +171,21 @@ object Mining {
 
 
         try {
-//            Ridi.start()
-//            Log.d("####MINING", "리디1 완료")
-//            Ridi.join()
-//
-//            OneStore.start()
-//            OneStore.join()
-//            Log.d("####MINING", "원스토어1 완료")
-//
-//            Kakao.start()
-//            Kakao.join()
-//            Log.d("####MINING", "카카오1 완료")
-//
-//            KakaoStage1.start()
-//            KakaoStage1.join()
-//            Log.d("####MINING", "카카오 스테이지1 완료")
+            Ridi.start()
+            Log.d("####MINING", "리디1 완료")
+            Ridi.join()
+
+            OneStore.start()
+            OneStore.join()
+            Log.d("####MINING", "원스토어1 완료")
+
+            Kakao.start()
+            Kakao.join()
+            Log.d("####MINING", "카카오1 완료")
+
+            KakaoStage1.start()
+            KakaoStage1.join()
+            Log.d("####MINING", "카카오 스테이지1 완료")
 
             Joara.start()
             Joara.join()
@@ -589,93 +589,37 @@ object Mining {
         }
     }
 
-    fun getRidiBest(cate: String, page: Int, context: Context) {
+    fun getRidiBest(cate: String, page: Int) {
         try {
             val doc: Document =
                 Jsoup.connect(Genre.setRidiGenre(cate, page)).post()
             val Ridi: Elements = doc.select(".book_thumbnail_wrapper")
             val RidiRef: MutableMap<String?, Any> = HashMap()
 
-            BestRef.setBestRefWeekList("Ridi", cate).addListenerForSingleValueEvent(object :
-                ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
+            for (i in Ridi.indices) {
+                if (i > 0) {
 
-                    for (i in Ridi.indices) {
-                        if (i > 0) {
-                            val title = doc.select("div .title_link")[i].text()
-                            val dataList = ArrayList<BookListDataBestAnalyze>()
+                    RidiRef["writerName"] =
+                        doc.select("div .author_detail_link")[i].text()
+                    RidiRef["subject"] = doc.select("div .title_link")[i].text()
+                    RidiRef["bookImg"] =
+                        Ridi.select(".thumbnail_image .thumbnail")[i].absUrl("data-src")
+                    RidiRef["bookCode"] = Ridi.select("a")[i].absUrl("href")
+                    RidiRef["info1"] = doc.select(".count_num")[i].text()
+                    RidiRef["info2"] =
+                        "추천 수 : " + doc.select("span .StarRate_ParticipantCount")[i].text()
+                    RidiRef["info3"] =
+                        "평점 : " + doc.select("span .StarRate_Score")[i].text()
+                    RidiRef["info4"] = ""
+                    RidiRef["info5"] = ""
+                    RidiRef["number"] = i + ((page - 1) * (Ridi.size - 1))
+                    RidiRef["date"] = DBDate.DateMMDD()
+                    RidiRef["type"] = "Ridi"
 
-                            for (weekItem in dataSnapshot.children) {
-                                val group: BookListDataBestToday? =
-                                    weekItem.getValue(BookListDataBestToday::class.java)
-
-                                if (group != null) {
-                                    if (group.title == title) {
-                                        dataList.add(
-                                            BookListDataBestAnalyze(
-                                                group.info3,
-                                                group.info4,
-                                                group.info5,
-                                                group.number,
-                                                group.date,
-                                            )
-                                        )
-                                    }
-                                }
-                            }
-
-                            val cmpAsc: Comparator<BookListDataBestAnalyze> =
-                                Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
-                            Collections.sort(dataList, cmpAsc)
-
-                            RidiRef["trophyCount"] = dataList.size
-
-                            if (dataList.size != 0) {
-                                if (DBDate.getToday(dataList[dataList.size - 1].date) - DBDate.getYesterday(
-                                        dataList[dataList.size - 1].date
-                                    ) == 1
-                                ) {
-                                    RidiRef["numberDiff"] =
-                                        calculateNumDiff(i, dataList[dataList.size - 1].number).num
-                                    RidiRef["status"] = calculateNumDiff(
-                                        i,
-                                        dataList[dataList.size - 1].number
-                                    ).status
-                                } else {
-                                    RidiRef["numberDiff"] = 0
-                                    RidiRef["status"] = "NEW"
-                                }
-                            } else {
-                                RidiRef["numberDiff"] = 0
-                                RidiRef["status"] = "NEW"
-                            }
-
-                            RidiRef["writerName"] =
-                                doc.select("div .author_detail_link")[i].text()
-                            RidiRef["subject"] = doc.select("div .title_link")[i].text()
-                            RidiRef["bookImg"] =
-                                Ridi.select(".thumbnail_image .thumbnail")[i].absUrl("data-src")
-                            RidiRef["bookCode"] = Ridi.select("a")[i].absUrl("href")
-                            RidiRef["info1"] = doc.select(".count_num")[i].text()
-                            RidiRef["info2"] =
-                                "추천 수 : " + doc.select("span .StarRate_ParticipantCount")[i].text()
-                            RidiRef["info3"] =
-                                "평점 : " + doc.select("span .StarRate_Score")[i].text()
-                            RidiRef["info4"] = ""
-                            RidiRef["info5"] = ""
-                            RidiRef["number"] = i
-                            RidiRef["date"] = DBDate.DateMMDD()
-                            RidiRef["type"] = "Ridi"
-                            RidiRef["data"] = dataList
-
-                            miningValue(RidiRef, (i + ((page - 1) * Ridi.size)), "Ridi", cate)
-
-                        }
-                    }
+                    miningValue(RidiRef, (i + ((page - 1) * Ridi.size)), "Ridi", cate)
                 }
+            }
 
-                override fun onCancelled(databaseError: DatabaseError) {}
-            })
         } catch (exception: SocketTimeoutException) {
             Log.d("EXCEPTION", "RIDI")
         }
@@ -1025,7 +969,6 @@ object Mining {
 
                     for (i in books!!.indices) {
 
-                        JoaraRef["trophyCount"] = 0
                         JoaraRef["writerName"] = books[i].writerName
                         JoaraRef["subject"] = books[i].subject
                         JoaraRef["bookImg"] = books[i].bookImg
@@ -1035,12 +978,9 @@ object Mining {
                         JoaraRef["info3"] = "조회 수 : " + books[i].cntPageRead
                         JoaraRef["info4"] = "선호작 수 : " + books[i].cntFavorite
                         JoaraRef["info5"] = "추천 수 : " + books[i].cntRecom
-                        JoaraRef["number"] = i + (page - 1)
+                        JoaraRef["number"] = i + ((page - 1) * books.size)
                         JoaraRef["date"] = DBDate.DateMMDD()
                         JoaraRef["type"] = "Joara"
-                        JoaraRef["data"] = ""
-                        JoaraRef["numberDiff"] = 0
-                        JoaraRef["status"] = "NEW"
 
                         miningValue(
                             JoaraRef,
@@ -1074,8 +1014,6 @@ object Mining {
 
                     for (i in books!!.indices) {
 
-                        JoaraRef["trophyCount"] = 0
-                        JoaraRef["numberDiff"] = 0
                         JoaraRef["status"] = "NEW"
                         JoaraRef["writerName"] = books[i].writerName
                         JoaraRef["subject"] = books[i].subject
@@ -1086,10 +1024,9 @@ object Mining {
                         JoaraRef["info3"] = "조회 수 : " + books[i].cntPageRead
                         JoaraRef["info4"] = "선호작 수 : " + books[i].cntFavorite
                         JoaraRef["info5"] = "추천 수 : " + books[i].cntRecom
-                        JoaraRef["number"] = i + (page - 1)
+                        JoaraRef["number"] = i + ((page - 1) * books.size)
                         JoaraRef["date"] = DBDate.DateMMDD()
                         JoaraRef["type"] = "Joara_Nobless"
-                        JoaraRef["data"] = ""
 
                         miningValue(
                             JoaraRef,
@@ -1124,8 +1061,6 @@ object Mining {
 
                     for (i in books!!.indices) {
 
-                        JoaraRef["trophyCount"] = 0
-                        JoaraRef["numberDiff"] = 0
                         JoaraRef["status"] = "NEW"
                         JoaraRef["writerName"] = books[i].writerName
                         JoaraRef["subject"] = books[i].subject
@@ -1136,10 +1071,9 @@ object Mining {
                         JoaraRef["info3"] = "조회 수 : " + books[i].cntPageRead
                         JoaraRef["info4"] = "선호작 수 : " + books[i].cntFavorite
                         JoaraRef["info5"] = "추천 수 : " + books[i].cntRecom
-                        JoaraRef["number"] = i + (page - 1)
+                        JoaraRef["number"] = i + ((page - 1) * books.size)
                         JoaraRef["date"] = DBDate.DateMMDD()
                         JoaraRef["type"] = "Joara_Nobless"
-                        JoaraRef["data"] = ""
 
                         miningValue(
                             JoaraRef,

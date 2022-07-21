@@ -592,8 +592,8 @@ class ActivityAdmin : AppCompatActivity() {
                 binding.loading.root.visibility = View.VISIBLE
 
                 Thread{
-                    for (i in 1..5) {
-                        Mining.getJoaraBest(this@ActivityAdmin, "ALL", i)
+                    for (i in 1..3) {
+                        Mining.getRidiBest("ALL", i)
                     }
 
                     runOnUiThread {

@@ -172,8 +172,7 @@ object BestRef {
             ref["info5"] as String,
             ref["number"] as Int,
             ref["date"] as String,
-            ref["type"] as String,
-            ref["status"] as String,
+            ref["type"] as String
         )
     }
 
