@@ -90,7 +90,6 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment() {
                                                     group.number,
                                                     group.date,
                                                     group.type,
-                                                    group.status,
                                                     group.memo
                                                 )
                                             )

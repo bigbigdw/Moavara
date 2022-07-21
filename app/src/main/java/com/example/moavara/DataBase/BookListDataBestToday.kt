@@ -51,7 +51,6 @@ data class BookListDataBest (
     var number: Int = 0,
     var date: String = "",
     var type: String = "",
-    var status: String = "",
     var memo: String = "",
 )
 

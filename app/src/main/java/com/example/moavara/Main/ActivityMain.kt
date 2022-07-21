@@ -5,9 +5,11 @@ import android.app.NotificationManager
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
+import android.os.Handler
+import android.os.Looper
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.NotificationCompat
@@ -21,9 +23,7 @@ import androidx.work.WorkManager
 import com.example.moavara.Firebase.FirebaseWorkManager
 import com.example.moavara.R
 import com.example.moavara.Search.ActivitySearch
-import com.example.moavara.Search.WeekendDate
 import com.example.moavara.User.ActivityUser
-import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Genre
 import com.example.moavara.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -62,25 +62,6 @@ class ActivityMain : AppCompatActivity() {
         val navView = findViewById<BottomNavigationView>(R.id.nav_bottom)
         NavigationUI.setupWithNavController(navView, navController!!)
 
-        FirebaseDatabase.getInstance().reference.child("Week").child(DBDate.DayString()).setValue(
-            DBDate.DateMMDD())
-
-        FirebaseDatabase.getInstance().reference.child("Week").get().addOnSuccessListener {
-
-            val week: WeekendDate? = it.getValue(WeekendDate::class.java)
-
-            if(week != null){
-                getSharedPreferences("WEEK", MODE_PRIVATE).edit().putString("SUN", week.sun).apply()
-                getSharedPreferences("WEEK", MODE_PRIVATE).edit().putString("MON", week.mon).apply()
-                getSharedPreferences("WEEK", MODE_PRIVATE).edit().putString("TUE", week.tue).apply()
-                getSharedPreferences("WEEK", MODE_PRIVATE).edit().putString("WED", week.wed).apply()
-                getSharedPreferences("WEEK", MODE_PRIVATE).edit().putString("THUR", week.thur).apply()
-                getSharedPreferences("WEEK", MODE_PRIVATE).edit().putString("FRI", week.fri).apply()
-                getSharedPreferences("WEEK", MODE_PRIVATE).edit().putString("SAT", week.sat).apply()
-            }
-
-        }.addOnFailureListener{}
-
         registNotification()
 
         val mConstraints = Constraints.Builder()
@@ -88,28 +69,28 @@ class ActivityMain : AppCompatActivity() {
             .build()
 
         /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
-        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(1, TimeUnit.HOURS)
+        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(3, TimeUnit.HOURS)
             .setConstraints(mConstraints)
             .build()
 
         val miningRef = FirebaseDatabase.getInstance().reference.child("Mining")
         val workManager = WorkManager.getInstance(applicationContext)
 
-//        Handler(Looper.getMainLooper()).postDelayed({
-//
-//            miningRef.get().addOnSuccessListener {
-//                if(it.value != null && it.value!! != "NULL"){
-//                    Toast.makeText(this, "WorkManager 이미 존재함", Toast.LENGTH_SHORT).show()
-//
-//                } else {
-//                    miningRef.setValue("ALL")
-//
-//                    workManager.enqueue(workRequest)
-//                    FirebaseMessaging.getInstance().subscribeToTopic("all")
-//                    Toast.makeText(this, "WorkManager 추가됨", Toast.LENGTH_SHORT).show()
-//                }
-//            }.addOnFailureListener{}
-//        }, 1000) //1초 후 실행
+        Handler(Looper.getMainLooper()).postDelayed({
+
+            miningRef.get().addOnSuccessListener {
+                if(it.value != null && it.value!! != "NULL"){
+                    Toast.makeText(this, "WorkManager 이미 존재함", Toast.LENGTH_SHORT).show()
+
+                } else {
+                    miningRef.setValue("ALL")
+
+                    workManager.enqueue(workRequest)
+                    FirebaseMessaging.getInstance().subscribeToTopic("all")
+                    Toast.makeText(this, "WorkManager 추가됨", Toast.LENGTH_SHORT).show()
+                }
+            }.addOnFailureListener{}
+        }, 1000) //1초 후 실행
     }
 
     fun registNotification(){

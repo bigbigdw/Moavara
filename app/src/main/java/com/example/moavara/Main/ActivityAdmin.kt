@@ -52,28 +52,28 @@ class ActivityAdmin : AppCompatActivity() {
             .build()
 
         /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
-        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(1, TimeUnit.HOURS)
+        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(3, TimeUnit.HOURS)
             .setConstraints(mConstraints)
             .build()
 
         val miningRef = FirebaseDatabase.getInstance().reference.child("Mining")
         val workManager = WorkManager.getInstance(applicationContext)
 
-//        Handler(Looper.getMainLooper()).postDelayed({
-//
-//            miningRef.get().addOnSuccessListener {
-//                if(it.value != null && it.value!! != "NULL"){
-//                    Toast.makeText(this, "WorkManager 이미 존재함", Toast.LENGTH_SHORT).show()
-//
-//                } else {
-//                    miningRef.setValue("ALL")
-//
-//                    workManager.enqueue(workRequest)
-//                    FirebaseMessaging.getInstance().subscribeToTopic("all")
-//                    Toast.makeText(this, "WorkManager 추가됨", Toast.LENGTH_SHORT).show()
-//                }
-//            }.addOnFailureListener{}
-//        }, 1000) //1초 후 실행
+        Handler(Looper.getMainLooper()).postDelayed({
+
+            miningRef.get().addOnSuccessListener {
+                if(it.value != null && it.value!! != "NULL"){
+                    Toast.makeText(this, "WorkManager 이미 존재함", Toast.LENGTH_SHORT).show()
+
+                } else {
+                    miningRef.setValue("ALL")
+
+                    workManager.enqueue(workRequest)
+                    FirebaseMessaging.getInstance().subscribeToTopic("all")
+                    Toast.makeText(this, "WorkManager 추가됨", Toast.LENGTH_SHORT).show()
+                }
+            }.addOnFailureListener{}
+        }, 1000) //1초 후 실행
 
 
         with(binding){
@@ -591,16 +591,12 @@ class ActivityAdmin : AppCompatActivity() {
 
                 binding.loading.root.visibility = View.VISIBLE
 
-                Thread{
-                    for (i in 1..3) {
-                        Mining.getRidiBest("ALL", i)
-                    }
+//                Mining.runMining(applicationContext, "FANTASY")
+//                Mining.runMining(applicationContext, "ALL")
+//                Mining.runMining(applicationContext, "ROMANCE")
+//                Mining.runMining(applicationContext, "BL")
 
-                    runOnUiThread {
-                        binding.loading.root.visibility = View.GONE
-                        Toast.makeText(applicationContext, "작품 개별 최신화", Toast.LENGTH_SHORT).show()
-                    }
-                }.start()
+                Mining.getMrBlueBest("ALL", this@ActivityAdmin)
             }
 
             llayoutBtn14.setOnClickListener {

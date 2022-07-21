@@ -1,7 +1,6 @@
 package com.example.moavara.Best
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -74,7 +73,6 @@ class FragmentBestTabToday(private val tabType: String) :
                                 group.number,
                                 group.date,
                                 group.type,
-                                group.status,
                                 group.memo
                             )
                         )

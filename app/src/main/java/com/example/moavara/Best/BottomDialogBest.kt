@@ -158,8 +158,7 @@ class BottomDialogBest(
                         item.info5,
                         item.number,
                         item.date,
-                        tabType,
-                        item.status,
+                        tabType
                     )
                 }
 
@@ -259,7 +258,7 @@ class BottomDialogBest(
                                                 } else {
                                                     iviewRank1.setImageResource(R.drawable.ic_best_vt_24px)
                                                 }
-                                                tviewRank1.text = (item.number + 1).toString()
+                                                tviewRank1.text = (group.number + 1).toString()
                                             }
                                             itemDate.date == 2 -> {
                                                 tviewRank2.visibility = View.VISIBLE
@@ -268,7 +267,7 @@ class BottomDialogBest(
                                                 } else {
                                                     iviewRank2.setImageResource(R.drawable.ic_best_vt_24px)
                                                 }
-                                                tviewRank2.text = (item.number + 1).toString()
+                                                tviewRank2.text = (group.number + 1).toString()
                                             }
                                             itemDate.date == 3 -> {
                                                 tviewRank3.visibility = View.VISIBLE
@@ -277,7 +276,7 @@ class BottomDialogBest(
                                                 } else {
                                                     iviewRank3.setImageResource(R.drawable.ic_best_vt_24px)
                                                 }
-                                                tviewRank3.text = (item.number + 1).toString()
+                                                tviewRank3.text = (group.number + 1).toString()
                                             }
                                             itemDate.date == 4 -> {
                                                 tviewRank4.visibility = View.VISIBLE
@@ -286,7 +285,7 @@ class BottomDialogBest(
                                                 } else {
                                                     iviewRank4.setImageResource(R.drawable.ic_best_vt_24px)
                                                 }
-                                                tviewRank4.text = (item.number + 1).toString()
+                                                tviewRank4.text = (group.number + 1).toString()
                                             }
                                             itemDate.date == 5 -> {
                                                 tviewRank5.visibility = View.VISIBLE
@@ -295,7 +294,7 @@ class BottomDialogBest(
                                                 } else {
                                                     iviewRank5.setImageResource(R.drawable.ic_best_vt_24px)
                                                 }
-                                                tviewRank5.text = (item.number + 1).toString()
+                                                tviewRank5.text = (group.number + 1).toString()
                                             }
                                             itemDate.date == 6 -> {
                                                 tviewRank6.visibility = View.VISIBLE
@@ -304,7 +303,7 @@ class BottomDialogBest(
                                                 } else {
                                                     iviewRank6.setImageResource(R.drawable.ic_best_vt_24px)
                                                 }
-                                                tviewRank6.text = (item.number + 1).toString()
+                                                tviewRank6.text = (group.number + 1).toString()
                                             }
                                             itemDate.date == 7 -> {
                                                 tviewRank7.visibility = View.VISIBLE
@@ -313,7 +312,7 @@ class BottomDialogBest(
                                                 } else {
                                                     iviewRank7.setImageResource(R.drawable.ic_best_vt_24px)
                                                 }
-                                                tviewRank7.text = (item.number + 1).toString()
+                                                tviewRank7.text = (group.number + 1).toString()
                                             }
                                         }
                                     }
