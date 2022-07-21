@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-
+            android:fontFamily="@font/pretendardvariable"
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
             android:text="베스트"
@@ -30,6 +30,7 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_width="wrap_content"
+            app:tabTextAppearance="@style/tab_text"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:background="#0D0E10"

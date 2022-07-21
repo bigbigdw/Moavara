@@ -52,7 +52,8 @@
                         android:text="Welcome"
                         android:textAlignment="center"
                         android:textColor="#EDE6FD"
-                        android:textSize="24dp" />
+                        android:textSize="24sp"
+                        tools:visibility="gone" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -67,7 +68,7 @@
                             android:text="모아바라"
                             android:textAlignment="center"
                             android:textColor="#844DF3"
-                            android:textSize="18dp"
+                            android:textSize="14sp"
                             android:textStyle="bold"
                             android:visibility="gone" />
 
@@ -79,7 +80,7 @@
                             android:text="모아바라에 오신것을 환영합니다."
                             android:textAlignment="center"
                             android:textColor="#EDE6FD"
-                            android:textSize="18dp"
+                            android:textSize="14sp"
                             android:visibility="visible" />
                     </LinearLayout>
 
@@ -97,8 +98,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="27dp"
-                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="72dp"
                         android:gravity="center"
                         android:orientation="horizontal">
 
@@ -110,7 +111,7 @@
                             android:text="장르"
                             android:textAlignment="center"
                             android:textColor="#844DF3"
-                            android:textSize="18dp"
+                            android:textSize="18sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -120,7 +121,7 @@
                             android:text="를 선택해주세요"
                             android:textAlignment="center"
                             android:textColor="#EDE6FD"
-                            android:textSize="18dp" />
+                            android:textSize="18sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -131,14 +132,16 @@
                         android:orientation="vertical">
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
 
                             <LinearLayout
                                 android:id="@+id/llayout_btn1"
-                                android:layout_width="260dp"
-                                android:layout_height="56dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="48dp"
+                                android:layout_marginStart="50dp"
+                                android:layout_marginEnd="50dp"
                                 android:layout_marginBottom="8dp"
                                 android:background="#0D0E10"
                                 android:gravity="center"
@@ -150,14 +153,16 @@
                                     android:fontFamily="@font/pretendardvariable"
                                     android:text="판타지"
                                     android:textColor="#EDE6FD"
-                                    android:textSize="16dp"
+                                    android:textSize="16sp"
                                     android:textStyle="bold" />
                             </LinearLayout>
 
                             <LinearLayout
                                 android:id="@+id/llayout_btn2"
-                                android:layout_width="260dp"
-                                android:layout_height="56dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="48dp"
+                                android:layout_marginStart="50dp"
+                                android:layout_marginEnd="50dp"
                                 android:layout_marginBottom="8dp"
                                 android:background="#0D0E10"
                                 android:gravity="center"
@@ -169,14 +174,16 @@
                                     android:fontFamily="@font/pretendardvariable"
                                     android:text="로맨스"
                                     android:textColor="#EDE6FD"
-                                    android:textSize="16dp"
+                                    android:textSize="16sp"
                                     android:textStyle="bold" />
                             </LinearLayout>
 
                             <LinearLayout
                                 android:id="@+id/llayout_btn3"
-                                android:layout_width="260dp"
-                                android:layout_height="56dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="48dp"
+                                android:layout_marginStart="50dp"
+                                android:layout_marginEnd="50dp"
                                 android:layout_marginBottom="8dp"
                                 android:background="#0D0E10"
                                 android:gravity="center"
@@ -188,15 +195,17 @@
                                     android:fontFamily="@font/pretendardvariable"
                                     android:text="장르 무관"
                                     android:textColor="#EDE6FD"
-                                    android:textSize="16dp"
+                                    android:textSize="16sp"
                                     android:textStyle="bold" />
                             </LinearLayout>
 
                             <LinearLayout
                                 android:id="@+id/llayout_btn4"
-                                android:layout_width="260dp"
-                                android:layout_height="56dp"
-                                android:layout_marginBottom="8dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="48dp"
+                                android:layout_marginStart="50dp"
+                                android:layout_marginEnd="50dp"
+                                android:layout_marginBottom="45dp"
                                 android:background="#0D0E10"
                                 android:gravity="center"
                                 android:orientation="vertical">
@@ -207,7 +216,7 @@
                                     android:fontFamily="@font/pretendardvariable"
                                     android:text="BL"
                                     android:textColor="#EDE6FD"
-                                    android:textSize="16dp"
+                                    android:textSize="16sp"
                                     android:textStyle="bold" />
                             </LinearLayout>
 
@@ -230,9 +239,9 @@
                         android:id="@+id/etviewNickname"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="23dp"
-                        android:layout_marginTop="66dp"
-                        android:layout_marginEnd="23dp"
+                        android:layout_marginStart="28dp"
+                        android:layout_marginTop="57dp"
+                        android:layout_marginEnd="28dp"
                         android:layout_marginBottom="80dp"
                         android:backgroundTint="#844DF3"
                         android:cursorVisible="@null"
@@ -270,7 +279,7 @@
                     android:text="다음으로"
                     android:textAlignment="center"
                     android:textColor="#EDE6FD"
-                    android:textSize="14dp" />
+                    android:textSize="20sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -282,7 +291,8 @@
                 android:orientation="vertical"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                tools:visibility="gone">
 
 
                 <TextView
@@ -293,7 +303,7 @@
                     android:text="다음으로"
                     android:textAlignment="center"
                     android:textColor="#EDE6FD"
-                    android:textSize="14dp" />
+                    android:textSize="20sp" />
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

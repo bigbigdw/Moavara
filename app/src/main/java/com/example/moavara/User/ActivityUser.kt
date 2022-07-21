@@ -29,7 +29,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 
 class ActivityUser : AppCompatActivity() {
-    var navController: NavController? = null
     private var auth: FirebaseAuth? = null
     private var googleSignInClient: GoogleSignInClient? = null
     private var GOOGLE_LOGIN_CODE = 9001
@@ -68,16 +67,16 @@ class ActivityUser : AppCompatActivity() {
 
             when (genre) {
                 "ALL" -> {
-                    tviewGenre.text = "선호장르 : 장르 무관"
+                    tviewGenre.text = "선택장르 : 장르 무관"
                 }
                 "FANTASY" -> {
-                    tviewGenre.text = "선호장르 : 판타지"
+                    tviewGenre.text = "선택장르 : 판타지"
                 }
                 "ROMANCE" -> {
-                    tviewGenre.text = "선호장르 : 로맨스"
+                    tviewGenre.text = "선택장르 : 로맨스"
                 }
                 "BL" -> {
-                    tviewGenre.text = "선호장르 : BL"
+                    tviewGenre.text = "선택장르 : BL"
                 }
             }
 

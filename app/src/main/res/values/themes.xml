@@ -47,6 +47,11 @@
         <item name="colorControlNormal">@color/white</item>
     </style>
 
+    <style name="tab_text" parent="@android:style/TextAppearance.Widget.TabWidget">
+        <item name="android:fontFamily">@font/pretendardvariable</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
     <style name="Theme.JoaraDW.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.JoaraDW.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

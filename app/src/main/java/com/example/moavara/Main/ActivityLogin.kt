@@ -116,7 +116,7 @@ class ActivityLogin : AppCompatActivity() {
 
                                     } else {
 
-                                        var dialogLogin: DialogLogin?
+                                        val dialogLogin: DialogLogin?
 
                                         val btnStep1 = View.OnClickListener { v: View? ->
 
@@ -143,6 +143,8 @@ class ActivityLogin : AppCompatActivity() {
                                             val intent = Intent(context, ActivityGenre::class.java)
                                             intent.putExtra("MODE", "NEWBIE")
                                             intent.putExtra("UID", task.result?.user?.uid.toString())
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                                             startActivity(intent)
                                             finish()
                                         }

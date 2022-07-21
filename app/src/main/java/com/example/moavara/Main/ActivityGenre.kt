@@ -90,7 +90,7 @@ class ActivityGenre : AppCompatActivity() {
                 tviewTitle.text = "환영합니다."
                 tviewUserName.visibility = View.VISIBLE
                 tviewUserName.text = context.getSharedPreferences("pref", MODE_PRIVATE)?.getString("NICKNAME", "")
-                tviewUserName2.text = " 님"
+                tviewUserName2.text = "님"
 
                 llayoutNickname.visibility = View.GONE
                 llayoutGenre.visibility = View.VISIBLE
@@ -136,7 +136,8 @@ class ActivityGenre : AppCompatActivity() {
                         tviewTitle.text = "환영합니다."
                         tviewUserName.visibility = View.VISIBLE
                         tviewUserName.text = etviewNickname.text
-                        tviewUserName2.text = " 님"
+                        tviewUserName2.text = "님 모아바라 입니다."
+                        tviewTitle.visibility = View.GONE
                     }
                 }
             }
@@ -232,13 +233,15 @@ class ActivityGenre : AppCompatActivity() {
 
                             savePreferences("NICKNAME", etviewNickname.text.toString())
                             val intent = Intent(context, ActivityGuide::class.java)
-                            Toast.makeText(context, "모아바라에 오신것을 환영합니다", Toast.LENGTH_SHORT).show()
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             startActivity(intent)
                         }
 
                         // 안내 팝업
                         dialogLogin = DialogConfirmLogin(
                             context,
+                            "",
                             "닉네임 : " + etviewNickname.text + "\n선호장르 : $genre",
                             leftListener,
                             rightListener
@@ -259,31 +262,35 @@ class ActivityGenre : AppCompatActivity() {
     override fun onBackPressed() {
         if(mode != "USER") {
             if(binding.llayoutNickname.visibility == View.VISIBLE){
-                val myAlertBuilder: AlertDialog.Builder = AlertDialog.Builder(this@ActivityGenre)
-                myAlertBuilder.setTitle("모아바라 가입")
-                myAlertBuilder.setMessage("가입을 그만두고 로그인 화면으로 돌아가시겠습니까?")
-                myAlertBuilder.setPositiveButton(
-                    "예"
-                ) { _, _ ->
 
-                    val currentUser = FirebaseAuth.getInstance().currentUser
-                    currentUser?.delete()
-                        ?.addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-                                userInfo.child(UID).removeValue()
-                                super.onBackPressed()
-                                finish()
-                            }
-                        }
+                var dialogLogin: DialogConfirmLogin? = null
 
+                val leftListener = View.OnClickListener { v: View? ->
+                    dialogLogin?.dismiss()
                 }
-                myAlertBuilder.setNegativeButton(
-                    "아니요"
-                ) { _, _ ->
-                    finish()
+
+                val rightListener = View.OnClickListener { v: View? ->
+                    savePreferences("NICKNAME", etviewNickname.text.toString())
+                    val intent = Intent(context, ActivityGuide::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(intent)
                 }
-                // Alert를 생성해주고 보여주는 메소드(show를 선언해야 Alert가 생성됨)
-                myAlertBuilder.show()
+
+                // 안내 팝업
+                dialogLogin = DialogConfirmLogin(
+                    context,
+                    "안내",
+                    "가입을 그만두고 로그인 화면으로 돌아가시겠습니까?",
+                    leftListener,
+                    rightListener
+                )
+
+                dialogLogin.window?.setBackgroundDrawable(
+                    ColorDrawable(
+                        Color.TRANSPARENT)
+                )
+                dialogLogin.show()
 
             } else if(binding.llayoutGenre.visibility == View.VISIBLE){
                 binding.llayoutNickname.visibility = View.VISIBLE

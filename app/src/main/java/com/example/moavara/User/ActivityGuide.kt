@@ -6,6 +6,7 @@ import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.moavara.Main.ActivityMain
@@ -71,7 +72,11 @@ class ActivityGuide : AppCompatActivity() {
 
     private fun setLayout() {
         binding.buttonNext.setOnClickListener {
-            finish()
+            val intent = Intent(this@ActivityGuide, ActivityMain::class.java)
+            Toast.makeText(this@ActivityGuide, "모아바라에 오신것을 환영합니다", Toast.LENGTH_SHORT).show()
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
         }
     }
 }

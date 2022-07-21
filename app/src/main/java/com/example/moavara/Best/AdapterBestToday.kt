@@ -7,9 +7,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.BookListDataBest
+import com.example.moavara.DataBase.BookListDataBestAnalyze
 import com.example.moavara.databinding.ItemBooklistBestTodayBinding
 
-class AdapterBestToday(private var holder: List<BookListDataBest>) :
+class AdapterBestToday(
+    private var holder: List<BookListDataBest>,
+    private var bookCodeItems: ArrayList<BookListDataBestAnalyze>
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     interface OnItemClickListener {

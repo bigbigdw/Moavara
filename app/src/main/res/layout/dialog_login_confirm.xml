@@ -39,6 +39,7 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <LinearLayout
+                        android:id="@+id/llayoutHead"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginTop="60dp"
@@ -51,17 +52,21 @@
                             android:layout_width="wrap_content"
 
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/pretendardvariable"
                             android:text="회원정보"
                             android:textAlignment="textStart"
                             android:textColor="#844DF3"
-                            android:textSize="13dp"
+                            android:textSize="16sp"
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tviewHeadWht"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/pretendardvariable"
                             android:text="를 확인해 주세요."
-                            android:textColor="#EDE6FD" />
+                            android:textColor="#EDE6FD"
+                            android:textSize="16sp" />
                     </LinearLayout>
 
                     <TextView
@@ -69,12 +74,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="30dp"
+                        android:fontFamily="@font/pretendardvariable"
                         android:lineSpacingExtra="8dp"
                         android:paddingStart="20dp"
                         android:paddingEnd="20dp"
                         android:text="닉네임: asdasdasdasd adsad\n선호장르: ㄴㅇㄴㅇㄹㅇㄴㄹ"
                         android:textColor="#EDE6FD"
-                        android:textSize="14dp" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -92,9 +98,10 @@
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:background="#6E7686"
+                        android:fontFamily="@font/pretendardvariable"
                         android:text="뒤로가기"
                         android:textColor="#EDE6FD"
-                        android:textSize="14dp"
+                        android:textSize="14sp"
                         android:textStyle="bold"
                         android:visibility="visible"
                         app:backgroundTint="@null" />
@@ -106,9 +113,10 @@
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:background="#844DF3"
+                        android:fontFamily="@font/pretendardvariable"
                         android:text="확인"
                         android:textColor="#EDE6FD"
-                        android:textSize="14dp"
+                        android:textSize="14sp"
                         android:textStyle="bold"
                         android:visibility="visible"
                         app:backgroundTint="@null" />

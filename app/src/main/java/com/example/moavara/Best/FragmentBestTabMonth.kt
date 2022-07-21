@@ -1,13 +1,13 @@
 package com.example.moavara.Best
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moavara.DataBase.BookListDataBest
+import com.example.moavara.DataBase.BookListDataBestAnalyze
 import com.example.moavara.Search.BookListDataBestWeekend
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.Genre
@@ -23,6 +23,7 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment() {
     private val itemMonth = ArrayList<BookListDataBestWeekend>()
     private val ItemMonthDay = ArrayList<BookListDataBest>()
     private var adapterMonthDay: AdapterBestToday? = null
+    private val bookCodeItems = ArrayList<BookListDataBestAnalyze>()
 
     private var _binding: FragmentBestMonthBinding? = null
     private val binding get() = _binding!!
@@ -37,14 +38,13 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment() {
 
         genre = Genre.getGenre(requireContext()).toString()
         adapterMonth = AdapterBestMonth(itemMonth)
-        adapterMonthDay = AdapterBestToday(ItemMonthDay)
+        adapterMonthDay = AdapterBestToday(ItemMonthDay, bookCodeItems)
 
         itemMonth.clear()
         getBestMonth()
 
         with(binding) {
-            rviewBestMonth.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            rviewBestMonth.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             rviewBestMonth.adapter = adapterMonth
 
             adapterMonth.setOnItemClickListener(object : AdapterBestMonth.OnItemClickListener {

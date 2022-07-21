@@ -10,9 +10,11 @@ import android.view.View
 import android.view.WindowManager
 import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.DialogLoginConfirmBinding
+import kotlinx.android.synthetic.main.dialog_login_confirm.*
 
 class DialogConfirmLogin(
     context: Context,
+    private val textHead: String,
     private val textBody: String,
     private val LeftListner: View.OnClickListener,
     private val RightListener: View.OnClickListener,
@@ -35,6 +37,13 @@ class DialogConfirmLogin(
             setColor(Color.parseColor("#3E424B"))
             shape = GradientDrawable.RECTANGLE
             cornerRadius = 15f.dpToPx()
+        }
+
+        if(textHead == ""){
+            tviewHeadWht.visibility = View.VISIBLE
+        } else {
+            tviewHeadWht.visibility = View.GONE
+            tviewUnderline.text = textHead
         }
 
         binding.llayoutBodyInner.background = body
