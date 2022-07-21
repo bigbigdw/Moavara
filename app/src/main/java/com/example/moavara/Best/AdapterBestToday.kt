@@ -53,8 +53,8 @@ class AdapterBestToday(
                         iviewArrow.setImageResource(R.drawable.ic_arrow_drop_up_24px)
                         iviewArrow.visibility = View.VISIBLE
                     } else if(bookCodeItems[position].numberDiff == 0){
-                        tviewNum.text =  "(${bookCodeItems[position].trophyCount})"
-                        tviewNum.setTextColor(Color.parseColor("#EDE6FD"))
+                        tviewNum.text = "NEW"
+                        tviewNum.setTextColor(Color.parseColor("#844DF3"))
                         iviewArrow.visibility = View.GONE
                     } else if(bookCodeItems[position].numberDiff < 0){
                         tviewNum.text =  "${bookCodeItems[position].numberDiff}(${bookCodeItems[position].trophyCount})"
