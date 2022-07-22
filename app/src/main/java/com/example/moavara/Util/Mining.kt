@@ -16,6 +16,7 @@ import com.google.firebase.database.ValueEventListener
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
+import java.io.File
 import java.net.SocketTimeoutException
 
 object Mining {
@@ -226,12 +227,12 @@ object Mining {
         }
     }
 
-    fun getMrBlueBest(cate: String, context: Context) {
+    fun getMrBlueBest(platform: String, context: Context) {
         Thread {
 
             try {
                 val doc: Document =
-                    Jsoup.connect(Genre.setMrBlueGenre(cate)).post()
+                    Jsoup.connect(Genre.setMrBlueGenre(platform)).post()
                 val MrBlue: Elements = doc.select(".list-box li")
                 val MrBlueRef: MutableMap<String?, Any> = HashMap()
 
@@ -251,10 +252,13 @@ object Mining {
                     MrBlueRef["date"] = DBDate.DateMMDD()
                     MrBlueRef["type"] = "MrBlue"
 
-                    miningValue(MrBlueRef, i, "MrBlue", cate)
+                    miningValue(MrBlueRef, i, "MrBlue", platform)
 
                 }
 
+                File(File("/storage/self/primary/MOAVARA"), "Today_MrBlue.json").delete()
+                File(File("/storage/self/primary/MOAVARA"), "Week_MrBlue.json").delete()
+                File(File("/storage/self/primary/MOAVARA"), "Month_MrBlue.json").delete()
 
             } catch (exception: SocketTimeoutException) {
                 Log.d("EXCEPTION", "MRBLUE")
@@ -263,10 +267,10 @@ object Mining {
 
     }
 
-    fun getNaverToday(cate: String, context: Context) {
+    fun getNaverToday(platform: String, context: Context) {
         try {
             val doc: Document =
-                Jsoup.connect(Genre.setNaverTodayGenre(cate)).post()
+                Jsoup.connect(Genre.setNaverTodayGenre(platform)).post()
             val Naver: Elements = doc.select(".ranking_wrap_left .list_ranking li")
             val NaverRef: MutableMap<String?, Any> = HashMap()
 
@@ -288,9 +292,13 @@ object Mining {
                 NaverRef["date"] = DBDate.DateMMDD()
                 NaverRef["type"] = "Naver_Today"
 
-                miningValue(NaverRef, i, "Naver_Today", cate)
+                miningValue(NaverRef, i, "Naver_Today", platform)
 
             }
+
+            File(File("/storage/self/primary/MOAVARA"), "Today_Naver_Today.json").delete()
+            File(File("/storage/self/primary/MOAVARA"), "Week_Naver_Today.json").delete()
+            File(File("/storage/self/primary/MOAVARA"), "Month_Naver_Today.json").delete()
 
 
         } catch (exception: SocketTimeoutException) {
@@ -299,10 +307,10 @@ object Mining {
 
     }
 
-    fun getNaverChallenge(cate: String, context: Context) {
+    fun getNaverChallenge(platform: String, context: Context) {
         try {
             val doc: Document =
-                Jsoup.connect(Genre.setNaverChallengeGenre(cate)).post()
+                Jsoup.connect(Genre.setNaverChallengeGenre(platform)).post()
             val Naver: Elements = doc.select(".ranking_wrap_left .list_ranking li")
             val NaverRef: MutableMap<String?, Any> = HashMap()
 
@@ -322,20 +330,23 @@ object Mining {
                 NaverRef["date"] = DBDate.DateMMDD()
                 NaverRef["type"] = "Naver_Challenge"
 
-                miningValue(NaverRef, i, "Naver_Challenge", cate)
+                miningValue(NaverRef, i, "Naver_Challenge", platform)
             }
 
+            File(File("/storage/self/primary/MOAVARA"), "Today_Naver_Challenge.json").delete()
+            File(File("/storage/self/primary/MOAVARA"), "Week_Naver_Challenge.json").delete()
+            File(File("/storage/self/primary/MOAVARA"), "Month_Naver_Challenge.json").delete()
 
         } catch (exception: SocketTimeoutException) {
             Log.d("EXCEPTION", "NAVER CHALLANGE")
         }
     }
 
-    fun getNaverBest(cate: String, context: Context) {
+    fun getNaverBest(platform: String, context: Context) {
         try {
 
             val doc: Document =
-                Jsoup.connect(Genre.setNaverGenre(cate)).post()
+                Jsoup.connect(Genre.setNaverGenre(platform)).post()
             val Naver: Elements = doc.select(".ranking_wrap_left .list_ranking li")
             val NaverRef: MutableMap<String?, Any> = HashMap()
 
@@ -355,8 +366,12 @@ object Mining {
                 NaverRef["date"] = DBDate.DateMMDD()
                 NaverRef["type"] = "Naver"
 
-                miningValue(NaverRef, i, "Naver", cate)
+                miningValue(NaverRef, i, "Naver", platform)
             }
+
+            File(File("/storage/self/primary/MOAVARA"), "Today_Naver.json").delete()
+            File(File("/storage/self/primary/MOAVARA"), "Week_Naver.json").delete()
+            File(File("/storage/self/primary/MOAVARA"), "Month_Naver.json").delete()
 
 
         } catch (exception: SocketTimeoutException) {
@@ -364,10 +379,10 @@ object Mining {
         }
     }
 
-    fun getRidiBest(cate: String, page: Int) {
+    fun getRidiBest(platform: String, page: Int) {
         try {
             val doc: Document =
-                Jsoup.connect(Genre.setRidiGenre(cate, page)).post()
+                Jsoup.connect(Genre.setRidiGenre(platform, page)).post()
             val Ridi: Elements = doc.select(".book_thumbnail_wrapper")
             val RidiRef: MutableMap<String?, Any> = HashMap()
 
@@ -393,23 +408,27 @@ object Mining {
                     RidiRef["date"] = DBDate.DateMMDD()
                     RidiRef["type"] = "Ridi"
 
-                    miningValue(RidiRef, (i + ((page - 1) * Ridi.size)), "Ridi", cate)
+                    miningValue(RidiRef, (i + ((page - 1) * Ridi.size)), "Ridi", platform)
                 }
             }
+
+            File(File("/storage/self/primary/MOAVARA"), "Today_Ridi.json").delete()
+            File(File("/storage/self/primary/MOAVARA"), "Week_Ridi.json").delete()
+            File(File("/storage/self/primary/MOAVARA"), "Month_Ridi.json").delete()
 
         } catch (exception: SocketTimeoutException) {
             Log.d("EXCEPTION", "RIDI")
         }
     }
 
-    fun getOneStoreBest(cate: String, page: Int, context: Context) {
+    fun getOneStoreBest(platform: String, page: Int, context: Context) {
         try {
             val OneStoryRef: MutableMap<String?, Any> = HashMap()
 
             val apiOneStory = RetrofitOnestore()
             val param: MutableMap<String?, Any> = HashMap()
 
-            param["menuId"] = Genre.setOneStoreGenre(cate)
+            param["menuId"] = Genre.setOneStoreGenre(platform)
             if (page == 1) {
                 param["startKey"] = "0/0"
             } else if (page == 2) {
@@ -447,10 +466,13 @@ object Mining {
                                 OneStoryRef,
                                 (i + ((page - 1) * productList.size)),
                                 "OneStore",
-                                cate
+                                platform
                             )
-
                         }
+
+                        File(File("/storage/self/primary/MOAVARA"), "Today_OneStore.json").delete()
+                        File(File("/storage/self/primary/MOAVARA"), "Week_OneStore.json").delete()
+                        File(File("/storage/self/primary/MOAVARA"), "Month_OneStore.json").delete()
                     }
                 })
         } catch (exception: SocketTimeoutException) {
@@ -458,7 +480,7 @@ object Mining {
         }
     }
 
-    fun getKakaoStageBest(cate: String, context: Context) {
+    fun getKakaoStageBest(platform: String, context: Context) {
         val KakaoRef: MutableMap<String?, Any> = HashMap()
 
         val apiKakao = RetrofitKaKao()
@@ -466,7 +488,7 @@ object Mining {
 
         param["adult"] = "false"
         param["dateRange"] = "YESTERDAY"
-        param["genreIds"] = Genre.setKakaoStageGenre(cate)
+        param["genreIds"] = Genre.setKakaoStageGenre(platform)
         param["recentHours"] = "72"
 
         apiKakao.getBestKakaoStage(
@@ -494,16 +516,19 @@ object Mining {
                             KakaoRef["date"] = DBDate.DateMMDD()
                             KakaoRef["type"] = "Kakao_Stage"
 
-                            miningValue(KakaoRef, i, "Kakao_Stage", cate)
+                            miningValue(KakaoRef, i, "Kakao_Stage", platform)
                         }
 
+                        File(File("/storage/self/primary/MOAVARA"), "Today_Kakao_Stage.json").delete()
+                        File(File("/storage/self/primary/MOAVARA"), "Week_Kakao_Stage.json").delete()
+                        File(File("/storage/self/primary/MOAVARA"), "Month_Kakao_Stage.json").delete()
                     }
 
                 }
             })
     }
 
-    fun getKakaoBest(cate: String, page: Int, context: Context) {
+    fun getKakaoBest(platform: String, page: Int, context: Context) {
         val apiKakao = RetrofitKaKao()
         val param: MutableMap<String?, Any> = HashMap()
         val KakaoRef: MutableMap<String?, Any> = HashMap()
@@ -540,16 +565,18 @@ object Mining {
                             KakaoRef,
                             (i + ((page - 1) * list.size)),
                             "Kakao",
-                            cate
+                            platform
                         )
                     }
 
-
+                    File(File("/storage/self/primary/MOAVARA"), "Today_Kakao.json").delete()
+                    File(File("/storage/self/primary/MOAVARA"), "Week_Kakao.json").delete()
+                    File(File("/storage/self/primary/MOAVARA"), "Month_Kakao.json").delete()
                 }
             })
     }
 
-    fun getJoaraBest(context: Context, cate: String, page: Int) {
+    fun getJoaraBest(context: Context, platform: String, page: Int) {
         val JoaraRef: MutableMap<String?, Any> = HashMap()
         val apiJoara = RetrofitJoara()
         val param = Param.getItemAPI(context)
@@ -557,7 +584,7 @@ object Mining {
         param["page"] = page.toString()
         param["best"] = "today"
         param["store"] = ""
-        param["category"] = Genre.setJoaraGenre(cate)
+        param["category"] = Genre.setJoaraGenre(platform)
 
         apiJoara.getJoaraBookBest(
             param,
@@ -585,14 +612,18 @@ object Mining {
                             JoaraRef,
                             (i + ((page - 1) * books.size)),
                             "Joara",
-                            cate
+                            platform
                         )
                     }
+
+                    File(File("/storage/self/primary/MOAVARA"), "Today_Joara.json").delete()
+                    File(File("/storage/self/primary/MOAVARA"), "Week_Joara.json").delete()
+                    File(File("/storage/self/primary/MOAVARA"), "Month_Joara.json").delete()
                 }
             })
     }
 
-    fun getJoaraBestPremium(context: Context, cate: String, page: Int) {
+    fun getJoaraBestPremium(context: Context, platform: String, page: Int) {
 
         val JoaraRef: MutableMap<String?, Any> = HashMap()
 
@@ -602,7 +633,7 @@ object Mining {
         param["page"] = page.toString()
         param["best"] = "today"
         param["store"] = "premium"
-        param["category"] = Genre.setJoaraGenre(cate)
+        param["category"] = Genre.setJoaraGenre(platform)
 
         apiJoara.getJoaraBookBest(
             param,
@@ -631,15 +662,19 @@ object Mining {
                             JoaraRef,
                             (i + ((page - 1) * books.size)),
                             "Joara_Premium",
-                            cate
+                            platform
                         )
                     }
+
+                    File(File("/storage/self/primary/MOAVARA"), "Today_Joara_Premium.json").delete()
+                    File(File("/storage/self/primary/MOAVARA"), "Week_Joara_Premium.json").delete()
+                    File(File("/storage/self/primary/MOAVARA"), "Month_Joara_Premium.json").delete()
                 }
             })
 
     }
 
-    fun getJoaraBestNobless(context: Context, cate: String, page: Int) {
+    fun getJoaraBestNobless(context: Context, platform: String, page: Int) {
 
         val JoaraRef: MutableMap<String?, Any> = HashMap()
 
@@ -649,7 +684,7 @@ object Mining {
         param["page"] = page.toString()
         param["best"] = "today"
         param["store"] = "nobless"
-        param["category"] = Genre.setJoaraGenre(cate)
+        param["category"] = Genre.setJoaraGenre(platform)
 
         apiJoara.getJoaraBookBest(
             param,
@@ -678,10 +713,13 @@ object Mining {
                             JoaraRef,
                             (i + ((page - 1) * books.size)),
                             "Joara_Nobless",
-                            cate
+                            platform
                         )
                     }
 
+                    File(File("/storage/self/primary/MOAVARA"), "Today_Joara_Nobless.json").delete()
+                    File(File("/storage/self/primary/MOAVARA"), "Week_Joara_Nobless.json").delete()
+                    File(File("/storage/self/primary/MOAVARA"), "Month_Joara_Nobless.json").delete()
                 }
             })
 
@@ -729,6 +767,10 @@ object Mining {
                                     ""
                                 )
                             }
+
+                            File(File("/storage/self/primary/MOAVARA"), "Today_Munpia.json").delete()
+                            File(File("/storage/self/primary/MOAVARA"), "Week_Munpia.json").delete()
+                            File(File("/storage/self/primary/MOAVARA"), "Month_Munpia.json").delete()
                         }
                     }
 
@@ -779,6 +821,10 @@ object Mining {
                                 genre
                             )
                         }
+
+                        File(File("/storage/self/primary/MOAVARA"), "Today_Toksoda.json").delete()
+                        File(File("/storage/self/primary/MOAVARA"), "Week_Toksoda.json").delete()
+                        File(File("/storage/self/primary/MOAVARA"), "Month_Toksoda.json").delete()
                     }
                 }
             })

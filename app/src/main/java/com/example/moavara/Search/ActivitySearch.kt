@@ -74,15 +74,16 @@ class ActivitySearch : AppCompatActivity() {
 
                 text = query.toString()
 
-                searchJoara(page, text)
-                searchKakaoStage(text)
-                searchKakao(page - 1, text)
-                searchNaver(text, "Naver")
-                searchNaver(text, "Naver_Today")
-                searchNaver(text, "Naver_Challenge")
-                searchMunpia(text)
-                searchToksoda(text)
                 searchMrBlue(text)
+                searchToksoda(text)
+                searchMunpia(text)
+                searchNaver(text, "Naver_Challenge")
+                searchNaver(text, "Naver_Today")
+                searchNaver(text, "Naver")
+                searchKakao(page - 1, text)
+                searchKakaoStage(text)
+                searchJoara(page, text)
+
                 return false
             }
 
@@ -139,15 +140,19 @@ class ActivitySearch : AppCompatActivity() {
                             )
                         }
 
-                        val cmpAsc: java.util.Comparator<BookListData> =
-                            Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
-                        Collections.sort(searchItems, cmpAsc)
+                        Log.d("####-!!!!", type)
 
-                        adapter?.notifyDataSetChanged()
+                        if(type == "Joara" || type == "Keyword"){
+                            val cmpAsc: java.util.Comparator<BookListData> =
+                                Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
+                            Collections.sort(searchItems, cmpAsc)
 
-                        with(binding) {
-                            blank.root.visibility = View.GONE
-                            rviewSearch.visibility = View.VISIBLE
+                            adapter?.notifyDataSetChanged()
+
+                            with(binding) {
+                                blank.root.visibility = View.GONE
+                                rviewSearch.visibility = View.VISIBLE
+                            }
                         }
                     }
                 }
@@ -250,6 +255,11 @@ class ActivitySearch : AppCompatActivity() {
                     Collections.sort(searchItems, cmpAsc)
 
                     adapter?.notifyDataSetChanged()
+
+                    with(binding) {
+                        blank.root.visibility = View.GONE
+                        rviewSearch.visibility = View.VISIBLE
+                    }
                 }
             })
     }
@@ -304,6 +314,11 @@ class ActivitySearch : AppCompatActivity() {
                 Collections.sort(searchItems, cmpAsc)
 
                 adapter?.notifyDataSetChanged()
+
+                with(binding) {
+                    blank.root.visibility = View.GONE
+                    rviewSearch.visibility = View.VISIBLE
+                }
             }
         }.start()
     }
@@ -341,7 +356,13 @@ class ActivitySearch : AppCompatActivity() {
                 val cmpAsc: java.util.Comparator<BookListData> =
                     Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
                 Collections.sort(searchItems, cmpAsc)
+
                 adapter?.notifyDataSetChanged()
+
+                with(binding) {
+                    blank.root.visibility = View.GONE
+                    rviewSearch.visibility = View.VISIBLE
+                }
             }
         }.start()
     }
@@ -390,7 +411,13 @@ class ActivitySearch : AppCompatActivity() {
                             val cmpAsc: java.util.Comparator<BookListData> =
                                 Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
                             Collections.sort(searchItems, cmpAsc)
+
                             adapter?.notifyDataSetChanged()
+
+                            with(binding) {
+                                blank.root.visibility = View.GONE
+                                rviewSearch.visibility = View.VISIBLE
+                            }
                         }
                     }
                 }
@@ -444,6 +471,11 @@ class ActivitySearch : AppCompatActivity() {
                 Collections.sort(searchItems, cmpAsc)
 
                 adapter?.notifyDataSetChanged()
+
+                with(binding) {
+                    blank.root.visibility = View.GONE
+                    rviewSearch.visibility = View.VISIBLE
+                }
             }
         }.start()
     }
