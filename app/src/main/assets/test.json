@@ -1500,5 +1500,907 @@
       "type": "Joara",
       "memo": ""
     }
+  ],
+  "itemStatus": [
+    {
+      "info1": "조회 수 : 77101",
+      "info2": "선호작 수 : 2321",
+      "info3": "추천 수 : 1589",
+      "number": 0,
+      "date": "20220722",
+      "numberDiff": 0,
+      "trophyCount": 0
+    },
+    {
+      "info1": "조회 수 : 71916",
+      "info2": "선호작 수 : 1847",
+      "info3": "추천 수 : 1445",
+      "number": 1,
+      "date": "20220722",
+      "numberDiff": 0,
+      "trophyCount": 0
+    },
+    {
+      "info1": "조회 수 : 44440",
+      "info2": "선호작 수 : 1396",
+      "info3": "추천 수 : 759",
+      "number": 2,
+      "date": "20220722",
+      "numberDiff": 15,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 36642",
+      "info2": "선호작 수 : 1036",
+      "info3": "추천 수 : 409",
+      "number": 3,
+      "date": "20220722",
+      "numberDiff": 10,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 33468",
+      "info2": "선호작 수 : 499",
+      "info3": "추천 수 : 679",
+      "number": 4,
+      "date": "20220722",
+      "numberDiff": -4,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 27420",
+      "info2": "선호작 수 : 63",
+      "info3": "추천 수 : 1051",
+      "number": 5,
+      "date": "20220722",
+      "numberDiff": 1,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 21113",
+      "info2": "선호작 수 : 389",
+      "info3": "추천 수 : 412",
+      "number": 6,
+      "date": "20220722",
+      "numberDiff": -5,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 14255",
+      "info2": "선호작 수 : 564",
+      "info3": "추천 수 : 501",
+      "number": 7,
+      "date": "20220722",
+      "numberDiff": 5,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 15430",
+      "info2": "선호작 수 : 380",
+      "info3": "추천 수 : 229",
+      "number": 8,
+      "date": "20220722",
+      "numberDiff": 10,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 10586",
+      "info2": "선호작 수 : 391",
+      "info3": "추천 수 : 164",
+      "number": 9,
+      "date": "20220722",
+      "numberDiff": 0,
+      "trophyCount": 0
+    },
+    {
+      "info1": "조회 수 : 20490",
+      "info2": "선호작 수 : 23",
+      "info3": "추천 수 : 641",
+      "number": 10,
+      "date": "20220722",
+      "numberDiff": -1,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 23990",
+      "info2": "선호작 수 : 118",
+      "info3": "추천 수 : 534",
+      "number": 11,
+      "date": "20220722",
+      "numberDiff": 0,
+      "trophyCount": 0
+    },
+    {
+      "info1": "조회 수 : 17629",
+      "info2": "선호작 수 : 128",
+      "info3": "추천 수 : 5",
+      "number": 12,
+      "date": "20220722",
+      "numberDiff": 0,
+      "trophyCount": 0
+    },
+    {
+      "info1": "조회 수 : 7580",
+      "info2": "선호작 수 : 478",
+      "info3": "추천 수 : 514",
+      "number": 13,
+      "date": "20220722",
+      "numberDiff": 0,
+      "trophyCount": 0
+    },
+    {
+      "info1": "조회 수 : 11353",
+      "info2": "선호작 수 : 259",
+      "info3": "추천 수 : 186",
+      "number": 14,
+      "date": "20220722",
+      "numberDiff": -5,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 19200",
+      "info2": "선호작 수 : 316",
+      "info3": "추천 수 : 91",
+      "number": 15,
+      "date": "20220722",
+      "numberDiff": 0,
+      "trophyCount": 0
+    },
+    {
+      "info1": "조회 수 : 9114",
+      "info2": "선호작 수 : 293",
+      "info3": "추천 수 : 177",
+      "number": 16,
+      "date": "20220722",
+      "numberDiff": 0,
+      "trophyCount": 0
+    },
+    {
+      "info1": "조회 수 : 14893",
+      "info2": "선호작 수 : 318",
+      "info3": "추천 수 : 130",
+      "number": 17,
+      "date": "20220722",
+      "numberDiff": 0,
+      "trophyCount": 0
+    },
+    {
+      "info1": "조회 수 : 14993",
+      "info2": "선호작 수 : 82",
+      "info3": "추천 수 : 3",
+      "number": 18,
+      "date": "20220722",
+      "numberDiff": -10,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 11354",
+      "info2": "선호작 수 : 106",
+      "info3": "추천 수 : 312",
+      "number": 19,
+      "date": "20220722",
+      "numberDiff": -18,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 10955",
+      "info2": "선호작 수 : 73",
+      "info3": "추천 수 : 398",
+      "number": 20,
+      "date": "20220722",
+      "numberDiff": 0,
+      "trophyCount": 0
+    },
+    {
+      "info1": "조회 수 : 10649",
+      "info2": "선호작 수 : 118",
+      "info3": "추천 수 : 207",
+      "number": 21,
+      "date": "20220722",
+      "numberDiff": -14,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 10381",
+      "info2": "선호작 수 : 191",
+      "info3": "추천 수 : 153",
+      "number": 22,
+      "date": "20220722",
+      "numberDiff": -19,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 10206",
+      "info2": "선호작 수 : 80",
+      "info3": "추천 수 : 342",
+      "number": 23,
+      "date": "20220722",
+      "numberDiff": -9,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 8371",
+      "info2": "선호작 수 : 126",
+      "info3": "추천 수 : 244",
+      "number": 24,
+      "date": "20220722",
+      "numberDiff": -11,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 9179",
+      "info2": "선호작 수 : 7",
+      "info3": "추천 수 : 352",
+      "number": 25,
+      "date": "20220722",
+      "numberDiff": 0,
+      "trophyCount": 0
+    },
+    {
+      "info1": "조회 수 : 12201",
+      "info2": "선호작 수 : 144",
+      "info3": "추천 수 : 51",
+      "number": 26,
+      "date": "20220722",
+      "numberDiff": -9,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 6836",
+      "info2": "선호작 수 : 124",
+      "info3": "추천 수 : 205",
+      "number": 27,
+      "date": "20220722",
+      "numberDiff": -25,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 8628",
+      "info2": "선호작 수 : 98",
+      "info3": "추천 수 : 357",
+      "number": 28,
+      "date": "20220722",
+      "numberDiff": 0,
+      "trophyCount": 0
+    },
+    {
+      "info1": "조회 수 : 7570",
+      "info2": "선호작 수 : 46",
+      "info3": "추천 수 : 255",
+      "number": 29,
+      "date": "20220722",
+      "numberDiff": -15,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 11364",
+      "info2": "선호작 수 : 50",
+      "info3": "추천 수 : 201",
+      "number": 30,
+      "date": "20220722",
+      "numberDiff": -20,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 5870",
+      "info2": "선호작 수 : 93",
+      "info3": "추천 수 : 136",
+      "number": 31,
+      "date": "20220722",
+      "numberDiff": -21,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 8646",
+      "info2": "선호작 수 : 31",
+      "info3": "추천 수 : 3",
+      "number": 32,
+      "date": "20220722",
+      "numberDiff": -17,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 7460",
+      "info2": "선호작 수 : 79",
+      "info3": "추천 수 : 351",
+      "number": 33,
+      "date": "20220722",
+      "numberDiff": -19,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 6424",
+      "info2": "선호작 수 : 36",
+      "info3": "추천 수 : 218",
+      "number": 34,
+      "date": "20220722",
+      "numberDiff": 0,
+      "trophyCount": 0
+    },
+    {
+      "info1": "조회 수 : 5227",
+      "info2": "선호작 수 : 34",
+      "info3": "추천 수 : 51",
+      "number": 35,
+      "date": "20220722",
+      "numberDiff": -29,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 6841",
+      "info2": "선호작 수 : 117",
+      "info3": "추천 수 : 219",
+      "number": 36,
+      "date": "20220722",
+      "numberDiff": -31,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 7692",
+      "info2": "선호작 수 : 34",
+      "info3": "추천 수 : 3",
+      "number": 37,
+      "date": "20220722",
+      "numberDiff": -19,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 6623",
+      "info2": "선호작 수 : 47",
+      "info3": "추천 수 : 29",
+      "number": 38,
+      "date": "20220722",
+      "numberDiff": -22,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 8695",
+      "info2": "선호작 수 : 39",
+      "info3": "추천 수 : 350",
+      "number": 39,
+      "date": "20220722",
+      "numberDiff": -30,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 6014",
+      "info2": "선호작 수 : 67",
+      "info3": "추천 수 : 112",
+      "number": 40,
+      "date": "20220722",
+      "numberDiff": -27,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 7449",
+      "info2": "선호작 수 : 21",
+      "info3": "추천 수 : 25",
+      "number": 41,
+      "date": "20220722",
+      "numberDiff": -20,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 7040",
+      "info2": "선호작 수 : 14",
+      "info3": "추천 수 : 238",
+      "number": 42,
+      "date": "20220722",
+      "numberDiff": 0,
+      "trophyCount": 0
+    },
+    {
+      "info1": "조회 수 : 8318",
+      "info2": "선호작 수 : 70",
+      "info3": "추천 수 : 244",
+      "number": 43,
+      "date": "20220722",
+      "numberDiff": -39,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 8958",
+      "info2": "선호작 수 : 16",
+      "info3": "추천 수 : 163",
+      "number": 44,
+      "date": "20220722",
+      "numberDiff": -25,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 5262",
+      "info2": "선호작 수 : 54",
+      "info3": "추천 수 : 199",
+      "number": 45,
+      "date": "20220722",
+      "numberDiff": -37,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 5588",
+      "info2": "선호작 수 : 58",
+      "info3": "추천 수 : 166",
+      "number": 46,
+      "date": "20220722",
+      "numberDiff": 0,
+      "trophyCount": 0
+    },
+    {
+      "info1": "조회 수 : 6934",
+      "info2": "선호작 수 : 0",
+      "info3": "추천 수 : 299",
+      "number": 47,
+      "date": "20220722",
+      "numberDiff": 0,
+      "trophyCount": 0
+    },
+    {
+      "info1": "조회 수 : 4992",
+      "info2": "선호작 수 : 31",
+      "info3": "추천 수 : 154",
+      "number": 48,
+      "date": "20220722",
+      "numberDiff": -29,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 4062",
+      "info2": "선호작 수 : 105",
+      "info3": "추천 수 : 166",
+      "number": 49,
+      "date": "20220722",
+      "numberDiff": -27,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 5756",
+      "info2": "선호작 수 : 27",
+      "info3": "추천 수 : 4",
+      "number": 50,
+      "date": "20220722",
+      "numberDiff": -47,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 6285",
+      "info2": "선호작 수 : 4",
+      "info3": "추천 수 : 140",
+      "number": 51,
+      "date": "20220722",
+      "numberDiff": 0,
+      "trophyCount": 0
+    },
+    {
+      "info1": "조회 수 : 8754",
+      "info2": "선호작 수 : 68",
+      "info3": "추천 수 : 109",
+      "number": 52,
+      "date": "20220722",
+      "numberDiff": -43,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 5268",
+      "info2": "선호작 수 : 65",
+      "info3": "추천 수 : 37",
+      "number": 53,
+      "date": "20220722",
+      "numberDiff": -49,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 10345",
+      "info2": "선호작 수 : 53",
+      "info3": "추천 수 : 76",
+      "number": 54,
+      "date": "20220722",
+      "numberDiff": 0,
+      "trophyCount": 0
+    },
+    {
+      "info1": "조회 수 : 5619",
+      "info2": "선호작 수 : 6",
+      "info3": "추천 수 : 12",
+      "number": 55,
+      "date": "20220722",
+      "numberDiff": -48,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 7029",
+      "info2": "선호작 수 : 26",
+      "info3": "추천 수 : 181",
+      "number": 56,
+      "date": "20220722",
+      "numberDiff": -39,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 5682",
+      "info2": "선호작 수 : 28",
+      "info3": "추천 수 : 92",
+      "number": 57,
+      "date": "20220722",
+      "numberDiff": 0,
+      "trophyCount": 0
+    },
+    {
+      "info1": "조회 수 : 5324",
+      "info2": "선호작 수 : 61",
+      "info3": "추천 수 : 34",
+      "number": 58,
+      "date": "20220722",
+      "numberDiff": -53,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 5482",
+      "info2": "선호작 수 : 5",
+      "info3": "추천 수 : 186",
+      "number": 59,
+      "date": "20220722",
+      "numberDiff": 0,
+      "trophyCount": 0
+    },
+    {
+      "info1": "조회 수 : 6490",
+      "info2": "선호작 수 : 44",
+      "info3": "추천 수 : 337",
+      "number": 60,
+      "date": "20220722",
+      "numberDiff": -49,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 6596",
+      "info2": "선호작 수 : 0",
+      "info3": "추천 수 : 101",
+      "number": 61,
+      "date": "20220722",
+      "numberDiff": -49,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 4187",
+      "info2": "선호작 수 : 27",
+      "info3": "추천 수 : 104",
+      "number": 62,
+      "date": "20220722",
+      "numberDiff": 0,
+      "trophyCount": 0
+    },
+    {
+      "info1": "조회 수 : 5841",
+      "info2": "선호작 수 : 52",
+      "info3": "추천 수 : 101",
+      "number": 63,
+      "date": "20220722",
+      "numberDiff": -47,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 5169",
+      "info2": "선호작 수 : 12",
+      "info3": "추천 수 : 128",
+      "number": 64,
+      "date": "20220722",
+      "numberDiff": -49,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 6884",
+      "info2": "선호작 수 : 12",
+      "info3": "추천 수 : 2",
+      "number": 65,
+      "date": "20220722",
+      "numberDiff": 0,
+      "trophyCount": 0
+    },
+    {
+      "info1": "조회 수 : 4360",
+      "info2": "선호작 수 : 21",
+      "info3": "추천 수 : 1",
+      "number": 66,
+      "date": "20220722",
+      "numberDiff": 0,
+      "trophyCount": 0
+    },
+    {
+      "info1": "조회 수 : 3772",
+      "info2": "선호작 수 : 39",
+      "info3": "추천 수 : 150",
+      "number": 67,
+      "date": "20220722",
+      "numberDiff": -49,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 4405",
+      "info2": "선호작 수 : 5",
+      "info3": "추천 수 : 64",
+      "number": 68,
+      "date": "20220722",
+      "numberDiff": -66,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 6066",
+      "info2": "선호작 수 : 18",
+      "info3": "추천 수 : 70",
+      "number": 69,
+      "date": "20220722",
+      "numberDiff": -66,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 3332",
+      "info2": "선호작 수 : 55",
+      "info3": "추천 수 : 26",
+      "number": 70,
+      "date": "20220722",
+      "numberDiff": -59,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 3931",
+      "info2": "선호작 수 : 26",
+      "info3": "추천 수 : 145",
+      "number": 71,
+      "date": "20220722",
+      "numberDiff": -51,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 5146",
+      "info2": "선호작 수 : 39",
+      "info3": "추천 수 : 230",
+      "number": 72,
+      "date": "20220722",
+      "numberDiff": -53,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 3959",
+      "info2": "선호작 수 : 14",
+      "info3": "추천 수 : 6",
+      "number": 73,
+      "date": "20220722",
+      "numberDiff": -66,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 4100",
+      "info2": "선호작 수 : 52",
+      "info3": "추천 수 : 99",
+      "number": 74,
+      "date": "20220722",
+      "numberDiff": -58,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 4905",
+      "info2": "선호작 수 : 47",
+      "info3": "추천 수 : 82",
+      "number": 75,
+      "date": "20220722",
+      "numberDiff": -62,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 5269",
+      "info2": "선호작 수 : 9",
+      "info3": "추천 수 : 70",
+      "number": 76,
+      "date": "20220722",
+      "numberDiff": -65,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 3895",
+      "info2": "선호작 수 : 14",
+      "info3": "추천 수 : 6",
+      "number": 77,
+      "date": "20220722",
+      "numberDiff": -66,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 4874",
+      "info2": "선호작 수 : 8",
+      "info3": "추천 수 : 98",
+      "number": 78,
+      "date": "20220722",
+      "numberDiff": -68,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 3624",
+      "info2": "선호작 수 : 19",
+      "info3": "추천 수 : 1",
+      "number": 79,
+      "date": "20220722",
+      "numberDiff": -64,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 3299",
+      "info2": "선호작 수 : 30",
+      "info3": "추천 수 : 49",
+      "number": 80,
+      "date": "20220722",
+      "numberDiff": -73,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 3070",
+      "info2": "선호작 수 : 28",
+      "info3": "추천 수 : 27",
+      "number": 81,
+      "date": "20220722",
+      "numberDiff": -61,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 6149",
+      "info2": "선호작 수 : 10",
+      "info3": "추천 수 : 174",
+      "number": 82,
+      "date": "20220722",
+      "numberDiff": 0,
+      "trophyCount": 0
+    },
+    {
+      "info1": "조회 수 : 4212",
+      "info2": "선호작 수 : 4",
+      "info3": "추천 수 : 178",
+      "number": 83,
+      "date": "20220722",
+      "numberDiff": 0,
+      "trophyCount": 0
+    },
+    {
+      "info1": "조회 수 : 2865",
+      "info2": "선호작 수 : 29",
+      "info3": "추천 수 : 72",
+      "number": 84,
+      "date": "20220722",
+      "numberDiff": -62,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 2936",
+      "info2": "선호작 수 : 21",
+      "info3": "추천 수 : 66",
+      "number": 85,
+      "date": "20220722",
+      "numberDiff": -77,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 4002",
+      "info2": "선호작 수 : 0",
+      "info3": "추천 수 : 6",
+      "number": 86,
+      "date": "20220722",
+      "numberDiff": -67,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 3390",
+      "info2": "선호작 수 : 24",
+      "info3": "추천 수 : 104",
+      "number": 87,
+      "date": "20220722",
+      "numberDiff": 0,
+      "trophyCount": 0
+    },
+    {
+      "info1": "조회 수 : 2442",
+      "info2": "선호작 수 : 57",
+      "info3": "추천 수 : 67",
+      "number": 88,
+      "date": "20220722",
+      "numberDiff": -86,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 3004",
+      "info2": "선호작 수 : 8",
+      "info3": "추천 수 : 157",
+      "number": 89,
+      "date": "20220722",
+      "numberDiff": 0,
+      "trophyCount": 0
+    },
+    {
+      "info1": "조회 수 : 5011",
+      "info2": "선호작 수 : 14",
+      "info3": "추천 수 : 156",
+      "number": 90,
+      "date": "20220722",
+      "numberDiff": -84,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 4431",
+      "info2": "선호작 수 : 11",
+      "info3": "추천 수 : 170",
+      "number": 91,
+      "date": "20220722",
+      "numberDiff": -77,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 3287",
+      "info2": "선호작 수 : 14",
+      "info3": "추천 수 : 78",
+      "number": 92,
+      "date": "20220722",
+      "numberDiff": 0,
+      "trophyCount": 0
+    },
+    {
+      "info1": "조회 수 : 4452",
+      "info2": "선호작 수 : 11",
+      "info3": "추천 수 : 51",
+      "number": 93,
+      "date": "20220722",
+      "numberDiff": -74,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 3008",
+      "info2": "선호작 수 : 4",
+      "info3": "추천 수 : 94",
+      "number": 94,
+      "date": "20220722",
+      "numberDiff": 0,
+      "trophyCount": 0
+    },
+    {
+      "info1": "조회 수 : 3039",
+      "info2": "선호작 수 : 16",
+      "info3": "추천 수 : 1",
+      "number": 95,
+      "date": "20220722",
+      "numberDiff": -81,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 3775",
+      "info2": "선호작 수 : 22",
+      "info3": "추천 수 : 27",
+      "number": 96,
+      "date": "20220722",
+      "numberDiff": -89,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 4739",
+      "info2": "선호작 수 : 2",
+      "info3": "추천 수 : 198",
+      "number": 97,
+      "date": "20220722",
+      "numberDiff": 0,
+      "trophyCount": 0
+    },
+    {
+      "info1": "조회 수 : 3071",
+      "info2": "선호작 수 : 33",
+      "info3": "추천 수 : 23",
+      "number": 98,
+      "date": "20220722",
+      "numberDiff": -88,
+      "trophyCount": 2
+    },
+    {
+      "info1": "조회 수 : 3967",
+      "info2": "선호작 수 : 19",
+      "info3": "추천 수 : 71",
+      "number": 99,
+      "date": "20220722",
+      "numberDiff": 0,
+      "trophyCount": 0
+    }
   ]
 }

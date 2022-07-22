@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moavara.DataBase.BookListDataBest
@@ -52,15 +53,32 @@ class FragmentBestTabToday(private val tabType: String) :
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rviewBest.adapter = adapterToday
 
-        readFile("test")
-//        getBookListToday()
+        readFile()
+
+        adapterToday?.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
+            override fun onItemClick(v: View?, position: Int) {
+                val item: BookListDataBest? = adapterToday?.getItem(position)
+
+                val mBottomDialogBest = BottomDialogBest(
+                    requireContext(),
+                    item,
+                    tabType,
+                    position
+                )
+
+                fragmentManager?.let { mBottomDialogBest.show(it, null) }
+            }
+        })
 
         return view
     }
 
     private fun getBookListToday() {
 
-        val jsonArr1 = JSONArray()
+        val file = File(Environment.getExternalStorageDirectory(), "${tabType}.json")
+        file.delete()
+
+        val jsonArray = JSONArray()
 
         BestRef.getBestDataToday(tabType, genre).addListenerForSingleValueEvent(object :
             ValueEventListener {
@@ -68,26 +86,26 @@ class FragmentBestTabToday(private val tabType: String) :
                 try {
 
                     for (postSnapshot in dataSnapshot.children) {
-                        val sObject = JSONObject() //배열 내에 들어갈 json
+                        val jsonObject = JSONObject() //배열 내에 들어갈 json
 
                         val group: BookListDataBest? =
                             postSnapshot.getValue(BookListDataBest::class.java)
 
                         if (group != null) {
 
-                            sObject.put("writer", group.writer)
-                            sObject.put("title", group.title)
-                            sObject.put("bookImg", group.bookImg)
-                            sObject.put("bookCode", group.bookCode)
-                            sObject.put("info1", group.info1)
-                            sObject.put("info2", group.info2)
-                            sObject.put("info3", group.info3)
-                            sObject.put("info4", group.info4)
-                            sObject.put("info5", group.info5)
-                            sObject.put("number", group.number)
-                            sObject.put("date", group.date)
-                            sObject.put("type", group.type)
-                            sObject.put("memo", group.memo)
+                            jsonObject.put("writer", group.writer)
+                            jsonObject.put("title", group.title)
+                            jsonObject.put("bookImg", group.bookImg)
+                            jsonObject.put("bookCode", group.bookCode)
+                            jsonObject.put("info1", group.info1)
+                            jsonObject.put("info2", group.info2)
+                            jsonObject.put("info3", group.info3)
+                            jsonObject.put("info4", group.info4)
+                            jsonObject.put("info5", group.info5)
+                            jsonObject.put("number", group.number)
+                            jsonObject.put("date", group.date)
+                            jsonObject.put("type", group.type)
+                            jsonObject.put("memo", group.memo)
 
                             items.add(BookListDataBest(
                                 group.writer,
@@ -105,12 +123,10 @@ class FragmentBestTabToday(private val tabType: String) :
                                 group.memo
                             ))
 
-                            jsonArr1.put(sObject)
+                            jsonArray.put(jsonObject)
                         }
                     }
-
-                    obj.putOpt("items", jsonArr1)
-                    writeFile(obj, "test")
+                    obj.putOpt("items", jsonArray)
                     getBestTodayList(items, true)
                     adapterToday?.notifyDataSetChanged()
                 } catch (e: JSONException) {
@@ -121,20 +137,7 @@ class FragmentBestTabToday(private val tabType: String) :
             override fun onCancelled(databaseError: DatabaseError) {}
         })
 
-        adapterToday?.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
-            override fun onItemClick(v: View?, position: Int) {
-                val item: BookListDataBest? = adapterToday?.getItem(position)
 
-                val mBottomDialogBest = BottomDialogBest(
-                    requireContext(),
-                    item,
-                    tabType,
-                    position
-                )
-
-                fragmentManager?.let { mBottomDialogBest.show(it, null) }
-            }
-        })
     }
 
     override fun getBestTodayList(items: ArrayList<BookListDataBest>, status: Boolean) {
@@ -142,65 +145,100 @@ class FragmentBestTabToday(private val tabType: String) :
         BestRef.getBookCode(tabType, genre).addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (bookCodeList in items) {
-                    val items = dataSnapshot.child(bookCodeList.bookCode)
 
-                    if (items.childrenCount > 1) {
-                        val bookCodes = ArrayList<BookListDataBestAnalyze>()
+                val jsonArray = JSONArray()
 
-                        for(item in items.children){
+                try {
+                    for (bookCodeList in items) {
 
-                            val group: BookListDataBest? = item.getValue(BookListDataBest::class.java)
+                        val items = dataSnapshot.child(bookCodeList.bookCode)
+
+                        if (items.childrenCount > 1) {
+
+                            val jsonObject = JSONObject()
+
+                            val bookCodes = ArrayList<BookListDataBestAnalyze>()
+
+                            for(item in items.children){
+
+                                val group: BookListDataBest? = item.getValue(BookListDataBest::class.java)
+
+                                if (group != null) {
+                                    bookCodes.add(
+                                        BookListDataBestAnalyze(
+                                            group.info1,
+                                            group.info2,
+                                            group.info3,
+                                            group.number,
+                                            group.date,
+                                        )
+                                    )
+                                }
+                            }
+
+                            val lastItem = bookCodes[bookCodes.size - 1]
+                            val moreLastItem = bookCodes[bookCodes.size - 2]
+
+                            bookCodeItems.add(
+                                BookListDataBestAnalyze(
+                                    lastItem.info1,
+                                    lastItem.info2,
+                                    lastItem.info3,
+                                    lastItem.number,
+                                    lastItem.date,
+                                    moreLastItem.number - lastItem.number,
+                                    bookCodes.size
+                                )
+                            )
+
+                            jsonObject.put("info1", lastItem.info1)
+                            jsonObject.put("info2", lastItem.info2)
+                            jsonObject.put("info3", lastItem.info3)
+                            jsonObject.put("number", lastItem.number)
+                            jsonObject.put("date", lastItem.date)
+                            jsonObject.put("numberDiff", moreLastItem.number - lastItem.number)
+                            jsonObject.put("trophyCount", bookCodes.size)
+
+                            jsonArray.put(jsonObject)
+
+                        } else if (items.childrenCount.toInt() == 1) {
+
+                            val jsonObject = JSONObject()
+
+                            val group: BookListDataBest? =
+                                dataSnapshot.child(bookCodeList.bookCode).child(DBDate.DateMMDD())
+                                    .getValue(BookListDataBest::class.java)
 
                             if (group != null) {
-                                bookCodes.add(
+                                bookCodeItems.add(
                                     BookListDataBestAnalyze(
                                         group.info1,
                                         group.info2,
                                         group.info3,
                                         group.number,
                                         group.date,
+                                        0,
+                                        1
                                     )
                                 )
+
+                                jsonObject.put("info1", group.info1)
+                                jsonObject.put("info2", group.info2)
+                                jsonObject.put("info3", group.info3)
+                                jsonObject.put("number", group.number)
+                                jsonObject.put("date", group.date)
+                                jsonObject.put("numberDiff", 0)
+                                jsonObject.put("trophyCount", 1)
+
+                                jsonArray.put(jsonObject)
                             }
                         }
-
-                        val lastItem = bookCodes[bookCodes.size - 1]
-                        val moreLastItem = bookCodes[bookCodes.size - 2]
-
-                        bookCodeItems.add(
-                            BookListDataBestAnalyze(
-                                lastItem.info1,
-                                lastItem.info2,
-                                lastItem.info3,
-                                lastItem.number,
-                                lastItem.date,
-                                moreLastItem.number - lastItem.number,
-                                bookCodes.size
-                            )
-                        )
-
-                    } else if (items.childrenCount.toInt() == 1) {
-
-                        val group: BookListDataBest? =
-                            dataSnapshot.child(bookCodeList.bookCode).child(DBDate.DateMMDD())
-                                .getValue(BookListDataBest::class.java)
-
-                        if (group != null) {
-                            bookCodeItems.add(
-                                BookListDataBestAnalyze(
-                                    group.info1,
-                                    group.info2,
-                                    group.info3,
-                                    group.number,
-                                    group.date,
-                                    0,
-                                    1
-                                )
-                            )
-                        }
                     }
+                } catch (e: JSONException) {
+                    e.printStackTrace()
                 }
+
+                writeFile(obj.putOpt("itemStatus", jsonArray))
                 adapterToday?.notifyDataSetChanged()
 
             }
@@ -209,30 +247,16 @@ class FragmentBestTabToday(private val tabType: String) :
         })
     }
 
-    fun writeFile(obj: JSONObject, fileName : String) {
+    fun writeFile(obj: JSONObject) {
 
-        //저장소 위치 -> "/storage/self/peimary/test.json"
-        val file = File(Environment.getExternalStorageDirectory(), "${fileName}.json")
+        val file = File(Environment.getExternalStorageDirectory(), "${tabType}.json")
 
-        // new File( "/storage/self/peimary/",fileTitle);
-        //위와 같이 저장소를 직접 입력해도 작동된다.
         try {
-            /**
-             * 폴더 생성
-             * File dir = new File(Environment.getExternalStorageDirectory(), "Data");
-             * if (!dir.exists()){
-             * dir.mkdir();
-             * }
-             */
 
-
-            //파일이 존재하지 않다면 생성
             if (!file.exists()) {
                 file.createNewFile()
             }
 
-            // FileWriter을 사용해도 상관 없음
-            // 그러나 본인은 이어쓰기에 용이한 BufferedWriter 사용
             val bw = BufferedWriter(FileWriter(file, true))
             bw.write(obj.toString())
             bw.newLine()
@@ -242,8 +266,8 @@ class FragmentBestTabToday(private val tabType: String) :
         }
     }
 
-    fun readFile(fileName : String) {
-        val file = File(Environment.getExternalStorageDirectory(), "${fileName}.json")
+    fun readFile() {
+        val file = File(Environment.getExternalStorageDirectory(), "${tabType}.json")
         try {
             val reader = BufferedReader(FileReader(file))
 
@@ -257,10 +281,11 @@ class FragmentBestTabToday(private val tabType: String) :
             val jsonData = buffer.toString()
 
             val jsonObject = JSONObject(jsonData)
-            val flag = jsonObject.getJSONArray("items")
+            val itemsFlag = jsonObject.getJSONArray("items")
+            val itemStatusFlag = jsonObject.getJSONArray("itemStatus")
 
-            for (i in 0 until flag.length()) {
-                val jo = flag.getJSONObject(i)
+            for (i in 0 until itemsFlag.length()) {
+                val jo = itemsFlag.getJSONObject(i)
                 items.add(BookListDataBest(
                     jo.optString("writer"),
                     jo.optString("title"),
@@ -278,11 +303,26 @@ class FragmentBestTabToday(private val tabType: String) :
                 ))
             }
 
-            adapterToday?.notifyDataSetChanged()
+            for (i in 0 until itemStatusFlag.length()) {
+                val jo = itemStatusFlag.getJSONObject(i)
+                bookCodeItems.add(BookListDataBestAnalyze(
+                    jo.optString("info1"),
+                    jo.optString("info2"),
+                    jo.optString("info3"),
+                    jo.optInt("number"),
+                    jo.optString("date"),
+                    jo.optInt("numberDiff"),
+                    jo.optInt("trophyCount"),
+                ))
+            }
 
             reader.close()
+
+            adapterToday?.notifyDataSetChanged()
         } catch (e1: FileNotFoundException) {
             Log.i("파일못찾음", e1.message.toString())
+            getBookListToday()
+            Toast.makeText(requireContext(), "리스트를 다운받고 있습니다", Toast.LENGTH_SHORT).show()
         } catch (e2: IOException) {
             Log.i("읽기오류", e2.message.toString())
         }
