@@ -140,6 +140,7 @@
         <entry key="app/src/main/res/ETC/layout/activity_genre.xml" value="0.26666666666666666" />
         <entry key="app/src/main/res/ETC/layout/activity_intro.xml" value="0.1" />
         <entry key="app/src/main/res/ETC/layout/activity_splash.xml" value="0.17407407407407408" />
+        <entry key="app/src/main/res/ETC/layout/etc_blank.xml" value="0.17979610750695088" />
         <entry key="app/src/main/res/Event/layout/bottom_dialog_event.xml" value="0.1" />
         <entry key="app/src/main/res/Event/layout/fragment_event.xml" value="0.25" />
         <entry key="app/src/main/res/Event/layout/item_event.xml" value="0.1" />
@@ -151,7 +152,7 @@
         <entry key="app/src/main/res/Search/layout/activity_search.xml" value="0.25" />
         <entry key="app/src/main/res/Search/layout/activity_search_detail.xml" value="0.20677083333333332" />
         <entry key="app/src/main/res/Search/layout/collapse_best_detail.xml" value="0.1921875" />
-        <entry key="app/src/main/res/Search/layout/fragment_search.xml" value="0.1" />
+        <entry key="app/src/main/res/Search/layout/fragment_search.xml" value="0.25" />
         <entry key="app/src/main/res/Search/layout/fragment_searchtab.xml" value="0.1" />
         <entry key="app/src/main/res/Search/layout/item_search.xml" value="0.15833333333333333" />
         <entry key="app/src/main/res/drawable/selector_bottom_navigation.xml" value="0.243" />
@@ -193,6 +194,7 @@
         <entry key="app/src/main/res/layout/fragment_event.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_event_detail.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_search.xml" value="0.375" />
         <entry key="app/src/main/res/layout/include_rank.xml" value="0.11574074074074074" />
         <entry key="app/src/main/res/layout/item_best_detail_analysis.xml" value="0.11574074074074074" />
         <entry key="app/src/main/res/layout/item_best_detail_analyze.xml" value="0.1" />

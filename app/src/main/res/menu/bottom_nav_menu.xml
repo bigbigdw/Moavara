@@ -17,7 +17,7 @@
         android:title="마이픽" />
 
     <item
-        android:id="@+id/Fragment_EventDetail"
+        android:id="@+id/Fragment_Search"
         android:icon="@drawable/ic_news_vt_24px"
         android:title="바로찾기" />
 

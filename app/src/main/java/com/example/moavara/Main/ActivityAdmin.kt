@@ -580,7 +580,9 @@ class ActivityAdmin : AppCompatActivity() {
 //                Mining.runMining(applicationContext, "ROMANCE")
 //                Mining.runMining(applicationContext, "BL")
 
-                Mining.getMrBlueBest("ALL", this@ActivityAdmin)
+                for (i in 1..3) {
+                        Mining.getOneStoreBest("ALL", i, this@ActivityAdmin)
+                }
             }
 
             llayoutBtn14.setOnClickListener {

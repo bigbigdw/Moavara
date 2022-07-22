@@ -61,6 +61,38 @@ object BestRef {
         )
     }
 
+    fun typeListTitleBookCode(): List<String> {
+        return listOf(
+            "조아라",
+            "네이버시리즈",
+            "챌린지리그",
+            "베스트리그",
+            "카카오페이지",
+            "스테이지",
+            "리디북스",
+            "원스토리",
+            "문피아",
+            "톡소다",
+            "미스터블루"
+        )
+    }
+
+    fun typeListBookcode(): List<String> {
+        return listOf(
+            "Joara",
+            "Naver_Today",
+            "Naver_Challenge",
+            "Naver",
+            "Kakao",
+            "Kakao_Stage",
+            "Ridi",
+            "OneStore",
+            "Munpia",
+            "Toksoda",
+            "MrBlue"
+        )
+    }
+
     fun typeListTitleSearch(): List<String> {
         return listOf(
             "통합 검색",
@@ -180,6 +212,8 @@ object BestRef {
             ref["info5"] as String,
             ref["number"] as Int,
             ref["date"] as String,
+            0,
+            0
         )
     }
 

@@ -1,111 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    android:background="#1E1E20"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/llayoutResult"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="wrap_content"
+        android:background="#0D0E10"
+        android:gravity="bottom"
+        android:paddingLeft="16dp"
+        android:orientation="horizontal">
 
-        <include
-            android:id="@+id/blank"
-            layout="@layout/etc_blank"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="visible"
-            tools:visibility="gone" />
-
-        <include
-            layout="@layout/loading"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"
-            tools:visibility="gone" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rviewSearch"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="16dp"
-            android:paddingTop="16dp"
-            android:paddingEnd="0dp" />
+            android:layout_weight="1"
+            android:fontFamily="@font/pretendardvariable"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:text="바로찾기"
+            android:textColor="#EDE6FD"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/llayoutSearch"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rviewType"
+        android:layout_marginStart="16dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="28dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:context=".Soon.FragmentSearch">
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp" />
 
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fillViewport="true">
+    <LinearLayout
+        android:id="@+id/llayoutWrap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
+        android:orientation="vertical" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/shape_outline_gray"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <EditText
-                        android:id="@+id/etextSearch"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@null"
-                        android:ems="10"
-                        android:hint="@string/Search_Text1"
-                        android:imeOptions="actionSearch"
-                        android:inputType="text"
-                        android:text="메모라이즈"
-                        android:textColor="#FFFFFF"
-                        android:textColorHint="#673AB7" />
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="125dp"
-                    android:layout_height="125dp"
-                    android:layout_marginTop="14dp"
-                    android:src="@drawable/likeit_4" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="검색검색"
-                    android:textAlignment="center" />
-
-                <Button
-                    android:id="@+id/btnSearch"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    android:background="#3F51B5"
-                    android:text="@string/Search_Text3" />
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
-
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

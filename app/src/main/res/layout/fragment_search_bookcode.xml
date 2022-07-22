@@ -41,7 +41,7 @@
         android:padding="28dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:context=".Soon.FragmentSearch"
+        tools:context=".Search.FragmentSearch"
         tools:visibility="visible">
 
         <androidx.core.widget.NestedScrollView

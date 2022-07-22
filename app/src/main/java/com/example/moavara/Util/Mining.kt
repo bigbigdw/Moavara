@@ -20,6 +20,9 @@ import java.io.File
 import java.net.SocketTimeoutException
 
 object Mining {
+    var secondKey = "0/0"
+    var thirdKey = "0/0"
+
     fun runMiningEvent(context: Context) {
         getNoticeJoara(context)
         getEventJoara(context)
@@ -108,7 +111,7 @@ object Mining {
         }
 
         val OneStore = Thread {
-            for (i in 1..4) {
+            for (i in 1..3) {
                 getOneStoreBest(genre, i, context)
             }
         }
@@ -432,9 +435,9 @@ object Mining {
             if (page == 1) {
                 param["startKey"] = "0/0"
             } else if (page == 2) {
-                param["startKey"] = "57/0"
+                param["startKey"] = secondKey
             } else if (page == 3) {
-                param["startKey"] = "120/0"
+                param["startKey"] = thirdKey
             }
 
             apiOneStory.getBestOneStore(
@@ -444,30 +447,38 @@ object Mining {
 
                         val productList = data.params?.productList
 
-                        for (i in productList!!.indices) {
+                        if(page == 1){
+                            secondKey = data.params?.startKey ?: "0/0"
+                        } else if(page == 2){
+                            thirdKey = data.params?.startKey ?: "0/0"
+                        }
 
-                            OneStoryRef["writerName"] = productList[i].artistNm
-                            OneStoryRef["subject"] = productList[i].prodNm
-                            OneStoryRef["bookImg"] =
-                                "https://img.onestore.co.kr/thumbnails/img_sac/224_320_F10_95/" + productList[i].thumbnailImageUrl
-                            OneStoryRef["bookCode"] = productList[i].prodId
-                            OneStoryRef["info1"] = " "
-                            OneStoryRef["info2"] = " "
-                            OneStoryRef["info3"] =
-                                "조회 수 : " + productList[i].totalCount
-                            OneStoryRef["info4"] = "평점 : " + productList[i].avgScore
-                            OneStoryRef["info5"] =
-                                "댓글 수 : " + productList[i].commentCount
-                            OneStoryRef["number"] = i + ((page - 1) * productList.size)
-                            OneStoryRef["date"] = DBDate.DateMMDD()
-                            OneStoryRef["type"] = "OneStore"
+                        if (productList != null) {
+                            for (i in productList.indices) {
 
-                            miningValue(
-                                OneStoryRef,
-                                (i + ((page - 1) * productList.size)),
-                                "OneStore",
-                                platform
-                            )
+                                OneStoryRef["writerName"] = productList[i].artistNm
+                                OneStoryRef["subject"] = productList[i].prodNm
+                                OneStoryRef["bookImg"] =
+                                    "https://img.onestore.co.kr/thumbnails/img_sac/224_320_F10_95/" + productList[i].thumbnailImageUrl
+                                OneStoryRef["bookCode"] = productList[i].prodId
+                                OneStoryRef["info1"] = " "
+                                OneStoryRef["info2"] = " "
+                                OneStoryRef["info3"] =
+                                    "조회 수 : " + productList[i].totalCount
+                                OneStoryRef["info4"] = "평점 : " + productList[i].avgScore
+                                OneStoryRef["info5"] =
+                                    "댓글 수 : " + productList[i].commentCount
+                                OneStoryRef["number"] = i + ((page - 1) * productList.size)
+                                OneStoryRef["date"] = DBDate.DateMMDD()
+                                OneStoryRef["type"] = "OneStore"
+
+                                miningValue(
+                                    OneStoryRef,
+                                    (i + ((page - 1) * productList.size)),
+                                    "OneStore",
+                                    platform
+                                )
+                            }
                         }
 
                         File(File("/storage/self/primary/MOAVARA"), "Today_OneStore.json").delete()

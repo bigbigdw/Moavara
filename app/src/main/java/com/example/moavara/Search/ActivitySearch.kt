@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.moavara.Best.AdapterType
 import com.example.moavara.R
 import com.example.moavara.Retrofit.*
-import com.example.moavara.Soon.FragmentSearch
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.Param
 import com.example.moavara.databinding.ActivitySearchBinding

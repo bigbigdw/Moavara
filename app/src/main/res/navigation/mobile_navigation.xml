@@ -12,10 +12,10 @@
         tools:layout="@layout/fragment_best" />
 
     <fragment
-        android:id="@+id/Fragment_Event"
-        android:name="com.example.moavara.Event.FragmentEvent"
+        android:id="@+id/Fragment_Search"
+        android:name="com.example.moavara.Search.FragmentSearch"
         android:label=""
-        tools:layout="@layout/fragment_event" />
+        tools:layout="@layout/fragment_search" />
 
     <activity
         android:id="@+id/ActivityMyPick"

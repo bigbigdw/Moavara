@@ -88,7 +88,7 @@
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:context=".Soon.FragmentSearch">
+        tools:context=".Search.FragmentSearch">
 
         <ImageView
             android:layout_width="125dp"
