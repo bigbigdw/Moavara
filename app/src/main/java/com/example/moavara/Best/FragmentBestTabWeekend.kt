@@ -10,9 +10,10 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moavara.DataBase.BookListDataBest
-import com.example.moavara.DataBase.BookListDataBestAnalyze
 import com.example.moavara.Search.BookListDataBestWeekend
 import com.example.moavara.Util.BestRef
+import com.example.moavara.Util.BestRef.getItem
+import com.example.moavara.Util.BestRef.putItem
 import com.example.moavara.Util.Genre
 import com.example.moavara.databinding.FragmentBestWeekendBinding
 import com.google.firebase.database.DataSnapshot
@@ -52,7 +53,6 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
         binding.rviewBest.adapter = adapterWeek
 
         readJsonList()
-//        getBestWeekList()
 
         adapterWeek?.setOnItemClickListener(object : AdapterBestWeekend.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int, value: String?) {
@@ -92,7 +92,7 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
 
     private fun getBestWeekList() {
 
-        val file = File(Environment.getExternalStorageDirectory(), "Week_${tabType}.json")
+        val file = File(File("/storage/self/primary/MOAVARA"), "Week_${tabType}.json")
         if (file.exists()) {
             file.delete()
         }
@@ -191,47 +191,13 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
         }
     }
 
-    fun putItem(jsonObject: JSONObject, item: BookListDataBest): JSONObject {
 
-        jsonObject.put("writer", item.writer)
-        jsonObject.put("title", item.title)
-        jsonObject.put("bookImg", item.bookImg)
-        jsonObject.put("bookCode", item.bookCode)
-        jsonObject.put("info1", item.info1)
-        jsonObject.put("info2", item.info2)
-        jsonObject.put("info3", item.info3)
-        jsonObject.put("info4", item.info4)
-        jsonObject.put("info5", item.info5)
-        jsonObject.put("number", item.number)
-        jsonObject.put("date", item.date)
-        jsonObject.put("type", item.type)
-        jsonObject.put("memo", item.memo)
-
-        return jsonObject
-    }
-
-    fun getItem(jsonObject: JSONObject): BookListDataBest {
-
-        return BookListDataBest(
-            jsonObject.optString("writer"),
-            jsonObject.optString("title"),
-            jsonObject.optString("bookImg"),
-            jsonObject.optString("bookCode"),
-            jsonObject.optString("info1"),
-            jsonObject.optString("info2"),
-            jsonObject.optString("info3"),
-            jsonObject.optString("info4"),
-            jsonObject.optString("info5"),
-            jsonObject.optInt("number"),
-            jsonObject.optString("date"),
-            jsonObject.optString("type"),
-            jsonObject.optString("memo"),
-        )
-    }
 
     fun writeFile(obj: JSONObject) {
 
-        val file = File(Environment.getExternalStorageDirectory(), "Week_${tabType}.json")
+        File("/storage/self/primary/MOAVARA").mkdir()
+
+        val file = File(File("/storage/self/primary/MOAVARA"), "Week_${tabType}.json")
 
         try {
 
@@ -249,7 +215,7 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
     }
 
     fun readJsonList() {
-        val file = File(Environment.getExternalStorageDirectory(), "Week_${tabType}.json")
+        val file = File(File("/storage/self/primary/MOAVARA"), "Week_${tabType}.json")
         try {
             val reader = BufferedReader(FileReader(file))
 

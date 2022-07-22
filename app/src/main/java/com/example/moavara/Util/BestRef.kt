@@ -4,6 +4,7 @@ import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.DataBase.BookListDataBestAnalyze
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import org.json.JSONObject
 
 object BestRef {
     private val mRootRef = FirebaseDatabase.getInstance().reference
@@ -183,6 +184,44 @@ object BestRef {
             ref["info5"] as String,
             ref["number"] as Int,
             ref["date"] as String,
+        )
+    }
+
+    fun putItem(jsonObject: JSONObject, item: BookListDataBest): JSONObject {
+
+        jsonObject.put("writer", item.writer)
+        jsonObject.put("title", item.title)
+        jsonObject.put("bookImg", item.bookImg)
+        jsonObject.put("bookCode", item.bookCode)
+        jsonObject.put("info1", item.info1)
+        jsonObject.put("info2", item.info2)
+        jsonObject.put("info3", item.info3)
+        jsonObject.put("info4", item.info4)
+        jsonObject.put("info5", item.info5)
+        jsonObject.put("number", item.number)
+        jsonObject.put("date", item.date)
+        jsonObject.put("type", item.type)
+        jsonObject.put("memo", item.memo)
+
+        return jsonObject
+    }
+
+    fun getItem(jsonObject: JSONObject): BookListDataBest {
+
+        return BookListDataBest(
+            jsonObject.optString("writer"),
+            jsonObject.optString("title"),
+            jsonObject.optString("bookImg"),
+            jsonObject.optString("bookCode"),
+            jsonObject.optString("info1"),
+            jsonObject.optString("info2"),
+            jsonObject.optString("info3"),
+            jsonObject.optString("info4"),
+            jsonObject.optString("info5"),
+            jsonObject.optInt("number"),
+            jsonObject.optString("date"),
+            jsonObject.optString("type"),
+            jsonObject.optString("memo"),
         )
     }
 }

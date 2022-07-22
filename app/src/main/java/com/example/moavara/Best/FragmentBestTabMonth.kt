@@ -1,21 +1,27 @@
 package com.example.moavara.Best
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.DataBase.BookListDataBestAnalyze
 import com.example.moavara.Search.BookListDataBestWeekend
 import com.example.moavara.Util.BestRef
+import com.example.moavara.Util.BestRef.putItem
 import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Genre
 import com.example.moavara.databinding.FragmentBestMonthBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import org.json.JSONArray
+import org.json.JSONObject
+import java.io.*
 
 
 class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayListener {
@@ -29,6 +35,7 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
     private var _binding: FragmentBestMonthBinding? = null
     private val binding get() = _binding!!
     var genre = ""
+    private var obj = JSONObject()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,10 +49,11 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
         adapterMonthDay = AdapterBestToday(ItemMonthDay, bookCodeItems)
 
         itemMonth.clear()
-        getBestMonth()
+        readJsonList()
 
         with(binding) {
-            rviewBestMonth.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            rviewBestMonth.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             rviewBestMonth.adapter = adapterMonth
 
             adapterMonth.setOnItemClickListener(object : AdapterBestMonth.OnItemClickListener {
@@ -60,7 +68,11 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
                                 override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                                     rviewBestMonthDay.layoutManager =
-                                        LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                                        LinearLayoutManager(
+                                            context,
+                                            LinearLayoutManager.VERTICAL,
+                                            false
+                                        )
                                     rviewBestMonthDay.adapter = adapterMonthDay
 
                                     if (dataSnapshot.childrenCount > 0) {
@@ -128,37 +140,90 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
 
     private fun getBestMonth() {
 
-        for (week in 1..5) {
-            BestRef.getBestDataMonth(tabType, genre).child(week.toString())
+        val file = File(File("/storage/self/primary/MOAVARA"), "Month_${tabType}.json")
+        if (file.exists()) {
+            file.delete()
+        }
+
+        try {
+
+            BestRef.getBestDataMonth(tabType, genre)
                 .addListenerForSingleValueEvent(object :
                     ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                        val weekItem = BookListDataBestWeekend()
+                        for (week in 1..6) {
+                            val jsonArray = JSONArray()
+                            val weekItem = BookListDataBestWeekend()
 
-                        for (day in 1..7) {
-                            val item: BookListDataBest? =
-                                dataSnapshot.child(day.toString()).child("0")
-                                    .getValue(BookListDataBest::class.java)
+                            for (day in 1..7) {
+                                val item: BookListDataBest? =
+                                    dataSnapshot.child(week.toString()).child(day.toString())
+                                        .child("0")
+                                        .getValue(BookListDataBest::class.java)
 
-                            when (day) {
-                                1 -> weekItem.sun = item
-                                2 -> weekItem.mon = item
-                                3 -> weekItem.tue = item
-                                4 -> weekItem.wed = item
-                                5 -> weekItem.thur = item
-                                6 -> weekItem.fri = item
-                                7 -> weekItem.sat = item
+                                val jsonObject = JSONObject()
+
+                                when (day) {
+                                    1 -> {
+                                        if (item != null) {
+                                            weekItem.sun = item
+                                            putItem(jsonObject, item)
+                                        }
+                                    }
+                                    2 -> {
+                                        if (item != null) {
+                                            weekItem.mon = item
+                                            putItem(jsonObject, item)
+                                        }
+                                    }
+                                    3 -> {
+                                        if (item != null) {
+                                            weekItem.tue = item
+                                            putItem(jsonObject, item)
+                                        }
+                                    }
+                                    4 -> {
+                                        if (item != null) {
+                                            weekItem.wed = item
+                                            putItem(jsonObject, item)
+                                        }
+                                    }
+                                    5 -> {
+                                        if (item != null) {
+                                            weekItem.thur = item
+                                            putItem(jsonObject, item)
+                                        }
+                                    }
+                                    6 -> {
+                                        if (item != null) {
+                                            putItem(jsonObject, item)
+                                            weekItem.fri = item
+                                        }
+                                    }
+                                    7 -> {
+                                        if (item != null) {
+                                            putItem(jsonObject, item)
+                                            weekItem.sat = item
+                                        }
+                                    }
+                                }
+                                jsonArray.put(jsonObject)
                             }
+
+                            itemMonth.add(weekItem)
+                            obj.putOpt(week.toString(), jsonArray)
+
+                            adapterMonth.notifyDataSetChanged()
                         }
-
-                        itemMonth.add(weekItem)
-                        adapterMonth.notifyDataSetChanged()
-
+                        writeFile(obj)
                     }
 
                     override fun onCancelled(databaseError: DatabaseError) {}
                 })
+
+
+        } catch (e: IOException) {
         }
 
     }
@@ -173,9 +238,10 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
                     if (items.childrenCount > 1) {
                         val bookCodes = ArrayList<BookListDataBestAnalyze>()
 
-                        for(item in items.children){
+                        for (item in items.children) {
 
-                            val group: BookListDataBest? = item.getValue(BookListDataBest::class.java)
+                            val group: BookListDataBest? =
+                                item.getValue(BookListDataBest::class.java)
 
                             if (group != null) {
                                 bookCodes.add(
@@ -232,5 +298,79 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
 
             override fun onCancelled(databaseError: DatabaseError) {}
         })
+    }
+
+    fun writeFile(obj: JSONObject) {
+
+        File("/storage/self/primary/MOAVARA").mkdir()
+
+        val file = File(File("/storage/self/primary/MOAVARA"), "Month_${tabType}.json")
+
+        try {
+
+            if (!file.exists()) {
+                file.createNewFile()
+            }
+
+            val bw = BufferedWriter(FileWriter(file, true))
+            bw.write(obj.toString())
+            bw.newLine()
+            bw.close()
+        } catch (e: IOException) {
+            Log.i("저장오류", e.message.toString())
+        }
+    }
+
+    fun readJsonList() {
+        val file = File(File("/storage/self/primary/MOAVARA"), "Month_${tabType}.json")
+        try {
+            val reader = BufferedReader(FileReader(file))
+
+            val buffer = StringBuilder()
+            var line = reader.readLine()
+            while (line != null) {
+                buffer.append(line).append("\n")
+                line = reader.readLine()
+            }
+
+            val jsonData = buffer.toString()
+            val jsonObject = JSONObject(jsonData)
+
+            for (num in 1..6) {
+                val weekItem = BookListDataBestWeekend()
+
+                for (day in 0..6) {
+                    val item = jsonObject.getJSONArray(num.toString()).getJSONObject(day)
+
+                    if (day == 0) {
+                        weekItem.sun = BestRef.getItem(item)
+                    } else if (day == 1) {
+                        weekItem.mon = BestRef.getItem(item)
+                    } else if (day == 2) {
+                        weekItem.tue = BestRef.getItem(item)
+                    } else if (day == 3) {
+                        weekItem.wed = BestRef.getItem(item)
+                    } else if (day == 4) {
+                        weekItem.thur = BestRef.getItem(item)
+                    } else if (day == 5) {
+                        weekItem.fri = BestRef.getItem(item)
+                    } else if (day == 6) {
+                        weekItem.sat = BestRef.getItem(item)
+                    }
+                }
+
+                itemMonth.add(weekItem)
+            }
+
+            reader.close()
+
+            adapterMonth.notifyDataSetChanged()
+        } catch (e1: FileNotFoundException) {
+            Log.i("파일못찾음", e1.message.toString())
+            getBestMonth()
+            Toast.makeText(requireContext(), "리스트를 다운받고 있습니다", Toast.LENGTH_SHORT).show()
+        } catch (e2: IOException) {
+            Log.i("읽기오류", e2.message.toString())
+        }
     }
 }

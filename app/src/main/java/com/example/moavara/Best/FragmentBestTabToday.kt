@@ -75,8 +75,10 @@ class FragmentBestTabToday(private val tabType: String) :
 
     private fun getBookListToday() {
 
-        val file = File(Environment.getExternalStorageDirectory(), "Today_${tabType}.json")
-        file.delete()
+        val file = File(File("/storage/self/primary/MOAVARA"), "Today_${tabType}.json")
+        if (file.exists()) {
+            file.delete()
+        }
 
         val jsonArray = JSONArray()
 
@@ -249,7 +251,9 @@ class FragmentBestTabToday(private val tabType: String) :
 
     fun writeJsonList(obj: JSONObject) {
 
-        val file = File(Environment.getExternalStorageDirectory(), "Today_${tabType}.json")
+        File("/storage/self/primary/MOAVARA").mkdir()
+
+        val file = File(File("/storage/self/primary/MOAVARA"), "Today_${tabType}.json")
 
         try {
 
@@ -267,7 +271,7 @@ class FragmentBestTabToday(private val tabType: String) :
     }
 
     fun readJsonList() {
-        val file = File(Environment.getExternalStorageDirectory(), "Today_${tabType}.json")
+        val file = File(File("/storage/self/primary/MOAVARA"), "Today_${tabType}.json")
         try {
             val reader = BufferedReader(FileReader(file))
 
