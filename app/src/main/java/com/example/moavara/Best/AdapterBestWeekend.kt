@@ -1,5 +1,6 @@
 package com.example.moavara.Best
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +14,6 @@ class AdapterBestWeekend(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var selected: String? = ""
-    var num: Int? = 0
 
     interface OnItemClickListener {
         fun onItemClick(v: View?, position: Int, value: String?)
@@ -36,12 +36,13 @@ class AdapterBestWeekend(
             val items = items[position]
 
             with(holder.binding){
-                if (items.sun != null) {
+
+                if (items.sun != null && items.sun?.bookImg?.isNotEmpty() == true) {
                     Glide.with(holder.itemView.context)
-                        .load(items.sun!!.bookImg)
+                        .load(items.sun?.bookImg)
                         .into(iviewBookImg1)
 
-                    if (selected != "" && getSelectedBook() != items.sun!!.title) {
+                    if (selected != "" && getSelectedBook() != items.sun?.title) {
                         llayoutCover1.visibility = View.VISIBLE
                     } else {
                         llayoutCover1.visibility = View.GONE
@@ -51,12 +52,12 @@ class AdapterBestWeekend(
                     llayoutNull1.visibility = View.VISIBLE
                 }
 
-                if (items.mon != null) {
+                if (items.mon != null && items.mon?.bookImg?.isNotEmpty() == true) {
                     Glide.with(holder.itemView.context)
-                        .load(items.mon!!.bookImg)
+                        .load(items.mon?.bookImg)
                         .into(iviewBookImg2)
 
-                    if (selected != "" && getSelectedBook() != items.mon!!.title) {
+                    if (selected != "" && getSelectedBook() != items.mon?.title) {
                         llayoutCover2.visibility = View.VISIBLE
                     } else {
                         llayoutCover2.visibility = View.GONE
@@ -66,12 +67,12 @@ class AdapterBestWeekend(
                     llayoutNull2.visibility = View.VISIBLE
                 }
 
-                if (items.tue != null) {
+                if (items.tue != null && items.tue?.bookImg?.isNotEmpty() == true) {
                     Glide.with(holder.itemView.context)
-                        .load(items.tue!!.bookImg)
+                        .load(items.tue?.bookImg)
                         .into(iviewBookImg3)
 
-                    if (selected != "" && getSelectedBook() != items.tue!!.title) {
+                    if (selected != "" && getSelectedBook() != items.tue?.title) {
                         llayoutCover3.visibility = View.VISIBLE
                     } else {
                         llayoutCover3.visibility = View.GONE
@@ -81,12 +82,12 @@ class AdapterBestWeekend(
                     llayoutNull3.visibility = View.VISIBLE
                 }
 
-                if (items.wed != null) {
+                if (items.wed != null && items.wed?.bookImg?.isNotEmpty() == true) {
                     Glide.with(holder.itemView.context)
-                        .load(items.wed!!.bookImg)
+                        .load(items.wed?.bookImg)
                         .into(iviewBookImg4)
 
-                    if (selected != "" && getSelectedBook() != items.wed!!.title) {
+                    if (selected != "" && getSelectedBook() != items.wed?.title) {
                         llayoutCover4.visibility = View.VISIBLE
                     } else {
                         llayoutCover4.visibility = View.GONE
@@ -96,12 +97,12 @@ class AdapterBestWeekend(
                     llayoutNull4.visibility = View.VISIBLE
                 }
 
-                if (items.thur != null) {
+                if (items.thur != null && items.thur?.bookImg?.isNotEmpty() == true) {
                     Glide.with(holder.itemView.context)
-                        .load(items.thur!!.bookImg)
+                        .load(items.thur?.bookImg)
                         .into(iviewBookImg5)
 
-                    if (selected != "" && getSelectedBook() != items.thur!!.title) {
+                    if (selected != "" && getSelectedBook() != items.thur?.title) {
                         llayoutCover5.visibility = View.VISIBLE
                     } else {
                         llayoutCover5.visibility = View.GONE
@@ -111,12 +112,12 @@ class AdapterBestWeekend(
                     llayoutNull5.visibility = View.VISIBLE
                 }
 
-                if (items.fri != null) {
+                if (items.fri != null && items.fri?.bookImg?.isNotEmpty() == true) {
                     Glide.with(holder.itemView.context)
-                        .load(items.fri!!.bookImg)
+                        .load(items.fri?.bookImg)
                         .into(iviewBookImg6)
 
-                    if (selected != "" && getSelectedBook() != items.fri!!.title) {
+                    if (selected != "" && getSelectedBook() != items.fri?.title) {
                         llayoutCover6.visibility = View.VISIBLE
                     } else {
                         llayoutCover6.visibility = View.GONE
@@ -126,12 +127,12 @@ class AdapterBestWeekend(
                     llayoutNull6.visibility = View.VISIBLE
                 }
 
-                if (items.sat != null) {
+                if (items.sat != null && items.sat?.bookImg?.isNotEmpty() == true) {
                     Glide.with(holder.itemView.context)
-                        .load(items.sat!!.bookImg)
+                        .load(items.sat?.bookImg)
                         .into(iviewBookImg7)
 
-                    if (selected != "" && getSelectedBook() != items.sat!!.title) {
+                    if (selected != "" && getSelectedBook() != items.sat?.title) {
                         llayoutCover7.visibility = View.VISIBLE
                     } else {
                         llayoutCover7.visibility = View.GONE
@@ -157,49 +158,49 @@ class AdapterBestWeekend(
                 cviewWrap1.setOnClickListener { v: View? ->
                     val pos = adapterPosition
                     if (pos != RecyclerView.NO_POSITION) {
-                        listener!!.onItemClick(v, pos, "sun")
+                        listener?.onItemClick(v, pos, "sun")
                     }
                 }
 
                 cviewWrap2.setOnClickListener { v: View? ->
                     val pos = adapterPosition
                     if (pos != RecyclerView.NO_POSITION) {
-                        listener!!.onItemClick(v, pos, "mon")
+                        listener?.onItemClick(v, pos, "mon")
                     }
                 }
 
                 cviewWrap3.setOnClickListener { v: View? ->
                     val pos = adapterPosition
                     if (pos != RecyclerView.NO_POSITION) {
-                        listener!!.onItemClick(v, pos, "tue")
+                        listener?.onItemClick(v, pos, "tue")
                     }
                 }
 
                 cviewWrap4.setOnClickListener { v: View? ->
                     val pos = adapterPosition
                     if (pos != RecyclerView.NO_POSITION) {
-                        listener!!.onItemClick(v, pos, "wed")
+                        listener?.onItemClick(v, pos, "wed")
                     }
                 }
 
                 cviewWrap5.setOnClickListener { v: View? ->
                     val pos = adapterPosition
                     if (pos != RecyclerView.NO_POSITION) {
-                        listener!!.onItemClick(v, pos, "thur")
+                        listener?.onItemClick(v, pos, "thur")
                     }
                 }
 
                 cviewWrap6.setOnClickListener { v: View? ->
                     val pos = adapterPosition
                     if (pos != RecyclerView.NO_POSITION) {
-                        listener!!.onItemClick(v, pos, "fri")
+                        listener?.onItemClick(v, pos, "fri")
                     }
                 }
 
                 cviewWrap7.setOnClickListener { v: View? ->
                     val pos = adapterPosition
                     if (pos != RecyclerView.NO_POSITION) {
-                        listener!!.onItemClick(v, pos, "sat")
+                        listener?.onItemClick(v, pos, "sat")
                     }
                 }
             }

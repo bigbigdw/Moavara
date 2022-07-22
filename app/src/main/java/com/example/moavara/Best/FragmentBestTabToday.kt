@@ -53,7 +53,7 @@ class FragmentBestTabToday(private val tabType: String) :
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rviewBest.adapter = adapterToday
 
-        readFile()
+        readJsonList()
 
         adapterToday?.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
@@ -75,7 +75,7 @@ class FragmentBestTabToday(private val tabType: String) :
 
     private fun getBookListToday() {
 
-        val file = File(Environment.getExternalStorageDirectory(), "${tabType}.json")
+        val file = File(Environment.getExternalStorageDirectory(), "Today_${tabType}.json")
         file.delete()
 
         val jsonArray = JSONArray()
@@ -238,7 +238,7 @@ class FragmentBestTabToday(private val tabType: String) :
                     e.printStackTrace()
                 }
 
-                writeFile(obj.putOpt("itemStatus", jsonArray))
+                writeJsonList(obj.putOpt("itemStatus", jsonArray))
                 adapterToday?.notifyDataSetChanged()
 
             }
@@ -247,9 +247,9 @@ class FragmentBestTabToday(private val tabType: String) :
         })
     }
 
-    fun writeFile(obj: JSONObject) {
+    fun writeJsonList(obj: JSONObject) {
 
-        val file = File(Environment.getExternalStorageDirectory(), "${tabType}.json")
+        val file = File(Environment.getExternalStorageDirectory(), "Today_${tabType}.json")
 
         try {
 
@@ -266,8 +266,8 @@ class FragmentBestTabToday(private val tabType: String) :
         }
     }
 
-    fun readFile() {
-        val file = File(Environment.getExternalStorageDirectory(), "${tabType}.json")
+    fun readJsonList() {
+        val file = File(Environment.getExternalStorageDirectory(), "Today_${tabType}.json")
         try {
             val reader = BufferedReader(FileReader(file))
 
@@ -327,6 +327,4 @@ class FragmentBestTabToday(private val tabType: String) :
             Log.i("읽기오류", e2.message.toString())
         }
     }
-
-
 }
