@@ -1,23 +1,18 @@
-package com.example.moavara.News
+package com.example.moavara.Soon.News
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moavara.Best.BottomDialogMain
-import com.example.moavara.Main.ActivityGenre
-import com.example.moavara.Pick.ActivityPick
 import com.example.moavara.R
 import com.example.moavara.Search.ActivitySearch
 import com.example.moavara.Search.NewsBX
 import com.example.moavara.User.ActivityUser
 import com.example.moavara.databinding.ActivityNewsBinding
 import com.example.moavara.databinding.ItemNewsBinding
-import com.google.android.material.snackbar.Snackbar
 import java.util.*
 
 class ActivityNews : AppCompatActivity() {

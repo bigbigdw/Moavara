@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../../layout/custom_preview.xml" value="0.2716708542713568" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Best/layout/activity_best_detail.xml" value="0.25" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Best/layout/bottom_dialog_best.xml" value="0.33" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Best/layout/bottomdialog_best.xml" value="0.3333333333333333" />
@@ -147,7 +148,7 @@
         <entry key="app/src/main/res/Pick/layout/fragment_pick_tab.xml" value="0.1" />
         <entry key="app/src/main/res/Pick/layout/item_pick_event.xml" value="0.1" />
         <entry key="app/src/main/res/Search/layout/activity_best_detail.xml" value="0.1921875" />
-        <entry key="app/src/main/res/Search/layout/activity_search.xml" value="0.1" />
+        <entry key="app/src/main/res/Search/layout/activity_search.xml" value="0.25" />
         <entry key="app/src/main/res/Search/layout/activity_search_detail.xml" value="0.20677083333333332" />
         <entry key="app/src/main/res/Search/layout/collapse_best_detail.xml" value="0.1921875" />
         <entry key="app/src/main/res/Search/layout/fragment_search.xml" value="0.1" />

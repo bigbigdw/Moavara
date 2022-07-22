@@ -1,4 +1,4 @@
-package com.example.moavara.Search
+package com.example.moavara.Soon
 
 import android.os.Bundle
 import android.text.Editable
@@ -9,8 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.moavara.Best.ActivityBestDetail
 import com.example.moavara.Retrofit.*
+import com.example.moavara.Search.AdapterBookSearch
+import com.example.moavara.Search.BookListData
 import com.example.moavara.Util.Param
 import com.example.moavara.databinding.FragmentSearchBinding
 import org.jsoup.Jsoup
@@ -372,8 +373,6 @@ class FragmentSearch : Fragment() {
                 }
 
                 for (items in MrBlue) {
-
-                    Log.d("@@@@", "https://www.mrblue.com/${items.select(".img a img").attr("data-original")}")
 
                     var bookImg = ""
 

@@ -1,4 +1,4 @@
-package com.example.moavara.News
+package com.example.moavara.Soon.News
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,24 +6,13 @@ import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.moavara.Best.BottomDialogMain
-import com.example.moavara.Main.mRootRef
-import com.example.moavara.Pick.ActivityPick
 import com.example.moavara.R
 import com.example.moavara.Search.ActivitySearch
 import com.example.moavara.Search.NewsBX
 import com.example.moavara.User.ActivityUser
 import com.example.moavara.Util.DBDate
-import com.example.moavara.databinding.ActivityNewsBinding
 import com.example.moavara.databinding.ActivityNewsWriteBinding
-import com.example.moavara.databinding.ItemNewsBinding
-import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import java.util.*
 
 class ActivityNewsWrite : AppCompatActivity() {

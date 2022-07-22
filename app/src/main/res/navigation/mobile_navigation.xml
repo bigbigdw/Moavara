@@ -31,7 +31,7 @@
 
 <!--    <activity-->
 <!--        android:id="@+id/ActivityNews"-->
-<!--        android:name="com.example.moavara.News.ActivityNews"-->
+<!--        android:name="com.example.moavara.Soon.News.ActivityNews"-->
 <!--        android:label=""-->
 <!--        tools:layout="@layout/activity_news" />-->
 
