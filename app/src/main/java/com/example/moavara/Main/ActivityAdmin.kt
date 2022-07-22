@@ -47,8 +47,13 @@ class ActivityAdmin : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
+        val mConstraints = Constraints.Builder()
+            .setRequiresStorageNotLow(true)
+            .build()
+
         /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
         val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(3, TimeUnit.HOURS)
+            .setConstraints(mConstraints) // 작업을 재시도 할경우에 대한 정책
             .build()
 
         val miningRef = FirebaseDatabase.getInstance().reference.child("Mining")

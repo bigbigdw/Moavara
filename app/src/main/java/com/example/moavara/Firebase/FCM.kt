@@ -1,17 +1,22 @@
 package com.example.moavara.Firebase
 
+import android.annotation.SuppressLint
+import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.media.RingtoneManager
 import android.os.Build
 import android.os.SystemClock
+import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.core.app.Person
 import androidx.core.graphics.drawable.IconCompat
 import com.example.moavara.Main.ActivitySplash
 import com.example.moavara.R
 import com.example.moavara.Util.BootReceiver
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
@@ -37,8 +42,27 @@ class FCM : FirebaseMessagingService() {
 
     private fun showNotification(title: String?, message: String?) {
 
+        FirebaseMessaging.getInstance().subscribeToTopic("all")
         // NotificationManager 객체 생성
         notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+
+        // API Level 26 버전 이상부터는 NotificationChannel을 사용하여 NotificationCompat.Builder를 생성하기에 분기
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channelId = "모아바라"
+            val channelName = "모아바라 Best"
+            val channelDescription = "Channel One Description"
+
+            val notificationChannel: NotificationChannel?
+            // HeadsUp은 Importance를 High로 설정해야하기에 분기
+            // NotificationChannel 객체 생성
+            notificationChannel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
+
+            notificationChannel.description = channelDescription
+            // NotificationChannel이 등록된 Builder
+            // 이 Builder에 의해 만들어진 Notification은 이곳에 등록된 Channel에 의해 관리
+            notificationManager?.createNotificationChannel(notificationChannel)
+            notificationBuilder = NotificationCompat.Builder(this, channelId)
+        }
 
         // API Level 26 버전 이상부터는 NotificationChannel을 사용하여 NotificationCompat.Builder를 생성하기에 분기
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -141,6 +165,6 @@ class FCM : FirebaseMessagingService() {
         }
 
         // NotificationManger.nofity를 이용하여 Notification post
-        notificationManager?.notify(100, notificationBuilder?.build())
+        notificationManager?.notify(0, notificationBuilder?.build())
     }
 }

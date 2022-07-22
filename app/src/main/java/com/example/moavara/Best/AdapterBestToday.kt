@@ -46,26 +46,30 @@ class AdapterBestToday(
                 tviewIndex.text = (position + 1).toString()
                 tviewTitle.text = item.title
 
-                if(bookCodeItems.size > 0){
-                    if(bookCodeItems[position].numberDiff > 0){
-                        tviewNum.text =  "${bookCodeItems[position].numberDiff}(${bookCodeItems[position].trophyCount})"
-                        tviewNum.setTextColor(Color.parseColor("#02BC77"))
-                        iviewArrow.setImageResource(R.drawable.ic_arrow_drop_up_24px)
-                        iviewArrow.visibility = View.VISIBLE
-                    } else if(bookCodeItems[position].numberDiff == 0){
+                try{
+                    if(bookCodeItems.size > 0){
+                        if(bookCodeItems[position].numberDiff > 0){
+                            tviewNum.text =  "${bookCodeItems[position].numberDiff}(${bookCodeItems[position].trophyCount})"
+                            tviewNum.setTextColor(Color.parseColor("#02BC77"))
+                            iviewArrow.setImageResource(R.drawable.ic_arrow_drop_up_24px)
+                            iviewArrow.visibility = View.VISIBLE
+                        } else if(bookCodeItems[position].numberDiff == 0){
+                            tviewNum.text = "NEW"
+                            tviewNum.setTextColor(Color.parseColor("#844DF3"))
+                            iviewArrow.visibility = View.GONE
+                        } else if(bookCodeItems[position].numberDiff < 0){
+                            tviewNum.text =  "${bookCodeItems[position].numberDiff}(${bookCodeItems[position].trophyCount})"
+                            tviewNum.setTextColor(Color.parseColor("#FF2366"))
+                            iviewArrow.setImageResource(R.drawable.ic_arrow_drop_down_24px)
+                            iviewArrow.visibility = View.VISIBLE
+                        }
+                    } else {
                         tviewNum.text = "NEW"
                         tviewNum.setTextColor(Color.parseColor("#844DF3"))
                         iviewArrow.visibility = View.GONE
-                    } else if(bookCodeItems[position].numberDiff < 0){
-                        tviewNum.text =  "${bookCodeItems[position].numberDiff}(${bookCodeItems[position].trophyCount})"
-                        tviewNum.setTextColor(Color.parseColor("#FF2366"))
-                        iviewArrow.setImageResource(R.drawable.ic_arrow_drop_down_24px)
-                        iviewArrow.visibility = View.VISIBLE
                     }
-                } else {
-                    tviewNum.text = "NEW"
-                    tviewNum.setTextColor(Color.parseColor("#844DF3"))
-                    iviewArrow.visibility = View.GONE
+                } catch (e : IndexOutOfBoundsException){
+
                 }
             }
         }
@@ -83,7 +87,7 @@ class AdapterBestToday(
             binding.llayoutWrap.setOnClickListener { v: View? ->
                 val pos = adapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
-                    listener!!.onItemClick(v, pos)
+                    listener?.onItemClick(v, pos)
                 }
             }
 
