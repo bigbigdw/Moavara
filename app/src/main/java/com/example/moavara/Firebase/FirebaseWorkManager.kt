@@ -14,46 +14,25 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class FirebaseWorkManager(private var context: Context, workerParams: WorkerParameters) :
     Worker(context, workerParams) {
-    val miningRef = FirebaseDatabase.getInstance().reference.child("Mining")
 
     override fun doWork(): Result {
 
-        miningRef.get().addOnSuccessListener {
-            if(it.value != null && it.value!! != "NULL"){
-
-                Thread{
-                    if(it.value == "ALL"){
-                        Mining.runMining(applicationContext, "ALL")
-                        miningRef.setValue("BL")
-                    } else if (it.value == "BL") {
-                        Mining.runMining(applicationContext, "BL")
-                        miningRef.setValue("FANTASY")
-                    } else if (it.value == "FANTASY") {
-                        Mining.runMining(applicationContext, "FANTASY")
-                        miningRef.setValue("ROMANCE")
-                    } else if (it.value == "ROMANCE") {
-                        Mining.runMining(applicationContext, "ROMANCE")
-                        miningRef.setValue("ALL")
-                    }
-                }.start()
-
-            } else {
-                miningRef.setValue("ALL")
-                Toast.makeText(context, "장르 : 전체", Toast.LENGTH_SHORT).show()
-            }
-            postFCM(it.value as String)
-        }.addOnFailureListener{}
+        Mining.runMining(applicationContext, "FANTASY")
+        Mining.runMining(applicationContext, "ALL")
+        Mining.runMining(applicationContext, "ROMANCE")
+        Mining.runMining(applicationContext, "BL")
+        postFCM()
 
         return Result.success()
     }
 
-    private fun postFCM(value: String) {
+    private fun postFCM() {
 
         val fcmBody = DataFCMBody(
             "/topics/all",
             "high",
             DataFCMBodyData("data", "body"),
-            DataFCMBodyNotification("모아바라", "베스트 리스트가 갱신되었습니다-0710 $value", "default", "ic_stat_ic_notification"),
+            DataFCMBodyNotification("모아바라", "베스트 리스트가 갱신되었습니다-0722", "default", "ic_stat_ic_notification"),
         )
 
         val call = Retrofit.Builder()

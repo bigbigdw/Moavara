@@ -63,34 +63,6 @@ class ActivityMain : AppCompatActivity() {
         NavigationUI.setupWithNavController(navView, navController!!)
 
         registNotification()
-
-        val mConstraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.CONNECTED)
-            .build()
-
-        /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
-        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(3, TimeUnit.HOURS)
-            .setConstraints(mConstraints)
-            .build()
-
-        val miningRef = FirebaseDatabase.getInstance().reference.child("Mining")
-        val workManager = WorkManager.getInstance(applicationContext)
-
-        Handler(Looper.getMainLooper()).postDelayed({
-
-            miningRef.get().addOnSuccessListener {
-                if(it.value != null && it.value!! != "NULL"){
-                    Toast.makeText(this, "WorkManager 이미 존재함", Toast.LENGTH_SHORT).show()
-
-                } else {
-                    miningRef.setValue("ALL")
-
-                    workManager.enqueue(workRequest)
-                    FirebaseMessaging.getInstance().subscribeToTopic("all")
-                    Toast.makeText(this, "WorkManager 추가됨", Toast.LENGTH_SHORT).show()
-                }
-            }.addOnFailureListener{}
-        }, 1000) //1초 후 실행
     }
 
     fun registNotification(){

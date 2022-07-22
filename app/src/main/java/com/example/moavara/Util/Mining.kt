@@ -625,7 +625,7 @@ object Mining {
                         JoaraRef["info5"] = "추천 수 : " + books[i].cntRecom
                         JoaraRef["number"] = i + ((page - 1) * books.size)
                         JoaraRef["date"] = DBDate.DateMMDD()
-                        JoaraRef["type"] = "Joara_Nobless"
+                        JoaraRef["type"] = "Joara_Premium"
 
                         miningValue(
                             JoaraRef,

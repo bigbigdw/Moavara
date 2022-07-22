@@ -232,20 +232,16 @@ class BottomDialogBest(
                     ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                        val items = ArrayList<BookListDataBestAnalyze>()
-
                         for (keyItem in dataSnapshot.children) {
                             val group: BookListDataBestAnalyze? =
                                 keyItem.getValue(BookListDataBestAnalyze::class.java)
 
                             if (group != null) {
-                                items.add(group)
+                                Log.d("####", group.number.toString())
                             }
-                        }
 
-                        for(group in items){
                             with(binding.includeRank) {
-                                val itemDate = DBDate.getDateData(group.date)
+                                val itemDate = group?.let { DBDate.getDateData(it.date) }
 
                                 if (itemDate != null) {
                                     if (itemDate.week == DBDate.Week().toInt()) {
