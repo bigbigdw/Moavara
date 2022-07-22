@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.moavara.Best.ActivityBestDetail
 import com.example.moavara.Retrofit.*
 import com.example.moavara.Util.Param
 import com.example.moavara.databinding.FragmentSearchBinding
@@ -28,7 +29,6 @@ class FragmentSearch : Fragment() {
     private var joaraOffset = 20
     private var kakaoStageOffset = 25
 
-    private val test = ArrayList<String?>()
     var text = "사랑"
 
     override fun onCreateView(
@@ -76,24 +76,17 @@ class FragmentSearch : Fragment() {
                 llayoutSearch.visibility = View.GONE
                 llayoutResult.visibility = View.VISIBLE
 
-                Log.d("####", "1")
-                test.add("1")
                 searchJoara(page, text)
-                Log.d("####", "3")
-                test.add("3")
                 searchKakaoStage(text)
                 searchKakao(page - 1, text)
-                Log.d("####", "5")
-                test.add("5")
-                Log.d("#######", test.toString())
-                Log.d("####", "6")
                 searchNaver(text, "Naver")
-                searchNaver(text, "Naver_Challenge")
                 searchNaver(text, "Naver_Today")
+                searchNaver(text, "Naver_Challenge")
+                searchMunpia(text)
+                searchToksoda(text)
+                searchMrBlue(text)
             }
         }
-
-
 
         return view
     }
@@ -120,10 +113,6 @@ class FragmentSearch : Fragment() {
             param,
             object : RetrofitDataListener<JoaraSearchResult> {
                 override fun onSuccess(it: JoaraSearchResult) {
-
-                    Log.d("####", "2")
-                    test.add("2")
-                    Log.d("#######-2", test.toString())
 
                     val books = it.books
 
@@ -173,10 +162,6 @@ class FragmentSearch : Fragment() {
             param,
             object : RetrofitDataListener<SearchResultKakao> {
                 override fun onSuccess(it: SearchResultKakao) {
-
-                    Log.d("####", "4")
-                    test.add("4")
-                    Log.d("#######-3", test.toString())
 
                     val results = it.results
 
@@ -290,6 +275,124 @@ class FragmentSearch : Fragment() {
                             items.select(".bullet_comp").text(),
                             "",
                             "",
+                        )
+                    )
+                }
+            }
+        }.start()
+    }
+
+    fun searchMunpia(text: String) {
+        Thread {
+            val doc: Document = Jsoup.connect("https://novel.munpia.com/page/hd.platinum/view/search/keyword/${text}/order/search_result").post()
+
+            val Munpia: Elements = doc.select(".article_wrap .article")
+
+            requireActivity().runOnUiThread {
+                with(binding){
+                    blank.root.visibility = View.GONE
+                    rviewSearch.visibility = View.VISIBLE
+                }
+
+                for (items in Munpia) {
+
+                    searchItems.add(
+                        BookListData(
+                            "문피아",
+                            items.select(".detail a").text(),
+                            items.select(".author").text(),
+                            "https://${items.select(".thumb img").attr("src")}",
+                            items.select(".detail a").attr("href"),
+                            items.select(".info span").next().get(0).text(),
+                            items.select(".info span").next().get(1).text(),
+                            items.select(".info span").next().get(2).text(),
+                        )
+                    )
+                }
+            }
+        }.start()
+    }
+
+    fun searchToksoda(text: String) {
+        val apiToksoda = RetrofitToksoda()
+        val param : MutableMap<String?, Any> = HashMap()
+
+        param["srchwrd"] = text
+        param["keyword"] = text
+        param["pageSize"] = "20"
+        param["pageIndex"] = "0"
+        param["ageGrade"] = "0"
+        param["lgctgrCd"] = ""
+        param["mdctgrCd"] = ""
+        param["searchType"] = "T"
+        param["sortType"] = "W"
+        param["prdtType"] = ""
+        param["eventYn"] = "N"
+        param["realSearchType"] = "N"
+        param["_"] = "1657267049443"
+
+        apiToksoda.getSearch(
+            param,
+            object : RetrofitDataListener<BestToksodaSearchResult> {
+                override fun onSuccess(data: BestToksodaSearchResult) {
+
+                    data.resultList.let {
+                        if (it != null) {
+                            for (i in it.indices) {
+
+                                searchItems.add(
+                                    BookListData(
+                                        "톡소다",
+                                        it[i].BOOK_NM,
+                                        it[i].AUTHOR,
+                                        "https:${it[i].IMG_PATH}",
+                                        it[i].BARCODE,
+                                        "장르 : ${it[i].LGCTGR_NM}",
+                                        "유통사 : ${it[i].PUB_NM}",
+                                        "키워드 : ${it[i].HASHTAG_NM}",
+                                    )
+                                )
+                            }
+                        }
+                    }
+                }
+            })
+    }
+
+    fun searchMrBlue(text: String){
+        Thread {
+            val doc: Document = Jsoup.connect("https://www.mrblue.com/search/novel?keyword=${text}&sortby=title").post()
+
+            val MrBlue: Elements = doc.select(".list-box ul li")
+
+            requireActivity().runOnUiThread {
+                with(binding){
+                    blank.root.visibility = View.GONE
+                    rviewSearch.visibility = View.VISIBLE
+                }
+
+                for (items in MrBlue) {
+
+                    Log.d("@@@@", "https://www.mrblue.com/${items.select(".img a img").attr("data-original")}")
+
+                    var bookImg = ""
+
+                    if(items.select(".img a img").attr("data-original").contains("https://img.mrblue.com/")){
+                        bookImg = items.select(".img a img").attr("data-original")
+                    } else {
+                        bookImg = "https://www.mrblue.com/${items.select(".img a img").attr("data-original")}"
+                    }
+
+                    searchItems.add(
+                        BookListData(
+                            "미스터 블루",
+                            items.select(".tit").text(),
+                            items.select(".name").text(),
+                            bookImg,
+                            items.select("a").attr("href"),
+                            items.select(".genre").text(),
+                            items.select(".price").text(),
+                            items.select(".review").text(),
                         )
                     )
                 }

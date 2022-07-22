@@ -428,24 +428,3 @@ fun miningValue(ref: MutableMap<String?, Any>, num: Int, platform: String, genre
 
 }
 
-fun calculateNumDiff(
-    num: Int,
-    numYesterday: Int
-): CalculNum {
-    when {
-        numYesterday < num -> {
-            return CalculNum(num - numYesterday, "DOWN")
-        }
-        numYesterday > num -> {
-            return CalculNum(num - numYesterday, "UP")
-        }
-        numYesterday == num -> {
-            return CalculNum(0, "-")
-        }
-        else -> {
-            return CalculNum(0, "NEW")
-        }
-    }
-    return CalculNum(0, "-")
-}
-

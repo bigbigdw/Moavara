@@ -19,7 +19,7 @@
     <item
         android:id="@+id/Fragment_EventDetail"
         android:icon="@drawable/ic_news_vt_24px"
-        android:title="뉴스" />
+        android:title="바로찾기" />
 
     <item
         android:id="@+id/Fragment_Community"

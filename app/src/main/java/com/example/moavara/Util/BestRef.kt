@@ -70,8 +70,6 @@ object BestRef {
             "베스트리그",
             "카카오페이지",
             "스테이지",
-            "리디북스",
-            "원스토리",
             "문피아",
             "톡소다",
             "미스터블루"
@@ -87,8 +85,6 @@ object BestRef {
             "Naver",
             "Kakao",
             "Kakao_Stage",
-            "Ridi",
-            "OneStore",
             "Munpia",
             "Toksoda",
             "MrBlue"

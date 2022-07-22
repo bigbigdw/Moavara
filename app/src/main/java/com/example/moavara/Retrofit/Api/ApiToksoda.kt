@@ -21,6 +21,6 @@ interface ApiToksoda {
     @GET("/banner/getBannerList")
     fun getEventList(@QueryMap queryMap: MutableMap<String?, Any>): Call<BestBannerListResult>
 
-    @GET("/event/getEventDetail")
+    @GET("/common/search/smartmakerLCPOpen")
     fun getEventDetail(@QueryMap queryMap: MutableMap<String?, Any>): Call<BestBannerListResult>
 }
