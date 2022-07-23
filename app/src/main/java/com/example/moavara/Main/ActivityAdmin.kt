@@ -11,8 +11,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.work.Constraints
-import androidx.work.NetworkType
+import androidx.work.BackoffPolicy
+import androidx.work.OneTimeWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.moavara.Firebase.*
@@ -47,13 +47,14 @@ class ActivityAdmin : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        val mConstraints = Constraints.Builder()
-            .setRequiresStorageNotLow(true)
-            .build()
-
         /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
         val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(3, TimeUnit.HOURS)
-            .setConstraints(mConstraints) // 작업을 재시도 할경우에 대한 정책
+            .setInitialDelay(10, TimeUnit.MINUTES)
+            .setBackoffCriteria(
+                BackoffPolicy.LINEAR,
+                OneTimeWorkRequest.MIN_BACKOFF_MILLIS,
+                TimeUnit.MILLISECONDS)
+            .addTag("Best")
             .build()
 
         val miningRef = FirebaseDatabase.getInstance().reference.child("Mining")
@@ -573,16 +574,16 @@ class ActivityAdmin : AppCompatActivity() {
 
             llayoutBtn13.setOnClickListener {
 
-                binding.loading.root.visibility = View.VISIBLE
+//                binding.loading.root.visibility = View.VISIBLE
 
-//                Mining.runMining(applicationContext, "FANTASY")
-//                Mining.runMining(applicationContext, "ALL")
-//                Mining.runMining(applicationContext, "ROMANCE")
-//                Mining.runMining(applicationContext, "BL")
+                Mining.runMining(applicationContext, "FANTASY")
+                Mining.runMining(applicationContext, "ALL")
+                Mining.runMining(applicationContext, "ROMANCE")
+                Mining.runMining(applicationContext, "BL")
 
-                for (i in 1..3) {
-                        Mining.getOneStoreBest("ALL", i, this@ActivityAdmin)
-                }
+//                for (i in 1..3) {
+//                        Mining.getOneStoreBest("ALL", i, this@ActivityAdmin)
+//                }
             }
 
             llayoutBtn14.setOnClickListener {

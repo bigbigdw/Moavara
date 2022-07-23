@@ -58,6 +58,12 @@ class FragmentSearchBookcode(private var platform: String) : Fragment() {
                 tviewSearch.text = "https://novel.naver.com/challenge/list?novelId=75595"
             }  else if (platform == "Naver_Today") {
                 tviewSearch.text = "https://novel.naver.com/best/list?novelId=268129"
+            }   else if (platform == "Ridi"){
+                tviewSearch.text = "https://ridibooks.com/books/425295076"
+            }   else if (platform == "Munpia"){
+                tviewSearch.text = "https://novel.munpia.com/284801"
+            } else if (platform == "Toksoda"){
+                tviewSearch.text = "https://www.tocsoda.co.kr/product/productView?brcd=76M2207187389"
             }
 
             btnSearch.setOnClickListener {
@@ -69,6 +75,12 @@ class FragmentSearchBookcode(private var platform: String) : Fragment() {
                     setLayoutKaKaoStage()
                 }  else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver"){
                     setLayoutNaverToday()
+                }  else if (platform == "Ridi"){
+                    setLayoutRidi()
+                }  else if (platform == "Munpia"){
+                    setLayoutMunpia()
+                } else if (platform == "Toksoda"){
+                    setLayoutToksoda()
                 }
             }
         }
@@ -85,24 +97,24 @@ class FragmentSearchBookcode(private var platform: String) : Fragment() {
         apiJoara.getBookDetailJoa(
             JoaraRef,
             object : RetrofitDataListener<JoaraBestDetailResult> {
-                override fun onSuccess(it: JoaraBestDetailResult) {
+                override fun onSuccess(data: JoaraBestDetailResult) {
 
                     with(binding){
                         llayoutSearch.visibility = View.GONE
                         llayoutResult.visibility = View.VISIBLE
 
-                        if(it.status == "1" && it.book != null){
+                        if(data.status == "1" && data.book != null){
                             Glide.with(requireContext())
-                                .load(it.book.bookImg)
+                                .load(data.book.bookImg)
                                 .into(searchResult.iviewBookCover)
 
-                            searchResult.tviewTitle.text = it.book.subject
-                            searchResult.tviewWriter.text = it.book.writerName
+                            searchResult.tviewTitle.text = data.book.subject
+                            searchResult.tviewWriter.text = data.book.writerName
 
-                            searchResult.tviewInfo1.text = "총 " + it.book.cntChapter + " 화"
-                            searchResult.tviewInfo2.text =  "선호작 수 : " + it.book.cntFavorite
-                            searchResult.tviewInfo3.text =  "조회 수 : " + it.book.cntPageRead
-                            searchResult.tviewInfo4.text =  "추천 수 : " + it.book.cntRecom
+                            searchResult.tviewInfo1.text = "총 " + data.book.cntChapter + " 화"
+                            searchResult.tviewInfo2.text =  "선호작 수 : " + data.book.cntFavorite
+                            searchResult.tviewInfo3.text =  "조회 수 : " + data.book.cntPageRead
+                            searchResult.tviewInfo4.text =  "추천 수 : " + data.book.cntRecom
 
                         }
                     }
@@ -207,5 +219,94 @@ class FragmentSearchBookcode(private var platform: String) : Fragment() {
 
             }
         }.start()
+    }
+
+    fun setLayoutRidi(){
+        Thread {
+            val doc: Document = Jsoup.connect("https://ridibooks.com/books/${bookCode}").get()
+
+            Log.d("####", "https://ridibooks.com/books/${bookCode}")
+
+            requireActivity().runOnUiThread {
+                with(binding){
+                    llayoutSearch.visibility = View.GONE
+                    llayoutResult.visibility = View.VISIBLE
+
+                    Glide.with(requireContext())
+                        .load("https:${doc.select(".thumbnail_image img").attr("src")}")
+                        .into(searchResult.iviewBookCover)
+
+                    searchResult.tviewTitle.text = doc.select(".header_info_wrap .info_title_wrap h3").text()
+                    searchResult.tviewWriter.text = doc.select(".metadata_writer .author_detail_link").text()
+
+                    searchResult.tviewInfo1.text = doc.select(".header_info_wrap .info_category_wrap").text()
+                    searchResult.tviewInfo2.text =  "평점 : ${doc.select(".header_info_wrap .StarRate_Score").text()}"
+                    searchResult.tviewInfo3.text =  doc.select(".header_info_wrap .StarRate_ParticipantCount").text()
+                    searchResult.tviewInfo4.text =  doc.select(".metadata_info_series_complete_wrap .metadata_item").text()
+
+                }
+            }
+        }.start()
+    }
+
+    fun setLayoutMunpia(){
+        Thread {
+            val doc: Document = Jsoup.connect("https://novel.munpia.com/${bookCode}" ).get()
+
+            requireActivity().runOnUiThread {
+                with(binding){
+                    llayoutSearch.visibility = View.GONE
+                    llayoutResult.visibility = View.VISIBLE
+
+                    Glide.with(requireContext())
+                        .load("https:${doc.select(".cover-box img").attr("src")}")
+                        .into(searchResult.iviewBookCover)
+
+                    searchResult.tviewTitle.text = doc.select(".detail-box h2 a").text().replace(doc.select(".detail-box h2 a span").text() + " ", "")
+                    searchResult.tviewWriter.text = doc.select(".member-trigger strong").text()
+
+                    searchResult.tviewInfo1.text = doc.select(".meta-path strong").text()
+                    searchResult.tviewInfo2.text =  "조회 수 : ${doc.select(".meta-etc dd").next().next().get(1).text()}"
+                    searchResult.tviewInfo3.text =  "추천 수 : ${doc.select(".meta-etc dd").next().next().get(2).text()}"
+                    searchResult.tviewInfo4.text =  doc.select(".meta-etc dt").next().get(2).text()
+
+                }
+            }
+        }.start()
+    }
+
+    fun setLayoutToksoda(){
+        val apiToksoda = RetrofitToksoda()
+        val param : MutableMap<String?, Any> = HashMap()
+
+        param["brcd"] = bookCode
+        param["_"] = "1657265744728"
+
+        apiToksoda.getBestDetail(
+            param,
+            object : RetrofitDataListener<BestToksodaDetailResult> {
+                override fun onSuccess(data: BestToksodaDetailResult) {
+
+                    with(binding){
+                        llayoutSearch.visibility = View.GONE
+                        llayoutResult.visibility = View.VISIBLE
+
+                        data.result.let {
+                            Glide.with(requireContext())
+                                .load("https:${it?.imgPath}")
+                                .into(searchResult.iviewBookCover)
+
+                            searchResult.tviewTitle.text = it?.wrknm ?: ""
+                            searchResult.tviewWriter.text = it?.athrnm ?: ""
+
+                            searchResult.tviewInfo1.text = "장르 :  ${it?.lgctgrNm}"
+                            searchResult.tviewInfo2.text =  "구독 수 : ${it?.inqrCnt}"
+                            searchResult.tviewInfo3.text =  "관심 : ${it?.intrstCnt}"
+                            searchResult.tviewInfo4.text =  "선호작 수 : ${it?.goodCnt}"
+
+                        }
+                    }
+                }
+            })
     }
 }

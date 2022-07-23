@@ -655,7 +655,6 @@ object Mining {
 
                     for (i in books!!.indices) {
 
-                        JoaraRef["status"] = "NEW"
                         JoaraRef["writerName"] = books[i].writerName
                         JoaraRef["subject"] = books[i].subject
                         JoaraRef["bookImg"] = books[i].bookImg

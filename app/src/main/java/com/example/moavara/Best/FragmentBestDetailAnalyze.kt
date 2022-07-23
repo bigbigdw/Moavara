@@ -166,31 +166,31 @@ class FragmentBestDetailAnalyze(
             }
         } else if (platfrom == "Naver_Today" || platfrom == "Naver_Challenge" || platfrom == "Naver") {
             if(num == 1){
-                return BestRef.StrToInt(data.replace("조회 ", "")).toFloat()
+                return BestRef.strToInt(data.replace("조회 ", "")).toFloat()
             } else if(num == 2){
-                return BestRef.StrToInt(data.replace("관심 ", "")).toFloat()
+                return BestRef.strToInt(data.replace("관심 ", "")).toFloat()
             } else {
                 return data.replace("별점", "").toFloat()
             }
         } else if (platfrom == "Kakao") {
             if(num == 1){
-                return BestRef.StrToInt(data.replace("조회 수 : ", "")).toFloat()
+                return BestRef.strToInt(data.replace("조회 수 : ", "")).toFloat()
             } else if(num == 2){
-                return BestRef.StrToInt(data.replace("추천 수 : ", "")).toFloat()
+                return BestRef.strToInt(data.replace("추천 수 : ", "")).toFloat()
             } else {
                 return data.replace("평점 : ", "").toFloat()
             }
         } else if (platfrom == "Kakao_Stage") {
             if(num == 1){
-                return BestRef.StrToInt(data.replace("조회 수 : ", "")).toFloat()
+                return BestRef.strToInt(data.replace("조회 수 : ", "")).toFloat()
             } else if(num == 2){
-                return  BestRef.StrToInt(data.replace("선호작 수 : ", "")).toFloat()
+                return  BestRef.strToInt(data.replace("선호작 수 : ", "")).toFloat()
             }
         } else if (platfrom == "Ridi") {
             if(num == 1){
                 return data.replace("평점 : ", "").replace("점", "").toFloat()
             } else if(num == 2){
-                return BestRef.StrToInt(data.replace("추천 수 : ", "").replace("명", "")).toFloat()
+                return BestRef.strToInt(data.replace("추천 수 : ", "").replace("명", "")).toFloat()
             }
         } else if (platfrom == "OneStore") {
             if(num == 1){

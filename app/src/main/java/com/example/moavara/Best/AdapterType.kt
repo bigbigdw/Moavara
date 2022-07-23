@@ -10,9 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.moavara.R
 import com.example.moavara.Search.BestType
 
-class AdapterType(items: List<BestType?>?) :
+class AdapterType(private var holder: List<BestType>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var holder: ArrayList<BestType?>? = items as ArrayList<BestType?>?
     var selected = 0
 
     interface OnItemClickListener {
@@ -34,9 +33,9 @@ class AdapterType(items: List<BestType?>?) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is MainBookViewHolder) {
 
-            val item = this.holder!![position]
+            val item = this.holder[position]
 
-            holder.tveiwTitle.text = item!!.title
+            holder.tveiwTitle.text = item.title
 
             if(getSelectedBtn() == position){
                 holder.tveiwTitle.setTextColor(Color.parseColor("#0D0E10"));
@@ -50,7 +49,7 @@ class AdapterType(items: List<BestType?>?) :
     }
 
     override fun getItemCount(): Int {
-        return if (holder == null) 0 else holder!!.size
+        return holder.size
     }
 
     inner class MainBookViewHolder internal constructor(itemView: View) :
@@ -64,7 +63,7 @@ class AdapterType(items: List<BestType?>?) :
             llayoutWrap.setOnClickListener { v: View? ->
                 val pos = adapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
-                    listener!!.onItemClick(v, pos)
+                    listener?.onItemClick(v, pos)
                 }
             }
 
@@ -73,8 +72,8 @@ class AdapterType(items: List<BestType?>?) :
 
     }
 
-    fun getItem(position: Int): BestType? {
-        return holder!![position]
+    fun getItem(position: Int): BestType {
+        return holder[position]
     }
 
     fun setSelectedBtn(select: Int) {

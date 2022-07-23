@@ -41,6 +41,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
             android:text="검색"
@@ -52,10 +53,13 @@
             android:id="@+id/sview"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_gravity="right"
+            android:layout_weight="5"
             android:background="#0D0E10"
+            android:gravity="right|end"
+            android:iconifiedByDefault="false"
             android:layoutDirection="rtl"
-            android:queryHint='"검색"'
+            android:queryHint='찾으실 작품을 검색해주세요'
             android:searchHintIcon="@android:drawable/ic_menu_search"
             android:searchIcon="@android:drawable/ic_menu_search" />
 

@@ -18,8 +18,6 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
 import java.util.*
-import kotlin.Comparator
-import kotlin.collections.ArrayList
 
 class ActivitySearch : AppCompatActivity() {
 
@@ -491,7 +489,7 @@ class ActivitySearch : AppCompatActivity() {
             rviewType.adapter = adapterType
         }
 
-        for (i in BestRef.typeListSearch().indices) {
+        for (i in BestRef.typeListTitleSearch().indices) {
             typeItems.add(
                 BestType(
                     BestRef.typeListTitleSearch()[i],
@@ -503,7 +501,7 @@ class ActivitySearch : AppCompatActivity() {
 
         adapterType.setOnItemClickListener(object : AdapterType.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
-                val item: BestType? = adapterType.getItem(position)
+                val item: BestType = adapterType.getItem(position)
                 adapterType.setSelectedBtn(position)
                 adapterType.notifyDataSetChanged()
 

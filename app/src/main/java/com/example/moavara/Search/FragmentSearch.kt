@@ -11,7 +11,6 @@ import com.example.moavara.Best.AdapterType
 import com.example.moavara.R
 import com.example.moavara.Util.BestRef
 import com.example.moavara.databinding.FragmentSearchBinding
-import java.util.*
 
 
 class FragmentSearch : Fragment() {
@@ -53,7 +52,7 @@ class FragmentSearch : Fragment() {
             rviewType.adapter = adapterType
         }
 
-        for(i in BestRef.typeList().indices){
+        for(i in BestRef.typeListTitleBookCode().indices){
             typeItems.add(
                 BestType(
                     BestRef.typeListTitleBookCode()[i],
@@ -65,15 +64,13 @@ class FragmentSearch : Fragment() {
 
         adapterType.setOnItemClickListener(object : AdapterType.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
-                val item: BestType? = adapterType.getItem(position)
+                val item: BestType = adapterType.getItem(position)
                 adapterType.setSelectedBtn(position)
                 adapterType.notifyDataSetChanged()
 
-                if(item != null){
-                    mFragmentSearchBookcode = FragmentSearchBookcode(item.type ?: "")
-                    childFragmentManager.commit {
-                        replace(R.id.llayoutWrap, mFragmentSearchBookcode)
-                    }
+                mFragmentSearchBookcode = FragmentSearchBookcode(item.type ?: "")
+                childFragmentManager.commit {
+                    replace(R.id.llayoutWrap, mFragmentSearchBookcode)
                 }
             }
         })

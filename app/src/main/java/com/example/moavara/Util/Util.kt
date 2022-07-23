@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import com.example.moavara.DataBase.TrophyInfo
 import com.example.moavara.Search.BookListDataBestMonthNum
-import com.example.moavara.Search.CalculNum
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -422,7 +421,7 @@ object Genre {
 
 fun miningValue(ref: MutableMap<String?, Any>, num: Int, platform: String, genre: String) {
 
-    BestRef.setBookCode(platform, genre, ref["bookCode"] as String, num).setValue(BestRef.setBookListDataBestAnalyze(ref))
+    BestRef.setBookCode(platform, genre, ref["bookCode"] as String).setValue(BestRef.setBookListDataBestAnalyze(ref))
 
     BestRef.setBestData(platform, num, genre).setValue(BestRef.setBookListDataBest(ref))
 
