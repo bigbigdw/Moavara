@@ -40,7 +40,7 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/teal_700" />
 
-        <service android:name=".Firebase.FCM">
+        <service android:name=".Firebase.FCM" android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
@@ -50,11 +50,6 @@
             android:name=".Main.ActivityLogin"
             android:noHistory="true"
             android:exported="true" />
-
-        <activity
-            android:name=".Pick.ActivityPick"
-            android:label=""
-            android:exported="true"/>
 
         <activity
             android:name="com.example.moavara.Search.ActivitySearch"
@@ -69,7 +64,7 @@
         </activity>
 
         <activity
-            android:name="com.example.moavara.Event.ActivityEventDetail"
+            android:name="com.example.moavara.Soon.Event.ActivityEventDetail"
             android:label=""
             android:noHistory="true"
             android:exported="true">

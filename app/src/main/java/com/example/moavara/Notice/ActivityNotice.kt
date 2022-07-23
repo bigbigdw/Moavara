@@ -10,8 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
-import com.example.moavara.Best.BottomDialogMain
-import com.example.moavara.Pick.ActivityPick
 import com.example.moavara.Pick.FragmentPickTabEvent
 import com.example.moavara.Pick.FragmentPickTabNovel
 import com.example.moavara.R

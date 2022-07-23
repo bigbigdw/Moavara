@@ -1,6 +1,5 @@
 package com.example.moavara.Main
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Paint
@@ -16,8 +15,6 @@ import com.example.moavara.User.ActivityGuide
 import com.example.moavara.Util.Genre
 import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.ActivityGenreBinding
-import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.activity_genre.*
 
 
 class ActivityGenre : AppCompatActivity() {
@@ -63,10 +60,10 @@ class ActivityGenre : AppCompatActivity() {
                 setStroke(2f.dpToPx().toInt(), Color.parseColor("#844DF3"))
             }
 
-            llayout_btn1.background = llayout_btnBG
-            llayout_btn2.background = llayout_btnBG
-            llayout_btn3.background = llayout_btnBG
-            llayout_btn4.background = llayout_btnBG
+            llayoutBtn1.background = llayout_btnBG
+            llayoutBtn2.background = llayout_btnBG
+            llayoutBtn3.background = llayout_btnBG
+            llayoutBtn4.background = llayout_btnBG
 
             if(mode == "USER" && UID != ""){
                 llayoutNickname.visibility = View.GONE
@@ -270,7 +267,7 @@ class ActivityGenre : AppCompatActivity() {
                 }
 
                 val rightListener = View.OnClickListener { v: View? ->
-                    savePreferences("NICKNAME", etviewNickname.text.toString())
+                    savePreferences("NICKNAME", binding.etviewNickname.text.toString())
                     val intent = Intent(context, ActivityGuide::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

@@ -3,27 +3,27 @@
 
     <item
         android:id="@+id/Fragment_Best"
-        android:icon="@drawable/ic_best_vt_24px"
+        android:icon="@drawable/bottom_best"
         android:title="@string/Title_Best" />
 
     <item
         android:id="@+id/Fragment_Event"
-        android:icon="@drawable/ic_event_vt_24px"
+        android:icon="@drawable/bottom_event"
         android:title="이벤트" />
 
     <item
-        android:id="@+id/ActivityMyPick"
-        android:icon="@drawable/ic_push_pin_vt_24px"
+        android:id="@+id/Fragment_Pick"
+        android:icon="@drawable/bottom_pick"
         android:title="마이픽" />
 
     <item
         android:id="@+id/Fragment_Search"
-        android:icon="@drawable/ic_news_vt_24px"
+        android:icon="@drawable/bottom_fourth"
         android:title="바로찾기" />
 
     <item
         android:id="@+id/Fragment_Community"
-        android:icon="@drawable/ic_community_vt_24px"
+        android:icon="@drawable/bottom_community"
         android:title="커뮤니티" />
 
 </menu>
