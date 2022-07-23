@@ -17,9 +17,8 @@ import com.example.moavara.databinding.FragmentEventTabBinding
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
-import java.util.*
 
-class FragmentEventTab(private val tabType: String) : Fragment() {
+class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
 
     private lateinit var adapterLeft: AdapterEvent
     private lateinit var adapterRight: AdapterEvent
@@ -111,9 +110,9 @@ class FragmentEventTab(private val tabType: String) : Fragment() {
         apiJoara.getJoaraEvent(
             param,
             object : RetrofitDataListener<JoaraEventResult> {
-                override fun onSuccess(it: JoaraEventResult) {
+                override fun onSuccess(data: JoaraEventResult) {
 
-                    val banner = it.banner
+                    val banner = data.banner
 
                     for (i in banner!!.indices) {
 

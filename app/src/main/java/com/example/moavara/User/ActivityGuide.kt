@@ -13,7 +13,6 @@ import com.example.moavara.Main.ActivityMain
 import com.example.moavara.R
 import com.example.moavara.databinding.ActivityGuideBinding
 import com.synnapps.carouselview.ViewListener
-import kotlinx.android.synthetic.main.item_guide_carousel.*
 
 
 class ActivityGuide : AppCompatActivity() {

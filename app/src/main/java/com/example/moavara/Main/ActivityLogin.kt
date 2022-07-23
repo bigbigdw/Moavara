@@ -25,7 +25,6 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.activity_genre.*
 
 class ActivityLogin : AppCompatActivity() {
     private var auth: FirebaseAuth? = null
