@@ -8,7 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
+import com.example.moavara.R
 import com.example.moavara.databinding.FragmentEventBinding
+import com.example.moavara.databinding.FragmentEventTabBinding
+import com.google.android.material.tabs.TabLayout
 
 class FragmentEvent: Fragment() {
 
@@ -36,13 +39,14 @@ class FragmentEvent: Fragment() {
         )
 
         adapter.addFragment(FragmentEventTab("Joara"), "조아라")
+//        adapter.addFragment(FragmentEventTab("Naver"), "네이버")
         adapter.addFragment(FragmentEventTab("Kakao"), "카카오")
         adapter.addFragment(FragmentEventTab("Ridi"), "리디북스")
         adapter.addFragment(FragmentEventTab("OneStore"), "원스토리")
         adapter.addFragment(FragmentEventTab("Munpia"), "문피아")
         adapter.addFragment(FragmentEventTab("Toksoda"), "톡소다")
         adapter.addFragment(FragmentEventTab("MrBlue"), "미스터블루")
-        viewPager?.adapter = adapter
+        viewPager!!.adapter = adapter
     }
 
     class ViewPagerAdapter(manager: FragmentManager) :

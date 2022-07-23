@@ -1,13 +1,16 @@
-package com.example.moavara.Soon.Event
+package com.example.moavara.Event
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils.replace
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.commit
-import com.example.moavara.Event.FragmentEventDetail
+import com.example.moavara.Best.FragmentBestTabMonth
+import com.example.moavara.Best.FragmentBestTabToday
+import com.example.moavara.Best.FragmentBestTabWeekend
 import com.example.moavara.R
 import com.example.moavara.Search.ActivitySearch
 import com.example.moavara.User.ActivityUser
@@ -27,7 +30,7 @@ class ActivityEventDetail : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        mFragmentEventDetail = FragmentEventDetail("")
+        mFragmentEventDetail = FragmentEventDetail("Event")
         supportFragmentManager.commit {
             replace(R.id.llayoutWrap, mFragmentEventDetail)
         }
@@ -38,7 +41,7 @@ class ActivityEventDetail : AppCompatActivity() {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 when(tab.position){
                     0->{
-                        mFragmentEventDetail = FragmentEventDetail("")
+                        mFragmentEventDetail = FragmentEventDetail("Event")
                         supportFragmentManager.commit {
                             replace(R.id.llayoutWrap, mFragmentEventDetail)
                         }

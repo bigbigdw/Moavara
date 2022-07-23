@@ -1,4 +1,4 @@
-package com.example.moavara.Soon.Event
+package com.example.moavara.Event
 
 import android.content.Intent
 import android.os.Bundle

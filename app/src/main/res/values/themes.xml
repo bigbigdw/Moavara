@@ -54,11 +54,6 @@
         <item name="android:textSize">17sp</item>
     </style>
 
-    <style name="Widget.BottomNavigationView"
-        parent="Widget.Design.BottomNavigationView">
-        <item name="fontFamily">@font/pretendardvariable</item>
-    </style>
-
     <style name="Theme.JoaraDW.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.JoaraDW.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

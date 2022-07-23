@@ -17,9 +17,9 @@
         android:label=""
         tools:layout="@layout/fragment_search" />
 
-    <fragment
-        android:id="@+id/Fragment_Pick"
-        android:name="com.example.moavara.Pick.FragmentPick"
+    <activity
+        android:id="@+id/ActivityMyPick"
+        android:name="com.example.moavara.Pick.ActivityPick"
         android:label=""
         tools:layout="@layout/activity_pick" />
 
@@ -36,10 +36,10 @@
 <!--        tools:layout="@layout/activity_news" />-->
 
     <fragment
-        android:id="@+id/Fragment_Event"
-        android:name="com.example.moavara.Event.FragmentEvent"
+        android:id="@+id/Fragment_EventDetail"
+        android:name="com.example.moavara.Event.FragmentLogin"
         android:label=""
-        tools:layout="@layout/fragment_event" />
+        tools:layout="@layout/fragment_best_tab_today" />
 
 
 

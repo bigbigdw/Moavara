@@ -1,4 +1,4 @@
-package com.example.moavara.Notice
+package com.example.moavara.Pick
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,23 +11,23 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.example.moavara.Best.BottomDialogMain
-import com.example.moavara.Pick.ActivityPick
-import com.example.moavara.Pick.FragmentPickTabEvent
-import com.example.moavara.Pick.FragmentPickTabNovel
 import com.example.moavara.R
 import com.example.moavara.Search.ActivitySearch
 import com.example.moavara.User.ActivityUser
-import com.example.moavara.databinding.ActivityNoticeBinding
+import com.example.moavara.databinding.ActivityPickBinding
+import java.util.*
+import kotlin.collections.ArrayList
 
-class ActivityNotice : AppCompatActivity() {
+
+class ActivityPick : AppCompatActivity() {
 
     var cate = "ALL"
     var status = ""
-    private lateinit var binding: ActivityNoticeBinding
+    private lateinit var binding: ActivityPickBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityNoticeBinding.inflate(layoutInflater)
+        binding = ActivityPickBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)

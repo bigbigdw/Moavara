@@ -10,6 +10,7 @@ import android.view.View
 import android.view.WindowManager
 import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.DialogLoginConfirmBinding
+import kotlinx.android.synthetic.main.dialog_login_confirm.*
 
 class DialogConfirmLogin(
     context: Context,
@@ -39,10 +40,10 @@ class DialogConfirmLogin(
         }
 
         if(textHead == ""){
-            binding.tviewHeadWht.visibility = View.VISIBLE
+            tviewHeadWht.visibility = View.VISIBLE
         } else {
-            binding.tviewHeadWht.visibility = View.GONE
-            binding.tviewUnderline.text = textHead
+            tviewHeadWht.visibility = View.GONE
+            tviewUnderline.text = textHead
         }
 
         binding.llayoutBodyInner.background = body

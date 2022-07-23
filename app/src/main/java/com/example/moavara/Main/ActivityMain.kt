@@ -2,25 +2,39 @@ package com.example.moavara.Main
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
+import androidx.work.Constraints
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import com.example.moavara.Firebase.FirebaseWorkManager
 import com.example.moavara.R
 import com.example.moavara.Search.ActivitySearch
 import com.example.moavara.User.ActivityUser
 import com.example.moavara.Util.Genre
 import com.example.moavara.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.messaging.FirebaseMessaging
+import java.util.concurrent.TimeUnit
+import java.util.jar.Manifest
 
 
 class ActivityMain : AppCompatActivity() {
@@ -46,10 +60,10 @@ class ActivityMain : AppCompatActivity() {
             MODE_PRIVATE
         )
 
-        val toolbar = findViewById<Toolbar>(com.example.moavara.R.id.toolbar)
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        navController = Navigation.findNavController(this, com.example.moavara.R.id.navHostFragmentMain)
+        navController = Navigation.findNavController(this, R.id.navHostFragmentMain)
 
         toolbar.setOnClickListener {
 
@@ -59,8 +73,6 @@ class ActivityMain : AppCompatActivity() {
 
         val navView = findViewById<BottomNavigationView>(R.id.nav_bottom)
         NavigationUI.setupWithNavController(navView, navController!!)
-
-        navView.itemIconTintList = null
 
         registNotification()
     }
