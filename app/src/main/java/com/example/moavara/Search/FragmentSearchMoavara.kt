@@ -53,15 +53,18 @@ class FragmentSearchMoavara : Fragment() {
 
         binding.sview.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                if (query != null) {
-                    adapterToday?.search(query)
-                }
-                adapterToday?.notifyDataSetChanged()
+//                if (query != null) {
+//                    adapterToday?.search(query)
+//                }
+//                adapterToday?.notifyDataSetChanged()
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-
+                if (newText != null) {
+                    adapterToday?.search(newText)
+                }
+                adapterToday?.notifyDataSetChanged()
                 return false
             }
         })
@@ -120,8 +123,7 @@ class FragmentSearchMoavara : Fragment() {
                             jsonObject.put("type", group.type)
                             jsonObject.put("memo", group.memo)
 
-                            items.add(
-                                BookListDataBest(
+                            val item = BookListDataBest(
                                 group.writer,
                                 group.title,
                                 group.bookImg,
@@ -136,7 +138,9 @@ class FragmentSearchMoavara : Fragment() {
                                 group.type,
                                 group.memo
                             )
-                            )
+
+                            items.add(item)
+                            searchItems.add(item)
 
                             jsonArray.put(jsonObject)
                         }
@@ -195,7 +199,8 @@ class FragmentSearchMoavara : Fragment() {
 
             for (i in 0 until itemsFlag.length()) {
                 val jo = itemsFlag.getJSONObject(i)
-                items.add(BookListDataBest(
+
+                val item = BookListDataBest(
                     jo.optString("writer"),
                     jo.optString("title"),
                     jo.optString("bookImg"),
@@ -209,7 +214,10 @@ class FragmentSearchMoavara : Fragment() {
                     jo.optString("date"),
                     jo.optString("type"),
                     jo.optString("memo"),
-                ))
+                )
+
+                items.add(item)
+                searchItems.add(item)
             }
 
             reader.close()
