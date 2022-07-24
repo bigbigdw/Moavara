@@ -11,11 +11,13 @@ import com.example.moavara.Best.AdapterType
 import com.example.moavara.R
 import com.example.moavara.Util.BestRef
 import com.example.moavara.databinding.FragmentSearchBinding
+import com.google.android.material.tabs.TabLayout
 
 
 class FragmentSearch : Fragment() {
 
     private lateinit var mFragmentSearchBookcode: FragmentSearchBookcode
+    private lateinit var mSearchMoavara: FragmentSearchMoavara
     private lateinit var adapterType: AdapterType
     private val typeItems = ArrayList<BestType>()
 
@@ -35,6 +37,33 @@ class FragmentSearch : Fragment() {
         childFragmentManager.commit {
             replace(R.id.llayoutWrap, mFragmentSearchBookcode)
         }
+
+        val fragmentBestTab = binding.tabs
+        fragmentBestTab.addTab(fragmentBestTab.newTab().setText("북코드"))
+        fragmentBestTab.addTab(fragmentBestTab.newTab().setText("투데이"))
+
+        fragmentBestTab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                when(tab.position){
+                    0->{
+                        mFragmentSearchBookcode = FragmentSearchBookcode("Joara")
+                        childFragmentManager.commit {
+                            replace(R.id.llayoutWrap, mFragmentSearchBookcode)
+                        }
+                        binding.rviewType.visibility = View.VISIBLE
+                    }
+                    1->{
+                        mSearchMoavara = FragmentSearchMoavara()
+                        childFragmentManager.commit {
+                            replace(R.id.llayoutWrap, mSearchMoavara)
+                        }
+                        binding.rviewType.visibility = View.GONE
+                    }
+                }
+            }
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        })
 
         getType()
 
