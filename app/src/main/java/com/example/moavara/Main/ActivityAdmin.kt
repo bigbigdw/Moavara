@@ -151,16 +151,8 @@ class ActivityAdmin : AppCompatActivity() {
 
             llayoutBtn13.setOnClickListener {
 
-//                binding.loading.root.visibility = View.VISIBLE
-
-                Mining.runMining(applicationContext, "FANTASY")
-                Mining.runMining(applicationContext, "ALL")
-                Mining.runMining(applicationContext, "ROMANCE")
-                Mining.runMining(applicationContext, "BL")
-
-//                for (i in 1..3) {
-//                        Mining.getOneStoreBest("ALL", i, this@ActivityAdmin)
-//                }
+                Mining.getOneStoreBest("ALL", this@ActivityAdmin)
+                Toast.makeText(applicationContext, "테스트 완료", Toast.LENGTH_SHORT).show()
             }
 
             llayoutBtn14.setOnClickListener {

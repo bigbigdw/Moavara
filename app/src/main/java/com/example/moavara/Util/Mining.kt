@@ -20,8 +20,6 @@ import java.io.File
 import java.net.SocketTimeoutException
 
 object Mining {
-    var secondKey = "0/0"
-    var thirdKey = "0/0"
 
     fun runMiningEvent(context: Context) {
         getNoticeJoara(context)
@@ -111,9 +109,7 @@ object Mining {
         }
 
         val OneStore = Thread {
-            for (i in 1..3) {
-                getOneStoreBest(genre, i, context)
-            }
+            getOneStoreBest(genre, context)
         }
 
         val Kakao = Thread {
@@ -424,21 +420,14 @@ object Mining {
         }
     }
 
-    fun getOneStoreBest(platform: String, page: Int, context: Context) {
+    fun getOneStoreBest(cate: String, context: Context) {
         try {
             val OneStoryRef: MutableMap<String?, Any> = HashMap()
 
             val apiOneStory = RetrofitOnestore()
             val param: MutableMap<String?, Any> = HashMap()
 
-            param["menuId"] = Genre.setOneStoreGenre(platform)
-            if (page == 1) {
-                param["startKey"] = "0/0"
-            } else if (page == 2) {
-                param["startKey"] = secondKey
-            } else if (page == 3) {
-                param["startKey"] = thirdKey
-            }
+            param["menuId"] = Genre.setOneStoreGenre(cate)
 
             apiOneStory.getBestOneStore(
                 param,
@@ -446,12 +435,6 @@ object Mining {
                     override fun onSuccess(data: OneStoreBookResult) {
 
                         val productList = data.params?.productList
-
-                        if(page == 1){
-                            secondKey = data.params?.startKey ?: "0/0"
-                        } else if(page == 2){
-                            thirdKey = data.params?.startKey ?: "0/0"
-                        }
 
                         if (productList != null) {
                             for (i in productList.indices) {
@@ -468,15 +451,15 @@ object Mining {
                                 OneStoryRef["info4"] = "평점 : " + productList[i].avgScore
                                 OneStoryRef["info5"] =
                                     "댓글 수 : " + productList[i].commentCount
-                                OneStoryRef["number"] = i + ((page - 1) * productList.size)
+                                OneStoryRef["number"] = i
                                 OneStoryRef["date"] = DBDate.DateMMDD()
                                 OneStoryRef["type"] = "OneStore"
 
                                 miningValue(
                                     OneStoryRef,
-                                    (i + ((page - 1) * productList.size)),
+                                    i,
                                     "OneStore",
-                                    platform
+                                    cate
                                 )
                             }
                         }

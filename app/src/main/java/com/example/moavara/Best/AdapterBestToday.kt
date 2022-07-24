@@ -47,21 +47,28 @@ class AdapterBestToday(
                 tviewTitle.text = item.title
 
                 try{
-                    if(bookCodeItems[position].numberDiff > 0){
-                        tviewNum.text =  "${bookCodeItems[position].numberDiff}(${bookCodeItems[position].trophyCount})"
-                        tviewNum.setTextColor(Color.parseColor("#02BC77"))
-                        iviewArrow.setImageResource(R.drawable.ic_arrow_drop_up_24px)
-                        iviewArrow.visibility = View.VISIBLE
-                    } else if(bookCodeItems[position].numberDiff < 0){
-                        tviewNum.text =  "${bookCodeItems[position].numberDiff}(${bookCodeItems[position].trophyCount})"
-                        tviewNum.setTextColor(Color.parseColor("#FF2366"))
-                        iviewArrow.setImageResource(R.drawable.ic_arrow_drop_down_24px)
-                        iviewArrow.visibility = View.VISIBLE
-                    } else if(bookCodeItems[position].numberDiff == 0){
+                    if(bookCodeItems[position].trophyCount > 1){
+                        if(bookCodeItems[position].numberDiff > 0){
+                            tviewNum.text =  "${bookCodeItems[position].numberDiff}(${bookCodeItems[position].trophyCount})"
+                            tviewNum.setTextColor(Color.parseColor("#02BC77"))
+                            iviewArrow.setImageResource(R.drawable.ic_arrow_drop_up_24px)
+                            iviewArrow.visibility = View.VISIBLE
+                        } else if(bookCodeItems[position].numberDiff < 0){
+                            tviewNum.text =  "${bookCodeItems[position].numberDiff}(${bookCodeItems[position].trophyCount})"
+                            tviewNum.setTextColor(Color.parseColor("#FF2366"))
+                            iviewArrow.setImageResource(R.drawable.ic_arrow_drop_down_24px)
+                            iviewArrow.visibility = View.VISIBLE
+                        } else if(bookCodeItems[position].numberDiff == 0){
+                            tviewNum.text = "-"
+                            tviewNum.setTextColor(Color.parseColor("#ffffff"))
+                            iviewArrow.visibility = View.GONE
+                        }
+                    } else {
                         tviewNum.text = "NEW"
                         tviewNum.setTextColor(Color.parseColor("#844DF3"))
                         iviewArrow.visibility = View.GONE
                     }
+
                 } catch (e : IndexOutOfBoundsException){
 
                 }

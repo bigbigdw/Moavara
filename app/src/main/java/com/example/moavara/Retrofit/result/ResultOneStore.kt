@@ -14,10 +14,6 @@ class OneStoreBookResultParam {
     @SerializedName("productList")
     @Expose
     var productList: List<OnestoreBookItem>? = null
-
-    @SerializedName("startKey")
-    @Expose
-    var startKey: String = ""
 }
 
 class OnestoreBookItem {
