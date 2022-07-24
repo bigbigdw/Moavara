@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -43,7 +42,7 @@ class ActivityAdmin : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
-        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(15, TimeUnit.MINUTES)
+        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(3, TimeUnit.HOURS)
             .setBackoffCriteria(
                 BackoffPolicy.LINEAR,
                 PeriodicWorkRequest.MIN_BACKOFF_MILLIS,
@@ -141,20 +140,8 @@ class ActivityAdmin : AppCompatActivity() {
             }
 
             llayoutBtn11.setOnClickListener {
-//                Mining.runMining(applicationContext, "ROMANCE")
-//                Toast.makeText(applicationContext, "장르 : 로맨스", Toast.LENGTH_SHORT).show()
-
-                binding.loading.root.visibility = View.VISIBLE
-
-                Thread {
-                    Mining.SetBookCodeData("Joara", "ALL", "959255")
-
-                    runOnUiThread {
-                        binding.loading.root.visibility = View.GONE
-                        Toast.makeText(applicationContext, "SetBookCodeData", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                }.start()
+                Mining.runMining(applicationContext, "ROMANCE")
+                Toast.makeText(applicationContext, "장르 : 로맨스", Toast.LENGTH_SHORT).show()
             }
 
             llayoutBtn12.setOnClickListener {
