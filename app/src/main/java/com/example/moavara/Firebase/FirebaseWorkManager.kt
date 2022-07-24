@@ -2,11 +2,8 @@ package com.example.moavara.Firebase
 
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.example.moavara.Util.Mining
-import com.google.firebase.database.FirebaseDatabase
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Retrofit
@@ -17,10 +14,11 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
 
     override fun doWork(): Result {
 
-        Mining.runMining(applicationContext, "FANTASY")
-        Mining.runMining(applicationContext, "ALL")
-        Mining.runMining(applicationContext, "ROMANCE")
-        Mining.runMining(applicationContext, "BL")
+//        Mining.runMining(applicationContext, "FANTASY")
+//        Mining.runMining(applicationContext, "ALL")
+//        Mining.runMining(applicationContext, "ROMANCE")
+//        Mining.runMining(applicationContext, "BL")
+        Log.d("####", "HIHI")
         postFCM()
 
         return Result.success()

@@ -1,15 +1,12 @@
 package com.example.moavara.Firebase
 
-import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
 import android.graphics.BitmapFactory
-import android.media.RingtoneManager
 import android.os.Build
 import android.os.SystemClock
-import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.core.app.Person
 import androidx.core.graphics.drawable.IconCompat
@@ -86,13 +83,13 @@ class FCM : FirebaseMessagingService() {
         }
 
         // 시스템에게 의뢰할 Intent를 담는 클래스
-        val activityPendingIntent = PendingIntent.getActivity(this, 10, mainIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val activityPendingIntent = PendingIntent.getActivity(this, 10, mainIntent, PendingIntent.FLAG_IMMUTABLE)
         // 사용자가 알림을 클릭 시 이동할 PendingIntent
         notificationBuilder?.setContentIntent(activityPendingIntent)
 
         // BroadCastReceiver Intent
         val broadIntent = Intent(this, BootReceiver::class.java)
-        val broadcastPendingIntent = PendingIntent.getBroadcast(this, 0, broadIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val broadcastPendingIntent = PendingIntent.getBroadcast(this, 0, broadIntent, PendingIntent.FLAG_IMMUTABLE)
 
         // ActionButton을 추가하여 클릭 시 PendingIntent 설정
         notificationBuilder?.addAction(NotificationCompat.Action.Builder(android.R.drawable.ic_menu_share, "Action 문자열", broadcastPendingIntent).build())

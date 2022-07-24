@@ -219,7 +219,7 @@
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="Room"
+                                            android:text="Workmanager 추가"
                                             android:textColor="#EDE6FD"
                                             android:textSize="16dp"
                                             android:textStyle="bold" />
@@ -237,7 +237,7 @@
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="Room 초기화"
+                                            android:text="Workmanager 상태 보기"
                                             android:textColor="#EDE6FD"
                                             android:textSize="16dp"
                                             android:textStyle="bold" />
