@@ -1,6 +1,5 @@
 package com.example.moavara.Search
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,8 @@ import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.databinding.ItemSearchmoavaraBinding
 
 class AdapterBestMoavara(
-    private var holder: List<BookListDataBest>
+    private var holder: ArrayList<BookListDataBest>,
+    private var searchHolder: ArrayList<BookListDataBest>
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -35,25 +35,7 @@ class AdapterBestMoavara(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is MainBookViewHolder) {
 
-            val item = this.holder[position]
-
-//            if(isSearch){
-//                if(item.title.contains(searchKeyword)){
-//                    holder.itemView.visibility = View.GONE
-//                    holder.itemView.layoutParams = RecyclerView.LayoutParams(0, 0)
-//                } else {
-//                    holder.itemView.visibility = View.VISIBLE
-//                    holder.itemView.layoutParams = RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-//                }
-//            }
-
-            if(item.title.contains("짝사랑")){
-                holder.itemView.visibility = View.VISIBLE
-                holder.itemView.layoutParams = RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-            } else {
-                holder.itemView.visibility = View.GONE
-                holder.itemView.layoutParams = RecyclerView.LayoutParams(0, 0)
-            }
+            val item = this.searchHolder[position]
 
             with(holder.binding){
                 Glide.with(holder.itemView.context)
@@ -67,12 +49,22 @@ class AdapterBestMoavara(
     }
 
     override fun getItemCount(): Int {
-        return holder.size
+        return searchHolder.size
     }
 
     fun search(keyword : String){
+
+        val newHolder = ArrayList<BookListDataBest>()
+
+        for(item in holder){
+            if(item.title.contains(keyword)){
+                newHolder.add(item)
+            }
+        }
+
+        isSearch = true
         searchKeyword = keyword
-        Log.d("####", searchKeyword)
+        searchHolder = newHolder
         notifyDataSetChanged()
     }
 
@@ -94,7 +86,7 @@ class AdapterBestMoavara(
     }
 
     fun getItem(position: Int): BookListDataBest {
-        return holder[position]
+        return searchHolder[position]
     }
 
 }

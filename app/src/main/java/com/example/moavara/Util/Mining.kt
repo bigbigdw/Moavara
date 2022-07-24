@@ -102,6 +102,11 @@ object Mining {
 
     fun runMining(context: Context, genre: String) {
 
+        val file = File(File("/storage/self/primary/MOAVARA"), "Today_Search.json")
+        if (file.exists()) {
+            file.delete()
+        }
+
         val Ridi = Thread {
             for (i in 1..3) {
                 getRidiBest(genre, i)
