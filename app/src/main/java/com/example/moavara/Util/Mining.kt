@@ -408,11 +408,11 @@ object Mining {
                         "추천 수 : " + doc.select("span .StarRate_ParticipantCount")[i].text()
                     RidiRef["info5"] =
                         "평점 : " + doc.select("span .StarRate_Score")[i].text()
-                    RidiRef["number"] = i + ((page - 1) * (Ridi.size - 1))
+                    RidiRef["number"] = (i -1) + ((page - 1) * (Ridi.size - 1))
                     RidiRef["date"] = DBDate.DateMMDD()
                     RidiRef["type"] = "Ridi"
 
-                    miningValue(RidiRef, (i + ((page - 1) * Ridi.size)), "Ridi", platform)
+                    miningValue(RidiRef, ((i -1) + ((page - 1) * (Ridi.size - 1))), "Ridi", platform)
                 }
             }
 

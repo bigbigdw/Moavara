@@ -1,6 +1,7 @@
 package com.example.moavara.Util
 
 import android.content.Context
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.moavara.DataBase.TrophyInfo
 import com.example.moavara.Search.BookListDataBestMonthNum
@@ -154,6 +155,8 @@ object DBDate {
                 return BookListDataBestMonthNum(22, 23, 24, 25, 26, 27, 28)
             } else if (position == 4) {
                 return BookListDataBestMonthNum(29, 30, 31, 0, 0, 0, 0)
+            }   else if (position == 5) {
+                return BookListDataBestMonthNum(0, 0, 0, 0, 0, 0, 0)
             }
             return date
         } else if (date.mon == 1) {
@@ -167,6 +170,8 @@ object DBDate {
                 return BookListDataBestMonthNum(21, 22, 23, 24, 25, 26, 27)
             } else if (position == 4) {
                 return BookListDataBestMonthNum(28, 29, 30, 31, 0, 0, 0)
+            }   else if (position == 5) {
+                return BookListDataBestMonthNum(0, 0, 0, 0, 0, 0, 0)
             }
             return date
         } else if (date.tue == 1) {
@@ -180,6 +185,8 @@ object DBDate {
                 return BookListDataBestMonthNum(20, 21, 22, 23, 24, 25, 26)
             } else if (position == 4) {
                 return BookListDataBestMonthNum(27, 28, 29, 30, 31, 0, 0)
+            }   else if (position == 5) {
+                return BookListDataBestMonthNum(0, 0, 0, 0, 0, 0, 0)
             }
             return date
         } else if (date.wed == 1) {
@@ -193,6 +200,8 @@ object DBDate {
                 return BookListDataBestMonthNum(19, 20, 21, 22, 23, 24, 25)
             } else if (position == 4) {
                 return BookListDataBestMonthNum(26, 27, 28, 29, 30, 31, 0)
+            }   else if (position == 5) {
+                return BookListDataBestMonthNum(0, 0, 0, 0, 0, 0, 0)
             }
             return date
         } else if (date.thur == 1) {
@@ -206,6 +215,8 @@ object DBDate {
                 return BookListDataBestMonthNum(18, 19, 20, 21, 22, 23, 24)
             } else if (position == 4) {
                 return BookListDataBestMonthNum(25, 26, 27, 28, 29, 30, 31)
+            }  else if (position == 5) {
+                return BookListDataBestMonthNum(0, 0, 0, 0, 0, 0, 0)
             }
             return date
         } else if (date.fri == 1) {

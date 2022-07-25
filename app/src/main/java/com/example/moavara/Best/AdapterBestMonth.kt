@@ -1,5 +1,7 @@
 package com.example.moavara.Best
 
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -8,10 +10,12 @@ import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.BookListDataBest
+import com.example.moavara.DataBase.TrophyInfo
 import com.example.moavara.Search.BookListDataBestMonthNum
 import com.example.moavara.Search.BookListDataBestWeekend
 import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.DBDate.getMonthDates
+import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.ItemBooklistBestMonthBinding
 
 class AdapterBestMonth(
@@ -21,6 +25,8 @@ class AdapterBestMonth(
     var item: ArrayList<BookListDataBestWeekend> = items
     var selected: String? = ""
     var monthDate = "${DBDate.Year()}0${DBDate.Month().toInt() + 1}01"
+    var monthNum = BookListDataBestMonthNum()
+    var monthCount = 0
 
     interface OnItemClickListener {
         fun onItemClick(v: View?, position: Int, value: String?)
@@ -42,21 +48,31 @@ class AdapterBestMonth(
 
             val items = item[position]
 
+            if(monthCount == 0){
+                monthDate = "${DBDate.Year()}0${DBDate.Month().toInt() + 1}01"
+            } else if(monthCount == 1){
+                monthDate = "${DBDate.Year()}0${DBDate.Month().toInt()}01"
+            } else if(monthCount == 2){
+                monthDate = "${DBDate.Year()}0${DBDate.Month().toInt() - 1}01"
+            }
+
             val date = DBDate.getDateData(monthDate)
+
+            val today = DBDate.getDateData(DBDate.DateMMDD())
 
             with(holder.binding){
 
-                val monthNum = date?.let { DBDate.setMonthNum(it.date) }
-                if (monthNum != null) {
-                    val dateNum = getMonthDates(monthNum, position)
-                    tviewDate1.text = dateNum.sun.toString()
-                    tviewDate2.text = dateNum.mon.toString()
-                    tviewDate3.text = dateNum.tue.toString()
-                    tviewDate4.text = dateNum.wed.toString()
-                    tviewDate5.text = dateNum.thur.toString()
-                    tviewDate6.text = dateNum.fri.toString()
-                    tviewDate7.text = dateNum.sat.toString()
-                }
+                monthNum = DBDate.setMonthNum(date!!.date)
+
+                val dateNum = getMonthDates(monthNum, position)
+                tviewDate1.text = dateNum.sun.toString()
+                tviewDate2.text = dateNum.mon.toString()
+                tviewDate3.text = dateNum.tue.toString()
+                tviewDate4.text = dateNum.wed.toString()
+                tviewDate5.text = dateNum.thur.toString()
+                tviewDate6.text = dateNum.fri.toString()
+                tviewDate7.text = dateNum.sat.toString()
+
                 if(tviewDate1.text == "0"){
                     tviewDate1.visibility = View.INVISIBLE
                 } else {
@@ -106,6 +122,12 @@ class AdapterBestMonth(
                     isSelectBook(items.sun, llayoutCover1)
                     iviewBookImg1.visibility = View.VISIBLE
 
+                    if(((today?.week ?: 0) - 1) == position && today?.date == 1){
+                        llayoutWrap1.background = todayMark()
+                    } else {
+                        llayoutWrap1.background = null
+                    }
+
                 } else {
                     iviewBookImg1.visibility = View.GONE
                 }
@@ -117,6 +139,13 @@ class AdapterBestMonth(
 
                     isSelectBook(items.mon, llayoutCover2)
                     iviewBookImg2.visibility = View.VISIBLE
+
+                    if(((today?.week ?: 0) - 1) == position && today?.date == 2 && monthCount == 0){
+                        llayoutWrap2.background = todayMark()
+                        Log.d("!!!!", "HIHI")
+                    } else {
+                        llayoutWrap2.background = null
+                    }
                 } else {
                     iviewBookImg2.visibility = View.GONE
                 }
@@ -128,6 +157,12 @@ class AdapterBestMonth(
 
                     isSelectBook(items.tue, llayoutCover3)
                     iviewBookImg3.visibility = View.VISIBLE
+
+                    if(((today?.week ?: 0) - 1) == position && today?.date == 3 && monthCount == 0){
+                        llayoutWrap3.background = todayMark()
+                    } else {
+                        llayoutWrap3.background = null
+                    }
                 } else {
                     iviewBookImg3.visibility = View.GONE
                 }
@@ -139,6 +174,12 @@ class AdapterBestMonth(
 
                     isSelectBook(items.wed, llayoutCover4)
                     iviewBookImg4.visibility = View.VISIBLE
+
+                    if(((today?.week ?: 0) - 1) == position && today?.date == 4 && monthCount == 0){
+                        llayoutWrap4.background = todayMark()
+                    } else {
+                        llayoutWrap4.background = null
+                    }
                 } else {
                     iviewBookImg4.visibility = View.GONE
                 }
@@ -150,6 +191,12 @@ class AdapterBestMonth(
 
                     isSelectBook(items.thur, llayoutCover5)
                     iviewBookImg5.visibility = View.VISIBLE
+
+                    if(((today?.week ?: 0) - 1) == position && today?.date == 5 && monthCount == 0){
+                        llayoutWrap5.background = todayMark()
+                    } else {
+                        llayoutWrap5.background = null
+                    }
                 } else {
                     iviewBookImg5.visibility = View.GONE
                 }
@@ -161,6 +208,12 @@ class AdapterBestMonth(
 
                     isSelectBook(items.fri, llayoutCover6)
                     iviewBookImg6.visibility = View.VISIBLE
+
+                    if(((today?.week ?: 0) - 1) == position && today?.date == 6 && monthCount == 0){
+                        llayoutWrap6.background = todayMark()
+                    } else {
+                        llayoutWrap6.background = null
+                    }
                 } else {
                     iviewBookImg6.visibility = View.GONE
                 }
@@ -172,11 +225,31 @@ class AdapterBestMonth(
 
                     isSelectBook(items.sat, llayoutCover7)
                     iviewBookImg7.visibility = View.VISIBLE
+
+                    if(((today?.week ?: 0) - 1) == position && today?.date == 7 && monthCount == 0){
+                        llayoutWrap7.background = todayMark()
+                    } else {
+                        llayoutWrap7.background = null
+                    }
                 } else {
                     iviewBookImg7.visibility = View.GONE
                 }
             }
         }
+    }
+
+    fun todayMark() :  GradientDrawable{
+        return GradientDrawable().apply {
+            setColor(Color.parseColor("#0D0E10"))
+            shape = GradientDrawable.RECTANGLE
+            cornerRadius = 4f.dpToPx()
+            setStroke(2f.dpToPx().toInt(), Color.parseColor("#844DF3"))
+        }
+    }
+
+    fun setMonthDate(count : Int){
+        monthCount = count
+        notifyDataSetChanged()
     }
 
     private fun isSelectBook(items : BookListDataBest?, llayout : LinearLayout){

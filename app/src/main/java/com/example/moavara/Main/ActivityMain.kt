@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +18,7 @@ import androidx.navigation.ui.NavigationUI
 import com.example.moavara.R
 import com.example.moavara.Search.ActivitySearch
 import com.example.moavara.User.ActivityUser
+import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Genre
 import com.example.moavara.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -63,6 +65,7 @@ class ActivityMain : AppCompatActivity() {
         navView.itemIconTintList = null
 
         registNotification()
+
     }
 
     fun registNotification(){

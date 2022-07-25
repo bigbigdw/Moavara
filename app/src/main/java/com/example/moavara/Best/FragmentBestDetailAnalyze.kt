@@ -2,6 +2,7 @@ package com.example.moavara.Best
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -67,9 +68,9 @@ class FragmentBestDetailAnalyze(
 
         val chapter = (context as ActivityBestDetail).chapter
         val dateList = mutableListOf<String>()
-        val entryList = mutableListOf<BarEntry>()
         val entryList2 = mutableListOf<BarEntry>()
         val entryList3 = mutableListOf<BarEntry>()
+        val entryList: ArrayList<BarEntry> = ArrayList()
         var num = 0
 
         if (chapter != null) {
@@ -98,8 +99,10 @@ class FragmentBestDetailAnalyze(
 
         if (item != null) {
 
+            Log.d("####", item.size.toString())
+
             for(item in item){
-                dateList.add(item.date)
+                dateList.add(item.date.replace("2022",""))
                 //BarEntry로 값 추가 후 리스트에 담는다
                 if (platfrom == "Kakao_Stage" || platfrom == "Ridi" || platfrom == "Toksoda") {
                     entryList.add(BarEntry(num.toFloat(), convertData(1, item.info1)))
@@ -224,9 +227,8 @@ class FragmentBestDetailAnalyze(
 }
 
 
-class AdapterChart(items: List<BestChart?>?) :
+class AdapterChart(private var holder: List<BestChart>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var holder: ArrayList<BestChart?>? = items as ArrayList<BestChart?>?
 
     interface OnItemClickListener {
         fun onItemClick(v: View?, position: Int)
@@ -251,78 +253,75 @@ class AdapterChart(items: List<BestChart?>?) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ViewHolder) {
 
-            val item = this.holder!![position]
+            val item = this.holder[position]
 
-            if (item != null) {
-
-                holder.binding.barChart.xAxis.valueFormatter = object : ValueFormatter() {
-                    override fun getFormattedValue(value: Float): String? {
-                        return item.dateList?.get(value.toInt())
-                    }
+            holder.binding.barChart.xAxis.valueFormatter = object : ValueFormatter() {
+                override fun getFormattedValue(value: Float): String? {
+                    return item.dateList?.get(value.toInt())
                 }
-
-                val barDataSet = BarDataSet(item.entryList, item.title)
-
-                barDataSet.color = ColorTemplate.rgb(item.color)
-                barDataSet.valueTextColor = Color.parseColor("#ffffff")
-                barDataSet.valueTextSize = 10F
-
-                val barData = BarData(barDataSet)
-                barData.barWidth = 0.5f
-
-                val barChart = holder.binding.barChart
-                barChart.data = barData
-
-                barChart.apply {
-                    setScaleEnabled(false)
-                    setPinchZoom(false)
-                    isClickable = false
-
-                    animateXY(0, 800)
-
-                    description = null
-
-                    legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-                    legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
-
-                    axisLeft.axisMinimum = 0f
-                    axisRight.axisMinimum = 0f
-
-                    axisRight.setDrawLabels(false)
-
-                    xAxis.setDrawGridLines(false)
-
-                    xAxis.position = XAxis.XAxisPosition.BOTTOM
-
-                    xAxis.textColor = Color.parseColor("#ffffff")
-                    axisLeft.textColor = Color.parseColor("#ffffff")
-                    legend.textColor = Color.parseColor("#ffffff")
-                }
-
-                if (item.entryList?.size!! < 7) {
-                    barChart.xAxis.labelCount = item.entryList?.size ?: 0
-                } else {
-                    barChart.xAxis.labelCount = 7
-                }
-
-                barChart.xAxis.labelCount = item.entryList?.size ?: 0
-                barChart.invalidate()
-                barChart.setVisibleXRangeMinimum(7F)
-                barChart.setVisibleXRangeMaximum(7F)
             }
+
+            val barDataSet = BarDataSet(item.entryList, item.title)
+
+            barDataSet.color = ColorTemplate.rgb(item.color)
+//            barDataSet.valueTextColor = Color.parseColor("#ffffff")
+//            barDataSet.valueTextSize = 10F
+
+            val barData = BarData(barDataSet)
+//            barData.barWidth = 0.5f
+
+            val barChart = holder.binding.barChart
+            barChart.data = barData
+
+            barChart.apply {
+                setScaleEnabled(false)
+                setPinchZoom(false)
+                isClickable = false
+
+
+                animateXY(800, 800)
+                description = null
+
+//                legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
+//                legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
+//
+//                axisLeft.axisMinimum = 0f
+//                axisRight.axisMinimum = 0f
+
+//                axisRight.setDrawLabels(false)
+//
+//                xAxis.setDrawGridLines(false)
+//
+//                xAxis.position = XAxis.XAxisPosition.BOTTOM
+
+                xAxis.textColor = Color.parseColor("#ffffff")
+                axisLeft.textColor = Color.parseColor("#ffffff")
+                legend.textColor = Color.parseColor("#ffffff")
+            }
+
+//            if (item.entryList?.size!! < 7) {
+//                barChart.xAxis.labelCount = item.entryList?.size ?: 0
+//            } else {
+//                barChart.xAxis.labelCount = 7
+//            }
+
+//            barChart.xAxis.labelCount = item.entryList?.size ?: 0
+            barChart.invalidate()
+//            barChart.setVisibleXRangeMinimum(7F)
+//            barChart.setVisibleXRangeMaximum(7F)
 
         }
     }
 
     override fun getItemCount(): Int {
-        return if (holder == null) 0 else holder!!.size
+        return holder.size
     }
 
     inner class ViewHolder internal constructor(val binding: ItemBestDetailAnalysisBinding) :
         RecyclerView.ViewHolder(binding.root) {
     }
 
-    fun getItem(position: Int): BestChart? {
-        return holder!![position]
+    fun getItem(position: Int): BestChart {
+        return holder[position]
     }
 }

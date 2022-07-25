@@ -22,6 +22,7 @@ import com.google.firebase.database.ValueEventListener
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.*
+import java.util.*
 
 
 class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayListener {
@@ -36,6 +37,9 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
     private val binding get() = _binding!!
     var genre = ""
     private var obj = JSONObject()
+    private var year = 0
+    private var month = 0
+    private var monthCount = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -119,6 +123,39 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
                 }
 
             })
+
+            val currentDate = DBDate.getDateData(DBDate.DateMMDD())
+
+            year = DBDate.Year().substring(2,4).toInt()
+            month = (currentDate?.month ?: 0).toInt() + 1
+
+            tviewMonth.text = "${year}년 ${month - monthCount}월"
+
+            llayoutBefore.setOnClickListener {
+                monthCount += 1
+
+                Log.d("@@@@-!!", monthCount.toString())
+
+                if(monthCount == 3){
+                    Toast.makeText(requireContext(), "과거로는 갈 수 없습니다.", Toast.LENGTH_SHORT).show()
+                } else {
+                    tviewMonth.text = "${year}년 ${month - monthCount}월"
+                    adapterMonth.setMonthDate(monthCount)
+                    getMonthBefore(month - monthCount)
+                }
+            }
+
+            llayoutAfter.setOnClickListener {
+                monthCount -= 1
+
+                if(monthCount == -1){
+                    Toast.makeText(requireContext(), "미래로는 갈 수 없습니다.", Toast.LENGTH_SHORT).show()
+                } else {
+                    tviewMonth.text = "${year}년 ${month - monthCount}월"
+                    adapterMonth.setMonthDate(monthCount)
+                    getMonthBefore(month - monthCount)
+                }
+            }
         }
 
         adapterMonthDay?.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
@@ -139,6 +176,9 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
     }
 
     private fun getBestMonth() {
+
+        binding.rviewBestMonth.removeAllViews()
+        itemMonth.clear()
 
         val file = File(File("/storage/self/primary/MOAVARA"), "Month_${tabType}.json")
         if (file.exists()) {
@@ -226,6 +266,77 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
         } catch (e: IOException) {
         }
 
+    }
+
+    fun getMonthBefore(month : Int){
+
+        Log.d("@@@@-@@", month.toString())
+
+        binding.rviewBestMonth.removeAllViews()
+        itemMonth.clear()
+
+        BestRef.getBestDataMonthBefore(tabType, genre).child((month - 1).toString())
+            .addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+
+                    for (week in 1..6) {
+                        val weekItem = BookListDataBestWeekend()
+
+                        for (day in 1..7) {
+                            val item: BookListDataBest? =
+                                dataSnapshot.child(week.toString()).child(day.toString())
+                                    .child("0")
+                                    .getValue(BookListDataBest::class.java)
+
+                            when (day) {
+                                1 -> {
+                                    if (item != null) {
+                                        weekItem.sun = item
+                                    }
+                                }
+                                2 -> {
+                                    if (item != null) {
+                                        weekItem.mon = item
+                                    }
+                                }
+                                3 -> {
+                                    if (item != null) {
+                                        weekItem.tue = item
+                                    }
+                                }
+                                4 -> {
+                                    if (item != null) {
+                                        weekItem.wed = item
+                                    }
+                                }
+                                5 -> {
+                                    if (item != null) {
+                                        weekItem.thur = item
+                                    }
+                                }
+                                6 -> {
+                                    if (item != null) {
+                                        weekItem.fri = item
+                                    }
+                                }
+                                7 -> {
+                                    if (item != null) {
+                                        weekItem.sat = item
+                                    }
+                                }
+                            }
+                        }
+
+                        itemMonth.add(weekItem)
+                        adapterMonth.notifyDataSetChanged()
+                    }
+                    writeFile(obj)
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {}
+            })
     }
 
     override fun getBestTodayList(items: ArrayList<BookListDataBest>, status: Boolean) {

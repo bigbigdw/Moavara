@@ -170,6 +170,14 @@ object BestRef {
         }
     }
 
+    fun getBestDataMonthBefore(platform: String, genre: String): DatabaseReference {
+        return if(platform == "Munpia"){
+            setBestRefMunpia(platform).child("Data")
+        } else {
+            setBestRef(platform, genre).child("Data")
+        }
+    }
+
     fun getBestDataMonth(platform: String, genre: String): DatabaseReference {
         return if(platform == "Munpia"){
             setBestRefMunpia(platform).child("Data").child(DBDate.Month())

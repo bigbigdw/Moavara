@@ -173,8 +173,6 @@ class ActivityBestDetail : AppCompatActivity() {
 
     fun setLayout(data: ArrayList<BookListDataBestAnalyze>?) {
 
-        Log.d("####", data.toString())
-
         if (platform == "Joara" || platform == "Joara_Nobless" || platform == "Joara_Premium") {
             setLayoutJoara()
         } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver"){
@@ -302,7 +300,7 @@ class ActivityBestDetail : AppCompatActivity() {
 
     fun setLayoutNaverToday(){
         Thread {
-            val doc: Document = Jsoup.connect(bookCode).post()
+            val doc: Document = Jsoup.connect("https://novel.naver.com/${bookCode}").post()
 
             bookCode = "https://novel.naver.com/${doc.select(".writer a").first()!!.attr("href")}"
 
@@ -462,7 +460,7 @@ class ActivityBestDetail : AppCompatActivity() {
                 override fun onSuccess(data: OnestoreBookDetail) {
 
                     with(binding){
-                        data.params.let { it ->
+                        data.params.let {
                             Glide.with(context)
                                 .load(it?.orgFilePos)
                                 .into(inclueBestDetail.iviewBookCover)

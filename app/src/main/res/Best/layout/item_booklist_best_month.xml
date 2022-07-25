@@ -15,10 +15,11 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:id="@+id/llayoutWrap1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="2dp"
             android:layout_weight="1"
-            android:layout_margin="1dp"
             android:orientation="vertical">
 
             <TextView
@@ -89,10 +90,11 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/llayoutWrap2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="2dp"
             android:layout_weight="1"
-            android:layout_margin="1dp"
             android:orientation="vertical">
 
             <TextView
@@ -172,10 +174,11 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/llayoutWrap3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="2dp"
             android:layout_weight="1"
-            android:layout_margin="1dp"
             android:orientation="vertical">
 
             <TextView
@@ -246,10 +249,11 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/llayoutWrap4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="2dp"
             android:layout_weight="1"
-            android:layout_margin="1dp"
             android:orientation="vertical">
 
             <TextView
@@ -320,10 +324,11 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/llayoutWrap5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="2dp"
             android:layout_weight="1"
-            android:layout_margin="1dp"
             android:orientation="vertical">
 
             <TextView
@@ -394,10 +399,11 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/llayoutWrap6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="2dp"
             android:layout_weight="1"
-            android:layout_margin="1dp"
             android:orientation="vertical">
 
             <TextView
@@ -468,10 +474,11 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/llayoutWrap7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="2dp"
             android:layout_weight="1"
-            android:layout_margin="1dp"
             android:orientation="vertical">
 
             <TextView
