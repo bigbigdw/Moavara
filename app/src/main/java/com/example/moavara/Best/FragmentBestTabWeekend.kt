@@ -32,6 +32,9 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
 
     lateinit var root: View
     var genre = ""
+    private var month = 0
+    private var week = 0
+    private var weekCount = 0
 
     private var _binding: FragmentBestWeekendBinding? = null
     private val binding get() = _binding!!

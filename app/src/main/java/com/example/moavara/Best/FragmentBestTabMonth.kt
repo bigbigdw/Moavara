@@ -134,8 +134,6 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
             llayoutBefore.setOnClickListener {
                 monthCount += 1
 
-                Log.d("@@@@-!!", monthCount.toString())
-
                 if(monthCount == 3){
                     Toast.makeText(requireContext(), "과거로는 갈 수 없습니다.", Toast.LENGTH_SHORT).show()
                 } else {
@@ -269,8 +267,6 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
     }
 
     fun getMonthBefore(month : Int){
-
-        Log.d("@@@@-@@", month.toString())
 
         binding.rviewBestMonth.removeAllViews()
         itemMonth.clear()
