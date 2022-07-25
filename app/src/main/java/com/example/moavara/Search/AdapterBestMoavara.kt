@@ -40,10 +40,14 @@ class AdapterBestMoavara(
             with(holder.binding){
                 Glide.with(holder.itemView.context)
                     .load(item.bookImg)
-                    .circleCrop()
-                    .into(ivewBookImg)
+                    .into(iview)
 
                 tviewTitle.text = item.title
+                tviewWriter.text = item.writer
+                tviewInfo1.text = item.info3
+                tviewInfo2.text = item.info4
+                tviewInfo3.text = item.info5
+                tviewPlatform.text = item.type
             }
         }
     }

@@ -7,15 +7,19 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.SystemClock
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.Person
 import androidx.core.graphics.drawable.IconCompat
 import com.example.moavara.Main.ActivitySplash
 import com.example.moavara.R
+import com.example.moavara.Search.BestType
+import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.BootReceiver
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import java.io.File
 
 class FCM : FirebaseMessagingService() {
 
@@ -24,6 +28,12 @@ class FCM : FirebaseMessagingService() {
     var it = ""
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
+
+        if(remoteMessage.notification?.body?.contains("푸시푸시") == true){
+            for(plaform in BestRef.typeList()){
+                File(File("/storage/self/primary/MOAVARA"), "Today_${plaform}.json").delete()
+            }
+        }
 
         if (remoteMessage.data.isNotEmpty()) {
             showNotification(remoteMessage.data["title"], remoteMessage.data["message"])

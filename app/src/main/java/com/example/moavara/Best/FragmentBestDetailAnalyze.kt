@@ -298,11 +298,13 @@ class AdapterChart(items: List<BestChart?>?) :
                     axisLeft.textColor = Color.parseColor("#ffffff")
                     legend.textColor = Color.parseColor("#ffffff")
                 }
-//                if (item.entryList?.size!! < 7) {
-//                    barChart.xAxis.labelCount = item.entryList?.size ?: 0
-//                } else {
-//                    barChart.xAxis.labelCount = 7
-//                }
+
+                if (item.entryList?.size!! < 7) {
+                    barChart.xAxis.labelCount = item.entryList?.size ?: 0
+                } else {
+                    barChart.xAxis.labelCount = 7
+                }
+
                 barChart.xAxis.labelCount = item.entryList?.size ?: 0
                 barChart.invalidate()
                 barChart.setVisibleXRangeMinimum(7F)

@@ -236,10 +236,6 @@ class BottomDialogBest(
                             val group: BookListDataBestAnalyze? =
                                 keyItem.getValue(BookListDataBestAnalyze::class.java)
 
-                            if (group != null) {
-                                Log.d("####", group.number.toString())
-                            }
-
                             with(binding.includeRank) {
                                 val itemDate = group?.let { DBDate.getDateData(it.date) }
 

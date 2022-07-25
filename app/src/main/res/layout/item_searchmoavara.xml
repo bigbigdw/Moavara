@@ -2,100 +2,122 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/llayout_Wrap"
+    android:id="@+id/llayoutWrap"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="0dp"
     android:layout_marginEnd="0dp"
-    android:layout_marginTop="4dp"
-    android:layout_marginBottom="4dp"
+    android:layout_marginBottom="18dp"
     android:orientation="horizontal"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 
-    <ImageView
-        android:id="@+id/ivew_bookImg"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:adjustViewBounds="true"
-        android:background="@drawable/shape_book_best_day_cover"
-        android:contentDescription="@string/TODO"
-        android:scaleType="fitXY"
-        app:srcCompat="@drawable/likeit_3" />
+    <androidx.cardview.widget.CardView
+        android:layout_width="91dp"
+        android:layout_height="132dp"
+        android:layout_marginEnd="15dp"
+        app:cardCornerRadius="6dp">
+
+        <ImageView
+            android:id="@+id/iview"
+            android:layout_width="91dp"
+            android:layout_height="132dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/TODO"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/booktest" />
+
+    </androidx.cardview.widget.CardView>
 
 
     <LinearLayout
-        android:id="@+id/BestWrap"
+        android:id="@+id/BookContentsWrapC"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="0dp"
-        android:background="@drawable/shape_book_best_day_text"
-        android:gravity="start|center_vertical"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="16dp"
         android:orientation="vertical">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/tviewPlatform"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:breakStrategy="high_quality"
+            android:ellipsize="end"
+            android:fontFamily="@font/pretendardvariable"
+            android:maxLines="1"
+            android:text="@string/Common_BookIntro"
+            android:textColor="#767676"
+            android:textSize="14sp"
+            tools:text="123123123123" />
 
-            <ImageView
-                android:id="@+id/iview_type"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_marginRight="4dp"
-                android:adjustViewBounds="true"
-                android:background="@drawable/shape_book_best_day_cover"
-                android:contentDescription="@string/TODO"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/likeit_3" />
+        <TextView
+            android:id="@+id/tviewTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:breakStrategy="high_quality"
+            android:ellipsize="end"
+            android:fontFamily="@font/pretendardvariable"
+            android:maxLines="3"
+            android:text="@string/Common_BookTitle"
+            android:textColor="#ffffff"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:visibility="visible"
+            tools:text="123123123123" />
 
-            <TextView
-                android:id="@+id/tview_Title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="8"
-                android:ellipsize="end"
-                android:fontFamily="@font/pretendardvariable"
-                android:maxLines="1"
-                android:textColor="#F6F6F8"
-                android:textSize="18dp"
-                android:textStyle="bold"
-                tools:text="Common_BookTitleCommon_BookTitle" />
+        <TextView
+            android:id="@+id/tviewWriter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:breakStrategy="high_quality"
+            android:ellipsize="end"
+            android:fontFamily="@font/pretendardvariable"
+            android:maxLines="1"
+            android:text="@string/Common_BookWriter"
+            android:textColor="#ffffff"
+            android:textSize="12sp"
+            android:visibility="visible"
+            tools:text="123123123123" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:layout_weight="1"
-                android:gravity="center_vertical|end"
-                android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tviewInfo1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:breakStrategy="high_quality"
+            android:ellipsize="end"
+            android:fontFamily="@font/pretendardvariable"
+            android:maxLines="1"
+            android:text="@string/Common_BookWriter"
+            android:textColor="#ffffff"
+            android:textSize="12sp"
+            tools:text="123123123123" />
 
-                <ImageView
-                    android:id="@+id/iviewArrow"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginLeft="4dp"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
-                    android:contentDescription="@string/TODO" />
+        <TextView
+            android:id="@+id/tviewInfo2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:breakStrategy="high_quality"
+            android:ellipsize="end"
+            android:fontFamily="@font/pretendardvariable"
+            android:maxLines="1"
+            android:text="@string/Common_BookWriter"
+            android:textColor="#ffffff"
+            android:textSize="12sp"
+            tools:text="123123123123" />
 
-                <TextView
-                    android:id="@+id/tview_Num"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:fontFamily="@font/pretendardvariable"
-                    android:textColor="#F6F6F8"
-                    android:textSize="12dp"
-                    android:textStyle="bold"
-                    tools:text="1" />
-            </LinearLayout>
-
-        </LinearLayout>
+        <TextView
+            android:id="@+id/tviewInfo3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:breakStrategy="high_quality"
+            android:ellipsize="end"
+            android:fontFamily="@font/pretendardvariable"
+            android:maxLines="1"
+            android:text="@string/Common_BookWriter"
+            android:textColor="#ffffff"
+            android:textSize="12sp"
+            tools:text="123123123123" />
 
     </LinearLayout>
 

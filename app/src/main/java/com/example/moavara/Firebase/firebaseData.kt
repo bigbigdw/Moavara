@@ -16,5 +16,7 @@ class DataFCMBodyNotification(
     var title: String = "notification 타이틀",
     var body: String = "notification message",
     var sound: String = "default",
-    var icon: String = "ic_stat_ic_notification"
+    var icon: String = "ic_stat_ic_notification",
+    var type: String = "best",
+    var click_action : String = "NOTIFICATION_CLICK",
 )

@@ -3,6 +3,7 @@ package com.example.moavara.Best
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -45,6 +46,7 @@ class ActivityBestDetail : AppCompatActivity() {
     private lateinit var mFragmentBestDetailComment: FragmentBestDetailComment
     private lateinit var mFragmentBestDetailRank: FragmentBestDetailRank
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityBestDetailBinding.inflate(layoutInflater)
@@ -62,13 +64,47 @@ class ActivityBestDetail : AppCompatActivity() {
         UID = context.getSharedPreferences("pref", MODE_PRIVATE)
             ?.getString("UID", "").toString()
 
+        setUserPick()
+
+        BestRef.getBookCode(platform, genre).child(bookCode).addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val data = ArrayList<BookListDataBestAnalyze>()
+
+                for(item in dataSnapshot.children){
+                    val group: BookListDataBestAnalyze? = item.getValue(BookListDataBestAnalyze::class.java)
+
+                    if (group != null) {
+                        data.add(
+                            BookListDataBestAnalyze(
+                                group.info1,
+                                group.info2,
+                                group.info3,
+                                group.number,
+                                group.date,
+                                group.numberDiff,
+                                group.trophyCount,
+                            )
+                        )
+                    }
+                }
+
+                setLayout(data)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
+
+
+    }
+
+    private fun setUserPick(){
         BestRef.getBestRefToday(platform, genre).child(pos.toString()).addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val group: BookListDataBestToday? = dataSnapshot.getValue(BookListDataBestToday::class.java)
 
                 runOnUiThread {
-//                    setLayout(group?.data)
 
                     with(binding){
                         llayoutBtnLeft.setOnClickListener {
@@ -112,8 +148,6 @@ class ActivityBestDetail : AppCompatActivity() {
 
             override fun onCancelled(databaseError: DatabaseError) {}
         })
-
-
     }
 
     private fun getUrl(bookCode: String): String {
@@ -138,6 +172,9 @@ class ActivityBestDetail : AppCompatActivity() {
     }
 
     fun setLayout(data: ArrayList<BookListDataBestAnalyze>?) {
+
+        Log.d("####", data.toString())
+
         if (platform == "Joara" || platform == "Joara_Nobless" || platform == "Joara_Premium") {
             setLayoutJoara()
         } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver"){

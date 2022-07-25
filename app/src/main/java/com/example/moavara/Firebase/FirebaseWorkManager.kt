@@ -31,7 +31,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
             "/topics/all",
             "high",
             DataFCMBodyData("data", "body"),
-            DataFCMBodyNotification("모아바라", "베스트 리스트가 갱신되었습니다-0722", "default", "ic_stat_ic_notification"),
+            DataFCMBodyNotification("모아바라", "베스트 리스트가 갱신되었습니다-0722", "default", "ic_stat_ic_notification", "best"),
         )
 
         val call = Retrofit.Builder()
