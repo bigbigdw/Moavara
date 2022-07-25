@@ -132,11 +132,11 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
             tviewMonth.text = "${year}년 ${month - monthCount}월"
 
             llayoutBefore.setOnClickListener {
-                monthCount += 1
 
-                if(monthCount == 3){
+                if(monthCount >= 2){
                     Toast.makeText(requireContext(), "과거로는 갈 수 없습니다.", Toast.LENGTH_SHORT).show()
                 } else {
+                    monthCount += 1
                     tviewMonth.text = "${year}년 ${month - monthCount}월"
                     adapterMonth.setMonthDate(monthCount)
                     getMonthBefore(month - monthCount)
@@ -144,11 +144,11 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
             }
 
             llayoutAfter.setOnClickListener {
-                monthCount -= 1
 
-                if(monthCount == -1){
+                if(monthCount <= 0){
                     Toast.makeText(requireContext(), "미래로는 갈 수 없습니다.", Toast.LENGTH_SHORT).show()
                 } else {
+                    monthCount -= 1
                     tviewMonth.text = "${year}년 ${month - monthCount}월"
                     adapterMonth.setMonthDate(monthCount)
                     getMonthBefore(month - monthCount)
@@ -276,7 +276,6 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
                 ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-
                     for (week in 1..6) {
                         val weekItem = BookListDataBestWeekend()
 
@@ -328,7 +327,6 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
                         itemMonth.add(weekItem)
                         adapterMonth.notifyDataSetChanged()
                     }
-                    writeFile(obj)
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {}

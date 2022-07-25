@@ -14,6 +14,7 @@ import com.example.moavara.Search.BookListDataBestWeekend
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.BestRef.getItem
 import com.example.moavara.Util.BestRef.putItem
+import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Genre
 import com.example.moavara.databinding.FragmentBestWeekendBinding
 import com.google.firebase.database.DataSnapshot
@@ -89,6 +90,39 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
 
             }
         })
+
+        val currentDate = DBDate.getDateData(DBDate.DateMMDD())
+
+        month = DBDate.Month().toInt() + 1
+        week = (currentDate?.week ?: 0).toInt() + 1
+
+        with(binding){
+            tviewWeek.text = "${month}월 ${week - weekCount}주차"
+
+            llayoutBefore.setOnClickListener {
+                if (weekCount + 1 >= week) {
+                    Toast.makeText(requireContext(), "과거로는 갈 수 없습니다.", Toast.LENGTH_SHORT).show()
+                } else {
+                    weekCount += 1
+                    tviewWeek.text = "${month}월 ${week - weekCount}주차"
+//                    adapterWeek.setMonthDate(monthCount)
+//                    getMonthBefore(month - monthCount)
+                }
+            }
+
+            llayoutAfter.setOnClickListener {
+                if(weekCount <= week){
+                    Toast.makeText(requireContext(), "미래로는 갈 수 없습니다.", Toast.LENGTH_SHORT).show()
+                } else {
+                    weekCount -= 1
+                    tviewWeek.text = "${month}월 ${week - weekCount}주차"
+//                    adapterMonth.setMonthDate(monthCount)
+//                    getMonthBefore(month - monthCount)
+                }
+            }
+        }
+
+
 
         return view
     }
@@ -166,6 +200,72 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
                     }
 
                     writeFile(obj)
+                    adapterWeek?.notifyDataSetChanged()
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {}
+            })
+
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun getBestWeekListBefore() {
+
+        try {
+            BestRef.getBestDataWeekBefore(tabType, genre).addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                    for (num in 0..9) {
+                        val weekItem = BookListDataBestWeekend()
+
+                        for (day in 1..7) {
+
+                            val item: BookListDataBest? =
+                                dataSnapshot.child(day.toString()).child(num.toString())
+                                    .getValue(BookListDataBest::class.java)
+
+                            if (day == 1) {
+                                if (item != null) {
+                                    weekItem.sun = item
+                                }
+
+                            } else if (day == 2) {
+                                if (item != null) {
+                                    weekItem.mon = item
+                                }
+
+                            } else if (day == 3) {
+                                if (item != null) {
+                                    weekItem.tue = item
+                                }
+
+                            } else if (day == 4) {
+                                if (item != null) {
+                                    weekItem.wed = item
+                                }
+
+                            } else if (day == 5) {
+                                if (item != null) {
+                                    weekItem.thur = item
+                                }
+
+                            } else if (day == 6) {
+                                if (item != null) {
+                                    weekItem.fri = item
+                                }
+                            } else if (day == 7) {
+                                if (item != null) {
+                                    weekItem.sat = item
+                                }
+                            }
+                        }
+
+                        itemWeek.add(weekItem)
+                    }
+
                     adapterWeek?.notifyDataSetChanged()
                 }
 
