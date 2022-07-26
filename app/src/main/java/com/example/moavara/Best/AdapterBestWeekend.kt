@@ -1,5 +1,7 @@
 package com.example.moavara.Best
 
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +9,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moavara.Search.BookListDataBestWeekend
+import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.ItemBooklistBestWeekendBinding
 
 class AdapterBestWeekend(

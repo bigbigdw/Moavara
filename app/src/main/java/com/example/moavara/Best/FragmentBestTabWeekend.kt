@@ -1,5 +1,7 @@
 package com.example.moavara.Best
 
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
@@ -10,12 +12,14 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moavara.DataBase.BookListDataBest
+import com.example.moavara.DataBase.TrophyInfo
 import com.example.moavara.Search.BookListDataBestWeekend
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.BestRef.getItem
 import com.example.moavara.Util.BestRef.putItem
 import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Genre
+import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.FragmentBestWeekendBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -51,6 +55,8 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
         genre = Genre.getGenre(requireContext()).toString()
 
         adapterWeek = AdapterBestWeekend(itemWeek)
+
+
 
         binding.rviewBest.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -94,37 +100,81 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
         val currentDate = DBDate.getDateData(DBDate.DateMMDD())
 
         month = DBDate.Month().toInt() + 1
-        week = (currentDate?.week ?: 0).toInt() + 1
+        week = (currentDate?.week ?: 0).toInt()
 
         with(binding){
             tviewWeek.text = "${month}월 ${week - weekCount}주차"
 
             llayoutBefore.setOnClickListener {
-                if (weekCount + 1 >= week) {
+                if (weekCount > week) {
                     Toast.makeText(requireContext(), "과거로는 갈 수 없습니다.", Toast.LENGTH_SHORT).show()
                 } else {
                     weekCount += 1
                     tviewWeek.text = "${month}월 ${week - weekCount}주차"
-//                    adapterWeek.setMonthDate(monthCount)
-//                    getMonthBefore(month - monthCount)
+                    getBestWeekListBefore(week - weekCount)
                 }
+
+                markDays()
             }
 
             llayoutAfter.setOnClickListener {
-                if(weekCount <= week){
+                if(weekCount < 1){
                     Toast.makeText(requireContext(), "미래로는 갈 수 없습니다.", Toast.LENGTH_SHORT).show()
                 } else {
                     weekCount -= 1
                     tviewWeek.text = "${month}월 ${week - weekCount}주차"
-//                    adapterMonth.setMonthDate(monthCount)
-//                    getMonthBefore(month - monthCount)
+                    getBestWeekListBefore(week - weekCount)
                 }
+
+                markDays()
+            }
+
+            markDays()
+        }
+        return view
+    }
+
+    fun markDays(){
+        with(binding){
+            var today = DBDate.getDateData(DBDate.DateMMDD())
+
+            if (weekCount == 0) {
+                if (today != null) {
+                    if (today.date == 1) {
+                        tviewSun.background = todayMark()
+                        tviewSun.setTextColor(Color.parseColor("#ffffff"))
+                    } else if (today.date == 2) {
+                        tviewMon.background = todayMark()
+                    } else if (today.date == 3) {
+                        tviewTue.background = todayMark()
+                    } else if (today.date == 4) {
+                        tviewWed.background = todayMark()
+                    } else if (today.date == 5) {
+                        tviewThur.background = todayMark()
+                    } else if (today.date == 6) {
+                        tviewFri.background = todayMark()
+                    } else if (today.date == 7) {
+                        tviewSat.background = todayMark()
+                    }
+                }
+            } else {
+                tviewSun.background = null
+                tviewMon.background = null
+                tviewTue.background = null
+                tviewWed.background = null
+                tviewThur.background = null
+                tviewFri.background = null
+                tviewSat.background = null
             }
         }
+    }
 
-
-
-        return view
+    fun todayMark() : GradientDrawable {
+        return GradientDrawable().apply {
+            setColor(Color.parseColor("#844DF3"))
+            shape = GradientDrawable.RECTANGLE
+            cornerRadius = 100f.dpToPx()
+        }
     }
 
     private fun getBestWeekList() {
@@ -133,6 +183,9 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
         if (file.exists()) {
             file.delete()
         }
+
+        binding.rviewBest.removeAllViews()
+        itemWeek.clear()
 
         try {
             BestRef.getBestDataWeek(tabType, genre).addListenerForSingleValueEvent(object :
@@ -211,10 +264,13 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
         }
     }
 
-    private fun getBestWeekListBefore() {
+    private fun getBestWeekListBefore(week : Int) {
+
+        binding.rviewBest.removeAllViews()
+        itemWeek.clear()
 
         try {
-            BestRef.getBestDataWeekBefore(tabType, genre).addListenerForSingleValueEvent(object :
+            BestRef.getBestDataWeekBefore(tabType, genre).child(week.toString()).addListenerForSingleValueEvent(object :
                 ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
 
