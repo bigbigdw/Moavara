@@ -70,6 +70,12 @@ object DBDate {
         return Calendar.getInstance().get(Calendar.WEEK_OF_MONTH).toString()
     }
 
+    fun DateMMDDHHMM(): String {
+        val currentTime: Date = Calendar.getInstance().time
+        val format = SimpleDateFormat("YYYYMMddhhmm")
+        return format.format(currentTime).toString()
+    }
+
     fun DateMMDD(): String {
         val currentTime: Date = Calendar.getInstance().time
         val format = SimpleDateFormat("YYYYMMdd")

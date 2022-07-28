@@ -63,34 +63,20 @@
                     android:textAlignment="center"
                     android:textColor="#E91E63" />
 
-                <Button
-                    android:id="@+id/btnSearch"
+                <SearchView
+                    android:id="@+id/sview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    android:background="#3F51B5"
-                    android:text="@string/Search_Text3" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/shape_outline_gray"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <EditText
-                        android:id="@+id/etextSearch"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@null"
-                        android:ems="10"
-                        android:hint="@string/Search_Text1"
-                        android:imeOptions="actionSearch"
-                        android:inputType="text"
-                        android:text="714701"
-                        android:textColor="#FFFFFF"
-                        android:textColorHint="#673AB7" />
-                </LinearLayout>
+                    android:layout_gravity="right"
+                    android:layout_marginTop="18dp"
+                    android:background="#1E1E20"
+                    android:gravity="right|end"
+                    android:iconifiedByDefault="false"
+                    android:inputType="number"
+                    android:layoutDirection="rtl"
+                    android:queryHint='찾으실 작품을 검색해주세요'
+                    android:searchHintIcon="@android:drawable/ic_menu_search"
+                    android:searchIcon="@android:drawable/ic_menu_search" />
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

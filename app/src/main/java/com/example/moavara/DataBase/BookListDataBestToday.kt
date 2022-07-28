@@ -38,6 +38,12 @@ data class BookListDataBestToday (
     @PrimaryKey(autoGenerate = true) var id: Int = 0
 }
 
+data class FCMAlert (
+    var date: String = "",
+    var title: String = "",
+    var body: String = "",
+)
+
 data class BookListDataBest (
     var writer: String = "",
     var title: String = "",

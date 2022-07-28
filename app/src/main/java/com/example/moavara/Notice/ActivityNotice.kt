@@ -2,6 +2,7 @@ package com.example.moavara.Notice
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils.replace
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -9,19 +10,26 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.commit
 import androidx.viewpager.widget.ViewPager
+import com.example.moavara.Best.FragmentBestTabMonth
+import com.example.moavara.Best.FragmentBestTabToday
+import com.example.moavara.Best.FragmentBestTabWeekend
 import com.example.moavara.Pick.FragmentPickTabEvent
 import com.example.moavara.Pick.FragmentPickTabNovel
 import com.example.moavara.R
 import com.example.moavara.Search.ActivitySearch
 import com.example.moavara.User.ActivityUser
 import com.example.moavara.databinding.ActivityNoticeBinding
+import com.google.android.material.tabs.TabLayout
 
 class ActivityNotice : AppCompatActivity() {
 
     var cate = "ALL"
     var status = ""
     private lateinit var binding: ActivityNoticeBinding
+    private lateinit var mFragmentNotice : FragmentNotice
+    private lateinit var mFragmentAlert : FragmentAlert
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,42 +40,37 @@ class ActivityNotice : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        with(binding){
-            setupViewPager(viewPager)
-            tabs.setupWithViewPager(viewPager)
-        }
-    }
-
-    private fun setupViewPager(viewPager: ViewPager?) {
-        val adapter = ViewPagerAdapter(
-            supportFragmentManager
-        )
-
-        adapter.addFragment(FragmentPickTabNovel(), "소설")
-        adapter.addFragment(FragmentPickTabEvent(), "이벤트")
-        viewPager!!.adapter = adapter
-    }
-
-    class ViewPagerAdapter(manager: FragmentManager?) :
-        FragmentPagerAdapter(manager!!) {
-        private val mFragmentList: MutableList<Fragment> = ArrayList()
-        private val mFragmentTitleList: MutableList<String> = ArrayList()
-        override fun getItem(position: Int): Fragment {
-            return mFragmentList[position]
+        mFragmentNotice = FragmentNotice()
+        supportFragmentManager.commit {
+            replace(R.id.llayoutWrap, mFragmentNotice)
         }
 
-        override fun getCount(): Int {
-            return mFragmentList.size
-        }
+        val fragmentBestTab = binding.tabs
 
-        fun addFragment(fragment: Fragment, title: String) {
-            mFragmentList.add(fragment)
-            mFragmentTitleList.add(title)
-        }
+        fragmentBestTab.addTab(fragmentBestTab.newTab().setText("공지"))
+        fragmentBestTab.addTab(fragmentBestTab.newTab().setText("알림"))
 
-        override fun getPageTitle(position: Int): CharSequence? {
-            return mFragmentTitleList[position]
-        }
+        fragmentBestTab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                when(tab.position){
+                    0->{
+                        mFragmentNotice = FragmentNotice()
+                        supportFragmentManager.commit {
+                            replace(R.id.llayoutWrap, mFragmentNotice)
+                        }
+                    }
+                    1->{
+                        mFragmentAlert = FragmentAlert()
+                        supportFragmentManager.commit {
+                            replace(R.id.llayoutWrap, mFragmentAlert)
+                        }
+                    }
+                }
+            }
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        })
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

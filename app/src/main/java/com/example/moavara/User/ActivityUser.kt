@@ -4,6 +4,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
+import android.text.SpannableStringBuilder
+import android.text.TextWatcher
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -12,9 +14,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.navigation.NavController
 import com.example.moavara.Best.BottomDialogMain
-import com.example.moavara.Main.*
+import com.example.moavara.Firebase.*
+import com.example.moavara.Main.ActivityLogin
+import com.example.moavara.Main.mRootRef
 import com.example.moavara.Notice.ActivityNotice
 import com.example.moavara.R
 import com.example.moavara.Search.ActivitySearch
@@ -27,6 +30,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+
 
 class ActivityUser : AppCompatActivity() {
     private var auth: FirebaseAuth? = null
@@ -37,6 +45,8 @@ class ActivityUser : AppCompatActivity() {
     var userInfo = mRootRef.child("User")
     var UID = ""
     private lateinit var binding: ActivityUserBinding
+    private var pushTitle = ""
+    private var pushBody = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,6 +135,105 @@ class ActivityUser : AppCompatActivity() {
             tviewBtnGenre.setOnClickListener {
                 val bottomDialogMain = BottomDialogMain()
                 supportFragmentManager.let { bottomDialogMain.show(it, null) }
+            }
+
+            etviewTitle.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(
+                    text: CharSequence,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                    Log.d("idtext", "beforeTextChanged")
+                }
+
+                override fun onTextChanged(
+                    text: CharSequence,
+                    start: Int,
+                    before: Int,
+                    count: Int
+                ) {
+                    Log.d("idtext", "onTextChanged")
+                }
+
+                override fun afterTextChanged(s: Editable) {
+                    pushTitle = s.toString()
+                }
+            })
+
+            etviewBody.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(
+                    text: CharSequence,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                    Log.d("idtext", "beforeTextChanged")
+                }
+
+                override fun onTextChanged(
+                    text: CharSequence,
+                    start: Int,
+                    before: Int,
+                    count: Int
+                ) {
+                    Log.d("idtext", "onTextChanged")
+                }
+
+                override fun afterTextChanged(s: Editable) {
+                    pushBody = s.toString()
+                }
+            })
+
+            llayoutPush.setOnClickListener {
+                val fcm = Intent(applicationContext, FCM::class.java)
+                startService(fcm)
+
+                val fcmBody = DataFCMBody(
+                    "/topics/all",
+                    "high",
+                    DataFCMBodyData(pushTitle, pushBody),
+                    DataFCMBodyNotification(pushTitle, pushBody, "default", "ic_stat_ic_notification"),
+                )
+
+                val call = Retrofit.Builder()
+                    .baseUrl("https://fcm.googleapis.com")
+                    .addConverterFactory(GsonConverterFactory.create()).build()
+                    .create(FirebaseService::class.java)
+                    .postRetrofit(
+                        fcmBody
+                    )
+
+                call.enqueue(object : Callback<FWorkManagerResult?> {
+                    override fun onResponse(
+                        call: Call<FWorkManagerResult?>,
+                        response: retrofit2.Response<FWorkManagerResult?>
+                    ) {
+                        if (response.isSuccessful) {
+                            response.body()?.let { it ->
+                                Log.d("@@@@FCM", "성공");
+                                pushTitle = ""
+                                pushBody = ""
+                                etviewTitle.text = SpannableStringBuilder("제목")
+                                etviewBody.text = SpannableStringBuilder("내용")
+                            }
+                        } else {
+                            Log.d("@@@@FCM", "실패2");
+                            pushTitle = ""
+                            pushBody = ""
+                            etviewTitle.text = SpannableStringBuilder("제목")
+                            etviewBody.text = SpannableStringBuilder("내용")
+                        }
+                    }
+
+                    override fun onFailure(call: Call<FWorkManagerResult?>, t: Throwable) {
+                        Log.d("@@@@FCM", "실패");
+                        pushTitle = ""
+                        pushBody = ""
+                        etviewTitle.text = SpannableStringBuilder("제목")
+                        etviewBody.text = SpannableStringBuilder("내용")
+                    }
+                })
             }
         }
     }

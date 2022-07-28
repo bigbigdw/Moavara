@@ -2,13 +2,19 @@ package com.example.moavara.Search
 
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputType
+import android.text.TextUtils.replace
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import com.bumptech.glide.Glide
+import com.example.moavara.Best.FragmentBestDetailComment
+import com.example.moavara.R
 import com.example.moavara.Retrofit.*
 import com.example.moavara.Util.Param
 import com.example.moavara.databinding.FragmentSearchBookcodeBinding
@@ -32,68 +38,69 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
 
         with(binding) {
 
-            etextSearch.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(
-                    text: CharSequence,
-                    start: Int,
-                    count: Int,
-                    after: Int
-                ) {
-                    Log.d("idtext", "beforeTextChanged")
-                }
-
-                override fun onTextChanged(
-                    text: CharSequence,
-                    start: Int,
-                    before: Int,
-                    count: Int
-                ) {
-                    Log.d("idtext", "onTextChanged")
-                }
-
-                override fun afterTextChanged(s: Editable) {
-                    bookCode = s.toString()
-                }
-            })
-
             if (platform == "Joara") {
                 tviewSearch.text = "https://www.joara.com/book/1452405"
+                sview.inputType = InputType.TYPE_CLASS_NUMBER
             } else if (platform == "Kakao") {
                 tviewSearch.text = "https://page.kakao.com/home?seriesId=57530778"
+                sview.inputType = InputType.TYPE_CLASS_NUMBER
             } else if (platform == "Kakao_Stage") {
                 tviewSearch.text = "https://page.kakao.com/home?seriesId=49902709"
+                sview.inputType = InputType.TYPE_CLASS_NUMBER
             } else if (platform == "Naver") {
                 tviewSearch.text = "https://novel.naver.com/webnovel/list?novelId=252934"
+                sview.inputType = InputType.TYPE_CLASS_NUMBER
             } else if (platform == "Naver_Challenge") {
                 tviewSearch.text = "https://novel.naver.com/challenge/list?novelId=75595"
+                sview.inputType = InputType.TYPE_CLASS_NUMBER
             } else if (platform == "Naver_Today") {
                 tviewSearch.text = "https://novel.naver.com/best/list?novelId=268129"
+                sview.inputType = InputType.TYPE_CLASS_NUMBER
             } else if (platform == "Ridi") {
                 tviewSearch.text = "https://ridibooks.com/books/425295076"
+                sview.inputType = InputType.TYPE_CLASS_NUMBER
+            } else if (platform == "OneStore") {
+                tviewSearch.text = "https://onestory.co.kr/detail/H042820022"
+                sview.inputType = InputType.TYPE_CLASS_TEXT
             } else if (platform == "Munpia") {
                 tviewSearch.text = "https://novel.munpia.com/284801"
+                sview.inputType = InputType.TYPE_CLASS_NUMBER
             } else if (platform == "Toksoda") {
                 tviewSearch.text =
                     "https://www.tocsoda.co.kr/product/productView?brcd=76M2207187389"
+                sview.inputType = InputType.TYPE_CLASS_TEXT
             }
 
-            btnSearch.setOnClickListener {
-                if (platform == "Joara") {
-                    setLayoutJoara()
-                } else if (platform == "Kakao") {
-                    setLayoutKaKao()
-                } else if (platform == "Kakao_Stage") {
-                    setLayoutKaKaoStage()
-                } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver") {
-                    setLayoutNaverToday()
-                } else if (platform == "Ridi") {
-                    setLayoutRidi()
-                } else if (platform == "Munpia") {
-                    setLayoutMunpia()
-                } else if (platform == "Toksoda") {
-                    setLayoutToksoda()
+            binding.sview.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+
+                    bookCode = query.toString()
+
+                    if (platform == "Joara") {
+                        setLayoutJoara()
+                    } else if (platform == "Kakao") {
+                        setLayoutKaKao()
+                    } else if (platform == "Kakao_Stage") {
+                        setLayoutKaKaoStage()
+                    } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver") {
+                        setLayoutNaverToday()
+                    } else if (platform == "Ridi") {
+                        setLayoutRidi()
+                    } else if (platform == "Munpia") {
+                        setLayoutMunpia()
+                    } else if (platform == "OneStore") {
+                        setLayoutOneStore()
+                    } else if (platform == "Toksoda") {
+                        setLayoutToksoda()
+                    }
+                    return false
+
                 }
-            }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    return false
+                }
+            })
         }
 
         return view
@@ -326,6 +333,39 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                             searchResult.tviewInfo2.text = "구독 수 : ${it?.inqrCnt}"
                             searchResult.tviewInfo3.text = "관심 : ${it?.intrstCnt}"
                             searchResult.tviewInfo4.text = "선호작 수 : ${it?.goodCnt}"
+
+                        }
+                    }
+                }
+            })
+    }
+
+    fun setLayoutOneStore(){
+        val apiOnestory = RetrofitOnestore()
+        val param : MutableMap<String?, Any> = HashMap()
+
+        param["channelId"] = bookCode
+        param["bookpassYn"] = "N"
+
+        apiOnestory.getBestKakaoStageDetail(
+            bookCode,
+            param,
+            object : RetrofitDataListener<OnestoreBookDetail> {
+                override fun onSuccess(data: OnestoreBookDetail) {
+
+                    with(binding){
+                        data.params.let {
+                            Glide.with(requireContext())
+                                .load(it?.orgFilePos)
+                                .into(searchResult.iviewBookCover)
+
+                            searchResult.tviewTitle.text = it?.prodNm ?: ""
+                            searchResult.tviewWriter.text = it?.artistNm
+
+                            searchResult.tviewInfo1.text = "별점 : ${it?.ratingAvgScore}점"
+                            searchResult.tviewInfo2.text =  "구독 수 : ${it?.pageViewTotal}"
+                            searchResult.tviewInfo3.text =  "총 ${it?.serialCount}화"
+                            searchResult.tviewInfo4.text =  "선호작 수 : ${it?.favoriteCount}"
 
                         }
                     }

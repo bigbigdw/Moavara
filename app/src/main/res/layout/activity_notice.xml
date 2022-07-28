@@ -34,17 +34,17 @@
         android:layout_height="wrap_content"
         android:background="#0D0E10"
         android:gravity="bottom"
-        android:paddingLeft="16dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingLeft="16dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-
+            android:fontFamily="@font/pretendardvariable"
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
-            android:text="고객센터"
+            android:text="공지사항"
             android:textColor="#EDE6FD"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -62,15 +62,17 @@
             app:tabIndicatorColor="#844DF3"
             app:tabMode="scrollable"
             app:tabSelectedTextColor="#844DF3"
+            app:tabTextAppearance="@style/tab_text"
             app:tabTextColor="#565C69">
 
         </com.google.android.material.tabs.TabLayout>
     </LinearLayout>
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/view_pager"
+    <LinearLayout
+        android:id="@+id/llayoutWrap"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:layout_marginBottom="60dp"
+        android:orientation="vertical" />
 
 </LinearLayout>

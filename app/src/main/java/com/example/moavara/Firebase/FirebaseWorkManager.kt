@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Mining
 import retrofit2.Call
 import retrofit2.Callback
@@ -31,7 +32,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
             "/topics/all",
             "high",
             DataFCMBodyData("data", "body"),
-            DataFCMBodyNotification("모아바라", "베스트 리스트가 갱신되었습니다-0722", "default", "ic_stat_ic_notification", "best"),
+            DataFCMBodyNotification("모아바라", "베스트 리스트가 갱신되었습니다-${DBDate.DateMMDDHHMM()}", "default", "ic_stat_ic_notification", "best"),
         )
 
         val call = Retrofit.Builder()

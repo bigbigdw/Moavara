@@ -8,5 +8,5 @@ interface FirebaseService {
     @POST("/fcm/send")
     fun postRetrofit(
         @Body body : DataFCMBody
-    ): Call<FWorkManagerResult?>?
+    ): Call<FWorkManagerResult>
 }

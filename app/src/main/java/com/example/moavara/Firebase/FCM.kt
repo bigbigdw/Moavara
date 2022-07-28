@@ -11,11 +11,17 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.Person
 import androidx.core.graphics.drawable.IconCompat
+import com.example.moavara.DataBase.FCMAlert
 import com.example.moavara.Main.ActivitySplash
 import com.example.moavara.R
 import com.example.moavara.Search.BestType
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.BootReceiver
+import com.example.moavara.Util.DBDate
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -26,28 +32,32 @@ class FCM : FirebaseMessagingService() {
     var notificationManager: NotificationManager? = null
     var notificationBuilder: NotificationCompat.Builder? = null
     var it = ""
+    val ref = FirebaseDatabase.getInstance().reference.child("Message")
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
 
-        if(remoteMessage.notification?.body?.contains("푸시푸시") == true){
-            for(plaform in BestRef.typeList()){
-                File(File("/storage/self/primary/MOAVARA"), "Today_${plaform}.json").delete()
-            }
-        }
-
         if (remoteMessage.data.isNotEmpty()) {
-            showNotification(remoteMessage.data["title"], remoteMessage.data["message"])
+            showNotification(remoteMessage.data["title"] as String, remoteMessage.data["message"] as String)
         }
 
         if (remoteMessage.notification != null) {
             showNotification(
-                remoteMessage.notification!!.title, remoteMessage.notification!!
-                    .body
+                remoteMessage.notification?.title ?: "", remoteMessage.notification
+                    ?.body ?: ""
             )
         }
     }
 
-    private fun showNotification(title: String?, message: String?) {
+    private fun showNotification(title: String, message: String) {
+
+        if(message.contains("베스트 리스트가 갱신되었습니다")){
+            for(plaform in BestRef.typeList()){
+                File(File("/storage/self/primary/MOAVARA"), "Today_${plaform}.json").delete()
+            }
+            miningAlert(title, message, "Alert")
+        } else {
+            miningAlert(title, message, "Notice")
+        }
 
         FirebaseMessaging.getInstance().subscribeToTopic("all")
         // NotificationManager 객체 생성
@@ -173,5 +183,17 @@ class FCM : FirebaseMessagingService() {
 
         // NotificationManger.nofity를 이용하여 Notification post
         notificationManager?.notify(0, notificationBuilder?.build())
+    }
+
+    private fun miningAlert(title: String, message: String, child : String) {
+        ref.child(child).addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                ref.child(child).child(dataSnapshot.childrenCount.toString()).setValue(FCMAlert(DBDate.DateMMDD(),
+                    title, message
+                ))
+            }
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
     }
 }
