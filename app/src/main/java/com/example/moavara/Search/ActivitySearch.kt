@@ -41,12 +41,6 @@ class ActivitySearch : AppCompatActivity() {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (type == "Keyword") {
-            searchJoara(page, text)
-        } else {
-            binding.rviewSearch.addOnScrollListener(recyclerViewScroll)
-        }
-
         mFragmentSearch = FragmentSearch()
         supportFragmentManager.commit {
             replace(R.id.llayoutWrap, mFragmentSearch)
@@ -137,20 +131,18 @@ class ActivitySearch : AppCompatActivity() {
                             )
                         }
 
-                        Log.d("####-!!!!", type)
-
-                        if(type == "Joara" || type == "Keyword"){
-                            val cmpAsc: java.util.Comparator<BookListData> =
+                        if (type == "Keyword") {
+                            val cmpAsc: Comparator<BookListData> =
                                 Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
                             Collections.sort(searchItems, cmpAsc)
-
-                            adapter?.notifyDataSetChanged()
-
-                            with(binding) {
-                                blank.root.visibility = View.GONE
-                                rviewSearch.visibility = View.VISIBLE
-                            }
                         }
+                        adapter?.notifyDataSetChanged()
+
+                        with(binding) {
+                            blank.root.visibility = View.GONE
+                            rviewSearch.visibility = View.VISIBLE
+                        }
+
                     }
                 }
             })
@@ -201,9 +193,12 @@ class ActivitySearch : AppCompatActivity() {
                         }
                     }
 
-                    val cmpAsc: java.util.Comparator<BookListData> =
-                        Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
-                    Collections.sort(searchItems, cmpAsc)
+                    if (type == "Keyword") {
+                        val cmpAsc: Comparator<BookListData> =
+                            Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
+                        Collections.sort(searchItems, cmpAsc)
+                    }
+                    adapter?.notifyDataSetChanged()
 
                     adapter?.notifyDataSetChanged()
 
@@ -247,9 +242,12 @@ class ActivitySearch : AppCompatActivity() {
                         )
                     }
 
-                    val cmpAsc: java.util.Comparator<BookListData> =
-                        Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
-                    Collections.sort(searchItems, cmpAsc)
+                    if (type == "Keyword") {
+                        val cmpAsc: Comparator<BookListData> =
+                            Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
+                        Collections.sort(searchItems, cmpAsc)
+                    }
+                    adapter?.notifyDataSetChanged()
 
                     adapter?.notifyDataSetChanged()
 
@@ -306,9 +304,12 @@ class ActivitySearch : AppCompatActivity() {
                     )
                 }
 
-                val cmpAsc: java.util.Comparator<BookListData> =
-                    Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
-                Collections.sort(searchItems, cmpAsc)
+                if (type == "Keyword") {
+                    val cmpAsc: Comparator<BookListData> =
+                        Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
+                    Collections.sort(searchItems, cmpAsc)
+                }
+                adapter?.notifyDataSetChanged()
 
                 adapter?.notifyDataSetChanged()
 
@@ -350,10 +351,11 @@ class ActivitySearch : AppCompatActivity() {
                     )
                 }
 
-                val cmpAsc: java.util.Comparator<BookListData> =
-                    Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
-                Collections.sort(searchItems, cmpAsc)
-
+                if (type == "Keyword") {
+                    val cmpAsc: Comparator<BookListData> =
+                        Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
+                    Collections.sort(searchItems, cmpAsc)
+                }
                 adapter?.notifyDataSetChanged()
 
                 with(binding) {
@@ -405,10 +407,11 @@ class ActivitySearch : AppCompatActivity() {
                                 )
                             }
 
-                            val cmpAsc: java.util.Comparator<BookListData> =
-                                Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
-                            Collections.sort(searchItems, cmpAsc)
-
+                            if (type == "Keyword") {
+                                val cmpAsc: Comparator<BookListData> =
+                                    Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
+                                Collections.sort(searchItems, cmpAsc)
+                            }
                             adapter?.notifyDataSetChanged()
 
                             with(binding) {
@@ -463,10 +466,11 @@ class ActivitySearch : AppCompatActivity() {
                     )
                 }
 
-                val cmpAsc: java.util.Comparator<BookListData> =
-                    Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
-                Collections.sort(searchItems, cmpAsc)
-
+                if (type == "Keyword") {
+                    val cmpAsc: Comparator<BookListData> =
+                        Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
+                    Collections.sort(searchItems, cmpAsc)
+                }
                 adapter?.notifyDataSetChanged()
 
                 with(binding) {
@@ -505,42 +509,43 @@ class ActivitySearch : AppCompatActivity() {
                 adapterType.setSelectedBtn(position)
                 adapterType.notifyDataSetChanged()
 
-                if (item != null) {
+                searchItems.clear()
+                adapter?.notifyDataSetChanged()
+                page = 1
+                type = item.type.toString()
 
-                    searchItems.clear()
-                    adapter?.notifyDataSetChanged()
+                if (item.type != "Keyword") {
+                    binding.rviewSearch.addOnScrollListener(recyclerViewScroll)
+                }
 
-                    item.type?.let { Log.d("####", it) }
-
-                    if (item.type == "Keyword") {
-                        searchJoara(page, text)
-                        searchKakaoStage(text)
-                        searchKakao(page - 1, text)
-                        searchNaver(text, "Naver")
-                        searchNaver(text, "Naver_Today")
-                        searchNaver(text, "Naver_Challenge")
-                        searchMunpia(text)
-                        searchToksoda(text)
-                        searchMrBlue(text)
-                    } else if (item.type == "Joara") {
-                        searchJoara(page, text)
-                    } else if (item.type == "Naver_Today") {
-                        searchNaver(text, "Naver_Today")
-                    } else if (item.type == "Naver_Challenge") {
-                        searchNaver(text, "Naver_Challenge")
-                    } else if (item.type == "Naver") {
-                        searchNaver(text, "Naver")
-                    } else if (item.type == "Kakao") {
-                        searchKakao(page - 1, text)
-                    } else if (item.type == "Kakao_Stage") {
-                        searchKakaoStage(text)
-                    } else if (item.type == "Munpia") {
-                        searchMunpia(text)
-                    } else if (item.type == "Toksoda") {
-                        searchToksoda(text)
-                    } else if (item.type == "MrBlue") {
-                        searchMrBlue(text)
-                    }
+                if (item.type == "Keyword") {
+                    searchJoara(page, text)
+                    searchKakaoStage(text)
+                    searchKakao(page - 1, text)
+                    searchNaver(text, "Naver")
+                    searchNaver(text, "Naver_Today")
+                    searchNaver(text, "Naver_Challenge")
+                    searchMunpia(text)
+                    searchToksoda(text)
+                    searchMrBlue(text)
+                } else if (item.type == "Joara") {
+                    searchJoara(page, text)
+                } else if (item.type == "Naver_Today") {
+                    searchNaver(text, "Naver_Today")
+                } else if (item.type == "Naver_Challenge") {
+                    searchNaver(text, "Naver_Challenge")
+                } else if (item.type == "Naver") {
+                    searchNaver(text, "Naver")
+                } else if (item.type == "Kakao") {
+                    searchKakao(page - 1, text)
+                } else if (item.type == "Kakao_Stage") {
+                    searchKakaoStage(text)
+                } else if (item.type == "Munpia") {
+                    searchMunpia(text)
+                } else if (item.type == "Toksoda") {
+                    searchToksoda(text)
+                } else if (item.type == "MrBlue") {
+                    searchMrBlue(text)
                 }
             }
         })
@@ -550,29 +555,18 @@ class ActivitySearch : AppCompatActivity() {
         object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (!recyclerView.canScrollVertically(1)) {
-                    if (joaraOffset == 20 && kakaoStageOffset == 25) {
-                        page++
 
-                        if (type == "Joara") {
-                            searchJoara(page, text)
-                        } else if (type == "Naver_Today") {
-                            searchNaver(text, "Naver_Today")
-                        } else if (type == "Naver_Challenge") {
-                            searchNaver(text, "Naver_Challenge")
-                        } else if (type == "Naver") {
-                            searchNaver(text, "Naver")
-                        } else if (type == "Kakao") {
-                            searchKakao(page - 1, text)
-                        } else if (type == "Kakao_Stage") {
-                            searchKakaoStage(text)
-                        } else if (type == "Munpia") {
-                            searchMunpia(text)
-                        } else if (type == "Toksoda") {
-                            searchToksoda(text)
-                        } else if (type == "MrBlue") {
-                            searchMrBlue(text)
-                        }
+                if (!recyclerView.canScrollVertically(1)) {
+                    page++
+
+                    if (type == "Joara") {
+                        searchJoara(page, text)
+                    } else if (type == "Kakao") {
+                        searchKakao(page - 1, text)
+                    } else if (type == "Kakao_Stage") {
+                        searchKakaoStage(text)
+                    } else if (type == "Toksoda") {
+                        searchToksoda(text)
                     }
                 }
             }
