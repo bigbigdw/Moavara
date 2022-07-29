@@ -43,21 +43,18 @@ class ActivityLogin : AppCompatActivity() {
         setContentView(binding.root)
 
         with(binding) {
-            val llayoutUpperBG = GradientDrawable().apply {
+
+            llayoutUpper.background = GradientDrawable().apply {
                 setColor(Color.parseColor("#121212"))
                 shape = GradientDrawable.RECTANGLE
                 cornerRadii = floatArrayOf(0f,0f,0f,0f, 50f.dpToPx(), 50f.dpToPx(), 50f.dpToPx(), 50f.dpToPx())
             }
 
-            llayoutUpper.background = llayoutUpperBG
-
-            val btnLoginBG = GradientDrawable().apply {
+            btnLogin.background = GradientDrawable().apply {
                 setColor(Color.parseColor("#844DF3"))
                 shape = GradientDrawable.RECTANGLE
                 cornerRadius = 100f.dpToPx()
             }
-
-            btnLogin.background = btnLoginBG
 
             // 구글 로그인 버튼
             btnLogin.setOnClickListener { googleLogin() }

@@ -1,6 +1,8 @@
 package com.example.moavara.Best
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +11,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import com.example.moavara.Main.ActivityGenre
 import com.example.moavara.Util.Genre
+import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.BottomDialogMainBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
@@ -41,6 +44,12 @@ class BottomDialogMain :
             "BL" -> {
                 binding.tviewGenre.text = "BL"
             }
+        }
+
+        binding.llayoutSubmit.background = GradientDrawable().apply {
+            setColor(Color.parseColor("#3F0BA5"))
+            shape = GradientDrawable.RECTANGLE
+            cornerRadius = 10f.dpToPx()
         }
 
         binding.llayoutSubmit.setOnClickListener {

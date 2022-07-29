@@ -19,7 +19,7 @@
     <item
         android:id="@+id/Fragment_Search"
         android:icon="@drawable/bottom_fourth"
-        android:title="바로찾기" />
+        android:title="퀵서치" />
 
     <item
         android:id="@+id/Fragment_Community"

@@ -9,6 +9,7 @@ import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moavara.Best.AdapterType
 import com.example.moavara.R
+import com.example.moavara.Soon.Search.FragmentSearchMoavara
 import com.example.moavara.Util.BestRef
 import com.example.moavara.databinding.FragmentSearchBinding
 import com.google.android.material.tabs.TabLayout

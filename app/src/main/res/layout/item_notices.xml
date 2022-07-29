@@ -54,7 +54,6 @@
                 android:layout_height="24dp"
                 android:layout_marginLeft="20dp"
                 android:adjustViewBounds="true"
-                android:background="@drawable/shape_book_best_day_cover"
                 android:contentDescription="@string/TODO"
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/likeit_3" />

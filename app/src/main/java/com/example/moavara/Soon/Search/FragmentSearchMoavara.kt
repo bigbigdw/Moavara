@@ -1,4 +1,4 @@
-package com.example.moavara.Search
+package com.example.moavara.Soon.Search
 
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moavara.Best.BottomDialogBest
 import com.example.moavara.DataBase.BookListDataBest
+import com.example.moavara.Search.AdapterBestMoavara
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.Genre
 import com.example.moavara.databinding.FragmentSearchmoavaraBinding

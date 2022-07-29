@@ -1,4 +1,4 @@
-package com.example.moavara.Notice
+package com.example.moavara.User
 
 import android.view.LayoutInflater
 import android.view.View

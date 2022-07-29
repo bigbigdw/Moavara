@@ -1,10 +1,9 @@
-package com.example.moavara.Notice
+package com.example.moavara.User
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moavara.DataBase.FCMAlert
@@ -18,8 +17,7 @@ import java.util.*
 import kotlin.Comparator
 import kotlin.collections.ArrayList
 
-
-class FragmentNotice : Fragment() {
+class FragmentAlert : Fragment() {
 
     private var _binding: FragmentNoticesBinding? = null
     private val binding get() = _binding!!
@@ -43,7 +41,7 @@ class FragmentNotice : Fragment() {
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rviewBest.adapter = adapter
 
-        ref.child("Notice").addListenerForSingleValueEvent(object :
+        ref.child("Alert").addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 try {

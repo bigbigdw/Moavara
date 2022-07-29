@@ -2,6 +2,7 @@ package com.example.moavara.Community
 
 import android.graphics.Color
 import android.graphics.Typeface
+import android.graphics.drawable.GradientDrawable
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.Spanned
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moavara.R
 import com.example.moavara.Search.CommunityBoard
+import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.ItemCommunityBinding
 
 
@@ -89,10 +91,22 @@ class AdapterCommunity(items: List<CommunityBoard?>?) :
 
         init {
 
-            binding.llayoutWrap.setOnClickListener {
-                val pos = adapterPosition
-                if (pos != RecyclerView.NO_POSITION) {
-                    listener?.onItemClick(it, pos)
+            with(binding){
+                iView.background = GradientDrawable().apply {
+                    cornerRadius = 100f.dpToPx()
+                }
+
+                llayoutBody.background = GradientDrawable().apply {
+                    setColor(Color.parseColor("#0D0D0D"))
+                    shape = GradientDrawable.RECTANGLE
+                    cornerRadius = 28f.dpToPx()
+                }
+
+                llayoutWrap.setOnClickListener {
+                    val pos = adapterPosition
+                    if (pos != RecyclerView.NO_POSITION) {
+                        listener?.onItemClick(it, pos)
+                    }
                 }
             }
         }

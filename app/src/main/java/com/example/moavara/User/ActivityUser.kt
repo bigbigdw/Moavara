@@ -1,6 +1,8 @@
 package com.example.moavara.User
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
@@ -18,9 +20,9 @@ import com.example.moavara.Best.BottomDialogMain
 import com.example.moavara.Firebase.*
 import com.example.moavara.Main.ActivityLogin
 import com.example.moavara.Main.mRootRef
-import com.example.moavara.Notice.ActivityNotice
 import com.example.moavara.R
 import com.example.moavara.Search.ActivitySearch
+import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.ActivityUserBinding
 import com.facebook.CallbackManager
 import com.google.android.gms.auth.api.Auth
@@ -73,6 +75,31 @@ class ActivityUser : AppCompatActivity() {
 
 
         with(binding){
+
+            val btnBG = GradientDrawable().apply {
+                setColor(Color.parseColor("#0D0E10"))
+                shape = GradientDrawable.RECTANGLE
+                cornerRadius = 100f.dpToPx()
+                setStroke(2f.dpToPx().toInt(), Color.parseColor("#773E424B"))
+            }
+
+            llayoutPush.background = btnBG
+            llayoutNotice.background = btnBG
+            tviewBtnGenre.background = btnBG
+            llayoutGuide.background = btnBG
+            llayoutCall.background = btnBG
+
+            llayoutUpper.background = GradientDrawable().apply {
+                setColor(Color.parseColor("#121212"))
+                shape = GradientDrawable.RECTANGLE
+                cornerRadii = floatArrayOf(0f,0f,0f,0f, 50f.dpToPx(), 50f.dpToPx(), 50f.dpToPx(), 50f.dpToPx())
+            }
+
+            llayoutUser.background = GradientDrawable().apply {
+                setColor(Color.parseColor("#3E424B"))
+                shape = GradientDrawable.OVAL
+            }
+
             tviewNickName.text = nickname
 
             when (genre) {
@@ -107,7 +134,7 @@ class ActivityUser : AppCompatActivity() {
             }
 
             llayoutNotice.setOnClickListener {
-                val intent = Intent(this@ActivityUser,ActivityNotice::class.java)
+                val intent = Intent(this@ActivityUser, ActivityNotice::class.java)
                 startActivity(intent)
             }
 

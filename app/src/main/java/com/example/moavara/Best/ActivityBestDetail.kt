@@ -1,14 +1,20 @@
 package com.example.moavara.Best
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.commit
 import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.BookListDataBestAnalyze
@@ -20,6 +26,7 @@ import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.Genre
 import com.example.moavara.Util.Param
 import com.example.moavara.databinding.ActivityBestDetailBinding
+import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -32,7 +39,6 @@ class ActivityBestDetail : AppCompatActivity() {
 
     var bookCode = ""
     var platform = ""
-    var context = this
     var bookTitle = ""
     var bookWriter = ""
     var chapter : List<JoaraBestChapter>? = null
@@ -61,7 +67,7 @@ class ActivityBestDetail : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         genre = Genre.getGenre(this).toString()
 
-        UID = context.getSharedPreferences("pref", MODE_PRIVATE)
+        UID = getSharedPreferences("pref", MODE_PRIVATE)
             ?.getString("UID", "").toString()
 
         setUserPick()
@@ -267,26 +273,38 @@ class ActivityBestDetail : AppCompatActivity() {
         apiJoara.getBookDetailJoa(
             JoaraRef,
             object : RetrofitDataListener<JoaraBestDetailResult> {
-                override fun onSuccess(it: JoaraBestDetailResult) {
+                override fun onSuccess(data: JoaraBestDetailResult) {
 
                     with(binding){
-                        if(it.status == "1" && it.book != null){
-                            Glide.with(context)
-                                .load(it.book.bookImg)
+                        if(data.status == "1" && data.book != null){
+                            Glide.with(this@ActivityBestDetail)
+                                .load(data.book.bookImg)
                                 .into(inclueBestDetail.iviewBookCover)
 
-                            bookTitle = it.book.subject
-                            chapter = it.book.chapter
+                            bookTitle = data.book.subject
+                            chapter = data.book.chapter
 
                             inclueBestDetail.tviewTitle.text = bookTitle
-                            inclueBestDetail.tviewWriter.text = it.book.writerName
+                            inclueBestDetail.tviewWriter.text = data.book.writerName
 
-                            inclueBestDetail.tviewInfo1.text = "총 " + it.book.cntChapter + " 화"
-                            inclueBestDetail.tviewInfo2.text =  "선호작 수 : " + it.book.cntFavorite
-                            inclueBestDetail.tviewInfo3.text =  "조회 수 : " + it.book.cntPageRead
-                            inclueBestDetail.tviewInfo4.text =  "추천 수 : " + it.book.cntRecom
+                            inclueBestDetail.tviewInfo1.text = "총 ${data.book.cntChapter} 화"
+                            inclueBestDetail.tviewInfo2.text =  "선호작 수 : ${data.book.cntFavorite}"
+                            inclueBestDetail.tviewInfo3.text =  "조회 수 : ${data.book.cntPageRead}"
+                            inclueBestDetail.tviewInfo4.text =  "추천 수 : ${data.book.cntRecom}"
 
-                            tviewIntro.text =  it.book.intro
+                            tviewIntro.text =  data.book.intro
+
+                            val lp = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1F)
+
+                            for(item in data.book.keyword){
+                                val chip = Chip(this@ActivityBestDetail)
+                                chip.text = "#${item}"
+                                chip.chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(this@ActivityBestDetail, R.color.chip))
+                                chip.setTextColor(Color.parseColor("#ffffff"))
+                                chip.layoutParams = lp
+                                chipgroup.addView(chip)
+                            }
+
                         }
                     }
 
@@ -306,7 +324,7 @@ class ActivityBestDetail : AppCompatActivity() {
 
             runOnUiThread {
                 with(binding){
-                    Glide.with(context)
+                    Glide.with(this@ActivityBestDetail)
                         .load(doc.select(".section_area_info .pic img").attr("src"))
                         .into(inclueBestDetail.iviewBookCover)
 
@@ -349,7 +367,7 @@ class ActivityBestDetail : AppCompatActivity() {
 
                     with(binding){
                         data.home?.let { it ->
-                            Glide.with(context)
+                            Glide.with(this@ActivityBestDetail)
                                 .load("https://dn-img-page.kakao.com/download/resource?kid=${it.land_thumbnail_url}")
                                 .into(inclueBestDetail.iviewBookCover)
 
@@ -385,7 +403,7 @@ class ActivityBestDetail : AppCompatActivity() {
 
                     with(binding){
                         data.let { it ->
-                            Glide.with(context)
+                            Glide.with(this@ActivityBestDetail)
                                 .load(data.thumbnail.url)
                                 .into(inclueBestDetail.iviewBookCover)
 
@@ -422,7 +440,7 @@ class ActivityBestDetail : AppCompatActivity() {
                 binding.llayoutIntro.visibility = View.GONE
 
                 with(binding){
-                    Glide.with(context)
+                    Glide.with(this@ActivityBestDetail)
                         .load("https:${doc.select(".thumbnail_image img").attr("src")}")
                         .into(inclueBestDetail.iviewBookCover)
 
@@ -461,7 +479,7 @@ class ActivityBestDetail : AppCompatActivity() {
 
                     with(binding){
                         data.params.let {
-                            Glide.with(context)
+                            Glide.with(this@ActivityBestDetail)
                                 .load(it?.orgFilePos)
                                 .into(inclueBestDetail.iviewBookCover)
 
@@ -494,7 +512,7 @@ class ActivityBestDetail : AppCompatActivity() {
             runOnUiThread {
 
                 with(binding){
-                    Glide.with(context)
+                    Glide.with(this@ActivityBestDetail)
                         .load("https:${doc.select(".cover-box img").attr("src")}")
                         .into(inclueBestDetail.iviewBookCover)
 
@@ -532,7 +550,7 @@ class ActivityBestDetail : AppCompatActivity() {
 
                     with(binding){
                         data.result.let { it ->
-                            Glide.with(context)
+                            Glide.with(this@ActivityBestDetail)
                                 .load("https:${it?.imgPath}")
                                 .into(inclueBestDetail.iviewBookCover)
 

@@ -243,6 +243,10 @@ class JoaraBestListValue {
     @SerializedName("chapter")
     @Expose
     var chapter : List<JoaraBestChapter>? = null
+
+    @SerializedName("keyword")
+    @Expose
+    lateinit var keyword : ArrayList<String>
 }
 
 class JoaraBestChapter {

@@ -17,7 +17,6 @@
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:adjustViewBounds="true"
-        android:background="@drawable/shape_book_best_day_cover"
         android:contentDescription="@string/TODO"
         android:scaleType="fitXY"
         app:srcCompat="@drawable/likeit_3" />
@@ -29,7 +28,7 @@
         android:layout_height="56dp"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="0dp"
-        android:background="@drawable/shape_book_best_day_text"
+        android:background="#0D0D0D"
         android:gravity="start|center_vertical"
         android:orientation="vertical">
 
@@ -79,7 +78,6 @@
                     android:layout_height="24dp"
                     android:layout_marginLeft="4dp"
                     android:adjustViewBounds="true"
-                    android:background="@drawable/shape_book_best_day_cover"
                     android:contentDescription="@string/TODO" />
 
                 <TextView

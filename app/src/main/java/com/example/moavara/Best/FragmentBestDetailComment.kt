@@ -1,5 +1,7 @@
 package com.example.moavara.Best
 
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +14,7 @@ import com.example.moavara.R
 import com.example.moavara.Retrofit.*
 import com.example.moavara.Search.BestComment
 import com.example.moavara.Util.Param
+import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.FragmentBestDetailTabsBinding
 import com.example.moavara.databinding.ItemBestDetailCommentBinding
 import org.jsoup.Jsoup
@@ -290,10 +293,22 @@ class AdapterBestOther(private var platfrom : String, items: List<BestComment?>?
 
         init {
 
-            binding.llayoutWrap.setOnClickListener {
-                val pos = adapterPosition
-                if (pos != RecyclerView.NO_POSITION) {
-                    listener?.onItemClick(it, pos)
+            with(binding){
+                iView.background = GradientDrawable().apply {
+                    cornerRadius = 100f.dpToPx()
+                }
+
+                llayoutBody.background = GradientDrawable().apply {
+                    setColor(Color.parseColor("#0D0D0D"))
+                    shape = GradientDrawable.RECTANGLE
+                    cornerRadius = 28f.dpToPx()
+                }
+
+                llayoutWrap.setOnClickListener {
+                    val pos = adapterPosition
+                    if (pos != RecyclerView.NO_POSITION) {
+                        listener?.onItemClick(it, pos)
+                    }
                 }
             }
         }

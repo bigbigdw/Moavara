@@ -56,8 +56,6 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
 
         adapterWeek = AdapterBestWeekend(itemWeek)
 
-
-
         binding.rviewBest.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rviewBest.adapter = adapterWeek
@@ -101,35 +99,39 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
 
         month = DBDate.Month().toInt() + 1
         week = (currentDate?.week ?: 0).toInt()
+        markDays()
 
         with(binding){
             tviewWeek.text = "${month}월 ${week - weekCount}주차"
+            llayoutAfter.visibility = View.INVISIBLE
 
             llayoutBefore.setOnClickListener {
-                if (weekCount > week) {
-                    Toast.makeText(requireContext(), "과거로는 갈 수 없습니다.", Toast.LENGTH_SHORT).show()
+                if (weekCount > week - 3) {
+                    llayoutBefore.visibility = View.INVISIBLE
                 } else {
-                    weekCount += 1
-                    tviewWeek.text = "${month}월 ${week - weekCount}주차"
-                    getBestWeekListBefore(week - weekCount)
+                    llayoutAfter.visibility = View.VISIBLE
                 }
 
+                weekCount += 1
+                tviewWeek.text = "${month}월 ${week - weekCount}주차"
+                getBestWeekListBefore(week - weekCount)
                 markDays()
             }
 
             llayoutAfter.setOnClickListener {
-                if(weekCount < 1){
+                if(weekCount < 2){
+                    llayoutAfter.visibility = View.INVISIBLE
                     Toast.makeText(requireContext(), "미래로는 갈 수 없습니다.", Toast.LENGTH_SHORT).show()
                 } else {
-                    weekCount -= 1
-                    tviewWeek.text = "${month}월 ${week - weekCount}주차"
-                    getBestWeekListBefore(week - weekCount)
+                    llayoutBefore.visibility = View.VISIBLE
                 }
+
+                weekCount -= 1
+                tviewWeek.text = "${month}월 ${week - weekCount}주차"
+                getBestWeekListBefore(week - weekCount)
 
                 markDays()
             }
-
-            markDays()
         }
         return view
     }

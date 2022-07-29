@@ -24,6 +24,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendardvariable"
                 android:text="현재 설정된 장르는 "
                 android:textColor="#EDE6FD"
                 android:textSize="17sp" />
@@ -32,6 +33,7 @@
                 android:id="@+id/tviewGenre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendardvariable"
                 android:text="판타지"
                 android:textColor="#844DF3"
                 android:textSize="28sp"
@@ -40,6 +42,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendardvariable"
                 android:text=" 입니다"
                 android:textColor="#EDE6FD"
                 android:textSize="17sp" />
@@ -50,6 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:fontFamily="@font/pretendardvariable"
             android:text="플랫폼 별 세부장르 변경을 "
             android:textAlignment="center"
             android:textColor="#EDE6FD"
@@ -59,6 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:fontFamily="@font/pretendardvariable"
             android:text="진행하시겠습니까?"
             android:textAlignment="center"
             android:textColor="#EDE6FD"
@@ -72,7 +77,6 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="40dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/selector_main_bottom"
             android:gravity="center"
             android:orientation="horizontal"
             android:padding="16dp">
@@ -81,6 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="8dp"
+                android:fontFamily="@font/pretendardvariable"
                 android:text="세부장르 변경하러 가기"
                 android:textColor="#EDE6FD"
                 android:textSize="20sp" />
@@ -96,6 +101,7 @@
             android:id="@+id/tviewDismiss"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendardvariable"
             android:text="아니오. 그대로 진행하겠습니다."
             android:textAlignment="center"
             android:textColor="#6E7686" />

@@ -55,6 +55,21 @@
                                     layout="@layout/include_best_detail"
                                     android:animateLayoutChanges="true" />
 
+                                <com.google.android.material.chip.ChipGroup
+                                    android:id="@+id/chipgroup"
+                                    android:layout_marginTop="8dp"
+                                    android:layout_marginBottom="8dp"
+                                    android:background="#0D0E10"
+                                    android:orientation="horizontal"
+                                    android:paddingStart="16dp"
+                                    android:paddingTop="16dp"
+                                    android:paddingEnd="16dp"
+                                    android:paddingBottom="24dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                </com.google.android.material.chip.ChipGroup>
+
                                 <LinearLayout
                                     android:id="@+id/llayoutIntro"
                                     android:layout_width="match_parent"
@@ -74,7 +89,7 @@
                                         android:layout_height="wrap_content"
                                         android:breakStrategy="high_quality"
                                         android:ellipsize="end"
-                                        android:fontFamily="@font/noto_sans"
+                                        android:fontFamily="@font/pretendardvariable"
                                         android:text="@string/Common_BookIntro"
                                         android:textColor="#ffffff"
                                         android:textSize="14sp" />
@@ -175,6 +190,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendardvariable"
                     android:text="Pick하기"
                     android:textColor="#FFFFFF"
                     android:textSize="16sp"
@@ -193,6 +209,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendardvariable"
                     android:text="@string/Best_BottomDialogBtn"
                     android:textColor="#FFFFFF"
                     android:textSize="16sp"

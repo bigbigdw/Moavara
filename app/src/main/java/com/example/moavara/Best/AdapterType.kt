@@ -1,6 +1,7 @@
 package com.example.moavara.Best
 
 import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moavara.R
 import com.example.moavara.Search.BestType
+import com.example.moavara.Util.dpToPx
+import com.example.moavara.databinding.ItemBestTypeBinding
+import com.example.moavara.databinding.ItemBooklistBestTodayBinding
 
 class AdapterType(private var holder: List<BestType>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -25,8 +29,7 @@ class AdapterType(private var holder: List<BestType>) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_best_type, parent, false)
+        val view = ItemBestTypeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MainBookViewHolder(view)
     }
 
@@ -35,16 +38,28 @@ class AdapterType(private var holder: List<BestType>) :
 
             val item = this.holder[position]
 
-            holder.tveiwTitle.text = item.title
+            with(holder.binding){
+                tveiwTitle.text = item.title
 
-            if(getSelectedBtn() == position){
-                holder.tveiwTitle.setTextColor(Color.parseColor("#0D0E10"));
-                holder.llayoutWrap.setBackgroundResource(R.drawable.selector_item_type_on);
-            } else {
-                holder.tveiwTitle.setTextColor(Color.parseColor("#EDE6FD"));
-                holder.llayoutWrap.setBackgroundResource(R.drawable.selector_item_type_off);
+                if(getSelectedBtn() == position){
+                    tveiwTitle.setTextColor(Color.parseColor("#0D0E10"));
+
+                    llayoutWrap.background = GradientDrawable().apply {
+                        setColor(Color.parseColor("#FFFFFF"))
+                        shape = GradientDrawable.RECTANGLE
+                        cornerRadius = 100f.dpToPx()
+                        setStroke(1f.dpToPx().toInt(), Color.parseColor("#FFDADADA"))
+                    }
+                } else {
+                    tveiwTitle.setTextColor(Color.parseColor("#EDE6FD"));
+                    llayoutWrap.background = GradientDrawable().apply {
+                        setColor(Color.parseColor("#0D0E10"))
+                        shape = GradientDrawable.RECTANGLE
+                        cornerRadius = 100f.dpToPx()
+                        setStroke(1f.dpToPx().toInt(), Color.parseColor("#3E424B"))
+                    }
+                }
             }
-
         }
     }
 
@@ -52,21 +67,25 @@ class AdapterType(private var holder: List<BestType>) :
         return holder.size
     }
 
-    inner class MainBookViewHolder internal constructor(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
-
-        var tveiwTitle: TextView = itemView.findViewById(R.id.tveiwTitle)
-        var llayoutWrap: LinearLayout = itemView.findViewById(R.id.llayout_Wrap)
+    inner class MainBookViewHolder internal constructor(val binding: ItemBestTypeBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         init {
+            with(binding){
+                llayoutWrap.background = GradientDrawable().apply {
+                    setColor(Color.parseColor("#0D0E10"))
+                    shape = GradientDrawable.RECTANGLE
+                    cornerRadius = 100f.dpToPx()
+                    setStroke(2f.dpToPx().toInt(), Color.parseColor("#3E424B"))
+                }
 
-            llayoutWrap.setOnClickListener { v: View? ->
-                val pos = adapterPosition
-                if (pos != RecyclerView.NO_POSITION) {
-                    listener?.onItemClick(v, pos)
+                llayoutWrap.setOnClickListener { v: View? ->
+                    val pos = adapterPosition
+                    if (pos != RecyclerView.NO_POSITION) {
+                        listener?.onItemClick(v, pos)
+                    }
                 }
             }
-
         }
 
 

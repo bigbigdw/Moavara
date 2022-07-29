@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -52,6 +53,10 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
         adapterMonth = AdapterBestMonth(itemMonth)
         adapterMonthDay = AdapterBestToday(ItemMonthDay, bookCodeItems)
 
+        binding.blank.root.visibility = View.VISIBLE
+        binding.blank.tviewblank.text = "작품을 불러오는 중..."
+        binding.rviewBestMonth.visibility = View.GONE
+
         itemMonth.clear()
         readJsonList()
 
@@ -64,6 +69,10 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
 
                 override fun onItemClick(v: View?, position: Int, value: String?) {
                     ItemMonthDay.clear()
+
+                    binding.loading.root.visibility = View.VISIBLE
+                    activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                    binding.rviewBestMonthDay.visibility = View.GONE
 
                     if (value != null) {
                         BestRef.getBestDataMonth(tabType, genre).child((position + 1).toString())
@@ -114,6 +123,7 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
 
                                     }
                                     getBestTodayList(ItemMonthDay, true)
+
                                     adapterMonthDay?.notifyDataSetChanged()
                                 }
 
@@ -128,31 +138,36 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
 
             year = DBDate.Year().substring(2,4).toInt()
             month = (currentDate?.month ?: 0).toInt() + 1
+            llayoutAfter.visibility = View.INVISIBLE
 
             tviewMonth.text = "${year}년 ${month - monthCount}월"
 
             llayoutBefore.setOnClickListener {
+                monthCount += 1
 
-                if(monthCount >= 2){
-                    Toast.makeText(requireContext(), "과거로는 갈 수 없습니다.", Toast.LENGTH_SHORT).show()
-                } else {
-                    monthCount += 1
-                    tviewMonth.text = "${year}년 ${month - monthCount}월"
-                    adapterMonth.setMonthDate(monthCount)
-                    getMonthBefore(month - monthCount)
+                if(monthCount == 2){
+                    llayoutBefore.visibility = View.INVISIBLE
+                }  else {
+                    llayoutAfter.visibility = View.VISIBLE
                 }
+
+                tviewMonth.text = "${year}년 ${month - monthCount}월"
+                adapterMonth.setMonthDate(monthCount)
+                getMonthBefore(month - monthCount)
             }
 
             llayoutAfter.setOnClickListener {
+                monthCount -= 1
 
-                if(monthCount <= 0){
-                    Toast.makeText(requireContext(), "미래로는 갈 수 없습니다.", Toast.LENGTH_SHORT).show()
+                if(monthCount == 0){
+                    llayoutAfter.visibility = View.INVISIBLE
                 } else {
-                    monthCount -= 1
-                    tviewMonth.text = "${year}년 ${month - monthCount}월"
-                    adapterMonth.setMonthDate(monthCount)
-                    getMonthBefore(month - monthCount)
+                    llayoutBefore.visibility = View.VISIBLE
                 }
+
+                tviewMonth.text = "${year}년 ${month - monthCount}월"
+                adapterMonth.setMonthDate(monthCount)
+                getMonthBefore(month - monthCount)
             }
         }
 
@@ -252,6 +267,8 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
                             itemMonth.add(weekItem)
                             obj.putOpt(week.toString(), jsonArray)
 
+                            binding.blank.root.visibility = View.GONE
+                            binding.rviewBestMonth.visibility = View.VISIBLE
                             adapterMonth.notifyDataSetChanged()
                         }
                         writeFile(obj)
@@ -268,6 +285,8 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
 
     fun getMonthBefore(month : Int){
 
+        binding.blank.root.visibility = View.VISIBLE
+        binding.rviewBestMonth.visibility = View.GONE
         binding.rviewBestMonth.removeAllViews()
         itemMonth.clear()
 
@@ -325,6 +344,8 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
                         }
 
                         itemMonth.add(weekItem)
+                        binding.blank.root.visibility = View.GONE
+                        binding.rviewBestMonth.visibility = View.VISIBLE
                         adapterMonth.notifyDataSetChanged()
                     }
                 }
@@ -397,6 +418,10 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
                         }
                     }
                 }
+
+                binding.loading.root.visibility = View.GONE
+                activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                binding.rviewBestMonthDay.visibility = View.VISIBLE
                 adapterMonthDay?.notifyDataSetChanged()
 
             }
@@ -468,7 +493,8 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
             }
 
             reader.close()
-
+            binding.blank.root.visibility = View.GONE
+            binding.rviewBestMonth.visibility = View.VISIBLE
             adapterMonth.notifyDataSetChanged()
         } catch (e1: FileNotFoundException) {
             Log.i("파일못찾음", e1.message.toString())

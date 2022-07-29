@@ -52,6 +52,10 @@ class FragmentBestTabToday(private val tabType: String) :
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rviewBest.adapter = adapterToday
 
+        binding.blank.root.visibility = View.VISIBLE
+        binding.blank.tviewblank.text = "작품을 불러오는 중..."
+        binding.rviewBest.visibility = View.GONE
+
         readJsonList()
 
         adapterToday?.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
@@ -128,7 +132,11 @@ class FragmentBestTabToday(private val tabType: String) :
                         }
                     }
                     obj.putOpt("items", jsonArray)
+
                     getBestTodayList(items, true)
+
+                    binding.blank.root.visibility = View.GONE
+                    binding.rviewBest.visibility = View.VISIBLE
                     adapterToday?.notifyDataSetChanged()
                 } catch (e: JSONException) {
                     e.printStackTrace()
@@ -241,6 +249,10 @@ class FragmentBestTabToday(private val tabType: String) :
                 }
 
                 writeJsonList(obj.putOpt("itemStatus", jsonArray))
+
+                binding.blank.root.visibility = View.GONE
+                binding.rviewBest.visibility = View.VISIBLE
+
                 adapterToday?.notifyDataSetChanged()
 
             }
@@ -321,7 +333,8 @@ class FragmentBestTabToday(private val tabType: String) :
             }
 
             reader.close()
-
+            binding.blank.root.visibility = View.GONE
+            binding.rviewBest.visibility = View.VISIBLE
             adapterToday?.notifyDataSetChanged()
         } catch (e1: FileNotFoundException) {
             Log.i("파일못찾음", e1.message.toString())

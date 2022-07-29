@@ -111,7 +111,7 @@
         </activity>
 
         <activity
-            android:name="com.example.moavara.Notice.ActivityNotice"
+            android:name="com.example.moavara.User.ActivityNotice"
             android:label=""
             android:exported="true">
         </activity>

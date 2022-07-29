@@ -1,6 +1,7 @@
 package com.example.moavara.Best
 
 import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.DataBase.BookListDataBestAnalyze
 import com.example.moavara.R
+import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.ItemBooklistBestTodayBinding
 
 class AdapterBestToday(
@@ -49,12 +51,12 @@ class AdapterBestToday(
                 try{
                     if(bookCodeItems[position].trophyCount > 1){
                         if(bookCodeItems[position].numberDiff > 0){
-                            tviewNum.text =  "${bookCodeItems[position].numberDiff}(${bookCodeItems[position].trophyCount})"
+                            tviewNum.text =  "${bookCodeItems[position].numberDiff}"
                             tviewNum.setTextColor(Color.parseColor("#02BC77"))
                             iviewArrow.setImageResource(R.drawable.ic_arrow_drop_up_24px)
                             iviewArrow.visibility = View.VISIBLE
                         } else if(bookCodeItems[position].numberDiff < 0){
-                            tviewNum.text =  "${bookCodeItems[position].numberDiff}(${bookCodeItems[position].trophyCount})"
+                            tviewNum.text =  "${bookCodeItems[position].numberDiff}"
                             tviewNum.setTextColor(Color.parseColor("#FF2366"))
                             iviewArrow.setImageResource(R.drawable.ic_arrow_drop_down_24px)
                             iviewArrow.visibility = View.VISIBLE
@@ -85,16 +87,27 @@ class AdapterBestToday(
 
         init {
 
-            binding.llayoutWrap.setOnClickListener { v: View? ->
-                val pos = adapterPosition
-                if (pos != RecyclerView.NO_POSITION) {
-                    listener?.onItemClick(v, pos)
+            with(binding){
+                ivewBookImg.background =GradientDrawable().apply {
+                    cornerRadius = 100f.dpToPx()
+                }
+
+                BestWrap.background = GradientDrawable().apply {
+                    setColor(Color.parseColor("#0D0D0D"))
+                    shape = GradientDrawable.RECTANGLE
+                    cornerRadius = 28f.dpToPx()
+                }
+
+                llayoutWrap.setOnClickListener { v: View? ->
+                    val pos = adapterPosition
+                    if (pos != RecyclerView.NO_POSITION) {
+                        listener?.onItemClick(v, pos)
+                    }
                 }
             }
 
+
         }
-
-
     }
 
     fun getItem(position: Int): BookListDataBest {

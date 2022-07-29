@@ -1,25 +1,14 @@
-package com.example.moavara.Notice
+package com.example.moavara.User
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.TextUtils.replace
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.commit
-import androidx.viewpager.widget.ViewPager
-import com.example.moavara.Best.FragmentBestTabMonth
-import com.example.moavara.Best.FragmentBestTabToday
-import com.example.moavara.Best.FragmentBestTabWeekend
-import com.example.moavara.Pick.FragmentPickTabEvent
-import com.example.moavara.Pick.FragmentPickTabNovel
 import com.example.moavara.R
 import com.example.moavara.Search.ActivitySearch
-import com.example.moavara.User.ActivityUser
 import com.example.moavara.databinding.ActivityNoticeBinding
 import com.google.android.material.tabs.TabLayout
 
