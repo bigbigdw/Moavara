@@ -50,7 +50,8 @@
                     android:background="#26292E"
                     android:gravity="center_horizontal|center_vertical"
                     android:orientation="horizontal"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    tools:visibility="gone">
 
                     <ImageView
                         android:layout_width="25dp"

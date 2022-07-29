@@ -19,7 +19,7 @@ class FragmentBest : Fragment() {
 
     private lateinit var mFragmentBestTabToday: FragmentBestTabToday
     private lateinit var mFragmentBestTabMonth: FragmentBestTabMonth
-    private lateinit var mFragmentBestTabWeekendOld: FragmentBestTabWeekendOld
+    private lateinit var mFragmentBestTabWeekend: FragmentBestTabWeekend
     private lateinit var adapterType: AdapterType
     private val typeItems = ArrayList<BestType>()
 
@@ -59,9 +59,9 @@ class FragmentBest : Fragment() {
                         getType("Today")
                     }
                     1->{
-                        mFragmentBestTabWeekendOld = FragmentBestTabWeekendOld("Joara")
+                        mFragmentBestTabWeekend = FragmentBestTabWeekend("Joara")
                         childFragmentManager.commit {
-                            replace(R.id.llayoutWrap, mFragmentBestTabWeekendOld)
+                            replace(R.id.llayoutWrap, mFragmentBestTabWeekend)
                         }
                         getType("Weekend")
                     }
@@ -120,10 +120,10 @@ class FragmentBest : Fragment() {
                     }
                     "Weekend" -> {
                         if (item != null) {
-                            mFragmentBestTabWeekendOld = FragmentBestTabWeekendOld(item.type?: "")
+                            mFragmentBestTabWeekend = FragmentBestTabWeekend(item.type?: "")
                         }
                         childFragmentManager.commit {
-                            replace(R.id.llayoutWrap, mFragmentBestTabWeekendOld)
+                            replace(R.id.llayoutWrap, mFragmentBestTabWeekend)
                         }
                     }
                     "Month" -> {

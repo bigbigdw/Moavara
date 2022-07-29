@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.moavara.Best.AdapterBestWeekend
 import com.example.moavara.Best.BottomDialogBest
 import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.Search.BookListDataBestWeekend
@@ -20,7 +19,7 @@ import com.example.moavara.Util.BestRef.putItem
 import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Genre
 import com.example.moavara.Util.dpToPx
-import com.example.moavara.databinding.FragmentBestWeekendBinding
+import com.example.moavara.databinding.FragmentBestWeekendOldBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -32,7 +31,7 @@ import java.io.*
 
 class FragmentBestTabWeekendOld(private val tabType: String) : Fragment() {
 
-    private var adapterWeek: AdapterBestWeekend? = null
+    private var adapterWeek: AdapterBestWeekendOld? = null
     private val itemWeek = ArrayList<BookListDataBestWeekend>()
 
     lateinit var root: View
@@ -41,7 +40,7 @@ class FragmentBestTabWeekendOld(private val tabType: String) : Fragment() {
     private var week = 0
     private var weekCount = 0
 
-    private var _binding: FragmentBestWeekendBinding? = null
+    private var _binding: FragmentBestWeekendOldBinding? = null
     private val binding get() = _binding!!
     private var obj = JSONObject()
 
@@ -49,12 +48,12 @@ class FragmentBestTabWeekendOld(private val tabType: String) : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentBestWeekendBinding.inflate(inflater, container, false)
+        _binding = FragmentBestWeekendOldBinding.inflate(inflater, container, false)
         val view = binding.root
 
         genre = Genre.getGenre(requireContext()).toString()
 
-        adapterWeek = AdapterBestWeekend(itemWeek)
+        adapterWeek = AdapterBestWeekendOld(itemWeek)
 
         binding.rviewBest.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -62,7 +61,7 @@ class FragmentBestTabWeekendOld(private val tabType: String) : Fragment() {
 
         readJsonList()
 
-        adapterWeek?.setOnItemClickListener(object : AdapterBestWeekend.OnItemClickListener {
+        adapterWeek?.setOnItemClickListener(object : AdapterBestWeekendOld.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int, value: String?) {
                 val item: BookListDataBestWeekend? = adapterWeek?.getItem(position)
 
@@ -137,38 +136,38 @@ class FragmentBestTabWeekendOld(private val tabType: String) : Fragment() {
     }
 
     fun markDays(){
-//        with(binding){
-//            var today = DBDate.getDateData(DBDate.DateMMDD())
-//
-//            if (weekCount == 0) {
-//                if (today != null) {
-//                    if (today.date == 1) {
-//                        tviewSun.background = todayMark()
-//                        tviewSun.setTextColor(Color.parseColor("#ffffff"))
-//                    } else if (today.date == 2) {
-//                        tviewMon.background = todayMark()
-//                    } else if (today.date == 3) {
-//                        tviewTue.background = todayMark()
-//                    } else if (today.date == 4) {
-//                        tviewWed.background = todayMark()
-//                    } else if (today.date == 5) {
-//                        tviewThur.background = todayMark()
-//                    } else if (today.date == 6) {
-//                        tviewFri.background = todayMark()
-//                    } else if (today.date == 7) {
-//                        tviewSat.background = todayMark()
-//                    }
-//                }
-//            } else {
-//                tviewSun.background = null
-//                tviewMon.background = null
-//                tviewTue.background = null
-//                tviewWed.background = null
-//                tviewThur.background = null
-//                tviewFri.background = null
-//                tviewSat.background = null
-//            }
-//        }
+        with(binding){
+            val today = DBDate.getDateData(DBDate.DateMMDD())
+
+            if (weekCount == 0) {
+                if (today != null) {
+                    if (today.date == 1) {
+                        tviewSun.background = todayMark()
+                        tviewSun.setTextColor(Color.parseColor("#ffffff"))
+                    } else if (today.date == 2) {
+                        tviewMon.background = todayMark()
+                    } else if (today.date == 3) {
+                        tviewTue.background = todayMark()
+                    } else if (today.date == 4) {
+                        tviewWed.background = todayMark()
+                    } else if (today.date == 5) {
+                        tviewThur.background = todayMark()
+                    } else if (today.date == 6) {
+                        tviewFri.background = todayMark()
+                    } else if (today.date == 7) {
+                        tviewSat.background = todayMark()
+                    }
+                }
+            } else {
+                tviewSun.background = null
+                tviewMon.background = null
+                tviewTue.background = null
+                tviewWed.background = null
+                tviewThur.background = null
+                tviewFri.background = null
+                tviewSat.background = null
+            }
+        }
     }
 
     fun todayMark() : GradientDrawable {

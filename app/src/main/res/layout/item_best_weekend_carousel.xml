@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="170dp"
     android:layout_marginStart="0dp"
     android:layout_marginEnd="0dp"
     android:layout_marginBottom="18dp"
+    android:background="#0D0E10"
     android:orientation="horizontal"
+    android:paddingStart="12dp"
+    android:paddingEnd="12dp"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 
     <androidx.cardview.widget.CardView
-
-        android:layout_width="134dp"
-        android:layout_height="194dp"
+        android:layout_width="92dp"
+        android:layout_height="140dp"
         android:layout_marginEnd="15dp"
         app:cardCornerRadius="6dp">
 
@@ -24,7 +25,7 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/Img_BookBest"
+                android:id="@+id/iviewBookBest"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
@@ -45,7 +46,7 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
-                        android:id="@+id/BestRankImg"
+                        android:id="@+id/iviewRank"
                         android:layout_width="58dp"
                         android:layout_height="31dp"
                         android:adjustViewBounds="true"
@@ -57,41 +58,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <LinearLayout
-                    android:id="@+id/FavWrap"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#CC000000"
-                    android:gravity="center_horizontal"
-                    android:orientation="horizontal"
-                    android:paddingStart="8dp"
-                    android:paddingTop="8dp"
-                    android:paddingEnd="8dp"
-                    android:paddingBottom="4dp"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:visibility="visible">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:breakStrategy="high_quality"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/noto_sans"
-                        android:maxLines="1"
-                        android:text="HIHI"
-                        android:textColor="#a5c500"
-                        android:textSize="15sp" />
-
-
-                </LinearLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
@@ -101,83 +67,21 @@
         android:id="@+id/BestWrap"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginEnd="16dp"
         android:orientation="vertical">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/tviewTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:id="@+id/BookLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="4dp"
-                android:background="#EEEEEE"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/TopText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:breakStrategy="high_quality"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/noto_sans_bold"
-                    android:maxLines="2"
-                    android:text="HIHI"
-                    android:textColor="#000000"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/Bar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginEnd="2dp"
-                    android:fontFamily="@font/noto_sans_bold"
-                    android:text="@string/Common_Bar"
-                    android:textColor="#000000"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:visibility="visible" />
-
-                <TextView
-                    android:id="@+id/Category"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:fontFamily="@font/noto_sans_bold"
-                    android:textColor="#000000"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/Text_Title_Best"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
             android:breakStrategy="high_quality"
             android:ellipsize="end"
-            android:fontFamily="@font/noto_sans_bold"
+            android:fontFamily="@font/pretendardvariable"
             android:text="@string/Common_BookTitle"
-            android:textColor="#673AB7"
-            android:textSize="16sp"
+            android:textAlignment="viewStart"
+            android:textColor="#EDE6FD"
+            android:textSize="18sp"
             android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/BookCodeText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -186,136 +90,95 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/Text_Writer_Best"
+                android:id="@+id/tviewWriter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:breakStrategy="high_quality"
                 android:ellipsize="end"
-                android:fontFamily="@font/noto_sans"
+                android:fontFamily="@font/pretendardvariable"
                 android:maxLines="1"
                 android:text="@string/Common_BookWriter"
-                android:textColor="#673AB7"
-                android:textSize="12sp" />
+                android:textColor="#6E7686"
+                android:textSize="11sp" />
 
             <TextView
+                android:id="@+id/tviewBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:layout_marginEnd="2dp"
-                android:fontFamily="@font/noto_sans_bold"
-                android:text="@string/Common_Bar"
-                android:textColor="#673AB7"
-                android:textSize="12sp"
-                android:textStyle="bold"
+                android:ellipsize="end"
+                android:fontFamily="@font/pretendardvariable"
+                android:maxLines="3"
+                android:text=" | "
+                android:textColor="#6E7686"
+                android:textSize="11sp"
                 android:visibility="visible" />
 
             <TextView
-                android:id="@+id/Text_CntChapter"
+                android:id="@+id/tviewInfo1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:breakStrategy="high_quality"
                 android:ellipsize="end"
-                android:fontFamily="@font/noto_sans"
-                android:maxLines="1"
-                android:text="@string/Common_BookWriter"
-                android:textColor="#673AB7"
-                android:textSize="12sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/noto_sans"
-                android:text="HIHI"
-                android:textColor="#673AB7"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/Text_BestViewed"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/noto_sans_bold"
-                android:text="HIHI"
-                android:textColor="#673AB7"
-                android:textSize="12sp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/noto_sans"
-                android:text="HIHI"
-                android:textColor="#673AB7"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/Text_BestFav"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/noto_sans_bold"
-                android:text="HIHI"
-                android:textColor="#673AB7"
-                android:textSize="12sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/noto_sans"
-                android:text="HIHI"
-                android:textColor="#673AB7"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/Text_BestRecommend"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/noto_sans_bold"
-                android:text="HIHI"
-                android:textColor="#673AB7"
-                android:textSize="12sp"
-                android:textStyle="bold" />
+                android:fontFamily="@font/pretendardvariable"
+                android:maxLines="3"
+                android:text="@string/Common_Count"
+                android:textColor="#6E7686"
+                android:textSize="11sp" />
 
         </LinearLayout>
 
         <TextView
-            android:id="@+id/Text_Intro_Best"
+            android:id="@+id/tviewInfo2"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:breakStrategy="high_quality"
+            android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:fontFamily="@font/noto_sans"
+            android:fontFamily="@font/pretendardvariable"
             android:maxLines="3"
-            android:text="@string/Common_BookIntro"
-            android:textColor="#767676"
-            android:textSize="14sp" />
+            android:textColor="#E2E3E7"
+            android:textSize="11sp"
+            android:visibility="visible"
+            tools:text="@string/Common_Count"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tviewInfo3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/pretendardvariable"
+            android:maxLines="3"
+            android:textColor="#E2E3E7"
+            android:textSize="11sp"
+            android:visibility="visible"
+            tools:text="@string/Common_Count"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tviewInfo4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/pretendardvariable"
+            android:maxLines="3"
+            android:textColor="#E2E3E7"
+            android:textSize="11sp"
+            android:visibility="visible"
+            tools:text="@string/Common_Count"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tviewInfo5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/pretendardvariable"
+            android:maxLines="1"
+            android:textColor="#6E7686"
+            android:textSize="12sp"
+            android:visibility="visible"
+            tools:text="@string/Common_Count"
+            tools:visibility="visible" />
 
     </LinearLayout>
 

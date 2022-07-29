@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#1E1E20"
@@ -15,7 +16,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="3dp"
             android:background="#0D0E10"
             android:gravity="center_vertical"
             android:orientation="horizontal">
@@ -62,52 +62,33 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#1E1E20"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="8dp"
-                android:background="#00d189"
+                android:background="#1E1E20"
                 android:orientation="horizontal"
                 android:paddingStart="16dp"
                 android:paddingTop="9dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="9dp">
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/noto_sans_bold"
-                        android:text="HIHI"
-                        android:textColor="#ffffff"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
-                        android:fontFamily="@font/noto_sans_bold"
-                        android:text="HIHI"
-                        android:textColor="#f4f4f4"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
+                <TextView
+                    android:id="@+id/tviewBestTop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/noto_sans_bold"
+                    android:textColor="#EDE6FD"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    tools:text="HIHI" />
             </LinearLayout>
 
             <com.synnapps.carouselview.CarouselView
                 android:id="@+id/carousel"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="180dp"
                 android:paddingStart="16dp"
                 android:paddingTop="16dp"
                 android:paddingEnd="16dp"

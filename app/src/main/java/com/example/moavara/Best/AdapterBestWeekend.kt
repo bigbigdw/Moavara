@@ -1,19 +1,15 @@
 package com.example.moavara.Best
 
-import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.moavara.Search.BookListDataBestWeekend
-import com.example.moavara.Util.dpToPx
+import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.databinding.ItemBooklistBestWeekendBinding
 
 class AdapterBestWeekend(
-    private var items: ArrayList<BookListDataBestWeekend>,
+    private var items: ArrayList<ArrayList<BookListDataBest>>,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var selected: String? = ""
@@ -29,7 +25,11 @@ class AdapterBestWeekend(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = ItemBooklistBestWeekendBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val view = ItemBooklistBestWeekendBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
         return HolderBestWeekend(view)
     }
 
@@ -38,112 +38,150 @@ class AdapterBestWeekend(
 
             val items = items[position]
 
-            with(holder.binding){
+            with(holder.binding) {
+                val item0 = items[0]
+                val item1 = items[1]
+                val item2 = items[2]
+                val item3 = items[3]
+                val item4 = items[4]
+                val item5 = items[5]
+                val item6 = items[6]
+                val item7 = items[7]
+                val item8 = items[8]
 
-                if (items.sun != null && items.sun?.bookImg?.isNotEmpty() == true) {
-                    Glide.with(holder.itemView.context)
-                        .load(items.sun?.bookImg)
-                        .into(iviewBookImg1)
-
-                    if (selected != "" && getSelectedBook() != items.sun?.title) {
-                        llayoutCover1.visibility = View.VISIBLE
-                    } else {
-                        llayoutCover1.visibility = View.GONE
-                    }
+                if (item0 != null) {
                     llayoutNull1.visibility = View.GONE
+
+                    Glide.with(holder.itemView.context)
+                        .load(item0.bookImg)
+                        .into(iviewImg1)
+
+                    tviewTitle1.text = item0.title
+                    tviewWriter1.text = item0.writer
                 } else {
                     llayoutNull1.visibility = View.VISIBLE
                 }
 
-                if (items.mon != null && items.mon?.bookImg?.isNotEmpty() == true) {
-                    Glide.with(holder.itemView.context)
-                        .load(items.mon?.bookImg)
-                        .into(iviewBookImg2)
-
-                    if (selected != "" && getSelectedBook() != items.mon?.title) {
-                        llayoutCover2.visibility = View.VISIBLE
-                    } else {
-                        llayoutCover2.visibility = View.GONE
-                    }
+                if (item1 != null) {
                     llayoutNull2.visibility = View.GONE
+
+                    Glide.with(holder.itemView.context)
+                        .load(item1.bookImg)
+                        .into(iviewImg2)
+
+                    tviewTitle2.text = item1.title
+                    tviewWriter2.text = item1.writer
                 } else {
                     llayoutNull2.visibility = View.VISIBLE
                 }
 
-                if (items.tue != null && items.tue?.bookImg?.isNotEmpty() == true) {
-                    Glide.with(holder.itemView.context)
-                        .load(items.tue?.bookImg)
-                        .into(iviewBookImg3)
-
-                    if (selected != "" && getSelectedBook() != items.tue?.title) {
-                        llayoutCover3.visibility = View.VISIBLE
-                    } else {
-                        llayoutCover3.visibility = View.GONE
-                    }
+                if (item2 != null) {
                     llayoutNull3.visibility = View.GONE
+
+                    Glide.with(holder.itemView.context)
+                        .load(item2.bookImg)
+                        .into(iviewImg3)
+
+                    tviewTitle3.text = item2.title
+                    tviewWriter3.text = item2.writer
                 } else {
                     llayoutNull3.visibility = View.VISIBLE
                 }
 
-                if (items.wed != null && items.wed?.bookImg?.isNotEmpty() == true) {
-                    Glide.with(holder.itemView.context)
-                        .load(items.wed?.bookImg)
-                        .into(iviewBookImg4)
-
-                    if (selected != "" && getSelectedBook() != items.wed?.title) {
-                        llayoutCover4.visibility = View.VISIBLE
-                    } else {
-                        llayoutCover4.visibility = View.GONE
-                    }
+                if (item3 != null) {
                     llayoutNull4.visibility = View.GONE
+
+                    Glide.with(holder.itemView.context)
+                        .load(item3.bookImg)
+                        .into(iviewImg4)
+
+                    tviewTitle4.text = item3.title
+                    tviewWriter4.text = item3.writer
                 } else {
                     llayoutNull4.visibility = View.VISIBLE
                 }
 
-                if (items.thur != null && items.thur?.bookImg?.isNotEmpty() == true) {
-                    Glide.with(holder.itemView.context)
-                        .load(items.thur?.bookImg)
-                        .into(iviewBookImg5)
-
-                    if (selected != "" && getSelectedBook() != items.thur?.title) {
-                        llayoutCover5.visibility = View.VISIBLE
-                    } else {
-                        llayoutCover5.visibility = View.GONE
-                    }
+                if (item4 != null) {
                     llayoutNull5.visibility = View.GONE
+
+                    Glide.with(holder.itemView.context)
+                        .load(item4.bookImg)
+                        .into(iviewImg5)
+
+                    tviewTitle5.text = item4.title
+                    tviewWriter5.text = item4.writer
                 } else {
                     llayoutNull5.visibility = View.VISIBLE
                 }
 
-                if (items.fri != null && items.fri?.bookImg?.isNotEmpty() == true) {
-                    Glide.with(holder.itemView.context)
-                        .load(items.fri?.bookImg)
-                        .into(iviewBookImg6)
-
-                    if (selected != "" && getSelectedBook() != items.fri?.title) {
-                        llayoutCover6.visibility = View.VISIBLE
-                    } else {
-                        llayoutCover6.visibility = View.GONE
-                    }
+                if (item5 != null) {
                     llayoutNull6.visibility = View.GONE
-                } else {
-                    llayoutNull6.visibility = View.VISIBLE
-                }
 
-                if (items.sat != null && items.sat?.bookImg?.isNotEmpty() == true) {
                     Glide.with(holder.itemView.context)
-                        .load(items.sat?.bookImg)
-                        .into(iviewBookImg7)
+                        .load(item5.bookImg)
+                        .into(iviewImg6)
 
-                    if (selected != "" && getSelectedBook() != items.sat?.title) {
-                        llayoutCover7.visibility = View.VISIBLE
-                    } else {
-                        llayoutCover7.visibility = View.GONE
-                    }
-                    llayoutNull7.visibility = View.GONE
+                    tviewTitle6.text = item5.title
+                    tviewWriter6.text = item5.writer
                 } else {
                     llayoutNull7.visibility = View.VISIBLE
                 }
+
+                if (item6 != null) {
+                    llayoutNull7.visibility = View.GONE
+
+                    Glide.with(holder.itemView.context)
+                        .load(item6.bookImg)
+                        .into(iviewImg7)
+
+                    tviewTitle7.text = item6.title
+                    tviewWriter7.text = item6.writer
+                } else {
+                    llayoutNull7.visibility = View.VISIBLE
+                }
+
+                if (item7 != null) {
+                    llayoutNull8.visibility = View.GONE
+
+                    Glide.with(holder.itemView.context)
+                        .load(item7.bookImg)
+                        .into(iviewImg8)
+
+                    tviewTitle8.text = item7.title
+                    tviewWriter8.text = item7.writer
+                } else {
+                    llayoutNull8.visibility = View.VISIBLE
+                }
+
+                if (item8 != null) {
+                    llayoutNull9.visibility = View.GONE
+
+                    Glide.with(holder.itemView.context)
+                        .load(item8.bookImg)
+                        .into(iviewImg9)
+
+                    tviewTitle9.text = item8.title
+                    tviewWriter9.text = item8.writer
+                } else {
+                    llayoutNull9.visibility = View.VISIBLE
+                }
+
+                if (position == 0) {
+                    tviewBestTop.text = "일요일 주간 베스트"
+                } else if (position == 1) {
+                    tviewBestTop.text = "월요일 주간 베스트"
+                } else if (position == 2) {
+                    tviewBestTop.text = "화요일 주간 베스트"
+                } else if (position == 3) {
+                    tviewBestTop.text = "수요일 주간 베스트"
+                } else if (position == 4) {
+                    tviewBestTop.text = "목요일 주간 베스트"
+                } else if (position == 5) {
+                    tviewBestTop.text = "금요일 주간 베스트"
+                } else if (position == 6) {
+                    tviewBestTop.text = "토요일 주간 베스트"
+                }
+
             }
         }
     }
@@ -157,50 +195,8 @@ class AdapterBestWeekend(
 
         init {
 
-            with(binding){
-                cviewWrap1.setOnClickListener { v: View? ->
-                    val pos = adapterPosition
-                    if (pos != RecyclerView.NO_POSITION) {
-                        listener?.onItemClick(v, pos, "sun")
-                    }
-                }
-
-                cviewWrap2.setOnClickListener { v: View? ->
-                    val pos = adapterPosition
-                    if (pos != RecyclerView.NO_POSITION) {
-                        listener?.onItemClick(v, pos, "mon")
-                    }
-                }
-
-                cviewWrap3.setOnClickListener { v: View? ->
-                    val pos = adapterPosition
-                    if (pos != RecyclerView.NO_POSITION) {
-                        listener?.onItemClick(v, pos, "tue")
-                    }
-                }
-
-                cviewWrap4.setOnClickListener { v: View? ->
-                    val pos = adapterPosition
-                    if (pos != RecyclerView.NO_POSITION) {
-                        listener?.onItemClick(v, pos, "wed")
-                    }
-                }
-
-                cviewWrap5.setOnClickListener { v: View? ->
-                    val pos = adapterPosition
-                    if (pos != RecyclerView.NO_POSITION) {
-                        listener?.onItemClick(v, pos, "thur")
-                    }
-                }
-
-                cviewWrap6.setOnClickListener { v: View? ->
-                    val pos = adapterPosition
-                    if (pos != RecyclerView.NO_POSITION) {
-                        listener?.onItemClick(v, pos, "fri")
-                    }
-                }
-
-                cviewWrap7.setOnClickListener { v: View? ->
+            with(binding) {
+                root.setOnClickListener { v: View? ->
                     val pos = adapterPosition
                     if (pos != RecyclerView.NO_POSITION) {
                         listener?.onItemClick(v, pos, "sat")
@@ -211,16 +207,8 @@ class AdapterBestWeekend(
 
     }
 
-    fun getItem(position: Int): BookListDataBestWeekend {
+    fun getItem(position: Int): ArrayList<BookListDataBest> {
         return items[position]
-    }
-
-    fun setSelectedBook(title: String) {
-        selected = title
-    }
-
-    fun getSelectedBook(): String? {
-        return selected
     }
 
 }

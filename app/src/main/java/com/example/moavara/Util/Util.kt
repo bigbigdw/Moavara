@@ -34,6 +34,36 @@ object DBDate {
         }
     }
 
+    fun DayToString(day : Int): String {
+
+        when (day) {
+            1 -> {
+                return "일"
+            }
+            2 -> {
+                return "월"
+            }
+            3 -> {
+                return "화"
+            }
+            4 -> {
+                return "수"
+            }
+            5 -> {
+                return "목"
+            }
+            6 -> {
+                return "금"
+            }
+            7 -> {
+                return "토"
+            }
+            else -> {
+                return ""
+            }
+        }
+    }
+
     fun DayString(): String {
 
         val day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK).toString()
