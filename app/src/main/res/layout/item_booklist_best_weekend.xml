@@ -48,6 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
                 android:layout_marginEnd="17dp"
+                android:layout_weight="1"
                 android:orientation="vertical"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -119,6 +120,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
                 android:layout_marginEnd="17dp"
+                android:layout_weight="1"
                 android:orientation="vertical"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -190,6 +192,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
                 android:layout_marginEnd="17dp"
+                android:layout_weight="1"
                 android:orientation="vertical"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -261,6 +264,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
                 android:layout_marginEnd="17dp"
+                android:layout_weight="1"
                 android:orientation="vertical"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -332,6 +336,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
                 android:layout_marginEnd="17dp"
+                android:layout_weight="1"
                 android:orientation="vertical"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -403,6 +408,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
                 android:layout_marginEnd="17dp"
+                android:layout_weight="1"
                 android:orientation="vertical"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -474,6 +480,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
                 android:layout_marginEnd="17dp"
+                android:layout_weight="1"
                 android:orientation="vertical"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -546,6 +553,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
                 android:layout_marginEnd="17dp"
+                android:layout_weight="1"
                 android:orientation="vertical"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -617,6 +625,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
                 android:layout_marginEnd="17dp"
+                android:layout_weight="1"
                 android:orientation="vertical"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
