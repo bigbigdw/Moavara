@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.moavara.R
@@ -32,7 +33,6 @@ class ActivityLogin : AppCompatActivity() {
     private var GOOGLE_LOGIN_CODE = 9001
     private var callbackManager: CallbackManager? = null
     private lateinit var binding: ActivityLoginBinding
-    var mode = "GO"
     var context = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +43,9 @@ class ActivityLogin : AppCompatActivity() {
         setContentView(binding.root)
 
         with(binding) {
+
+            loading.root.visibility = View.VISIBLE
+            window?.addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
 
             llayoutUpper.background = GradientDrawable().apply {
                 setColor(Color.parseColor("#121212"))
@@ -190,6 +193,8 @@ class ActivityLogin : AppCompatActivity() {
             if (result.isSuccess) {
                 val accout = result.signInAccount
                 firebaseAuthWithGoogle(accout)
+                binding.loading.root.visibility = View.GONE
+                window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                 Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this, "로그인 실패!!!", Toast.LENGTH_SHORT).show()
@@ -220,6 +225,8 @@ class ActivityLogin : AppCompatActivity() {
 
                             Toast.makeText(context, "환영한다 " + group?.Nickname, Toast.LENGTH_SHORT).show()
                             startActivity(Intent(context, ActivityMain::class.java))
+                            binding.loading.root.visibility = View.GONE
+                            window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                             finish()
                         }
                     }

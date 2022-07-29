@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -76,6 +77,9 @@ class ActivityUser : AppCompatActivity() {
 
         with(binding){
 
+            loading.root.visibility = View.VISIBLE
+            window?.addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+
             val btnBG = GradientDrawable().apply {
                 setColor(Color.parseColor("#0D0E10"))
                 shape = GradientDrawable.RECTANGLE
@@ -90,7 +94,7 @@ class ActivityUser : AppCompatActivity() {
             llayoutCall.background = btnBG
 
             llayoutUpper.background = GradientDrawable().apply {
-                setColor(Color.parseColor("#121212"))
+                setColor(Color.parseColor("#0D0E10"))
                 shape = GradientDrawable.RECTANGLE
                 cornerRadii = floatArrayOf(0f,0f,0f,0f, 50f.dpToPx(), 50f.dpToPx(), 50f.dpToPx(), 50f.dpToPx())
             }
@@ -316,6 +320,8 @@ class ActivityUser : AppCompatActivity() {
             if (result.isSuccess) {
                 val accout = result.signInAccount
                 firebaseAuthWithGoogle(accout)
+                binding.loading.root.visibility = View.GONE
+                window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                 Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this, "로그인 실패!!!", Toast.LENGTH_SHORT).show()

@@ -116,7 +116,7 @@
         <entry key="..\:/ANDROID_SDK/platforms/android-31/data/res/layout/simple_list_item_checked.xml" value="0.1" />
         <entry key="app/src/main/res/Best/layout/activity_best_detail.xml" value="0.25" />
         <entry key="app/src/main/res/Best/layout/activity_bestdetail.xml" value="0.1" />
-        <entry key="app/src/main/res/Best/layout/bottom_dialog_best.xml" value="0.1" />
+        <entry key="app/src/main/res/Best/layout/bottom_dialog_best.xml" value="0.5" />
         <entry key="app/src/main/res/Best/layout/collapse_best_detail.xml" value="0.1921875" />
         <entry key="app/src/main/res/Best/layout/fragment_best.xml" value="0.1" />
         <entry key="app/src/main/res/Best/layout/fragment_best_detail_tabs.xml" value="0.1" />
@@ -184,13 +184,13 @@
         <entry key="app/src/main/res/layout/activity_book_setting.xml" value="0.16944444444444445" />
         <entry key="app/src/main/res/layout/activity_event_detail.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_guide.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.24202127659574468" />
         <entry key="app/src/main/res/layout/activity_news.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_news_write.xml" value="0.2111111111111111" />
         <entry key="app/src/main/res/layout/activity_notice.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_signup.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_user.xml" value="0.12254901960784313" />
+        <entry key="app/src/main/res/layout/activity_user.xml" value="0.33" />
         <entry key="app/src/main/res/layout/bottom_dialog_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/dialog_login_alert.xml" value="0.33" />
         <entry key="app/src/main/res/layout/dialog_login_confirm.xml" value="0.33" />
@@ -209,7 +209,7 @@
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_search_bookcode.xml" value="0.30213160333642264" />
         <entry key="app/src/main/res/layout/fragment_searchmoavara.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/include_rank.xml" value="0.11574074074074074" />
+        <entry key="app/src/main/res/layout/include_rank.xml" value="0.5" />
         <entry key="app/src/main/res/layout/item_best_detail_analysis.xml" value="0.11574074074074074" />
         <entry key="app/src/main/res/layout/item_best_detail_analyze.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_best_type.xml" value="0.1" />

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 
@@ -23,9 +24,7 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
-                android:layout_marginRight="1dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendardvariable"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="일"
@@ -34,48 +33,52 @@
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/iviewRank1"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/TODO"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/ic_best_gr_24px" />
-
-            <TextView
-                android:id="@+id/tviewRank1"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
-                android:layout_marginRight="1dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
 
-                android:fontFamily="@font/pretendardvariable"
-                android:gravity="center_horizontal|center_vertical"
-                android:text="14위"
-                android:textAlignment="center"
-                android:textColor="#FDFDFD"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:visibility="invisible"
-                tools:visibility="visible" />
+                <ImageView
+                    android:id="@+id/iviewRank1"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/TODO"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/ic_best_gr_24px" />
+
+                <TextView
+                    android:id="@+id/tviewRank1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="-5dp"
+                    android:fontFamily="@font/pretendardvariable"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="100"
+                    android:textAlignment="center"
+                    android:textColor="#FDFDFD"
+                    android:textStyle="bold"
+                    android:visibility="invisible"
+                    tools:visibility="visible" />
+            </FrameLayout>
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            
+
             android:gravity="center_horizontal|center_vertical"
             android:orientation="vertical"
             tools:visibility="visible">
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
-                android:layout_marginRight="1dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
 
                 android:fontFamily="@font/pretendardvariable"
                 android:gravity="center_horizontal|center_vertical"
@@ -85,48 +88,57 @@
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/iviewRank2"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/TODO"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/ic_best_gr_24px" />
-
-            <TextView
-                android:id="@+id/tviewRank2"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
-                android:layout_marginRight="1dp"
-                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
-                android:fontFamily="@font/pretendardvariable"
-                android:gravity="center_horizontal|center_vertical"
-                android:text="14위"
-                android:textAlignment="center"
-                android:textColor="#FDFDFD"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:visibility="invisible"
-                tools:visibility="visible" />
+                <ImageView
+                    android:id="@+id/iviewRank2"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/TODO"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/ic_best_gr_24px" />
+
+                <TextView
+                    android:id="@+id/tviewRank2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="-5dp"
+
+                    android:layout_marginRight="1dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/pretendardvariable"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="100"
+                    android:textAlignment="center"
+                    android:textColor="#FDFDFD"
+                    android:textStyle="bold"
+                    android:visibility="invisible"
+                    tools:visibility="visible" />
+
+            </FrameLayout>
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            
+
             android:gravity="center_horizontal|center_vertical"
             android:orientation="vertical"
             tools:visibility="visible">
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
+                android:layout_height="wrap_content"
                 android:layout_marginRight="1dp"
-                android:layout_weight="1"
 
                 android:fontFamily="@font/pretendardvariable"
                 android:gravity="center_horizontal|center_vertical"
@@ -136,48 +148,57 @@
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/iviewRank3"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/TODO"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/ic_best_gr_24px" />
-
-            <TextView
-                android:id="@+id/tviewRank3"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
-                android:layout_marginRight="1dp"
-                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
-                android:fontFamily="@font/pretendardvariable"
-                android:gravity="center_horizontal|center_vertical"
-                android:text="14위"
-                android:textAlignment="center"
-                android:textColor="#FDFDFD"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:visibility="invisible"
-                tools:visibility="visible" />
+                <ImageView
+                    android:id="@+id/iviewRank3"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/TODO"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/ic_best_gr_24px" />
+
+                <TextView
+                    android:id="@+id/tviewRank3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="-5dp"
+
+                    android:layout_marginRight="1dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/pretendardvariable"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="100"
+                    android:textAlignment="center"
+                    android:textColor="#FDFDFD"
+                    android:textStyle="bold"
+                    android:visibility="invisible"
+                    tools:visibility="visible" />
+
+            </FrameLayout>
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            
+
             android:gravity="center_horizontal|center_vertical"
             android:orientation="vertical"
             tools:visibility="visible">
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
+                android:layout_height="wrap_content"
                 android:layout_marginRight="1dp"
-                android:layout_weight="1"
 
                 android:fontFamily="@font/pretendardvariable"
                 android:gravity="center_horizontal|center_vertical"
@@ -187,48 +208,57 @@
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/iviewRank4"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/TODO"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/ic_best_gr_24px" />
-
-            <TextView
-                android:id="@+id/tviewRank4"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
-                android:layout_marginRight="1dp"
-                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
-                android:fontFamily="@font/pretendardvariable"
-                android:gravity="center_horizontal|center_vertical"
-                android:text="14위"
-                android:textAlignment="center"
-                android:textColor="#FDFDFD"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:visibility="invisible"
-                tools:visibility="visible" />
+                <ImageView
+                    android:id="@+id/iviewRank4"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/TODO"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/ic_best_gr_24px" />
+
+                <TextView
+                    android:id="@+id/tviewRank4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="-5dp"
+
+                    android:layout_marginRight="1dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/pretendardvariable"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="100"
+                    android:textAlignment="center"
+                    android:textColor="#FDFDFD"
+                    android:textStyle="bold"
+                    android:visibility="invisible"
+                    tools:visibility="visible" />
+
+            </FrameLayout>
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            
+
             android:gravity="center_horizontal|center_vertical"
             android:orientation="vertical"
             tools:visibility="visible">
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
+                android:layout_height="wrap_content"
                 android:layout_marginRight="1dp"
-                android:layout_weight="1"
 
                 android:fontFamily="@font/pretendardvariable"
                 android:gravity="center_horizontal|center_vertical"
@@ -238,48 +268,57 @@
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/iviewRank5"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/TODO"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/ic_best_gr_24px" />
-
-            <TextView
-                android:id="@+id/tviewRank5"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
-                android:layout_marginRight="1dp"
-                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
-                android:fontFamily="@font/pretendardvariable"
-                android:gravity="center_horizontal|center_vertical"
-                android:text="14위"
-                android:textAlignment="center"
-                android:textColor="#FDFDFD"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:visibility="invisible"
-                tools:visibility="visible" />
+                <ImageView
+                    android:id="@+id/iviewRank5"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/TODO"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/ic_best_gr_24px" />
+
+                <TextView
+                    android:id="@+id/tviewRank5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="-5dp"
+
+                    android:layout_marginRight="1dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/pretendardvariable"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="100"
+                    android:textAlignment="center"
+                    android:textColor="#FDFDFD"
+                    android:textStyle="bold"
+                    android:visibility="invisible"
+                    tools:visibility="visible" />
+
+            </FrameLayout>
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            
+
             android:gravity="center_horizontal|center_vertical"
             android:orientation="vertical"
             tools:visibility="visible">
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
+                android:layout_height="wrap_content"
                 android:layout_marginRight="1dp"
-                android:layout_weight="1"
 
                 android:fontFamily="@font/pretendardvariable"
                 android:gravity="center_horizontal|center_vertical"
@@ -289,49 +328,53 @@
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/iviewRank6"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/TODO"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/ic_best_gr_24px" />
-
-            <TextView
-                android:id="@+id/tviewRank6"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
-                android:layout_marginRight="1dp"
-                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
-                android:fontFamily="@font/pretendardvariable"
-                android:gravity="center_horizontal|center_vertical"
-                android:text="14위"
-                android:textAlignment="center"
-                android:textColor="#FDFDFD"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:visibility="invisible"
-                tools:visibility="visible" />
+                <ImageView
+                    android:id="@+id/iviewRank6"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/TODO"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/ic_best_gr_24px" />
+
+                <TextView
+                    android:id="@+id/tviewRank6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="-5dp"
+                    android:fontFamily="@font/pretendardvariable"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="100"
+                    android:textAlignment="center"
+                    android:textColor="#FDFDFD"
+                    android:textStyle="bold"
+                    android:visibility="invisible"
+                    tools:visibility="visible" />
+
+            </FrameLayout>
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            
+
             android:gravity="center_horizontal|center_vertical"
             android:orientation="vertical"
             tools:visibility="visible">
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
-                android:layout_marginRight="1dp"
-                android:layout_weight="1"
-
+                android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendardvariable"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="토"
@@ -340,32 +383,39 @@
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/iviewRank7"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/TODO"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/ic_best_gr_24px" />
-
-            <TextView
-                android:id="@+id/tviewRank7"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
-                android:layout_marginRight="1dp"
-                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
-                android:fontFamily="@font/pretendardvariable"
-                android:gravity="center_horizontal|center_vertical"
-                android:text="14위"
-                android:textAlignment="center"
-                android:textColor="#FDFDFD"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:visibility="invisible"
-                tools:visibility="visible" />
+                <ImageView
+                    android:id="@+id/iviewRank7"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/TODO"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/ic_best_gr_24px" />
+
+                <TextView
+                    android:id="@+id/tviewRank7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="-5dp"
+                    android:fontFamily="@font/pretendardvariable"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="100"
+                    android:textAlignment="center"
+                    android:textColor="#FDFDFD"
+                    android:textStyle="bold"
+                    android:visibility="invisible"
+                    tools:visibility="visible" />
+
+
+            </FrameLayout>
+
         </LinearLayout>
 
     </LinearLayout>

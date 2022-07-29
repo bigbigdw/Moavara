@@ -3,8 +3,11 @@ package com.example.moavara.Best
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.text.SpannableStringBuilder
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +21,8 @@ import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.DBDate
+import com.example.moavara.Util.applyingTextColor
+import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.BottomDialogBestBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.database.DataSnapshot
@@ -60,6 +65,27 @@ class BottomDialogBest(
 
         with(binding) {
 
+            llayoutWrap.background = GradientDrawable().apply {
+                setColor(Color.parseColor("#26292E"))
+                shape = GradientDrawable.RECTANGLE
+                cornerRadii = floatArrayOf(
+                    20f.dpToPx(),
+                    20f.dpToPx(),
+                    20f.dpToPx(),
+                    20f.dpToPx(),
+                    0f,
+                    0f,
+                    0f,
+                    0f
+                )
+            }
+
+            viewDeco.background = GradientDrawable().apply {
+                setColor(Color.parseColor("#404551"))
+                shape = GradientDrawable.RECTANGLE
+                cornerRadius = 50f.dpToPx()
+            }
+
             tviewTitle.text = item?.title ?: ""
             tviewWriter.text = item?.writer ?: ""
 
@@ -90,56 +116,85 @@ class BottomDialogBest(
                 tviewInfo1.text = item?.info1 ?: ""
                 tviewInfo2.text = item?.info2 ?: ""
                 tviewInfo3.text = item?.info3 ?: ""
-            } else if (tabType == "Kakao" || tabType == "Joara" || tabType == "Joara_Premium" || tabType == "Joara_Nobless" || tabType == "Munpia" || tabType == "Toksoda") {
+            } else if (tabType == "Kakao" || tabType == "Munpia" || tabType == "Toksoda" || tabType == "Joara" || tabType == "Joara_Premium" || tabType == "Joara_Nobless") {
                 tviewInfo1.visibility = View.VISIBLE
                 tviewInfo2.visibility = View.VISIBLE
                 tviewInfo3.visibility = View.VISIBLE
                 tviewInfo4.visibility = View.VISIBLE
                 tviewInfo5.visibility = View.VISIBLE
 
-                tviewInfo1.text = item?.info1 ?: ""
-                tviewInfo2.text = item?.info2
-                tviewInfo3.text = item?.info3 ?: ""
-                tviewInfo4.text = item?.info4
-                tviewInfo5.text = item?.info5 ?: ""
+                if(tabType == "Joara" || tabType == "Joara_Premium" || tabType == "Joara_Nobless"){
+                    tviewInfo1.text = item?.info2 ?: ""
+
+
+                    val info3 = SpannableStringBuilder(item?.info3)
+                    info3.applyingTextColor(
+                        "조회 수 : ",
+                        "#6E7686"
+                    )
+
+                    val info4 = SpannableStringBuilder(item?.info4)
+                    info4.applyingTextColor(
+                        "선호작 수 : ",
+                        "#6E7686"
+                    )
+
+                    val info5 = SpannableStringBuilder(item?.info5)
+                    info5.applyingTextColor(
+                        "추천 수 : ",
+                        "#6E7686"
+                    )
+
+                    tviewInfo2.text = info3
+                    tviewInfo3.text = info4
+                    tviewInfo4.text = info5
+
+                    tviewInfo5.text = item?.info1 ?: ""
+                } else {
+                    tviewInfo1.text = item?.info2 ?: ""
+                    tviewInfo2.text = item?.info3
+                    tviewInfo3.text = item?.info4 ?: ""
+                    tviewInfo4.text = item?.info5
+                    tviewInfo5.text = item?.info1 ?: ""
+                }
             }
 
             Glide.with(mContext)
                 .load(item?.bookImg)
                 .into(iviewBookImg)
 
-            when (item?.number) {
-                0 -> {
-                    iviewRanking.setImageResource(R.drawable.icon_best_1)
-                }
-                1 -> {
-                    iviewRanking.setImageResource(R.drawable.icon_best_2)
-                }
-                2 -> {
-                    iviewRanking.setImageResource(R.drawable.icon_best_3)
-                }
-                3 -> {
-                    iviewRanking.setImageResource(R.drawable.icon_best_4)
-                }
-                4 -> {
-                    iviewRanking.setImageResource(R.drawable.icon_best_5)
-                }
-                5 -> {
-                    iviewRanking.setImageResource(R.drawable.icon_best_6)
-                }
-                6 -> {
-                    iviewRanking.setImageResource(R.drawable.icon_best_7)
-                }
-                7 -> {
-                    iviewRanking.setImageResource(R.drawable.icon_best_8)
-                }
-                8 -> {
-                    iviewRanking.setImageResource(R.drawable.icon_best_9)
-                }
-                else -> {
-                    Log.d("bestRankImage", "NO_IMAGE")
-                }
-            }
+//            when (item?.number) {
+//                0 -> {
+//                    iviewRanking.setImageResource(R.drawable.icon_best_1)
+//                }
+//                1 -> {
+//                    iviewRanking.setImageResource(R.drawable.icon_best_2)
+//                }
+//                2 -> {
+//                    iviewRanking.setImageResource(R.drawable.icon_best_3)
+//                }
+//                3 -> {
+//                    iviewRanking.setImageResource(R.drawable.icon_best_4)
+//                }
+//                4 -> {
+//                    iviewRanking.setImageResource(R.drawable.icon_best_5)
+//                }
+//                5 -> {
+//                    iviewRanking.setImageResource(R.drawable.icon_best_6)
+//                }
+//                6 -> {
+//                    iviewRanking.setImageResource(R.drawable.icon_best_7)
+//                }
+//                7 -> {
+//                    iviewRanking.setImageResource(R.drawable.icon_best_8)
+//                }
+//                8 -> {
+//                    iviewRanking.setImageResource(R.drawable.icon_best_9)
+//                }
+//                else -> {
+//                    Log.d("bestRankImage", "NO_IMAGE")
+//                }
+//            }
 
             getRankList(item)
 
@@ -184,11 +239,6 @@ class BottomDialogBest(
                 bookDetailIntent.putExtra("POSITION", pos)
                 startActivity(bookDetailIntent)
                 dismiss()
-            }
-
-            llayoutBtnRight.setOnClickListener {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getUrl()))
-                startActivity(intent)
             }
         }
 
