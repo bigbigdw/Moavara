@@ -286,7 +286,6 @@ class ActivityBestDetail : AppCompatActivity() {
                                 )
                                 chip.setTextColor(Color.parseColor("#EDE6FD"))
                                 chip.layoutParams = lp
-                                chip.ensureAccessibleTouchTarget(150)
                                 chipgroup.addView(chip)
                             }
 

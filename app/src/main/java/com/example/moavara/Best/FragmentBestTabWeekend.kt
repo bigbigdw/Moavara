@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -54,7 +55,7 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
 
         with(binding){
 
-            adapter = AdapterBestWeekend(itemWeek)
+            adapter = AdapterBestWeekend(requireContext(), itemWeek)
 
             binding.rviewBest.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

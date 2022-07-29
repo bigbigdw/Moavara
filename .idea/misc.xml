@@ -194,6 +194,7 @@
         <entry key="app/src/main/res/layout/activity_signup.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_user.xml" value="0.33" />
         <entry key="app/src/main/res/layout/bottom_dialog_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/cu_item_best_weekend.xml" value="0.375" />
         <entry key="app/src/main/res/layout/dialog_login_alert.xml" value="0.33" />
         <entry key="app/src/main/res/layout/dialog_login_confirm.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_best.xml" value="0.1" />
@@ -218,7 +219,7 @@
         <entry key="app/src/main/res/layout/item_best_type.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_best_weekend_carousel.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item_booklist_best_month.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/item_booklist_best_weekend.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/item_booklist_best_weekend.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_booklist_best_weekend_sub.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_community.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_event.xml" value="0.1" />
