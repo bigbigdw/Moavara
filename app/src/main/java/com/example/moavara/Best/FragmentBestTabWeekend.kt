@@ -115,10 +115,10 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
 
                              val itemListCarousel = ArrayList<BookListDataBest>()
 
-                             for (num in 0..9) {
+                             for (numCarousel in 0..9) {
 
                                  val item: BookListDataBest? =
-                                     dataSnapshot.child(day.toString()).child(num.toString())
+                                     dataSnapshot.child(day.toString()).child(numCarousel.toString())
                                          .getValue(BookListDataBest::class.java)
 
                                  if (item != null) {
@@ -126,7 +126,7 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
                                  }
                              }
 
-                             arrayCarousel.addAll(itemList)
+                             arrayCarousel.addAll(itemListCarousel)
                          }
 
                          itemWeek.add(itemList)

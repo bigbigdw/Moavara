@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/noto_sans_bold"
             android:text="HIHI"
-            android:textColor="#ffffff"
+            android:textColor="#EDE6FD"
             android:textSize="15sp"
             android:textStyle="bold" />
     </LinearLayout>
