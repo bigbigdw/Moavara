@@ -42,6 +42,9 @@ class ActivityLogin : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.loading.root.visibility = View.VISIBLE
+        window?.addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+
         with(binding) {
 
             loading.root.visibility = View.VISIBLE

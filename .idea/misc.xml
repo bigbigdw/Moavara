@@ -114,7 +114,7 @@
         <entry key="..\:/ANDROID_SDK/platforms/android-31/data/res/drawable-watch/sym_def_app_icon.xml" value="0.1" />
         <entry key="..\:/ANDROID_SDK/platforms/android-31/data/res/layout/activity_list_item.xml" value="0.1" />
         <entry key="..\:/ANDROID_SDK/platforms/android-31/data/res/layout/simple_list_item_checked.xml" value="0.1" />
-        <entry key="app/src/main/res/Best/layout/activity_best_detail.xml" value="0.25" />
+        <entry key="app/src/main/res/Best/layout/activity_best_detail.xml" value="0.1" />
         <entry key="app/src/main/res/Best/layout/activity_bestdetail.xml" value="0.1" />
         <entry key="app/src/main/res/Best/layout/bottom_dialog_best.xml" value="0.5" />
         <entry key="app/src/main/res/Best/layout/collapse_best_detail.xml" value="0.1921875" />
@@ -128,7 +128,8 @@
         <entry key="app/src/main/res/Best/layout/fragment_best_today_v2.xml" value="0.1" />
         <entry key="app/src/main/res/Best/layout/fragment_best_v2.xml" value="0.1" />
         <entry key="app/src/main/res/Best/layout/fragment_best_weekend.xml" value="0.25" />
-        <entry key="app/src/main/res/Best/layout/include_best_detail.xml" value="0.1" />
+        <entry key="app/src/main/res/Best/layout/fragment_best_weekend_old.xml" value="0.1" />
+        <entry key="app/src/main/res/Best/layout/include_best_detail.xml" value="0.3638392857142857" />
         <entry key="app/src/main/res/Best/layout/item_best_detail_comment.xml" value="0.1" />
         <entry key="app/src/main/res/Best/layout/item_best_detail_other.xml" value="0.36574074074074076" />
         <entry key="app/src/main/res/Best/layout/item_best_rank.xml" value="0.23425925925925925" />
@@ -196,12 +197,13 @@
         <entry key="app/src/main/res/layout/dialog_login_confirm.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_best.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_best_detail_analyze.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_best_detail_rank.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_best_month.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_best_today.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_best_today_tab.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_best_today_v2.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_best_v2.xml" value="0.18" />
-        <entry key="app/src/main/res/layout/fragment_best_weekend.xml" value="0.10843373493975904" />
+        <entry key="app/src/main/res/layout/fragment_best_weekend.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_event.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_event_detail.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.1" />
@@ -213,6 +215,7 @@
         <entry key="app/src/main/res/layout/item_best_detail_analysis.xml" value="0.11574074074074074" />
         <entry key="app/src/main/res/layout/item_best_detail_analyze.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_best_type.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_best_weekend_carousel.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item_booklist_best_month.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_booklist_best_weekend_sub.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_community.xml" value="0.1" />

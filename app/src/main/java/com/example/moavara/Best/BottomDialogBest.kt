@@ -245,36 +245,9 @@ class BottomDialogBest(
         return view
     }
 
-    private fun getUrl(): String {
-
-        return if (tabType == "MrBlue") {
-            "https://www.mrblue.com/novel/" + (item?.bookCode ?: "")
-        } else if (tabType == "Naver_Today") {
-            (item?.bookCode ?: "")
-        } else if (tabType == "Naver_Challenge") {
-            (item?.bookCode ?: "")
-        } else if (tabType == "Naver") {
-            (item?.bookCode ?: "")
-        } else if (tabType == "Kakao_Stage") {
-            "https://pagestage.kakao.com/novels/" + (item?.bookCode ?: "")
-        } else if (tabType == "Kakao") {
-            "https://page.kakao.com/home?seriesId=" + (item?.bookCode ?: "")
-        } else if (tabType == "OneStore") {
-            "https://onestory.co.kr/detail/" + (item?.bookCode ?: "")
-        } else if (tabType == "Ridi") {
-            (item?.bookCode ?: "")
-        } else if (tabType == "Joara" || tabType == "Joara_Premium" || tabType == "Joara_Nobless") {
-            "https://www.joara.com/book/" + (item?.bookCode ?: "")
-        } else if (tabType == "Munpia") {
-            "https://novel.munpia.com/${(item?.bookCode ?: "")}"
-        } else if (tabType == "Toksoda") {
-            "https://www.tocsoda.co.kr/product/productView?brcd=${(item?.bookCode ?: "")}"
-        } else ""
-    }
-
     override fun getTheme() = R.style.CustomBottomSheetDialogTheme
 
-    fun getRankList(item: BookListDataBest?) {
+    private fun getRankList(item: BookListDataBest?) {
 
         if (item != null) {
             BestRef.getBookCode(item.type, Genre).child(item.bookCode)

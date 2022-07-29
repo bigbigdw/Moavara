@@ -9,6 +9,7 @@ import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moavara.R
 import com.example.moavara.Search.BestType
+import com.example.moavara.Soon.Best.FragmentBestTabWeekendOld
 import com.example.moavara.Util.BestRef
 import com.example.moavara.databinding.FragmentBestBinding
 import com.google.android.material.tabs.TabLayout
@@ -18,7 +19,7 @@ class FragmentBest : Fragment() {
 
     private lateinit var mFragmentBestTabToday: FragmentBestTabToday
     private lateinit var mFragmentBestTabMonth: FragmentBestTabMonth
-    private lateinit var mFragmentBestTabWeekend: FragmentBestTabWeekend
+    private lateinit var mFragmentBestTabWeekendOld: FragmentBestTabWeekendOld
     private lateinit var adapterType: AdapterType
     private val typeItems = ArrayList<BestType>()
 
@@ -58,9 +59,9 @@ class FragmentBest : Fragment() {
                         getType("Today")
                     }
                     1->{
-                        mFragmentBestTabWeekend = FragmentBestTabWeekend("Joara")
+                        mFragmentBestTabWeekendOld = FragmentBestTabWeekendOld("Joara")
                         childFragmentManager.commit {
-                            replace(R.id.llayoutWrap, mFragmentBestTabWeekend)
+                            replace(R.id.llayoutWrap, mFragmentBestTabWeekendOld)
                         }
                         getType("Weekend")
                     }
@@ -119,10 +120,10 @@ class FragmentBest : Fragment() {
                     }
                     "Weekend" -> {
                         if (item != null) {
-                            mFragmentBestTabWeekend = FragmentBestTabWeekend(item.type?: "")
+                            mFragmentBestTabWeekendOld = FragmentBestTabWeekendOld(item.type?: "")
                         }
                         childFragmentManager.commit {
-                            replace(R.id.llayoutWrap, mFragmentBestTabWeekend)
+                            replace(R.id.llayoutWrap, mFragmentBestTabWeekendOld)
                         }
                     }
                     "Month" -> {

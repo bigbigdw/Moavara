@@ -1,17 +1,16 @@
 package com.example.moavara.Best
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.view.WindowManager
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
@@ -19,12 +18,13 @@ import androidx.fragment.app.commit
 import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.BookListDataBestAnalyze
 import com.example.moavara.DataBase.BookListDataBestToday
-import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
 import com.example.moavara.Retrofit.*
+import com.example.moavara.Soon.Best.FragmentBestDetailRank
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.Genre
 import com.example.moavara.Util.Param
+import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.ActivityBestDetailBinding
 import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayout
@@ -41,17 +41,14 @@ class ActivityBestDetail : AppCompatActivity() {
     var platform = ""
     var bookTitle = ""
     var bookWriter = ""
-    var chapter : List<JoaraBestChapter>? = null
+    var chapter: List<JoaraBestChapter>? = null
     var pos = 0
     var genre = ""
-    var UID = ""
-    var userInfo = mRootRef.child("User")
     private lateinit var binding: ActivityBestDetailBinding
     private lateinit var mFragmentBestDetailAnalyze: FragmentBestDetailAnalyze
     private lateinit var mFragmentBestDetailBooks: FragmentBestDetailBooks
     private lateinit var mFragmentBestDetailComment: FragmentBestDetailComment
-    private lateinit var mFragmentBestDetailRank: FragmentBestDetailRank
-
+    val data = ArrayList<BookListDataBestAnalyze>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,18 +64,25 @@ class ActivityBestDetail : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         genre = Genre.getGenre(this).toString()
 
-        UID = getSharedPreferences("pref", MODE_PRIVATE)
-            ?.getString("UID", "").toString()
+        binding.llayoutBtnRight.background = GradientDrawable().apply {
+            setColor(Color.parseColor("#621CEF"))
+            shape = GradientDrawable.RECTANGLE
+            cornerRadius = 100f.dpToPx()
+        }
+
+        binding.loading.root.visibility = View.VISIBLE
+        binding.coorWrap.visibility = View.GONE
+        window?.addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
 
         setUserPick()
 
         BestRef.getBookCode(platform, genre).child(bookCode).addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val data = ArrayList<BookListDataBestAnalyze>()
 
-                for(item in dataSnapshot.children){
-                    val group: BookListDataBestAnalyze? = item.getValue(BookListDataBestAnalyze::class.java)
+                for (item in dataSnapshot.children) {
+                    val group: BookListDataBestAnalyze? =
+                        item.getValue(BookListDataBestAnalyze::class.java)
 
                     if (group != null) {
                         data.add(
@@ -95,7 +99,7 @@ class ActivityBestDetail : AppCompatActivity() {
                     }
                 }
 
-                setLayout(data)
+                setLayout()
             }
 
             override fun onCancelled(databaseError: DatabaseError) {}
@@ -104,56 +108,31 @@ class ActivityBestDetail : AppCompatActivity() {
 
     }
 
-    private fun setUserPick(){
-        BestRef.getBestRefToday(platform, genre).child(pos.toString()).addListenerForSingleValueEvent(object :
-            ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val group: BookListDataBestToday? = dataSnapshot.getValue(BookListDataBestToday::class.java)
+    private fun setUserPick() {
+        BestRef.getBestRefToday(platform, genre).child(pos.toString())
+            .addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val group: BookListDataBestToday? =
+                        dataSnapshot.getValue(BookListDataBestToday::class.java)
 
-                runOnUiThread {
+                    runOnUiThread {
 
-                    with(binding){
-                        llayoutBtnLeft.setOnClickListener {
+                        with(binding) {
 
-                            val group = BookListDataBestToday(
-                                group!!.writer,
-                                group.title,
-                                group.bookImg,
-                                group.bookCode,
-                                group.info1,
-                                group.info2,
-                                group.info3,
-                                group.info4,
-                                group.info5,
-                                group.number,
-                                group.numberDiff,
-                                group.date,
-                                platform,
-                                group.status,
-                                group.trophyCount,
-                            )
-
-                            userInfo.child(UID).child("book").addListenerForSingleValueEvent(object :
-                                ValueEventListener {
-                                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                                    userInfo.child(UID).child("book").child(dataSnapshot.childrenCount.toString()).setValue(group)
-                                }
-                                override fun onCancelled(databaseError: DatabaseError) {}
-                            })
-
-                            Toast.makeText(this@ActivityBestDetail, "Pick 성공!", Toast.LENGTH_SHORT).show()
-                        }
-
-                        llayoutBtnRight.setOnClickListener {
-                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getUrl(group?.bookCode ?: "")))
-                            startActivity(intent)
+                            llayoutBtnRight.setOnClickListener {
+                                val intent = Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse(getUrl(group?.bookCode ?: ""))
+                                )
+                                startActivity(intent)
+                            }
                         }
                     }
                 }
-            }
 
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
+                override fun onCancelled(databaseError: DatabaseError) {}
+            })
     }
 
     private fun getUrl(bookCode: String): String {
@@ -170,58 +149,61 @@ class ActivityBestDetail : AppCompatActivity() {
             "https://onestory.co.kr/detail/${bookCode}"
         } else if (platform == "Joara" || platform == "Joara_Premium" || platform == "Joara_Nobless") {
             "https://www.joara.com/book/${bookCode}"
-        }else if (platform == "Munpia") {
+        } else if (platform == "Munpia") {
             "https://novel.munpia.com/${bookCode}"
         } else if (platform == "Toksoda") {
             "https://www.tocsoda.co.kr/product/productView?brcd=${bookCode}"
-        }else ""
+        } else ""
     }
 
-    fun setLayout(data: ArrayList<BookListDataBestAnalyze>?) {
+    fun setLayout() {
 
         if (platform == "Joara" || platform == "Joara_Nobless" || platform == "Joara_Premium") {
             setLayoutJoara()
-        } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver"){
+        } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver") {
             setLayoutNaverToday()
-        } else if (platform == "Kakao"){
+        } else if (platform == "Kakao") {
             setLayoutKaKao()
-        } else if (platform == "Kakao_Stage"){
+        } else if (platform == "Kakao_Stage") {
             setLayoutKaKaoStage()
-        } else if (platform == "Ridi"){
+        } else if (platform == "Ridi") {
             setLayoutRidi()
-        } else if (platform == "OneStore"){
+        } else if (platform == "OneStore") {
             setLayoutOneStory()
-        } else if (platform == "Munpia"){
+        } else if (platform == "Munpia") {
             setLayoutMunpia()
-        } else if (platform == "Toksoda"){
+        } else if (platform == "Toksoda") {
             setLayoutToksoda()
         }
 
-        if(platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver"){
+        if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver") {
             binding.tabs.addTab(binding.tabs.newTab().setText("다른 작품"))
             binding.tabs.addTab(binding.tabs.newTab().setText("작품 분석"))
-            binding.tabs.addTab(binding.tabs.newTab().setText("랭크"))
-        } else if(platform == "Kakao" || platform == "Kakao_Stage" || platform == "OneStore" || platform == "Munpia") {
+        } else if (platform == "Kakao" || platform == "Kakao_Stage" || platform == "OneStore" || platform == "Munpia") {
             binding.tabs.addTab(binding.tabs.newTab().setText("댓글"))
             binding.tabs.addTab(binding.tabs.newTab().setText("작품 분석"))
-            binding.tabs.addTab(binding.tabs.newTab().setText("랭크"))
-        } else if(platform == "Ridi") {
+        } else if (platform == "Ridi") {
             binding.tabs.addTab(binding.tabs.newTab().setText("다른 작품"))
             binding.tabs.addTab(binding.tabs.newTab().setText("작품 분석"))
-            binding.tabs.addTab(binding.tabs.newTab().setText("랭크"))
         } else {
+            binding.tabs.addTab(binding.tabs.newTab().setText("작품 분석"))
             binding.tabs.addTab(binding.tabs.newTab().setText("댓글"))
             binding.tabs.addTab(binding.tabs.newTab().setText("다른 작품"))
-            binding.tabs.addTab(binding.tabs.newTab().setText("작품 분석"))
-            binding.tabs.addTab(binding.tabs.newTab().setText("랭크"))
         }
 
         binding.tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                when(tab.position){
-                    0->{
+                when (tab.position) {
+                    0 -> {
+                        mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(platform, data)
+                        supportFragmentManager.commit {
+                            replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
+                        }
+                    }
+                    1 -> {
                         if (platform == "Joara" || platform == "Joara_Nobless" || platform == "Joara_Premium" || platform == "Kakao" || platform == "Kakao_Stage" || platform == "OneStore" || platform == "Munpia" || platform == "Toksoda") {
-                            mFragmentBestDetailComment = FragmentBestDetailComment(platform, bookCode)
+                            mFragmentBestDetailComment =
+                                FragmentBestDetailComment(platform, bookCode)
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailComment)
                             }
@@ -232,39 +214,28 @@ class ActivityBestDetail : AppCompatActivity() {
                             }
                         }
                     }
-                    1->{
+                    2 -> {
                         if (platform == "Joara" || platform == "Joara_Nobless" || platform == "Joara_Premium" || platform == "Toksoda") {
                             mFragmentBestDetailBooks = FragmentBestDetailBooks(platform, bookCode)
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
                             }
-                        } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver" || platform == "Kakao"|| platform == "Kakao_Stage" || platform == "Ridi" || platform == "OneStore" || platform == "Munpia") {
+                        } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver" || platform == "Kakao" || platform == "Kakao_Stage" || platform == "Ridi" || platform == "OneStore" || platform == "Munpia") {
                             mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(platform, data)
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
                             }
                         }
                     }
-                    2->{
-                        mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(platform, data)
-                        supportFragmentManager.commit {
-                            replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
-                        }
-                    }
-                    3->{
-                        mFragmentBestDetailRank = FragmentBestDetailRank(platform, data)
-                        supportFragmentManager.commit {
-                            replace(R.id.llayoutWrap, mFragmentBestDetailRank)
-                        }
-                    }
                 }
             }
+
             override fun onTabUnselected(tab: TabLayout.Tab) {}
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
     }
 
-    fun setLayoutJoara(){
+    fun setLayoutJoara() {
         val apiJoara = RetrofitJoara()
         val JoaraRef = Param.getItemAPI(this)
         JoaraRef["book_code"] = bookCode
@@ -273,62 +244,76 @@ class ActivityBestDetail : AppCompatActivity() {
         apiJoara.getBookDetailJoa(
             JoaraRef,
             object : RetrofitDataListener<JoaraBestDetailResult> {
-                override fun onSuccess(data: JoaraBestDetailResult) {
+                override fun onSuccess(res: JoaraBestDetailResult) {
 
-                    with(binding){
-                        if(data.status == "1" && data.book != null){
+                    with(binding) {
+                        if (res.status == "1" && res.book != null) {
+
+                            loading.root.visibility = View.GONE
+                            coorWrap.visibility = View.VISIBLE
+                            window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+
                             Glide.with(this@ActivityBestDetail)
-                                .load(data.book.bookImg)
+                                .load(res.book.bookImg)
                                 .into(inclueBestDetail.iviewBookCover)
 
-                            bookTitle = data.book.subject
-                            chapter = data.book.chapter
+                            bookTitle = res.book.subject
+                            chapter = res.book.chapter
 
                             inclueBestDetail.tviewTitle.text = bookTitle
-                            inclueBestDetail.tviewWriter.text = data.book.writerName
+                            inclueBestDetail.tviewWriter.text = res.book.writerName
 
-                            inclueBestDetail.tviewInfo1.text = "총 ${data.book.cntChapter} 화"
-                            inclueBestDetail.tviewInfo2.text =  "선호작 수 : ${data.book.cntFavorite}"
-                            inclueBestDetail.tviewInfo3.text =  "조회 수 : ${data.book.cntPageRead}"
-                            inclueBestDetail.tviewInfo4.text =  "추천 수 : ${data.book.cntRecom}"
+                            inclueBestDetail.tviewInfo1.text = "총 ${res.book.cntChapter}화"
+                            inclueBestDetail.tviewInfo2.text = res.book.cntFavorite
+                            inclueBestDetail.tviewInfo3.text = res.book.cntPageRead
+                            inclueBestDetail.tviewInfo4.text = res.book.cntRecom
 
-                            tviewIntro.text =  data.book.intro
+                            tviewIntro.text = res.book.intro
 
-                            val lp = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1F)
+                            val lp = LinearLayout.LayoutParams(
+                                ViewGroup.LayoutParams.WRAP_CONTENT,
+                                ViewGroup.LayoutParams.WRAP_CONTENT
+                            )
 
-                            for(item in data.book.keyword){
+                            for (item in res.book.keyword) {
                                 val chip = Chip(this@ActivityBestDetail)
                                 chip.text = "#${item}"
-                                chip.chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(this@ActivityBestDetail, R.color.chip))
-                                chip.setTextColor(Color.parseColor("#ffffff"))
+                                chip.chipBackgroundColor = ColorStateList.valueOf(
+                                    ContextCompat.getColor(
+                                        this@ActivityBestDetail,
+                                        R.color.chip
+                                    )
+                                )
+                                chip.setTextColor(Color.parseColor("#EDE6FD"))
                                 chip.layoutParams = lp
+                                chip.ensureAccessibleTouchTarget(150)
                                 chipgroup.addView(chip)
                             }
 
                         }
                     }
 
-                    mFragmentBestDetailComment = FragmentBestDetailComment(platform, bookCode)
+                    mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(platform, data)
                     supportFragmentManager.commit {
-                        replace(R.id.llayoutWrap, mFragmentBestDetailComment)
+                        replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
                     }
                 }
             })
     }
 
-    fun setLayoutNaverToday(){
+    fun setLayoutNaverToday() {
         Thread {
             val doc: Document = Jsoup.connect("https://novel.naver.com/${bookCode}").post()
 
             bookCode = "https://novel.naver.com/${doc.select(".writer a").first()!!.attr("href")}"
 
             runOnUiThread {
-                with(binding){
+                with(binding) {
                     Glide.with(this@ActivityBestDetail)
                         .load(doc.select(".section_area_info .pic img").attr("src"))
                         .into(inclueBestDetail.iviewBookCover)
 
-                    if(platform == "Naver_Challenge" || platform == "Naver"){
+                    if (platform == "Naver_Challenge" || platform == "Naver") {
                         inclueBestDetail.llayoutWrap2.visibility = View.GONE
                     } else {
                         inclueBestDetail.llayoutWrap2.visibility = View.VISIBLE
@@ -339,9 +324,10 @@ class ActivityBestDetail : AppCompatActivity() {
                     inclueBestDetail.tviewWriter.text = doc.select(".writer").text()
 
                     inclueBestDetail.tviewInfo1.text = doc.select(".info_book .like").text()
-                    inclueBestDetail.tviewInfo2.text =  doc.select(".info_book .download").text()
-                    inclueBestDetail.tviewInfo3.text =  doc.select(".info_book .publish").text()
-                    inclueBestDetail.tviewInfo4.text =  "장르 : ${doc.select(".info_book .genre").text()}"
+                    inclueBestDetail.tviewInfo2.text = doc.select(".info_book .download").text()
+                    inclueBestDetail.tviewInfo3.text = doc.select(".info_book .publish").text()
+                    inclueBestDetail.tviewInfo4.text =
+                        "장르 : ${doc.select(".info_book .genre").text()}"
 
                     tviewIntro.text = doc.select(".section_area_info .dsc").text()
                 }
@@ -354,9 +340,9 @@ class ActivityBestDetail : AppCompatActivity() {
         }.start()
     }
 
-    fun setLayoutKaKao(){
+    fun setLayoutKaKao() {
         val apiKakao = RetrofitKaKao()
-        val param : MutableMap<String?, Any> = HashMap()
+        val param: MutableMap<String?, Any> = HashMap()
 
         param["seriesid"] = bookCode
 
@@ -365,7 +351,7 @@ class ActivityBestDetail : AppCompatActivity() {
             object : RetrofitDataListener<BestKakaoBookDetail> {
                 override fun onSuccess(data: BestKakaoBookDetail) {
 
-                    with(binding){
+                    with(binding) {
                         data.home?.let { it ->
                             Glide.with(this@ActivityBestDetail)
                                 .load("https://dn-img-page.kakao.com/download/resource?kid=${it.land_thumbnail_url}")
@@ -377,11 +363,11 @@ class ActivityBestDetail : AppCompatActivity() {
                             inclueBestDetail.tviewWriter.text = it.author_name
 
                             inclueBestDetail.tviewInfo1.text = "총 ${it.open_counts}화"
-                            inclueBestDetail.tviewInfo2.text =  "장르 : ${it.sub_category}"
-                            inclueBestDetail.tviewInfo3.text =  "조회 수 : ${it.read_count}"
-                            inclueBestDetail.tviewInfo4.text =  "댓글 수 : ${it.page_comment_count}"
+                            inclueBestDetail.tviewInfo2.text = "장르 : ${it.sub_category}"
+                            inclueBestDetail.tviewInfo3.text = "조회 수 : ${it.read_count}"
+                            inclueBestDetail.tviewInfo4.text = "댓글 수 : ${it.page_comment_count}"
 
-                            tviewIntro.text =  it.description
+                            tviewIntro.text = it.description
                         }
                     }
                 }
@@ -393,7 +379,7 @@ class ActivityBestDetail : AppCompatActivity() {
         }
     }
 
-    fun setLayoutKaKaoStage(){
+    fun setLayoutKaKaoStage() {
         val apiKakaoStage = RetrofitKaKao()
 
         apiKakaoStage.getBestKakaoStageDetail(
@@ -401,7 +387,7 @@ class ActivityBestDetail : AppCompatActivity() {
             object : RetrofitDataListener<KakaoStageBestBookResult> {
                 override fun onSuccess(data: KakaoStageBestBookResult) {
 
-                    with(binding){
+                    with(binding) {
                         data.let { it ->
                             Glide.with(this@ActivityBestDetail)
                                 .load(data.thumbnail.url)
@@ -413,11 +399,11 @@ class ActivityBestDetail : AppCompatActivity() {
                             inclueBestDetail.tviewWriter.text = it.nickname.name
 
                             inclueBestDetail.tviewInfo1.text = "총 ${it.publishedEpisodeCount}화"
-                            inclueBestDetail.tviewInfo2.text =  "선호작 수 : ${it.favoriteCount}"
-                            inclueBestDetail.tviewInfo3.text =  "조회 수 : ${it.viewCount}"
-                            inclueBestDetail.tviewInfo4.text =  "방문 수 : ${it.visitorCount}"
+                            inclueBestDetail.tviewInfo2.text = "선호작 수 : ${it.favoriteCount}"
+                            inclueBestDetail.tviewInfo3.text = "조회 수 : ${it.viewCount}"
+                            inclueBestDetail.tviewInfo4.text = "방문 수 : ${it.visitorCount}"
 
-                            tviewIntro.text =  it.synopsis
+                            tviewIntro.text = it.synopsis
                         }
                     }
                 }
@@ -429,29 +415,36 @@ class ActivityBestDetail : AppCompatActivity() {
         }
     }
 
-    fun setLayoutRidi(){
+    fun setLayoutRidi() {
         Thread {
             val doc: Document = Jsoup.connect(bookCode).get()
 
-            bookCode = "https://ridibooks.com${doc.select(".metadata_writer .author_detail_link").attr("href")}"
+            bookCode = "https://ridibooks.com${
+                doc.select(".metadata_writer .author_detail_link").attr("href")
+            }"
 
             runOnUiThread {
 
                 binding.llayoutIntro.visibility = View.GONE
 
-                with(binding){
+                with(binding) {
                     Glide.with(this@ActivityBestDetail)
                         .load("https:${doc.select(".thumbnail_image img").attr("src")}")
                         .into(inclueBestDetail.iviewBookCover)
 
                     bookTitle = doc.select(".header_info_wrap .info_title_wrap h3").text()
                     inclueBestDetail.tviewTitle.text = bookTitle
-                    inclueBestDetail.tviewWriter.text = doc.select(".metadata_writer .author_detail_link").text()
+                    inclueBestDetail.tviewWriter.text =
+                        doc.select(".metadata_writer .author_detail_link").text()
 
-                    inclueBestDetail.tviewInfo1.text = doc.select(".header_info_wrap .info_category_wrap").text()
-                    inclueBestDetail.tviewInfo2.text =  "평점 : ${doc.select(".header_info_wrap .StarRate_Score").text()}"
-                    inclueBestDetail.tviewInfo3.text =  doc.select(".header_info_wrap .StarRate_ParticipantCount").text()
-                    inclueBestDetail.tviewInfo4.text =  doc.select(".metadata_info_series_complete_wrap .metadata_item").text()
+                    inclueBestDetail.tviewInfo1.text =
+                        doc.select(".header_info_wrap .info_category_wrap").text()
+                    inclueBestDetail.tviewInfo2.text =
+                        "평점 : ${doc.select(".header_info_wrap .StarRate_Score").text()}"
+                    inclueBestDetail.tviewInfo3.text =
+                        doc.select(".header_info_wrap .StarRate_ParticipantCount").text()
+                    inclueBestDetail.tviewInfo4.text =
+                        doc.select(".metadata_info_series_complete_wrap .metadata_item").text()
 
                     tviewIntro.text = doc.select(".introduce_book .introduce_paragraph").text()
                 }
@@ -464,9 +457,9 @@ class ActivityBestDetail : AppCompatActivity() {
         }.start()
     }
 
-    fun setLayoutOneStory(){
+    fun setLayoutOneStory() {
         val apiOnestory = RetrofitOnestore()
-        val param : MutableMap<String?, Any> = HashMap()
+        val param: MutableMap<String?, Any> = HashMap()
 
         param["channelId"] = bookCode
         param["bookpassYn"] = "N"
@@ -477,7 +470,7 @@ class ActivityBestDetail : AppCompatActivity() {
             object : RetrofitDataListener<OnestoreBookDetail> {
                 override fun onSuccess(data: OnestoreBookDetail) {
 
-                    with(binding){
+                    with(binding) {
                         data.params.let {
                             Glide.with(this@ActivityBestDetail)
                                 .load(it?.orgFilePos)
@@ -489,9 +482,9 @@ class ActivityBestDetail : AppCompatActivity() {
                             inclueBestDetail.tviewWriter.text = it?.artistNm
 
                             inclueBestDetail.tviewInfo1.text = "별점 : ${it?.ratingAvgScore}점"
-                            inclueBestDetail.tviewInfo2.text =  "구독 수 : ${it?.pageViewTotal}"
-                            inclueBestDetail.tviewInfo3.text =  "총 ${it?.serialCount}화"
-                            inclueBestDetail.tviewInfo4.text =  "선호작 수 : ${it?.favoriteCount}"
+                            inclueBestDetail.tviewInfo2.text = "구독 수 : ${it?.pageViewTotal}"
+                            inclueBestDetail.tviewInfo3.text = "총 ${it?.serialCount}화"
+                            inclueBestDetail.tviewInfo4.text = "선호작 수 : ${it?.favoriteCount}"
 
                             binding.llayoutIntro.visibility = View.GONE
                         }
@@ -505,25 +498,29 @@ class ActivityBestDetail : AppCompatActivity() {
         }
     }
 
-    fun setLayoutMunpia(){
+    fun setLayoutMunpia() {
         Thread {
-            val doc: Document = Jsoup.connect("https://novel.munpia.com/${bookCode}" ).get()
+            val doc: Document = Jsoup.connect("https://novel.munpia.com/${bookCode}").get()
 
             runOnUiThread {
 
-                with(binding){
+                with(binding) {
                     Glide.with(this@ActivityBestDetail)
                         .load("https:${doc.select(".cover-box img").attr("src")}")
                         .into(inclueBestDetail.iviewBookCover)
 
-                    bookTitle = doc.select(".detail-box h2 a").text().replace(doc.select(".detail-box h2 a span").text() + " ", "")
+                    bookTitle = doc.select(".detail-box h2 a").text()
+                        .replace(doc.select(".detail-box h2 a span").text() + " ", "")
                     inclueBestDetail.tviewTitle.text = bookTitle
                     inclueBestDetail.tviewWriter.text = doc.select(".member-trigger strong").text()
 
                     inclueBestDetail.tviewInfo1.text = doc.select(".meta-path strong").text()
-                    inclueBestDetail.tviewInfo2.text =  "조회 수 : ${doc.select(".meta-etc dd").next().next().get(1).text()}"
-                    inclueBestDetail.tviewInfo3.text =  "추천 수 : ${doc.select(".meta-etc dd").next().next().get(2).text()}"
-                    inclueBestDetail.tviewInfo4.text =  doc.select(".meta-etc dt").next().get(2).text()
+                    inclueBestDetail.tviewInfo2.text =
+                        "조회 수 : ${doc.select(".meta-etc dd").next().next().get(1).text()}"
+                    inclueBestDetail.tviewInfo3.text =
+                        "추천 수 : ${doc.select(".meta-etc dd").next().next().get(2).text()}"
+                    inclueBestDetail.tviewInfo4.text =
+                        doc.select(".meta-etc dt").next().get(2).text()
 
                     tviewIntro.text = doc.select(".story").text()
                 }
@@ -536,9 +533,9 @@ class ActivityBestDetail : AppCompatActivity() {
         }.start()
     }
 
-    fun setLayoutToksoda(){
+    fun setLayoutToksoda() {
         val apiToksoda = RetrofitToksoda()
-        val param : MutableMap<String?, Any> = HashMap()
+        val param: MutableMap<String?, Any> = HashMap()
 
         param["brcd"] = bookCode
         param["_"] = "1657265744728"
@@ -548,7 +545,7 @@ class ActivityBestDetail : AppCompatActivity() {
             object : RetrofitDataListener<BestToksodaDetailResult> {
                 override fun onSuccess(data: BestToksodaDetailResult) {
 
-                    with(binding){
+                    with(binding) {
                         data.result.let { it ->
                             Glide.with(this@ActivityBestDetail)
                                 .load("https:${it?.imgPath}")
@@ -561,11 +558,11 @@ class ActivityBestDetail : AppCompatActivity() {
                             inclueBestDetail.tviewWriter.text = bookWriter
 
                             inclueBestDetail.tviewInfo1.text = "장르 :  ${it?.lgctgrNm}"
-                            inclueBestDetail.tviewInfo2.text =  "구독 수 : ${it?.inqrCnt}"
-                            inclueBestDetail.tviewInfo3.text =  "관심 : ${it?.intrstCnt}"
-                            inclueBestDetail.tviewInfo4.text =  "선호작 수 : ${it?.goodCnt}"
+                            inclueBestDetail.tviewInfo2.text = "구독 수 : ${it?.inqrCnt}"
+                            inclueBestDetail.tviewInfo3.text = "관심 : ${it?.intrstCnt}"
+                            inclueBestDetail.tviewInfo4.text = "선호작 수 : ${it?.goodCnt}"
 
-                            tviewIntro.text =  it?.lnIntro
+                            tviewIntro.text = it?.lnIntro
                         }
                     }
                 }

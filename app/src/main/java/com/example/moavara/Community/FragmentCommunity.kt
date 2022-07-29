@@ -6,15 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.moavara.Best.AdapterType
-import com.example.moavara.Best.FragmentBestTabMonth
-import com.example.moavara.Best.FragmentBestTabToday
-import com.example.moavara.Best.FragmentBestTabWeekend
 import com.example.moavara.R
-import com.example.moavara.Search.BestType
-import com.example.moavara.Util.BestRef
-import com.example.moavara.databinding.FragmentBestBinding
 import com.example.moavara.databinding.FragmentCommunityBinding
 import com.google.android.material.tabs.TabLayout
 

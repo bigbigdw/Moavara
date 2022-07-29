@@ -1,49 +1,31 @@
 package com.example.moavara.Best
 
-import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.moavara.DataBase.BookListDataBest
-import com.example.moavara.DataBase.TrophyInfo
-import com.example.moavara.Search.BookListDataBestWeekend
-import com.example.moavara.Util.BestRef
-import com.example.moavara.Util.BestRef.getItem
-import com.example.moavara.Util.BestRef.putItem
-import com.example.moavara.Util.DBDate
+import com.bumptech.glide.Glide
+import com.example.moavara.R
 import com.example.moavara.Util.Genre
-import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.FragmentBestWeekendBinding
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
-import org.json.JSONArray
-import org.json.JSONException
+import com.synnapps.carouselview.ViewListener
 import org.json.JSONObject
-import java.io.*
-
 
 class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
 
-    private var adapterWeek: AdapterBestWeekend? = null
-    private val itemWeek = ArrayList<BookListDataBestWeekend>()
-
     lateinit var root: View
     var genre = ""
-    private var month = 0
-    private var week = 0
-    private var weekCount = 0
 
     private var _binding: FragmentBestWeekendBinding? = null
     private val binding get() = _binding!!
-    private var obj = JSONObject()
+
+    var arrayCarousel: MutableList<JSONObject> = java.util.ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,377 +36,97 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
 
         genre = Genre.getGenre(requireContext()).toString()
 
-        adapterWeek = AdapterBestWeekend(itemWeek)
-
-        binding.rviewBest.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        binding.rviewBest.adapter = adapterWeek
-
-        readJsonList()
-
-        adapterWeek?.setOnItemClickListener(object : AdapterBestWeekend.OnItemClickListener {
-            override fun onItemClick(v: View?, position: Int, value: String?) {
-                val item: BookListDataBestWeekend? = adapterWeek?.getItem(position)
-
-                when {
-                    value.equals("sun") -> {
-                        findBook(item?.sun)
-                    }
-                    value.equals("mon") -> {
-                        findBook(item?.mon)
-                    }
-                    value.equals("tue") -> {
-                        findBook(item?.tue)
-                    }
-                    value.equals("wed") -> {
-                        findBook(item?.wed)
-                    }
-                    value.equals("thur") -> {
-                        findBook(item?.thur)
-                    }
-                    value.equals("fri") -> {
-                        findBook(item?.fri)
-                    }
-                    value.equals("sat") -> {
-                        findBook(item?.sat)
-                    }
-                }
-
-                adapterWeek?.notifyDataSetChanged()
-
-            }
-        })
-
-        val currentDate = DBDate.getDateData(DBDate.DateMMDD())
-
-        month = DBDate.Month().toInt() + 1
-        week = (currentDate?.week ?: 0).toInt()
-        markDays()
-
-        with(binding){
-            tviewWeek.text = "${month}월 ${week - weekCount}주차"
-            llayoutAfter.visibility = View.INVISIBLE
-
-            llayoutBefore.setOnClickListener {
-                if (weekCount > week - 3) {
-                    llayoutBefore.visibility = View.INVISIBLE
-                } else {
-                    llayoutAfter.visibility = View.VISIBLE
-                }
-
-                weekCount += 1
-                tviewWeek.text = "${month}월 ${week - weekCount}주차"
-                getBestWeekListBefore(week - weekCount)
-                markDays()
-            }
-
-            llayoutAfter.setOnClickListener {
-                if(weekCount < 2){
-                    llayoutAfter.visibility = View.INVISIBLE
-                    Toast.makeText(requireContext(), "미래로는 갈 수 없습니다.", Toast.LENGTH_SHORT).show()
-                } else {
-                    llayoutBefore.visibility = View.VISIBLE
-                }
-
-                weekCount -= 1
-                tviewWeek.text = "${month}월 ${week - weekCount}주차"
-                getBestWeekListBefore(week - weekCount)
-
-                markDays()
-            }
-        }
         return view
     }
 
-    fun markDays(){
+
+    fun initCarousel(){
         with(binding){
-            var today = DBDate.getDateData(DBDate.DateMMDD())
+            carousel.removeAllViews()
+            arrayCarousel = ArrayList()
+        }
+    }
 
-            if (weekCount == 0) {
-                if (today != null) {
-                    if (today.date == 1) {
-                        tviewSun.background = todayMark()
-                        tviewSun.setTextColor(Color.parseColor("#ffffff"))
-                    } else if (today.date == 2) {
-                        tviewMon.background = todayMark()
-                    } else if (today.date == 3) {
-                        tviewTue.background = todayMark()
-                    } else if (today.date == 4) {
-                        tviewWed.background = todayMark()
-                    } else if (today.date == 5) {
-                        tviewThur.background = todayMark()
-                    } else if (today.date == 6) {
-                        tviewFri.background = todayMark()
-                    } else if (today.date == 7) {
-                        tviewSat.background = todayMark()
-                    }
+    private val viewListenerBest =
+        ViewListener { position ->
+            val customView: View = layoutInflater.inflate(R.layout.item_best_weekend_carousel, null)
+
+            val image: ImageView = customView.findViewById(R.id.Img_BookBest)
+            val bestRankImage: ImageView = customView.findViewById(R.id.BestRankImg)
+            val title: TextView = customView.findViewById(R.id.Text_Title_Best)
+            val writer: TextView = customView.findViewById(R.id.Text_Writer_Best)
+            val intro: TextView = customView.findViewById(R.id.Text_Intro_Best)
+            val bestViewCount: TextView = customView.findViewById(R.id.Text_BestViewed)
+            val bestFav: TextView = customView.findViewById(R.id.Text_BestFav)
+            val bestRecommend: TextView = customView.findViewById(R.id.Text_BestRecommend)
+            val bookCode: TextView = customView.findViewById(R.id.BookCodeText)
+            val topText: TextView = customView.findViewById(R.id.TopText)
+            val category: TextView = customView.findViewById(R.id.Category)
+            val textCntChapter: TextView = customView.findViewById(R.id.Text_CntChapter)
+            val bookLabel: LinearLayout = customView.findViewById(R.id.BookLabel)
+
+            Glide.with(requireContext()).load(arrayCarousel[position].getString("bookImg"))
+                .into(image)
+
+            when (position) {
+                0 -> {
+                    bestRankImage.setImageResource(R.drawable.icon_best_1)
                 }
-            } else {
-                tviewSun.background = null
-                tviewMon.background = null
-                tviewTue.background = null
-                tviewWed.background = null
-                tviewThur.background = null
-                tviewFri.background = null
-                tviewSat.background = null
-            }
-        }
-    }
-
-    fun todayMark() : GradientDrawable {
-        return GradientDrawable().apply {
-            setColor(Color.parseColor("#844DF3"))
-            shape = GradientDrawable.RECTANGLE
-            cornerRadius = 100f.dpToPx()
-        }
-    }
-
-    private fun getBestWeekList() {
-
-        val file = File(File("/storage/self/primary/MOAVARA"), "Week_${tabType}.json")
-        if (file.exists()) {
-            file.delete()
-        }
-
-        binding.rviewBest.removeAllViews()
-        itemWeek.clear()
-
-        try {
-            BestRef.getBestDataWeek(tabType, genre).addListenerForSingleValueEvent(object :
-                ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-
-                    for (num in 0..9) {
-                        val weekItem = BookListDataBestWeekend()
-                        val jsonArray = JSONArray()
-
-                        for (day in 1..7) {
-
-                            val jsonObject = JSONObject()
-
-                            val item: BookListDataBest? =
-                                dataSnapshot.child(day.toString()).child(num.toString())
-                                    .getValue(BookListDataBest::class.java)
-
-                            if (day == 1) {
-                                if (item != null) {
-                                    weekItem.sun = item
-                                    putItem(jsonObject, item)
-                                }
-
-                            } else if (day == 2) {
-                                if (item != null) {
-                                    weekItem.mon = item
-                                    putItem(jsonObject, item)
-                                }
-
-                            } else if (day == 3) {
-                                if (item != null) {
-                                    weekItem.tue = item
-                                    putItem(jsonObject, item)
-                                }
-
-                            } else if (day == 4) {
-                                if (item != null) {
-                                    weekItem.wed = item
-                                    putItem(jsonObject, item)
-                                }
-
-                            } else if (day == 5) {
-                                if (item != null) {
-                                    weekItem.thur = item
-                                    putItem(jsonObject, item)
-                                }
-
-                            } else if (day == 6) {
-                                if (item != null) {
-                                    putItem(jsonObject, item)
-                                    weekItem.fri = item
-                                }
-                            } else if (day == 7) {
-                                if (item != null) {
-                                    putItem(jsonObject, item)
-                                    weekItem.sat = item
-                                }
-                            }
-                            jsonArray.put(jsonObject)
-                        }
-
-                        obj.putOpt(num.toString(), jsonArray)
-                        itemWeek.add(weekItem)
-                    }
-
-                    writeFile(obj)
-                    adapterWeek?.notifyDataSetChanged()
+                1 -> {
+                    bestRankImage.setImageResource(R.drawable.icon_best_2)
                 }
-
-                override fun onCancelled(databaseError: DatabaseError) {}
-            })
-
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
-    }
-
-    private fun getBestWeekListBefore(week : Int) {
-
-        binding.rviewBest.removeAllViews()
-        itemWeek.clear()
-
-        try {
-            BestRef.getBestDataWeekBefore(tabType, genre).child(week.toString()).addListenerForSingleValueEvent(object :
-                ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-
-                    for (num in 0..9) {
-                        val weekItem = BookListDataBestWeekend()
-
-                        for (day in 1..7) {
-
-                            val item: BookListDataBest? =
-                                dataSnapshot.child(day.toString()).child(num.toString())
-                                    .getValue(BookListDataBest::class.java)
-
-                            if (day == 1) {
-                                if (item != null) {
-                                    weekItem.sun = item
-                                }
-
-                            } else if (day == 2) {
-                                if (item != null) {
-                                    weekItem.mon = item
-                                }
-
-                            } else if (day == 3) {
-                                if (item != null) {
-                                    weekItem.tue = item
-                                }
-
-                            } else if (day == 4) {
-                                if (item != null) {
-                                    weekItem.wed = item
-                                }
-
-                            } else if (day == 5) {
-                                if (item != null) {
-                                    weekItem.thur = item
-                                }
-
-                            } else if (day == 6) {
-                                if (item != null) {
-                                    weekItem.fri = item
-                                }
-                            } else if (day == 7) {
-                                if (item != null) {
-                                    weekItem.sat = item
-                                }
-                            }
-                        }
-
-                        itemWeek.add(weekItem)
-                    }
-
-                    adapterWeek?.notifyDataSetChanged()
+                2 -> {
+                    bestRankImage.setImageResource(R.drawable.icon_best_3)
                 }
-
-                override fun onCancelled(databaseError: DatabaseError) {}
-            })
-
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
-    }
-
-    private fun findBook(item: BookListDataBest?) {
-        if (item != null) {
-            if (adapterWeek?.getSelectedBook() == item.title) {
-                val mBottomDialogBest = BottomDialogBest(
-                    requireContext(),
-                    item,
-                    tabType,
-                    item.number
-                )
-                fragmentManager?.let { mBottomDialogBest.show(it, null) }
-                adapterWeek?.setSelectedBook("")
-            } else {
-                adapterWeek?.setSelectedBook(item.title)
-            }
-        }
-    }
-
-
-
-    fun writeFile(obj: JSONObject) {
-
-        File("/storage/self/primary/MOAVARA").mkdir()
-
-        val file = File(File("/storage/self/primary/MOAVARA"), "Week_${tabType}.json")
-
-        try {
-
-            if (!file.exists()) {
-                file.createNewFile()
-            }
-
-            val bw = BufferedWriter(FileWriter(file, true))
-            bw.write(obj.toString())
-            bw.newLine()
-            bw.close()
-        } catch (e: IOException) {
-            Log.i("저장오류", e.message.toString())
-        }
-    }
-
-    fun readJsonList() {
-        val file = File(File("/storage/self/primary/MOAVARA"), "Week_${tabType}.json")
-        try {
-            val reader = BufferedReader(FileReader(file))
-
-            val buffer = StringBuilder()
-            var line = reader.readLine()
-            while (line != null) {
-                buffer.append(line).append("\n")
-                line = reader.readLine()
-            }
-
-            val jsonData = buffer.toString()
-            val jsonObject = JSONObject(jsonData)
-
-            for (num in 0..9) {
-                val weekItem = BookListDataBestWeekend()
-
-                for (day in 0..6) {
-                    val item = jsonObject.getJSONArray(num.toString()).getJSONObject(day)
-
-                    if (day == 0) {
-                        weekItem.sun = getItem(item)
-                    } else if (day == 1) {
-                        weekItem.mon = getItem(item)
-                    } else if (day == 2) {
-                        weekItem.tue = getItem(item)
-                    } else if (day == 3) {
-                        weekItem.wed = getItem(item)
-                    } else if (day == 4) {
-                        weekItem.thur = getItem(item)
-                    } else if (day == 5) {
-                        weekItem.fri = getItem(item)
-                    } else if (day == 6) {
-                        weekItem.sat = getItem(item)
-                    }
+                3 -> {
+                    bestRankImage.setImageResource(R.drawable.icon_best_4)
                 }
-
-                itemWeek.add(weekItem)
+                4 -> {
+                    bestRankImage.setImageResource(R.drawable.icon_best_5)
+                }
+                5 -> {
+                    bestRankImage.setImageResource(R.drawable.icon_best_6)
+                }
+                6 -> {
+                    bestRankImage.setImageResource(R.drawable.icon_best_7)
+                }
+                7 -> {
+                    bestRankImage.setImageResource(R.drawable.icon_best_8)
+                }
+                8 -> {
+                    bestRankImage.setImageResource(R.drawable.icon_best_9)
+                }
+                else -> {
+                    Log.d("bestRankImage","NO_IMAGE")
+                }
             }
 
-            reader.close()
+            title.text = arrayCarousel[position].getString("subject")
+            writer.text = arrayCarousel[position].getString("writerName")
+            intro.text = arrayCarousel[position].getString("intro")
+            bestViewCount.text = arrayCarousel[position].getString("cntPageRead")
+            bestFav.text = arrayCarousel[position].getString("cntFavorite")
+            bestRecommend.text = arrayCarousel[position].getString("cntRecom")
+            bookCode.text = arrayCarousel[position].getString("bookCode")
+            category.text = arrayCarousel[position].getString("categoryKoName")
+            textCntChapter.text = arrayCarousel[position].getString("cntChapter")
 
-            adapterWeek?.notifyDataSetChanged()
-        } catch (e1: FileNotFoundException) {
-            Log.i("파일못찾음", e1.message.toString())
-            getBestWeekList()
-            Toast.makeText(requireContext(), "리스트를 다운받고 있습니다", Toast.LENGTH_SHORT).show()
-        } catch (e2: IOException) {
-            Log.i("읽기오류", e2.message.toString())
+            if (arrayCarousel[position].getString("isNobless") == "TRUE" && arrayCarousel[position].getString("isAdult") == "FALSE") {
+               Log.d("!!!!", "1")
+            } else if (arrayCarousel[position].getString("isPremium") == "TRUE" && arrayCarousel[position].getString("isAdult") == "FALSE") {
+                Log.d("!!!!", "2")
+            } else if (arrayCarousel[position].getString("isFinish") == "TRUE" && arrayCarousel[position].getString("isAdult") == "FALSE") {
+                Log.d("!!!!", "3")
+            } else if (arrayCarousel[position].getString("isNobless") == "TRUE" && arrayCarousel[position].getString("isAdult") == "TRUE") {
+                Log.d("!!!!", "4")
+            } else if (arrayCarousel[position].getString("isPremium") == "TRUE" && arrayCarousel[position].getString("isAdult") == "TRUE") {
+                Log.d("!!!!", "5")
+            } else if (arrayCarousel[position].getString("isFinish") == "TRUE" && arrayCarousel[position].getString("isAdult") == "TRUE") {
+                Log.d("!!!!", "6")
+            }
+
+
+            binding.carousel.indicatorGravity = Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM
+            customView
         }
-    }
 }

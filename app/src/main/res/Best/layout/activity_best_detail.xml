@@ -13,9 +13,11 @@
         android:layout_height="match_parent">
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/coorWrap"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:layout_editor_absoluteY="866dp">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/BookAppBar"
@@ -55,18 +57,42 @@
                                     layout="@layout/include_best_detail"
                                     android:animateLayoutChanges="true" />
 
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginBottom="24dp"
+                                    android:background="#1E1E20"
+                                    android:gravity="center_horizontal|center_vertical"
+                                    android:orientation="vertical">
+
+                                    <LinearLayout
+                                        android:id="@+id/llayoutBtnRight"
+                                        android:layout_width="260dp"
+                                        android:layout_height="41dp"
+                                        android:background="#621CEF"
+                                        android:gravity="center"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/pretendardvariable"
+                                            android:text="@string/Best_BottomDialogBtn"
+                                            android:textColor="#FFFFFF"
+                                            android:textSize="20dp"
+                                            tools:ignore="TextContrastCheck" />
+                                    </LinearLayout>
+                                </LinearLayout>
+
                                 <com.google.android.material.chip.ChipGroup
                                     android:id="@+id/chipgroup"
-                                    android:layout_marginTop="8dp"
-                                    android:layout_marginBottom="8dp"
-                                    android:background="#0D0E10"
-                                    android:orientation="horizontal"
-                                    android:paddingStart="16dp"
-                                    android:paddingTop="16dp"
-                                    android:paddingEnd="16dp"
-                                    android:paddingBottom="24dp"
                                     android:layout_width="match_parent"
-                                    android:layout_height="match_parent">
+                                    android:layout_height="match_parent"
+                                    android:layout_marginBottom="16dp"
+                                    android:orientation="horizontal"
+                                    android:padding="16dp"
+                                    android:paddingHorizontal="16dp"
+                                    android:paddingVertical="8dp">
 
                                 </com.google.android.material.chip.ChipGroup>
 
@@ -74,9 +100,7 @@
                                     android:id="@+id/llayoutIntro"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="8dp"
                                     android:layout_marginBottom="8dp"
-                                    android:background="#0D0E10"
                                     android:orientation="horizontal"
                                     android:paddingStart="16dp"
                                     android:paddingTop="16dp"
@@ -91,7 +115,7 @@
                                         android:ellipsize="end"
                                         android:fontFamily="@font/pretendardvariable"
                                         android:text="@string/Common_BookIntro"
-                                        android:textColor="#ffffff"
+                                        android:textColor="#EDE6FD"
                                         android:textSize="14sp" />
                                 </LinearLayout>
 
@@ -132,7 +156,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="60dp"
                 android:orientation="vertical"
                 android:textColor="#222222"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -143,6 +166,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:background="#0D0E10"
+                    app:tabTextAppearance="@style/tab_text"
                     app:itemBackground="@android:color/transparent"
                     app:itemIconTint="#00d180"
                     app:itemTextColor="#0df0df"
@@ -171,52 +195,18 @@
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-        <LinearLayout
+        <include
+            android:id="@+id/loading"
+            layout="@layout/loading"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            android:layout_height="match_parent"
+            android:clickable="false"
+            android:contextClickable="false"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="gone" />
 
-            <LinearLayout
-                android:id="@+id/llayoutBtnLeft"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:background="#03A9F4"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/pretendardvariable"
-                    android:text="Pick하기"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    tools:ignore="TextContrastCheck" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/llayoutBtnRight"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:background="#844DF3"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/pretendardvariable"
-                    android:text="@string/Best_BottomDialogBtn"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    tools:ignore="TextContrastCheck" />
-            </LinearLayout>
-
-        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
