@@ -8,8 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -26,10 +26,7 @@ import com.synnapps.carouselview.ViewListener
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
-import java.io.BufferedWriter
-import java.io.File
-import java.io.FileWriter
-import java.io.IOException
+import java.io.*
 
 class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
 
@@ -41,7 +38,7 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
 
     private var adapter: AdapterBestWeekend? = null
     var arrayCarousel = ArrayList<BookListDataBest>()
-    private val itemWeek = ArrayList<ArrayList<BookListDataBest>>()
+    private val itemWeek = ArrayList<ArrayList<BookListDataBest>?>()
     private var obj = JSONObject()
 
     override fun onCreateView(
@@ -90,32 +87,36 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
                 ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                    val jsonArray = JSONArray()
+                    Log.d("!!!!", dataSnapshot.value.toString())
 
                      for (day in 1..7) {
-
+                         val itemResult = dataSnapshot.child(day.toString())
+                         val jsonArray = JSONArray()
                          val itemList = ArrayList<BookListDataBest>()
-                         val jsonObject = JSONObject()
 
-                         for (num in 0..19) {
+                         if(itemResult.value == null){
+                             itemWeek.add(null)
+                         } else {
+                             for (num in 0..19) {
+                                 val jsonObject = JSONObject()
 
-                            val item: BookListDataBest? =
-                                dataSnapshot.child(day.toString()).child(num.toString())
-                                    .getValue(BookListDataBest::class.java)
+                                 val item: BookListDataBest? =
+                                     itemResult.child(num.toString())
+                                         .getValue(BookListDataBest::class.java)
 
-                             if (item != null) {
-                                 itemList.add(item)
-                                 BestRef.putItem(jsonObject, item)
+                                 if (item != null) {
+                                     itemList.add(item)
+                                     jsonArray.put(BestRef.putItem(jsonObject, item))
+                                 }
                              }
-                        }
-                         jsonArray.put(jsonObject)
-                         obj.putOpt(day.toString(), jsonArray)
+                             itemWeek.add(itemList)
+                         }
 
-                         if(dataSnapshot.key.toString() == day.toString()){
+                         if(dataSnapshot.childrenCount.toString() == day.toString()){
 
                              val itemListCarousel = ArrayList<BookListDataBest>()
 
-                             for (numCarousel in 0..9) {
+                             for (numCarousel in 0..8) {
 
                                  val item: BookListDataBest? =
                                      dataSnapshot.child(day.toString()).child(numCarousel.toString())
@@ -123,17 +124,18 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
 
                                  if (item != null) {
                                      itemListCarousel.add(item)
+                                     binding.llayoutCarousel.visibility = View.VISIBLE
                                  }
                              }
 
                              arrayCarousel.addAll(itemListCarousel)
                          }
 
-                         itemWeek.add(itemList)
-
+                         obj.putOpt(day.toString(), jsonArray)
                     }
 
                     writeFile(obj)
+
                     adapter?.notifyDataSetChanged()
 
                     with(binding){
@@ -176,6 +178,80 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
         with(binding){
             carousel.removeAllViews()
             arrayCarousel = ArrayList()
+        }
+    }
+
+    fun readJsonList() {
+        val file = File(File("/storage/self/primary/MOAVARA"), "Week_${tabType}.json")
+        try {
+            val reader = BufferedReader(FileReader(file))
+
+            val buffer = StringBuilder()
+            var line = reader.readLine()
+            while (line != null) {
+                buffer.append(line).append("\n")
+                line = reader.readLine()
+            }
+
+            val jsonData = buffer.toString()
+            val jsonObject = JSONObject(jsonData)
+
+            for (day in 1..7) {
+                val jsonArray = JSONArray()
+                val itemList = ArrayList<BookListDataBest>()
+                val itemResult = jsonObject.getJSONArray(day.toString())
+
+                if(itemResult.length() == 0){
+                    itemWeek.add(null)
+                } else {
+                    for (num in 0..19) {
+                        val item = itemResult.getJSONObject(num)
+
+                        if (item != null) {
+                            itemList.add(BestRef.getItem(item))
+                            jsonArray.put(BestRef.putItem(jsonObject, BestRef.getItem(item)))
+                        }
+                    }
+
+                    if(jsonObject.length().toString() == day.toString()){
+
+                        val itemListCarousel = ArrayList<BookListDataBest>()
+
+                        for (numCarousel in 0..8) {
+                            val item = jsonObject.getJSONArray(numCarousel.toString()).getJSONObject(day)
+
+                            if (item != null) {
+                                itemListCarousel.add(BestRef.getItem(item))
+                            }
+                        }
+
+                        arrayCarousel.addAll(itemListCarousel)
+                    }
+
+                    itemWeek.add(itemList)
+                }
+
+                obj.putOpt(day.toString(), jsonArray)
+            }
+
+            writeFile(obj)
+            adapter?.notifyDataSetChanged()
+
+            with(binding){
+                carousel.pageCount = arrayCarousel.size
+                carousel.slideInterval = 4000
+            }
+
+            reader.close()
+
+            adapter?.notifyDataSetChanged()
+
+        } catch (e1: FileNotFoundException) {
+            Log.i("파일못찾음", e1.message.toString())
+            getBestWeekList()
+            Toast.makeText(requireContext(), "리스트를 다운받고 있습니다", Toast.LENGTH_SHORT).show()
+        } catch (e2: IOException) {
+            Log.i("읽기오류", e2.message.toString())
         }
     }
 

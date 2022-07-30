@@ -42,13 +42,10 @@ class ActivityLogin : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.loading.root.visibility = View.VISIBLE
-        window?.addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-
         with(binding) {
 
-            loading.root.visibility = View.VISIBLE
-            window?.addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+            loading.root.visibility = View.GONE
+            window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
 
             llayoutUpper.background = GradientDrawable().apply {
                 setColor(Color.parseColor("#121212"))

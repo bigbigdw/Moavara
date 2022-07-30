@@ -43,6 +43,16 @@ class BestRankListWeekend(
 )
 
 class BookListDataBestWeekend(
+    var sun: ArrayList<BookListDataBest>? = null,
+    var mon: ArrayList<BookListDataBest>? = null,
+    var tue: ArrayList<BookListDataBest>? = null,
+    var wed: ArrayList<BookListDataBest>? = null,
+    var thur: ArrayList<BookListDataBest>? = null,
+    var fri: ArrayList<BookListDataBest>? = null,
+    var sat: ArrayList<BookListDataBest>? = null,
+)
+
+class BookListDataBestWeekendOld(
     var sun: BookListDataBest? = null,
     var mon: BookListDataBest? = null,
     var tue: BookListDataBest? = null,

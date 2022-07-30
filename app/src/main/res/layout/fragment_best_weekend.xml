@@ -65,40 +65,49 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/llayoutCarousel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#1E1E20"
-                android:orientation="horizontal"
-                android:paddingStart="16dp"
-                android:paddingTop="9dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="9dp">
+                android:orientation="vertical"
+                android:visibility="gone">
 
-                <TextView
-                    android:id="@+id/tviewBestTop"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/noto_sans_bold"
-                    android:textColor="#EDE6FD"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    tools:text="HIHI" />
+                    android:background="#1E1E20"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingTop="9dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="9dp">
+
+                    <TextView
+                        android:id="@+id/tviewBestTop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/noto_sans_bold"
+                        android:textColor="#EDE6FD"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        tools:text="HIHI" />
+                </LinearLayout>
+
+                <com.synnapps.carouselview.CarouselView
+                    android:id="@+id/carousel"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:background="#0D0E10"
+                    android:paddingStart="16dp"
+
+                    android:paddingTop="16dp"
+                    android:paddingEnd="16dp"
+                    app:disableAutoPlayOnUserInteraction="false"
+                    app:indicatorGravity="left"
+                    app:indicatorVisibility="gone">
+
+                </com.synnapps.carouselview.CarouselView>
+
             </LinearLayout>
-
-            <com.synnapps.carouselview.CarouselView
-                android:id="@+id/carousel"
-                android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:background="#0D0E10"
-                android:paddingStart="16dp"
-
-                android:paddingTop="16dp"
-                android:paddingEnd="16dp"
-                app:disableAutoPlayOnUserInteraction="false"
-                app:indicatorGravity="left"
-                app:indicatorVisibility="gone">
-
-            </com.synnapps.carouselview.CarouselView>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rviewBest"

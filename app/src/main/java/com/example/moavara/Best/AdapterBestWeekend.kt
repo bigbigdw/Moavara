@@ -1,23 +1,17 @@
 package com.example.moavara.Best
 
 import android.content.Context
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.BookListDataBest
-import com.example.moavara.R
 import com.example.moavara.databinding.ItemBooklistBestWeekendBinding
-import com.google.android.material.chip.Chip
 
 class AdapterBestWeekend(
     private var context : Context,
-    private var items: ArrayList<ArrayList<BookListDataBest>>,
+    private var items: ArrayList<ArrayList<BookListDataBest>?>,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val lp = LinearLayout.LayoutParams(
@@ -52,13 +46,21 @@ class AdapterBestWeekend(
 
             with(holder.binding) {
 
-                for (items in itemList) {
-                    val itemBestWeekend = ItemBestWeekend(context)
-                    itemBestWeekend.setItem(items.bookImg, items.title, items.writer, true)
-                    itemBestWeekend.layoutParams = lp
-                    llayoutView.addView(itemBestWeekend)
+                if (itemList != null) {
+                    for (items in itemList) {
+                        val itemBestWeekend = ItemBestWeekend(context)
+                        itemBestWeekend.setItem(items.bookImg, items.title, items.writer, true)
+                        itemBestWeekend.layoutParams = lp
+                        llayoutView.addView(itemBestWeekend)
+                    }
+                } else {
+                    for (num in 0..19) {
+                        val itemBestWeekend = ItemBestWeekend(context)
+                        itemBestWeekend.setItem("", "", "", false)
+                        itemBestWeekend.layoutParams = lp
+                        llayoutView.addView(itemBestWeekend)
+                    }
                 }
-
 
                 if (position == 0) {
                     tviewBestTop.text = "일요일 주간 베스트"
@@ -101,7 +103,7 @@ class AdapterBestWeekend(
 
     }
 
-    fun getItem(position: Int): ArrayList<BookListDataBest> {
+    fun getItem(position: Int): java.util.ArrayList<BookListDataBest>? {
         return items[position]
     }
 

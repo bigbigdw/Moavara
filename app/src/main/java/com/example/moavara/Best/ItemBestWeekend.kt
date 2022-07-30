@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import com.bumptech.glide.Glide
-import com.example.moavara.R
 import com.example.moavara.databinding.CuItemBestWeekendBinding
 
 class ItemBestWeekend : LinearLayout {
@@ -20,6 +19,8 @@ class ItemBestWeekend : LinearLayout {
         with(mBinding){
             if (hasView) {
                 llayoutNull.visibility = View.GONE
+                tviewTitle.visibility = View.VISIBLE
+                tviewWriter.visibility = View.VISIBLE
 
                 Glide.with(root.context)
                     .load(bookImg)
@@ -29,6 +30,8 @@ class ItemBestWeekend : LinearLayout {
                 tviewWriter.text = writer
             } else {
                 llayoutNull.visibility = View.VISIBLE
+                tviewTitle.visibility = View.GONE
+                tviewWriter.visibility = View.GONE
             }
         }
     }

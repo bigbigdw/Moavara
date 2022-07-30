@@ -10,19 +10,18 @@ import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.BookListDataBest
-import com.example.moavara.DataBase.TrophyInfo
 import com.example.moavara.Search.BookListDataBestMonthNum
-import com.example.moavara.Search.BookListDataBestWeekend
+import com.example.moavara.Search.BookListDataBestWeekendOld
 import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.DBDate.getMonthDates
 import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.ItemBooklistBestMonthBinding
 
 class AdapterBestMonth(
-    items: ArrayList<BookListDataBestWeekend>,
+    items: ArrayList<BookListDataBestWeekendOld>,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var item: ArrayList<BookListDataBestWeekend> = items
+    var item: ArrayList<BookListDataBestWeekendOld> = items
     var selected: String? = ""
     var monthDate = "${DBDate.Year()}0${DBDate.Month().toInt() + 1}01"
     var monthNum = BookListDataBestMonthNum()
@@ -323,7 +322,7 @@ class AdapterBestMonth(
 
     }
 
-    fun getItem(position: Int): BookListDataBestWeekend? {
+    fun getItem(position: Int): BookListDataBestWeekendOld? {
         return item[position]
     }
 
