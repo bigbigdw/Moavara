@@ -20,7 +20,7 @@
             android:layout_height="60dp"
             android:adjustViewBounds="true"
             android:contentDescription="@string/TODO"
-            app:srcCompat="@drawable/ic_launcher_gray" />
+            app:srcCompat="@mipmap/ic_launcher" />
 
         <Space
             android:layout_width="match_parent"
@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/pretendardvariable"
-            android:text="@string/blank"
+            android:text="작품을 불러오는 중..."
             android:textAlignment="center"
             android:textColor="#FFFFFF"
             android:textSize="16sp" />

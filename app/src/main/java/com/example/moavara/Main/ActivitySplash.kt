@@ -1,15 +1,13 @@
 package com.example.moavara.Main
 
-import com.example.moavara.Firebase.FCM
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
+import com.example.moavara.Firebase.FCM
 import com.example.moavara.R
 import com.example.moavara.Util.Genre
-import com.example.moavara.Util.Mining
 import com.google.firebase.database.FirebaseDatabase
 
 
@@ -27,15 +25,17 @@ class ActivitySplash : Activity() {
 
         cate = Genre.getGenre(this).toString()
 
-        Handler(Looper.myLooper()!!).postDelayed(
-            {
-                val intent = Intent(this, ActivityLogin::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
-                startActivityIfNeeded(intent, 0)
-                finish()
-            },
-            2000
-        )
+        Looper.myLooper()?.let {
+            Handler(it).postDelayed(
+                {
+                    val intent = Intent(this, ActivityLogin::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
+                    startActivityIfNeeded(intent, 0)
+                    finish()
+                },
+                2000
+            )
+        }
 
     }
 

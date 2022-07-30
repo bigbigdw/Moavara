@@ -1,6 +1,8 @@
 package com.example.moavara.Best
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -56,7 +58,14 @@ class FragmentBestTabToday(private val tabType: String) :
         binding.blank.tviewblank.text = "작품을 불러오는 중..."
         binding.rviewBest.visibility = View.GONE
 
-        readJsonList()
+        Looper.myLooper()?.let {
+            Handler(it).postDelayed(
+                {
+                    readJsonList()
+                },
+                300
+            )
+        }
 
         adapterToday?.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {

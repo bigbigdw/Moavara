@@ -1,6 +1,8 @@
 package com.example.moavara.Best
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +25,6 @@ import com.google.firebase.database.ValueEventListener
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.*
-import java.util.*
 
 
 class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayListener {
@@ -58,7 +59,14 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
         binding.rviewBestMonth.visibility = View.GONE
 
         itemMonth.clear()
-        readJsonList()
+        Looper.myLooper()?.let {
+            Handler(it).postDelayed(
+                {
+                    readJsonList()
+                },
+                300
+            )
+        }
 
         with(binding) {
             rviewBestMonth.layoutManager =

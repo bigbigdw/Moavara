@@ -1,6 +1,8 @@
 package com.example.moavara.Best
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.SpannableStringBuilder
 import android.util.Log
 import android.view.Gravity
@@ -14,7 +16,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.BookListDataBest
-import com.example.moavara.DataBase.TrophyInfo
 import com.example.moavara.R
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.DBDate
@@ -45,7 +46,6 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
     private var month = 0
     private var week = 0
     private var weekCount = 0
-    private val currentDate = TrophyInfo()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,10 +69,16 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
             month = DBDate.Month().toInt() + 1
             week = (currentDate?.week ?: 0).toInt()
 
-            readJsonList()
+            Looper.myLooper()?.let {
+                Handler(it).postDelayed(
+                    {
+                        readJsonList()
+                    },
+                    300
+                )
+            }
 
             carousel.setViewListener(viewListenerBest)
-
             carousel.setImageClickListener { position ->
                 Log.d("####", "HIHI")
             }
@@ -83,6 +89,8 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
             llayoutAfter.visibility = View.INVISIBLE
 
             llayoutBefore.setOnClickListener {
+                binding.blank.root.visibility = View.VISIBLE
+                binding.llayoutWrap.visibility = View.GONE
                 if (weekCount > week - 3) {
                     llayoutBefore.visibility = View.INVISIBLE
                 } else {
@@ -96,9 +104,10 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
             }
 
             llayoutAfter.setOnClickListener {
+                binding.blank.root.visibility = View.VISIBLE
+                binding.llayoutWrap.visibility = View.GONE
                 if(weekCount < 2){
                     llayoutAfter.visibility = View.INVISIBLE
-                    Toast.makeText(requireContext(), "미래로는 갈 수 없습니다.", Toast.LENGTH_SHORT).show()
                 } else {
                     llayoutBefore.visibility = View.VISIBLE
                 }
@@ -174,7 +183,8 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
                     }
 
                     writeFile(obj)
-
+                    binding.blank.root.visibility = View.GONE
+                    binding.llayoutWrap.visibility = View.VISIBLE
                     adapter?.notifyDataSetChanged()
 
                     if(arrayCarousel.size > 0){
@@ -359,7 +369,8 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
             }
 
             reader.close()
-
+            binding.blank.root.visibility = View.GONE
+            binding.llayoutWrap.visibility = View.VISIBLE
             adapter?.notifyDataSetChanged()
 
         } catch (e1: FileNotFoundException) {
