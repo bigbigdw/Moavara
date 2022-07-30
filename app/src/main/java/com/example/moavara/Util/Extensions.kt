@@ -19,13 +19,14 @@ fun View.setViewHeight(h: Int) {
  * @param color 변경할 색
  * */
 fun SpannableStringBuilder.applyingTextColor(str: String, color: String) {
-    this.setSpan(
-
-        ForegroundColorSpan(Color.parseColor(color)),
-        indexOf(str),
-        indexOf(str) + str.length,
-        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-    )
+    try{
+        this.setSpan(
+            ForegroundColorSpan(Color.parseColor(color)),
+            indexOf(str),
+            indexOf(str) + str.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+    } catch (e: IndexOutOfBoundsException){}
 }
 
 
