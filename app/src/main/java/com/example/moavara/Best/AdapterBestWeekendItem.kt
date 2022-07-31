@@ -74,7 +74,9 @@ class AdapterBestWeekendItem(
             with(binding) {
                 root.setOnClickListener { v: View? ->
                     val pos = adapterPosition
-                    if (pos != RecyclerView.NO_POSITION) {
+                    if (pos != RecyclerView.NO_POSITION
+                        && (items?.get(adapterPosition)?.bookCode ?: "") != ""
+                    ) {
                         listener?.onItemClick(v, pos)
                     }
                 }

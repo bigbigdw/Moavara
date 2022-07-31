@@ -14,7 +14,7 @@ import com.example.moavara.databinding.ItemBooklistBestWeekendBinding
 
 class AdapterBestWeekend(
     private var context : Context,
-    private var items: ArrayList<ArrayList<BookListDataBest>?>,
+    private var items: ArrayList<ArrayList<BookListDataBest>? >,
     private var platform : String,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -72,15 +72,9 @@ class AdapterBestWeekend(
                             mBottomDialogBest.show((context as AppCompatActivity).supportFragmentManager, null)
                         }
                     })
-                } else {
-                    for (num in 0..19) {
-                        innerItem.add(null)
-                    }
                 }
 
                 adapter?.notifyDataSetChanged()
-
-
 
                 if (position == 0) {
                     tviewBestTop.text = "일요일 주간 베스트"

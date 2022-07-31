@@ -154,6 +154,7 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                                 itemList.add(BookListDataBest())
                                 jsonArray.put(BestRef.putItem(jsonObject, BookListDataBest()))
                             }
+                            itemWeek.add(itemList)
                         } else {
                             for (num in 0..19) {
                                 val jsonObject = JSONObject()
@@ -235,7 +236,13 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                          val itemList = ArrayList<BookListDataBest>()
 
                          if(itemResult.value == null){
-                             itemWeek.add(null)
+                             for (num in 0..19) {
+                                 val jsonObject = JSONObject()
+
+                                 itemList.add(BookListDataBest())
+                                 jsonArray.put(BestRef.putItem(jsonObject, BookListDataBest()))
+                             }
+                             itemWeek.add(itemList)
                          } else {
                              for (num in 0..19) {
                                  val jsonObject = JSONObject()
@@ -282,7 +289,7 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                         with(binding){
                             carousel.pageCount = arrayCarousel.size
                             carousel.slideInterval = 4000
-                            binding.llayoutCarousel.visibility = View.GONE
+                            binding.llayoutCarousel.visibility = View.VISIBLE
                         }
                     }
 
