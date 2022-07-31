@@ -30,20 +30,14 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <HorizontalScrollView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="#0D0E10"
         android:paddingLeft="16dp"
         android:paddingTop="16dp"
-        android:paddingBottom="16dp">
-
-        <LinearLayout
-            android:id="@+id/llayoutView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"/>
-    </HorizontalScrollView>
+        android:paddingBottom="16dp" />
 
 
 </LinearLayout>

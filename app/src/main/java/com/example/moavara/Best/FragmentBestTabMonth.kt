@@ -189,7 +189,7 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
                     tabType,
                     position
                 )
-                fragmentManager?.let { mBottomDialogBest.show(it, null) }
+                childFragmentManager.let { mBottomDialogBest.show(it, null) }
             }
         })
 
@@ -367,12 +367,12 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (bookCodeList in items) {
-                    val items = dataSnapshot.child(bookCodeList.bookCode)
+                    val bookCodeitems = dataSnapshot.child(bookCodeList.bookCode)
 
-                    if (items.childrenCount > 1) {
+                    if (bookCodeitems.childrenCount > 1) {
                         val bookCodes = ArrayList<BookListDataBestAnalyze>()
 
-                        for (item in items.children) {
+                        for (item in bookCodeitems.children) {
 
                             val group: BookListDataBest? =
                                 item.getValue(BookListDataBest::class.java)
@@ -405,7 +405,7 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
                             )
                         )
 
-                    } else if (items.childrenCount.toInt() == 1) {
+                    } else if (bookCodeitems.childrenCount.toInt() == 1) {
 
                         val group: BookListDataBest? =
                             dataSnapshot.child(bookCodeList.bookCode).child(DBDate.DateMMDD())

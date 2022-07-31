@@ -1,7 +1,8 @@
-package com.example.moavara.Best
+package com.example.moavara.Soon.Best
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
@@ -36,8 +37,11 @@ class ItemBestWeekend : LinearLayout {
         }
     }
 
-    init {
+    fun getBookDetail() {
+        Log.d("####", "HIHI")
+    }
 
+    init {
         addView(mBinding.root)
     }
 }

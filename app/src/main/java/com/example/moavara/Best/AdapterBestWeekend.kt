@@ -1,24 +1,25 @@
 package com.example.moavara.Best
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.databinding.ItemBooklistBestWeekendBinding
 
+
 class AdapterBestWeekend(
     private var context : Context,
     private var items: ArrayList<ArrayList<BookListDataBest>?>,
+    private var platform : String,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    val lp = LinearLayout.LayoutParams(
-        ViewGroup.LayoutParams.WRAP_CONTENT,
-        ViewGroup.LayoutParams.WRAP_CONTENT
-    )
-
+    private val innerItem = ArrayList<BookListDataBest?>()
+    private var adapter: AdapterBestWeekendItem? = null
 
     interface OnItemClickListener {
         fun onItemClick(v: View?, position: Int, value: String?)
@@ -45,22 +46,41 @@ class AdapterBestWeekend(
             val itemList = items[position]
 
             with(holder.binding) {
+                adapter = AdapterBestWeekendItem(context, itemList)
+
+                rview.layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                rview.adapter = adapter
 
                 if (itemList != null) {
                     for (items in itemList) {
-                        val itemBestWeekend = ItemBestWeekend(context)
-                        itemBestWeekend.setItem(items.bookImg, items.title, items.writer, true)
-                        itemBestWeekend.layoutParams = lp
-                        llayoutView.addView(itemBestWeekend)
+                        innerItem.add(items)
                     }
+
+                    adapter?.setOnItemClickListener(object : AdapterBestWeekendItem.OnItemClickListener {
+                        override fun onItemClick(v: View?, position: Int) {
+                            val item: BookListDataBest? = adapter?.getItem(position)
+
+                            Log.d("!!!!", "HIHI ${item} ${position}")
+
+                            val mBottomDialogBest = BottomDialogBest(
+                                context,
+                                item,
+                                platform,
+                                item?.number ?: 0
+                            )
+                            mBottomDialogBest.show((context as AppCompatActivity).supportFragmentManager, null)
+                        }
+                    })
                 } else {
                     for (num in 0..19) {
-                        val itemBestWeekend = ItemBestWeekend(context)
-                        itemBestWeekend.setItem("", "", "", false)
-                        itemBestWeekend.layoutParams = lp
-                        llayoutView.addView(itemBestWeekend)
+                        innerItem.add(null)
                     }
                 }
+
+                adapter?.notifyDataSetChanged()
+
+
 
                 if (position == 0) {
                     tviewBestTop.text = "일요일 주간 베스트"
@@ -89,17 +109,7 @@ class AdapterBestWeekend(
     inner class HolderBestWeekend internal constructor(val binding: ItemBooklistBestWeekendBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        init {
-
-            with(binding) {
-                root.setOnClickListener { v: View? ->
-                    val pos = adapterPosition
-                    if (pos != RecyclerView.NO_POSITION) {
-                        listener?.onItemClick(v, pos, "sat")
-                    }
-                }
-            }
-        }
+        init {}
 
     }
 

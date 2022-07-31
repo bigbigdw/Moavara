@@ -1,5 +1,6 @@
 package com.example.moavara.Best
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -31,7 +32,7 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.io.*
 
-class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
+class FragmentBestTabWeekend(private val platform: String) : Fragment() {
 
     lateinit var root: View
     var genre = ""
@@ -58,7 +59,7 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
 
         with(binding){
 
-            adapter = AdapterBestWeekend(requireContext(), itemWeek)
+            adapter = AdapterBestWeekend(requireContext(), itemWeek, platform)
 
             binding.rviewBest.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -80,7 +81,11 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
 
             carousel.setViewListener(viewListenerBest)
             carousel.setImageClickListener { position ->
-                Log.d("####", "HIHI")
+                val bookDetailIntent = Intent(requireContext(), ActivityBestDetail::class.java)
+                bookDetailIntent.putExtra("BookCode", arrayCarousel[position].bookCode)
+                bookDetailIntent.putExtra("Type", String.format("%s", platform))
+                bookDetailIntent.putExtra("POSITION", position)
+                startActivity(bookDetailIntent)
             }
         }
 
@@ -124,7 +129,7 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
 
     private fun getBestWeekListBefore(week : Int) {
 
-        val file = File(File("/storage/self/primary/MOAVARA"), "Week_${tabType}.json")
+        val file = File(File("/storage/self/primary/MOAVARA"), "Week_${platform}.json")
         if (file.exists()) {
             file.delete()
         }
@@ -133,7 +138,7 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
         itemWeek.clear()
 
         try {
-            BestRef.getBestDataWeekBefore(tabType, genre).child(week.toString()).addListenerForSingleValueEvent(object :
+            BestRef.getBestDataWeekBefore(platform, genre).child(week.toString()).addListenerForSingleValueEvent(object :
                 ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
 
@@ -143,7 +148,12 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
                         val itemList = ArrayList<BookListDataBest>()
 
                         if(itemResult.value == null){
-                            itemWeek.add(null)
+                            for (num in 0..19) {
+                                val jsonObject = JSONObject()
+
+                                itemList.add(BookListDataBest())
+                                jsonArray.put(BestRef.putItem(jsonObject, BookListDataBest()))
+                            }
                         } else {
                             for (num in 0..19) {
                                 val jsonObject = JSONObject()
@@ -191,6 +201,7 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
                         with(binding){
                             carousel.pageCount = arrayCarousel.size
                             carousel.slideInterval = 4000
+                            binding.llayoutCarousel.visibility = View.VISIBLE
                         }
                     }
                 }
@@ -205,7 +216,7 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
 
     private fun getBestWeekList() {
 
-        val file = File(File("/storage/self/primary/MOAVARA"), "Week_${tabType}.json")
+        val file = File(File("/storage/self/primary/MOAVARA"), "Week_${platform}.json")
         if (file.exists()) {
             file.delete()
         }
@@ -214,7 +225,7 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
         itemWeek.clear()
 
         try {
-            BestRef.getBestDataWeek(tabType, genre).addListenerForSingleValueEvent(object :
+            BestRef.getBestDataWeek(platform, genre).addListenerForSingleValueEvent(object :
                 ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
 
@@ -271,6 +282,7 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
                         with(binding){
                             carousel.pageCount = arrayCarousel.size
                             carousel.slideInterval = 4000
+                            binding.llayoutCarousel.visibility = View.GONE
                         }
                     }
 
@@ -288,7 +300,7 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
 
         File("/storage/self/primary/MOAVARA").mkdir()
 
-        val file = File(File("/storage/self/primary/MOAVARA"), "Week_${tabType}.json")
+        val file = File(File("/storage/self/primary/MOAVARA"), "Week_${platform}.json")
 
         try {
 
@@ -306,7 +318,7 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
     }
 
     fun readJsonList() {
-        val file = File(File("/storage/self/primary/MOAVARA"), "Week_${tabType}.json")
+        val file = File(File("/storage/self/primary/MOAVARA"), "Week_${platform}.json")
         try {
             val today = DBDate.getDateData(DBDate.DateMMDD())
             val reader = BufferedReader(FileReader(file))
@@ -327,7 +339,11 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
                 val itemResult = jsonObject.getJSONArray(day.toString())
 
                 if(itemResult.length() == 0){
-                    itemWeek.add(null)
+                    for (num in 0..19) {
+                        itemList.add(BookListDataBest())
+                        jsonArray.put(BestRef.putItem(jsonObject, BookListDataBest()))
+                    }
+                    itemWeek.add(itemList)
                 } else {
                     for (num in 0..19) {
                         val item = itemResult.getJSONObject(num)
@@ -363,9 +379,12 @@ class FragmentBestTabWeekend(private val tabType: String) : Fragment() {
             writeFile(obj)
             adapter?.notifyDataSetChanged()
 
-            with(binding){
-                carousel.pageCount = arrayCarousel.size
-                carousel.slideInterval = 4000
+            if(arrayCarousel.size > 0){
+                with(binding){
+                    carousel.pageCount = arrayCarousel.size
+                    carousel.slideInterval = 4000
+                    binding.llayoutCarousel.visibility = View.VISIBLE
+                }
             }
 
             reader.close()

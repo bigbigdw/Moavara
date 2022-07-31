@@ -141,7 +141,6 @@ class AdapterBestMonth(
 
                     if(((today?.week ?: 0) - 1) == position && today?.date == 2 && monthCount == 0){
                         llayoutWrap2.background = todayMark()
-                        Log.d("!!!!", "HIHI")
                     } else {
                         llayoutWrap2.background = null
                     }
