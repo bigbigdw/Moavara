@@ -447,30 +447,257 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
 
             tviewTitle.text = arrayCarousel[position].title
             tviewWriter.text = arrayCarousel[position].writer
-            tviewInfo1.text = arrayCarousel[position].info2
 
-            val info3 = SpannableStringBuilder(arrayCarousel[position].info3)
-            info3.applyingTextColor(
-                "조회 수 : ",
-                "#6E7686"
-            )
+            if (platform == "MrBlue") {
+                tviewInfo1.visibility = View.GONE
+                tviewInfo2.visibility = View.GONE
+                tviewInfo3.visibility = View.GONE
+                tviewInfo4.visibility = View.GONE
+                tviewInfo5.visibility = View.GONE
+            }   else if(platform == "Toksoda"){
+                tviewInfo1.visibility = View.VISIBLE
+                tviewInfo2.visibility = View.GONE
+                tviewInfo3.visibility = View.VISIBLE
+                tviewInfo4.visibility = View.VISIBLE
+                tviewInfo5.visibility = View.VISIBLE
 
-            val info4 = SpannableStringBuilder(arrayCarousel[position].info4)
-            info4.applyingTextColor(
-                "선호작 수 : ",
-                "#6E7686"
-            )
+                tviewInfo1.text = arrayCarousel[position].info2 ?: ""
 
-            val info5 = SpannableStringBuilder(arrayCarousel[position].info5)
-            info5.applyingTextColor(
-                "추천 수 : ",
-                "#6E7686"
-            )
+                val info3 = SpannableStringBuilder(arrayCarousel[position]?.info3)
+                info3.applyingTextColor(
+                    "조회 수 : ",
+                    "#6E7686"
+                )
 
-            tviewInfo2.text = info3
-            tviewInfo3.text = info4
-            tviewInfo4.text = info5
-            tviewInfo5.text = arrayCarousel[position].info1
+                val info5 = SpannableStringBuilder(arrayCarousel[position]?.info5)
+                info5.applyingTextColor(
+                    "선호작 수 : ",
+                    "#6E7686"
+                )
+
+                tviewInfo3.text = info3
+                tviewInfo4.text = info5
+                tviewInfo5.text = arrayCarousel[position]?.info1 ?: ""
+            } else if (platform == "Naver" || platform == "Naver_Today" || platform == "Naver_Challenge") {
+                tviewInfo1.text = arrayCarousel[position]?.info1 ?: ""
+                tviewInfo1.visibility = View.VISIBLE
+                tviewInfo2.visibility = View.VISIBLE
+                tviewInfo3.visibility = View.VISIBLE
+                tviewInfo4.visibility = View.VISIBLE
+                tviewInfo5.visibility = View.GONE
+
+                val info3 = SpannableStringBuilder(arrayCarousel[position]?.info3?.replace("별점", "별점 : "))
+                info3.applyingTextColor(
+                    "별점 : ",
+                    "#6E7686"
+                )
+
+                val info4 = SpannableStringBuilder(arrayCarousel[position]?.info4?.replace("조회", "조회 수 : "))
+                info4.applyingTextColor(
+                    "조회 수 : ",
+                    "#6E7686"
+                )
+
+                val info5 = SpannableStringBuilder(arrayCarousel[position]?.info5?.replace("관심", "관심 : "))
+                info5.applyingTextColor(
+                    "관심 : ",
+                    "#6E7686"
+                )
+
+                tviewInfo2.text = info3
+                tviewInfo3.text = info4
+                tviewInfo4.text = info5
+            }  else if (platform == "Kakao_Stage") {
+                tviewInfo1.text = arrayCarousel[position]?.info2 ?: ""
+
+                tviewInfo1.visibility = View.VISIBLE
+                tviewInfo2.visibility = View.GONE
+                tviewInfo3.visibility = View.VISIBLE
+                tviewInfo4.visibility = View.VISIBLE
+                tviewInfo5.visibility = View.VISIBLE
+
+                val info3 = SpannableStringBuilder(arrayCarousel[position]?.info3?.replace("별점", "별점 : "))
+                info3.applyingTextColor(
+                    "조회 수 : ",
+                    "#6E7686"
+                )
+
+                val info4 = SpannableStringBuilder(arrayCarousel[position]?.info4?.replace("조회", "조회 수 : "))
+                info4.applyingTextColor(
+                    "선호작 수 : ",
+                    "#6E7686"
+                )
+
+                tviewInfo3.text = info3
+                tviewInfo4.text = info4
+                tviewInfo5.text = arrayCarousel[position]?.info1 ?: ""
+            } else if (platform == "Ridi") {
+                tviewInfo1.text = arrayCarousel[position]?.info1 ?: ""
+                tviewInfo1.visibility = View.VISIBLE
+                tviewInfo2.visibility = View.GONE
+                tviewInfo3.visibility = View.VISIBLE
+                tviewInfo4.visibility = View.VISIBLE
+                tviewInfo5.visibility = View.GONE
+
+                val info3 = SpannableStringBuilder(arrayCarousel[position]?.info3)
+                info3.applyingTextColor(
+                    "추천 수 : ",
+                    "#6E7686"
+                )
+
+                val info4 = SpannableStringBuilder(arrayCarousel[position]?.info4)
+                info4.applyingTextColor(
+                    "평점 : ",
+                    "#6E7686"
+                )
+
+                tviewInfo3.text = info3
+                tviewInfo4.text = info4
+            } else if (platform == "OneStore") {
+                tviewInfo1.visibility = View.GONE
+                tviewInfo2.visibility = View.VISIBLE
+                tviewInfo3.visibility = View.VISIBLE
+                tviewInfo4.visibility = View.VISIBLE
+                tviewInfo5.visibility = View.GONE
+
+                val info3 = SpannableStringBuilder(arrayCarousel[position]?.info3?.replace("별점", "별점 : "))
+                info3.applyingTextColor(
+                    "조회 수 : ",
+                    "#6E7686"
+                )
+
+                val info4 = SpannableStringBuilder(arrayCarousel[position]?.info4?.replace("조회", "조회 수 : "))
+                info4.applyingTextColor(
+                    "평점 : ",
+                    "#6E7686"
+                )
+
+                val info5 = SpannableStringBuilder(arrayCarousel[position]?.info5?.replace("관심", "관심 : "))
+                info5.applyingTextColor(
+                    "댓글 수 : ",
+                    "#6E7686"
+                )
+
+                tviewInfo2.text = info3
+                tviewInfo3.text = info4
+                tviewInfo4.text = info5
+            } else if (platform == "Kakao" || platform == "Munpia" || platform == "Toksoda" || platform == "Joara" || platform == "Joara_Premium" || platform == "Joara_Nobless" || platform == "Munpia" ) {
+                tviewInfo1.visibility = View.VISIBLE
+                tviewInfo2.visibility = View.VISIBLE
+                tviewInfo3.visibility = View.VISIBLE
+                tviewInfo4.visibility = View.VISIBLE
+                tviewInfo5.visibility = View.VISIBLE
+
+                if(platform == "Joara" || platform == "Joara_Premium" || platform == "Joara_Nobless"){
+                    tviewInfo1.text = arrayCarousel[position].info2 ?: ""
+
+                    val info3 = SpannableStringBuilder(arrayCarousel[position].info3)
+                    info3.applyingTextColor(
+                        BestRef.setDetailText(platform, 1),
+                        "#6E7686"
+                    )
+
+                    val info4 = SpannableStringBuilder(arrayCarousel[position].info4)
+                    info4.applyingTextColor(
+                        BestRef.setDetailText(platform, 2),
+                        "#6E7686"
+                    )
+
+                    val info5 = SpannableStringBuilder(arrayCarousel[position].info5)
+                    info5.applyingTextColor(
+                        BestRef.setDetailText(platform, 3),
+                        "#6E7686"
+                    )
+
+                    tviewInfo2.text = info3
+                    tviewInfo3.text = info4
+                    tviewInfo4.text = info5
+
+                    tviewInfo5.text = arrayCarousel[position].info1 ?: ""
+                } else if(platform == "Kakao"){
+                    tviewInfo1.text = arrayCarousel[position].info2 ?: ""
+
+                    val info3 = SpannableStringBuilder(arrayCarousel[position].info3)
+                    info3.applyingTextColor(
+                        "조회 수 : ",
+                        "#6E7686"
+                    )
+
+                    val info4 = SpannableStringBuilder(arrayCarousel[position].info4)
+                    info4.applyingTextColor(
+                        "추천 수 : ",
+                        "#6E7686"
+                    )
+
+                    val info5 = SpannableStringBuilder(arrayCarousel[position].info5)
+                    info5.applyingTextColor(
+                        "평점 : ",
+                        "#6E7686"
+                    )
+
+                    tviewInfo2.text = info3
+                    tviewInfo3.text = info4
+                    tviewInfo4.text = info5
+                    tviewInfo5.text = arrayCarousel[position].info1
+                } else if(platform == "Munpia"){
+                    tviewInfo1.text = arrayCarousel[position].info2
+
+                    val info3 = SpannableStringBuilder(arrayCarousel[position].info3)
+                    info3.applyingTextColor(
+                        "조회 수 : ",
+                        "#6E7686"
+                    )
+
+                    val info4 = SpannableStringBuilder(arrayCarousel[position].info4)
+                    info4.applyingTextColor(
+                        "방문 수 : ",
+                        "#6E7686"
+                    )
+
+                    val info5 = SpannableStringBuilder(arrayCarousel[position].info5)
+                    info5.applyingTextColor(
+                        "선호작 수 : ",
+                        "#6E7686"
+                    )
+
+                    tviewInfo2.text = info3
+                    tviewInfo3.text = info4
+                    tviewInfo4.text = info5
+                    tviewInfo5.text = arrayCarousel[position].info1
+                } else {
+                    tviewInfo1.text = arrayCarousel[position].info2
+                    tviewInfo2.text = arrayCarousel[position].info3
+                    tviewInfo3.text = arrayCarousel[position].info4
+                    tviewInfo4.text = arrayCarousel[position].info5
+                    tviewInfo5.text = arrayCarousel[position].info1
+                }
+            }
+
+
+//            tviewInfo1.text = arrayCarousel[position].info2
+//
+//            val info3 = SpannableStringBuilder(arrayCarousel[position].info3)
+//            info3.applyingTextColor(
+//                BestRef.setDetailText(platform, 1),
+//                "#6E7686"
+//            )
+//
+//            val info4 = SpannableStringBuilder(arrayCarousel[position].info4)
+//            info4.applyingTextColor(
+//                BestRef.setDetailText(platform, 2),
+//                "#6E7686"
+//            )
+//
+//            val info5 = SpannableStringBuilder(arrayCarousel[position].info5)
+//            info5.applyingTextColor(
+//                BestRef.setDetailText(platform, 3),
+//                "#6E7686"
+//            )
+//
+//            tviewInfo2.text = info3
+//            tviewInfo3.text = info4
+//            tviewInfo4.text = info5
+//            tviewInfo5.text = arrayCarousel[position].info1
 
             binding.carousel.indicatorGravity = Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM
             customView

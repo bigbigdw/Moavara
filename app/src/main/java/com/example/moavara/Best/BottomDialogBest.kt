@@ -32,7 +32,7 @@ import com.google.firebase.database.ValueEventListener
 class BottomDialogBest(
     private val mContext: Context,
     private val item: BookListDataBest?,
-    private val tabType: String,
+    private val platform: String,
     private val pos: Int
 ) :
     BottomSheetDialogFragment() {
@@ -51,11 +51,6 @@ class BottomDialogBest(
     ): View {
         _binding = BottomDialogBestBinding.inflate(inflater, container, false)
         val view = binding.root
-
-        mRootRef.child("Best").child(tabType).child(
-            context?.getSharedPreferences("pref", MODE_PRIVATE)?.getString("GENRE", "") ?: ""
-        ).child("week-list").child(DBDate.Week() + ((DBDate.DayInt() * 1000) + pos).toString())
-            .child("trophyCount")
 
         UID = context?.getSharedPreferences("pref", AppCompatActivity.MODE_PRIVATE)
             ?.getString("UID", "").toString()
@@ -89,43 +84,174 @@ class BottomDialogBest(
             tviewTitle.text = item?.title ?: ""
             tviewWriter.text = item?.writer ?: ""
 
-            if (tabType == "MrBlue") {
+            if (platform == "MrBlue") {
                 tviewInfo1.visibility = View.GONE
                 tviewInfo2.visibility = View.GONE
                 tviewInfo3.visibility = View.GONE
                 tviewInfo4.visibility = View.GONE
                 tviewInfo5.visibility = View.GONE
-            } else if (tabType == "Kakao_Stage" || tabType == "Naver_Today" || tabType == "Naver_Challenge" || tabType == "Naver") {
+            }   else if(platform == "Toksoda"){
+                tviewInfo1.visibility = View.VISIBLE
+                tviewInfo2.visibility = View.GONE
+                tviewInfo3.visibility = View.VISIBLE
+                tviewInfo4.visibility = View.VISIBLE
+                tviewInfo5.visibility = View.VISIBLE
+
+                tviewInfo1.text = item?.info2 ?: ""
+
+                val info3 = SpannableStringBuilder(item?.info3)
+                info3.applyingTextColor(
+                    "조회 수 : ",
+                    "#6E7686"
+                )
+
+                val info5 = SpannableStringBuilder(item?.info5)
+                info5.applyingTextColor(
+                    "선호작 수 : ",
+                    "#6E7686"
+                )
+
+                tviewInfo3.text = info3
+                tviewInfo4.text = info5
+                tviewInfo5.text = item?.info1 ?: ""
+            } else if (platform == "Naver" || platform == "Naver_Today" || platform == "Naver_Challenge") {
+                tviewInfo1.text = item?.info1 ?: ""
                 tviewInfo1.visibility = View.VISIBLE
                 tviewInfo2.visibility = View.VISIBLE
                 tviewInfo3.visibility = View.VISIBLE
                 tviewInfo4.visibility = View.VISIBLE
                 tviewInfo5.visibility = View.GONE
 
-                tviewInfo1.text = item?.info1 ?: ""
-                tviewInfo2.text = item?.info2 ?: ""
-                tviewInfo3.text = item?.info3 ?: ""
-                tviewInfo4.text = item?.info4 ?: ""
-            } else if (tabType == "Ridi" || tabType == "OneStore") {
+                val info3 = SpannableStringBuilder(item?.info3?.replace("별점", "별점 : "))
+                info3.applyingTextColor(
+                    "별점 : ",
+                    "#6E7686"
+                )
+
+                val info4 = SpannableStringBuilder(item?.info4?.replace("조회", "조회 수 : "))
+                info4.applyingTextColor(
+                    "조회 수 : ",
+                    "#6E7686"
+                )
+
+                val info5 = SpannableStringBuilder(item?.info5?.replace("관심", "관심 : "))
+                info5.applyingTextColor(
+                    "관심 : ",
+                    "#6E7686"
+                )
+
+                tviewInfo2.text = info3
+                tviewInfo3.text = info4
+                tviewInfo4.text = info5
+            }  else if (platform == "Kakao_Stage") {
+                tviewInfo1.text = item?.info2 ?: ""
+
                 tviewInfo1.visibility = View.VISIBLE
-                tviewInfo2.visibility = View.VISIBLE
+                tviewInfo2.visibility = View.GONE
                 tviewInfo3.visibility = View.VISIBLE
-                tviewInfo4.visibility = View.GONE
+                tviewInfo4.visibility = View.VISIBLE
+                tviewInfo5.visibility = View.VISIBLE
+
+                val info3 = SpannableStringBuilder(item?.info3?.replace("별점", "별점 : "))
+                info3.applyingTextColor(
+                    "조회 수 : ",
+                    "#6E7686"
+                )
+
+                val info4 = SpannableStringBuilder(item?.info4?.replace("조회", "조회 수 : "))
+                info4.applyingTextColor(
+                    "선호작 수 : ",
+                    "#6E7686"
+                )
+
+                tviewInfo3.text = info3
+                tviewInfo4.text = info4
+                tviewInfo5.text = item?.info1 ?: ""
+            } else if (platform == "Ridi") {
+                tviewInfo1.text = item?.info1 ?: ""
+                tviewInfo1.visibility = View.VISIBLE
+                tviewInfo2.visibility = View.GONE
+                tviewInfo3.visibility = View.VISIBLE
+                tviewInfo4.visibility = View.VISIBLE
                 tviewInfo5.visibility = View.GONE
 
-                tviewInfo1.text = item?.info1 ?: ""
-                tviewInfo2.text = item?.info2 ?: ""
-                tviewInfo3.text = item?.info3 ?: ""
-            } else if (tabType == "Kakao" || tabType == "Munpia" || tabType == "Toksoda" || tabType == "Joara" || tabType == "Joara_Premium" || tabType == "Joara_Nobless") {
+                val info3 = SpannableStringBuilder(item?.info3)
+                info3.applyingTextColor(
+                    "추천 수 : ",
+                    "#6E7686"
+                )
+
+                val info4 = SpannableStringBuilder(item?.info4)
+                info4.applyingTextColor(
+                    "평점 : ",
+                    "#6E7686"
+                )
+
+                tviewInfo3.text = info3
+                tviewInfo4.text = info4
+            } else if (platform == "OneStore") {
+                tviewInfo1.visibility = View.GONE
+                tviewInfo2.visibility = View.VISIBLE
+                tviewInfo3.visibility = View.VISIBLE
+                tviewInfo4.visibility = View.VISIBLE
+                tviewInfo5.visibility = View.GONE
+
+                val info3 = SpannableStringBuilder(item?.info3?.replace("별점", "별점 : "))
+                info3.applyingTextColor(
+                    "조회 수 : ",
+                    "#6E7686"
+                )
+
+                val info4 = SpannableStringBuilder(item?.info4?.replace("조회", "조회 수 : "))
+                info4.applyingTextColor(
+                    "평점 : ",
+                    "#6E7686"
+                )
+
+                val info5 = SpannableStringBuilder(item?.info5?.replace("관심", "관심 : "))
+                info5.applyingTextColor(
+                    "댓글 수 : ",
+                    "#6E7686"
+                )
+
+                tviewInfo2.text = info3
+                tviewInfo3.text = info4
+                tviewInfo4.text = info5
+            } else if (platform == "Kakao" || platform == "Munpia" || platform == "Toksoda" || platform == "Joara" || platform == "Joara_Premium" || platform == "Joara_Nobless" || platform == "Munpia" ) {
                 tviewInfo1.visibility = View.VISIBLE
                 tviewInfo2.visibility = View.VISIBLE
                 tviewInfo3.visibility = View.VISIBLE
                 tviewInfo4.visibility = View.VISIBLE
                 tviewInfo5.visibility = View.VISIBLE
 
-                if(tabType == "Joara" || tabType == "Joara_Premium" || tabType == "Joara_Nobless"){
+                if(platform == "Joara" || platform == "Joara_Premium" || platform == "Joara_Nobless"){
                     tviewInfo1.text = item?.info2 ?: ""
 
+                    val info3 = SpannableStringBuilder(item?.info3)
+                    info3.applyingTextColor(
+                        BestRef.setDetailText(platform, 1),
+                        "#6E7686"
+                    )
+
+                    val info4 = SpannableStringBuilder(item?.info4)
+                    info4.applyingTextColor(
+                        BestRef.setDetailText(platform, 2),
+                        "#6E7686"
+                    )
+
+                    val info5 = SpannableStringBuilder(item?.info5)
+                    info5.applyingTextColor(
+                        BestRef.setDetailText(platform, 3),
+                        "#6E7686"
+                    )
+
+                    tviewInfo2.text = info3
+                    tviewInfo3.text = info4
+                    tviewInfo4.text = info5
+
+                    tviewInfo5.text = item?.info1 ?: ""
+                } else if(platform == "Kakao"){
+                    tviewInfo1.text = item?.info2 ?: ""
 
                     val info3 = SpannableStringBuilder(item?.info3)
                     info3.applyingTextColor(
@@ -135,20 +261,44 @@ class BottomDialogBest(
 
                     val info4 = SpannableStringBuilder(item?.info4)
                     info4.applyingTextColor(
-                        "선호작 수 : ",
+                        "추천 수 : ",
                         "#6E7686"
                     )
 
                     val info5 = SpannableStringBuilder(item?.info5)
                     info5.applyingTextColor(
-                        "추천 수 : ",
+                        "평점 : ",
                         "#6E7686"
                     )
 
                     tviewInfo2.text = info3
                     tviewInfo3.text = info4
                     tviewInfo4.text = info5
+                    tviewInfo5.text = item?.info1 ?: ""
+                } else if(platform == "Munpia"){
+                    tviewInfo1.text = item?.info2 ?: ""
 
+                    val info3 = SpannableStringBuilder(item?.info3)
+                    info3.applyingTextColor(
+                        "조회 수 : ",
+                        "#6E7686"
+                    )
+
+                    val info4 = SpannableStringBuilder(item?.info4)
+                    info4.applyingTextColor(
+                        "방문 수 : ",
+                        "#6E7686"
+                    )
+
+                    val info5 = SpannableStringBuilder(item?.info5)
+                    info5.applyingTextColor(
+                        "선호작 수 : ",
+                        "#6E7686"
+                    )
+
+                    tviewInfo2.text = info3
+                    tviewInfo3.text = info4
+                    tviewInfo4.text = info5
                     tviewInfo5.text = item?.info1 ?: ""
                 } else {
                     tviewInfo1.text = item?.info2 ?: ""
@@ -162,39 +312,6 @@ class BottomDialogBest(
             Glide.with(mContext)
                 .load(item?.bookImg)
                 .into(iviewBookImg)
-
-//            when (item?.number) {
-//                0 -> {
-//                    iviewRanking.setImageResource(R.drawable.icon_best_1)
-//                }
-//                1 -> {
-//                    iviewRanking.setImageResource(R.drawable.icon_best_2)
-//                }
-//                2 -> {
-//                    iviewRanking.setImageResource(R.drawable.icon_best_3)
-//                }
-//                3 -> {
-//                    iviewRanking.setImageResource(R.drawable.icon_best_4)
-//                }
-//                4 -> {
-//                    iviewRanking.setImageResource(R.drawable.icon_best_5)
-//                }
-//                5 -> {
-//                    iviewRanking.setImageResource(R.drawable.icon_best_6)
-//                }
-//                6 -> {
-//                    iviewRanking.setImageResource(R.drawable.icon_best_7)
-//                }
-//                7 -> {
-//                    iviewRanking.setImageResource(R.drawable.icon_best_8)
-//                }
-//                8 -> {
-//                    iviewRanking.setImageResource(R.drawable.icon_best_9)
-//                }
-//                else -> {
-//                    Log.d("bestRankImage", "NO_IMAGE")
-//                }
-//            }
 
             getRankList(item)
 
@@ -213,7 +330,7 @@ class BottomDialogBest(
                         item.info5,
                         item.number,
                         item.date,
-                        tabType
+                        platform
                     )
                 }
 
@@ -235,7 +352,7 @@ class BottomDialogBest(
                 val bookDetailIntent = Intent(mContext, ActivityBestDetail::class.java)
                 bookDetailIntent.putExtra("BookCode",
                     item?.let { it1 -> String.format("%s", it1.bookCode) })
-                bookDetailIntent.putExtra("Type", String.format("%s", tabType))
+                bookDetailIntent.putExtra("Type", String.format("%s", platform))
                 bookDetailIntent.putExtra("POSITION", pos)
                 startActivity(bookDetailIntent)
                 dismiss()

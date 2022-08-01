@@ -260,4 +260,27 @@ object BestRef {
             jsonObject.optString("memo"),
         )
     }
+
+    fun setDetailText(platform : String, type : Int): String {
+        if(platform == "Joara" || platform == "Joara_Nobless" || platform == "Joara_Premium"){
+            if(type == 1){
+                return "조회 수 : "
+            } else if(type == 2){
+                return "선호작 수 : "
+            } else if(type == 3){
+                return "추천 수 : "
+            }
+        } else if (platform == "Naver" || platform == "Naver_Today" || platform == "Naver_Challenge") {
+            if (type == 1) {
+                return "별점 : "
+            } else if (type == 2) {
+                return "조회 수 : "
+            } else if (type == 3) {
+                return "관심 : "
+            }
+        } else {
+            return ""
+        }
+        return ""
+    }
 }

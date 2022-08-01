@@ -95,7 +95,7 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
 
     fun getCommentsNaverToday(){
         Thread {
-            val doc: Document = Jsoup.connect(bookCode).get()
+            val doc: Document = Jsoup.connect("https://novel.naver.com/webnovel/list?novelId=${bookCode}").get()
             val Naver: Elements = doc.select(".srch_cont .list_type2 li a")
 
             requireActivity().runOnUiThread {

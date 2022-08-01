@@ -49,7 +49,7 @@ class BottomDialogMain :
         binding.llayoutSubmit.background = GradientDrawable().apply {
             setColor(Color.parseColor("#3F0BA5"))
             shape = GradientDrawable.RECTANGLE
-            cornerRadius = 10f.dpToPx()
+            cornerRadius = 100f.dpToPx()
         }
 
         binding.llayoutSubmit.setOnClickListener {

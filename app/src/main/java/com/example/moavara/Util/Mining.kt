@@ -285,9 +285,9 @@ object Mining {
                 NaverRef["subject"] = title
                 NaverRef["bookImg"] = Naver.select("div img")[i].absUrl("src")
                 NaverRef["bookCode"] = Naver.select("a")[i].absUrl("href").replace("https://novel.naver.com/webnovel/list?novelId=", "")
-                NaverRef["info1"] = Naver.select(".score_area")[i].text()
+                NaverRef["info1"] = Naver[i].select(".num_total").first()!!.text()
                 NaverRef["info2"] = ""
-                NaverRef["info3"] = Naver[i].select(".num_total").first()!!.text()
+                NaverRef["info3"] = Naver.select(".score_area")[i].text()
                 NaverRef["info4"] =
                     Naver[i].select(".num_total").next().first()!!.text()
                 NaverRef["info5"] = Naver.select(".count")[i].text()
@@ -324,9 +324,9 @@ object Mining {
                 NaverRef["subject"] = Naver.select(".tit")[i].text()
                 NaverRef["bookImg"] = Naver.select("div img")[i].absUrl("src")
                 NaverRef["bookCode"] = Naver.select("a")[i].absUrl("href").replace("https://novel.naver.com/challenge/list?novelId=", "")
-                NaverRef["info1"] = Naver.select(".score_area")[i].text()
+                NaverRef["info1"] = Naver[i].select(".num_total").first()!!.text()
                 NaverRef["info2"] = ""
-                NaverRef["info3"] = Naver[i].select(".num_total").first()!!.text()
+                NaverRef["info3"] = Naver.select(".score_area")[i].text()
                 NaverRef["info4"] =
                     Naver[i].select(".num_total").next().first()!!.text()
                 NaverRef["info5"] = Naver.select(".count")[i].text()
@@ -361,8 +361,8 @@ object Mining {
                 NaverRef["bookImg"] = Naver.select("div img")[i].absUrl("src")
                 NaverRef["bookCode"] = Naver.select("a")[i].absUrl("href").replace("https://novel.naver.com/best/list?novelId=", "")
                 NaverRef["info1"] = ""
-                NaverRef["info2"] = Naver.select(".score_area")[i].text()
-                NaverRef["info3"] = Naver[i].select(".num_total").first()!!.text()
+                NaverRef["info2"] = Naver[i].select(".num_total").first()!!.text()
+                NaverRef["info3"] = Naver.select(".score_area")[i].text()
                 NaverRef["info4"] =
                     Naver[i].select(".num_total").next().first()!!.text()
                 NaverRef["info5"] = Naver.select(".count")[i].text()
@@ -401,13 +401,13 @@ object Mining {
                     RidiRef["bookImg"] =
                         Ridi.select(".thumbnail_image .thumbnail")[i].absUrl("data-src")
                     RidiRef["bookCode"] = uri.path?.replace("/books/", "") ?: ""
-                    RidiRef["info1"] = ""
+                    RidiRef["info1"] = doc.select(".count_num")[i].text()
                     RidiRef["info2"] = ""
-                    RidiRef["info3"] = doc.select(".count_num")[i].text()
-                    RidiRef["info4"] =
+                    RidiRef["info3"] =
                         "추천 수 : " + doc.select("span .StarRate_ParticipantCount")[i].text()
-                    RidiRef["info5"] =
+                    RidiRef["info4"] =
                         "평점 : " + doc.select("span .StarRate_Score")[i].text()
+                    RidiRef["info5"] = ""
                     RidiRef["number"] = (i -1) + ((page - 1) * (Ridi.size - 1))
                     RidiRef["date"] = DBDate.DateMMDD()
                     RidiRef["type"] = "Ridi"
@@ -506,11 +506,11 @@ object Mining {
                             KakaoRef["subject"] = novel.title
                             KakaoRef["bookImg"] = novel.thumbnail!!.url
                             KakaoRef["bookCode"] = novel.stageSeriesNumber
-                            KakaoRef["info1"] = "줄거리 : " + novel.synopsis
-                            KakaoRef["info2"] = ""
-                            KakaoRef["info3"] = "총" + novel.publishedEpisodeCount + " 화"
-                            KakaoRef["info4"] = "조회 수 : " + novel.viewCount
-                            KakaoRef["info5"] = "선호작 수 : " + novel.visitorCount
+                            KakaoRef["info1"] = novel.synopsis
+                            KakaoRef["info2"] = "총 " + novel.publishedEpisodeCount + " 화"
+                            KakaoRef["info3"] = "조회 수 : " + novel.viewCount
+                            KakaoRef["info4"] = "선호작 수 : " + novel.visitorCount
+                            KakaoRef["info5"] = ""
                             KakaoRef["number"] = i
                             KakaoRef["date"] = DBDate.DateMMDD()
                             KakaoRef["type"] = "Kakao_Stage"
@@ -749,7 +749,7 @@ object Mining {
                                 MoonpiaRef["bookImg"] =
                                     "https://cdn1.munpia.com${it[i].nvCover}"
                                 MoonpiaRef["bookCode"] = it[i].nvSrl
-                                MoonpiaRef["info1"] = "줄거리 : ${it[i].nvStory}"
+                                MoonpiaRef["info1"] = it[i].nvStory
                                 MoonpiaRef["info2"] = "베스트 시간 : ${it[i].nsrData?.hour}"
                                 MoonpiaRef["info3"] = "조회 수 : ${it[i].nsrData?.hit}"
                                 MoonpiaRef["info4"] = "방문 수 : ${it[i].nsrData?.number}"

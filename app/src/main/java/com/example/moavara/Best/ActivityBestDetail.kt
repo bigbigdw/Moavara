@@ -177,8 +177,8 @@ class ActivityBestDetail : AppCompatActivity() {
         }
 
         if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver") {
-            binding.tabs.addTab(binding.tabs.newTab().setText("다른 작품"))
             binding.tabs.addTab(binding.tabs.newTab().setText("작품 분석"))
+            binding.tabs.addTab(binding.tabs.newTab().setText("다른 작품"))
         } else if (platform == "Kakao" || platform == "Kakao_Stage" || platform == "OneStore" || platform == "Munpia") {
             binding.tabs.addTab(binding.tabs.newTab().setText("댓글"))
             binding.tabs.addTab(binding.tabs.newTab().setText("작품 분석"))
@@ -302,12 +302,15 @@ class ActivityBestDetail : AppCompatActivity() {
 
     fun setLayoutNaverToday() {
         Thread {
-            val doc: Document = Jsoup.connect("https://novel.naver.com/${bookCode}").post()
-
-            bookCode = "https://novel.naver.com/${doc.select(".writer a").first()!!.attr("href")}"
+            val doc: Document = Jsoup.connect("https://novel.naver.com/webnovel/list?novelId=${bookCode}").post()
 
             runOnUiThread {
                 with(binding) {
+                    binding.loading.root.visibility = View.GONE
+                    binding.coorWrap.visibility = View.VISIBLE
+                    window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                    chipgroup.visibility = View.GONE
+
                     Glide.with(this@ActivityBestDetail)
                         .load(doc.select(".section_area_info .pic img").attr("src"))
                         .into(inclueBestDetail.iviewBookCover)
@@ -322,18 +325,19 @@ class ActivityBestDetail : AppCompatActivity() {
                     inclueBestDetail.tviewTitle.text = bookTitle
                     inclueBestDetail.tviewWriter.text = doc.select(".writer").text()
 
-                    inclueBestDetail.tviewInfo1.text = doc.select(".info_book .like").text()
-                    inclueBestDetail.tviewInfo2.text = doc.select(".info_book .download").text()
-                    inclueBestDetail.tviewInfo3.text = doc.select(".info_book .publish").text()
-                    inclueBestDetail.tviewInfo4.text =
+                    inclueBestDetail.tviewInfo1.text =
                         "장르 : ${doc.select(".info_book .genre").text()}"
+
+                    inclueBestDetail.tviewInfo2.text = doc.select(".info_book .like").text()
+                    inclueBestDetail.tviewInfo3.text = doc.select(".info_book .download").text()
+                    inclueBestDetail.tviewInfo4.text = doc.select(".info_book .publish").text()
 
                     tviewIntro.text = doc.select(".section_area_info .dsc").text()
                 }
 
-                mFragmentBestDetailBooks = FragmentBestDetailBooks(platform, bookCode)
+                mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(platform, data)
                 supportFragmentManager.commit {
-                    replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
+                    replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
                 }
             }
         }.start()
