@@ -51,12 +51,12 @@ class AdapterBestToday(
                 try{
                     if(bookCodeItems[position].trophyCount > 1){
                         if(bookCodeItems[position].numberDiff > 0){
-                            tviewNum.text =  "${bookCodeItems[position].numberDiff}"
+                            tviewNum.text =  "${bookCodeItems[position].numberDiff} (${bookCodeItems[position].trophyCount})"
                             tviewNum.setTextColor(Color.parseColor("#02BC77"))
                             iviewArrow.setImageResource(R.drawable.ic_arrow_drop_up_24px)
                             iviewArrow.visibility = View.VISIBLE
                         } else if(bookCodeItems[position].numberDiff < 0){
-                            tviewNum.text =  "${bookCodeItems[position].numberDiff}"
+                            tviewNum.text =  "${bookCodeItems[position].numberDiff} (${bookCodeItems[position].trophyCount})"
                             tviewNum.setTextColor(Color.parseColor("#FF2366"))
                             iviewArrow.setImageResource(R.drawable.ic_arrow_drop_down_24px)
                             iviewArrow.visibility = View.VISIBLE

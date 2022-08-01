@@ -20,7 +20,6 @@ import com.example.moavara.DataBase.BookListDataBestAnalyze
 import com.example.moavara.DataBase.BookListDataBestToday
 import com.example.moavara.R
 import com.example.moavara.Retrofit.*
-import com.example.moavara.Soon.Best.FragmentBestDetailRank
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.Genre
 import com.example.moavara.Util.Param
@@ -244,38 +243,38 @@ class ActivityBestDetail : AppCompatActivity() {
         apiJoara.getBookDetailJoa(
             JoaraRef,
             object : RetrofitDataListener<JoaraBestDetailResult> {
-                override fun onSuccess(res: JoaraBestDetailResult) {
+                override fun onSuccess(data: JoaraBestDetailResult) {
 
                     with(binding) {
-                        if (res.status == "1" && res.book != null) {
+                        if (data.status == "1" && data.book != null) {
 
                             loading.root.visibility = View.GONE
                             coorWrap.visibility = View.VISIBLE
                             window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
 
                             Glide.with(this@ActivityBestDetail)
-                                .load(res.book.bookImg)
+                                .load(data.book.bookImg)
                                 .into(inclueBestDetail.iviewBookCover)
 
-                            bookTitle = res.book.subject
-                            chapter = res.book.chapter
+                            bookTitle = data.book.subject
+                            chapter = data.book.chapter
 
                             inclueBestDetail.tviewTitle.text = bookTitle
-                            inclueBestDetail.tviewWriter.text = res.book.writerName
+                            inclueBestDetail.tviewWriter.text = data.book.writerName
 
-                            inclueBestDetail.tviewInfo1.text = "총 ${res.book.cntChapter}화"
-                            inclueBestDetail.tviewInfo2.text = res.book.cntFavorite
-                            inclueBestDetail.tviewInfo3.text = res.book.cntPageRead
-                            inclueBestDetail.tviewInfo4.text = res.book.cntRecom
+                            inclueBestDetail.tviewInfo1.text = "총 ${data.book.cntChapter}화"
+                            inclueBestDetail.tviewInfo2.text = data.book.cntFavorite
+                            inclueBestDetail.tviewInfo3.text = data.book.cntPageRead
+                            inclueBestDetail.tviewInfo4.text = data.book.cntRecom
 
-                            tviewIntro.text = res.book.intro
+                            tviewIntro.text = data.book.intro
 
                             val lp = LinearLayout.LayoutParams(
                                 ViewGroup.LayoutParams.WRAP_CONTENT,
                                 ViewGroup.LayoutParams.WRAP_CONTENT
                             )
 
-                            for (item in res.book.keyword) {
+                            for (item in data.book.keyword) {
                                 val chip = Chip(this@ActivityBestDetail)
                                 chip.text = "#${item}"
                                 chip.chipBackgroundColor = ColorStateList.valueOf(
@@ -292,7 +291,9 @@ class ActivityBestDetail : AppCompatActivity() {
                         }
                     }
 
-                    mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(platform, data)
+                    mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(platform,
+                        this@ActivityBestDetail.data
+                    )
                     supportFragmentManager.commit {
                         replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
                     }

@@ -199,6 +199,8 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                             carousel.slideInterval = 4000
                             binding.llayoutCarousel.visibility = View.VISIBLE
                         }
+                    } else {
+                        binding.llayoutCarousel.visibility = View.GONE
                     }
                 }
 
@@ -212,11 +214,6 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
 
     private fun getBestWeekList() {
 
-        val file = File(File("/storage/self/primary/MOAVARA"), "Week_${platform}.json")
-        if (file.exists()) {
-            file.delete()
-        }
-
         binding.rviewBest.removeAllViews()
         itemWeek.clear()
 
@@ -227,28 +224,22 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
 
                      for (day in 1..7) {
                          val itemResult = dataSnapshot.child(day.toString())
-                         val jsonArray = JSONArray()
                          val itemList = ArrayList<BookListDataBest>()
 
                          if(itemResult.value == null){
                              for (num in 0..19) {
-                                 val jsonObject = JSONObject()
-
                                  itemList.add(BookListDataBest())
-                                 jsonArray.put(BestRef.putItem(jsonObject, BookListDataBest()))
                              }
                              itemWeek.add(itemList)
+
                          } else {
                              for (num in 0..19) {
-                                 val jsonObject = JSONObject()
-
                                  val item: BookListDataBest? =
                                      itemResult.child(num.toString())
                                          .getValue(BookListDataBest::class.java)
 
                                  if (item != null) {
                                      itemList.add(item)
-                                     jsonArray.put(BestRef.putItem(jsonObject, item))
                                  }
                              }
                              itemWeek.add(itemList)
@@ -268,11 +259,8 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                          }
 
                          arrayCarousel.addAll(itemListCarousel)
-
-                         obj.putOpt(day.toString(), jsonArray)
                     }
 
-                    writeFile(obj)
                     binding.blank.root.visibility = View.GONE
                     binding.llayoutWrap.visibility = View.VISIBLE
                     adapter?.notifyDataSetChanged()
@@ -283,6 +271,8 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                             carousel.slideInterval = 4000
                             binding.llayoutCarousel.visibility = View.VISIBLE
                         }
+                    } else {
+                        binding.llayoutCarousel.visibility = View.GONE
                     }
 
                 }
@@ -353,6 +343,7 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                     }
 
                     if(today?.date == day){
+                        Log.d("####", "${today.date} ${day}")
 
                         val itemListCarousel = ArrayList<BookListDataBest>()
 
@@ -377,12 +368,16 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
             writeFile(obj)
             adapter?.notifyDataSetChanged()
 
+            Log.d("####", arrayCarousel.size.toString())
+
             if(arrayCarousel.size > 0){
                 with(binding){
                     carousel.pageCount = arrayCarousel.size
                     carousel.slideInterval = 4000
                     binding.llayoutCarousel.visibility = View.VISIBLE
                 }
+            } else {
+                binding.llayoutCarousel.visibility = View.GONE
             }
 
             reader.close()
@@ -496,13 +491,13 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                     "#6E7686"
                 )
 
-                val info4 = SpannableStringBuilder(arrayCarousel[position].info4?.replace("조회", "조회 수 : "))
+                val info4 = SpannableStringBuilder(arrayCarousel[position].info4.replace("조회", "조회 수 : "))
                 info4.applyingTextColor(
                     "조회 수 : ",
                     "#6E7686"
                 )
 
-                val info5 = SpannableStringBuilder(arrayCarousel[position].info5?.replace("관심", "관심 : "))
+                val info5 = SpannableStringBuilder(arrayCarousel[position].info5.replace("관심", "관심 : "))
                 info5.applyingTextColor(
                     "관심 : ",
                     "#6E7686"
@@ -520,13 +515,13 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                 tviewInfo4.visibility = View.VISIBLE
                 tviewInfo5.visibility = View.VISIBLE
 
-                val info3 = SpannableStringBuilder(arrayCarousel[position].info3?.replace("별점", "별점 : "))
+                val info3 = SpannableStringBuilder(arrayCarousel[position].info3.replace("별점", "별점 : "))
                 info3.applyingTextColor(
                     "조회 수 : ",
                     "#6E7686"
                 )
 
-                val info4 = SpannableStringBuilder(arrayCarousel[position].info4?.replace("조회", "조회 수 : "))
+                val info4 = SpannableStringBuilder(arrayCarousel[position].info4.replace("조회", "조회 수 : "))
                 info4.applyingTextColor(
                     "선호작 수 : ",
                     "#6E7686"
@@ -576,7 +571,7 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                     "#6E7686"
                 )
 
-                val info5 = SpannableStringBuilder(arrayCarousel[position].info5?.replace("관심", "관심 : "))
+                val info5 = SpannableStringBuilder(arrayCarousel[position].info5.replace("관심", "관심 : "))
                 info5.applyingTextColor(
                     "댓글 수 : ",
                     "#6E7686"

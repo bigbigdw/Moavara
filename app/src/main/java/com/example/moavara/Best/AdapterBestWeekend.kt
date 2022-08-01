@@ -1,7 +1,6 @@
 package com.example.moavara.Best
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,8 +51,6 @@ class AdapterBestWeekend(
                 adapter.setOnItemClickListener(object : AdapterBestWeekendItem.OnItemClickListener {
                     override fun onItemClick(v: View?, position: Int) {
                         val item: BookListDataBest? = adapter.getItem(position)
-
-                        Log.d("!!!!", "HIHI ${item} ${position}")
 
                         val mBottomDialogBest = BottomDialogBest(
                             context,
