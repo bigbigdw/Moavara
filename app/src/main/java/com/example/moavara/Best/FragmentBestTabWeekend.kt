@@ -47,6 +47,7 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
     private var month = 0
     private var week = 0
     private var weekCount = 0
+    val today = DBDate.getDateData(DBDate.DateMMDD())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -144,28 +145,21 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
 
                     for (day in 1..7) {
                         val itemResult = dataSnapshot.child(day.toString())
-                        val jsonArray = JSONArray()
                         val itemList = ArrayList<BookListDataBest>()
 
                         if(itemResult.value == null){
                             for (num in 0..19) {
-                                val jsonObject = JSONObject()
-
                                 itemList.add(BookListDataBest())
-                                jsonArray.put(BestRef.putItem(jsonObject, BookListDataBest()))
                             }
                             itemWeek.add(itemList)
                         } else {
                             for (num in 0..19) {
-                                val jsonObject = JSONObject()
-
                                 val item: BookListDataBest? =
                                     itemResult.child(num.toString())
                                         .getValue(BookListDataBest::class.java)
 
                                 if (item != null) {
                                     itemList.add(item)
-                                    jsonArray.put(BestRef.putItem(jsonObject, item))
                                 }
                             }
                             itemWeek.add(itemList)
@@ -183,17 +177,14 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
 
                                 if (item != null) {
                                     itemListCarousel.add(item)
-                                    binding.llayoutCarousel.visibility = View.VISIBLE
                                 }
                             }
 
                             arrayCarousel.addAll(itemListCarousel)
                         }
 
-                        obj.putOpt(day.toString(), jsonArray)
                     }
 
-                    writeFile(obj)
                     binding.blank.root.visibility = View.GONE
                     binding.llayoutWrap.visibility = View.VISIBLE
                     adapter?.notifyDataSetChanged()
@@ -259,30 +250,27 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                              itemWeek.add(itemList)
                          }
 
-                         if(dataSnapshot.childrenCount.toString() == day.toString()){
+                         val itemListCarousel = ArrayList<BookListDataBest>()
 
-                             val itemListCarousel = ArrayList<BookListDataBest>()
+                         for (numCarousel in 0..8) {
 
-                             for (numCarousel in 0..8) {
+                             val item: BookListDataBest? =
+                                 dataSnapshot.child(today?.date.toString()).child(numCarousel.toString())
+                                     .getValue(BookListDataBest::class.java)
 
-                                 val item: BookListDataBest? =
-                                     dataSnapshot.child(day.toString()).child(numCarousel.toString())
-                                         .getValue(BookListDataBest::class.java)
-
-                                 if (item != null) {
-                                     itemListCarousel.add(item)
-                                     binding.llayoutCarousel.visibility = View.VISIBLE
-                                 }
+                             if (item != null) {
+                                 itemListCarousel.add(item)
                              }
-
-                             arrayCarousel.addAll(itemListCarousel)
                          }
+
+                         arrayCarousel.addAll(itemListCarousel)
 
                          obj.putOpt(day.toString(), jsonArray)
                     }
 
                     writeFile(obj)
-
+                    binding.blank.root.visibility = View.GONE
+                    binding.llayoutWrap.visibility = View.VISIBLE
                     adapter?.notifyDataSetChanged()
 
                     if(arrayCarousel.size > 0){
@@ -327,7 +315,6 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
     fun readJsonList() {
         val file = File(File("/storage/self/primary/MOAVARA"), "Week_${platform}.json")
         try {
-            val today = DBDate.getDateData(DBDate.DateMMDD())
             val reader = BufferedReader(FileReader(file))
 
             val buffer = StringBuilder()

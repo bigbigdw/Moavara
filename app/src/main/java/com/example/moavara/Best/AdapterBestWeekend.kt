@@ -18,9 +18,6 @@ class AdapterBestWeekend(
     private var platform : String,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val innerItem = ArrayList<BookListDataBest?>()
-    private var adapter: AdapterBestWeekendItem? = null
-
     interface OnItemClickListener {
         fun onItemClick(v: View?, position: Int, value: String?)
     }
@@ -46,35 +43,27 @@ class AdapterBestWeekend(
             val itemList = items[position]
 
             with(holder.binding) {
-                adapter = AdapterBestWeekendItem(context, itemList)
+                val adapter = AdapterBestWeekendItem(context, itemList)
 
                 rview.layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 rview.adapter = adapter
 
-                if (itemList != null) {
-                    for (items in itemList) {
-                        innerItem.add(items)
+                adapter.setOnItemClickListener(object : AdapterBestWeekendItem.OnItemClickListener {
+                    override fun onItemClick(v: View?, position: Int) {
+                        val item: BookListDataBest? = adapter.getItem(position)
+
+                        Log.d("!!!!", "HIHI ${item} ${position}")
+
+                        val mBottomDialogBest = BottomDialogBest(
+                            context,
+                            item,
+                            platform,
+                            item?.number ?: 0
+                        )
+                        mBottomDialogBest.show((context as AppCompatActivity).supportFragmentManager, null)
                     }
-
-                    adapter?.setOnItemClickListener(object : AdapterBestWeekendItem.OnItemClickListener {
-                        override fun onItemClick(v: View?, position: Int) {
-                            val item: BookListDataBest? = adapter?.getItem(position)
-
-                            Log.d("!!!!", "HIHI ${item} ${position}")
-
-                            val mBottomDialogBest = BottomDialogBest(
-                                context,
-                                item,
-                                platform,
-                                item?.number ?: 0
-                            )
-                            mBottomDialogBest.show((context as AppCompatActivity).supportFragmentManager, null)
-                        }
-                    })
-                }
-
-                adapter?.notifyDataSetChanged()
+                })
 
                 if (position == 0) {
                     tviewBestTop.text = "일요일 주간 베스트"
