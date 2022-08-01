@@ -2,8 +2,6 @@ package com.example.moavara.Best
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.SpannableStringBuilder
 import android.util.Log
 import android.view.Gravity
@@ -71,14 +69,7 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
             month = DBDate.Month().toInt() + 1
             week = (currentDate?.week ?: 0).toInt()
 
-            Looper.myLooper()?.let {
-                Handler(it).postDelayed(
-                    {
-                        readJsonList()
-                    },
-                    300
-                )
-            }
+            readJsonList()
 
             carousel.setViewListener(viewListenerBest)
             carousel.setImageClickListener { position ->
@@ -343,7 +334,6 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                     }
 
                     if(today?.date == day){
-                        Log.d("####", "${today.date} ${day}")
 
                         val itemListCarousel = ArrayList<BookListDataBest>()
 
@@ -367,8 +357,6 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
 
             writeFile(obj)
             adapter?.notifyDataSetChanged()
-
-            Log.d("####", arrayCarousel.size.toString())
 
             if(arrayCarousel.size > 0){
                 with(binding){
