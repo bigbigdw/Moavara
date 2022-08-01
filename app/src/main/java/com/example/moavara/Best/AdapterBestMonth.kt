@@ -61,9 +61,9 @@ class AdapterBestMonth(
 
             with(holder.binding){
 
-                monthNum = DBDate.setMonthNum(date!!.date)
+                monthNum = DBDate.setMonthNum(date?.date ?: 0)
 
-                val dateNum = getMonthDates(monthNum, position)
+                val dateNum = getMonthDates(date?.month ?: 0, monthNum, position)
                 tviewDate1.text = dateNum.sun.toString()
                 tviewDate2.text = dateNum.mon.toString()
                 tviewDate3.text = dateNum.tue.toString()

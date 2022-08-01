@@ -179,7 +179,7 @@ object DBDate {
         return bookListDataBestMonthNum
     }
 
-    fun getMonthDates(date: BookListDataBestMonthNum, position: Int) : BookListDataBestMonthNum {
+    fun getMonthDates(month : Int, date: BookListDataBestMonthNum, position: Int) : BookListDataBestMonthNum {
         if (date.sun == 1) {
             if (position == 0) {
                 return BookListDataBestMonthNum(1, 2, 3, 4, 5, 6, 7)
@@ -190,7 +190,11 @@ object DBDate {
             } else if (position == 3) {
                 return BookListDataBestMonthNum(22, 23, 24, 25, 26, 27, 28)
             } else if (position == 4) {
-                return BookListDataBestMonthNum(29, 30, 31, 0, 0, 0, 0)
+                if(month == 1){
+                    return BookListDataBestMonthNum(0, 0, 0, 0, 0, 0, 0)
+                } else {
+                    return BookListDataBestMonthNum(29, 30, 31, 0, 0, 0, 0)
+                }
             }   else if (position == 5) {
                 return BookListDataBestMonthNum(0, 0, 0, 0, 0, 0, 0)
             }
@@ -205,7 +209,11 @@ object DBDate {
             } else if (position == 3) {
                 return BookListDataBestMonthNum(21, 22, 23, 24, 25, 26, 27)
             } else if (position == 4) {
-                return BookListDataBestMonthNum(28, 29, 30, 31, 0, 0, 0)
+                if(month == 1){
+                    return BookListDataBestMonthNum(28, 0, 0, 0, 0, 0, 0)
+                } else {
+                    return BookListDataBestMonthNum(28, 29, 30, 31, 0, 0, 0)
+                }
             }   else if (position == 5) {
                 return BookListDataBestMonthNum(0, 0, 0, 0, 0, 0, 0)
             }
@@ -220,7 +228,11 @@ object DBDate {
             } else if (position == 3) {
                 return BookListDataBestMonthNum(20, 21, 22, 23, 24, 25, 26)
             } else if (position == 4) {
-                return BookListDataBestMonthNum(27, 28, 29, 30, 31, 0, 0)
+                if(month == 1){
+                    return BookListDataBestMonthNum(27, 28, 0, 0, 0, 0, 0)
+                } else {
+                    return BookListDataBestMonthNum(27, 28, 29, 30, 31, 0, 0)
+                }
             }   else if (position == 5) {
                 return BookListDataBestMonthNum(0, 0, 0, 0, 0, 0, 0)
             }
@@ -235,7 +247,11 @@ object DBDate {
             } else if (position == 3) {
                 return BookListDataBestMonthNum(19, 20, 21, 22, 23, 24, 25)
             } else if (position == 4) {
-                return BookListDataBestMonthNum(26, 27, 28, 29, 30, 31, 0)
+                if(month == 1){
+                    return BookListDataBestMonthNum(26, 27, 28, 0, 0, 0, 0)
+                } else {
+                    return BookListDataBestMonthNum(26, 27, 28, 29, 30, 31, 0)
+                }
             }   else if (position == 5) {
                 return BookListDataBestMonthNum(0, 0, 0, 0, 0, 0, 0)
             }
@@ -250,7 +266,11 @@ object DBDate {
             } else if (position == 3) {
                 return BookListDataBestMonthNum(18, 19, 20, 21, 22, 23, 24)
             } else if (position == 4) {
-                return BookListDataBestMonthNum(25, 26, 27, 28, 29, 30, 31)
+                if(month == 1){
+                    return BookListDataBestMonthNum(25, 26, 27, 28, 0, 0, 0)
+                } else {
+                    return BookListDataBestMonthNum(25, 26, 27, 28, 29, 30, 31)
+                }
             }  else if (position == 5) {
                 return BookListDataBestMonthNum(0, 0, 0, 0, 0, 0, 0)
             }
@@ -265,9 +285,17 @@ object DBDate {
             } else if (position == 3) {
                 return BookListDataBestMonthNum(17, 18, 19, 20, 21, 22, 23)
             } else if (position == 4) {
-                return BookListDataBestMonthNum(24, 25, 26, 27, 28, 29, 30)
+                if(month == 1){
+                    return BookListDataBestMonthNum(24, 25, 26, 27, 28, 0, 0)
+                } else {
+                    return BookListDataBestMonthNum(24, 25, 26, 27, 28, 29, 30)
+                }
             } else if (position == 5) {
-                return BookListDataBestMonthNum(31, 0, 0, 0, 0, 0, 0)
+                if(month == 1){
+                    return BookListDataBestMonthNum(0, 0, 0, 0, 0, 0, 0)
+                } else {
+                    return BookListDataBestMonthNum(31, 0, 0, 0, 0, 0, 0)
+                }
             }
             return date
         }  else if (date.sat == 1) {
@@ -280,9 +308,17 @@ object DBDate {
             } else if (position == 3) {
                 return BookListDataBestMonthNum(16, 17, 18, 19, 20, 21, 22)
             } else if (position == 4) {
-                return BookListDataBestMonthNum(23, 24, 25, 26, 27, 28, 29)
+                if(month == 1){
+                    return BookListDataBestMonthNum(23, 24, 25, 26, 27, 28, 0)
+                } else {
+                    return BookListDataBestMonthNum(23, 24, 25, 26, 27, 28, 29)
+                }
             } else if (position == 5) {
-                return BookListDataBestMonthNum(30, 31, 0, 0, 0, 0, 0)
+                if(month == 1){
+                    return BookListDataBestMonthNum(0, 0, 0, 0, 0, 0, 0)
+                } else {
+                    return BookListDataBestMonthNum(30, 31, 0, 0, 0, 0, 0)
+                }
             }
             return date
         }
