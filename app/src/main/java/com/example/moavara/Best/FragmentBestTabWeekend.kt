@@ -125,11 +125,6 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
 
     private fun getBestWeekListBefore(week : Int) {
 
-        val file = File(File("/storage/self/primary/MOAVARA"), "Week_${platform}.json")
-        if (file.exists()) {
-            file.delete()
-        }
-
         binding.rviewBest.removeAllViews()
         itemWeek.clear()
 

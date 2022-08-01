@@ -9,7 +9,6 @@ import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moavara.R
 import com.example.moavara.Search.BestType
-import com.example.moavara.Soon.Best.FragmentBestTabWeekendOld
 import com.example.moavara.Util.BestRef
 import com.example.moavara.databinding.FragmentBestBinding
 import com.google.android.material.tabs.TabLayout
@@ -104,7 +103,7 @@ class FragmentBest : Fragment() {
 
         adapterType.setOnItemClickListener(object : AdapterType.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
-                val item: BestType? = adapterType.getItem(position)
+                val item: BestType = adapterType.getItem(position)
                 adapterType.setSelectedBtn(position)
                 pos = position
                 adapterType.notifyDataSetChanged()

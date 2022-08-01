@@ -8,19 +8,11 @@
     android:background="#1E1E20"
     android:orientation="vertical">
 
-    <include
-        android:id="@+id/includeRank"
-        layout="@layout/include_rank"
+    <LinearLayout
+        android:id="@+id/InnerFragmentBestDetailRank"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:animateLayoutChanges="true" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rview_BestMonth"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="24dp"
-        android:background="#1E1E20" />
+        android:orientation="vertical"></LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rViewChartJoara"

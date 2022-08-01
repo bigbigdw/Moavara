@@ -10,11 +10,10 @@ import com.example.moavara.Util.DBDate
 import com.example.moavara.databinding.ItemBestRanklistBinding
 
 class AdapterBestRankList(
-    items: java.util.ArrayList<BestRankListWeekend>,
+    items: ArrayList<BestRankListWeekend>,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var item: java.util.ArrayList<BestRankListWeekend> = items
-    var selected: String? = ""
+    var item: ArrayList<BestRankListWeekend> = items
 
     interface OnItemClickListener {
         fun onItemClick(v: View?, position: Int, value: String?)
@@ -45,7 +44,7 @@ class AdapterBestRankList(
                         iviewBookImg1.setImageResource(R.drawable.ic_best_vt_24px)
                     }
                     tview1.visibility = View.VISIBLE
-                    tview1.text = "${items.sun?.number}등"
+                    tview1.text = "${items.sun?.number ?: 0 + 1}등"
                 } else {
                     iviewBookImg1.setImageResource(R.drawable.ic_best_gr_24px)
                     tview1.visibility = View.GONE
@@ -59,7 +58,7 @@ class AdapterBestRankList(
                         iviewBookImg2.setImageResource(R.drawable.ic_best_vt_24px)
                     }
                     tview2.visibility = View.VISIBLE
-                    tview2.text = "${items.mon?.number}등"
+                    tview2.text = "${items.mon?.number ?: 0 + 1}등"
                 } else {
                     iviewBookImg2.setImageResource(R.drawable.ic_best_gr_24px)
                     tview2.visibility = View.GONE
@@ -73,7 +72,7 @@ class AdapterBestRankList(
                         iviewBookImg3.setImageResource(R.drawable.ic_best_vt_24px)
                     }
                     tview3.visibility = View.VISIBLE
-                    tview3.text = "${items.tue?.number}등"
+                    tview3.text = "${items.tue?.number ?: 0 + 1}등"
                 } else {
                     iviewBookImg3.setImageResource(R.drawable.ic_best_gr_24px)
                     tview3.visibility = View.GONE
@@ -87,7 +86,7 @@ class AdapterBestRankList(
                         iviewBookImg4.setImageResource(R.drawable.ic_best_vt_24px)
                     }
                     tview4.visibility = View.VISIBLE
-                    tview4.text = "${items.wed?.number}등"
+                    tview4.text = "${items.wed?.number ?: 0 + 1}등"
                 } else {
                     iviewBookImg4.setImageResource(R.drawable.ic_best_gr_24px)
                     tview4.visibility = View.GONE
@@ -101,7 +100,7 @@ class AdapterBestRankList(
                         iviewBookImg5.setImageResource(R.drawable.ic_best_vt_24px)
                     }
                     tview5.visibility = View.VISIBLE
-                    tview5.text = "${items.thur?.number}등"
+                    tview5.text = "${items.thur?.number ?: 0 + 1}등"
                 } else {
                     iviewBookImg5.setImageResource(R.drawable.ic_best_gr_24px)
                     tview5.visibility = View.GONE
@@ -115,7 +114,7 @@ class AdapterBestRankList(
                         iviewBookImg6.setImageResource(R.drawable.ic_best_vt_24px)
                     }
                     tview6.visibility = View.VISIBLE
-                    tview6.text = "${items.fri?.number}등"
+                    tview6.text = "${items.fri?.number ?: 0 + 1}등"
                 } else {
                     iviewBookImg6.setImageResource(R.drawable.ic_best_gr_24px)
                     tview6.visibility = View.GONE
@@ -129,7 +128,7 @@ class AdapterBestRankList(
                         iviewBookImg7.setImageResource(R.drawable.ic_best_vt_24px)
                     }
                     tview7.visibility = View.VISIBLE
-                    tview7.text = "${items.sat?.number}등"
+                    tview7.text = "${items.sat?.number ?: 0 + 1}등"
                 } else {
                     iviewBookImg7.setImageResource(R.drawable.ic_best_gr_24px)
                     tview7.visibility = View.GONE
@@ -150,9 +149,5 @@ class AdapterBestRankList(
         return item[position]
     }
 
-
-    fun getSelectedBook(): String? {
-        return selected
-    }
 
 }
