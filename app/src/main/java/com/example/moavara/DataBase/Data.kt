@@ -142,6 +142,7 @@ data class UserPickBook(
     var info3: String = "",
     var info4: String = "",
     var info5: String = "",
+    var info6: String = "",
     var number: Int = 0,
     var numberDiff: Int = 0,
     var date: String = "",

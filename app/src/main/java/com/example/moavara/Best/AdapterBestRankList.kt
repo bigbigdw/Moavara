@@ -14,6 +14,7 @@ class AdapterBestRankList(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var item: ArrayList<BestRankListWeekend> = items
+    var itemMode = 1
 
     interface OnItemClickListener {
         fun onItemClick(v: View?, position: Int, value: String?)
@@ -37,98 +38,98 @@ class AdapterBestRankList(
 
             with(holder.binding){
                 if (items.sun != null) {
-                    tviewDate1.text = items.sun?.date?.substring(3)
+                    tviewDate1.text = items.sun?.date?.substring(4)
                     if (items.sun?.date == DBDate.DateMMDD()) {
                         iviewBookImg1.setImageResource(R.drawable.ic_best_gn_24px)
                     } else {
                         iviewBookImg1.setImageResource(R.drawable.ic_best_vt_24px)
                     }
                     tview1.visibility = View.VISIBLE
-                    tview1.text = "${items.sun?.number ?: 0 + 1}등"
+                    tview1.text = "${items.sun?.number!!.toInt() + 1}등"
                 } else {
                     iviewBookImg1.setImageResource(R.drawable.ic_best_gr_24px)
                     tview1.visibility = View.GONE
                 }
 
                 if (items.mon != null) {
-                    tviewDate2.text = items.mon?.date?.substring(3)
+                    tviewDate2.text = items.mon?.date?.substring(4)
                     if (items.mon?.date == DBDate.DateMMDD()) {
                         iviewBookImg2.setImageResource(R.drawable.ic_best_gn_24px)
                     } else {
                         iviewBookImg2.setImageResource(R.drawable.ic_best_vt_24px)
                     }
                     tview2.visibility = View.VISIBLE
-                    tview2.text = "${items.mon?.number ?: 0 + 1}등"
+                    tview2.text = "${items.mon?.number!!.toInt() + 1}등"
                 } else {
                     iviewBookImg2.setImageResource(R.drawable.ic_best_gr_24px)
                     tview2.visibility = View.GONE
                 }
 
                 if (items.tue != null) {
-                    tviewDate3.text = items.tue?.date?.substring(3)
+                    tviewDate3.text = items.tue?.date?.substring(4)
                     if (items.tue?.date == DBDate.DateMMDD()) {
                         iviewBookImg3.setImageResource(R.drawable.ic_best_gn_24px)
                     } else {
                         iviewBookImg3.setImageResource(R.drawable.ic_best_vt_24px)
                     }
                     tview3.visibility = View.VISIBLE
-                    tview3.text = "${items.tue?.number ?: 0 + 1}등"
+                    tview3.text = "${(items.tue?.number?.toInt() ?: 0) + 1}등"
                 } else {
                     iviewBookImg3.setImageResource(R.drawable.ic_best_gr_24px)
                     tview3.visibility = View.GONE
                 }
 
                 if (items.wed != null) {
-                    tviewDate4.text = items.wed?.date?.substring(3)
+                    tviewDate4.text = items.wed?.date?.substring(4)
                     if (items.wed?.date == DBDate.DateMMDD()) {
                         iviewBookImg4.setImageResource(R.drawable.ic_best_gn_24px)
                     } else {
                         iviewBookImg4.setImageResource(R.drawable.ic_best_vt_24px)
                     }
                     tview4.visibility = View.VISIBLE
-                    tview4.text = "${items.wed?.number ?: 0 + 1}등"
+                    tview4.text = "${(items.wed?.number?.toInt() ?: 0) + 1}등"
                 } else {
                     iviewBookImg4.setImageResource(R.drawable.ic_best_gr_24px)
                     tview4.visibility = View.GONE
                 }
 
                 if (items.thur != null) {
-                    tviewDate5.text = items.thur?.date?.substring(3)
+                    tviewDate5.text = items.thur?.date?.substring(4)
                     if (items.thur?.date == DBDate.DateMMDD()) {
                         iviewBookImg5.setImageResource(R.drawable.ic_best_gn_24px)
                     } else {
                         iviewBookImg5.setImageResource(R.drawable.ic_best_vt_24px)
                     }
                     tview5.visibility = View.VISIBLE
-                    tview5.text = "${items.thur?.number ?: 0 + 1}등"
+                    tview5.text = "${(items.thur?.number?.toInt() ?: 0) + 1}등"
                 } else {
                     iviewBookImg5.setImageResource(R.drawable.ic_best_gr_24px)
                     tview5.visibility = View.GONE
                 }
 
                 if (items.fri != null) {
-                    tviewDate6.text = items.fri?.date?.substring(3)
+                    tviewDate6.text = items.fri?.date?.substring(4)
                     if (items.fri?.date == DBDate.DateMMDD()) {
                         iviewBookImg6.setImageResource(R.drawable.ic_best_gn_24px)
                     } else {
                         iviewBookImg6.setImageResource(R.drawable.ic_best_vt_24px)
                     }
                     tview6.visibility = View.VISIBLE
-                    tview6.text = "${items.fri?.number ?: 0 + 1}등"
+                    tview6.text = "${(items.fri?.number?.toInt() ?: 0) + 1}등"
                 } else {
                     iviewBookImg6.setImageResource(R.drawable.ic_best_gr_24px)
                     tview6.visibility = View.GONE
                 }
 
                 if (items.sat != null) {
-                    tviewDate7.text = items.sat?.date?.substring(3)
+                    tviewDate7.text = items.sat?.date?.substring(4)
                     if (items.sat?.date == DBDate.DateMMDD()) {
                         iviewBookImg7.setImageResource(R.drawable.ic_best_gn_24px)
                     } else {
                         iviewBookImg7.setImageResource(R.drawable.ic_best_vt_24px)
                     }
                     tview7.visibility = View.VISIBLE
-                    tview7.text = "${items.sat?.number ?: 0 + 1}등"
+                    tview7.text = "${(items.sat?.number?.toInt() ?: 0) + 1}등"
                 } else {
                     iviewBookImg7.setImageResource(R.drawable.ic_best_gr_24px)
                     tview7.visibility = View.GONE

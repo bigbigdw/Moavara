@@ -54,10 +54,19 @@ data class BookListDataBest (
     var info3: String = "",
     var info4: String = "",
     var info5: String = "",
+    var info6: String = "",
     var number: Int = 0,
     var date: String = "",
     var type: String = "",
     var memo: String = "",
+)
+
+data class BestTodayAverage (
+    var info1: Int = 0,
+    var info2: Int = 0,
+    var info3: Int = 0,
+    var info4: Int = 0,
+    var info5: Int = 0,
 )
 
 data class BookListDataBestAnalyze (

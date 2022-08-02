@@ -25,34 +25,42 @@ class InnerFragmentBestDetailRank(
     val itemMonthList13 = BestRankListWeekend()
     val itemMonthList14 = BestRankListWeekend()
     val itemMonthList15 = BestRankListWeekend()
+    val itemMonthList16 = BestRankListWeekend()
+
     val itemMonthList21 = BestRankListWeekend()
     val itemMonthList22 = BestRankListWeekend()
     val itemMonthList23 = BestRankListWeekend()
     val itemMonthList24 = BestRankListWeekend()
     val itemMonthList25 = BestRankListWeekend()
+    val itemMonthList26 = BestRankListWeekend()
+
     val itemMonthList31 = BestRankListWeekend()
     val itemMonthList32 = BestRankListWeekend()
     val itemMonthList33 = BestRankListWeekend()
     val itemMonthList34 = BestRankListWeekend()
     val itemMonthList35 = BestRankListWeekend()
+    val itemMonthList36 = BestRankListWeekend()
 
     var monthBeforeBefore1 = false
     var monthBeforeBefore2 = false
     var monthBeforeBefore3 = false
     var monthBeforeBefore4 = false
     var monthBeforeBefore5 = false
+    var monthBeforeBefore6 = false
 
     var monthBefore1 = false
     var monthBefore2 = false
     var monthBefore3 = false
     var monthBefore4 = false
     var monthBefore5 = false
+    var monthBefore6 = false
 
     var month1 = false
     var month2 = false
     var month3 = false
     var month4 = false
     var month5 = false
+    var month6 = false
     private var _binding: FragmentBestDetailRankBinding? = null
     private val binding get() = _binding!!
 
@@ -102,6 +110,9 @@ class InnerFragmentBestDetailRank(
                 } else if (itemDate.week == 5) {
                     getItemMonthList(itemDate, itemData, itemMonthList15)
                     month5= true
+                }  else if (itemDate.week == 5) {
+                    getItemMonthList(itemDate, itemData, itemMonthList16)
+                    month6= true
                 }
             } else if (itemDate?.month == DBDate.Month().toInt() - 1) {
                 if (itemDate.week == 1) {
@@ -119,6 +130,9 @@ class InnerFragmentBestDetailRank(
                 } else if (itemDate.week == 5) {
                     getItemMonthList(itemDate, itemData, itemMonthList25)
                     monthBefore5 = true
+                } else if (itemDate.week == 6) {
+                    getItemMonthList(itemDate, itemData, itemMonthList26)
+                    monthBefore6 = true
                 }
             }  else if (itemDate?.month == DBDate.Month().toInt() - 2) {
                 if (itemDate.week == 1) {
@@ -136,6 +150,9 @@ class InnerFragmentBestDetailRank(
                 } else if (itemDate.week == 5) {
                     getItemMonthList(itemDate, itemData, itemMonthList35)
                     monthBeforeBefore5 = true
+                } else if (itemDate.week == 6) {
+                    getItemMonthList(itemDate, itemData, itemMonthList36)
+                    monthBeforeBefore6 = true
                 }
             }
         }
@@ -155,6 +172,9 @@ class InnerFragmentBestDetailRank(
         if(monthBeforeBefore5){
             itemMonth.add(itemMonthList35)
         }
+        if(monthBeforeBefore6){
+            itemMonth.add(itemMonthList36)
+        }
 
         if(monthBefore1){
             itemMonth.add(itemMonthList21)
@@ -171,6 +191,9 @@ class InnerFragmentBestDetailRank(
         if(monthBefore5){
             itemMonth.add(itemMonthList25)
         }
+        if(monthBefore6){
+            itemMonth.add(itemMonthList26)
+        }
 
         if(month1){
             itemMonth.add(itemMonthList11)
@@ -186,6 +209,9 @@ class InnerFragmentBestDetailRank(
         }
         if(month5){
             itemMonth.add(itemMonthList15)
+        }
+        if(month6){
+            itemMonth.add(itemMonthList16)
         }
 
         adapterMonth.notifyDataSetChanged()

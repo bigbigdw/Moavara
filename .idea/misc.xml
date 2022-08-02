@@ -199,7 +199,7 @@
         <entry key="app/src/main/res/layout/dialog_login_alert.xml" value="0.33" />
         <entry key="app/src/main/res/layout/dialog_login_confirm.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_best.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_best_detail_analyze.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_best_detail_analyze.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_best_detail_rank.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_best_month.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_best_today.xml" value="0.1" />

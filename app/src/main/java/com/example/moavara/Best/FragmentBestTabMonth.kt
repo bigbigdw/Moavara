@@ -121,6 +121,7 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
                                                     group.info3,
                                                     group.info4,
                                                     group.info5,
+                                                    group.info6,
                                                     group.number,
                                                     group.date,
                                                     group.type,

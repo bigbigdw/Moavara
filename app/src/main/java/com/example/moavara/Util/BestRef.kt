@@ -9,14 +9,6 @@ import org.json.JSONObject
 object BestRef {
     private val mRootRef = FirebaseDatabase.getInstance().reference
 
-    fun strToInt(str: String): Int {
-        return if(str.contains("만")){
-            str.replace("만","").toInt() * 10000
-        } else if (str.contains(",")) {
-            str.replace(",","").toInt()
-        } else str.toInt()
-    }
-
     private fun setBestRef(platform: String, genre: String): DatabaseReference {
         return mRootRef.child("Best").child(platform).child(genre)
     }
@@ -205,6 +197,7 @@ object BestRef {
             ref["info3"] as String,
             ref["info4"] as String,
             ref["info5"] as String,
+            ref["info6"] as String,
             ref["number"] as Int,
             ref["date"] as String,
             ref["type"] as String
@@ -254,6 +247,7 @@ object BestRef {
             jsonObject.optString("info3"),
             jsonObject.optString("info4"),
             jsonObject.optString("info5"),
+            jsonObject.optString("info6"),
             jsonObject.optInt("number"),
             jsonObject.optString("date"),
             jsonObject.optString("type"),

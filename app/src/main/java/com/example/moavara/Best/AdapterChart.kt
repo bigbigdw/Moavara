@@ -72,7 +72,6 @@ class AdapterChart(private var holder: List<BestChart>) :
                 legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
                 legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
 
-
                 axisRight.setDrawLabels(false)
                 xAxis.setDrawGridLines(false)
 

@@ -29,7 +29,6 @@ class ActivityAdmin : AppCompatActivity() {
 
     var cate = "ALL"
     var status = ""
-    var isRoom = false
     private lateinit var binding: ActivityAdminBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,7 +90,6 @@ class ActivityAdmin : AppCompatActivity() {
                 Mining.runMining(applicationContext, "ROMANCE")
                 Mining.runMining(applicationContext, "BL")
                 Toast.makeText(applicationContext, "데이터 갱신 완료", Toast.LENGTH_SHORT).show()
-
             }
 
             llayoutBtn4.setOnClickListener {

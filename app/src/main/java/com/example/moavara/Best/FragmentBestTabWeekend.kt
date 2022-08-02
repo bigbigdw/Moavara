@@ -200,6 +200,12 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
 
     private fun getBestWeekList() {
 
+        val file = File(File("/storage/self/primary/MOAVARA"), "Week_${platform}.json")
+        if (file.exists()) {
+            file.delete()
+        }
+
+
         binding.rviewBest.removeAllViews()
         itemWeek.clear()
 
@@ -210,22 +216,27 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
 
                      for (day in 1..7) {
                          val itemResult = dataSnapshot.child(day.toString())
+                         val jsonArray = JSONArray()
                          val itemList = ArrayList<BookListDataBest>()
 
                          if(itemResult.value == null){
                              for (num in 0..19) {
+                                 val jsonObject = JSONObject()
                                  itemList.add(BookListDataBest())
+                                 jsonArray.put(BestRef.putItem(jsonObject, BookListDataBest()))
                              }
                              itemWeek.add(itemList)
 
                          } else {
                              for (num in 0..19) {
+                                 val jsonObject = JSONObject()
                                  val item: BookListDataBest? =
                                      itemResult.child(num.toString())
                                          .getValue(BookListDataBest::class.java)
 
                                  if (item != null) {
                                      itemList.add(item)
+                                     jsonArray.put(BestRef.putItem(jsonObject, item))
                                  }
                              }
                              itemWeek.add(itemList)
@@ -245,10 +256,12 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                          }
 
                          arrayCarousel.addAll(itemListCarousel)
+                         obj.putOpt(day.toString(), jsonArray)
                     }
 
                     binding.blank.root.visibility = View.GONE
                     binding.llayoutWrap.visibility = View.VISIBLE
+                    writeFile(obj)
                     adapter?.notifyDataSetChanged()
 
                     if(arrayCarousel.size > 0){
