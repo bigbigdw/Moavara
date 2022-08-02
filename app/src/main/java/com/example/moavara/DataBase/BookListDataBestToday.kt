@@ -62,10 +62,10 @@ data class BookListDataBest (
 )
 
 data class BestTodayAverage (
-    var info1: Float = 0F,
-    var info2: Float = 0F,
-    var info3: Float = 0F,
-    var info4: Float = 0F
+    var info1: Int = 0,
+    var info2: Int = 0,
+    var info3: Int = 0,
+    var info4: Int = 0,
 )
 
 data class BookListDataBestAnalyze (
