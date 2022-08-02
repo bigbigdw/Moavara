@@ -1,7 +1,6 @@
 package com.example.moavara.Util
 
 import android.content.Context
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.moavara.DataBase.TrophyInfo
 import com.example.moavara.Search.BookListDataBestMonthNum
@@ -13,87 +12,12 @@ object DBDate {
 
     var status = ""
 
-    fun Date(): Int {
-        return Calendar.getInstance().get(Calendar.DATE)
-    }
-
     fun DayInt(): Int {
         return Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
     }
 
     fun Day(): String {
         return Calendar.getInstance().get(Calendar.DAY_OF_WEEK).toString()
-    }
-
-    fun Yesterday(): String {
-
-        return if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 1) {
-            "7"
-        } else {
-            (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1).toString()
-        }
-    }
-
-    fun DayToString(day : Int): String {
-
-        when (day) {
-            1 -> {
-                return "일"
-            }
-            2 -> {
-                return "월"
-            }
-            3 -> {
-                return "화"
-            }
-            4 -> {
-                return "수"
-            }
-            5 -> {
-                return "목"
-            }
-            6 -> {
-                return "금"
-            }
-            7 -> {
-                return "토"
-            }
-            else -> {
-                return ""
-            }
-        }
-    }
-
-    fun DayString(): String {
-
-        val day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK).toString()
-
-        when (day) {
-            "1" -> {
-                return "sun"
-            }
-            "2" -> {
-                return "mon"
-            }
-            "3" -> {
-                return "tue"
-            }
-            "4" -> {
-                return "wed"
-            }
-            "5" -> {
-                return "thur"
-            }
-            "6" -> {
-                return "fri"
-            }
-            "7" -> {
-                return "sat"
-            }
-            else -> {
-                return ""
-            }
-        }
     }
 
     fun Week(): String {
@@ -147,14 +71,6 @@ object DBDate {
         }
 
         return null
-    }
-
-    fun getYesterday(date : String) : Int {
-        return (date.toInt() - 1)
-    }
-
-    fun getToday(date : String) : Int {
-        return (date.toInt())
     }
 
     fun setMonthNum(date : Int) : BookListDataBestMonthNum {

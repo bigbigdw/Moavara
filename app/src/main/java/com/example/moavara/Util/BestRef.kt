@@ -209,6 +209,7 @@ object BestRef {
             ref["info3"] as String,
             ref["info4"] as String,
             ref["info5"] as String,
+            ref["info6"] as String,
             ref["number"] as Int,
             ref["date"] as String,
             0,

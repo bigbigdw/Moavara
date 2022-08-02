@@ -205,7 +205,6 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
             file.delete()
         }
 
-
         binding.rviewBest.removeAllViews()
         itemWeek.clear()
 

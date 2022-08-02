@@ -31,3 +31,23 @@ fun SpannableStringBuilder.applyingTextColor(str: String, color: String) {
 
 
 fun Float.dpToPx(): Float = this * Resources.getSystem().displayMetrics.density
+
+fun String.strToFloat()  : Float {
+    val text = this.replace(",", "").replace(" ", "")
+
+    return if(this.contains("만")){
+        text.replace("만","").toFloat() * 10000
+    } else {
+        text.toFloat()
+    }
+}
+
+fun String.strToInt()  : Int {
+    val text = this.replace(",", "").replace(" ", "")
+
+    return if(this.contains("만")){
+        text.replace("만","").toInt() * 10000
+    } else {
+        text.toInt()
+    }
+}

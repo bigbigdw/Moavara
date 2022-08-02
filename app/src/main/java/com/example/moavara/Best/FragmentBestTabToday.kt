@@ -1,8 +1,6 @@
 package com.example.moavara.Best
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -58,14 +56,7 @@ class FragmentBestTabToday(private val tabType: String) :
         binding.blank.tviewblank.text = "작품을 불러오는 중..."
         binding.rviewBest.visibility = View.GONE
 
-        Looper.myLooper()?.let {
-            Handler(it).postDelayed(
-                {
-                    readJsonList()
-                },
-                300
-            )
-        }
+        readJsonList()
 
         adapterToday?.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
@@ -188,6 +179,7 @@ class FragmentBestTabToday(private val tabType: String) :
                                             group.info1,
                                             group.info2,
                                             group.info3,
+                                            group.info4,
                                             group.number,
                                             group.date,
 
@@ -204,6 +196,7 @@ class FragmentBestTabToday(private val tabType: String) :
                                     lastItem.info1,
                                     lastItem.info2,
                                     lastItem.info3,
+                                    lastItem.info4,
                                     lastItem.number,
                                     lastItem.date,
                                     moreLastItem.number - lastItem.number,
@@ -235,6 +228,7 @@ class FragmentBestTabToday(private val tabType: String) :
                                         group.info1,
                                         group.info2,
                                         group.info3,
+                                        group.info4,
                                         group.number,
                                         group.date,
                                         0,
@@ -336,6 +330,7 @@ class FragmentBestTabToday(private val tabType: String) :
                     jo.optString("info1"),
                     jo.optString("info2"),
                     jo.optString("info3"),
+                    jo.optString("info4"),
                     jo.optInt("number"),
                     jo.optString("date"),
                     jo.optInt("numberDiff"),

@@ -17,7 +17,7 @@
     <com.github.mikephil.charting.charts.RadarChart
         android:id="@+id/radarChart"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="350dp"
         android:layout_marginTop="16dp" />
 
     <androidx.recyclerview.widget.RecyclerView

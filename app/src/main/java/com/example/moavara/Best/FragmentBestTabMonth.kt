@@ -384,6 +384,7 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
                                         group.info1,
                                         group.info2,
                                         group.info3,
+                                        group.info4,
                                         group.number,
                                         group.date,
                                     )
@@ -399,6 +400,7 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
                                 lastItem.info1,
                                 lastItem.info2,
                                 lastItem.info3,
+                                lastItem.info4,
                                 lastItem.number,
                                 lastItem.date,
                                 moreLastItem.number - lastItem.number,
@@ -418,6 +420,7 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
                                     group.info1,
                                     group.info2,
                                     group.info3,
+                                    group.info4,
                                     group.number,
                                     group.date,
                                     0,

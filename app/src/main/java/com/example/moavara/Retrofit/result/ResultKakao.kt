@@ -86,6 +86,14 @@ class KakaoBestStageResult {
     @SerializedName("visitorCount")
     @Expose
     var visitorCount: String = ""
+
+    @SerializedName("episodeLikeCount")
+    @Expose
+    var episodeLikeCount: String = ""
+
+    @SerializedName("favoriteCount")
+    @Expose
+    var favoriteCount: String = ""
 }
 
 class KakaoBestStageThumbnailResult {
@@ -143,6 +151,10 @@ class KakaoBestBookResult {
     @SerializedName("image")
     @Expose
     var image: String = ""
+
+    @SerializedName("comment_count")
+    @Expose
+    var comment_count: String = ""
 }
 
 class BestKakaoBookDetail {

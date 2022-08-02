@@ -4,17 +4,10 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.room.Room
 import com.example.moavara.DataBase.BestTodayAverage
-import com.example.moavara.DataBase.BookListDataBestAnalyze
-import com.example.moavara.DataBase.DataBaseBestDay
-import com.example.moavara.Main.mRootRef
 import com.example.moavara.Retrofit.*
 import com.example.moavara.Search.EventDetailDataMining
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
@@ -116,17 +109,17 @@ object Mining {
         }
 
         val OneStore = Thread {
-            getOneStoreBest(genre, context)
+            getOneStoreBest(genre)
         }
 
         val Kakao = Thread {
             for (i in 1..4) {
-                getKakaoBest(genre, i, context)
+                getKakaoBest(genre, i)
             }
         }
 
         val KakaoStage1 = Thread {
-            getKakaoStageBest(genre, context)
+            getKakaoStageBest(genre)
         }
 
         val Joara = Thread {
@@ -148,31 +141,31 @@ object Mining {
         }
 
         val NaverToday = Thread {
-            getNaverToday(genre, context)
+            getNaverToday(genre)
         }
 
         val NaverChallenge = Thread {
-            getNaverChallenge(genre, context)
+            getNaverChallenge(genre)
         }
 
         val NaverBest = Thread {
-            getNaverBest(genre, context)
+            getNaverBest(genre)
         }
 
         val Moonpia = Thread {
             for (i in 1..4) {
-                getMoonpiaBest(i, context)
+                getMoonpiaBest(i)
             }
         }
 
         val Toksoda = Thread {
             for (i in 1..5) {
-                getToksodaBest(genre, i, context)
+                getToksodaBest(genre, i)
             }
         }
 
         val MrBlue = Thread {
-            getMrBlueBest(genre, context)
+            getMrBlueBest(genre)
         }
 
 
@@ -233,7 +226,7 @@ object Mining {
         }
     }
 
-    fun getMrBlueBest(genre: String, context: Context) {
+    fun getMrBlueBest(genre: String) {
         Thread {
 
             try {
@@ -256,6 +249,7 @@ object Mining {
                     MrBlueRef["info3"] = " "
                     MrBlueRef["info4"] = " "
                     MrBlueRef["info5"] = " "
+                    MrBlueRef["info6"] = " "
                     MrBlueRef["number"] = i
                     MrBlueRef["date"] = DBDate.DateMMDD()
                     MrBlueRef["type"] = "MrBlue"
@@ -274,16 +268,16 @@ object Mining {
 
     }
 
-    fun getNaverToday(genre: String, context: Context) {
+    fun getNaverToday(genre: String) {
         try {
             val doc: Document =
                 Jsoup.connect(Genre.setNaverTodayGenre(genre)).post()
             val Naver: Elements = doc.select(".ranking_wrap_left .list_ranking li")
             val NaverRef: MutableMap<String?, Any> = HashMap()
 
-            var averageInfo3 = 0
-            var averageInfo4 = 0
-            var averageInfo5 = 0
+            var average1 = 0F
+            var average2 = 0F
+            var average3 = 0F
 
             for (i in Naver.indices) {
 
@@ -295,10 +289,10 @@ object Mining {
                     .replace("https://novel.naver.com/webnovel/list?novelId=", "")
                 NaverRef["info1"] = Naver[i].select(".num_total").first()!!.text()
                 NaverRef["info2"] = ""
-                NaverRef["info3"] = Naver.select(".score_area")[i].text()
-                NaverRef["info4"] =
-                    Naver[i].select(".num_total").next().first()!!.text()
-                NaverRef["info5"] = Naver.select(".count")[i].text()
+                NaverRef["info3"] = Naver.select(".score_area")[i].text().replace("별점", "")
+                NaverRef["info4"] = Naver[i].select(".num_total").next().first()!!.text().replace("조회 ", "")
+                NaverRef["info5"] = Naver.select(".count")[i].text().replace("관심", "")
+                NaverRef["info6"] = ""
                 NaverRef["number"] = i
 
                 NaverRef["date"] = DBDate.DateMMDD()
@@ -306,14 +300,15 @@ object Mining {
 
                 miningValue(NaverRef, i, "Naver_Today", genre)
 
-                averageInfo3 += Naver.select(".score_area")[i].text().toInt() / Naver.size
-                averageInfo4 += Naver[i].select(".num_total").next().first()!!.text().toInt() / Naver.size
-                averageInfo5 += Naver.select(".count")[i].text().toInt() / Naver.size
+                average1 += Naver.select(".score_area")[i].text().replace("별점", "").replace("별", "")
+                    .toFloat() / Naver.size
+                average2 += Naver[i].select(".num_total").next().first()!!.text().replace("조회 ", "").strToFloat() / Naver.size
+                average3 += Naver.select(".count")[i].text().replace("관심", "").strToFloat() / Naver.size
             }
 
             FirebaseDatabase.getInstance().reference.child("Best").child("Naver_Today")
-                .child(genre).child("Average")
-                .setValue(BestTodayAverage(averageInfo3, averageInfo4, averageInfo5))
+                .child(genre).child("Average").child(DBDate.DateMMDD())
+                .setValue(BestTodayAverage(average1, average2, average3))
 
             File(File("/storage/self/primary/MOAVARA"), "Today_Naver_Today.json").delete()
             File(File("/storage/self/primary/MOAVARA"), "Week_Naver_Today.json").delete()
@@ -326,16 +321,16 @@ object Mining {
 
     }
 
-    fun getNaverChallenge(genre: String, context: Context) {
+    fun getNaverChallenge(genre: String) {
         try {
             val doc: Document =
                 Jsoup.connect(Genre.setNaverChallengeGenre(genre)).post()
             val Naver: Elements = doc.select(".ranking_wrap_left .list_ranking li")
             val NaverRef: MutableMap<String?, Any> = HashMap()
 
-            var averageInfo3 = 0
-            var averageInfo4 = 0
-            var averageInfo5 = 0
+            var average1 = 0F
+            var average2 = 0F
+            var average3 = 0F
 
             for (i in Naver.indices) {
 
@@ -346,24 +341,25 @@ object Mining {
                     .replace("https://novel.naver.com/challenge/list?novelId=", "")
                 NaverRef["info1"] = Naver[i].select(".num_total").first()!!.text()
                 NaverRef["info2"] = ""
-                NaverRef["info3"] = Naver.select(".score_area")[i].text()
+                NaverRef["info3"] = Naver.select(".score_area")[i].text().replace("별점","")
                 NaverRef["info4"] =
                     Naver[i].select(".num_total").next().first()!!.text()
                 NaverRef["info5"] = Naver.select(".count")[i].text()
+                NaverRef["info6"] = ""
                 NaverRef["number"] = i
                 NaverRef["date"] = DBDate.DateMMDD()
                 NaverRef["type"] = "Naver_Challenge"
 
                 miningValue(NaverRef, i, "Naver_Challenge", genre)
 
-                averageInfo3 += Naver.select(".score_area")[i].text().toInt() / Naver.size
-                averageInfo4 += Naver[i].select(".num_total").next().first()!!.text().toInt() / Naver.size
-                averageInfo5 += Naver.select(".count")[i].text().toInt() / Naver.size
+                average1 += Naver.select(".score_area")[i].text().replace("별점","").toFloat() / Naver.size
+                average2 += Naver[i].select(".num_total").next().first()!!.text().replace("조회 ", "").strToFloat()/ Naver.size
+                average3 += Naver.select(".count")[i].text().replace("관심", "").strToFloat() / Naver.size
             }
 
             FirebaseDatabase.getInstance().reference.child("Best").child("Naver_Challenge")
-                .child(genre).child("Average")
-                .setValue(BestTodayAverage(averageInfo3, averageInfo4, averageInfo5))
+                .child(genre).child("Average").child(DBDate.DateMMDD())
+                .setValue(BestTodayAverage(average1, average2, average3))
 
             File(File("/storage/self/primary/MOAVARA"), "Today_Naver_Challenge.json").delete()
             File(File("/storage/self/primary/MOAVARA"), "Week_Naver_Challenge.json").delete()
@@ -374,7 +370,7 @@ object Mining {
         }
     }
 
-    fun getNaverBest(genre: String, context: Context) {
+    fun getNaverBest(genre: String) {
         try {
 
             val doc: Document =
@@ -382,9 +378,9 @@ object Mining {
             val Naver: Elements = doc.select(".ranking_wrap_left .list_ranking li")
             val NaverRef: MutableMap<String?, Any> = HashMap()
 
-            var averageInfo3 = 0
-            var averageInfo4 = 0
-            var averageInfo5 = 0
+            var average1 = 0F
+            var average2 = 0F
+            var average3 = 0F
 
             for (i in Naver.indices) {
 
@@ -399,20 +395,21 @@ object Mining {
                 NaverRef["info4"] =
                     Naver[i].select(".num_total").next().first()!!.text()
                 NaverRef["info5"] = Naver.select(".count")[i].text()
+                NaverRef["info6"] = ""
                 NaverRef["number"] = i
                 NaverRef["date"] = DBDate.DateMMDD()
                 NaverRef["type"] = "Naver"
 
                 miningValue(NaverRef, i, "Naver", genre)
 
-                averageInfo3 += Naver.select(".score_area")[i].text().toInt() / Naver.size
-                averageInfo4 += Naver[i].select(".num_total").next().first()!!.text().toInt() / Naver.size
-                averageInfo5 += Naver.select(".count")[i].text().toInt() / Naver.size
+                average1 += Naver.select(".score_area")[i].text().replace("별점","").toFloat() / Naver.size
+                average2 += Naver[i].select(".num_total").next().first()!!.text().replace("조회 ", "").strToFloat() / Naver.size
+                average3 += Naver.select(".count")[i].text().replace("관심", "").strToFloat() / Naver.size
             }
 
             FirebaseDatabase.getInstance().reference.child("Best").child("Ridi")
-                .child(genre).child("Average")
-                .setValue(BestTodayAverage(averageInfo3, averageInfo4, averageInfo5))
+                .child(genre).child("Average").child(DBDate.DateMMDD())
+                .setValue(BestTodayAverage(average1, average2, average3))
 
             File(File("/storage/self/primary/MOAVARA"), "Today_Naver.json").delete()
             File(File("/storage/self/primary/MOAVARA"), "Week_Naver.json").delete()
@@ -431,9 +428,8 @@ object Mining {
             val Ridi: Elements = doc.select(".book_thumbnail_wrapper")
             val RidiRef: MutableMap<String?, Any> = HashMap()
 
-            var averageInfo3 = 0
-            var averageInfo4 = 0
-            var averageInfo5 = 0
+            var average1 = 0F
+            var average2 = 0F
 
             for (i in Ridi.indices) {
                 if (i > 0) {
@@ -451,9 +447,15 @@ object Mining {
                     RidiRef["info3"] = doc.select("span .StarRate_ParticipantCount")[i].text()
                     RidiRef["info4"] = doc.select("span .StarRate_Score")[i].text()
                     RidiRef["info5"] = ""
+                    RidiRef["info6"] = ""
                     RidiRef["number"] = (i - 1) + ((page - 1) * (Ridi.size - 1))
                     RidiRef["date"] = DBDate.DateMMDD()
                     RidiRef["type"] = "Ridi"
+
+                    average1 += doc.select("span .StarRate_ParticipantCount")[i].text()
+                        .replace(",", "").replace("명", "").toFloat() / (Ridi.size - 1)
+                    average2 += doc.select("span .StarRate_Score")[i].text().replace("점", "")
+                        .toFloat() / (Ridi.size - 1)
 
                     miningValue(
                         RidiRef,
@@ -461,15 +463,12 @@ object Mining {
                         "Ridi",
                         genre
                     )
-
-                    averageInfo3 += doc.select("span .StarRate_ParticipantCount")[i].text().toInt() / Ridi.size - 1
-                    averageInfo4 += doc.select("span .StarRate_Score")[i].text().toInt() / Ridi.size - 1
                 }
             }
 
             FirebaseDatabase.getInstance().reference.child("Best").child("Ridi")
-                .child(genre).child("Average")
-                .setValue(BestTodayAverage(averageInfo3, averageInfo4, averageInfo5))
+                .child(genre).child("Average").child(DBDate.DateMMDD())
+                .setValue(BestTodayAverage(average1, average2))
 
             File(File("/storage/self/primary/MOAVARA"), "Today_Ridi.json").delete()
             File(File("/storage/self/primary/MOAVARA"), "Week_Ridi.json").delete()
@@ -480,16 +479,16 @@ object Mining {
         }
     }
 
-    fun getOneStoreBest(genre: String, context: Context) {
+    fun getOneStoreBest(genre: String) {
         try {
             val OneStoryRef: MutableMap<String?, Any> = HashMap()
 
             val apiOneStory = RetrofitOnestore()
             val param: MutableMap<String?, Any> = HashMap()
 
-            var averageInfo3 = 0
-            var averageInfo4 = 0
-            var averageInfo5 = 0
+            var average1 = 0F
+            var average2 = 0F
+            var average3 = 0F
 
             param["menuId"] = Genre.setOneStoreGenre(genre)
 
@@ -515,6 +514,7 @@ object Mining {
                                 OneStoryRef["info4"] = "평점 : " + productList[i].avgScore
                                 OneStoryRef["info5"] =
                                     "댓글 수 : " + productList[i].commentCount
+                                OneStoryRef["info6"] = ""
                                 OneStoryRef["number"] = i
                                 OneStoryRef["date"] = DBDate.DateMMDD()
                                 OneStoryRef["type"] = "OneStore"
@@ -526,15 +526,21 @@ object Mining {
                                     genre
                                 )
 
-                                averageInfo3 += productList[i].totalCount.toInt() / productList.size
-                                averageInfo4 += productList[i].avgScore.toInt() / productList.size
-                                averageInfo5 += productList[i].commentCount.toInt() / productList.size
+                                average1 += productList[i].totalCount.toFloat() / productList.size
+                                average2 += productList[i].avgScore.toFloat() / productList.size
+                                average3 += productList[i].commentCount.toFloat() / productList.size
 
                             }
 
                             FirebaseDatabase.getInstance().reference.child("Best").child("OneStore")
-                                .child(genre).child("Average")
-                                .setValue(BestTodayAverage(averageInfo3, averageInfo4, averageInfo5))
+                                .child(genre).child("Average").child(DBDate.DateMMDD())
+                                .setValue(
+                                    BestTodayAverage(
+                                        average1,
+                                        average2,
+                                        average3
+                                    )
+                                )
                         }
 
                         File(File("/storage/self/primary/MOAVARA"), "Today_OneStore.json").delete()
@@ -547,15 +553,16 @@ object Mining {
         }
     }
 
-    fun getKakaoStageBest(genre: String, context: Context) {
+    fun getKakaoStageBest(genre: String) {
         val KakaoRef: MutableMap<String?, Any> = HashMap()
 
         val apiKakao = RetrofitKaKao()
         val param: MutableMap<String?, Any> = HashMap()
 
-        var averageInfo3 = 0
-        var averageInfo4 = 0
-        val averageInfo5 = 0
+        var average1 = 0F
+        var average2 = 0F
+        var average3 = 0F
+        var average4 = 0F
 
         param["adult"] = "false"
         param["dateRange"] = "YESTERDAY"
@@ -581,21 +588,24 @@ object Mining {
                             KakaoRef["info1"] = novel.synopsis
                             KakaoRef["info2"] = "총 " + novel.publishedEpisodeCount + " 화"
                             KakaoRef["info3"] = "조회 수 : " + novel.viewCount
-                            KakaoRef["info4"] = "선호작 수 : " + novel.visitorCount
-                            KakaoRef["info5"] = ""
+                            KakaoRef["info4"] = "방문자 수 : " + novel.visitorCount
+                            KakaoRef["info5"] = "회차 좋아요 수 : " + novel.episodeLikeCount
+                            KakaoRef["info6"] = "선호작 수 : " + novel.favoriteCount
                             KakaoRef["number"] = i
                             KakaoRef["date"] = DBDate.DateMMDD()
                             KakaoRef["type"] = "Kakao_Stage"
 
                             miningValue(KakaoRef, i, "Kakao_Stage", genre)
 
-                            averageInfo3 += novel.viewCount.toInt() / list.size
-                            averageInfo4 += novel.visitorCount.toInt() / list.size
+                            average1 += novel.viewCount.toFloat() / list.size
+                            average2 += novel.visitorCount.toFloat() / list.size
+                            average3 += novel.episodeLikeCount.toFloat() / list.size
+                            average4 += novel.favoriteCount.toFloat() / list.size
                         }
 
                         FirebaseDatabase.getInstance().reference.child("Best").child("Kakao_Stage")
-                            .child(genre).child("Average")
-                            .setValue(BestTodayAverage(averageInfo3, averageInfo4, averageInfo5))
+                            .child(genre).child("Average").child(DBDate.DateMMDD())
+                            .setValue(BestTodayAverage(average1, average2, average3, average4))
 
                         File(
                             File("/storage/self/primary/MOAVARA"),
@@ -615,14 +625,15 @@ object Mining {
             })
     }
 
-    fun getKakaoBest(genre: String, page: Int, context: Context) {
+    fun getKakaoBest(genre: String, page: Int) {
         val apiKakao = RetrofitKaKao()
         val param: MutableMap<String?, Any> = HashMap()
         val KakaoRef: MutableMap<String?, Any> = HashMap()
 
-        var averageInfo3 = 0
-        var averageInfo4 = 0
-        var averageInfo5 = 0
+        var average1 = 0F
+        var average2 = 0F
+        var average3 = 0F
+        var average4 = 0F
 
         param["category"] = "11"
         param["subcategory"] = "0"
@@ -645,11 +656,12 @@ object Mining {
                             KakaoRef["bookImg"] =
                                 "https://dn-img-page.kakao.com/download/resource?kid=" + list[i].image
                             KakaoRef["bookCode"] = list[i].series_id
-                            KakaoRef["info1"] = "줄거리 : " + list[i].description
-                            KakaoRef["info2"] = "부제 : " + list[i].caption
+                            KakaoRef["info1"] = list[i].description
+                            KakaoRef["info2"] = list[i].caption
                             KakaoRef["info3"] = "조회 수 : " + list[i].read_count
                             KakaoRef["info4"] = "추천 수 : " + list[i].like_count
                             KakaoRef["info5"] = "평점 : " + list[i].rating
+                            KakaoRef["info6"] = "댓글 수 : " + list[i].comment_count
                             KakaoRef["number"] = (i + ((page - 1) * list.size))
                             KakaoRef["date"] = DBDate.DateMMDD()
                             KakaoRef["type"] = "Kakao"
@@ -660,15 +672,16 @@ object Mining {
                                 genre
                             )
 
-                            averageInfo3 += list[i].read_count.toInt() / list.size
-                            averageInfo4 += list[i].read_count.toInt() / list.size
-                            averageInfo5 += list[i].rating.toInt() / list.size
+                            average1 += list[i].read_count.toFloat() / list.size
+                            average2 += list[i].read_count.toFloat() / list.size
+                            average3 += list[i].rating.toFloat() / list.size
+                            average4 += list[i].comment_count.toFloat() / list.size
                         }
                     }
 
                     FirebaseDatabase.getInstance().reference.child("Best").child("Kakao")
-                        .child(genre).child("Average")
-                        .setValue(BestTodayAverage(averageInfo3, averageInfo4, averageInfo5))
+                        .child(genre).child("Average").child(DBDate.DateMMDD())
+                        .setValue(BestTodayAverage(average1, average2, average3, average4))
 
                     File(File("/storage/self/primary/MOAVARA"), "Today_Kakao.json").delete()
                     File(File("/storage/self/primary/MOAVARA"), "Week_Kakao.json").delete()
@@ -682,9 +695,10 @@ object Mining {
         val apiJoara = RetrofitJoara()
         val param = Param.getItemAPI(context)
 
-        var averageInfo3 = 0
-        var averageInfo4 = 0
-        var averageInfo5 = 0
+        var average1 = 0F
+        var average2 = 0F
+        var average3 = 0F
+        var average4 = 0F
 
         param["page"] = page.toString()
         param["best"] = "today"
@@ -710,13 +724,15 @@ object Mining {
                             JoaraRef["info3"] = "조회 수 : ${books[i].cntPageRead}"
                             JoaraRef["info4"] = "선호작 수 : ${books[i].cntFavorite}"
                             JoaraRef["info5"] = "추천 수 : ${books[i].cntRecom}"
+                            JoaraRef["info6"] = "댓글 수 : ${books[i].cntTotalComment}"
                             JoaraRef["number"] = i + ((page - 1) * books.size)
                             JoaraRef["date"] = DBDate.DateMMDD()
                             JoaraRef["type"] = "Joara"
 
-                            averageInfo3 += books[i].cntPageRead.toInt() / books.size
-                            averageInfo4 += books[i].cntFavorite.toInt() / books.size
-                            averageInfo5 += books[i].cntRecom.toInt() / books.size
+                            average1 += books[i].cntPageRead.toFloat() / books.size
+                            average2 += books[i].cntFavorite.toFloat() / books.size
+                            average3 += books[i].cntRecom.toFloat() / books.size
+                            average4 += books[i].cntTotalComment.toFloat() / books.size
 
                             miningValue(
                                 JoaraRef,
@@ -728,8 +744,8 @@ object Mining {
                     }
 
                     FirebaseDatabase.getInstance().reference.child("Best").child("Joara")
-                        .child(genre).child("Average")
-                        .setValue(BestTodayAverage(averageInfo3, averageInfo4, averageInfo5))
+                        .child(genre).child("Average").child(DBDate.DateMMDD())
+                        .setValue(BestTodayAverage(average1, average2, average3, average4))
 
                     File(File("/storage/self/primary/MOAVARA"), "Today_Joara.json").delete()
                     File(File("/storage/self/primary/MOAVARA"), "Week_Joara.json").delete()
@@ -750,9 +766,10 @@ object Mining {
         param["store"] = "premium"
         param["category"] = Genre.setJoaraGenre(genre)
 
-        var averageInfo3 = 0
-        var averageInfo4 = 0
-        var averageInfo5 = 0
+        var average1 = 0F
+        var average2 = 0F
+        var average3 = 0F
+        var average4 = 0F
 
         apiJoara.getJoaraBookBest(
             param,
@@ -772,6 +789,7 @@ object Mining {
                         JoaraRef["info3"] = "조회 수 : ${books[i].cntPageRead}"
                         JoaraRef["info4"] = "선호작 수 : ${books[i].cntFavorite}"
                         JoaraRef["info5"] = "추천 수 : ${books[i].cntRecom}"
+                        JoaraRef["info6"] = "댓글 수 : ${books[i].cntTotalComment}"
                         JoaraRef["number"] = i + ((page - 1) * books.size)
                         JoaraRef["date"] = DBDate.DateMMDD()
                         JoaraRef["type"] = "Joara_Premium"
@@ -783,14 +801,15 @@ object Mining {
                             genre
                         )
 
-                        averageInfo3 += books[i].cntPageRead.toInt() / books.size
-                        averageInfo4 += books[i].cntFavorite.toInt() / books.size
-                        averageInfo5 += books[i].cntRecom.toInt() / books.size
+                        average1 += books[i].cntPageRead.toFloat() / books.size
+                        average2 += books[i].cntFavorite.toFloat() / books.size
+                        average3 += books[i].cntRecom.toFloat() / books.size
+                        average4 += books[i].cntTotalComment.toFloat() / books.size
                     }
 
                     FirebaseDatabase.getInstance().reference.child("Best").child("Joara_Premium")
-                        .child(genre).child("Average")
-                        .setValue(BestTodayAverage(averageInfo3, averageInfo4, averageInfo5))
+                        .child(genre).child("Average").child(DBDate.DateMMDD())
+                        .setValue(BestTodayAverage(average1, average2, average3, average4))
 
                     File(File("/storage/self/primary/MOAVARA"), "Today_Joara_Premium.json").delete()
                     File(File("/storage/self/primary/MOAVARA"), "Week_Joara_Premium.json").delete()
@@ -812,9 +831,10 @@ object Mining {
         param["store"] = "nobless"
         param["category"] = Genre.setJoaraGenre(genre)
 
-        var averageInfo3 = 0
-        var averageInfo4 = 0
-        var averageInfo5 = 0
+        var average1 = 0F
+        var average2 = 0F
+        var average3 = 0F
+        var average4 = 0F
 
         apiJoara.getJoaraBookBest(
             param,
@@ -835,6 +855,7 @@ object Mining {
                         JoaraRef["info3"] = "조회 수 : ${books[i].cntPageRead}"
                         JoaraRef["info4"] = "선호작 수 : ${books[i].cntFavorite}"
                         JoaraRef["info5"] = "추천 수 : ${books[i].cntRecom}"
+                        JoaraRef["info6"] = "댓글 수 : ${books[i].cntTotalComment}"
                         JoaraRef["number"] = i + ((page - 1) * books.size)
                         JoaraRef["date"] = DBDate.DateMMDD()
                         JoaraRef["type"] = "Joara_Nobless"
@@ -845,14 +866,16 @@ object Mining {
                             "Joara_Nobless",
                             genre
                         )
-                        averageInfo3 += books[i].cntPageRead.toInt() / books.size
-                        averageInfo4 += books[i].cntFavorite.toInt() / books.size
-                        averageInfo5 += books[i].cntRecom.toInt() / books.size
+
+                        average1 += books[i].cntPageRead.toFloat() / books.size
+                        average2 += books[i].cntFavorite.toFloat() / books.size
+                        average3 += books[i].cntRecom.toFloat() / books.size
+                        average4 += books[i].cntTotalComment.toFloat() / books.size
                     }
 
                     FirebaseDatabase.getInstance().reference.child("Best").child("Joara_Nobless")
-                        .child(genre).child("Average")
-                        .setValue(BestTodayAverage(averageInfo3, averageInfo4, averageInfo5))
+                        .child(genre).child("Average").child(DBDate.DateMMDD())
+                        .setValue(BestTodayAverage(average1, average2, average3, average4))
 
                     File(File("/storage/self/primary/MOAVARA"), "Today_Joara_Nobless.json").delete()
                     File(File("/storage/self/primary/MOAVARA"), "Week_Joara_Nobless.json").delete()
@@ -862,7 +885,7 @@ object Mining {
 
     }
 
-    fun getMoonpiaBest(page: Int, context: Context) {
+    fun getMoonpiaBest(page: Int) {
         val MoonpiaRef: MutableMap<String?, Any> = HashMap()
 
         val apiMoonPia = RetrofitMoonPia()
@@ -873,9 +896,10 @@ object Mining {
         param["outAdult"] = "true"
         param["offset"] = (page - 1) * 25
 
-        var averageInfo3 = 0
-        var averageInfo4 = 0
-        var averageInfo5 = 0
+        var average1 = 0F
+        var average2 = 0F
+        var average3 = 0F
+        var average4 = 0F
 
         apiMoonPia.postMoonPiaBest(
             param,
@@ -893,10 +917,11 @@ object Mining {
                                     "https://cdn1.munpia.com${it[i].nvCover}"
                                 MoonpiaRef["bookCode"] = it[i].nvSrl
                                 MoonpiaRef["info1"] = it[i].nvStory
-                                MoonpiaRef["info2"] = "베스트 시간 : ${it[i].nsrData?.hour}"
+                                MoonpiaRef["info2"] = it[i].nvGnMainTitle
                                 MoonpiaRef["info3"] = "조회 수 : ${it[i].nsrData?.hit}"
                                 MoonpiaRef["info4"] = "방문 수 : ${it[i].nsrData?.number}"
                                 MoonpiaRef["info5"] = "선호작 수 : ${it[i].nsrData?.prefer}"
+                                MoonpiaRef["info6"] = "베스트 시간 : ${it[i].nsrData?.hour}"
                                 MoonpiaRef["number"] = (i + ((page - 1) * it.size))
                                 MoonpiaRef["date"] = DBDate.DateMMDD()
                                 MoonpiaRef["type"] = "Munpia"
@@ -907,14 +932,22 @@ object Mining {
                                     "Munpia",
                                     ""
                                 )
-                                averageInfo3 += it[i].nsrData?.hour?.toInt() ?: 0 / it.size
-                                averageInfo4 += it[i].nsrData?.hit?.toInt() ?: 0 / it.size
-                                averageInfo5 += it[i].nsrData?.prefer?.toInt() ?: 0 / it.size
+                                average1 += (it[i].nsrData?.hour?.toFloat() ?: 0F) / it.size
+                                average2 += (it[i].nsrData?.hit?.toFloat() ?: 0F) / it.size
+                                average3 += (it[i].nsrData?.prefer?.toFloat() ?: 0F) / it.size
+                                average4 += (it[i].nsrData?.hour?.toFloat() ?: 0F) / it.size
                             }
 
                             FirebaseDatabase.getInstance().reference.child("Best").child("Munpia")
-                                .child("Average")
-                                .setValue(BestTodayAverage(averageInfo3, averageInfo4, averageInfo5))
+                                .child("Average").child(DBDate.DateMMDD())
+                                .setValue(
+                                    BestTodayAverage(
+                                        average1,
+                                        average2,
+                                        average3,
+                                        average4
+                                    )
+                                )
 
                             File(
                                 File("/storage/self/primary/MOAVARA"),
@@ -932,7 +965,7 @@ object Mining {
             })
     }
 
-    fun getToksodaBest(genre: String, page: Int, context: Context) {
+    fun getToksodaBest(genre: String, page: Int) {
         val ToksodaRef: MutableMap<String?, Any> = HashMap()
 
         val apiToksoda = RetrofitToksoda()
@@ -947,9 +980,9 @@ object Mining {
         param["freePblserlYn"] = "00431"
         param["_"] = "1657262989944"
 
-        var averageInfo3 = 0
-        var averageInfo4 = 0
-        var averageInfo5 = 0
+        var average1 = 0F
+        var average2 = 0F
+        var average3 = 0F
 
         apiToksoda.getBestList(
             param,
@@ -966,8 +999,9 @@ object Mining {
                             ToksodaRef["info1"] = it[i].lnIntro
                             ToksodaRef["info2"] = "총 ${it[i].whlEpsdCnt}화"
                             ToksodaRef["info3"] = "조회 수 : ${it[i].inqrCnt}"
-                            ToksodaRef["info4"] = "장르 : ${it[i].lgctgrNm}"
-                            ToksodaRef["info5"] = "선호작 수 : ${it[i].intrstCnt}"
+                            ToksodaRef["info4"] = "좋아요 수 : ${it[i].goodAllCnt}"
+                            ToksodaRef["info5"] = "관심 수 : ${it[i].intrstCnt}"
+                            ToksodaRef["info6"] = ""
                             ToksodaRef["number"] = i
                             ToksodaRef["date"] = DBDate.DateMMDD()
                             ToksodaRef["type"] = "Toksoda"
@@ -979,13 +1013,14 @@ object Mining {
                                 genre
                             )
 
-                            averageInfo3 += it[i].inqrCnt.toInt() / it.size
-                            averageInfo4 += it[i].intrstCnt.toInt() / it.size
+                            average1 += it[i].inqrCnt.toFloat() / it.size
+                            average2 += it[i].goodAllCnt.toFloat() / it.size
+                            average3 += it[i].intrstCnt.toFloat() / it.size
                         }
 
                         FirebaseDatabase.getInstance().reference.child("Best").child("Toksoda")
-                            .child(genre).child("Average")
-                            .setValue(BestTodayAverage(averageInfo3, averageInfo4, averageInfo5))
+                            .child(genre).child("Average").child(DBDate.DateMMDD())
+                            .setValue(BestTodayAverage(average1, average2, average3))
 
                         File(File("/storage/self/primary/MOAVARA"), "Today_Toksoda.json").delete()
                         File(File("/storage/self/primary/MOAVARA"), "Week_Toksoda.json").delete()
@@ -993,45 +1028,6 @@ object Mining {
                     }
                 }
             })
-    }
-
-    fun SetBookCodeData(platform: String, genre: String, bookCode: String) {
-
-        val result: ArrayList<BookListDataBestAnalyze>? = null
-        var num = 0
-
-        BestRef.getBookCode(platform, genre).child(bookCode)
-            .addListenerForSingleValueEvent(object :
-                ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-
-//                    java.lang.ClassCastException: java.util.HashMap cannot be cast to java.util.ArrayList
-//                    var hi = dataSnapshot.value as ArrayList<BookListDataBestAnalyze>
-//
-//                  Log.d("####", hi[0].toString())
-
-//                    for (keyItem in dataSnapshot.children) {
-//                        val group: BookListDataBestAnalyze? = keyItem.getValue(BookListDataBestAnalyze::class.java)
-//                    }
-                }
-
-                override fun onCancelled(databaseError: DatabaseError) {}
-            })
-    }
-
-    fun RoomDB(context: Context, platform: String, cate: String) {
-
-    }
-
-
-    fun RoomDBRemove(context: Context, tabType: String, cate: String) {
-        val bestDao: DataBaseBestDay = Room.databaseBuilder(
-            context,
-            DataBaseBestDay::class.java,
-            "$tabType $cate"
-        ).allowMainThreadQueries().build()
-
-        bestDao.bestDao().initAll()
     }
 }
 

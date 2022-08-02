@@ -131,9 +131,9 @@ class BestMoonpiaContentsItems{
     @Expose
     var nvStory: String = ""
 
-    @SerializedName("nvSumEntryForGuest")
+    @SerializedName("nvGnMainTitle")
     @Expose
-    var nvSumEntryForGuest: String = ""
+    var nvGnMainTitle: String = ""
 
     @SerializedName("nvSrl")
     @Expose
@@ -212,6 +212,10 @@ class BestToksodaToksodaResultList{
     @SerializedName("intrstCnt")
     @Expose
     var intrstCnt: String = ""
+
+    @SerializedName("goodAllCnt")
+    @Expose
+    var goodAllCnt: String = ""
 }
 
 class BestToksodaDetailResult {

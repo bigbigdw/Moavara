@@ -89,6 +89,7 @@ class ActivityBestDetail : AppCompatActivity() {
                                 group.info1,
                                 group.info2,
                                 group.info3,
+                                group.info4,
                                 group.number,
                                 group.date,
                                 group.numberDiff,

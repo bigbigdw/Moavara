@@ -117,16 +117,14 @@ class FragmentBestDetailAnalyze(
         }
 
         with(binding){
-//            radarChart.scaleY = 1.5f;
-//            radarChart.scaleX = 1.5f;
 
-//            radarChart.setBackgroundColor(Color.parseColor("#4971EF"))
             radarChart.description.isEnabled = false
             radarChart.webLineWidth = 1f
             radarChart.webColor = Color.parseColor("#00d180")
             radarChart.webLineWidthInner = 1f
             radarChart.webColorInner = Color.parseColor("#ff7b22")
             radarChart.webAlpha = 100
+            radarChart.setExtraOffsets(-5f,-20f,-5f,-5f)
 
             val set1 = RadarDataSet(entries1, "평균")
             set1.color = Color.rgb(103, 110, 129)
@@ -176,13 +174,10 @@ class FragmentBestDetailAnalyze(
             yAxis.setDrawLabels(false)
 
             val l: Legend = radarChart.legend
-            l.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
+            l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
             l.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
             l.orientation = Legend.LegendOrientation.HORIZONTAL
-            l.formToTextSpace = 15f
-            l.setDrawInside(true)
-            l.xEntrySpace = 15f
-            l.yEntrySpace = 15f
+            l.setDrawInside(false)
             l.textColor = Color.WHITE
         }
     }

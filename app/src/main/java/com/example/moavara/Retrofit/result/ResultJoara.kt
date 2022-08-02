@@ -236,6 +236,11 @@ class JoaraBestListValue {
     @Expose
     var cntRecom: String = ""
 
+    @SerializedName("cnt_total_comment")
+    @Expose
+    var cntTotalComment: String = ""
+
+
     @SerializedName("cnt_page_read")
     @Expose
     var cntPageRead: String = ""

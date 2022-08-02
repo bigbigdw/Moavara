@@ -149,7 +149,7 @@ class ActivityAdmin : AppCompatActivity() {
 
             llayoutBtn13.setOnClickListener {
 
-                Mining.getOneStoreBest("ALL", this@ActivityAdmin)
+                Mining.getOneStoreBest("ALL")
                 Toast.makeText(applicationContext, "테스트 완료", Toast.LENGTH_SHORT).show()
             }
 
