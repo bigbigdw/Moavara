@@ -80,7 +80,8 @@ class FragmentSearchMoavara : Fragment() {
                     requireContext(),
                     item,
                     item?.type ?: "",
-                    position
+                    position,
+                    adapterToday?.itemCount ?: 0
                 )
 
                 fragmentManager?.let { mBottomDialogBest.show(it, null) }

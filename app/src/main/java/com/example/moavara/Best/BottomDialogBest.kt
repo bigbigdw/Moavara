@@ -30,7 +30,8 @@ class BottomDialogBest(
     private val mContext: Context,
     private val item: BookListDataBest?,
     private val platform: String,
-    private val pos: Int
+    private val pos: Int,
+    private var itemCount : Int,
 ) :
     BottomSheetDialogFragment() {
 
@@ -352,6 +353,7 @@ class BottomDialogBest(
                     item?.let { it1 -> String.format("%s", it1.bookCode) })
                 bookDetailIntent.putExtra("Type", String.format("%s", platform))
                 bookDetailIntent.putExtra("POSITION", pos)
+                bookDetailIntent.putExtra("COUNT", itemCount)
                 startActivity(bookDetailIntent)
                 dismiss()
             }

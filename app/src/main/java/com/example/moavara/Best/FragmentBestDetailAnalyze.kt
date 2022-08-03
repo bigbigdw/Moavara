@@ -2,15 +2,18 @@ package com.example.moavara.Best
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.moavara.DataBase.BestTodayAverage
 import com.example.moavara.DataBase.BookListDataBestAnalyze
 import com.example.moavara.R
 import com.example.moavara.Search.BestChart
+import com.example.moavara.Util.DBDate
 import com.example.moavara.databinding.FragmentBestDetailAnalyzeBinding
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.Legend
@@ -22,10 +25,16 @@ import com.github.mikephil.charting.data.RadarDataSet
 import com.github.mikephil.charting.data.RadarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class FragmentBestDetailAnalyze(
     private val platfrom: String,
     private val item: ArrayList<BookListDataBestAnalyze>,
+    private var genre: String,
+    private var itemCount: Int,
 ) : Fragment() {
 
     private var adapterChart: AdapterChart? = null
@@ -101,84 +110,144 @@ class FragmentBestDetailAnalyze(
 
     }
 
-    private fun getRadarChart(){
+    private fun getRadarChart() {
 
-        val mul = 80f
-        val min = 20f
-        val cnt = 4
-        val entries1 = ArrayList<RadarEntry>()
-        val entries2 = ArrayList<RadarEntry>()
+        val Average =
+            FirebaseDatabase.getInstance().reference.child("Best").child(platfrom)
+                .child(genre).child("Average").child(DBDate.DateMMDD())
 
-        for (i in 0 until cnt) {
-            val val1 = (Math.random() * mul).toFloat() + min
-            entries1.add(RadarEntry(val1))
-            val val2 = (Math.random() * mul).toFloat() + min
-            entries2.add(RadarEntry(val2))
-        }
+        val entryAverage = ArrayList<RadarEntry>()
+        val entriesCurrent = ArrayList<RadarEntry>()
 
-        with(binding){
+        Average.addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val group: BestTodayAverage? = dataSnapshot.getValue(BestTodayAverage::class.java)
 
-            radarChart.description.isEnabled = false
-            radarChart.webLineWidth = 1f
-            radarChart.webColor = Color.parseColor("#00d180")
-            radarChart.webLineWidthInner = 1f
-            radarChart.webColorInner = Color.parseColor("#ff7b22")
-            radarChart.webAlpha = 100
-            radarChart.setExtraOffsets(-5f,-20f,-5f,-5f)
+                val valAvg1 = group?.info1 ?: 0
+                val valAvg2 = group?.info2 ?: 0
+                val valAvg3 = group?.info3 ?: 0
+                val valAvg4 = group?.info4 ?: 0
 
-            val set1 = RadarDataSet(entries1, "평균")
-            set1.color = Color.rgb(103, 110, 129)
-            set1.fillColor = Color.rgb(103, 110, 129)
-            set1.setDrawFilled(true)
-            set1.fillAlpha = 180
-            set1.lineWidth = 2f
-            set1.isDrawHighlightCircleEnabled = true
-            set1.setDrawHighlightIndicators(false)
+                val valCur1 = item[item.size - 1].info1.toFloat()
+                val valCur2 = item[item.size - 1].info2.toFloat()
+                val valCur3 = item[item.size - 1].info3.toFloat()
+                val valCur4 = item[item.size - 1].info4.toFloat()
 
-            val set2 = RadarDataSet(entries2, "현재 작품")
-            set2.color = Color.rgb(121, 162, 175)
-            set2.fillColor = Color.rgb(121, 162, 175)
-            set2.setDrawFilled(true)
-            set2.fillAlpha = 180
-            set2.lineWidth = 2f
-            set2.isDrawHighlightCircleEnabled = true
-            set2.setDrawHighlightIndicators(false)
+                Log.d("!!!!-1", "${valAvg1} ${valAvg2} ${valAvg3} ${valAvg4}")
+                Log.d("!!!!-2", "${valCur1} ${valCur2} ${valCur3} ${valCur4}")
+                Log.d(
+                    "!!!!-3",
+                    "${(valCur1 / valAvg1) * 100} ${(valCur2 / valAvg2) * 100} ${(valCur3 / valAvg3) * 100} ${(valCur4 / valAvg4) * 100}"
+                )
+                Log.d(
+                    "!!!!-4",
+                    "${(valCur1 / (valAvg1 / itemCount)) * 100} ${(valCur2 / (valAvg2 / itemCount)) * 100} ${(valCur3 / (valAvg3 / itemCount)) * 100} ${(valCur4 / (valAvg4 / itemCount)) * 100}"
+                )
+                Log.d(
+                    "!!!!-5",
+                    "${(valAvg1 / valCur1) * 100} ${(valAvg2 / valCur2) * 100} ${(valAvg2 / valCur2) * 100} ${(valAvg2 / valCur2) * 100}"
+                )
+                Log.d(
+                    "!!!!-6",
+                    "${((valAvg1 / itemCount) / valCur1) * 100} ${((valAvg2 / itemCount) / valCur2) * 100} ${((valAvg3 / itemCount) / valCur2) * 100} ${((valAvg4 / itemCount) / valCur2) * 100}"
+                )
+                Log.d(
+                    "!!!!-7",
+                    "${(valCur1 / valAvg1) * 200} ${(valCur2 / valAvg2) * 200} ${(valCur3 / valAvg3) * 200} ${(valCur4 / valAvg4) * 200}"
+                )
 
-            val sets = ArrayList<IRadarDataSet>()
-            sets.add(set1)
-            sets.add(set2)
+                Log.d(
+                    "!!!!-8",
+                    "${(valCur1 / valAvg1) * 20 * itemCount} ${(valCur2 / valAvg2) * 20 * itemCount} ${(valCur3 / valAvg3) * 20 * itemCount} ${(valCur4 / valAvg4) * 20 * itemCount}"
+                )
 
-            val data = RadarData(sets)
-            data.setValueTextSize(8f)
-            data.setDrawValues(false)
-            data.setValueTextColor(Color.WHITE)
+                entryAverage.add(RadarEntry(50F))
+                entryAverage.add(RadarEntry(50F))
+                entryAverage.add(RadarEntry(50F))
+                entryAverage.add(RadarEntry(50F))
 
-            radarChart.data = data
-            radarChart.invalidate()
+                var numberAvg = 0
 
-            radarChart.animateXY(1400, 1400, Easing.EaseInOutQuad)
+                for (numItem in item) {
+                    numberAvg += (itemCount - numItem.number)
+                }
 
-            val xAxis: XAxis = radarChart.xAxis
-            xAxis.textSize = 9f
-            xAxis.yOffset = 0f
-            xAxis.xOffset = 0f
-            val labels = arrayOf("조회 수", "선호작 수", "추천 수", "댓글 수")
-            xAxis.valueFormatter = IndexAxisValueFormatter(labels)
-            xAxis.textColor = Color.WHITE
+                entriesCurrent.add(RadarEntry(100F))
+                entriesCurrent.add(RadarEntry(100F))
+                entriesCurrent.add(RadarEntry(100F))
+                entriesCurrent.add(RadarEntry(100F))
 
-            val yAxis: YAxis = radarChart.yAxis
-            yAxis.setLabelCount(5, false)
-            yAxis.textSize = 9f
-            yAxis.axisMinimum = 0f
-            yAxis.axisMaximum = 80f
-            yAxis.setDrawLabels(false)
+                with(binding) {
 
-            val l: Legend = radarChart.legend
-            l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-            l.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
-            l.orientation = Legend.LegendOrientation.HORIZONTAL
-            l.setDrawInside(false)
-            l.textColor = Color.WHITE
-        }
+                    radarChart.description.isEnabled = false
+                    radarChart.webLineWidth = 1f
+                    radarChart.webColor = Color.parseColor("#EDE6FD")
+                    radarChart.webLineWidthInner = 1f
+                    radarChart.webColorInner = Color.parseColor("#EDE6FD")
+                    radarChart.webAlpha = 100
+                    radarChart.setExtraOffsets(-5f, -20f, -5f, -5f)
+
+                    val set1 = RadarDataSet(entryAverage, "평균")
+                    set1.color = Color.parseColor("#6E7686")
+                    set1.fillColor = Color.parseColor("#6E7686")
+                    set1.setDrawFilled(true)
+                    set1.fillAlpha = 180
+                    set1.lineWidth = 2f
+                    set1.isDrawHighlightCircleEnabled = true
+                    set1.setDrawHighlightIndicators(false)
+
+                    val set2 = RadarDataSet(entriesCurrent, "현재 작품")
+                    set2.color = Color.parseColor("#621CEF")
+                    set2.fillColor = Color.parseColor("#621CEF")
+                    set2.setDrawFilled(true)
+                    set2.fillAlpha = 180
+                    set2.lineWidth = 2f
+                    set2.isDrawHighlightCircleEnabled = true
+                    set2.setDrawHighlightIndicators(false)
+
+                    val sets = ArrayList<IRadarDataSet>()
+                    sets.add(set1)
+                    sets.add(set2)
+
+                    val data = RadarData(sets)
+                    data.setValueTextSize(8f)
+                    data.setDrawValues(false)
+                    data.setValueTextColor(Color.WHITE)
+
+                    radarChart.animateXY(1400, 1400, Easing.EaseInOutQuad)
+
+                    val xAxis: XAxis = radarChart.xAxis
+                    xAxis.textSize = 9f
+                    xAxis.yOffset = 0f
+                    xAxis.xOffset = 0f
+                    val labels = arrayOf("조회 수", "선호작 수", "추천 수", "트로피")
+                    xAxis.valueFormatter = IndexAxisValueFormatter(labels)
+                    xAxis.textColor = Color.WHITE
+
+                    val yAxis: YAxis = radarChart.yAxis
+                    yAxis.setLabelCount(5, false)
+                    yAxis.textSize = 9f
+                    yAxis.axisMinimum = 0f
+                    yAxis.axisMaximum = 100f
+                    yAxis.setDrawLabels(false)
+
+                    val l: Legend = radarChart.legend
+                    l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
+                    l.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+                    l.orientation = Legend.LegendOrientation.HORIZONTAL
+                    l.setDrawInside(false)
+                    l.xEntrySpace = 7f
+                    l.yEntrySpace = 5f
+                    l.textColor = Color.WHITE
+
+                    radarChart.data = data
+                    radarChart.invalidate()
+                }
+
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
     }
 }

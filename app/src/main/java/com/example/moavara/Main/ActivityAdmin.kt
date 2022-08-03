@@ -149,7 +149,9 @@ class ActivityAdmin : AppCompatActivity() {
 
             llayoutBtn13.setOnClickListener {
 
-                Mining.getOneStoreBest("ALL")
+                for (i in 1..5) {
+                    Mining.getJoaraBest(this@ActivityAdmin, "ALL", i)
+                }
                 Toast.makeText(applicationContext, "테스트 완료", Toast.LENGTH_SHORT).show()
             }
 
@@ -180,7 +182,7 @@ class ActivityAdmin : AppCompatActivity() {
             .create(FirebaseService::class.java)
             .postRetrofit(
                 fcmBody
-            )!!
+            )
 
         call.enqueue(object : Callback<FWorkManagerResult?> {
             override fun onResponse(

@@ -42,6 +42,7 @@ class ActivityBestDetail : AppCompatActivity() {
     var bookWriter = ""
     var chapter: List<JoaraBestChapter>? = null
     var pos = 0
+    var itemCount = 0
     var genre = ""
     private lateinit var binding: ActivityBestDetailBinding
     private lateinit var mFragmentBestDetailAnalyze: FragmentBestDetailAnalyze
@@ -57,6 +58,7 @@ class ActivityBestDetail : AppCompatActivity() {
         bookCode = intent.getStringExtra("BookCode") ?: ""
         platform = intent.getStringExtra("Type") ?: ""
         pos = intent.getIntExtra("POSITION", 0)
+        itemCount = intent.getIntExtra("COUNT", 0)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -195,7 +197,8 @@ class ActivityBestDetail : AppCompatActivity() {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 when (tab.position) {
                     0 -> {
-                        mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(platform, data)
+                        mFragmentBestDetailAnalyze =
+                            FragmentBestDetailAnalyze(platform, data, genre, itemCount)
                         supportFragmentManager.commit {
                             replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
                         }
@@ -221,7 +224,8 @@ class ActivityBestDetail : AppCompatActivity() {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
                             }
                         } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver" || platform == "Kakao" || platform == "Kakao_Stage" || platform == "Ridi" || platform == "OneStore" || platform == "Munpia") {
-                            mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(platform, data)
+                            mFragmentBestDetailAnalyze =
+                                FragmentBestDetailAnalyze(platform, data, genre, itemCount)
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
                             }
@@ -292,8 +296,9 @@ class ActivityBestDetail : AppCompatActivity() {
                         }
                     }
 
-                    mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(platform,
-                        this@ActivityBestDetail.data
+                    mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(
+                        platform,
+                        this@ActivityBestDetail.data, genre, itemCount
                     )
                     supportFragmentManager.commit {
                         replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
@@ -304,7 +309,8 @@ class ActivityBestDetail : AppCompatActivity() {
 
     fun setLayoutNaverToday() {
         Thread {
-            val doc: Document = Jsoup.connect("https://novel.naver.com/webnovel/list?novelId=${bookCode}").post()
+            val doc: Document =
+                Jsoup.connect("https://novel.naver.com/webnovel/list?novelId=${bookCode}").post()
 
             runOnUiThread {
                 with(binding) {
@@ -337,7 +343,8 @@ class ActivityBestDetail : AppCompatActivity() {
                     tviewIntro.text = doc.select(".section_area_info .dsc").text()
                 }
 
-                mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(platform, data)
+                mFragmentBestDetailAnalyze =
+                    FragmentBestDetailAnalyze(platform, data, genre, itemCount)
                 supportFragmentManager.commit {
                     replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
                 }

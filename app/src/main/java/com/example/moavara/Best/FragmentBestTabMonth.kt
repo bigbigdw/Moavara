@@ -188,7 +188,8 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
                     requireContext(),
                     item,
                     tabType,
-                    position
+                    position,
+                    adapterMonthDay?.itemCount ?: 0
                 )
                 childFragmentManager.let { mBottomDialogBest.show(it, null) }
             }

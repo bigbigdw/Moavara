@@ -7,10 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.moavara.DataBase.BestTodayAverage
 import com.example.moavara.Retrofit.*
 import com.example.moavara.Search.EventDetailDataMining
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
@@ -309,11 +306,13 @@ object Mining {
 
                 miningValue(NaverRef, i, "Naver_Today", genre)
 
-                average1 += Naver.select(".score_area")[i].text().replace("별점", "").toFloat()
-                    .roundToInt()
-                average2 += Naver[i].select(".num_total").next().first()!!.text().replace("조회 ", "")
-                    .strToInt()
-                average3 += Naver.select(".count")[i].text().replace("관심", "").strToInt()
+                if(i < 20){
+                    average1 += Naver.select(".score_area")[i].text().replace("별점", "").toFloat()
+                        .roundToInt()
+                    average2 += Naver[i].select(".num_total").next().first()!!.text().replace("조회 ", "")
+                        .strToInt()
+                    average3 += Naver.select(".count")[i].text().replace("관심", "").strToInt()
+                }
             }
 
             FirebaseDatabase.getInstance().reference.child("Best").child("Naver_Today")
@@ -366,11 +365,14 @@ object Mining {
 
                 miningValue(NaverRef, i, "Naver_Challenge", genre)
 
-                average1 += Naver.select(".score_area")[i].text().replace("별점", "").toFloat()
-                    .roundToInt()
-                average2 += Naver[i].select(".num_total").next().first()!!.text().replace("조회 ", "")
-                    .strToInt()
-                average3 += Naver.select(".count")[i].text().replace("관심", "").strToInt()
+                if(i < 20){
+                    average1 += Naver.select(".score_area")[i].text().replace("별점", "").toFloat()
+                        .roundToInt()
+                    average2 += Naver[i].select(".num_total").next().first()!!.text().replace("조회 ", "")
+                        .strToInt()
+                    average3 += Naver.select(".count")[i].text().replace("관심", "").strToInt()
+                }
+
             }
 
             FirebaseDatabase.getInstance().reference.child("Best").child("Naver_Challenge")
@@ -422,14 +424,16 @@ object Mining {
 
                 miningValue(NaverRef, i, "Naver", genre)
 
-                average1 += Naver.select(".score_area")[i].text().replace("별점", "").toFloat()
-                    .roundToInt()
-                average2 += Naver[i].select(".num_total").next().first()!!.text().replace("조회 ", "")
-                    .strToInt()
-                average3 += Naver.select(".count")[i].text().replace("관심", "").strToInt()
+                if(i < 20){
+                    average1 += Naver.select(".score_area")[i].text().replace("별점", "").toFloat()
+                        .roundToInt()
+                    average2 += Naver[i].select(".num_total").next().first()!!.text().replace("조회 ", "")
+                        .strToInt()
+                    average3 += Naver.select(".count")[i].text().replace("관심", "").strToInt()
+                }
             }
 
-            FirebaseDatabase.getInstance().reference.child("Best").child("Ridi")
+            FirebaseDatabase.getInstance().reference.child("Best").child("Naver")
                 .child(genre).child("Average").child(DBDate.DateMMDD())
                 .setValue(BestTodayAverage(average1, average2, average3))
 
@@ -474,11 +478,13 @@ object Mining {
                     RidiRef["date"] = DBDate.DateMMDD()
                     RidiRef["type"] = "Ridi"
 
-                    average1 += doc.select("span .StarRate_ParticipantCount")[i].text()
-                        .replace(",", "").replace("명", "").toInt()
-                    average2 += doc.select("span .StarRate_Score")[i].text().replace("점", "")
-                        .replace(".", "")
-                        .toInt()
+                    if(page == 1 && i < 21){
+                        average1 += doc.select("span .StarRate_ParticipantCount")[i].text()
+                            .replace(",", "").replace("명", "").toInt()
+                        average2 += doc.select("span .StarRate_Score")[i].text().replace("점", "")
+                            .replace(".", "")
+                            .toInt()
+                    }
 
                     miningValue(
                         RidiRef,
@@ -489,26 +495,15 @@ object Mining {
                 }
             }
 
-            val Average =
+            if(page == 1){
                 FirebaseDatabase.getInstance().reference.child("Best").child("Ridi")
                     .child(genre).child("Average").child(DBDate.DateMMDD())
+                    .removeValue()
 
-            Average.addListenerForSingleValueEvent(object :
-                ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val group: BestTodayAverage? =
-                        dataSnapshot.getValue(BestTodayAverage::class.java)
-
-                    Average.setValue(
-                        BestTodayAverage(
-                            (group?.info1 ?: 0) + average1,
-                            (group?.info2 ?: 0) + average2,
-                        )
-                    )
-                }
-
-                override fun onCancelled(databaseError: DatabaseError) {}
-            })
+                FirebaseDatabase.getInstance().reference.child("Best").child("Ridi")
+                    .child(genre).child("Average").child(DBDate.DateMMDD())
+                    .setValue(BestTodayAverage(average1, average2))
+            }
 
             File(File("/storage/self/primary/MOAVARA"), "Today_Ridi.json").delete()
             File(File("/storage/self/primary/MOAVARA"), "Week_Ridi.json").delete()
@@ -565,36 +560,17 @@ object Mining {
                                     genre
                                 )
 
-                                average1 += productList[i].totalCount.toInt()
-                                average2 += productList[i].avgScore.toFloat().roundToInt()
-                                average3 += productList[i].commentCount.toInt()
+                                if(i < 20){
+                                    average1 += productList[i].totalCount.toInt()
+                                    average2 += productList[i].avgScore.toFloat().roundToInt()
+                                    average3 += productList[i].commentCount.toInt()
+                                }
 
                             }
 
-                            average1 /= productList.size
-                            average2 /= productList.size
-                            average3 /= productList.size
-
-                            val Average =
-                                FirebaseDatabase.getInstance().reference.child("Best").child("OneStore")
-                                    .child(genre).child("Average").child(DBDate.DateMMDD())
-
-                            Average.addListenerForSingleValueEvent(object :
-                                ValueEventListener {
-                                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                                    val group: BestTodayAverage? =
-                                        dataSnapshot.getValue(BestTodayAverage::class.java)
-
-                                    Average.setValue(
-                                        BestTodayAverage(
-                                            (group?.info1 ?: 0) + average1,
-                                            (group?.info2 ?: 0) + average2
-                                        )
-                                    )
-                                }
-
-                                override fun onCancelled(databaseError: DatabaseError) {}
-                            })
+                            FirebaseDatabase.getInstance().reference.child("Best").child("OneStore")
+                                .child(genre).child("Average").child(DBDate.DateMMDD())
+                                .setValue(BestTodayAverage(average1, average2))
                         }
 
                         File(File("/storage/self/primary/MOAVARA"), "Today_OneStore.json").delete()
@@ -651,10 +627,12 @@ object Mining {
 
                             miningValue(KakaoRef, i, "Kakao_Stage", genre)
 
-                            average1 += novel.viewCount.toInt()
-                            average2 += novel.visitorCount.toInt()
-                            average3 += novel.episodeLikeCount.toInt()
-                            average4 += novel.favoriteCount.toInt()
+                            if(i < 20){
+                                average1 += novel.viewCount.toInt()
+                                average2 += novel.visitorCount.toInt()
+                                average3 += novel.episodeLikeCount.toInt()
+                                average4 += novel.favoriteCount.toInt()
+                            }
                         }
 
                         FirebaseDatabase.getInstance().reference.child("Best").child("Kakao_Stage")
@@ -726,35 +704,24 @@ object Mining {
                                 genre
                             )
 
-                            average1 += list[i].read_count.toInt()
-                            average2 += list[i].like_count.toInt()
-                            average3 += list[i].rating.toFloat().roundToInt()
-                            average4 += list[i].comment_count.toInt()
+                            if(page == 1 && i < 20){
+                                average1 += list[i].read_count.toInt()
+                                average2 += list[i].like_count.toInt()
+                                average3 += list[i].rating.toFloat().roundToInt()
+                                average4 += list[i].comment_count.toInt()
+                            }
                         }
                     }
 
-                    val Average =
+                    if(page == 1){
                         FirebaseDatabase.getInstance().reference.child("Best").child("Kakao")
                             .child(genre).child("Average").child(DBDate.DateMMDD())
+                            .removeValue()
 
-                    Average.addListenerForSingleValueEvent(object :
-                        ValueEventListener {
-                        override fun onDataChange(dataSnapshot: DataSnapshot) {
-                            val group: BestTodayAverage? =
-                                dataSnapshot.getValue(BestTodayAverage::class.java)
-
-                            Average.setValue(
-                                BestTodayAverage(
-                                    (group?.info1 ?: 0) + average1,
-                                    (group?.info2 ?: 0) + average2,
-                                    (group?.info3 ?: 0) + average3,
-                                    (group?.info4 ?: 0) + average4
-                                )
-                            )
-                        }
-
-                        override fun onCancelled(databaseError: DatabaseError) {}
-                    })
+                        FirebaseDatabase.getInstance().reference.child("Best").child("Kakao")
+                            .child(genre).child("Average").child(DBDate.DateMMDD())
+                            .setValue(BestTodayAverage(average1, average2, average3, average4))
+                    }
 
                     File(File("/storage/self/primary/MOAVARA"), "Today_Kakao.json").delete()
                     File(File("/storage/self/primary/MOAVARA"), "Week_Kakao.json").delete()
@@ -802,10 +769,12 @@ object Mining {
                             JoaraRef["date"] = DBDate.DateMMDD()
                             JoaraRef["type"] = "Joara"
 
-                            average1 += books[i].cntPageRead.toInt()
-                            average2 += books[i].cntFavorite.toInt()
-                            average3 += books[i].cntRecom.toInt()
-                            average4 += books[i].cntTotalComment.toInt()
+                            if(page == 1 && i < 20){
+                                average1 += books[i].cntPageRead.toInt()
+                                average2 += books[i].cntFavorite.toInt()
+                                average3 += books[i].cntRecom.toInt()
+                                average4 += books[i].cntTotalComment.toInt()
+                            }
 
                             miningValue(
                                 JoaraRef,
@@ -816,28 +785,15 @@ object Mining {
                         }
                     }
 
-                    val Average =
+                    if(page == 1){
                         FirebaseDatabase.getInstance().reference.child("Best").child("Joara")
                             .child(genre).child("Average").child(DBDate.DateMMDD())
+                            .removeValue()
 
-                    Average.addListenerForSingleValueEvent(object :
-                        ValueEventListener {
-                        override fun onDataChange(dataSnapshot: DataSnapshot) {
-                            val group: BestTodayAverage? =
-                                dataSnapshot.getValue(BestTodayAverage::class.java)
-
-                            Average.setValue(
-                                BestTodayAverage(
-                                    (group?.info1 ?: 0) + average1,
-                                    (group?.info2 ?: 0) + average2,
-                                    (group?.info3 ?: 0) + average3,
-                                    (group?.info4 ?: 0) + average4
-                                )
-                            )
-                        }
-
-                        override fun onCancelled(databaseError: DatabaseError) {}
-                    })
+                        FirebaseDatabase.getInstance().reference.child("Best").child("Joara")
+                            .child(genre).child("Average").child(DBDate.DateMMDD())
+                            .setValue(BestTodayAverage(average1, average2, average3, average4))
+                    }
 
                     File(File("/storage/self/primary/MOAVARA"), "Today_Joara.json").delete()
                     File(File("/storage/self/primary/MOAVARA"), "Week_Joara.json").delete()
@@ -894,35 +850,24 @@ object Mining {
                                 genre
                             )
 
-                            average1 += books[i].cntPageRead.toInt()
-                            average2 += books[i].cntFavorite.toInt()
-                            average3 += books[i].cntRecom.toInt()
-                            average4 += books[i].cntTotalComment.toInt()
+                            if(page == 1 && i < 20){
+                                average1 += books[i].cntPageRead.toInt()
+                                average2 += books[i].cntFavorite.toInt()
+                                average3 += books[i].cntRecom.toInt()
+                                average4 += books[i].cntTotalComment.toInt()
+                            }
                         }
                     }
 
-                    val Average =
+                    if(page == 1){
                         FirebaseDatabase.getInstance().reference.child("Best").child("Joara_Premium")
                             .child(genre).child("Average").child(DBDate.DateMMDD())
+                            .removeValue()
 
-                    Average.addListenerForSingleValueEvent(object :
-                        ValueEventListener {
-                        override fun onDataChange(dataSnapshot: DataSnapshot) {
-                            val group: BestTodayAverage? =
-                                dataSnapshot.getValue(BestTodayAverage::class.java)
-
-                            Average.setValue(
-                                BestTodayAverage(
-                                    (group?.info1 ?: 0) + average1,
-                                    (group?.info2 ?: 0) + average2,
-                                    (group?.info3 ?: 0) + average3,
-                                    (group?.info4 ?: 0) + average4
-                                )
-                            )
-                        }
-
-                        override fun onCancelled(databaseError: DatabaseError) {}
-                    })
+                        FirebaseDatabase.getInstance().reference.child("Best").child("Joara_Premium")
+                            .child(genre).child("Average").child(DBDate.DateMMDD())
+                            .setValue(BestTodayAverage(average1, average2, average3, average4))
+                    }
 
                     File(File("/storage/self/primary/MOAVARA"), "Today_Joara_Premium.json").delete()
                     File(File("/storage/self/primary/MOAVARA"), "Week_Joara_Premium.json").delete()
@@ -981,35 +926,24 @@ object Mining {
                                 genre
                             )
 
-                            average1 += books[i].cntPageRead.toInt()
-                            average2 += books[i].cntFavorite.toInt()
-                            average3 += books[i].cntRecom.toInt()
-                            average4 += books[i].cntTotalComment.toInt()
+                            if(page == 1 && i < 20){
+                                average1 += books[i].cntPageRead.toInt()
+                                average2 += books[i].cntFavorite.toInt()
+                                average3 += books[i].cntRecom.toInt()
+                                average4 += books[i].cntTotalComment.toInt()
+                            }
                         }
                     }
 
-                    val Average =
+                    if(page == 1){
                         FirebaseDatabase.getInstance().reference.child("Best").child("Joara_Nobless")
                             .child(genre).child("Average").child(DBDate.DateMMDD())
+                            .removeValue()
 
-                    Average.addListenerForSingleValueEvent(object :
-                        ValueEventListener {
-                        override fun onDataChange(dataSnapshot: DataSnapshot) {
-                            val group: BestTodayAverage? =
-                                dataSnapshot.getValue(BestTodayAverage::class.java)
-
-                            Average.setValue(
-                                BestTodayAverage(
-                                    (group?.info1 ?: 0) + average1,
-                                    (group?.info2 ?: 0) + average2,
-                                    (group?.info3 ?: 0) + average3,
-                                    (group?.info4 ?: 0) + average4
-                                )
-                            )
-                        }
-
-                        override fun onCancelled(databaseError: DatabaseError) {}
-                    })
+                        FirebaseDatabase.getInstance().reference.child("Best").child("Joara_Nobless")
+                            .child(genre).child("Average").child(DBDate.DateMMDD())
+                            .setValue(BestTodayAverage(average1, average2, average3, average4))
+                    }
 
                     File(File("/storage/self/primary/MOAVARA"), "Today_Joara_Nobless.json").delete()
                     File(File("/storage/self/primary/MOAVARA"), "Week_Joara_Nobless.json").delete()
@@ -1066,34 +1000,24 @@ object Mining {
                                     "Munpia",
                                     ""
                                 )
-                                average1 += (it[i].nsrData?.hour?.toInt() ?: 0)
-                                average2 += (it[i].nsrData?.hit?.toInt() ?: 0)
-                                average3 += (it[i].nsrData?.prefer?.toInt() ?: 0)
-                                average4 += (it[i].nsrData?.hour?.toInt() ?: 0)
+
+                                if(page == 1 && i < 20){
+                                    average1 += (it[i].nsrData?.hour?.toInt() ?: 0)
+                                    average2 += (it[i].nsrData?.hit?.toInt() ?: 0)
+                                    average3 += (it[i].nsrData?.prefer?.toInt() ?: 0)
+                                    average4 += (it[i].nsrData?.hour?.toInt() ?: 0)
+                                }
                             }
 
-                            val Average =
+                            if(page == 1){
                                 FirebaseDatabase.getInstance().reference.child("Best").child("Munpia")
                                     .child("Average").child(DBDate.DateMMDD())
+                                    .removeValue()
 
-                            Average.addListenerForSingleValueEvent(object :
-                                ValueEventListener {
-                                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                                    val group: BestTodayAverage? =
-                                        dataSnapshot.getValue(BestTodayAverage::class.java)
-
-                                    Average.setValue(
-                                        BestTodayAverage(
-                                            (group?.info1 ?: 0) + average1,
-                                            (group?.info2 ?: 0) + average2,
-                                            (group?.info3 ?: 0) + average3,
-                                            (group?.info4 ?: 0) + average4
-                                        )
-                                    )
-                                }
-
-                                override fun onCancelled(databaseError: DatabaseError) {}
-                            })
+                                FirebaseDatabase.getInstance().reference.child("Best").child("Munpia")
+                                    .child("Average").child(DBDate.DateMMDD())
+                                    .setValue(BestTodayAverage(average1, average2, average3, average4))
+                            }
 
                             File(
                                 File("/storage/self/primary/MOAVARA"),
@@ -1159,33 +1083,23 @@ object Mining {
                                 genre
                             )
 
-                            average1 += it[i].inqrCnt.toInt()
-                            average2 += it[i].goodAllCnt.toInt()
-                            average3 += it[i].intrstCnt.toInt()
+                            if(page == 1 && i < 20){
+                                average1 += it[i].inqrCnt.toInt()
+                                average2 += it[i].goodAllCnt.toInt()
+                                average3 += it[i].intrstCnt.toInt()
+                            }
                         }
 
 
-                        val Average =
+                        if(page == 1){
+                            FirebaseDatabase.getInstance().reference.child("Best").child("Toksoda")
+                                .child("Average").child(DBDate.DateMMDD())
+                                .removeValue()
+
                             FirebaseDatabase.getInstance().reference.child("Best").child("Toksoda")
                                 .child(genre).child("Average").child(DBDate.DateMMDD())
-
-                        Average.addListenerForSingleValueEvent(object :
-                            ValueEventListener {
-                            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                                val group: BestTodayAverage? =
-                                    dataSnapshot.getValue(BestTodayAverage::class.java)
-
-                                Average.setValue(
-                                    BestTodayAverage(
-                                        (group?.info1 ?: 0) + average1,
-                                        (group?.info2 ?: 0) + average2,
-                                        (group?.info3 ?: 0) + average3
-                                    )
-                                )
-                            }
-
-                            override fun onCancelled(databaseError: DatabaseError) {}
-                        })
+                                .setValue(BestTodayAverage(average1, average2, average3))
+                        }
 
                         File(File("/storage/self/primary/MOAVARA"), "Today_Toksoda.json").delete()
                         File(File("/storage/self/primary/MOAVARA"), "Week_Toksoda.json").delete()
