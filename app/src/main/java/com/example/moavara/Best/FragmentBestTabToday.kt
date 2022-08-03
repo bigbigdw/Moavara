@@ -1,5 +1,7 @@
 package com.example.moavara.Best
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -23,7 +25,7 @@ import org.json.JSONObject
 import java.io.*
 
 
-class FragmentBestTabToday(private val tabType: String) :
+class FragmentBestTabToday(private val platform: String) :
     Fragment(), BestTodayListener {
 
     private var adapterToday: AdapterBestToday? = null
@@ -62,15 +64,23 @@ class FragmentBestTabToday(private val tabType: String) :
             override fun onItemClick(v: View?, position: Int) {
                 val item: BookListDataBest? = adapterToday?.getItem(position)
 
-                val mBottomDialogBest = BottomDialogBest(
-                    requireContext(),
-                    item,
-                    tabType,
-                    position,
-                    adapterToday?.itemCount ?: 0
-                )
+                if(platform == "MrBlue"){
+                    val intent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse( "https://www.mrblue.com/novel/${item?.bookCode}")
+                    )
+                    context?.startActivity(intent)
+                } else {
+                    val mBottomDialogBest = BottomDialogBest(
+                        requireContext(),
+                        item,
+                        platform,
+                        position,
+                        adapterToday?.itemCount ?: 0
+                    )
 
-                fragmentManager?.let { mBottomDialogBest.show(it, null) }
+                    fragmentManager?.let { mBottomDialogBest.show(it, null) }
+                }
             }
         })
 
@@ -79,17 +89,19 @@ class FragmentBestTabToday(private val tabType: String) :
 
     private fun getBookListToday() {
 
-        val file = File(File("/storage/self/primary/MOAVARA"), "Today_${tabType}.json")
+        val file = File(File("/storage/self/primary/MOAVARA"), "Today_${platform}.json")
         if (file.exists()) {
             file.delete()
         }
 
         val jsonArray = JSONArray()
 
-        BestRef.getBestDataToday(tabType, genre).addListenerForSingleValueEvent(object :
+        BestRef.getBestDataToday(platform, genre).addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 try {
+                    binding.blank.root.visibility = View.GONE
+                    binding.rviewBest.visibility = View.VISIBLE
 
                     for (postSnapshot in dataSnapshot.children) {
                         val jsonObject = JSONObject() //배열 내에 들어갈 json
@@ -137,8 +149,7 @@ class FragmentBestTabToday(private val tabType: String) :
 
                     getBestTodayList(items, true)
 
-                    binding.blank.root.visibility = View.GONE
-                    binding.rviewBest.visibility = View.VISIBLE
+
                     adapterToday?.notifyDataSetChanged()
                 } catch (e: JSONException) {
                     e.printStackTrace()
@@ -153,7 +164,7 @@ class FragmentBestTabToday(private val tabType: String) :
 
     override fun getBestTodayList(items: ArrayList<BookListDataBest>, status: Boolean) {
 
-        BestRef.getBookCode(tabType, genre).addListenerForSingleValueEvent(object :
+        BestRef.getBookCode(platform, genre).addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
@@ -282,7 +293,7 @@ class FragmentBestTabToday(private val tabType: String) :
 
         File("/storage/self/primary/MOAVARA").mkdir()
 
-        val file = File(File("/storage/self/primary/MOAVARA"), "Today_${tabType}.json")
+        val file = File(File("/storage/self/primary/MOAVARA"), "Today_${platform}.json")
 
         try {
 
@@ -300,7 +311,7 @@ class FragmentBestTabToday(private val tabType: String) :
     }
 
     fun readJsonList() {
-        val file = File(File("/storage/self/primary/MOAVARA"), "Today_${tabType}.json")
+        val file = File(File("/storage/self/primary/MOAVARA"), "Today_${platform}.json")
         try {
             val reader = BufferedReader(FileReader(file))
 

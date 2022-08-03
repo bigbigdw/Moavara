@@ -1,5 +1,7 @@
 package com.example.moavara.Soon.Search
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -54,10 +56,6 @@ class FragmentSearchMoavara : Fragment() {
 
         binding.sview.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-//                if (query != null) {
-//                    adapterToday?.search(query)
-//                }
-//                adapterToday?.notifyDataSetChanged()
                 return false
             }
 
@@ -76,15 +74,25 @@ class FragmentSearchMoavara : Fragment() {
             override fun onItemClick(v: View?, position: Int) {
                 val item: BookListDataBest? = adapterToday?.getItem(position)
 
-                val mBottomDialogBest = BottomDialogBest(
-                    requireContext(),
-                    item,
-                    item?.type ?: "",
-                    position,
-                    adapterToday?.itemCount ?: 0
-                )
+                if (item != null) {
+                    if(item.type == "MrBlue"){
+                        val intent = Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse( "https://www.mrblue.com/novel/${item.bookCode}")
+                        )
+                        context?.startActivity(intent)
+                    } else {
+                        val mBottomDialogBest = BottomDialogBest(
+                            requireContext(),
+                            item,
+                            item.type ?: "",
+                            position,
+                            adapterToday?.itemCount ?: 0
+                        )
 
-                fragmentManager?.let { mBottomDialogBest.show(it, null) }
+                        fragmentManager?.let { mBottomDialogBest.show(it, null) }
+                    }
+                }
             }
         })
 

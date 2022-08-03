@@ -1,6 +1,8 @@
 package com.example.moavara.Best
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,14 +54,22 @@ class AdapterBestWeekend(
                     override fun onItemClick(v: View?, position: Int) {
                         val item: BookListDataBest? = adapter.getItem(position)
 
-                        val mBottomDialogBest = BottomDialogBest(
-                            context,
-                            item,
-                            platform,
-                            item?.number ?: 0,
-                            adapter.itemCount
-                        )
-                        mBottomDialogBest.show((context as AppCompatActivity).supportFragmentManager, null)
+                        if(platform == "MrBlue"){
+                            val intent = Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse( "https://www.mrblue.com/novel/${item?.bookCode}")
+                            )
+                            context.startActivity(intent)
+                        } else {
+                            val mBottomDialogBest = BottomDialogBest(
+                                context,
+                                item,
+                                platform,
+                                item?.number ?: 0,
+                                adapter.itemCount
+                            )
+                            mBottomDialogBest.show((context as AppCompatActivity).supportFragmentManager, null)
+                        }
                     }
                 })
 

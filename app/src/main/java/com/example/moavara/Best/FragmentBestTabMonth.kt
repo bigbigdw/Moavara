@@ -1,5 +1,7 @@
 package com.example.moavara.Best
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -27,7 +29,7 @@ import org.json.JSONObject
 import java.io.*
 
 
-class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayListener {
+class FragmentBestTabMonth(private val platform: String) : Fragment(), BestTodayListener {
 
     private lateinit var adapterMonth: AdapterBestMonth
     private val itemMonth = ArrayList<BookListDataBestWeekendOld>()
@@ -83,7 +85,7 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
                     binding.rviewBestMonthDay.visibility = View.GONE
 
                     if (value != null) {
-                        BestRef.getBestDataMonth(tabType, genre).child((position + 1).toString())
+                        BestRef.getBestDataMonth(platform, genre).child((position + 1).toString())
                             .child(value).addListenerForSingleValueEvent(object :
                                 ValueEventListener {
                                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -184,14 +186,22 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
             override fun onItemClick(v: View?, position: Int) {
                 val item: BookListDataBest? = adapterMonthDay?.getItem(position)
 
-                val mBottomDialogBest = BottomDialogBest(
-                    requireContext(),
-                    item,
-                    tabType,
-                    position,
-                    adapterMonthDay?.itemCount ?: 0
-                )
-                childFragmentManager.let { mBottomDialogBest.show(it, null) }
+                if(platform == "MrBlue"){
+                    val intent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse( "https://www.mrblue.com/novel/${item?.bookCode}")
+                    )
+                    requireContext().startActivity(intent)
+                } else {
+                    val mBottomDialogBest = BottomDialogBest(
+                        requireContext(),
+                        item,
+                        platform,
+                        position,
+                        adapterMonthDay?.itemCount ?: 0
+                    )
+                    childFragmentManager.let { mBottomDialogBest.show(it, null) }
+                }
             }
         })
 
@@ -203,14 +213,14 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
         binding.rviewBestMonth.removeAllViews()
         itemMonth.clear()
 
-        val file = File(File("/storage/self/primary/MOAVARA"), "Month_${tabType}.json")
+        val file = File(File("/storage/self/primary/MOAVARA"), "Month_${platform}.json")
         if (file.exists()) {
             file.delete()
         }
 
         try {
 
-            BestRef.getBestDataMonth(tabType, genre)
+            BestRef.getBestDataMonth(platform, genre)
                 .addListenerForSingleValueEvent(object :
                     ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -300,7 +310,7 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
         binding.rviewBestMonth.removeAllViews()
         itemMonth.clear()
 
-        BestRef.getBestDataMonthBefore(tabType, genre).child((month - 1).toString())
+        BestRef.getBestDataMonthBefore(platform, genre).child((month - 1).toString())
             .addListenerForSingleValueEvent(object :
                 ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -365,7 +375,7 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
     }
 
     override fun getBestTodayList(items: ArrayList<BookListDataBest>, status: Boolean) {
-        BestRef.getBookCode(tabType, genre).addListenerForSingleValueEvent(object :
+        BestRef.getBookCode(platform, genre).addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (bookCodeList in items) {
@@ -459,7 +469,7 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
 
         File("/storage/self/primary/MOAVARA").mkdir()
 
-        val file = File(File("/storage/self/primary/MOAVARA"), "Month_${tabType}.json")
+        val file = File(File("/storage/self/primary/MOAVARA"), "Month_${platform}.json")
 
         try {
 
@@ -477,7 +487,7 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
     }
 
     fun readJsonList() {
-        val file = File(File("/storage/self/primary/MOAVARA"), "Month_${tabType}.json")
+        val file = File(File("/storage/self/primary/MOAVARA"), "Month_${platform}.json")
         try {
             val reader = BufferedReader(FileReader(file))
 

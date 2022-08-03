@@ -148,8 +148,7 @@ class ActivityAdmin : AppCompatActivity() {
             }
 
             llayoutBtn13.setOnClickListener {
-
-                Mining.miningTrophy("Joara", "ALL")
+                Mining.miningTrophy("Toksoda", "ALL")
                 Toast.makeText(applicationContext, "테스트 완료", Toast.LENGTH_SHORT).show()
             }
 

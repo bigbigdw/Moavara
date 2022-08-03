@@ -97,13 +97,13 @@ class BottomDialogBest(
 
                 tviewInfo1.text = item?.info2 ?: ""
 
-                val info3 = SpannableStringBuilder(item?.info3)
+                val info3 = SpannableStringBuilder("조회 수 : ${item?.info3}" )
                 info3.applyingTextColor(
                     "조회 수 : ",
                     "#6E7686"
                 )
 
-                val info5 = SpannableStringBuilder(item?.info5)
+                val info5 = SpannableStringBuilder("선호작 수 : ${item?.info5}")
                 info5.applyingTextColor(
                     "선호작 수 : ",
                     "#6E7686"
@@ -120,19 +120,19 @@ class BottomDialogBest(
                 tviewInfo4.visibility = View.VISIBLE
                 tviewInfo5.visibility = View.GONE
 
-                val info3 = SpannableStringBuilder(item?.info3?.replace("별점", "별점 : "))
+                val info3 = SpannableStringBuilder("별점 수 : ${item?.info3?.replace("별점", "별점 : ")}")
                 info3.applyingTextColor(
                     "별점 : ",
                     "#6E7686"
                 )
 
-                val info4 = SpannableStringBuilder(item?.info4?.replace("조회", "조회 수 : "))
+                val info4 = SpannableStringBuilder("조회 수 : ${item?.info4?.replace("조회", "조회 수 : ")}" )
                 info4.applyingTextColor(
                     "조회 수 : ",
                     "#6E7686"
                 )
 
-                val info5 = SpannableStringBuilder(item?.info5?.replace("관심", "관심 : "))
+                val info5 = SpannableStringBuilder("관심 : ${item?.info5?.replace("관심", "관심 : ")}")
                 info5.applyingTextColor(
                     "관심 : ",
                     "#6E7686"
@@ -150,13 +150,13 @@ class BottomDialogBest(
                 tviewInfo4.visibility = View.VISIBLE
                 tviewInfo5.visibility = View.VISIBLE
 
-                val info3 = SpannableStringBuilder(item?.info3?.replace("별점", "별점 : "))
+                val info3 = SpannableStringBuilder("조회 수 : ${item?.info3?.replace("별점", "별점 : ")}" )
                 info3.applyingTextColor(
                     "조회 수 : ",
                     "#6E7686"
                 )
 
-                val info4 = SpannableStringBuilder(item?.info4?.replace("조회", "조회 수 : "))
+                val info4 = SpannableStringBuilder("선호작 수 : ${item?.info4?.replace("조회", "조회 수 : ")}" )
                 info4.applyingTextColor(
                     "선호작 수 : ",
                     "#6E7686"
@@ -173,13 +173,13 @@ class BottomDialogBest(
                 tviewInfo4.visibility = View.VISIBLE
                 tviewInfo5.visibility = View.GONE
 
-                val info3 = SpannableStringBuilder(item?.info3)
+                val info3 = SpannableStringBuilder("추천 수 : ${item?.info3}" )
                 info3.applyingTextColor(
                     "추천 수 : ",
                     "#6E7686"
                 )
 
-                val info4 = SpannableStringBuilder(item?.info4)
+                val info4 = SpannableStringBuilder("평점 : ${item?.info4}")
                 info4.applyingTextColor(
                     "평점 : ",
                     "#6E7686"
@@ -194,19 +194,19 @@ class BottomDialogBest(
                 tviewInfo4.visibility = View.VISIBLE
                 tviewInfo5.visibility = View.GONE
 
-                val info3 = SpannableStringBuilder(item?.info3?.replace("별점", "별점 : "))
+                val info3 = SpannableStringBuilder("조회 수 : ${item?.info3?.replace("별점", "별점 : ")}" )
                 info3.applyingTextColor(
                     "조회 수 : ",
                     "#6E7686"
                 )
 
-                val info4 = SpannableStringBuilder(item?.info4?.replace("조회", "조회 수 : "))
+                val info4 = SpannableStringBuilder("평점 : ${item?.info4?.replace("조회", "조회 수 : ")}" )
                 info4.applyingTextColor(
                     "평점 : ",
                     "#6E7686"
                 )
 
-                val info5 = SpannableStringBuilder(item?.info5?.replace("관심", "관심 : "))
+                val info5 = SpannableStringBuilder("댓글 수 : ${item?.info5?.replace("관심", "관심 : ")}" )
                 info5.applyingTextColor(
                     "댓글 수 : ",
                     "#6E7686"
@@ -225,21 +225,21 @@ class BottomDialogBest(
                 if(platform == "Joara" || platform == "Joara_Premium" || platform == "Joara_Nobless"){
                     tviewInfo1.text = item?.info2 ?: ""
 
-                    val info3 = SpannableStringBuilder(item?.info3)
+                    val info3 = SpannableStringBuilder("조회 수 : ${item?.info3}")
                     info3.applyingTextColor(
-                        BestRef.setDetailText(platform, 1),
+                        "조회 수 : ",
                         "#6E7686"
                     )
 
-                    val info4 = SpannableStringBuilder(item?.info4)
+                    val info4 = SpannableStringBuilder("선호작 수 : ${item?.info4}")
                     info4.applyingTextColor(
-                        BestRef.setDetailText(platform, 2),
+                        "선호작 수 : ",
                         "#6E7686"
                     )
 
-                    val info5 = SpannableStringBuilder(item?.info5)
+                    val info5 = SpannableStringBuilder("추천 수 : ${item?.info5}")
                     info5.applyingTextColor(
-                        BestRef.setDetailText(platform, 3),
+                        "추천 수 : ",
                         "#6E7686"
                     )
 
@@ -251,19 +251,19 @@ class BottomDialogBest(
                 } else if(platform == "Kakao"){
                     tviewInfo1.text = item?.info2 ?: ""
 
-                    val info3 = SpannableStringBuilder(item?.info3)
+                    val info3 = SpannableStringBuilder("조회 수 : ${item?.info3}")
                     info3.applyingTextColor(
                         "조회 수 : ",
                         "#6E7686"
                     )
 
-                    val info4 = SpannableStringBuilder(item?.info4)
+                    val info4 = SpannableStringBuilder("추천 수 : ${item?.info4}")
                     info4.applyingTextColor(
                         "추천 수 : ",
                         "#6E7686"
                     )
 
-                    val info5 = SpannableStringBuilder(item?.info5)
+                    val info5 = SpannableStringBuilder("평점 : ${item?.info5}")
                     info5.applyingTextColor(
                         "평점 : ",
                         "#6E7686"
@@ -276,19 +276,19 @@ class BottomDialogBest(
                 } else if(platform == "Munpia"){
                     tviewInfo1.text = item?.info2 ?: ""
 
-                    val info3 = SpannableStringBuilder(item?.info3)
+                    val info3 = SpannableStringBuilder("조회 수 : ${item?.info3}")
                     info3.applyingTextColor(
                         "조회 수 : ",
                         "#6E7686"
                     )
 
-                    val info4 = SpannableStringBuilder(item?.info4)
+                    val info4 = SpannableStringBuilder("방문 수 : ${item?.info4}")
                     info4.applyingTextColor(
                         "방문 수 : ",
                         "#6E7686"
                     )
 
-                    val info5 = SpannableStringBuilder(item?.info5)
+                    val info5 = SpannableStringBuilder("선호작 수 : ${item?.info5}")
                     info5.applyingTextColor(
                         "선호작 수 : ",
                         "#6E7686"
