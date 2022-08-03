@@ -123,30 +123,21 @@ class FragmentBestDetailAnalyze(
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val group: BestTodayAverage? = dataSnapshot.getValue(BestTodayAverage::class.java)
 
-                var valCur1 = 0
-                var valCur2 = 0
-                var valCur3 = 0
-                var valCur4 = 0
+                val valCur1 = itemCount - item[item.size-1].numInfo1
+                val valCur2 = itemCount - item[item.size-1].numInfo2
+                val valCur3 = itemCount - item[item.size-1].numInfo3
+                var valCur4 = itemCount - item[item.size-1].numInfo4
+                val numberAvg = itemCount - item[item.size-1].number
 
                 entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
                 entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
                 entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
                 entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
 
-                var numberAvg = 0
-
-                for (numItem in item) {
-                    numberAvg += (itemCount - numItem.number)
-                    valCur1 += (itemCount - numItem.numInfo1)
-                    valCur2 += (itemCount - numItem.numInfo2)
-                    valCur3 += (itemCount - numItem.numInfo3)
-                    valCur4 += (itemCount - numItem.numInfo4)
-                }
-
-                entriesCurrent.add(RadarEntry((valCur1 / item.size).toFloat()))
-                entriesCurrent.add(RadarEntry((valCur2 / item.size).toFloat()))
-                entriesCurrent.add(RadarEntry((valCur3 / item.size).toFloat()))
-                entriesCurrent.add(RadarEntry((numberAvg / item.size).toFloat()))
+                entriesCurrent.add(RadarEntry(valCur1.toFloat()))
+                entriesCurrent.add(RadarEntry(valCur2.toFloat()))
+                entriesCurrent.add(RadarEntry(valCur3.toFloat()))
+                entriesCurrent.add(RadarEntry(numberAvg.toFloat()))
 
                 with(binding) {
 

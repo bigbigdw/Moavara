@@ -41,9 +41,9 @@ object Mining {
         apiJoara.getNoticeList(
             param,
             object : RetrofitDataListener<JoaraNoticeResult> {
-                override fun onSuccess(it: JoaraNoticeResult) {
+                override fun onSuccess(data: JoaraNoticeResult) {
 
-                    val data = it.notices
+                    val data = data.notices
 
                     if (data != null) {
                         for (item in data) {
@@ -78,9 +78,9 @@ object Mining {
         apiJoara.getJoaraEventList(
             param,
             object : RetrofitDataListener<JoaraEventsResult> {
-                override fun onSuccess(it: JoaraEventsResult) {
+                override fun onSuccess(data: JoaraEventsResult) {
 
-                    val data = it.data
+                    val data = data.data
 
                     if (data != null) {
                         for (item in data) {
@@ -124,7 +124,7 @@ object Mining {
             }
         }
 
-        val KakaoStage1 = Thread {
+        val KakaoStage = Thread {
             getKakaoStageBest(genre)
         }
 
@@ -174,59 +174,156 @@ object Mining {
             getMrBlueBest(genre)
         }
 
+        val RidiTrophy = Thread {
+            miningTrophy("Ridi", "ALL")
+        }
+
+        val OneStoreTrophy = Thread {
+            miningTrophy("OneStore", "ALL")
+        }
+
+        val KakaoTrophy = Thread {
+            miningTrophy("Kakao", "ALL")
+        }
+
+        val KakaoStageTrophy = Thread {
+            miningTrophy("Kakao_Stage", "ALL")
+        }
+
+        val JoaraTrophy = Thread {
+            miningTrophy("Joara", "ALL")
+        }
+
+        val JoaraNoblessTrophy = Thread {
+            miningTrophy("Joara_Nobless", "ALL")
+        }
+
+        val JoaraPremiumTrophy = Thread {
+            miningTrophy("Joara_Premium", "ALL")
+        }
+
+        val NaverTodayTrophy = Thread {
+            miningTrophy("Naver_Today", "ALL")
+        }
+
+        val NaverChallengeTrophy = Thread {
+            miningTrophy("Naver_Challenge", "ALL")
+        }
+
+        val NaverBestTrophy = Thread {
+            miningTrophy("Naver", "ALL")
+        }
+
+        val MoonpiaTrophy = Thread {
+            miningTrophy("Munpia", "ALL")
+        }
+
+        val ToksodaTrophy = Thread {
+            miningTrophy("Toksoda", "ALL")
+        }
+
 
         try {
             Ridi.start()
-            Log.d("####MINING", "리디1 완료")
+            Log.d("MINING", "리디 완료")
             Ridi.join()
 
             OneStore.start()
             OneStore.join()
-            Log.d("####MINING", "원스토어1 완료")
+            Log.d("MINING", "원스토어 완료")
 
             Kakao.start()
             Kakao.join()
-            Log.d("####MINING", "카카오1 완료")
+            Log.d("MINING", "카카오 완료")
 
-            KakaoStage1.start()
-            KakaoStage1.join()
-            Log.d("####MINING", "카카오 스테이지1 완료")
+            KakaoStage.start()
+            KakaoStage.join()
+            Log.d("MINING", "카카오 스테이지1 완료")
 
             Joara.start()
             Joara.join()
-            Log.d("####MINING", "조아라1 완료")
+            Log.d("MINING", "조아라 완료")
 
             JoaraNobless.start()
             JoaraNobless.join()
-            Log.d("####MINING", "조아라 노블레스1 완료")
+            Log.d("MINING", "조아라 노블레스 완료")
 
             JoaraPremium.start()
             JoaraPremium.join()
-            Log.d("####MINING", "조아라 프리미엄1 완료")
+            Log.d("MINING", "조아라 프리미엄 완료")
 
             NaverToday.start()
             NaverToday.join()
-            Log.d("####MINING", "네이버 투데이1 완료")
+            Log.d("MINING", "네이버 투데이 완료")
 
             NaverChallenge.start()
             NaverChallenge.join()
-            Log.d("####MINING", "네이버 챌린지1 완료")
+            Log.d("MINING", "네이버 챌린지 완료")
 
             NaverBest.start()
             NaverBest.join()
-            Log.d("####MINING", "네이버1 완료")
+            Log.d("MINING", "네이버 완료")
 
             Moonpia.start()
             Moonpia.join()
-            Log.d("####MINING", "문피아 완료")
+            Log.d("MINING", "문피아 완료")
 
             Toksoda.start()
             Toksoda.join()
-            Log.d("####MINING", "톡소다1 완료")
+            Log.d("MINING", "톡소다 완료")
 
             MrBlue.start()
             MrBlue.join()
-            Log.d("####MINING", "미스터 블루 완료")
+            Log.d("MINING", "미스터 블루 완료")
+
+            RidiTrophy.start()
+            Log.d("MINING", "리디 완료")
+            RidiTrophy.join()
+
+            OneStoreTrophy.start()
+            OneStoreTrophy.join()
+            Log.d("MINING", "원스토어 트로피 완료")
+
+            KakaoTrophy.start()
+            KakaoTrophy.join()
+            Log.d("MINING", "카카오 트로피 완료")
+
+            KakaoStageTrophy.start()
+            KakaoStageTrophy.join()
+            Log.d("MINING", "카카오 스테이지 트로피 완료")
+
+            JoaraTrophy.start()
+            JoaraTrophy.join()
+            Log.d("MINING", "조아라 트로피 완료")
+
+            JoaraNoblessTrophy.start()
+            JoaraNoblessTrophy.join()
+            Log.d("MINING", "조아라 노블레스 트로피 완료")
+
+            JoaraPremiumTrophy.start()
+            JoaraPremiumTrophy.join()
+            Log.d("MINING", "조아라 프리미엄 트로피 완료")
+
+            NaverTodayTrophy.start()
+            NaverTodayTrophy.join()
+            Log.d("MINING", "네이버 투데이 트로피 완료")
+
+            NaverChallengeTrophy.start()
+            NaverChallengeTrophy.join()
+            Log.d("MINING", "네이버 챌린지 트로피 완료")
+
+            NaverBestTrophy.start()
+            NaverBestTrophy.join()
+            Log.d("MINING", "네이버 트로피 완료")
+
+            MoonpiaTrophy.start()
+            MoonpiaTrophy.join()
+            Log.d("MINING", "문피아 트로피 완료")
+
+            ToksodaTrophy.start()
+            ToksodaTrophy.join()
+            Log.d("MINING", "톡소다 트로피 완료")
+
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
@@ -722,10 +819,6 @@ object Mining {
                     if(page == 1){
                         FirebaseDatabase.getInstance().reference.child("Best").child("Kakao")
                             .child(genre).child("Average").child(DBDate.DateMMDD())
-                            .removeValue()
-
-                        FirebaseDatabase.getInstance().reference.child("Best").child("Kakao")
-                            .child(genre).child("Average").child(DBDate.DateMMDD())
                             .setValue(BestTodayAverage(average1, average2, average3, average4))
                     }
 
@@ -793,10 +886,6 @@ object Mining {
                     }
 
                     if(page == 1){
-                        FirebaseDatabase.getInstance().reference.child("Best").child("Joara")
-                            .child(genre).child("Average").child(DBDate.DateMMDD())
-                            .removeValue()
-
                         FirebaseDatabase.getInstance().reference.child("Best").child("Joara")
                             .child(genre).child("Average").child(DBDate.DateMMDD())
                             .setValue(BestTodayAverage(average1, average2, average3, average4))
@@ -867,10 +956,6 @@ object Mining {
                     }
 
                     if(page == 1){
-                        FirebaseDatabase.getInstance().reference.child("Best").child("Joara_Premium")
-                            .child(genre).child("Average").child(DBDate.DateMMDD())
-                            .removeValue()
-
                         FirebaseDatabase.getInstance().reference.child("Best").child("Joara_Premium")
                             .child(genre).child("Average").child(DBDate.DateMMDD())
                             .setValue(BestTodayAverage(average1, average2, average3, average4))
@@ -945,10 +1030,6 @@ object Mining {
                     if(page == 1){
                         FirebaseDatabase.getInstance().reference.child("Best").child("Joara_Nobless")
                             .child(genre).child("Average").child(DBDate.DateMMDD())
-                            .removeValue()
-
-                        FirebaseDatabase.getInstance().reference.child("Best").child("Joara_Nobless")
-                            .child(genre).child("Average").child(DBDate.DateMMDD())
                             .setValue(BestTodayAverage(average1, average2, average3, average4))
                     }
 
@@ -1017,10 +1098,6 @@ object Mining {
                             }
 
                             if(page == 1){
-                                FirebaseDatabase.getInstance().reference.child("Best").child("Munpia")
-                                    .child("Average").child(DBDate.DateMMDD())
-                                    .removeValue()
-
                                 FirebaseDatabase.getInstance().reference.child("Best").child("Munpia")
                                     .child("Average").child(DBDate.DateMMDD())
                                     .setValue(BestTodayAverage(average1, average2, average3, average4))
@@ -1099,10 +1176,6 @@ object Mining {
 
 
                         if(page == 1){
-                            FirebaseDatabase.getInstance().reference.child("Best").child("Toksoda")
-                                .child("Average").child(DBDate.DateMMDD())
-                                .removeValue()
-
                             FirebaseDatabase.getInstance().reference.child("Best").child("Toksoda")
                                 .child(genre).child("Average").child(DBDate.DateMMDD())
                                 .setValue(BestTodayAverage(average1, average2, average3))
