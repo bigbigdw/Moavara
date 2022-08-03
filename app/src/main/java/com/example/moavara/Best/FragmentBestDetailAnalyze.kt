@@ -192,7 +192,7 @@ class FragmentBestDetailAnalyze(
                     yAxis.setLabelCount(5, false)
                     yAxis.textSize = 9f
                     yAxis.axisMinimum = 0f
-                    yAxis.axisMaximum = 80f
+                    yAxis.axisMaximum = (itemCount -20).toFloat()
                     yAxis.setDrawLabels(false)
 
                     val l: Legend = radarChart.legend

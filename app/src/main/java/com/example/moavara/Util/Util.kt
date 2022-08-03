@@ -308,20 +308,20 @@ object Genre {
         }
     }
 
-    fun setRidiGenre(str: String, page : Int): String {
+    fun setRidiGenre(str: String): String {
         return when {
             str == "BL" -> {
-                "https://ridibooks.com/bestsellers/bl-webnovel?order=daily&rent=n&adult=n&adult_exclude=y&page=${page}"
+                "https://ridibooks.com/bestsellers/bl-webnovel?order=daily&rent=n&adult=n&adult_exclude=y&page=1"
             }
             str == "FANTASY" -> {
-                "https://ridibooks.com/bestsellers/fantasy_serial?order=daily&page=${page}"
+                "https://ridibooks.com/bestsellers/fantasy_serial?order=daily&page=1"
             }
             str == "ROMANCE" -> {
-                "https://ridibooks.com/bestsellers/romance_serial?rent=n&adult=n&adult_exclude=y&order=daily&page=${page}"
+                "https://ridibooks.com/bestsellers/romance_serial?rent=n&adult=n&adult_exclude=y&order=daily&page=1"
             }
             else -> {
                 //로맨스
-                "https://ridibooks.com/bestsellers/romance_serial?rent=n&adult=n&adult_exclude=y&order=daily&page=${page}"
+                "https://ridibooks.com/bestsellers/romance_serial?rent=n&adult=n&adult_exclude=y&order=daily&page=1"
             }
         }
     }
