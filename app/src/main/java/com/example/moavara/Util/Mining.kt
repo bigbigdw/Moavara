@@ -5,14 +5,19 @@ import android.net.Uri
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.moavara.DataBase.BestTodayAverage
+import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.Retrofit.*
 import com.example.moavara.Search.EventDetailDataMining
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
 import java.io.File
 import java.net.SocketTimeoutException
+import java.util.*
 import kotlin.math.roundToInt
 
 object Mining {
@@ -276,9 +281,9 @@ object Mining {
             val Naver: Elements = doc.select(".ranking_wrap_left .list_ranking li")
             val NaverRef: MutableMap<String?, Any> = HashMap()
 
-            var average1 = 0
-            var average2 = 0
-            var average3 = 0
+            var average1 = 1
+            var average2 = 1
+            var average3 = 1
 
             for (i in Naver.indices) {
 
@@ -337,9 +342,9 @@ object Mining {
             val Naver: Elements = doc.select(".ranking_wrap_left .list_ranking li")
             val NaverRef: MutableMap<String?, Any> = HashMap()
 
-            var average1 = 0
-            var average2 = 0
-            var average3 = 0
+            var average1 = 1
+            var average2 = 1
+            var average3 = 1
 
             for (i in Naver.indices) {
 
@@ -396,9 +401,9 @@ object Mining {
             val Naver: Elements = doc.select(".ranking_wrap_left .list_ranking li")
             val NaverRef: MutableMap<String?, Any> = HashMap()
 
-            var average1 = 0
-            var average2 = 0
-            var average3 = 0
+            var average1 = 1
+            var average2 = 1
+            var average3 = 1
 
             for (i in Naver.indices) {
 
@@ -454,8 +459,8 @@ object Mining {
             val Ridi: Elements = doc.select(".book_thumbnail_wrapper")
             val RidiRef: MutableMap<String?, Any> = HashMap()
 
-            var average1 = 0
-            var average2 = 0
+            var average1 = 1
+            var average2 = 1
 
             for (i in Ridi.indices) {
                 if (i > 0) {
@@ -521,9 +526,9 @@ object Mining {
             val apiOneStory = RetrofitOnestore()
             val param: MutableMap<String?, Any> = HashMap()
 
-            var average1 = 0
-            var average2 = 0
-            var average3 = 0
+            var average1 = 1
+            var average2 = 1
+            var average3 = 1
 
             param["menuId"] = Genre.setOneStoreGenre(genre)
 
@@ -589,10 +594,10 @@ object Mining {
         val apiKakao = RetrofitKaKao()
         val param: MutableMap<String?, Any> = HashMap()
 
-        var average1 = 0
-        var average2 = 0
-        var average3 = 0
-        var average4 = 0
+        var average1 = 1
+        var average2 = 1
+        var average3 = 1
+        var average4 = 1
 
         param["adult"] = "false"
         param["dateRange"] = "YESTERDAY"
@@ -662,10 +667,10 @@ object Mining {
         val param: MutableMap<String?, Any> = HashMap()
         val KakaoRef: MutableMap<String?, Any> = HashMap()
 
-        var average1 = 0
-        var average2 = 0
-        var average3 = 0
-        var average4 = 0
+        var average1 = 1
+        var average2 = 1
+        var average3 = 1
+        var average4 = 1
 
         param["category"] = "11"
         param["subcategory"] = "0"
@@ -697,6 +702,7 @@ object Mining {
                             KakaoRef["number"] = (i + ((page - 1) * list.size))
                             KakaoRef["date"] = DBDate.DateMMDD()
                             KakaoRef["type"] = "Kakao"
+
                             miningValue(
                                 KakaoRef,
                                 (i + ((page - 1) * list.size)),
@@ -735,10 +741,10 @@ object Mining {
         val apiJoara = RetrofitJoara()
         val param = Param.getItemAPI(context)
 
-        var average1 = 0
-        var average2 = 0
-        var average3 = 0
-        var average4 = 0
+        var average1 = 1
+        var average2 = 1
+        var average3 = 1
+        var average4 = 1
 
         param["page"] = page.toString()
         param["best"] = "today"
@@ -753,6 +759,7 @@ object Mining {
                     val books = data.bookLists
 
                     if (books != null) {
+
                         for (i in books.indices) {
 
                             JoaraRef["writerName"] = books[i].writerName
@@ -814,10 +821,10 @@ object Mining {
         param["store"] = "premium"
         param["category"] = Genre.setJoaraGenre(genre)
 
-        var average1 = 0
-        var average2 = 0
-        var average3 = 0
-        var average4 = 0
+        var average1 = 1
+        var average2 = 1
+        var average3 = 1
+        var average4 = 1
 
         apiJoara.getJoaraBookBest(
             param,
@@ -889,10 +896,10 @@ object Mining {
         param["store"] = "nobless"
         param["category"] = Genre.setJoaraGenre(genre)
 
-        var average1 = 0
-        var average2 = 0
-        var average3 = 0
-        var average4 = 0
+        var average1 = 1
+        var average2 = 1
+        var average3 = 1
+        var average4 = 1
 
         apiJoara.getJoaraBookBest(
             param,
@@ -964,10 +971,10 @@ object Mining {
         param["outAdult"] = "true"
         param["offset"] = (page - 1) * 25
 
-        var average1 = 0
-        var average2 = 0
-        var average3 = 0
-        var average4 = 0
+        var average1 = 1
+        var average2 = 1
+        var average3 = 1
+        var average4 = 1
 
         apiMoonPia.postMoonPiaBest(
             param,
@@ -1050,9 +1057,9 @@ object Mining {
         param["freePblserlYn"] = "00431"
         param["_"] = "1657262989944"
 
-        var average1 = 0
-        var average2 = 0
-        var average3 = 0
+        var average1 = 1
+        var average2 = 1
+        var average3 = 1
 
         apiToksoda.getBestList(
             param,
@@ -1107,6 +1114,58 @@ object Mining {
                     }
                 }
             })
+    }
+
+    fun miningTrophy(platform: String, genre: String) {
+
+        BestRef.getBestDataToday(platform, genre).addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val itemGroup = ArrayList<BookListDataBest>()
+
+                for(item in dataSnapshot.children){
+                    val group: BookListDataBest? = item.getValue(BookListDataBest::class.java)
+                    if (group != null) {
+                        itemGroup.add(group)
+                    }
+                }
+
+                val sort1: Comparator<BookListDataBest> =
+                    Comparator { o1, o2 -> o1.info3.compareTo(o2.info3) }
+                Collections.sort(itemGroup, sort1)
+
+                for(i in itemGroup.indices){
+                    BestRef.setBookCode(platform, genre, itemGroup[i].bookCode).child("numInfo1").setValue(i)
+                }
+
+                val sort2: Comparator<BookListDataBest> =
+                    Comparator { o1, o2 -> o1.info4.compareTo(o2.info4) }
+                Collections.sort(itemGroup, sort2)
+
+                for(i in itemGroup.indices){
+                    BestRef.setBookCode(platform, genre, itemGroup[i].bookCode).child("numInfo2").setValue(i)
+                }
+
+                val sort3: Comparator<BookListDataBest> =
+                    Comparator { o1, o2 -> o1.info5.compareTo(o2.info5) }
+                Collections.sort(itemGroup, sort3)
+
+                for(i in itemGroup.indices){
+                    BestRef.setBookCode(platform, genre, itemGroup[i].bookCode).child("numInfo3").setValue(i)
+                }
+
+                val sort4: Comparator<BookListDataBest> =
+                    Comparator { o1, o2 -> o1.info6.compareTo(o2.info6) }
+                Collections.sort(itemGroup, sort4)
+
+                for(i in itemGroup.indices){
+                    BestRef.setBookCode(platform, genre, itemGroup[i].bookCode).child("numInfo4").setValue(i)
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
+
     }
 }
 

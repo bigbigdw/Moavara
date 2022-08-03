@@ -2,7 +2,6 @@ package com.example.moavara.Best
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -124,59 +123,30 @@ class FragmentBestDetailAnalyze(
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val group: BestTodayAverage? = dataSnapshot.getValue(BestTodayAverage::class.java)
 
-                val valAvg1 = group?.info1 ?: 0
-                val valAvg2 = group?.info2 ?: 0
-                val valAvg3 = group?.info3 ?: 0
-                val valAvg4 = group?.info4 ?: 0
+                var valCur1 = 0
+                var valCur2 = 0
+                var valCur3 = 0
+                var valCur4 = 0
 
-                val valCur1 = item[item.size - 1].info1.toFloat()
-                val valCur2 = item[item.size - 1].info2.toFloat()
-                val valCur3 = item[item.size - 1].info3.toFloat()
-                val valCur4 = item[item.size - 1].info4.toFloat()
-
-                Log.d("!!!!-1", "${valAvg1} ${valAvg2} ${valAvg3} ${valAvg4}")
-                Log.d("!!!!-2", "${valCur1} ${valCur2} ${valCur3} ${valCur4}")
-                Log.d(
-                    "!!!!-3",
-                    "${(valCur1 / valAvg1) * 100} ${(valCur2 / valAvg2) * 100} ${(valCur3 / valAvg3) * 100} ${(valCur4 / valAvg4) * 100}"
-                )
-                Log.d(
-                    "!!!!-4",
-                    "${(valCur1 / (valAvg1 / itemCount)) * 100} ${(valCur2 / (valAvg2 / itemCount)) * 100} ${(valCur3 / (valAvg3 / itemCount)) * 100} ${(valCur4 / (valAvg4 / itemCount)) * 100}"
-                )
-                Log.d(
-                    "!!!!-5",
-                    "${(valAvg1 / valCur1) * 100} ${(valAvg2 / valCur2) * 100} ${(valAvg2 / valCur2) * 100} ${(valAvg2 / valCur2) * 100}"
-                )
-                Log.d(
-                    "!!!!-6",
-                    "${((valAvg1 / itemCount) / valCur1) * 100} ${((valAvg2 / itemCount) / valCur2) * 100} ${((valAvg3 / itemCount) / valCur2) * 100} ${((valAvg4 / itemCount) / valCur2) * 100}"
-                )
-                Log.d(
-                    "!!!!-7",
-                    "${(valCur1 / valAvg1) * 200} ${(valCur2 / valAvg2) * 200} ${(valCur3 / valAvg3) * 200} ${(valCur4 / valAvg4) * 200}"
-                )
-
-                Log.d(
-                    "!!!!-8",
-                    "${(valCur1 / valAvg1) * 20 * itemCount} ${(valCur2 / valAvg2) * 20 * itemCount} ${(valCur3 / valAvg3) * 20 * itemCount} ${(valCur4 / valAvg4) * 20 * itemCount}"
-                )
-
-                entryAverage.add(RadarEntry(50F))
-                entryAverage.add(RadarEntry(50F))
-                entryAverage.add(RadarEntry(50F))
-                entryAverage.add(RadarEntry(50F))
+                entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+                entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+                entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+                entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
 
                 var numberAvg = 0
 
                 for (numItem in item) {
                     numberAvg += (itemCount - numItem.number)
+                    valCur1 += (itemCount - numItem.numInfo1)
+                    valCur2 += (itemCount - numItem.numInfo2)
+                    valCur3 += (itemCount - numItem.numInfo3)
+                    valCur4 += (itemCount - numItem.numInfo4)
                 }
 
-                entriesCurrent.add(RadarEntry(100F))
-                entriesCurrent.add(RadarEntry(100F))
-                entriesCurrent.add(RadarEntry(100F))
-                entriesCurrent.add(RadarEntry(100F))
+                entriesCurrent.add(RadarEntry((valCur1 / item.size).toFloat()))
+                entriesCurrent.add(RadarEntry((valCur2 / item.size).toFloat()))
+                entriesCurrent.add(RadarEntry((valCur3 / item.size).toFloat()))
+                entriesCurrent.add(RadarEntry((numberAvg / item.size).toFloat()))
 
                 with(binding) {
 
@@ -221,6 +191,8 @@ class FragmentBestDetailAnalyze(
                     xAxis.textSize = 9f
                     xAxis.yOffset = 0f
                     xAxis.xOffset = 0f
+                    xAxis.axisMinimum = 0f
+                    xAxis.axisMaximum = 100f
                     val labels = arrayOf("조회 수", "선호작 수", "추천 수", "트로피")
                     xAxis.valueFormatter = IndexAxisValueFormatter(labels)
                     xAxis.textColor = Color.WHITE
@@ -229,7 +201,7 @@ class FragmentBestDetailAnalyze(
                     yAxis.setLabelCount(5, false)
                     yAxis.textSize = 9f
                     yAxis.axisMinimum = 0f
-                    yAxis.axisMaximum = 100f
+                    yAxis.axisMaximum = 80f
                     yAxis.setDrawLabels(false)
 
                     val l: Legend = radarChart.legend
@@ -249,5 +221,13 @@ class FragmentBestDetailAnalyze(
 
             override fun onCancelled(databaseError: DatabaseError) {}
         })
+    }
+
+    fun getMax(value : Float) : Float {
+        return if(value > 100F){
+            100F
+        } else {
+            value
+        }
     }
 }

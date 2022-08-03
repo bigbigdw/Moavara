@@ -149,9 +149,7 @@ class ActivityAdmin : AppCompatActivity() {
 
             llayoutBtn13.setOnClickListener {
 
-                for (i in 1..5) {
-                    Mining.getJoaraBest(this@ActivityAdmin, "ALL", i)
-                }
+                Mining.miningTrophy("Joara", "ALL")
                 Toast.makeText(applicationContext, "테스트 완료", Toast.LENGTH_SHORT).show()
             }
 

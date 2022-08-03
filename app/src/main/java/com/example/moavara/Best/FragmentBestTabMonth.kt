@@ -376,8 +376,8 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
 
                         for (item in bookCodeitems.children) {
 
-                            val group: BookListDataBest? =
-                                item.getValue(BookListDataBest::class.java)
+                            val group: BookListDataBestAnalyze? =
+                                item.getValue(BookListDataBestAnalyze::class.java)
 
                             if (group != null) {
                                 bookCodes.add(
@@ -387,6 +387,10 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
                                         group.info3,
                                         group.info4,
                                         group.number,
+                                        group.numInfo1,
+                                        group.numInfo2,
+                                        group.numInfo3,
+                                        group.numInfo4,
                                         group.date,
                                     )
                                 )
@@ -403,6 +407,10 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
                                 lastItem.info3,
                                 lastItem.info4,
                                 lastItem.number,
+                                lastItem.numInfo1,
+                                lastItem.numInfo2,
+                                lastItem.numInfo3,
+                                lastItem.numInfo4,
                                 lastItem.date,
                                 moreLastItem.number - lastItem.number,
                                 bookCodes.size
@@ -411,9 +419,9 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
 
                     } else if (bookCodeitems.childrenCount.toInt() == 1) {
 
-                        val group: BookListDataBest? =
+                        val group: BookListDataBestAnalyze? =
                             dataSnapshot.child(bookCodeList.bookCode).child(DBDate.DateMMDD())
-                                .getValue(BookListDataBest::class.java)
+                                .getValue(BookListDataBestAnalyze::class.java)
 
                         if (group != null) {
                             bookCodeItems.add(
@@ -423,6 +431,10 @@ class FragmentBestTabMonth(private val tabType: String) : Fragment(), BestTodayL
                                     group.info3,
                                     group.info4,
                                     group.number,
+                                    group.numInfo1,
+                                    group.numInfo2,
+                                    group.numInfo3,
+                                    group.numInfo4,
                                     group.date,
                                     0,
                                     1
