@@ -50,20 +50,6 @@ class InnerFragmentBestDetailBar(
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rViewChart.adapter = adapterChart
 
-        val Average =
-            FirebaseDatabase.getInstance().reference.child("Best").child(platform)
-                .child(genre).child("Average").child(DBDate.DateMMDD())
-
-        Average.addListenerForSingleValueEvent(object :
-            ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val group: BestTodayAverage? = dataSnapshot.getValue(BestTodayAverage::class.java)
-
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
-
         if (platform == "Joara" || platform == "Joara_Nobless" || platform == "Joara_Premium") {
             for (i in BookItem.indices) {
                 dateList.add(BookItem[i].date.substring(4))

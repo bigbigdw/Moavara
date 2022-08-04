@@ -65,7 +65,6 @@ class AdapterChart(private var holder: List<BestChart>) :
                 setPinchZoom(false)
                 isClickable = false
 
-
                 animateXY(800, 800)
                 description = null
 
