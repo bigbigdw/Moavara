@@ -121,6 +121,7 @@
         <entry key="app/src/main/res/Best/layout/collapse_best_detail.xml" value="0.1921875" />
         <entry key="app/src/main/res/Best/layout/cu_item_best_weekend.xml" value="0.1" />
         <entry key="app/src/main/res/Best/layout/fragment_best.xml" value="0.1" />
+        <entry key="app/src/main/res/Best/layout/fragment_best_detail_analyze.xml" value="0.1" />
         <entry key="app/src/main/res/Best/layout/fragment_best_detail_rank.xml" value="0.1" />
         <entry key="app/src/main/res/Best/layout/fragment_best_detail_tabs.xml" value="0.1" />
         <entry key="app/src/main/res/Best/layout/fragment_best_month.xml" value="0.1" />
@@ -222,6 +223,7 @@
         <entry key="app/src/main/res/layout/fragment_best_today_v2.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_best_v2.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_best_weekend.xml" value="0.17916666666666667" />
+        <entry key="app/src/main/res/layout/fragment_bestdetail_radar.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_event.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_event_detail.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.1" />

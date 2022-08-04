@@ -1,68 +1,41 @@
 package com.example.moavara.Best
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moavara.DataBase.BookListDataBestAnalyze
-import com.example.moavara.DataBase.TrophyInfo
-import com.example.moavara.R
-import com.example.moavara.Search.BestRankListWeekend
-import com.example.moavara.Util.DBDate
-import com.example.moavara.databinding.FragmentBestDetailRankBinding
+import com.example.moavara.databinding.FragmentBestdetailRadarBinding
+import com.github.mikephil.charting.animation.Easing
+import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis
+import com.github.mikephil.charting.data.RadarData
+import com.github.mikephil.charting.data.RadarDataSet
+import com.github.mikephil.charting.data.RadarEntry
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet
 import java.util.*
-import kotlin.Comparator
 
 class InnerFragmentBestDetailRadar(
-    private val item: ArrayList<BookListDataBestAnalyze>,
+    BookItem: ArrayList<BookListDataBestAnalyze>,
+    private var itemCount: Int,
+    private val platform: String,
 ) : Fragment() {
 
-    private lateinit var adapterMonth: AdapterBestRankList
-    private val itemMonth = ArrayList<BestRankListWeekend>()
-    val itemMonthList11 = BestRankListWeekend()
-    val itemMonthList12 = BestRankListWeekend()
-    val itemMonthList13 = BestRankListWeekend()
-    val itemMonthList14 = BestRankListWeekend()
-    val itemMonthList15 = BestRankListWeekend()
-    val itemMonthList16 = BestRankListWeekend()
+    val entryAverage = ArrayList<RadarEntry>()
+    val entriesCurrent = ArrayList<RadarEntry>()
+    var labels = arrayOf("조회 수", "선호작 수", "추천 수", "트로피" ,"댓글 수")
+    val valCur1 = itemCount - BookItem[BookItem.size-1].numInfo1
+    val valCur2 = itemCount - BookItem[BookItem.size-1].numInfo2
+    val valCur3 = itemCount - BookItem[BookItem.size-1].numInfo3
+    val valCur4 = itemCount - BookItem[BookItem.size-1].numInfo4
+    val numberAvg = itemCount - BookItem[BookItem.size-1].number
 
-    val itemMonthList21 = BestRankListWeekend()
-    val itemMonthList22 = BestRankListWeekend()
-    val itemMonthList23 = BestRankListWeekend()
-    val itemMonthList24 = BestRankListWeekend()
-    val itemMonthList25 = BestRankListWeekend()
-    val itemMonthList26 = BestRankListWeekend()
 
-    val itemMonthList31 = BestRankListWeekend()
-    val itemMonthList32 = BestRankListWeekend()
-    val itemMonthList33 = BestRankListWeekend()
-    val itemMonthList34 = BestRankListWeekend()
-    val itemMonthList35 = BestRankListWeekend()
-    val itemMonthList36 = BestRankListWeekend()
-
-    var monthBeforeBefore1 = false
-    var monthBeforeBefore2 = false
-    var monthBeforeBefore3 = false
-    var monthBeforeBefore4 = false
-    var monthBeforeBefore5 = false
-    var monthBeforeBefore6 = false
-
-    var monthBefore1 = false
-    var monthBefore2 = false
-    var monthBefore3 = false
-    var monthBefore4 = false
-    var monthBefore5 = false
-    var monthBefore6 = false
-
-    var month1 = false
-    var month2 = false
-    var month3 = false
-    var month4 = false
-    var month5 = false
-    var month6 = false
-    private var _binding: FragmentBestDetailRankBinding? = null
+    private var _binding: FragmentBestdetailRadarBinding? = null
     private val binding get() = _binding!!
 
     var status = ""
@@ -71,253 +44,170 @@ class InnerFragmentBestDetailRadar(
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentBestDetailRankBinding.inflate(inflater, container, false)
+        _binding = FragmentBestdetailRadarBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        adapterMonth = AdapterBestRankList(itemMonth)
-        binding.rviewBestMonth.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        binding.rviewBestMonth.adapter = adapterMonth
+        if (platform == "Joara" || platform == "Joara_Nobless" || platform == "Joara_Premium") {
+            labels = arrayOf("조회 수", "선호작 수", "추천 수", "트로피")
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
 
-        getRankList(item)
+            entriesCurrent.add(RadarEntry(valCur1.toFloat()))
+            entriesCurrent.add(RadarEntry(valCur2.toFloat()))
+            entriesCurrent.add(RadarEntry(numberAvg.toFloat()))
+        } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver") {
+            labels = arrayOf("조회 수", "선호작 수", "추천 수", "트로피")
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
 
-        getAnalyze()
+            entriesCurrent.add(RadarEntry(valCur1.toFloat()))
+            entriesCurrent.add(RadarEntry(valCur2.toFloat()))
+            entriesCurrent.add(RadarEntry(valCur3.toFloat()))
+            entriesCurrent.add(RadarEntry(numberAvg.toFloat()))
+        } else if (platform == "Kakao") {
+            labels = arrayOf("조회 수", "선호작 수", "추천 수", "트로피" ,"댓글 수")
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+
+            entriesCurrent.add(RadarEntry(valCur1.toFloat()))
+            entriesCurrent.add(RadarEntry(valCur2.toFloat()))
+            entriesCurrent.add(RadarEntry(valCur3.toFloat()))
+            entriesCurrent.add(RadarEntry(valCur4.toFloat()))
+            entriesCurrent.add(RadarEntry(numberAvg.toFloat()))
+        } else if (platform == "Kakao_Stage") {
+            labels = arrayOf("조회 수", "선호작 수", "추천 수", "트로피" ,"댓글 수")
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+
+            entriesCurrent.add(RadarEntry(valCur1.toFloat()))
+            entriesCurrent.add(RadarEntry(valCur2.toFloat()))
+            entriesCurrent.add(RadarEntry(valCur3.toFloat()))
+            entriesCurrent.add(RadarEntry(valCur4.toFloat()))
+            entriesCurrent.add(RadarEntry(numberAvg.toFloat()))
+        } else if (platform == "Ridi") {
+            labels = arrayOf("조회 수", "선호작 수", "추천 수", "트로피")
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+
+            entriesCurrent.add(RadarEntry(valCur1.toFloat()))
+            entriesCurrent.add(RadarEntry(valCur2.toFloat()))
+            entriesCurrent.add(RadarEntry(numberAvg.toFloat()))
+        } else if (platform == "OneStore") {
+            labels = arrayOf("조회 수", "선호작 수", "추천 수", "트로피")
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+
+            entriesCurrent.add(RadarEntry(valCur1.toFloat()))
+            entriesCurrent.add(RadarEntry(valCur2.toFloat()))
+            entriesCurrent.add(RadarEntry(valCur3.toFloat()))
+            entriesCurrent.add(RadarEntry(numberAvg.toFloat()))
+        } else if (platform == "Munpia") {
+            labels = arrayOf("조회 수", "선호작 수", "추천 수", "트로피" ,"댓글 수")
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+
+            entriesCurrent.add(RadarEntry(valCur1.toFloat()))
+            entriesCurrent.add(RadarEntry(valCur2.toFloat()))
+            entriesCurrent.add(RadarEntry(valCur3.toFloat()))
+            entriesCurrent.add(RadarEntry(valCur4.toFloat()))
+            entriesCurrent.add(RadarEntry(numberAvg.toFloat()))
+        } else if (platform == "Toksoda") {
+            labels = arrayOf("조회 수", "선호작 수", "추천 수", "트로피" ,"댓글 수")
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+
+            entriesCurrent.add(RadarEntry(valCur1.toFloat()))
+            entriesCurrent.add(RadarEntry(valCur2.toFloat()))
+            entriesCurrent.add(RadarEntry(valCur3.toFloat()))
+            entriesCurrent.add(RadarEntry(valCur4.toFloat()))
+            entriesCurrent.add(RadarEntry(numberAvg.toFloat()))
+        }
+
+        with(binding) {
+
+            radarChart.description.isEnabled = false
+            radarChart.webLineWidth = 1f
+            radarChart.webColor = Color.parseColor("#EDE6FD")
+            radarChart.webLineWidthInner = 1f
+            radarChart.webColorInner = Color.parseColor("#EDE6FD")
+            radarChart.webAlpha = 100
+            radarChart.setExtraOffsets(-5f, -20f, -5f, -5f)
+
+            val set1 = RadarDataSet(entryAverage, "평균")
+            set1.color = Color.parseColor("#6E7686")
+            set1.fillColor = Color.parseColor("#6E7686")
+            set1.setDrawFilled(true)
+            set1.fillAlpha = 180
+            set1.lineWidth = 2f
+            set1.isDrawHighlightCircleEnabled = true
+            set1.setDrawHighlightIndicators(false)
+
+            val set2 = RadarDataSet(entriesCurrent, "현재 작품")
+            set2.color = Color.parseColor("#621CEF")
+            set2.fillColor = Color.parseColor("#621CEF")
+            set2.setDrawFilled(true)
+            set2.fillAlpha = 180
+            set2.lineWidth = 2f
+            set2.isDrawHighlightCircleEnabled = true
+            set2.setDrawHighlightIndicators(false)
+
+            val sets = ArrayList<IRadarDataSet>()
+            sets.add(set1)
+            sets.add(set2)
+
+            val data = RadarData(sets)
+            data.setValueTextSize(8f)
+            data.setDrawValues(false)
+            data.setValueTextColor(Color.WHITE)
+
+            radarChart.animateXY(1400, 1400, Easing.EaseInOutQuad)
+
+            val xAxis: XAxis = radarChart.xAxis
+            xAxis.textSize = 9f
+            xAxis.yOffset = 0f
+            xAxis.xOffset = 0f
+            xAxis.axisMinimum = 0f
+
+            xAxis.valueFormatter = IndexAxisValueFormatter(labels)
+            xAxis.textColor = Color.WHITE
+
+            val yAxis: YAxis = radarChart.yAxis
+            yAxis.setLabelCount(5, false)
+            yAxis.textSize = 9f
+            yAxis.axisMinimum = 0f
+            yAxis.setDrawLabels(false)
+
+            val l: Legend = radarChart.legend
+            l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
+            l.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+            l.orientation = Legend.LegendOrientation.HORIZONTAL
+            l.setDrawInside(false)
+            l.xEntrySpace = 7f
+            l.yEntrySpace = 5f
+            l.textColor = Color.WHITE
+
+            radarChart.data = data
+            radarChart.invalidate()
+        }
 
         return view
-    }
-
-    private fun getAnalyze() {
-
-        val cmpAsc: java.util.Comparator<BookListDataBestAnalyze> =
-            Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
-        Collections.sort(item, cmpAsc)
-
-        for (itemData in item) {
-            val itemDate = DBDate.getDateData(itemData.date)
-
-            if (itemDate?.month == DBDate.Month().toInt()) {
-                if (itemDate.week == 1) {
-                    getItemMonthList(itemDate, itemData, itemMonthList11)
-                    month1= true
-                } else if (itemDate.week == 2) {
-                    getItemMonthList(itemDate, itemData, itemMonthList12)
-                    month2= true
-                } else if (itemDate.week == 3) {
-                    getItemMonthList(itemDate, itemData, itemMonthList13)
-                    month3= true
-                } else if (itemDate.week == 4) {
-                    getItemMonthList(itemDate, itemData, itemMonthList14)
-                    month4= true
-                } else if (itemDate.week == 5) {
-                    getItemMonthList(itemDate, itemData, itemMonthList15)
-                    month5= true
-                }  else if (itemDate.week == 5) {
-                    getItemMonthList(itemDate, itemData, itemMonthList16)
-                    month6= true
-                }
-            } else if (itemDate?.month == DBDate.Month().toInt() - 1) {
-                if (itemDate.week == 1) {
-                    getItemMonthList(itemDate, itemData, itemMonthList21)
-                    monthBefore1 = true
-                } else if (itemDate.week == 2) {
-                    getItemMonthList(itemDate, itemData, itemMonthList22)
-                    monthBefore2 = true
-                } else if (itemDate.week == 3) {
-                    getItemMonthList(itemDate, itemData, itemMonthList23)
-                    monthBefore3 = true
-                } else if (itemDate.week == 4) {
-                    getItemMonthList(itemDate, itemData, itemMonthList24)
-                    monthBefore4 = true
-                } else if (itemDate.week == 5) {
-                    getItemMonthList(itemDate, itemData, itemMonthList25)
-                    monthBefore5 = true
-                } else if (itemDate.week == 6) {
-                    getItemMonthList(itemDate, itemData, itemMonthList26)
-                    monthBefore6 = true
-                }
-            }  else if (itemDate?.month == DBDate.Month().toInt() - 2) {
-                if (itemDate.week == 1) {
-                    getItemMonthList(itemDate, itemData, itemMonthList31)
-                    monthBeforeBefore1 = true
-                } else if (itemDate.week == 2) {
-                    getItemMonthList(itemDate, itemData, itemMonthList32)
-                    monthBeforeBefore2 = true
-                } else if (itemDate.week == 3) {
-                    getItemMonthList(itemDate, itemData, itemMonthList33)
-                    monthBeforeBefore3 = true
-                } else if (itemDate.week == 4) {
-                    getItemMonthList(itemDate, itemData, itemMonthList34)
-                    monthBeforeBefore4 = true
-                } else if (itemDate.week == 5) {
-                    getItemMonthList(itemDate, itemData, itemMonthList35)
-                    monthBeforeBefore5 = true
-                } else if (itemDate.week == 6) {
-                    getItemMonthList(itemDate, itemData, itemMonthList36)
-                    monthBeforeBefore6 = true
-                }
-            }
-        }
-
-        if(monthBeforeBefore1){
-            itemMonth.add(itemMonthList31)
-        }
-        if(monthBeforeBefore2){
-            itemMonth.add(itemMonthList32)
-        }
-        if(monthBeforeBefore3){
-            itemMonth.add(itemMonthList33)
-        }
-        if(monthBeforeBefore4){
-            itemMonth.add(itemMonthList34)
-        }
-        if(monthBeforeBefore5){
-            itemMonth.add(itemMonthList35)
-        }
-        if(monthBeforeBefore6){
-            itemMonth.add(itemMonthList36)
-        }
-
-        if(monthBefore1){
-            itemMonth.add(itemMonthList21)
-        }
-        if(monthBefore2){
-            itemMonth.add(itemMonthList22)
-        }
-        if(monthBefore3){
-            itemMonth.add(itemMonthList23)
-        }
-        if(monthBefore4){
-            itemMonth.add(itemMonthList24)
-        }
-        if(monthBefore5){
-            itemMonth.add(itemMonthList25)
-        }
-        if(monthBefore6){
-            itemMonth.add(itemMonthList26)
-        }
-
-        if(month1){
-            itemMonth.add(itemMonthList11)
-        }
-        if(month2){
-            itemMonth.add(itemMonthList12)
-        }
-        if(month3){
-            itemMonth.add(itemMonthList13)
-        }
-        if(month4){
-            itemMonth.add(itemMonthList14)
-        }
-        if(month5){
-            itemMonth.add(itemMonthList15)
-        }
-        if(month6){
-            itemMonth.add(itemMonthList16)
-        }
-
-        adapterMonth.notifyDataSetChanged()
-    }
-
-    fun getItemMonthList(
-        trophyInfo: TrophyInfo,
-        item: BookListDataBestAnalyze,
-        itemMonthList: BestRankListWeekend
-    ) {
-
-        if (trophyInfo.date == 1) {
-            itemMonthList.sun = item
-        } else if (trophyInfo.date == 2) {
-            itemMonthList.mon = item
-        }  else if (trophyInfo.date == 3) {
-            itemMonthList.tue = item
-        }  else if (trophyInfo.date == 4) {
-            itemMonthList.wed = item
-        }  else if (trophyInfo.date == 5) {
-            itemMonthList.thur = item
-        }  else if (trophyInfo.date == 6) {
-            itemMonthList.fri = item
-        }  else if (trophyInfo.date == 7) {
-            itemMonthList.sat = item
-        }
-
-    }
-
-    private fun getRankList(data: ArrayList<BookListDataBestAnalyze>) {
-        for (item in data) {
-            val itemDate = DBDate.getDateData(item.date)
-
-            with(binding.includeRank) {
-                if (itemDate != null) {
-                    if (itemDate.week == DBDate.Week().toInt()) {
-                        when {
-                            itemDate.date == 1 -> {
-                                tviewRank1.visibility = View.VISIBLE
-
-                                if (itemDate.date == DBDate.DayInt()) {
-                                    iviewRank1.setImageResource(R.drawable.ic_best_gn_24px)
-                                } else {
-                                    iviewRank1.setImageResource(R.drawable.ic_best_vt_24px)
-                                }
-                                tviewRank1.text = "${(item.number + 1)}"
-                            }
-                            itemDate.date == 2 -> {
-                                tviewRank2.visibility = View.VISIBLE
-                                if (itemDate.date == DBDate.DayInt()) {
-                                    iviewRank2.setImageResource(R.drawable.ic_best_gn_24px)
-                                } else {
-                                    iviewRank2.setImageResource(R.drawable.ic_best_vt_24px)
-                                }
-                                tviewRank2.text = "${(item.number + 1)}"
-                            }
-                            itemDate.date == 3 -> {
-                                tviewRank3.visibility = View.VISIBLE
-                                if (itemDate.date == DBDate.DayInt()) {
-                                    iviewRank3.setImageResource(R.drawable.ic_best_gn_24px)
-                                } else {
-                                    iviewRank3.setImageResource(R.drawable.ic_best_vt_24px)
-                                }
-                                tviewRank3.text = "${(item.number + 1)}"
-                            }
-                            itemDate.date == 4 -> {
-                                tviewRank4.visibility = View.VISIBLE
-                                if (itemDate.date == DBDate.DayInt()) {
-                                    iviewRank4.setImageResource(R.drawable.ic_best_gn_24px)
-                                } else {
-                                    iviewRank4.setImageResource(R.drawable.ic_best_vt_24px)
-                                }
-                                tviewRank4.text = "${(item.number + 1)}"
-                            }
-                            itemDate.date == 5 -> {
-                                tviewRank5.visibility = View.VISIBLE
-                                if (itemDate.date == DBDate.DayInt()) {
-                                    iviewRank5.setImageResource(R.drawable.ic_best_gn_24px)
-                                } else {
-                                    iviewRank5.setImageResource(R.drawable.ic_best_vt_24px)
-                                }
-                                tviewRank5.text = "${(item.number + 1)}"
-                            }
-                            itemDate.date == 6 -> {
-                                tviewRank6.visibility = View.VISIBLE
-                                if (itemDate.date == DBDate.DayInt()) {
-                                    iviewRank6.setImageResource(R.drawable.ic_best_gn_24px)
-                                } else {
-                                    iviewRank6.setImageResource(R.drawable.ic_best_vt_24px)
-                                }
-                                tviewRank6.text = "${(item.number + 1)}"
-                            }
-                            itemDate.date == 7 -> {
-                                tviewRank7.visibility = View.VISIBLE
-                                if (itemDate.date == DBDate.DayInt()) {
-                                    iviewRank7.setImageResource(R.drawable.ic_best_gn_24px)
-                                } else {
-                                    iviewRank7.setImageResource(R.drawable.ic_best_vt_24px)
-                                }
-                                tviewRank7.text = "${(item.number + 1)}"
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
 }
