@@ -246,8 +246,6 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
         Thread {
             val doc: Document = Jsoup.connect("https://ridibooks.com/books/${bookCode}").get()
 
-            Log.d("####", "https://ridibooks.com/books/${bookCode}")
-
             requireActivity().runOnUiThread {
                 with(binding) {
                     llayoutSearch.visibility = View.GONE

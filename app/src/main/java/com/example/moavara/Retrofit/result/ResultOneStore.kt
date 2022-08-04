@@ -86,6 +86,15 @@ class OnestoreBookDetailContents {
     @Expose
     var prodNm: String = ""
 
+    @SerializedName("tagList")
+    @Expose
+    var tagList: List<OnestoreBookDetailKeywords>? = null
+}
+
+class OnestoreBookDetailKeywords{
+    @SerializedName("tagNm")
+    @Expose
+    var tagNm: String = ""
 }
 
 class OnestoreBookDetailComment {

@@ -210,7 +210,7 @@ class FragmentBestDetailComment(private val platfrom: String, private val bookCo
             })
     }
 
-    fun getCommentsMunpia() {
+    private fun getCommentsMunpia() {
         Thread {
             val doc: Document = Jsoup.connect("https://novel.munpia.com/${bookCode}").get()
 
@@ -221,17 +221,23 @@ class FragmentBestDetailComment(private val platfrom: String, private val bookCo
                     items.add(
                         BestComment(
                             doc.select(".review .article-inner").get(i).text(),
-                            doc.select(".review .writer-area .date-de").get(1).text()
+                            doc.select(".review .writer-area .date-de").get(i).text()
                                 .replace("· ", ""),
                         )
                     )
                 }
+
+                if(items.isNotEmpty()){
+                    binding.blank.root.visibility = View.GONE
+                    binding.rview.visibility = View.VISIBLE
+                }
+
                 adapterBestComment!!.notifyDataSetChanged()
             }
         }.start()
     }
 
-    fun getCommentsToksoda(){
+    private fun getCommentsToksoda(){
         val apiToksoda = RetrofitToksoda()
         val param : MutableMap<String?, Any> = HashMap()
         param["brcd"] = bookCode
@@ -256,6 +262,12 @@ class FragmentBestDetailComment(private val platfrom: String, private val bookCo
                                 )
                             }
                         }
+
+                        if(items.isNotEmpty()){
+                            binding.blank.root.visibility = View.GONE
+                            binding.rview.visibility = View.VISIBLE
+                        }
+
                         adapterBestComment!!.notifyDataSetChanged()
                     }
                 }

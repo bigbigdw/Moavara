@@ -166,13 +166,51 @@ class FragmentBestDetailAnalyze(
             entriesCurrent.add(RadarEntry(valCur4.toFloat()))
             entriesCurrent.add(RadarEntry(numberAvg.toFloat()))
         } else if (platform == "Ridi") {
+            labels = arrayOf("조회 수", "선호작 수", "추천 수", "트로피")
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
 
+            entriesCurrent.add(RadarEntry(valCur1.toFloat()))
+            entriesCurrent.add(RadarEntry(valCur2.toFloat()))
+            entriesCurrent.add(RadarEntry(numberAvg.toFloat()))
         } else if (platform == "OneStore") {
+            labels = arrayOf("조회 수", "선호작 수", "추천 수", "트로피")
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
 
+            entriesCurrent.add(RadarEntry(valCur1.toFloat()))
+            entriesCurrent.add(RadarEntry(valCur2.toFloat()))
+            entriesCurrent.add(RadarEntry(valCur3.toFloat()))
+            entriesCurrent.add(RadarEntry(numberAvg.toFloat()))
         } else if (platform == "Munpia") {
+            labels = arrayOf("조회 수", "선호작 수", "추천 수", "트로피" ,"댓글 수")
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
 
+            entriesCurrent.add(RadarEntry(valCur1.toFloat()))
+            entriesCurrent.add(RadarEntry(valCur2.toFloat()))
+            entriesCurrent.add(RadarEntry(valCur3.toFloat()))
+            entriesCurrent.add(RadarEntry(valCur4.toFloat()))
+            entriesCurrent.add(RadarEntry(numberAvg.toFloat()))
         } else if (platform == "Toksoda") {
+            labels = arrayOf("조회 수", "선호작 수", "추천 수", "트로피" ,"댓글 수")
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
 
+            entriesCurrent.add(RadarEntry(valCur1.toFloat()))
+            entriesCurrent.add(RadarEntry(valCur2.toFloat()))
+            entriesCurrent.add(RadarEntry(valCur3.toFloat()))
+            entriesCurrent.add(RadarEntry(valCur4.toFloat()))
+            entriesCurrent.add(RadarEntry(numberAvg.toFloat()))
         }
 
         with(binding) {
@@ -323,13 +361,54 @@ class FragmentBestDetailAnalyze(
             items.add(BestChart(dateList, entryList4, "편당 추천 수", "#ffd200"))
             adapterChart?.notifyDataSetChanged()
         } else if (platform == "Ridi") {
+            for (i in BookItem.indices) {
+                dateList.add(BookItem[i].date.substring(4))
+                entryList.add(BarEntry(i.toFloat(), BookItem[i].info1.replace(",", "").replace("추천 수 : ", "").replace("명", "").toFloat()))
+                entryList2.add(BarEntry(i.toFloat(), BookItem[i].info2.replace("평점 : ", "").replace("점", "").toFloat()))
+            }
 
+            items.add(BestChart(dateList, entryList, "편당 댓글 수", "#1f8ce6"))
+            items.add(BestChart(dateList, entryList2, "편당 조회 수", "#1f8ce6"))
         } else if (platform == "OneStore") {
+            for (i in BookItem.indices) {
+                dateList.add(BookItem[i].date.substring(4))
+                entryList.add(BarEntry(i.toFloat(), BookItem[i].info1.replace("조회 수 : ", "").toFloat()))
+                entryList2.add(BarEntry(i.toFloat(), BookItem[i].info2.replace("평점 : ", "").toFloat()))
+                entryList3.add(BarEntry(i.toFloat(), BookItem[i].info3.replace("댓글 수 : ", "").toFloat()))
+            }
 
+            items.add(BestChart(dateList, entryList, "편당 댓글 수", "#fc6b05"))
+            items.add(BestChart(dateList, entryList2, "편당 조회 수", "#fc6b05"))
+            items.add(BestChart(dateList, entryList3, "편당 추천 수", "#fc6b05"))
+            adapterChart?.notifyDataSetChanged()
         } else if (platform == "Munpia") {
+            for (i in BookItem.indices) {
+                dateList.add(BookItem[i].date.substring(4))
+                entryList.add(BarEntry(i.toFloat(), BookItem[i].info1.toFloat()))
+                entryList2.add(BarEntry(i.toFloat(), BookItem[i].info2.toFloat()))
+                entryList3.add(BarEntry(i.toFloat(), BookItem[i].info3.toFloat()))
+                entryList4.add(BarEntry(i.toFloat(), BookItem[i].info4.toFloat()))
+            }
 
+            items.add(BestChart(dateList, entryList, "편당 댓글 수", "#5f9bd1"))
+            items.add(BestChart(dateList, entryList2, "편당 조회 수", "#5f9bd1"))
+            items.add(BestChart(dateList, entryList3, "편당 추천 수", "#5f9bd1"))
+            items.add(BestChart(dateList, entryList4, "편당 추천 수", "#5f9bd1"))
+            adapterChart?.notifyDataSetChanged()
         } else if (platform == "Toksoda") {
+            for (i in BookItem.indices) {
+                dateList.add(BookItem[i].date.substring(4))
+                entryList.add(BarEntry(i.toFloat(), BookItem[i].info1.toFloat()))
+                entryList2.add(BarEntry(i.toFloat(), BookItem[i].info2.toFloat()))
+                entryList3.add(BarEntry(i.toFloat(), BookItem[i].info3.toFloat()))
+//                entryList4.add(BarEntry(i.toFloat(), BookItem[i].info4.toFloat()))
+            }
 
+            items.add(BestChart(dateList, entryList, "편당 댓글 수", "#ff442c"))
+            items.add(BestChart(dateList, entryList2, "편당 조회 수", "#ff442c"))
+            items.add(BestChart(dateList, entryList3, "편당 추천 수", "#ff442c"))
+//            items.add(BestChart(dateList, entryList4, "편당 추천 수", "#ff442c"))
+            adapterChart?.notifyDataSetChanged()
         }
 
 

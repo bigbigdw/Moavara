@@ -39,10 +39,10 @@ android {
     sourceSets {
         main {
             res {
-                srcDirs 'src\\main\\res', 'src\\main\\res\\Search', 'src\\main\\res\\ETC', 'src\\main\\res\\Best', 'src/main/res', 'src/main/res/Event', 'src\\main\\res\\Login', 'src\\main\\res\\Main', 'src\\main\\res\\Pick', 'src/main/res/Community'
+                srcDirs 'src\\main\\res', 'src\\main\\res\\Search', 'src\\main\\res\\ETC', 'src\\main\\res\\Best', 'src/main/res', 'src/main/res/Event', 'src\\main\\res\\Login', 'src\\main\\res\\Main', 'src\\main\\res\\Pick', 'src/main/res/Community', 'src/main/res/Main'
             }
             assets {
-                srcDirs 'src\\main\\assets', 'src\\main\\assets\\Best'
+                srcDirs 'src\\main\\assets', 'src\\main\\assets\\Best', 'src/main/assets', 'src/main/assets/Main'
             }
         }
     }

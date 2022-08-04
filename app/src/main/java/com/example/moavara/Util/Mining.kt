@@ -505,7 +505,7 @@ object Mining {
         }
     }
 
-    fun getRidiBest(genre: String) {
+    private fun getRidiBest(genre: String) {
         try {
             val doc: Document =
                 Jsoup.connect(Genre.setRidiGenre(genre)).post()

@@ -51,6 +51,7 @@
             android:breakStrategy="high_quality"
             android:ellipsize="end"
             android:fontFamily="@font/pretendardvariable"
+            android:maxLines="2"
             android:text="@string/Common_BookTitle"
             android:textAlignment="viewStart"
             android:textColor="#EDE6FD"

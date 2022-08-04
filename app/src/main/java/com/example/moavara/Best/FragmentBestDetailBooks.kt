@@ -1,6 +1,7 @@
 package com.example.moavara.Best
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +21,7 @@ import org.jsoup.select.Elements
 class FragmentBestDetailBooks(private val platfrom: String, private val bookCode: String) :
     Fragment() {
 
-    private var adapterBestOthers: AdapterBestBooks? = null
+    private var adapterBestOthers: AdapterBestComment? = null
     private val items = ArrayList<BookListDataBestToday?>()
 
     private var _binding: FragmentBestDetailTabsBinding? = null
@@ -35,7 +36,7 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
     ): View {
         _binding = FragmentBestDetailTabsBinding.inflate(inflater, container, false)
         val view = binding.root
-        adapterBestOthers = AdapterBestBooks(items)
+        adapterBestOthers = AdapterBestComment(items)
 
         binding.rview.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -50,7 +51,7 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
         }  else if (platfrom == "Naver_Today"  || platfrom == "Naver_Challenge") {
             getCommentsNaverToday()
         }  else if (platfrom == "Ridi"){
-            getCommentsRidi()
+            getOthersRidi()
         } else if (platfrom == "Toksoda"){
             getBooksToksoda()
         }
@@ -128,29 +129,43 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
                         )
                     )
                 }
+
+                if(items.isNotEmpty()){
+                    binding.blank.root.visibility = View.GONE
+                    binding.rview.visibility = View.VISIBLE
+                }
+
                 adapterBestOthers?.notifyDataSetChanged()
             }
         }.start()
     }
 
-    private fun getCommentsRidi() {
+    private fun getOthersRidi() {
         Thread {
             val doc: Document = Jsoup.connect(bookCode).get()
+
             val other = doc.select(".book_macro_landscape")
 
             requireActivity().runOnUiThread {
                 for (i in other.indices) {
+
+                    var img = other[i].select(".thumbnail").attr("data-src")
+
+                    if(!img.contains("https://")){
+                        img = "https:${img}"
+                    }
+
                     items.add(
                         BookListDataBestToday(
-                            doc.select(".author_name_wrapper h4 .lang_kor").text(),
-                            doc.select(".title_text").text(),
-                            "https:${doc.select(".thumbnail").attr("data-src")}",
-                            "https://ridibooks.com/books${doc.select(".thumbnail_btn").attr("href")}",
-                            doc.select(".book_count .count_num").text(),
-                            doc.select(".RSGBookMetadata_StarRate .StarRate_ParticipantCount").text(),
-                            doc.select(".book_metadata_wrapper .meta_description").text(),
-                            doc.select(".rental_price_info").text(),
-                            doc.select(".buy_price_info").text(),
+                            other[i].select(".author_name_wrapper h4 .lang_kor").text(),
+                            other[i].select(".title_text").text(),
+                            img,
+                            "https://ridibooks.com/books${other[i].select(".thumbnail_btn").attr("href")}",
+                            other[i].select(".book_count .count_num").text(),
+                            other[i].select(".RSGBookMetadata_StarRate .StarRate_ParticipantCount").text(),
+                            other[i].select(".book_metadata_wrapper .meta_description").text(),
+                            other[i].select(".rental_price_info").text(),
+                            other[i].select(".buy_price_info").text(),
                             0,
                             0,
                             "",
@@ -158,6 +173,12 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
                         )
                     )
                 }
+
+                if(items.isNotEmpty()){
+                    binding.blank.root.visibility = View.GONE
+                    binding.rview.visibility = View.VISIBLE
+                }
+
                 adapterBestOthers?.notifyDataSetChanged()
             }
         }.start()
@@ -213,6 +234,11 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
                                 )
                             }
 
+                            if(items.isNotEmpty()){
+                                binding.blank.root.visibility = View.GONE
+                                binding.rview.visibility = View.VISIBLE
+                            }
+
                         }
                         adapterBestOthers?.notifyDataSetChanged()
                     }
@@ -221,7 +247,7 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
     }
 }
 
-class AdapterBestBooks(items: List<BookListDataBestToday?>?) :
+class AdapterBestComment(items: List<BookListDataBestToday?>?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var holder: ArrayList<BookListDataBestToday?>? = items as ArrayList<BookListDataBestToday?>?
 

@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -193,8 +194,8 @@ class ActivityBestDetail : AppCompatActivity() {
             binding.tabs.addTab(binding.tabs.newTab().setText("작품 분석"))
             binding.tabs.addTab(binding.tabs.newTab().setText("댓글"))
         } else if (platform == "Ridi") {
-            binding.tabs.addTab(binding.tabs.newTab().setText("다른 작품"))
             binding.tabs.addTab(binding.tabs.newTab().setText("작품 분석"))
+            binding.tabs.addTab(binding.tabs.newTab().setText("다른 작품"))
         } else {
             binding.tabs.addTab(binding.tabs.newTab().setText("작품 분석"))
             binding.tabs.addTab(binding.tabs.newTab().setText("댓글"))
@@ -392,7 +393,7 @@ class ActivityBestDetail : AppCompatActivity() {
 
                         val keyword = data.related_keytalk_list
 
-                        for(item in keyword){
+                        for (item in keyword) {
                             val chip = Chip(this@ActivityBestDetail)
                             chip.text = "#${item.item_name}"
                             chip.chipBackgroundColor = ColorStateList.valueOf(
@@ -459,17 +460,21 @@ class ActivityBestDetail : AppCompatActivity() {
         }
     }
 
-    fun setLayoutRidi() {
+    private fun setLayoutRidi() {
         Thread {
-            val doc: Document = Jsoup.connect(bookCode).get()
+            val doc: Document = Jsoup.connect("https://ridibooks.com/books/${bookCode}").get()
 
             bookCode = "https://ridibooks.com${
                 doc.select(".metadata_writer .author_detail_link").attr("href")
             }"
 
             runOnUiThread {
-
+                binding.chipgroup.visibility = View.GONE
                 binding.llayoutIntro.visibility = View.GONE
+
+                binding.loading.root.visibility = View.GONE
+                binding.coorWrap.visibility = View.VISIBLE
+                window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
 
                 with(binding) {
                     Glide.with(this@ActivityBestDetail)
@@ -484,7 +489,7 @@ class ActivityBestDetail : AppCompatActivity() {
                     inclueBestDetail.tviewInfo1.text =
                         doc.select(".header_info_wrap .info_category_wrap").text()
                     inclueBestDetail.tviewInfo2.text =
-                        "평점 : ${doc.select(".header_info_wrap .StarRate_Score").text()}"
+                        doc.select(".header_info_wrap .StarRate_Score").text()
                     inclueBestDetail.tviewInfo3.text =
                         doc.select(".header_info_wrap .StarRate_ParticipantCount").text()
                     inclueBestDetail.tviewInfo4.text =
@@ -493,15 +498,16 @@ class ActivityBestDetail : AppCompatActivity() {
                     tviewIntro.text = doc.select(".introduce_book .introduce_paragraph").text()
                 }
 
-                mFragmentBestDetailBooks = FragmentBestDetailBooks(platform, bookCode)
+                mFragmentBestDetailAnalyze =
+                    FragmentBestDetailAnalyze(platform, data, genre, itemCount)
                 supportFragmentManager.commit {
-                    replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
+                    replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
                 }
             }
         }.start()
     }
 
-    fun setLayoutOneStory() {
+    private fun setLayoutOneStory() {
         val apiOnestory = RetrofitOnestore()
         val param: MutableMap<String?, Any> = HashMap()
 
@@ -515,6 +521,10 @@ class ActivityBestDetail : AppCompatActivity() {
                 override fun onSuccess(data: OnestoreBookDetail) {
 
                     with(binding) {
+                        binding.loading.root.visibility = View.GONE
+                        binding.coorWrap.visibility = View.VISIBLE
+                        window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+
                         data.params.let {
                             Glide.with(this@ActivityBestDetail)
                                 .load(it?.orgFilePos)
@@ -526,19 +536,42 @@ class ActivityBestDetail : AppCompatActivity() {
                             inclueBestDetail.tviewWriter.text = it?.artistNm
 
                             inclueBestDetail.tviewInfo1.text = "별점 : ${it?.ratingAvgScore}점"
-                            inclueBestDetail.tviewInfo2.text = "구독 수 : ${it?.pageViewTotal}"
-                            inclueBestDetail.tviewInfo3.text = "총 ${it?.serialCount}화"
-                            inclueBestDetail.tviewInfo4.text = "선호작 수 : ${it?.favoriteCount}"
+                            inclueBestDetail.tviewInfo2.text = it?.pageViewTotal
+                            inclueBestDetail.tviewInfo3.text = it?.serialCount
+                            inclueBestDetail.tviewInfo4.text = it?.favoriteCount
 
                             binding.llayoutIntro.visibility = View.GONE
+
+                            if (it != null) {
+                                val keyword = it.tagList
+
+                                if (keyword != null) {
+                                    for (item in keyword) {
+                                        val chip = Chip(this@ActivityBestDetail)
+                                        chip.text = "#${item.tagNm}"
+                                        chip.chipBackgroundColor = ColorStateList.valueOf(
+                                            ContextCompat.getColor(
+                                                this@ActivityBestDetail,
+                                                R.color.chip
+                                            )
+                                        )
+                                        chip.setTextColor(Color.parseColor("#EDE6FD"))
+                                        chip.layoutParams = lp
+                                        chipgroup.addView(chip)
+                                    }
+                                }
+                            } else {
+                                binding.chipgroup.visibility = View.GONE
+                            }
                         }
                     }
                 }
             })
 
-        mFragmentBestDetailComment = FragmentBestDetailComment(platform, bookCode)
+        mFragmentBestDetailAnalyze =
+            FragmentBestDetailAnalyze(platform, data, genre, itemCount)
         supportFragmentManager.commit {
-            replace(R.id.llayoutWrap, mFragmentBestDetailComment)
+            replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
         }
     }
 
@@ -547,8 +580,12 @@ class ActivityBestDetail : AppCompatActivity() {
             val doc: Document = Jsoup.connect("https://novel.munpia.com/${bookCode}").get()
 
             runOnUiThread {
-
                 with(binding) {
+                    binding.chipgroup.visibility = View.GONE
+                    binding.loading.root.visibility = View.GONE
+                    binding.coorWrap.visibility = View.VISIBLE
+                    window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+
                     Glide.with(this@ActivityBestDetail)
                         .load("https:${doc.select(".cover-box img").attr("src")}")
                         .into(inclueBestDetail.iviewBookCover)
@@ -560,24 +597,25 @@ class ActivityBestDetail : AppCompatActivity() {
 
                     inclueBestDetail.tviewInfo1.text = doc.select(".meta-path strong").text()
                     inclueBestDetail.tviewInfo2.text =
-                        "조회 수 : ${doc.select(".meta-etc dd").next().next().get(1).text()}"
+                        doc.select(".meta-etc dd").next().next()[1].text()
                     inclueBestDetail.tviewInfo3.text =
-                        "추천 수 : ${doc.select(".meta-etc dd").next().next().get(2).text()}"
+                        doc.select(".meta-etc dd").next().next()[2].text()
                     inclueBestDetail.tviewInfo4.text =
-                        doc.select(".meta-etc dt").next().get(2).text()
+                        doc.select(".meta-etc dt").next()[2].text()
 
                     tviewIntro.text = doc.select(".story").text()
                 }
 
-                mFragmentBestDetailComment = FragmentBestDetailComment(platform, bookCode)
+                mFragmentBestDetailAnalyze =
+                    FragmentBestDetailAnalyze(platform, data, genre, itemCount)
                 supportFragmentManager.commit {
-                    replace(R.id.llayoutWrap, mFragmentBestDetailComment)
+                    replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
                 }
             }
         }.start()
     }
 
-    fun setLayoutToksoda() {
+    private fun setLayoutToksoda() {
         val apiToksoda = RetrofitToksoda()
         val param: MutableMap<String?, Any> = HashMap()
 
@@ -590,31 +628,54 @@ class ActivityBestDetail : AppCompatActivity() {
                 override fun onSuccess(data: BestToksodaDetailResult) {
 
                     with(binding) {
-                        data.result.let { it ->
+                        binding.loading.root.visibility = View.GONE
+                        binding.coorWrap.visibility = View.VISIBLE
+                        window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+
+                        data.result?.let {
                             Glide.with(this@ActivityBestDetail)
-                                .load("https:${it?.imgPath}")
+                                .load("https:${it.imgPath}")
                                 .into(inclueBestDetail.iviewBookCover)
 
-                            bookTitle = it?.wrknm ?: ""
-                            bookWriter = it?.athrnm ?: ""
+                            bookTitle = it.wrknm
+                            bookWriter = it.athrnm
 
                             inclueBestDetail.tviewTitle.text = bookTitle
                             inclueBestDetail.tviewWriter.text = bookWriter
 
                             inclueBestDetail.tviewInfo1.text = "장르 :  ${it?.lgctgrNm}"
-                            inclueBestDetail.tviewInfo2.text = "구독 수 : ${it?.inqrCnt}"
-                            inclueBestDetail.tviewInfo3.text = "관심 : ${it?.intrstCnt}"
-                            inclueBestDetail.tviewInfo4.text = "선호작 수 : ${it?.goodCnt}"
+                            inclueBestDetail.tviewInfo2.text = it.inqrCnt
+                            inclueBestDetail.tviewInfo3.text = it.intrstCnt
+                            inclueBestDetail.tviewInfo4.text = it.goodCnt
 
-                            tviewIntro.text = it?.lnIntro
+                            tviewIntro.text = it.lnIntro
+
+                            val keyword = it.hashTagList
+
+                            if (keyword != null) {
+                                for (item in keyword) {
+                                    val chip = Chip(this@ActivityBestDetail)
+                                    chip.text = "#${item.hashtagNm}"
+                                    chip.chipBackgroundColor = ColorStateList.valueOf(
+                                        ContextCompat.getColor(
+                                            this@ActivityBestDetail,
+                                            R.color.chip
+                                        )
+                                    )
+                                    chip.setTextColor(Color.parseColor("#EDE6FD"))
+                                    chip.layoutParams = lp
+                                    chipgroup.addView(chip)
+                                }
+                            }
                         }
                     }
                 }
             })
 
-        mFragmentBestDetailComment = FragmentBestDetailComment(platform, bookCode)
+        mFragmentBestDetailAnalyze =
+            FragmentBestDetailAnalyze(platform, data, genre, itemCount)
         supportFragmentManager.commit {
-            replace(R.id.llayoutWrap, mFragmentBestDetailComment)
+            replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
         }
     }
 
