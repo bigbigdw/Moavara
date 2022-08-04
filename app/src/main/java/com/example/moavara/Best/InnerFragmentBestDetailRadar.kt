@@ -52,9 +52,11 @@ class InnerFragmentBestDetailRadar(
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
 
             entriesCurrent.add(RadarEntry(valCur1.toFloat()))
             entriesCurrent.add(RadarEntry(valCur2.toFloat()))
+            entriesCurrent.add(RadarEntry(valCur3.toFloat()))
             entriesCurrent.add(RadarEntry(numberAvg.toFloat()))
         } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver") {
             labels = arrayOf("조회 수", "선호작 수", "추천 수", "트로피")
