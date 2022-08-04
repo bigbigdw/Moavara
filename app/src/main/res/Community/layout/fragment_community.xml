@@ -24,7 +24,7 @@
             android:paddingBottom="12dp"
             android:text="커뮤니티"
             android:textColor="#EDE6FD"
-            android:textSize="20sp"
+            android:textSize="27sp"
             android:textStyle="bold" />
 
     </LinearLayout>

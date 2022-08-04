@@ -125,12 +125,12 @@ class FragmentBestDetailAnalyze(
                     val groupVal1 = ((group?.info1 ?: 0) / itemCount).toFloat()
                     val groupVal2 = ((group?.info2 ?: 0) / itemCount).toFloat()
                     val groupVal3 = ((group?.info3 ?: 0) / itemCount).toFloat()
-                    var groupVal4 = ((group?.info4 ?: 0) / itemCount).toFloat()
+//                    var groupVal4 = ((group?.info4 ?: 0) / itemCount).toFloat()
 
                     val currentVal1 = BookItem[BookItem.size - 1].info1.toFloat()
                     val currentVal2 = BookItem[BookItem.size - 1].info2.toFloat()
                     val currentVal3 = BookItem[BookItem.size - 1].info3.toFloat()
-                    var currentVal4 = BookItem[BookItem.size - 1].info4.toFloat()
+//                    var currentVal4 = BookItem[BookItem.size - 1].info4.toFloat()
 
                     entryList.add(BarEntry(5F, (currentVal1 / groupVal1) * 100))
                     entryList.add(BarEntry(4F, 100F))
@@ -141,12 +141,12 @@ class FragmentBestDetailAnalyze(
 
                     val xAxisValues: List<String> = ArrayList(
                         listOf(
-                            "평균 작품 값1",
-                            "현재 작품 값1",
-                            "평균 작품 값2",
-                            "현재 작품 값2",
-                            "평균 작품 값3",
-                            "현재 작품 값3",
+                            "조회수 평균",
+                            "현재 작품 조회수",
+                            "선호작 평균",
+                            "현재 작품 선호작",
+                            "추천수 평균",
+                            "현재 추천 수",
                         )
                     )
 

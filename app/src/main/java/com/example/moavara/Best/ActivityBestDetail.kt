@@ -134,7 +134,7 @@ class ActivityBestDetail : AppCompatActivity() {
                             llayoutBtnRight.setOnClickListener {
                                 val intent = Intent(
                                     Intent.ACTION_VIEW,
-                                    Uri.parse(getUrl(group?.bookCode ?: ""))
+                                    Uri.parse(getUrl(bookCode))
                                 )
                                 startActivity(intent)
                             }

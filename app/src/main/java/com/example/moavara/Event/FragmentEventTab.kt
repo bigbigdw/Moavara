@@ -462,9 +462,9 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
         if (tabType == "Joara" && !item.link.contains("joaralink://event?event_id=") && !item.link.contains("joaralink://notice?notice_id=")) {
             Toast.makeText(requireContext(), "이벤트 페이지가 아닙니다.", Toast.LENGTH_SHORT).show()
         } else if (tabType == "OneStore") {
-            Toast.makeText(requireContext(), "원스토어는 지원하지 않습니다.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "이벤트 페이지가 아닙니다.", Toast.LENGTH_SHORT).show()
         }else if (tabType == "Munpia") {
-            Toast.makeText(requireContext(), "문피아는 지원하지 않습니다.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "이벤트 페이지가 아닙니다.", Toast.LENGTH_SHORT).show()
         } else if (tabType == "Kakao" && item.link.contains("kakaopage://exec?open_web_with_auth/store/event")) {
             Toast.makeText(requireContext(), "이벤트 페이지가 아닙니다.", Toast.LENGTH_SHORT).show()
         } else if (tabType == "Toksoda") {
