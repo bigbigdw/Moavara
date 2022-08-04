@@ -307,7 +307,7 @@ object Mining {
             Collections.sort(books, sort1)
 
             for(i in books.indices){
-                BestRef.setBookCode("Naver_Challenge", genre, books[i].bookCode).child("numInfo1").setValue(i)
+                BestRef.setBookCode("Naver_Today", genre, books[i].bookCode).child("numInfo1").setValue(i)
             }
 
             val sort2: Comparator<BookListDataBest> =
@@ -315,7 +315,7 @@ object Mining {
             Collections.sort(books, sort2)
 
             for(i in books.indices){
-                BestRef.setBookCode("Naver_Challenge", genre, books[i].bookCode).child("numInfo2").setValue(i)
+                BestRef.setBookCode("Naver_Today", genre, books[i].bookCode).child("numInfo2").setValue(i)
             }
 
             val sort3: Comparator<BookListDataBest> =
@@ -323,7 +323,7 @@ object Mining {
             Collections.sort(books, sort3)
 
             for(i in books.indices){
-                BestRef.setBookCode("Naver_Challenge", genre, books[i].bookCode).child("numInfo3").setValue(i)
+                BestRef.setBookCode("Naver_Today", genre, books[i].bookCode).child("numInfo3").setValue(i)
             }
 
             FirebaseDatabase.getInstance().reference.child("Best").child("Naver_Today")

@@ -49,6 +49,10 @@ class ActivityBestDetail : AppCompatActivity() {
     private lateinit var mFragmentBestDetailBooks: FragmentBestDetailBooks
     private lateinit var mFragmentBestDetailComment: FragmentBestDetailComment
     val data = ArrayList<BookListDataBestAnalyze>()
+    val lp = LinearLayout.LayoutParams(
+        ViewGroup.LayoutParams.WRAP_CONTENT,
+        ViewGroup.LayoutParams.WRAP_CONTENT
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -186,8 +190,8 @@ class ActivityBestDetail : AppCompatActivity() {
             binding.tabs.addTab(binding.tabs.newTab().setText("작품 분석"))
             binding.tabs.addTab(binding.tabs.newTab().setText("다른 작품"))
         } else if (platform == "Kakao" || platform == "Kakao_Stage" || platform == "OneStore" || platform == "Munpia") {
-            binding.tabs.addTab(binding.tabs.newTab().setText("댓글"))
             binding.tabs.addTab(binding.tabs.newTab().setText("작품 분석"))
+            binding.tabs.addTab(binding.tabs.newTab().setText("댓글"))
         } else if (platform == "Ridi") {
             binding.tabs.addTab(binding.tabs.newTab().setText("다른 작품"))
             binding.tabs.addTab(binding.tabs.newTab().setText("작품 분석"))
@@ -243,7 +247,7 @@ class ActivityBestDetail : AppCompatActivity() {
         })
     }
 
-    fun setLayoutJoara() {
+    private fun setLayoutJoara() {
         val apiJoara = RetrofitJoara()
         val JoaraRef = Param.getItemAPI(this)
         JoaraRef["book_code"] = bookCode
@@ -278,10 +282,7 @@ class ActivityBestDetail : AppCompatActivity() {
 
                             tviewIntro.text = data.book.intro
 
-                            val lp = LinearLayout.LayoutParams(
-                                ViewGroup.LayoutParams.WRAP_CONTENT,
-                                ViewGroup.LayoutParams.WRAP_CONTENT
-                            )
+
 
                             for (item in data.book.keyword) {
                                 val chip = Chip(this@ActivityBestDetail)
@@ -356,7 +357,7 @@ class ActivityBestDetail : AppCompatActivity() {
         }.start()
     }
 
-    fun setLayoutKaKao() {
+    private fun setLayoutKaKao() {
         val apiKakao = RetrofitKaKao()
         val param: MutableMap<String?, Any> = HashMap()
 
@@ -368,35 +369,57 @@ class ActivityBestDetail : AppCompatActivity() {
                 override fun onSuccess(data: BestKakaoBookDetail) {
 
                     with(binding) {
+                        loading.root.visibility = View.GONE
+                        coorWrap.visibility = View.VISIBLE
+                        window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+
                         data.home?.let { it ->
                             Glide.with(this@ActivityBestDetail)
                                 .load("https://dn-img-page.kakao.com/download/resource?kid=${it.land_thumbnail_url}")
                                 .into(inclueBestDetail.iviewBookCover)
 
                             bookTitle = it.title
-
                             inclueBestDetail.tviewTitle.text = bookTitle
                             inclueBestDetail.tviewWriter.text = it.author_name
 
                             inclueBestDetail.tviewInfo1.text = "총 ${it.open_counts}화"
-                            inclueBestDetail.tviewInfo2.text = "장르 : ${it.sub_category}"
-                            inclueBestDetail.tviewInfo3.text = "조회 수 : ${it.read_count}"
-                            inclueBestDetail.tviewInfo4.text = "댓글 수 : ${it.page_comment_count}"
+                            inclueBestDetail.tviewInfo2.text = it.sub_category
+                            inclueBestDetail.tviewInfo3.text = it.read_count
+                            inclueBestDetail.tviewInfo4.text = it.page_comment_count
 
                             tviewIntro.text = it.description
+                        }
+
+                        val keyword = data.related_keytalk_list
+
+                        for(item in keyword){
+                            val chip = Chip(this@ActivityBestDetail)
+                            chip.text = "#${item.item_name}"
+                            chip.chipBackgroundColor = ColorStateList.valueOf(
+                                ContextCompat.getColor(
+                                    this@ActivityBestDetail,
+                                    R.color.chip
+                                )
+                            )
+                            chip.setTextColor(Color.parseColor("#EDE6FD"))
+                            chip.layoutParams = lp
+                            chipgroup.addView(chip)
                         }
                     }
                 }
             })
 
-        mFragmentBestDetailComment = FragmentBestDetailComment(platform, bookCode)
+        mFragmentBestDetailAnalyze =
+            FragmentBestDetailAnalyze(platform, data, genre, itemCount)
         supportFragmentManager.commit {
-            replace(R.id.llayoutWrap, mFragmentBestDetailComment)
+            replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
         }
     }
 
-    fun setLayoutKaKaoStage() {
+    private fun setLayoutKaKaoStage() {
         val apiKakaoStage = RetrofitKaKao()
+
+        binding.chipgroup.visibility = View.GONE
 
         apiKakaoStage.getBestKakaoStageDetail(
             bookCode,
@@ -404,7 +427,11 @@ class ActivityBestDetail : AppCompatActivity() {
                 override fun onSuccess(data: KakaoStageBestBookResult) {
 
                     with(binding) {
-                        data.let { it ->
+                        loading.root.visibility = View.GONE
+                        coorWrap.visibility = View.VISIBLE
+                        window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+
+                        data.let {
                             Glide.with(this@ActivityBestDetail)
                                 .load(data.thumbnail.url)
                                 .into(inclueBestDetail.iviewBookCover)
@@ -415,9 +442,9 @@ class ActivityBestDetail : AppCompatActivity() {
                             inclueBestDetail.tviewWriter.text = it.nickname.name
 
                             inclueBestDetail.tviewInfo1.text = "총 ${it.publishedEpisodeCount}화"
-                            inclueBestDetail.tviewInfo2.text = "선호작 수 : ${it.favoriteCount}"
-                            inclueBestDetail.tviewInfo3.text = "조회 수 : ${it.viewCount}"
-                            inclueBestDetail.tviewInfo4.text = "방문 수 : ${it.visitorCount}"
+                            inclueBestDetail.tviewInfo2.text = it.favoriteCount
+                            inclueBestDetail.tviewInfo3.text = it.viewCount
+                            inclueBestDetail.tviewInfo4.text = it.visitorCount
 
                             tviewIntro.text = it.synopsis
                         }
@@ -425,9 +452,10 @@ class ActivityBestDetail : AppCompatActivity() {
                 }
             })
 
-        mFragmentBestDetailComment = FragmentBestDetailComment(platform, bookCode)
+        mFragmentBestDetailAnalyze =
+            FragmentBestDetailAnalyze(platform, data, genre, itemCount)
         supportFragmentManager.commit {
-            replace(R.id.llayoutWrap, mFragmentBestDetailComment)
+            replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
         }
     }
 

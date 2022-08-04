@@ -20,7 +20,7 @@ import org.jsoup.select.Elements
 class FragmentBestDetailBooks(private val platfrom: String, private val bookCode: String) :
     Fragment() {
 
-    private var adapterBestOthers: AdapterBestComment? = null
+    private var adapterBestOthers: AdapterBestBooks? = null
     private val items = ArrayList<BookListDataBestToday?>()
 
     private var _binding: FragmentBestDetailTabsBinding? = null
@@ -35,11 +35,15 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
     ): View {
         _binding = FragmentBestDetailTabsBinding.inflate(inflater, container, false)
         val view = binding.root
-        adapterBestOthers = AdapterBestComment(items)
+        adapterBestOthers = AdapterBestBooks(items)
 
         binding.rview.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rview.adapter = adapterBestOthers
+
+        binding.blank.root.visibility = View.VISIBLE
+        binding.blank.tviewblank.text = "다른 작품이 없습니다."
+        binding.rview.visibility = View.GONE
 
         if(platfrom == "Joara" || platfrom == "Joara_Nobless" || platfrom == "Joara_Premium"){
             getOthersJoa()
@@ -68,6 +72,12 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
                 override fun onSuccess(data: JoaraBestListResult) {
 
                     if(data.bookLists != null){
+
+                        if(data.bookLists.isNotEmpty()){
+                            binding.blank.root.visibility = View.GONE
+                            binding.rview.visibility = View.VISIBLE
+                        }
+
                         for(i in data.bookLists.indices){
                             items.add(
                                 BookListDataBestToday(
@@ -87,7 +97,7 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
                                 )
                             )
                         }
-                        adapterBestOthers!!.notifyDataSetChanged()
+                        adapterBestOthers?.notifyDataSetChanged()
                     }
                 }
             })
@@ -118,7 +128,7 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
                         )
                     )
                 }
-                adapterBestOthers!!.notifyDataSetChanged()
+                adapterBestOthers?.notifyDataSetChanged()
             }
         }.start()
     }
@@ -148,7 +158,7 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
                         )
                     )
                 }
-                adapterBestOthers!!.notifyDataSetChanged()
+                adapterBestOthers?.notifyDataSetChanged()
             }
         }.start()
     }
@@ -178,6 +188,11 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
 
                     data.resultList.let {
                         if (it != null) {
+                            if(it.isNotEmpty()){
+                                binding.blank.root.visibility = View.GONE
+                                binding.rview.visibility = View.VISIBLE
+                            }
+
                             for (i in it.indices) {
                                 items.add(
                                     BookListDataBestToday(
@@ -199,14 +214,14 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
                             }
 
                         }
-                        adapterBestOthers!!.notifyDataSetChanged()
+                        adapterBestOthers?.notifyDataSetChanged()
                     }
                 }
             })
     }
 }
 
-class AdapterBestComment(items: List<BookListDataBestToday?>?) :
+class AdapterBestBooks(items: List<BookListDataBestToday?>?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var holder: ArrayList<BookListDataBestToday?>? = items as ArrayList<BookListDataBestToday?>?
 

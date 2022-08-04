@@ -165,6 +165,16 @@ class BestKakaoBookDetail {
     @SerializedName("notice")
     @Expose
     val notice: BestKakaoBookDetailNotice? = null
+
+    @SerializedName("related_keytalk_list")
+    @Expose
+    lateinit var related_keytalk_list: ArrayList<BestKakaoBookDetailKeyword>
+}
+
+class BestKakaoBookDetailKeyword{
+    @SerializedName("item_name")
+    @Expose
+    var item_name: String = ""
 }
 
 class BestKakaoBookDetailNotice {

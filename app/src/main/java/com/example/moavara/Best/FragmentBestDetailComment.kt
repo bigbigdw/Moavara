@@ -45,6 +45,10 @@ class FragmentBestDetailComment(private val platfrom: String, private val bookCo
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rview.adapter = adapterBestComment
 
+        binding.blank.root.visibility = View.VISIBLE
+        binding.blank.tviewblank.text = "댓글이 없습니다."
+        binding.rview.visibility = View.GONE
+
         if (platfrom == "Joara" || platfrom == "Joara_Nobless" || platfrom == "Joara_Premium") {
             getCommentsJoara()
         } else if (platfrom == "Kakao") {
@@ -75,18 +79,23 @@ class FragmentBestDetailComment(private val platfrom: String, private val bookCo
         apiJoara.getBookCommentJoa(
             param,
             object : RetrofitDataListener<JoaraBestDetailCommentsResult> {
-                override fun onSuccess(it: JoaraBestDetailCommentsResult) {
+                override fun onSuccess(data: JoaraBestDetailCommentsResult) {
+                    if (data.status == "1" && data.comments != null) {
 
-                    if (it.status == "1" && it.comments != null) {
-                        for (i in it.comments.indices) {
+                        if(data.comments.isNotEmpty()){
+                            binding.blank.root.visibility = View.GONE
+                            binding.rview.visibility = View.VISIBLE
+                        }
+
+                        for (i in data.comments.indices) {
                             items.add(
                                 BestComment(
-                                    it.comments[i].comment,
-                                    it.comments[i].created,
+                                    data.comments[i].comment,
+                                    data.comments[i].created,
                                 )
                             )
                         }
-                        adapterBestComment!!.notifyDataSetChanged()
+                        adapterBestComment?.notifyDataSetChanged()
                     }
                 }
             })
@@ -106,6 +115,11 @@ class FragmentBestDetailComment(private val platfrom: String, private val bookCo
             object : RetrofitDataListener<BestKakaoBookDetailComment> {
                 override fun onSuccess(data: BestKakaoBookDetailComment) {
 
+                    if(data.comment_list.isNotEmpty()){
+                        binding.blank.root.visibility = View.GONE
+                        binding.rview.visibility = View.VISIBLE
+                    }
+
                     data.comment_list.let {
                         for (i in it.indices) {
                             items.add(
@@ -115,7 +129,7 @@ class FragmentBestDetailComment(private val platfrom: String, private val bookCo
                                 )
                             )
                         }
-                        adapterBestComment!!.notifyDataSetChanged()
+                        adapterBestComment?.notifyDataSetChanged()
                     }
                 }
             })
@@ -138,6 +152,11 @@ class FragmentBestDetailComment(private val platfrom: String, private val bookCo
             "0",
             object : RetrofitDataListener<KakaoStageBestBookCommentResult> {
                 override fun onSuccess(data: KakaoStageBestBookCommentResult) {
+
+                    if(data.content.isNotEmpty()){
+                        binding.blank.root.visibility = View.GONE
+                        binding.rview.visibility = View.VISIBLE
+                    }
 
                     data.content.let {
                         for (i in it.indices) {
@@ -168,6 +187,11 @@ class FragmentBestDetailComment(private val platfrom: String, private val bookCo
             param,
             object : RetrofitDataListener<OnestoreBookDetailComment> {
                 override fun onSuccess(data: OnestoreBookDetailComment) {
+
+                    if(data.params?.commentList?.isNotEmpty() == true){
+                        binding.blank.root.visibility = View.GONE
+                        binding.rview.visibility = View.VISIBLE
+                    }
 
                     data.params?.commentList.let {
                         if (it != null) {
