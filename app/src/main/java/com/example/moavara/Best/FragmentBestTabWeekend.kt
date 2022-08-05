@@ -320,14 +320,12 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
             val jsonObject = JSONObject(jsonData)
 
             for (day in 1..7) {
-                val jsonArray = JSONArray()
                 val itemList = ArrayList<BookListDataBest>()
                 val itemResult = jsonObject.getJSONArray(day.toString())
 
                 if(itemResult.length() == 0){
                     for (num in 0..19) {
                         itemList.add(BookListDataBest())
-                        jsonArray.put(BestRef.putItem(jsonObject, BookListDataBest()))
                     }
                     itemWeek.add(itemList)
                 } else {
@@ -336,7 +334,6 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
 
                         if (item != null) {
                             itemList.add(BestRef.getItem(item))
-                            jsonArray.put(BestRef.putItem(jsonObject, BestRef.getItem(item)))
                         }
                     }
 
@@ -358,11 +355,8 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
 
                     itemWeek.add(itemList)
                 }
-
-                obj.putOpt(day.toString(), jsonArray)
             }
 
-            writeFile(obj)
             adapter?.notifyDataSetChanged()
 
             if(arrayCarousel.size > 0){

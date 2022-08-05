@@ -129,7 +129,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                             searchResult.tviewTitle.text = data.book.subject
                             searchResult.tviewWriter.text = data.book.writerName
 
-                            searchResult.tviewInfo1.text = "총 " + data.book.cntChapter + " 화"
+                            searchResult.tviewInfo.text = "총 " + data.book.cntChapter + " 화"
                             searchResult.tviewInfo2.text = "선호작 수 : " + data.book.cntFavorite
                             searchResult.tviewInfo3.text = "조회 수 : " + data.book.cntPageRead
                             searchResult.tviewInfo4.text = "추천 수 : " + data.book.cntRecom
@@ -162,7 +162,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                             searchResult.tviewTitle.text = it.title
                             searchResult.tviewWriter.text = it.author_name
 
-                            searchResult.tviewInfo1.text = "총 ${it.open_counts}화"
+                            searchResult.tviewInfo.text = "총 ${it.open_counts}화"
                             searchResult.tviewInfo2.text = "장르 : ${it.sub_category}"
                             searchResult.tviewInfo3.text = "조회 수 : ${it.read_count}"
                             searchResult.tviewInfo4.text = "댓글 수 : ${it.page_comment_count}"
@@ -193,7 +193,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                             searchResult.tviewTitle.text = it.title
                             searchResult.tviewWriter.text = it.nickname.name
 
-                            searchResult.tviewInfo1.text = "총 ${it.publishedEpisodeCount}화"
+                            searchResult.tviewInfo.text = "총 ${it.publishedEpisodeCount}화"
                             searchResult.tviewInfo2.text = "선호작 수 : ${it.favoriteCount}"
                             searchResult.tviewInfo3.text = "조회 수 : ${it.viewCount}"
                             searchResult.tviewInfo4.text = "방문 수 : ${it.visitorCount}"
@@ -230,7 +230,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                         searchResult.tviewTitle.text = doc.select(".book_title").text()
                         searchResult.tviewWriter.text = doc.select(".writer").text()
 
-                        searchResult.tviewInfo1.text = doc.select(".info_book .like").text()
+                        searchResult.tviewInfo.text = doc.select(".info_book .like").text()
                         searchResult.tviewInfo2.text = doc.select(".info_book .download").text()
                         searchResult.tviewInfo3.text = doc.select(".info_book .publish").text()
                         searchResult.tviewInfo4.text =
@@ -260,7 +260,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                     searchResult.tviewWriter.text =
                         doc.select(".metadata_writer .author_detail_link").text()
 
-                    searchResult.tviewInfo1.text =
+                    searchResult.tviewInfo.text =
                         doc.select(".header_info_wrap .info_category_wrap").text()
                     searchResult.tviewInfo2.text =
                         "평점 : ${doc.select(".header_info_wrap .StarRate_Score").text()}"
@@ -291,7 +291,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                         .replace(doc.select(".detail-box h2 a span").text() + " ", "")
                     searchResult.tviewWriter.text = doc.select(".member-trigger strong").text()
 
-                    searchResult.tviewInfo1.text = doc.select(".meta-path strong").text()
+                    searchResult.tviewInfo.text = doc.select(".meta-path strong").text()
                     searchResult.tviewInfo2.text =
                         "조회 수 : ${doc.select(".meta-etc dd").next().next().get(1).text()}"
                     searchResult.tviewInfo3.text =
@@ -327,7 +327,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                             searchResult.tviewTitle.text = it?.wrknm ?: ""
                             searchResult.tviewWriter.text = it?.athrnm ?: ""
 
-                            searchResult.tviewInfo1.text = "장르 :  ${it?.lgctgrNm}"
+                            searchResult.tviewInfo.text = "장르 :  ${it?.lgctgrNm}"
                             searchResult.tviewInfo2.text = "구독 수 : ${it?.inqrCnt}"
                             searchResult.tviewInfo3.text = "관심 : ${it?.intrstCnt}"
                             searchResult.tviewInfo4.text = "선호작 수 : ${it?.goodCnt}"
@@ -360,7 +360,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                             searchResult.tviewTitle.text = it?.prodNm ?: ""
                             searchResult.tviewWriter.text = it?.artistNm
 
-                            searchResult.tviewInfo1.text = "별점 : ${it?.ratingAvgScore}점"
+                            searchResult.tviewInfo.text = "별점 : ${it?.ratingAvgScore}점"
                             searchResult.tviewInfo2.text =  "구독 수 : ${it?.pageViewTotal}"
                             searchResult.tviewInfo3.text =  "총 ${it?.serialCount}화"
                             searchResult.tviewInfo4.text =  "선호작 수 : ${it?.favoriteCount}"

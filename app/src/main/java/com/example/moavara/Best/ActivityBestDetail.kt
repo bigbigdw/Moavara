@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -207,7 +206,7 @@ class ActivityBestDetail : AppCompatActivity() {
                 when (tab.position) {
                     0 -> {
                         mFragmentBestDetailAnalyze =
-                            FragmentBestDetailAnalyze(platform, data, genre, itemCount)
+                            FragmentBestDetailAnalyze(platform, data, itemCount)
                         supportFragmentManager.commit {
                             replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
                         }
@@ -234,7 +233,7 @@ class ActivityBestDetail : AppCompatActivity() {
                             }
                         } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver" || platform == "Kakao" || platform == "Kakao_Stage" || platform == "Ridi" || platform == "OneStore" || platform == "Munpia") {
                             mFragmentBestDetailAnalyze =
-                                FragmentBestDetailAnalyze(platform, data, genre, itemCount)
+                                FragmentBestDetailAnalyze(platform, data, itemCount)
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
                             }
@@ -276,7 +275,7 @@ class ActivityBestDetail : AppCompatActivity() {
                             inclueBestDetail.tviewTitle.text = bookTitle
                             inclueBestDetail.tviewWriter.text = data.book.writerName
 
-                            inclueBestDetail.tviewInfo1.text = "총 ${data.book.cntChapter}화"
+                            inclueBestDetail.tviewInfo.text = "총 ${data.book.cntChapter}화"
                             inclueBestDetail.tviewInfo2.text = data.book.cntFavorite
                             inclueBestDetail.tviewInfo3.text = data.book.cntPageRead
                             inclueBestDetail.tviewInfo4.text = data.book.cntRecom
@@ -304,7 +303,7 @@ class ActivityBestDetail : AppCompatActivity() {
 
                     mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(
                         platform,
-                        this@ActivityBestDetail.data, genre, itemCount
+                        this@ActivityBestDetail.data, itemCount
                     )
                     supportFragmentManager.commit {
                         replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
@@ -330,16 +329,18 @@ class ActivityBestDetail : AppCompatActivity() {
                         .into(inclueBestDetail.iviewBookCover)
 
                     if (platform == "Naver_Challenge" || platform == "Naver") {
-                        inclueBestDetail.llayoutWrap2.visibility = View.GONE
+                        inclueBestDetail.llayoutTab4.visibility = View.GONE
+                        inclueBestDetail.viewTab4.visibility = View.GONE
                     } else {
-                        inclueBestDetail.llayoutWrap2.visibility = View.VISIBLE
+                        inclueBestDetail.llayoutTab4.visibility = View.VISIBLE
+                        inclueBestDetail.viewTab4.visibility = View.VISIBLE
                     }
 
                     bookTitle = doc.select(".book_title").text()
                     inclueBestDetail.tviewTitle.text = bookTitle
                     inclueBestDetail.tviewWriter.text = doc.select(".writer").text()
 
-                    inclueBestDetail.tviewInfo1.text =
+                    inclueBestDetail.tviewInfo.text =
                         "장르 : ${doc.select(".info_book .genre").text()}"
 
                     inclueBestDetail.tviewInfo2.text = doc.select(".info_book .like").text()
@@ -350,7 +351,7 @@ class ActivityBestDetail : AppCompatActivity() {
                 }
 
                 mFragmentBestDetailAnalyze =
-                    FragmentBestDetailAnalyze(platform, data, genre, itemCount)
+                    FragmentBestDetailAnalyze(platform, data, itemCount)
                 supportFragmentManager.commit {
                     replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
                 }
@@ -383,7 +384,7 @@ class ActivityBestDetail : AppCompatActivity() {
                             inclueBestDetail.tviewTitle.text = bookTitle
                             inclueBestDetail.tviewWriter.text = it.author_name
 
-                            inclueBestDetail.tviewInfo1.text = "총 ${it.open_counts}화"
+                            inclueBestDetail.tviewInfo.text = "총 ${it.open_counts}화"
                             inclueBestDetail.tviewInfo2.text = it.sub_category
                             inclueBestDetail.tviewInfo3.text = it.read_count
                             inclueBestDetail.tviewInfo4.text = it.page_comment_count
@@ -411,7 +412,7 @@ class ActivityBestDetail : AppCompatActivity() {
             })
 
         mFragmentBestDetailAnalyze =
-            FragmentBestDetailAnalyze(platform, data, genre, itemCount)
+            FragmentBestDetailAnalyze(platform, data, itemCount)
         supportFragmentManager.commit {
             replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
         }
@@ -442,7 +443,7 @@ class ActivityBestDetail : AppCompatActivity() {
                             inclueBestDetail.tviewTitle.text = bookTitle
                             inclueBestDetail.tviewWriter.text = it.nickname.name
 
-                            inclueBestDetail.tviewInfo1.text = "총 ${it.publishedEpisodeCount}화"
+                            inclueBestDetail.tviewInfo.text = "총 ${it.publishedEpisodeCount}화"
                             inclueBestDetail.tviewInfo2.text = it.favoriteCount
                             inclueBestDetail.tviewInfo3.text = it.viewCount
                             inclueBestDetail.tviewInfo4.text = it.visitorCount
@@ -454,7 +455,7 @@ class ActivityBestDetail : AppCompatActivity() {
             })
 
         mFragmentBestDetailAnalyze =
-            FragmentBestDetailAnalyze(platform, data, genre, itemCount)
+            FragmentBestDetailAnalyze(platform, data, itemCount)
         supportFragmentManager.commit {
             replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
         }
@@ -486,7 +487,7 @@ class ActivityBestDetail : AppCompatActivity() {
                     inclueBestDetail.tviewWriter.text =
                         doc.select(".metadata_writer .author_detail_link").text()
 
-                    inclueBestDetail.tviewInfo1.text =
+                    inclueBestDetail.tviewInfo.text =
                         doc.select(".header_info_wrap .info_category_wrap").text()
                     inclueBestDetail.tviewInfo2.text =
                         doc.select(".header_info_wrap .StarRate_Score").text()
@@ -499,7 +500,7 @@ class ActivityBestDetail : AppCompatActivity() {
                 }
 
                 mFragmentBestDetailAnalyze =
-                    FragmentBestDetailAnalyze(platform, data, genre, itemCount)
+                    FragmentBestDetailAnalyze(platform, data, itemCount)
                 supportFragmentManager.commit {
                     replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
                 }
@@ -535,7 +536,7 @@ class ActivityBestDetail : AppCompatActivity() {
                             inclueBestDetail.tviewTitle.text = bookTitle
                             inclueBestDetail.tviewWriter.text = it?.artistNm
 
-                            inclueBestDetail.tviewInfo1.text = "별점 : ${it?.ratingAvgScore}점"
+                            inclueBestDetail.tviewInfo.text = "별점 : ${it?.ratingAvgScore}점"
                             inclueBestDetail.tviewInfo2.text = it?.pageViewTotal
                             inclueBestDetail.tviewInfo3.text = it?.serialCount
                             inclueBestDetail.tviewInfo4.text = it?.favoriteCount
@@ -569,7 +570,7 @@ class ActivityBestDetail : AppCompatActivity() {
             })
 
         mFragmentBestDetailAnalyze =
-            FragmentBestDetailAnalyze(platform, data, genre, itemCount)
+            FragmentBestDetailAnalyze(platform, data, itemCount)
         supportFragmentManager.commit {
             replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
         }
@@ -595,7 +596,7 @@ class ActivityBestDetail : AppCompatActivity() {
                     inclueBestDetail.tviewTitle.text = bookTitle
                     inclueBestDetail.tviewWriter.text = doc.select(".member-trigger strong").text()
 
-                    inclueBestDetail.tviewInfo1.text = doc.select(".meta-path strong").text()
+                    inclueBestDetail.tviewInfo.text = doc.select(".meta-path strong").text()
                     inclueBestDetail.tviewInfo2.text =
                         doc.select(".meta-etc dd").next().next()[1].text()
                     inclueBestDetail.tviewInfo3.text =
@@ -607,7 +608,7 @@ class ActivityBestDetail : AppCompatActivity() {
                 }
 
                 mFragmentBestDetailAnalyze =
-                    FragmentBestDetailAnalyze(platform, data, genre, itemCount)
+                    FragmentBestDetailAnalyze(platform, data, itemCount)
                 supportFragmentManager.commit {
                     replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
                 }
@@ -643,7 +644,7 @@ class ActivityBestDetail : AppCompatActivity() {
                             inclueBestDetail.tviewTitle.text = bookTitle
                             inclueBestDetail.tviewWriter.text = bookWriter
 
-                            inclueBestDetail.tviewInfo1.text = "장르 :  ${it?.lgctgrNm}"
+                            inclueBestDetail.tviewInfo.text = "장르 :  ${it.lgctgrNm}"
                             inclueBestDetail.tviewInfo2.text = it.inqrCnt
                             inclueBestDetail.tviewInfo3.text = it.intrstCnt
                             inclueBestDetail.tviewInfo4.text = it.goodCnt
@@ -673,7 +674,7 @@ class ActivityBestDetail : AppCompatActivity() {
             })
 
         mFragmentBestDetailAnalyze =
-            FragmentBestDetailAnalyze(platform, data, genre, itemCount)
+            FragmentBestDetailAnalyze(platform, data, itemCount)
         supportFragmentManager.commit {
             replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
         }

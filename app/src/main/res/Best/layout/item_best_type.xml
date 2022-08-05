@@ -10,8 +10,10 @@
     android:paddingBottom="8dp">
 
     <ImageView
+        android:id="@+id/iview"
         android:layout_width="23dp"
         android:layout_height="23dp"
+        android:layout_marginRight="2dp"
         android:src="@mipmap/ic_launcher" />
 
     <TextView

@@ -1,36 +1,24 @@
 package com.example.moavara.Best
 
-import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.moavara.DataBase.BestTodayAverage
 import com.example.moavara.DataBase.BookListDataBestAnalyze
 import com.example.moavara.R
 import com.example.moavara.Search.BestChart
-import com.example.moavara.Util.DBDate
+import com.example.moavara.Soon.Best.AdapterChart
+import com.example.moavara.Soon.Best.InnerFragmentBestDetailBar
 import com.example.moavara.databinding.FragmentBestDetailAnalyzeBinding
-import com.github.mikephil.charting.components.Legend
-import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import java.util.*
 
 class FragmentBestDetailAnalyze(
     private val platform: String,
     private val BookItem: ArrayList<BookListDataBestAnalyze>,
-    private var genre: String,
     private var itemCount: Int,
 ) : Fragment() {
 
@@ -39,7 +27,7 @@ class FragmentBestDetailAnalyze(
 
     private lateinit var mInnerFragmentBestDetailRank: InnerFragmentBestDetailRank
     private lateinit var mInnerFragmentBestDetailRadar: InnerFragmentBestDetailRadar
-    private lateinit var mInnerFragmentBestDetailBar: InnerFragmentBestDetailBar
+    private lateinit var mInnerFragmentBestDetailLine: InnerFragmentBestDetailLine
 
     var status = ""
 
@@ -65,11 +53,9 @@ class FragmentBestDetailAnalyze(
             replace(R.id.InnerFragmentBestDetailRadar, mInnerFragmentBestDetailRadar)
         }
 
-        getHorizontalBarChart()
-
-        mInnerFragmentBestDetailBar = InnerFragmentBestDetailBar(BookItem, platform, genre)
+        mInnerFragmentBestDetailLine = InnerFragmentBestDetailLine(platform, BookItem)
         childFragmentManager.commit {
-            replace(R.id.InnerFragmentBestDetailBar, mInnerFragmentBestDetailBar)
+            replace(R.id.InnerFragmentBestDetailLine, mInnerFragmentBestDetailLine)
         }
 
         return view
@@ -105,97 +91,5 @@ class FragmentBestDetailAnalyze(
             itemsJoara.add(BestChart(dateList, entryList3, "편당 추천 수", "#20459e"))
             adapterChartJoara.notifyDataSetChanged()
         }
-    }
-
-    private fun getHorizontalBarChart() {
-        val Average =
-            FirebaseDatabase.getInstance().reference.child("Best").child(platform)
-                .child(genre).child("Average").child(DBDate.DateMMDD())
-
-        Average.addListenerForSingleValueEvent(object :
-            ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val group: BestTodayAverage? = dataSnapshot.getValue(BestTodayAverage::class.java)
-
-                Log.d("####", group.toString())
-
-                with(binding) {
-                    val entryList: ArrayList<BarEntry> = ArrayList()
-
-                    val groupVal1 = ((group?.info1 ?: 0) / itemCount).toFloat()
-                    val groupVal2 = ((group?.info2 ?: 0) / itemCount).toFloat()
-                    val groupVal3 = ((group?.info3 ?: 0) / itemCount).toFloat()
-//                    var groupVal4 = ((group?.info4 ?: 0) / itemCount).toFloat()
-
-                    val currentVal1 = BookItem[BookItem.size - 1].info1.toFloat()
-                    val currentVal2 = BookItem[BookItem.size - 1].info2.toFloat()
-                    val currentVal3 = BookItem[BookItem.size - 1].info3.toFloat()
-//                    var currentVal4 = BookItem[BookItem.size - 1].info4.toFloat()
-
-                    entryList.add(BarEntry(5F, (currentVal1 / groupVal1) * 100))
-                    entryList.add(BarEntry(4F, 100F))
-                    entryList.add(BarEntry(3F, (currentVal2 / groupVal2) * 100))
-                    entryList.add(BarEntry(2F, 100F))
-                    entryList.add(BarEntry(1F, (currentVal3 / groupVal3) * 100))
-                    entryList.add(BarEntry(0F, 100F))
-
-                    val xAxisValues: List<String> = ArrayList(
-                        listOf(
-                            "조회수 평균",
-                            "현재 작품 조회수",
-                            "선호작 평균",
-                            "현재 작품 선호작",
-                            "추천수 평균",
-                            "현재 추천 수",
-                        )
-                    )
-
-                    barChart.xAxis.valueFormatter = IndexAxisValueFormatter(xAxisValues)
-                    barChart.legend.isEnabled = false
-                    val barDataSet = BarDataSet(entryList, "HIHI")
-                    barDataSet.isHighlightEnabled = false
-
-                    barDataSet.setColors(
-                        Color.parseColor("#621CEF"),
-                        Color.parseColor("#EDE6FD"),
-                        Color.parseColor("#621CEF"),
-                        Color.parseColor("#EDE6FD"),
-                        Color.parseColor("#621CEF"),
-                        Color.parseColor("#EDE6FD")
-                    )
-
-                    val barData = BarData(barDataSet)
-
-                    barChart.data = barData
-
-                    barChart.apply {
-                        setScaleEnabled(false)
-                        setPinchZoom(false)
-                        isClickable = false
-
-                        animateXY(800, 800)
-                        description = null
-
-                        legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-                        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
-
-                        axisRight.setDrawLabels(false)
-                        xAxis.setDrawGridLines(false)
-
-                        xAxis.position = XAxis.XAxisPosition.BOTTOM
-
-                        barDataSet.valueTextSize = 10f
-                        barDataSet.valueTextColor = Color.parseColor("#EDE6FD")
-                        xAxis.textColor = Color.parseColor("#EDE6FD")
-                        axisLeft.textColor = Color.parseColor("#EDE6FD")
-                        legend.textColor = Color.parseColor("#EDE6FD")
-                    }
-
-                    barChart.invalidate()
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
     }
 }

@@ -3,6 +3,7 @@ package com.example.moavara.Search
 import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.DataBase.BookListDataBestAnalyze
 import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.Entry
 
 
 class BookListData(
@@ -114,6 +115,13 @@ data class CommunityBoard(
 data class BestChart(
     var dateList: MutableList<String>? = null,
     var entryList: MutableList<BarEntry>? = null,
+    var title: String = "",
+    var color: String = ""
+)
+
+data class BestLineChart(
+    var dateList: MutableList<String>? = null,
+    var entryList: MutableList<Entry>? = null,
     var title: String = "",
     var color: String = ""
 )

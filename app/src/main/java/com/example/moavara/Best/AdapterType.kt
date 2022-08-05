@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.moavara.R
 import com.example.moavara.Search.BestType
 import com.example.moavara.Util.dpToPx
@@ -41,11 +42,58 @@ class AdapterType(private var holder: List<BestType>) :
             with(holder.binding){
                 tveiwTitle.text = item.title
 
+                if (item.type == "Joara" || item.type == "Joara_Nobless" || item.type == "Joara_Premium") {
+                    Glide.with(holder.itemView.context)
+                        .load(R.drawable.logo_joara)
+                        .circleCrop()
+                        .into(iview)
+                } else if (item.type == "Naver_Challenge" || item.type == "Naver_Today" || item.type == "Naver") {
+                    Glide.with(holder.itemView.context)
+                        .load(R.drawable.logo_naver)
+                        .circleCrop()
+                        .into(iview)
+                } else if (item.type == "Kakao") {
+                    Glide.with(holder.itemView.context)
+                        .load(R.drawable.logo_kakao)
+                        .circleCrop()
+                        .into(iview)
+                } else if (item.type == "Kakao_Stage") {
+                    Glide.with(holder.itemView.context)
+                        .load(R.drawable.logo_kakaostage)
+                        .circleCrop()
+                        .into(iview)
+                } else if (item.type == "Munpia") {
+                    Glide.with(holder.itemView.context)
+                        .load(R.drawable.logo_munpia)
+                        .circleCrop()
+                        .into(iview)
+                } else if (item.type == "OneStore") {
+                    Glide.with(holder.itemView.context)
+                        .load(R.drawable.logo_onestore)
+                        .circleCrop()
+                        .into(iview)
+                } else if (item.type == "Ridi") {
+                    Glide.with(holder.itemView.context)
+                        .load(R.drawable.logo_ridi)
+                        .circleCrop()
+                        .into(iview)
+                } else if (item.type == "Toksoda") {
+                    Glide.with(holder.itemView.context)
+                        .load(R.drawable.logo_toksoda)
+                        .circleCrop()
+                        .into(iview)
+                } else if (item.type == "MrBlue") {
+                    Glide.with(holder.itemView.context)
+                        .load(R.drawable.logo_mrblue)
+                        .circleCrop()
+                        .into(iview)
+                }
+
                 if(getSelectedBtn() == position){
                     tveiwTitle.setTextColor(Color.parseColor("#0D0E10"));
 
                     llayoutWrap.background = GradientDrawable().apply {
-                        setColor(Color.parseColor("#FFFFFF"))
+                        setColor(Color.parseColor("#EDE6FD"))
                         shape = GradientDrawable.RECTANGLE
                         cornerRadius = 100f.dpToPx()
                         setStroke(1f.dpToPx().toInt(), Color.parseColor("#FFDADADA"))
