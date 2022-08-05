@@ -1,0 +1,57 @@
+{
+  "exportFormatVersion": 2,
+  "exportTime": "2022-08-05 06:21:08",
+  "containerVersion": {
+    "path": "accounts/6052996338/containers/90919832/versions/1",
+    "accountId": "6052996338",
+    "containerId": "90919832",
+    "containerVersionId": "1",
+    "name": "Empty Container",
+    "container": {
+      "path": "accounts/6052996338/containers/90919832",
+      "accountId": "6052996338",
+      "containerId": "90919832",
+      "name": "Moavara",
+      "publicId": "GTM-TWCLVGN",
+      "usageContext": [
+        "ANDROID_SDK_5"
+      ],
+      "fingerprint": "1659680343742",
+      "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/6052996338/containers/90919832/workspaces?apiLink=container"
+    },
+    "builtInVariable": [
+      {
+        "accountId": "6052996338",
+        "containerId": "90919832",
+        "type": "APP_ID",
+        "name": "App ID"
+      },
+      {
+        "accountId": "6052996338",
+        "containerId": "90919832",
+        "type": "APP_NAME",
+        "name": "App Name"
+      },
+      {
+        "accountId": "6052996338",
+        "containerId": "90919832",
+        "type": "APP_VERSION_CODE",
+        "name": "App Version Code"
+      },
+      {
+        "accountId": "6052996338",
+        "containerId": "90919832",
+        "type": "APP_VERSION_NAME",
+        "name": "App Version Name"
+      },
+      {
+        "accountId": "6052996338",
+        "containerId": "90919832",
+        "type": "EVENT_NAME",
+        "name": "Event Name"
+      }
+    ],
+    "fingerprint": "1659680343747",
+    "tagManagerUrl": "https://tagmanager.google.com/#/versions/accounts/6052996338/containers/90919832/versions/1?apiLink=version"
+  }
+}
