@@ -22,7 +22,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import java.util.ArrayList
 
 class InnerFragmentBestDetailBar(
     private val platform: String,
@@ -177,9 +176,9 @@ class InnerFragmentBestDetailBar(
                 with(binding) {
                     val entryList: ArrayList<BarEntry> = ArrayList()
 
-                    val groupVal1 = ((group?.info1 ?: 0) / itemCount).toFloat()
-                    val groupVal2 = ((group?.info2 ?: 0) / itemCount).toFloat()
-                    val groupVal3 = ((group?.info3 ?: 0) / itemCount).toFloat()
+                    val groupVal1 = ((group?.info1?.toInt() ?: 0) / itemCount).toFloat()
+                    val groupVal2 = ((group?.info2?.toInt() ?: 0) / itemCount).toFloat()
+                    val groupVal3 = ((group?.info3?.toInt() ?: 0) / itemCount).toFloat()
 //                    var groupVal4 = ((group?.info4 ?: 0) / itemCount).toFloat()
 
                     val currentVal1 = BookItem[BookItem.size - 1].info1.toFloat()

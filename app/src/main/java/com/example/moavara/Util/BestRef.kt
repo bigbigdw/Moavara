@@ -260,6 +260,14 @@ object BestRef {
         )
     }
 
+    fun decimalToString(num : Int) : String {
+        return if(num < 10000){
+            "$num"
+        } else {
+            ("${(num / 1000).toFloat() / 10}만").replace(".0","")
+        }
+    }
+
     fun setDetailText(platform : String, type : Int): String {
         if(platform == "Joara" || platform == "Joara_Nobless" || platform == "Joara_Premium"){
             if(type == 1){

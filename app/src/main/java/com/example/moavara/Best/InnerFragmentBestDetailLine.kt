@@ -11,7 +11,6 @@ import com.example.moavara.Search.BestLineChart
 import com.example.moavara.databinding.FragmentBestDetailLineBinding
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
-import java.util.ArrayList
 
 class InnerFragmentBestDetailLine(
     private val platform: String,
@@ -49,11 +48,15 @@ class InnerFragmentBestDetailLine(
                 entryList.add(BarEntry(i.toFloat(), BookItem[i].info1.replace("조회 수 : ", "").toFloat()))
                 entryList2.add(BarEntry(i.toFloat(), BookItem[i].info2.replace("선호작 수 : ", "").toFloat()))
                 entryList3.add(BarEntry(i.toFloat(), BookItem[i].info3.replace("추천 수 : ", "").toFloat()))
+                //TODO:
+//                entryList4.add(BarEntry(i.toFloat(), BookItem[i].info3.replace("댓글 수 : ", "").toFloat()))
             }
 
             items.add(BestLineChart(dateList, entryList, "조회 수", "#20459e"))
             items.add(BestLineChart(dateList, entryList2, "선호작 수", "#20459e"))
             items.add(BestLineChart(dateList, entryList3, "추천 수", "#20459e"))
+            //TODO:
+//            items.add(BestLineChart(dateList, entryList4, "댓글 수", "#20459e"))
             adapterChart?.notifyDataSetChanged()
         } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver") {
             for (i in BookItem.indices) {

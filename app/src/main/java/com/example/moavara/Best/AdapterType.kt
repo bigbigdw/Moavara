@@ -5,15 +5,12 @@ import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moavara.R
 import com.example.moavara.Search.BestType
 import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.ItemBestTypeBinding
-import com.example.moavara.databinding.ItemBooklistBestTodayBinding
 
 class AdapterType(private var holder: List<BestType>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -90,13 +87,13 @@ class AdapterType(private var holder: List<BestType>) :
                 }
 
                 if(getSelectedBtn() == position){
-                    tveiwTitle.setTextColor(Color.parseColor("#0D0E10"));
+                    tveiwTitle.setTextColor(Color.parseColor("#EDE6FD"));
 
                     llayoutWrap.background = GradientDrawable().apply {
-                        setColor(Color.parseColor("#EDE6FD"))
+                        setColor(Color.parseColor("#621CEF"))
                         shape = GradientDrawable.RECTANGLE
                         cornerRadius = 100f.dpToPx()
-                        setStroke(1f.dpToPx().toInt(), Color.parseColor("#FFDADADA"))
+                        setStroke(1f.dpToPx().toInt(), Color.parseColor("#621CEF"))
                     }
                 } else {
                     tveiwTitle.setTextColor(Color.parseColor("#EDE6FD"));

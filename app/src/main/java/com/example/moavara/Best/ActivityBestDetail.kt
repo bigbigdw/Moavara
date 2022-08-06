@@ -1,7 +1,6 @@
 package com.example.moavara.Best
 
 import android.content.Intent
-import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
@@ -13,19 +12,19 @@ import android.view.WindowManager
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.commit
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.BookListDataBestAnalyze
 import com.example.moavara.DataBase.BookListDataBestToday
 import com.example.moavara.R
 import com.example.moavara.Retrofit.*
+import com.example.moavara.Search.BestType
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.Genre
 import com.example.moavara.Util.Param
 import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.ActivityBestDetailBinding
-import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -48,6 +47,10 @@ class ActivityBestDetail : AppCompatActivity() {
     private lateinit var mFragmentBestDetailAnalyze: FragmentBestDetailAnalyze
     private lateinit var mFragmentBestDetailBooks: FragmentBestDetailBooks
     private lateinit var mFragmentBestDetailComment: FragmentBestDetailComment
+
+    private lateinit var adapterType: AdapterKeyword
+    private val typeItems = ArrayList<BestType>()
+
     val data = ArrayList<BookListDataBestAnalyze>()
     val lp = LinearLayout.LayoutParams(
         ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -143,27 +146,6 @@ class ActivityBestDetail : AppCompatActivity() {
 
                 override fun onCancelled(databaseError: DatabaseError) {}
             })
-    }
-
-    private fun getUrl(bookCode: String): String {
-
-        return if (platform == "MrBlue") {
-            "https://www.mrblue.com/novel/${bookCode}"
-        } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver" || platform == "Ridi") {
-            bookCode
-        } else if (platform == "Kakao_Stage") {
-            "https://pagestage.kakao.com/novels/${bookCode}"
-        } else if (platform == "Kakao") {
-            "https://page.kakao.com/home?seriesId=${bookCode}"
-        } else if (platform == "OneStore") {
-            "https://onestory.co.kr/detail/${bookCode}"
-        } else if (platform == "Joara" || platform == "Joara_Premium" || platform == "Joara_Nobless") {
-            "https://www.joara.com/book/${bookCode}"
-        } else if (platform == "Munpia") {
-            "https://novel.munpia.com/${bookCode}"
-        } else if (platform == "Toksoda") {
-            "https://www.tocsoda.co.kr/product/productView?brcd=${bookCode}"
-        } else ""
     }
 
     fun setLayout() {
@@ -272,31 +254,40 @@ class ActivityBestDetail : AppCompatActivity() {
                             bookTitle = data.book.subject
                             chapter = data.book.chapter
 
+                            tviewToolbar.text = data.book.subject
+
                             inclueBestDetail.tviewTitle.text = bookTitle
                             inclueBestDetail.tviewWriter.text = data.book.writerName
-
                             inclueBestDetail.tviewInfo.text = "총 ${data.book.cntChapter}화"
-                            inclueBestDetail.tviewInfo2.text = data.book.cntFavorite
-                            inclueBestDetail.tviewInfo3.text = data.book.cntPageRead
-                            inclueBestDetail.tviewInfo4.text = data.book.cntRecom
+
+                            inclueBestDetail.tviewInfo1.text =
+                                BestRef.decimalToString(data.book.cntPageRead.toInt())
+                            inclueBestDetail.iviewInfo1.setImageResource(R.drawable.ic_hits_wt_24px)
+                            inclueBestDetail.tviewInfo2.text =
+                                BestRef.decimalToString(data.book.cntFavorite.toInt())
+                            inclueBestDetail.iviewInfo2.setImageResource(R.drawable.ic_favorites_wt_24px)
+                            inclueBestDetail.tviewInfo3.text = BestRef.decimalToString(data.book.cntRecom.toInt())
+                            inclueBestDetail.iviewInfo3.setImageResource(R.drawable.ic_recommend_wt_24px)
+                            inclueBestDetail.tviewInfo4.text = BestRef.decimalToString(data.book.cntTotalComment.toInt())
 
                             tviewIntro.text = data.book.intro
 
+                            adapterType = AdapterKeyword(typeItems)
 
+                            with(binding) {
+                                rviewType.layoutManager =
+                                    LinearLayoutManager(
+                                        this@ActivityBestDetail,
+                                        LinearLayoutManager.HORIZONTAL,
+                                        false
+                                    )
+                                rviewType.adapter = adapterType
+                            }
 
                             for (item in data.book.keyword) {
-                                val chip = Chip(this@ActivityBestDetail)
-                                chip.text = "#${item}"
-                                chip.chipBackgroundColor = ColorStateList.valueOf(
-                                    ContextCompat.getColor(
-                                        this@ActivityBestDetail,
-                                        R.color.chip
-                                    )
-                                )
-                                chip.setTextColor(Color.parseColor("#EDE6FD"))
-                                chip.layoutParams = lp
-                                chipgroup.addView(chip)
+                                typeItems.add(BestType("#${item}", ""))
                             }
+                            adapterType.notifyDataSetChanged()
 
                         }
                     }
@@ -312,8 +303,9 @@ class ActivityBestDetail : AppCompatActivity() {
             })
     }
 
-    fun setLayoutNaverToday() {
+    private fun setLayoutNaverToday() {
         Thread {
+
             val doc: Document =
                 Jsoup.connect("https://novel.naver.com/webnovel/list?novelId=${bookCode}").post()
 
@@ -322,19 +314,12 @@ class ActivityBestDetail : AppCompatActivity() {
                     binding.loading.root.visibility = View.GONE
                     binding.coorWrap.visibility = View.VISIBLE
                     window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-                    chipgroup.visibility = View.GONE
 
                     Glide.with(this@ActivityBestDetail)
                         .load(doc.select(".section_area_info .pic img").attr("src"))
                         .into(inclueBestDetail.iviewBookCover)
 
-                    if (platform == "Naver_Challenge" || platform == "Naver") {
-                        inclueBestDetail.llayoutTab4.visibility = View.GONE
-                        inclueBestDetail.viewTab4.visibility = View.GONE
-                    } else {
-                        inclueBestDetail.llayoutTab4.visibility = View.VISIBLE
-                        inclueBestDetail.viewTab4.visibility = View.VISIBLE
-                    }
+
 
                     bookTitle = doc.select(".book_title").text()
                     inclueBestDetail.tviewTitle.text = bookTitle
@@ -343,9 +328,16 @@ class ActivityBestDetail : AppCompatActivity() {
                     inclueBestDetail.tviewInfo.text =
                         "장르 : ${doc.select(".info_book .genre").text()}"
 
-                    inclueBestDetail.tviewInfo2.text = doc.select(".info_book .like").text()
-                    inclueBestDetail.tviewInfo3.text = doc.select(".info_book .download").text()
-                    inclueBestDetail.tviewInfo4.text = doc.select(".info_book .publish").text()
+                    inclueBestDetail.iviewInfo1.setImageResource(R.drawable.ic_favorites_wt_24px)
+                    inclueBestDetail.tviewInfo1.text = doc.select(".info_book .like").text().replace("관심", "").replace("명", "")
+
+                    inclueBestDetail.tviewInfo2.text = doc.select(".grade_area em").text()
+                    inclueBestDetail.iviewInfo2.setImageResource(R.drawable.ic_recommend_wt_24px)
+
+                    inclueBestDetail.tviewInfo3.text = doc.select(".info_book .download").text().replace("다운로드", "")
+
+                    inclueBestDetail.llayoutTab4.visibility = View.GONE
+                    inclueBestDetail.viewTab4.visibility = View.GONE
 
                     tviewIntro.text = doc.select(".section_area_info .dsc").text()
                 }
@@ -394,19 +386,22 @@ class ActivityBestDetail : AppCompatActivity() {
 
                         val keyword = data.related_keytalk_list
 
-                        for (item in keyword) {
-                            val chip = Chip(this@ActivityBestDetail)
-                            chip.text = "#${item.item_name}"
-                            chip.chipBackgroundColor = ColorStateList.valueOf(
-                                ContextCompat.getColor(
+                        adapterType = AdapterKeyword(typeItems)
+
+                        with(binding) {
+                            rviewType.layoutManager =
+                                LinearLayoutManager(
                                     this@ActivityBestDetail,
-                                    R.color.chip
+                                    LinearLayoutManager.HORIZONTAL,
+                                    false
                                 )
-                            )
-                            chip.setTextColor(Color.parseColor("#EDE6FD"))
-                            chip.layoutParams = lp
-                            chipgroup.addView(chip)
+                            rviewType.adapter = adapterType
                         }
+
+                        for (item in keyword) {
+                            typeItems.add(BestType("#${item}", ""))
+                        }
+                        adapterType.notifyDataSetChanged()
                     }
                 }
             })
@@ -420,8 +415,6 @@ class ActivityBestDetail : AppCompatActivity() {
 
     private fun setLayoutKaKaoStage() {
         val apiKakaoStage = RetrofitKaKao()
-
-        binding.chipgroup.visibility = View.GONE
 
         apiKakaoStage.getBestKakaoStageDetail(
             bookCode,
@@ -470,7 +463,6 @@ class ActivityBestDetail : AppCompatActivity() {
             }"
 
             runOnUiThread {
-                binding.chipgroup.visibility = View.GONE
                 binding.llayoutIntro.visibility = View.GONE
 
                 binding.loading.root.visibility = View.GONE
@@ -547,22 +539,24 @@ class ActivityBestDetail : AppCompatActivity() {
                                 val keyword = it.tagList
 
                                 if (keyword != null) {
-                                    for (item in keyword) {
-                                        val chip = Chip(this@ActivityBestDetail)
-                                        chip.text = "#${item.tagNm}"
-                                        chip.chipBackgroundColor = ColorStateList.valueOf(
-                                            ContextCompat.getColor(
+
+                                    adapterType = AdapterKeyword(typeItems)
+
+                                    with(binding) {
+                                        rviewType.layoutManager =
+                                            LinearLayoutManager(
                                                 this@ActivityBestDetail,
-                                                R.color.chip
+                                                LinearLayoutManager.HORIZONTAL,
+                                                false
                                             )
-                                        )
-                                        chip.setTextColor(Color.parseColor("#EDE6FD"))
-                                        chip.layoutParams = lp
-                                        chipgroup.addView(chip)
+                                        rviewType.adapter = adapterType
                                     }
+
+                                    for (item in keyword) {
+                                        typeItems.add(BestType("#${item}", ""))
+                                    }
+                                    adapterType.notifyDataSetChanged()
                                 }
-                            } else {
-                                binding.chipgroup.visibility = View.GONE
                             }
                         }
                     }
@@ -582,7 +576,6 @@ class ActivityBestDetail : AppCompatActivity() {
 
             runOnUiThread {
                 with(binding) {
-                    binding.chipgroup.visibility = View.GONE
                     binding.loading.root.visibility = View.GONE
                     binding.coorWrap.visibility = View.VISIBLE
                     window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
@@ -654,19 +647,22 @@ class ActivityBestDetail : AppCompatActivity() {
                             val keyword = it.hashTagList
 
                             if (keyword != null) {
-                                for (item in keyword) {
-                                    val chip = Chip(this@ActivityBestDetail)
-                                    chip.text = "#${item.hashtagNm}"
-                                    chip.chipBackgroundColor = ColorStateList.valueOf(
-                                        ContextCompat.getColor(
+                                adapterType = AdapterKeyword(typeItems)
+
+                                with(binding) {
+                                    rviewType.layoutManager =
+                                        LinearLayoutManager(
                                             this@ActivityBestDetail,
-                                            R.color.chip
+                                            LinearLayoutManager.HORIZONTAL,
+                                            false
                                         )
-                                    )
-                                    chip.setTextColor(Color.parseColor("#EDE6FD"))
-                                    chip.layoutParams = lp
-                                    chipgroup.addView(chip)
+                                    rviewType.adapter = adapterType
                                 }
+
+                                for (item in keyword) {
+                                    typeItems.add(BestType("#${item}", ""))
+                                }
+                                adapterType.notifyDataSetChanged()
                             }
                         }
                     }
@@ -678,6 +674,27 @@ class ActivityBestDetail : AppCompatActivity() {
         supportFragmentManager.commit {
             replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
         }
+    }
+
+    private fun getUrl(bookCode: String): String {
+
+        return if (platform == "MrBlue") {
+            "https://www.mrblue.com/novel/${bookCode}"
+        } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver" || platform == "Ridi") {
+            bookCode
+        } else if (platform == "Kakao_Stage") {
+            "https://pagestage.kakao.com/novels/${bookCode}"
+        } else if (platform == "Kakao") {
+            "https://page.kakao.com/home?seriesId=${bookCode}"
+        } else if (platform == "OneStore") {
+            "https://onestory.co.kr/detail/${bookCode}"
+        } else if (platform == "Joara" || platform == "Joara_Premium" || platform == "Joara_Nobless") {
+            "https://www.joara.com/book/${bookCode}"
+        } else if (platform == "Munpia") {
+            "https://novel.munpia.com/${bookCode}"
+        } else if (platform == "Toksoda") {
+            "https://www.tocsoda.co.kr/product/productView?brcd=${bookCode}"
+        } else ""
     }
 
 

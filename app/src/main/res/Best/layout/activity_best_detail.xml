@@ -3,6 +3,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#1E1E20"
@@ -78,23 +79,18 @@
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/pretendardvariable"
                                             android:text="@string/Best_BottomDialogBtn"
-                                            android:textColor="#FFFFFF"
+                                            android:textColor="#EDE6FD"
                                             android:textSize="20dp"
                                             tools:ignore="TextContrastCheck" />
                                     </LinearLayout>
                                 </LinearLayout>
 
-                                <com.google.android.material.chip.ChipGroup
-                                    android:id="@+id/chipgroup"
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/rviewType"
                                     android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginBottom="16dp"
-                                    android:orientation="horizontal"
-                                    android:padding="16dp"
-                                    android:paddingHorizontal="16dp"
-                                    android:paddingVertical="8dp">
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="16dp" />
 
-                                </com.google.android.material.chip.ChipGroup>
 
                                 <LinearLayout
                                     android:id="@+id/llayoutIntro"
@@ -106,7 +102,6 @@
                                     android:paddingTop="16dp"
                                     android:paddingEnd="16dp"
                                     android:paddingBottom="24dp">
-
                                     <TextView
                                         android:id="@+id/tviewIntro"
                                         android:layout_width="match_parent"
@@ -133,21 +128,16 @@
 
                     </androidx.appcompat.widget.Toolbar>
 
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/tviewToolbar"
                         android:layout_width="match_parent"
                         android:layout_height="55dp"
-                        android:gravity="left|center_vertical"
-                        android:orientation="vertical"
-                        app:layout_collapseMode="pin">
-
-                        <ImageView
-                            android:id="@+id/HomeImg"
-                            android:layout_width="110dp"
-                            android:layout_height="22dp"
-                            android:layout_marginLeft="48dp"
-                            android:contentDescription="@string/TODO"
-                            android:src="@drawable/moabara_logo" />
-                    </LinearLayout>
+                        android:gravity="center"
+                        android:text="작품명"
+                        android:textColor="#EDE6FD"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_collapseMode="pin" />
 
 
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -166,7 +156,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:background="#0D0E10"
-                    app:tabTextAppearance="@style/tab_text"
                     app:itemBackground="@android:color/transparent"
                     app:itemIconTint="#00d180"
                     app:itemTextColor="#0df0df"
@@ -174,6 +163,7 @@
                     app:tabIndicatorColor="#844DF3"
                     app:tabMode="fixed"
                     app:tabSelectedTextColor="#844DF3"
+                    app:tabTextAppearance="@style/tab_text"
                     app:tabTextColor="#565C69">
 
                 </com.google.android.material.tabs.TabLayout>
