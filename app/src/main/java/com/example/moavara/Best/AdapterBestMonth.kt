@@ -2,7 +2,6 @@ package com.example.moavara.Best
 
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,17 +10,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.Search.BookListDataBestMonthNum
-import com.example.moavara.Search.BookListDataBestWeekendOld
+import com.example.moavara.Search.BookListDataBestWeekend
 import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.DBDate.getMonthDates
 import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.ItemBooklistBestMonthBinding
 
 class AdapterBestMonth(
-    items: ArrayList<BookListDataBestWeekendOld>,
+    items: ArrayList<BookListDataBestWeekend>,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var item: ArrayList<BookListDataBestWeekendOld> = items
+    var item: ArrayList<BookListDataBestWeekend> = items
     var selected: String? = ""
     var monthDate = "${DBDate.Year()}0${DBDate.Month().toInt() + 1}01"
     var monthNum = BookListDataBestMonthNum()
@@ -38,7 +37,8 @@ class AdapterBestMonth(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = ItemBooklistBestMonthBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val view =
+            ItemBooklistBestMonthBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return HolderBestWeekend(view)
     }
 
@@ -47,19 +47,23 @@ class AdapterBestMonth(
 
             val items = item[position]
 
-            if(monthCount == 0){
-                monthDate = "${DBDate.Year()}0${DBDate.Month().toInt() + 1}01"
-            } else if(monthCount == 1){
-                monthDate = "${DBDate.Year()}0${DBDate.Month().toInt()}01"
-            } else if(monthCount == 2){
-                monthDate = "${DBDate.Year()}0${DBDate.Month().toInt() - 1}01"
+            when (monthCount) {
+                0 -> {
+                    monthDate = "${DBDate.Year()}0${DBDate.Month().toInt() + 1}01"
+                }
+                1 -> {
+                    monthDate = "${DBDate.Year()}0${DBDate.Month().toInt()}01"
+                }
+                2 -> {
+                    monthDate = "${DBDate.Year()}0${DBDate.Month().toInt() - 1}01"
+                }
             }
 
             val date = DBDate.getDateData(monthDate)
 
             val today = DBDate.getDateData(DBDate.DateMMDD())
 
-            with(holder.binding){
+            with(holder.binding) {
 
                 monthNum = DBDate.setMonthNum(date?.date ?: 0)
 
@@ -72,43 +76,43 @@ class AdapterBestMonth(
                 tviewDate6.text = dateNum.fri.toString()
                 tviewDate7.text = dateNum.sat.toString()
 
-                if(tviewDate1.text == "0"){
+                if (tviewDate1.text == "0") {
                     tviewDate1.visibility = View.INVISIBLE
                 } else {
                     tviewDate1.visibility = View.VISIBLE
                 }
 
-                if(tviewDate2.text == "0"){
+                if (tviewDate2.text == "0") {
                     tviewDate2.visibility = View.INVISIBLE
                 } else {
                     tviewDate2.visibility = View.VISIBLE
                 }
 
-                if(tviewDate3.text == "0"){
+                if (tviewDate3.text == "0") {
                     tviewDate3.visibility = View.INVISIBLE
                 } else {
                     tviewDate3.visibility = View.VISIBLE
                 }
 
-                if(tviewDate4.text == "0"){
+                if (tviewDate4.text == "0") {
                     tviewDate4.visibility = View.INVISIBLE
                 } else {
                     tviewDate4.visibility = View.VISIBLE
                 }
 
-                if(tviewDate5.text == "0"){
+                if (tviewDate5.text == "0") {
                     tviewDate5.visibility = View.INVISIBLE
                 } else {
                     tviewDate5.visibility = View.VISIBLE
                 }
 
-                if(tviewDate6.text == "0"){
+                if (tviewDate6.text == "0") {
                     tviewDate6.visibility = View.INVISIBLE
                 } else {
                     tviewDate6.visibility = View.VISIBLE
                 }
 
-                if(tviewDate7.text == "0"){
+                if (tviewDate7.text == "0") {
                     tviewDate7.visibility = View.INVISIBLE
                 } else {
                     tviewDate7.visibility = View.VISIBLE
@@ -121,7 +125,7 @@ class AdapterBestMonth(
                     isSelectBook(items.sun, llayoutCover1)
                     iviewBookImg1.visibility = View.VISIBLE
 
-                    if(((today?.week ?: 0) - 1) == position && today?.date == 1){
+                    if (((today?.week ?: 0) - 1) == position && today?.date == 1) {
                         llayoutWrap1.background = todayMark()
                     } else {
                         llayoutWrap1.background = null
@@ -139,7 +143,7 @@ class AdapterBestMonth(
                     isSelectBook(items.mon, llayoutCover2)
                     iviewBookImg2.visibility = View.VISIBLE
 
-                    if(((today?.week ?: 0) - 1) == position && today?.date == 2 && monthCount == 0){
+                    if (((today?.week?: 0) - 1) == position && today?.date == 2 && monthCount == 0) {
                         llayoutWrap2.background = todayMark()
                     } else {
                         llayoutWrap2.background = null
@@ -156,7 +160,7 @@ class AdapterBestMonth(
                     isSelectBook(items.tue, llayoutCover3)
                     iviewBookImg3.visibility = View.VISIBLE
 
-                    if(((today?.week ?: 0) - 1) == position && today?.date == 3 && monthCount == 0){
+                    if (((today?.week?: 0) - 1) == position && today?.date == 3 && monthCount == 0) {
                         llayoutWrap3.background = todayMark()
                     } else {
                         llayoutWrap3.background = null
@@ -173,7 +177,7 @@ class AdapterBestMonth(
                     isSelectBook(items.wed, llayoutCover4)
                     iviewBookImg4.visibility = View.VISIBLE
 
-                    if(((today?.week ?: 0) - 1) == position && today?.date == 4 && monthCount == 0){
+                    if (((today?.week?: 0) - 1) == position && today?.date == 4 && monthCount == 0) {
                         llayoutWrap4.background = todayMark()
                     } else {
                         llayoutWrap4.background = null
@@ -190,7 +194,7 @@ class AdapterBestMonth(
                     isSelectBook(items.thur, llayoutCover5)
                     iviewBookImg5.visibility = View.VISIBLE
 
-                    if(((today?.week ?: 0) - 1) == position && today?.date == 5 && monthCount == 0){
+                    if (((today?.week?: 0) - 1) == position && today?.date == 5 && monthCount == 0) {
                         llayoutWrap5.background = todayMark()
                     } else {
                         llayoutWrap5.background = null
@@ -207,7 +211,7 @@ class AdapterBestMonth(
                     isSelectBook(items.fri, llayoutCover6)
                     iviewBookImg6.visibility = View.VISIBLE
 
-                    if(((today?.week ?: 0) - 1) == position && today?.date == 6 && monthCount == 0){
+                    if (((today?.week?: 0) - 1) == position && today?.date == 6 && monthCount == 0) {
                         llayoutWrap6.background = todayMark()
                     } else {
                         llayoutWrap6.background = null
@@ -224,7 +228,7 @@ class AdapterBestMonth(
                     isSelectBook(items.sat, llayoutCover7)
                     iviewBookImg7.visibility = View.VISIBLE
 
-                    if(((today?.week ?: 0) - 1) == position && today?.date == 7 && monthCount == 0){
+                    if (((today?.week?: 0) - 1) == position && today?.date == 7 && monthCount == 0) {
                         llayoutWrap7.background = todayMark()
                     } else {
                         llayoutWrap7.background = null
@@ -236,7 +240,7 @@ class AdapterBestMonth(
         }
     }
 
-    fun todayMark() :  GradientDrawable{
+    private fun todayMark(): GradientDrawable {
         return GradientDrawable().apply {
             setColor(Color.parseColor("#0D0E10"))
             shape = GradientDrawable.RECTANGLE
@@ -245,12 +249,12 @@ class AdapterBestMonth(
         }
     }
 
-    fun setMonthDate(count : Int){
+    fun setMonthDate(count: Int) {
         monthCount = count
         notifyDataSetChanged()
     }
 
-    private fun isSelectBook(items : BookListDataBest?, llayout : LinearLayout){
+    private fun isSelectBook(items: BookListDataBest?, llayout: LinearLayout) {
         if (selected != "" && getSelectedBook() != items?.bookCode) {
             llayout.visibility = View.VISIBLE
         } else {
@@ -267,7 +271,7 @@ class AdapterBestMonth(
 
         init {
 
-            with(binding){
+            with(binding) {
                 cviewWrap1.setOnClickListener { v: View? ->
                     val pos = adapterPosition
                     if (pos != RecyclerView.NO_POSITION) {
@@ -321,7 +325,7 @@ class AdapterBestMonth(
 
     }
 
-    fun getItem(position: Int): BookListDataBestWeekendOld? {
+    fun getItem(position: Int): BookListDataBestWeekend? {
         return item[position]
     }
 

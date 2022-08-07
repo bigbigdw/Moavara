@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moavara.Best.BottomDialogBest
 import com.example.moavara.DataBase.BookListDataBest
-import com.example.moavara.Search.BookListDataBestWeekendOld
+import com.example.moavara.Search.BookListDataBestWeekend
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.BestRef.getItem
 import com.example.moavara.Util.BestRef.putItem
@@ -32,7 +32,7 @@ import java.io.*
 class FragmentBestTabWeekendOld(private val tabType: String) : Fragment() {
 
     private var adapterWeek: AdapterBestWeekendOld? = null
-    private val itemWeek = ArrayList<BookListDataBestWeekendOld>()
+    private val itemWeek = ArrayList<BookListDataBestWeekend>()
 
     lateinit var root: View
     var genre = ""
@@ -63,7 +63,7 @@ class FragmentBestTabWeekendOld(private val tabType: String) : Fragment() {
 
         adapterWeek?.setOnItemClickListener(object : AdapterBestWeekendOld.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int, value: String?) {
-                val item: BookListDataBestWeekendOld? = adapterWeek?.getItem(position)
+                val item: BookListDataBestWeekend? = adapterWeek?.getItem(position)
 
                 when {
                     value.equals("sun") -> {
@@ -194,7 +194,7 @@ class FragmentBestTabWeekendOld(private val tabType: String) : Fragment() {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                     for (num in 0..9) {
-                        val weekItem = BookListDataBestWeekendOld()
+                        val weekItem = BookListDataBestWeekend()
                         val jsonArray = JSONArray()
 
                         for (day in 1..7) {
@@ -276,7 +276,7 @@ class FragmentBestTabWeekendOld(private val tabType: String) : Fragment() {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                     for (num in 0..9) {
-                        val weekItem = BookListDataBestWeekendOld()
+                        val weekItem = BookListDataBestWeekend()
 
                         for (day in 1..7) {
 
@@ -391,7 +391,7 @@ class FragmentBestTabWeekendOld(private val tabType: String) : Fragment() {
             val jsonObject = JSONObject(jsonData)
 
             for (num in 0..9) {
-                val weekItem = BookListDataBestWeekendOld()
+                val weekItem = BookListDataBestWeekend()
 
                 for (day in 0..6) {
                     val item = jsonObject.getJSONArray(num.toString()).getJSONObject(day)

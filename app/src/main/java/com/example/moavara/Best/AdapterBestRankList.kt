@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moavara.R
 import com.example.moavara.Search.BestRankListWeekend
+import com.example.moavara.Search.BookListDataBestMonthNum
 import com.example.moavara.Util.DBDate
 import com.example.moavara.databinding.ItemBestRanklistBinding
 
@@ -14,7 +15,9 @@ class AdapterBestRankList(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var item: ArrayList<BestRankListWeekend> = items
-    var itemMode = 1
+    var monthDate = "${DBDate.Year()}0${DBDate.Month().toInt() + 1}01"
+    var monthNum = BookListDataBestMonthNum()
+    var monthCount = 0
 
     interface OnItemClickListener {
         fun onItemClick(v: View?, position: Int, value: String?)
@@ -36,9 +39,76 @@ class AdapterBestRankList(
 
             val items = item[position]
 
+            when (monthCount) {
+                0 -> {
+                    monthDate = "${DBDate.Year()}0${DBDate.Month().toInt() + 1}01"
+                }
+                1 -> {
+                    monthDate = "${DBDate.Year()}0${DBDate.Month().toInt()}01"
+                }
+                2 -> {
+                    monthDate = "${DBDate.Year()}0${DBDate.Month().toInt() - 1}01"
+                }
+            }
+
+            val date = DBDate.getDateData(monthDate)
+
             with(holder.binding){
+
+                monthNum = DBDate.setMonthNum(date?.date ?: 0)
+
+                val dateNum = DBDate.getMonthDates(date?.month ?: 0, monthNum, position)
+                tviewDate1.text = dateNum.sun.toString()
+                tviewDate2.text = dateNum.mon.toString()
+                tviewDate3.text = dateNum.tue.toString()
+                tviewDate4.text = dateNum.wed.toString()
+                tviewDate5.text = dateNum.thur.toString()
+                tviewDate6.text = dateNum.fri.toString()
+                tviewDate7.text = dateNum.sat.toString()
+
+                if (tviewDate1.text == "0") {
+                    tviewDate1.visibility = View.INVISIBLE
+                } else {
+                    tviewDate1.visibility = View.VISIBLE
+                }
+
+                if (tviewDate2.text == "0") {
+                    tviewDate2.visibility = View.INVISIBLE
+                } else {
+                    tviewDate2.visibility = View.VISIBLE
+                }
+
+                if (tviewDate3.text == "0") {
+                    tviewDate3.visibility = View.INVISIBLE
+                } else {
+                    tviewDate3.visibility = View.VISIBLE
+                }
+
+                if (tviewDate4.text == "0") {
+                    tviewDate4.visibility = View.INVISIBLE
+                } else {
+                    tviewDate4.visibility = View.VISIBLE
+                }
+
+                if (tviewDate5.text == "0") {
+                    tviewDate5.visibility = View.INVISIBLE
+                } else {
+                    tviewDate5.visibility = View.VISIBLE
+                }
+
+                if (tviewDate6.text == "0") {
+                    tviewDate6.visibility = View.INVISIBLE
+                } else {
+                    tviewDate6.visibility = View.VISIBLE
+                }
+
+                if (tviewDate7.text == "0") {
+                    tviewDate7.visibility = View.INVISIBLE
+                } else {
+                    tviewDate7.visibility = View.VISIBLE
+                }
+
                 if (items.sun != null) {
-                    tviewDate1.text = items.sun?.date?.substring(4)
                     if (items.sun?.date == DBDate.DateMMDD()) {
                         iviewBookImg1.setImageResource(R.drawable.ic_best_gn_24px)
                     } else {
@@ -52,7 +122,6 @@ class AdapterBestRankList(
                 }
 
                 if (items.mon != null) {
-                    tviewDate2.text = items.mon?.date?.substring(4)
                     if (items.mon?.date == DBDate.DateMMDD()) {
                         iviewBookImg2.setImageResource(R.drawable.ic_best_gn_24px)
                     } else {
@@ -66,7 +135,6 @@ class AdapterBestRankList(
                 }
 
                 if (items.tue != null) {
-                    tviewDate3.text = items.tue?.date?.substring(4)
                     if (items.tue?.date == DBDate.DateMMDD()) {
                         iviewBookImg3.setImageResource(R.drawable.ic_best_gn_24px)
                     } else {
@@ -80,7 +148,6 @@ class AdapterBestRankList(
                 }
 
                 if (items.wed != null) {
-                    tviewDate4.text = items.wed?.date?.substring(4)
                     if (items.wed?.date == DBDate.DateMMDD()) {
                         iviewBookImg4.setImageResource(R.drawable.ic_best_gn_24px)
                     } else {
@@ -94,7 +161,6 @@ class AdapterBestRankList(
                 }
 
                 if (items.thur != null) {
-                    tviewDate5.text = items.thur?.date?.substring(4)
                     if (items.thur?.date == DBDate.DateMMDD()) {
                         iviewBookImg5.setImageResource(R.drawable.ic_best_gn_24px)
                     } else {
@@ -108,7 +174,6 @@ class AdapterBestRankList(
                 }
 
                 if (items.fri != null) {
-                    tviewDate6.text = items.fri?.date?.substring(4)
                     if (items.fri?.date == DBDate.DateMMDD()) {
                         iviewBookImg6.setImageResource(R.drawable.ic_best_gn_24px)
                     } else {
@@ -122,7 +187,6 @@ class AdapterBestRankList(
                 }
 
                 if (items.sat != null) {
-                    tviewDate7.text = items.sat?.date?.substring(4)
                     if (items.sat?.date == DBDate.DateMMDD()) {
                         iviewBookImg7.setImageResource(R.drawable.ic_best_gn_24px)
                     } else {
@@ -136,6 +200,11 @@ class AdapterBestRankList(
                 }
             }
         }
+    }
+
+    fun setMonthDate(count: Int) {
+        monthCount = count
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {

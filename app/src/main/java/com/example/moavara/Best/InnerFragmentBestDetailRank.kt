@@ -20,50 +20,12 @@ class InnerFragmentBestDetailRank(
 
     private lateinit var adapterMonth: AdapterBestRankList
     private val itemMonth = ArrayList<BestRankListWeekend>()
-    val itemMonthList11 = BestRankListWeekend()
-    val itemMonthList12 = BestRankListWeekend()
-    val itemMonthList13 = BestRankListWeekend()
-    val itemMonthList14 = BestRankListWeekend()
-    val itemMonthList15 = BestRankListWeekend()
-    val itemMonthList16 = BestRankListWeekend()
+    var currentMonth = DBDate.Month().toInt() + 1
+    private var monthCount = 0
 
-    val itemMonthList21 = BestRankListWeekend()
-    val itemMonthList22 = BestRankListWeekend()
-    val itemMonthList23 = BestRankListWeekend()
-    val itemMonthList24 = BestRankListWeekend()
-    val itemMonthList25 = BestRankListWeekend()
-    val itemMonthList26 = BestRankListWeekend()
-
-    val itemMonthList31 = BestRankListWeekend()
-    val itemMonthList32 = BestRankListWeekend()
-    val itemMonthList33 = BestRankListWeekend()
-    val itemMonthList34 = BestRankListWeekend()
-    val itemMonthList35 = BestRankListWeekend()
-    val itemMonthList36 = BestRankListWeekend()
-
-    var monthBeforeBefore1 = false
-    var monthBeforeBefore2 = false
-    var monthBeforeBefore3 = false
-    var monthBeforeBefore4 = false
-    var monthBeforeBefore5 = false
-    var monthBeforeBefore6 = false
-
-    var monthBefore1 = false
-    var monthBefore2 = false
-    var monthBefore3 = false
-    var monthBefore4 = false
-    var monthBefore5 = false
-    var monthBefore6 = false
-
-    var month1 = false
-    var month2 = false
-    var month3 = false
-    var month4 = false
-    var month5 = false
-    var month6 = false
     private var _binding: FragmentBestDetailRankBinding? = null
     private val binding get() = _binding!!
-
+    private var year = 0
     var status = ""
 
     override fun onCreateView(
@@ -80,12 +42,56 @@ class InnerFragmentBestDetailRank(
 
         getRankList(item)
 
-        getAnalyze()
+        getAnalyze(currentMonth - 1)
+
+        with(binding){
+            year = DBDate.Year().substring(2,4).toInt()
+            llayoutAfter.visibility = View.INVISIBLE
+
+            tviewMonth.text = "${year}년 ${currentMonth}월"
+
+            llayoutBefore.setOnClickListener {
+                monthCount += 1
+
+                if(monthCount == 2){
+                    llayoutBefore.visibility = View.INVISIBLE
+                }  else {
+                    llayoutAfter.visibility = View.VISIBLE
+                }
+
+                tviewMonth.text = "${year}년 ${currentMonth - monthCount}월"
+                adapterMonth.setMonthDate(monthCount)
+                getAnalyze((currentMonth -1) - monthCount)
+            }
+
+            llayoutAfter.setOnClickListener {
+                monthCount -= 1
+
+                if(monthCount == 0){
+                    llayoutAfter.visibility = View.INVISIBLE
+                } else {
+                    llayoutBefore.visibility = View.VISIBLE
+                }
+
+                tviewMonth.text = "${year}년 ${currentMonth - monthCount}월"
+                adapterMonth.setMonthDate(monthCount)
+                getAnalyze((currentMonth) - monthCount)
+            }
+        }
 
         return view
     }
 
-    private fun getAnalyze() {
+    private fun getAnalyze(month: Int) {
+
+        val itemMonthList1 = BestRankListWeekend()
+        val itemMonthList2 = BestRankListWeekend()
+        val itemMonthList3 = BestRankListWeekend()
+        val itemMonthList4 = BestRankListWeekend()
+        val itemMonthList5 = BestRankListWeekend()
+        val itemMonthList6 = BestRankListWeekend()
+
+        itemMonth.clear()
 
         val cmpAsc: Comparator<BookListDataBestAnalyze> =
             Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
@@ -94,125 +100,36 @@ class InnerFragmentBestDetailRank(
         for (itemData in item) {
             val itemDate = DBDate.getDateData(itemData.date)
 
-            if (itemDate?.month == DBDate.Month().toInt()) {
-                if (itemDate.week == 1) {
-                    getItemMonthList(itemDate, itemData, itemMonthList11)
-                    month1= true
-                } else if (itemDate.week == 2) {
-                    getItemMonthList(itemDate, itemData, itemMonthList12)
-                    month2= true
-                } else if (itemDate.week == 3) {
-                    getItemMonthList(itemDate, itemData, itemMonthList13)
-                    month3= true
-                } else if (itemDate.week == 4) {
-                    getItemMonthList(itemDate, itemData, itemMonthList14)
-                    month4= true
-                } else if (itemDate.week == 5) {
-                    getItemMonthList(itemDate, itemData, itemMonthList15)
-                    month5= true
-                }  else if (itemDate.week == 5) {
-                    getItemMonthList(itemDate, itemData, itemMonthList16)
-                    month6= true
-                }
-            } else if (itemDate?.month == DBDate.Month().toInt() - 1) {
-                if (itemDate.week == 1) {
-                    getItemMonthList(itemDate, itemData, itemMonthList21)
-                    monthBefore1 = true
-                } else if (itemDate.week == 2) {
-                    getItemMonthList(itemDate, itemData, itemMonthList22)
-                    monthBefore2 = true
-                } else if (itemDate.week == 3) {
-                    getItemMonthList(itemDate, itemData, itemMonthList23)
-                    monthBefore3 = true
-                } else if (itemDate.week == 4) {
-                    getItemMonthList(itemDate, itemData, itemMonthList24)
-                    monthBefore4 = true
-                } else if (itemDate.week == 5) {
-                    getItemMonthList(itemDate, itemData, itemMonthList25)
-                    monthBefore5 = true
-                } else if (itemDate.week == 6) {
-                    getItemMonthList(itemDate, itemData, itemMonthList26)
-                    monthBefore6 = true
-                }
-            }  else if (itemDate?.month == DBDate.Month().toInt() - 2) {
-                if (itemDate.week == 1) {
-                    getItemMonthList(itemDate, itemData, itemMonthList31)
-                    monthBeforeBefore1 = true
-                } else if (itemDate.week == 2) {
-                    getItemMonthList(itemDate, itemData, itemMonthList32)
-                    monthBeforeBefore2 = true
-                } else if (itemDate.week == 3) {
-                    getItemMonthList(itemDate, itemData, itemMonthList33)
-                    monthBeforeBefore3 = true
-                } else if (itemDate.week == 4) {
-                    getItemMonthList(itemDate, itemData, itemMonthList34)
-                    monthBeforeBefore4 = true
-                } else if (itemDate.week == 5) {
-                    getItemMonthList(itemDate, itemData, itemMonthList35)
-                    monthBeforeBefore5 = true
-                } else if (itemDate.week == 6) {
-                    getItemMonthList(itemDate, itemData, itemMonthList36)
-                    monthBeforeBefore6 = true
+            if (itemDate?.month == month) {
+                when (itemDate.week) {
+                    1 -> {
+                        getItemMonthList(itemDate, itemData, itemMonthList1)
+                    }
+                    2 -> {
+                        getItemMonthList(itemDate, itemData, itemMonthList2)
+                    }
+                    3 -> {
+                        getItemMonthList(itemDate, itemData, itemMonthList3)
+                    }
+                    4 -> {
+                        getItemMonthList(itemDate, itemData, itemMonthList4)
+                    }
+                    5 -> {
+                        getItemMonthList(itemDate, itemData, itemMonthList5)
+                    }
+                    6 -> {
+                        getItemMonthList(itemDate, itemData, itemMonthList6)
+                    }
                 }
             }
         }
 
-        if(monthBeforeBefore1){
-            itemMonth.add(itemMonthList31)
-        }
-        if(monthBeforeBefore2){
-            itemMonth.add(itemMonthList32)
-        }
-        if(monthBeforeBefore3){
-            itemMonth.add(itemMonthList33)
-        }
-        if(monthBeforeBefore4){
-            itemMonth.add(itemMonthList34)
-        }
-        if(monthBeforeBefore5){
-            itemMonth.add(itemMonthList35)
-        }
-        if(monthBeforeBefore6){
-            itemMonth.add(itemMonthList36)
-        }
-
-        if(monthBefore1){
-            itemMonth.add(itemMonthList21)
-        }
-        if(monthBefore2){
-            itemMonth.add(itemMonthList22)
-        }
-        if(monthBefore3){
-            itemMonth.add(itemMonthList23)
-        }
-        if(monthBefore4){
-            itemMonth.add(itemMonthList24)
-        }
-        if(monthBefore5){
-            itemMonth.add(itemMonthList25)
-        }
-        if(monthBefore6){
-            itemMonth.add(itemMonthList26)
-        }
-
-        if(month1){
-            itemMonth.add(itemMonthList11)
-        }
-        if(month2){
-            itemMonth.add(itemMonthList12)
-        }
-        if(month3){
-            itemMonth.add(itemMonthList13)
-        }
-        if(month4){
-            itemMonth.add(itemMonthList14)
-        }
-        if(month5){
-            itemMonth.add(itemMonthList15)
-        }
-        if(month6){
-            itemMonth.add(itemMonthList16)
-        }
+        itemMonth.add(itemMonthList1)
+        itemMonth.add(itemMonthList2)
+        itemMonth.add(itemMonthList3)
+        itemMonth.add(itemMonthList4)
+        itemMonth.add(itemMonthList5)
+        itemMonth.add(itemMonthList6)
 
         adapterMonth.notifyDataSetChanged()
     }
