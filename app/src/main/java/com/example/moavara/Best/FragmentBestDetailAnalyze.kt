@@ -89,9 +89,9 @@ class FragmentBestDetailAnalyze(
                 num += 1
             }
 
-            itemsJoara.add(BestChart(dateList, entryList, "편당 댓글 수", "#20459e"))
-            itemsJoara.add(BestChart(dateList, entryList2, "편당 조회 수", "#20459e"))
-            itemsJoara.add(BestChart(dateList, entryList3, "편당 추천 수", "#20459e"))
+            itemsJoara.add(BestChart(dateList, entryList, "편당 댓글 수", "#621CEF"))
+            itemsJoara.add(BestChart(dateList, entryList2, "편당 조회 수", "#621CEF"))
+            itemsJoara.add(BestChart(dateList, entryList3, "편당 추천 수", "#621CEF"))
             adapterChartJoara.notifyDataSetChanged()
         }
     }

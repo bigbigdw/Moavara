@@ -85,7 +85,7 @@ data class BookListDataBestAnalyze (
 
 data class AnayzeData(
     var date: String = "",
-    var info: Int = 0,
+    var info: String = "",
 )
 
 data class TrophyInfo (
