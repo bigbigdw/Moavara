@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
 
     android:background="#1E1E20"
     android:orientation="vertical">
@@ -14,13 +15,13 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <LinearLayout
+        <ImageView
             android:id="@+id/llayoutBefore"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginLeft="18dp"
-            android:background="#3F51B5"
-            android:orientation="horizontal" />
+            android:contentDescription="@string/TODO"
+            app:srcCompat="@drawable/ico_prev" />
 
         <TextView
             android:id="@+id/tviewMonth"
@@ -35,13 +36,13 @@
             android:textColor="#EDE6FD"
             android:textSize="17sp" />
 
-        <LinearLayout
+        <ImageView
             android:id="@+id/llayoutAfter"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginRight="18dp"
-            android:background="#3F51B5"
-            android:orientation="horizontal" />
+            android:contentDescription="@string/TODO"
+            app:srcCompat="@drawable/icon_next" />
     </LinearLayout>
 
     <LinearLayout

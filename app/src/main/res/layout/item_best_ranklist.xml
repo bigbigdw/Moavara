@@ -55,7 +55,7 @@
                             android:adjustViewBounds="true"
                             android:contentDescription="@string/TODO"
                             android:scaleType="fitXY"
-                            app:srcCompat="@drawable/ic_best_gr_24px" />
+                            app:srcCompat="@drawable/ic_launcher_gray" />
 
                         <TextView
                             android:id="@+id/tview1"
@@ -123,7 +123,7 @@
                             android:adjustViewBounds="true"
                             android:contentDescription="@string/TODO"
                             android:scaleType="fitXY"
-                            app:srcCompat="@drawable/ic_best_gr_24px" />
+                            app:srcCompat="@drawable/ic_launcher_gray" /> />
 
                         <TextView
                             android:id="@+id/tview2"
@@ -192,7 +192,7 @@
                             android:adjustViewBounds="true"
                             android:contentDescription="@string/TODO"
                             android:scaleType="fitXY"
-                            app:srcCompat="@drawable/ic_best_gr_24px" />
+                            app:srcCompat="@drawable/ic_launcher_gray" />
 
                         <TextView
                             android:id="@+id/tview3"
@@ -261,7 +261,7 @@
                             android:adjustViewBounds="true"
                             android:contentDescription="@string/TODO"
                             android:scaleType="fitXY"
-                            app:srcCompat="@drawable/ic_best_gr_24px" />
+                            app:srcCompat="@drawable/ic_launcher_gray" />
 
                         <TextView
                             android:id="@+id/tview4"
@@ -330,7 +330,7 @@
                             android:adjustViewBounds="true"
                             android:contentDescription="@string/TODO"
                             android:scaleType="fitXY"
-                            app:srcCompat="@drawable/ic_best_gr_24px" />
+                            app:srcCompat="@drawable/ic_launcher_gray" />
 
                         <TextView
                             android:id="@+id/tview5"
@@ -399,7 +399,7 @@
                             android:adjustViewBounds="true"
                             android:contentDescription="@string/TODO"
                             android:scaleType="fitXY"
-                            app:srcCompat="@drawable/ic_best_gr_24px" />
+                            app:srcCompat="@drawable/ic_launcher_gray" />
 
                         <TextView
                             android:id="@+id/tview6"
@@ -468,7 +468,7 @@
                             android:adjustViewBounds="true"
                             android:contentDescription="@string/TODO"
                             android:scaleType="fitXY"
-                            app:srcCompat="@drawable/ic_best_gr_24px" />
+                            app:srcCompat="@drawable/ic_launcher_gray" />
 
                         <TextView
                             android:id="@+id/tview7"

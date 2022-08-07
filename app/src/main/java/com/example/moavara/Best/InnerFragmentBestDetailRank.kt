@@ -75,7 +75,7 @@ class InnerFragmentBestDetailRank(
 
                 tviewMonth.text = "${year}년 ${currentMonth - monthCount}월"
                 adapterMonth.setMonthDate(monthCount)
-                getAnalyze((currentMonth) - monthCount)
+                getAnalyze((currentMonth -1) - monthCount)
             }
         }
 

@@ -43,7 +43,7 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
     private val itemWeek = ArrayList<ArrayList<BookListDataBest>?>()
     private var obj = JSONObject()
     private var month = 0
-    private var week = 0
+    private var originalWeek = 0
     private var weekCount = 0
     val today = DBDate.getDateData(DBDate.DateMMDD())
 
@@ -56,7 +56,7 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
 
         genre = Genre.getGenre(requireContext()).toString()
 
-        with(binding){
+        with(binding) {
 
             adapter = AdapterBestWeekend(requireContext(), itemWeek, platform)
 
@@ -66,8 +66,8 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
 
             val currentDate = DBDate.getDateData(DBDate.DateMMDD())
 
-            month = DBDate.Month().toInt() + 1
-            week = (currentDate?.week ?: 0).toInt()
+            month = DBDate.Month().toInt()
+            originalWeek = (currentDate?.week ?: 0).toInt()
 
             readJsonList()
 
@@ -81,117 +81,138 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
             }
         }
 
-        with(binding){
-            tviewWeek.text = "${month}월 ${week - weekCount}주차"
+        with(binding) {
+            tviewWeek.text = "${month + 1}월 ${originalWeek - weekCount}주차"
             llayoutAfter.visibility = View.INVISIBLE
 
-            if(week - weekCount == 1){
+            if (originalWeek - weekCount == 1) {
                 llayoutBefore.visibility = View.INVISIBLE
             }
 
             llayoutBefore.setOnClickListener {
                 binding.blank.root.visibility = View.VISIBLE
                 binding.llayoutWrap.visibility = View.GONE
-                if (weekCount > week - 3) {
-                    llayoutBefore.visibility = View.INVISIBLE
-                } else {
-                    llayoutAfter.visibility = View.VISIBLE
+
+                if(month == DBDate.Month().toInt() -2 && originalWeek - weekCount == 2){
+                    binding.llayoutBefore.visibility = View.INVISIBLE
                 }
 
                 weekCount += 1
-                tviewWeek.text = "${month}월 ${week - weekCount}주차"
-                getBestWeekListBefore(week - weekCount)
-                binding.llayoutCarousel.visibility = View.GONE
+
+                if (originalWeek - weekCount == 0) {
+                    month -= 1
+                    weekCount = 0
+                }
+
+                llayoutAfter.visibility = View.VISIBLE
+                getBestWeekListBefore(month, originalWeek, weekCount)
             }
 
             llayoutAfter.setOnClickListener {
                 binding.blank.root.visibility = View.VISIBLE
                 binding.llayoutWrap.visibility = View.GONE
-                if(weekCount < 2){
-                    llayoutAfter.visibility = View.INVISIBLE
-                } else {
-                    llayoutBefore.visibility = View.VISIBLE
-                }
+//                if(weekCount < 2){
+//                    llayoutAfter.visibility = View.INVISIBLE
+//                } else {
+//                    llayoutBefore.visibility = View.VISIBLE
+//                }
 
                 weekCount -= 1
-                tviewWeek.text = "${month}월 ${week - weekCount}주차"
-                getBestWeekListBefore(week - weekCount)
-                binding.llayoutCarousel.visibility = View.GONE
+                tviewWeek.text = "${month}월 ${originalWeek - weekCount}주차"
+                getBestWeekListBefore(month, originalWeek, weekCount)
             }
         }
 
         return view
     }
 
-    private fun getBestWeekListBefore(week : Int) {
+    private fun getBestWeekListBefore(month: Int, week: Int , count: Int) {
 
         binding.rviewBest.removeAllViews()
         itemWeek.clear()
+        arrayCarousel.clear()
+
+        var dataWeek = 0
 
         try {
-            BestRef.getBestDataWeekBefore(platform, genre).child(week.toString()).addListenerForSingleValueEvent(object :
-                ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
+            BestRef.getBestDataWeekBefore(platform, genre).child(month.toString())
+                .addListenerForSingleValueEvent(object :
+                    ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                    for (day in 1..7) {
-                        val itemResult = dataSnapshot.child(day.toString())
-                        val itemList = ArrayList<BookListDataBest>()
-
-                        if(itemResult.value == null){
-                            for (num in 0..19) {
-                                itemList.add(BookListDataBest())
-                            }
-                            itemWeek.add(itemList)
+                        if (weekCount == 0) {
+                            dataWeek = dataSnapshot.childrenCount.toInt()
+                            originalWeek = dataSnapshot.childrenCount.toInt()
                         } else {
-                            for (num in 0..19) {
-                                val item: BookListDataBest? =
-                                    itemResult.child(num.toString())
-                                        .getValue(BookListDataBest::class.java)
-
-                                if (item != null) {
-                                    itemList.add(item)
-                                }
-                            }
-                            itemWeek.add(itemList)
+                            dataWeek = week - count
                         }
 
-                        if(dataSnapshot.childrenCount.toString() == day.toString() && DBDate.Week().toInt() == week)  {
+                        binding.tviewWeek.text = "${month + 1}월 ${dataWeek}주차"
 
-                            val itemListCarousel = ArrayList<BookListDataBest>()
+                        for (day in 1..7) {
+                            val itemResult =
+                                dataSnapshot.child(dataWeek.toString()).child(day.toString())
+                            val itemList = ArrayList<BookListDataBest>()
 
-                            for (numCarousel in 0..8) {
-
-                                val item: BookListDataBest? =
-                                    dataSnapshot.child(day.toString()).child(numCarousel.toString())
-                                        .getValue(BookListDataBest::class.java)
-
-                                if (item != null) {
-                                    itemListCarousel.add(item)
+                            if (itemResult.value == null) {
+                                for (num in 0..19) {
+                                    itemList.add(BookListDataBest())
                                 }
+                                itemWeek.add(itemList)
+                            } else {
+                                for (num in 0..19) {
+                                    val item: BookListDataBest? =
+                                        itemResult.child(num.toString())
+                                            .getValue(BookListDataBest::class.java)
+
+                                    if (item != null) {
+                                        itemList.add(item)
+                                    }
+                                }
+                                itemWeek.add(itemList)
                             }
 
-                            arrayCarousel.addAll(itemListCarousel)
+                            if (month == DBDate.Month().toInt()
+                                && dataSnapshot.child(dataWeek.toString()).childrenCount.toString() == day.toString()
+                                && DBDate.Week().toInt() == dataWeek
+                            ) {
+
+                                val itemListCarousel = ArrayList<BookListDataBest>()
+
+                                for (numCarousel in 0..8) {
+
+                                    val item: BookListDataBest? =
+                                        dataSnapshot.child(day.toString())
+                                            .child(numCarousel.toString())
+                                            .getValue(BookListDataBest::class.java)
+
+                                    if (item != null) {
+                                        itemListCarousel.add(item)
+                                    }
+                                }
+
+                                arrayCarousel.addAll(itemListCarousel)
+                            }
+
                         }
 
+                        binding.blank.root.visibility = View.GONE
+                        binding.llayoutWrap.visibility = View.VISIBLE
+                        adapter?.notifyDataSetChanged()
+
+                        if (arrayCarousel.size > 0) {
+                            with(binding) {
+                                carousel.pageCount = arrayCarousel.size
+                                carousel.slideInterval = 4000
+                                binding.llayoutCarousel.visibility = View.VISIBLE
+                            }
+                        } else {
+                            binding.llayoutCarousel.visibility = View.GONE
+                        }
                     }
 
-                    binding.blank.root.visibility = View.GONE
-                    binding.llayoutWrap.visibility = View.VISIBLE
-                    adapter?.notifyDataSetChanged()
-
-                    if(arrayCarousel.size > 0){
-                        with(binding){
-                            carousel.pageCount = arrayCarousel.size
-                            carousel.slideInterval = 4000
-                            binding.llayoutCarousel.visibility = View.VISIBLE
-                        }
-                    } else {
-                        binding.llayoutCarousel.visibility = View.GONE
-                    }
-                }
-
-                override fun onCancelled(databaseError: DatabaseError) {}
-            })
+                    override fun onCancelled(databaseError: DatabaseError) {}
+                })
 
         } catch (e: JSONException) {
             e.printStackTrace()
@@ -213,49 +234,50 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                 ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                     for (day in 1..7) {
-                         val itemResult = dataSnapshot.child(day.toString())
-                         val jsonArray = JSONArray()
-                         val itemList = ArrayList<BookListDataBest>()
+                    for (day in 1..7) {
+                        val itemResult = dataSnapshot.child(day.toString())
+                        val jsonArray = JSONArray()
+                        val itemList = ArrayList<BookListDataBest>()
 
-                         if(itemResult.value == null){
-                             for (num in 0..19) {
-                                 val jsonObject = JSONObject()
-                                 itemList.add(BookListDataBest())
-                                 jsonArray.put(BestRef.putItem(jsonObject, BookListDataBest()))
-                             }
-                             itemWeek.add(itemList)
+                        if (itemResult.value == null) {
+                            for (num in 0..19) {
+                                val jsonObject = JSONObject()
+                                itemList.add(BookListDataBest())
+                                jsonArray.put(BestRef.putItem(jsonObject, BookListDataBest()))
+                            }
+                            itemWeek.add(itemList)
 
-                         } else {
-                             for (num in 0..19) {
-                                 val jsonObject = JSONObject()
-                                 val item: BookListDataBest? =
-                                     itemResult.child(num.toString())
-                                         .getValue(BookListDataBest::class.java)
+                        } else {
+                            for (num in 0..19) {
+                                val jsonObject = JSONObject()
+                                val item: BookListDataBest? =
+                                    itemResult.child(num.toString())
+                                        .getValue(BookListDataBest::class.java)
 
-                                 if (item != null) {
-                                     itemList.add(item)
-                                     jsonArray.put(BestRef.putItem(jsonObject, item))
-                                 }
-                             }
-                             itemWeek.add(itemList)
-                         }
+                                if (item != null) {
+                                    itemList.add(item)
+                                    jsonArray.put(BestRef.putItem(jsonObject, item))
+                                }
+                            }
+                            itemWeek.add(itemList)
+                        }
 
-                         val itemListCarousel = ArrayList<BookListDataBest>()
+                        val itemListCarousel = ArrayList<BookListDataBest>()
 
-                         for (numCarousel in 0..8) {
+                        for (numCarousel in 0..8) {
 
-                             val item: BookListDataBest? =
-                                 dataSnapshot.child(today?.date.toString()).child(numCarousel.toString())
-                                     .getValue(BookListDataBest::class.java)
+                            val item: BookListDataBest? =
+                                dataSnapshot.child(today?.date.toString())
+                                    .child(numCarousel.toString())
+                                    .getValue(BookListDataBest::class.java)
 
-                             if (item != null) {
-                                 itemListCarousel.add(item)
-                             }
-                         }
+                            if (item != null) {
+                                itemListCarousel.add(item)
+                            }
+                        }
 
-                         arrayCarousel.addAll(itemListCarousel)
-                         obj.putOpt(day.toString(), jsonArray)
+                        arrayCarousel.addAll(itemListCarousel)
+                        obj.putOpt(day.toString(), jsonArray)
                     }
 
                     binding.blank.root.visibility = View.GONE
@@ -263,8 +285,8 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                     writeFile(obj)
                     adapter?.notifyDataSetChanged()
 
-                    if(arrayCarousel.size > 0){
-                        with(binding){
+                    if (arrayCarousel.size > 0) {
+                        with(binding) {
                             carousel.pageCount = arrayCarousel.size
                             carousel.slideInterval = 4000
                             binding.llayoutCarousel.visibility = View.VISIBLE
@@ -323,7 +345,7 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                 val itemList = ArrayList<BookListDataBest>()
                 val itemResult = jsonObject.getJSONArray(day.toString())
 
-                if(itemResult.length() == 0){
+                if (itemResult.length() == 0) {
                     for (num in 0..19) {
                         itemList.add(BookListDataBest())
                     }
@@ -337,7 +359,7 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                         }
                     }
 
-                    if(today?.date == day){
+                    if (today?.date == day) {
 
                         val itemListCarousel = ArrayList<BookListDataBest>()
 
@@ -359,8 +381,8 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
 
             adapter?.notifyDataSetChanged()
 
-            if(arrayCarousel.size > 0){
-                with(binding){
+            if (arrayCarousel.size > 0) {
+                with(binding) {
                     carousel.pageCount = arrayCarousel.size
                     carousel.slideInterval = 4000
                     binding.llayoutCarousel.visibility = View.VISIBLE
@@ -429,7 +451,7 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                     iviewRank.setImageResource(R.drawable.icon_best_9)
                 }
                 else -> {
-                    Log.d("bestRankImage","NO_IMAGE")
+                    Log.d("bestRankImage", "NO_IMAGE")
                 }
             }
 
@@ -442,7 +464,7 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                 tviewInfo3.visibility = View.GONE
                 tviewInfo4.visibility = View.GONE
                 tviewInfo5.visibility = View.GONE
-            }   else if(platform == "Toksoda"){
+            } else if (platform == "Toksoda") {
                 tviewInfo1.visibility = View.VISIBLE
                 tviewInfo2.visibility = View.GONE
                 tviewInfo3.visibility = View.VISIBLE
@@ -474,19 +496,22 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                 tviewInfo4.visibility = View.VISIBLE
                 tviewInfo5.visibility = View.GONE
 
-                val info3 = SpannableStringBuilder(arrayCarousel[position].info3.replace("별점", "별점 : "))
+                val info3 =
+                    SpannableStringBuilder(arrayCarousel[position].info3.replace("별점", "별점 : "))
                 info3.applyingTextColor(
                     "별점 : ",
                     "#6E7686"
                 )
 
-                val info4 = SpannableStringBuilder(arrayCarousel[position].info4.replace("조회", "조회 수 : "))
+                val info4 =
+                    SpannableStringBuilder(arrayCarousel[position].info4.replace("조회", "조회 수 : "))
                 info4.applyingTextColor(
                     "조회 수 : ",
                     "#6E7686"
                 )
 
-                val info5 = SpannableStringBuilder(arrayCarousel[position].info5.replace("관심", "관심 : "))
+                val info5 =
+                    SpannableStringBuilder(arrayCarousel[position].info5.replace("관심", "관심 : "))
                 info5.applyingTextColor(
                     "관심 : ",
                     "#6E7686"
@@ -495,7 +520,7 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                 tviewInfo2.text = info3
                 tviewInfo3.text = info4
                 tviewInfo4.text = info5
-            }  else if (platform == "Kakao_Stage") {
+            } else if (platform == "Kakao_Stage") {
                 tviewInfo1.text = arrayCarousel[position].info2 ?: ""
 
                 tviewInfo1.visibility = View.VISIBLE
@@ -504,13 +529,15 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                 tviewInfo4.visibility = View.VISIBLE
                 tviewInfo5.visibility = View.VISIBLE
 
-                val info3 = SpannableStringBuilder(arrayCarousel[position].info3.replace("별점", "별점 : "))
+                val info3 =
+                    SpannableStringBuilder(arrayCarousel[position].info3.replace("별점", "별점 : "))
                 info3.applyingTextColor(
                     "조회 수 : ",
                     "#6E7686"
                 )
 
-                val info4 = SpannableStringBuilder(arrayCarousel[position].info4.replace("조회", "조회 수 : "))
+                val info4 =
+                    SpannableStringBuilder(arrayCarousel[position].info4.replace("조회", "조회 수 : "))
                 info4.applyingTextColor(
                     "선호작 수 : ",
                     "#6E7686"
@@ -548,19 +575,22 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                 tviewInfo4.visibility = View.VISIBLE
                 tviewInfo5.visibility = View.GONE
 
-                val info3 = SpannableStringBuilder(arrayCarousel[position].info3.replace("별점", "별점 : "))
+                val info3 =
+                    SpannableStringBuilder(arrayCarousel[position].info3.replace("별점", "별점 : "))
                 info3.applyingTextColor(
                     "조회 수 : ",
                     "#6E7686"
                 )
 
-                val info4 = SpannableStringBuilder(arrayCarousel[position].info4.replace("조회", "조회 수 : "))
+                val info4 =
+                    SpannableStringBuilder(arrayCarousel[position].info4.replace("조회", "조회 수 : "))
                 info4.applyingTextColor(
                     "평점 : ",
                     "#6E7686"
                 )
 
-                val info5 = SpannableStringBuilder(arrayCarousel[position].info5.replace("관심", "관심 : "))
+                val info5 =
+                    SpannableStringBuilder(arrayCarousel[position].info5.replace("관심", "관심 : "))
                 info5.applyingTextColor(
                     "댓글 수 : ",
                     "#6E7686"
@@ -569,14 +599,14 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                 tviewInfo2.text = info3
                 tviewInfo3.text = info4
                 tviewInfo4.text = info5
-            } else if (platform == "Kakao" || platform == "Munpia" || platform == "Toksoda" || platform == "Joara" || platform == "Joara_Premium" || platform == "Joara_Nobless" || platform == "Munpia" ) {
+            } else if (platform == "Kakao" || platform == "Munpia" || platform == "Toksoda" || platform == "Joara" || platform == "Joara_Premium" || platform == "Joara_Nobless" || platform == "Munpia") {
                 tviewInfo1.visibility = View.VISIBLE
                 tviewInfo2.visibility = View.VISIBLE
                 tviewInfo3.visibility = View.VISIBLE
                 tviewInfo4.visibility = View.VISIBLE
                 tviewInfo5.visibility = View.VISIBLE
 
-                if(platform == "Joara" || platform == "Joara_Premium" || platform == "Joara_Nobless"){
+                if (platform == "Joara" || platform == "Joara_Premium" || platform == "Joara_Nobless") {
                     tviewInfo1.text = arrayCarousel[position].info2 ?: ""
 
                     val info3 = SpannableStringBuilder(arrayCarousel[position].info3)
@@ -602,7 +632,7 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                     tviewInfo4.text = info5
 
                     tviewInfo5.text = arrayCarousel[position].info1 ?: ""
-                } else if(platform == "Kakao"){
+                } else if (platform == "Kakao") {
                     tviewInfo1.text = arrayCarousel[position].info2 ?: ""
 
                     val info3 = SpannableStringBuilder(arrayCarousel[position].info3)
@@ -627,7 +657,7 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                     tviewInfo3.text = info4
                     tviewInfo4.text = info5
                     tviewInfo5.text = arrayCarousel[position].info1
-                } else if(platform == "Munpia"){
+                } else if (platform == "Munpia") {
                     tviewInfo1.text = arrayCarousel[position].info2
 
                     val info3 = SpannableStringBuilder(arrayCarousel[position].info3)
