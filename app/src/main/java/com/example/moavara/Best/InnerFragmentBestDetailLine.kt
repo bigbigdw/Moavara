@@ -22,6 +22,11 @@ class InnerFragmentBestDetailLine(
     val entryList3 = mutableListOf<Entry>()
     val entryList4 = mutableListOf<Entry>()
 
+    val dataList1 = ArrayList<Int>()
+    val dataList2 = ArrayList<Int>()
+    val dataList3 = ArrayList<Int>()
+    val dataList4 = ArrayList<Int>()
+
     private var adapterChart: AdapterLine? = null
     private val items = ArrayList<BestLineChart>()
 
@@ -37,7 +42,7 @@ class InnerFragmentBestDetailLine(
         _binding = FragmentBestDetailLineBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        adapterChart = AdapterLine(items)
+        adapterChart = AdapterLine(requireContext(), items)
         binding.rViewChart.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rViewChart.adapter = adapterChart
@@ -50,11 +55,15 @@ class InnerFragmentBestDetailLine(
                 entryList3.add(BarEntry(i.toFloat(), BookItem[i].info3.replace("추천 수 : ", "").toFloat()))
                 //TODO:
 //                entryList4.add(BarEntry(i.toFloat(), BookItem[i].info3.replace("댓글 수 : ", "").toFloat()))
+
+                dataList1.add(BookItem[i].info1.replace("조회 수 : ", "").toInt())
+                dataList2.add(BookItem[i].info2.replace("선호작 수 : ", "").toInt())
+                dataList3.add(BookItem[i].info3.replace("추천 수 : ", "").toInt())
             }
 
-            items.add(BestLineChart(dateList, entryList, "조회 수", "#20459e"))
-            items.add(BestLineChart(dateList, entryList2, "선호작 수", "#20459e"))
-            items.add(BestLineChart(dateList, entryList3, "추천 수", "#20459e"))
+            items.add(BestLineChart(dateList, entryList, "조회 수", "#20459e", dataList1))
+            items.add(BestLineChart(dateList, entryList2, "선호작 수", "#20459e", dataList2))
+            items.add(BestLineChart(dateList, entryList3, "추천 수", "#20459e", dataList3))
             //TODO:
 //            items.add(BestLineChart(dateList, entryList4, "댓글 수", "#20459e"))
             adapterChart?.notifyDataSetChanged()

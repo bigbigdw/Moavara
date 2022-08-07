@@ -113,7 +113,8 @@ data class BestLineChart(
     var dateList: MutableList<String>? = null,
     var entryList: MutableList<Entry>? = null,
     var title: String = "",
-    var color: String = ""
+    var color: String = "",
+    var data: ArrayList<Int> = ArrayList()
 )
 
 data class UserInfo(

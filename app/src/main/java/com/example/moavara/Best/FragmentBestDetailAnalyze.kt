@@ -11,10 +11,8 @@ import com.example.moavara.DataBase.BookListDataBestAnalyze
 import com.example.moavara.R
 import com.example.moavara.Search.BestChart
 import com.example.moavara.Soon.Best.AdapterChart
-import com.example.moavara.Soon.Best.InnerFragmentBestDetailBar
 import com.example.moavara.databinding.FragmentBestDetailAnalyzeBinding
 import com.github.mikephil.charting.data.BarEntry
-import java.util.*
 
 class FragmentBestDetailAnalyze(
     private val platform: String,
@@ -57,6 +55,11 @@ class FragmentBestDetailAnalyze(
         childFragmentManager.commit {
             replace(R.id.InnerFragmentBestDetailLine, mInnerFragmentBestDetailLine)
         }
+
+//        mInnerFragmentBestDetailData = InnerFragmentBestDetailData(BookItem, platform)
+//        childFragmentManager.commit {
+//            replace(R.id.InnerFragmentBestDetailData, mInnerFragmentBestDetailData)
+//        }
 
         return view
     }
