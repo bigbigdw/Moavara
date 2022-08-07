@@ -1,20 +1,13 @@
 package com.example.moavara.Search
 
 import android.os.Bundle
-import android.text.Editable
 import android.text.InputType
-import android.text.TextUtils.replace
-import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
 import com.bumptech.glide.Glide
-import com.example.moavara.Best.FragmentBestDetailComment
-import com.example.moavara.R
 import com.example.moavara.Retrofit.*
 import com.example.moavara.Util.Param
 import com.example.moavara.databinding.FragmentSearchBookcodeBinding
@@ -345,7 +338,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
         param["channelId"] = bookCode
         param["bookpassYn"] = "N"
 
-        apiOnestory.getBestKakaoStageDetail(
+        apiOnestory.getOneStoreDetail(
             bookCode,
             param,
             object : RetrofitDataListener<OnestoreBookDetail> {

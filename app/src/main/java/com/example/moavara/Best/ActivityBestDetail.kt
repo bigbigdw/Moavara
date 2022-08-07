@@ -262,12 +262,9 @@ class ActivityBestDetail : AppCompatActivity() {
 
                             inclueBestDetail.tviewInfo1.text =
                                 BestRef.decimalToString(data.book.cntPageRead.toInt())
-                            inclueBestDetail.iviewInfo1.setImageResource(R.drawable.ic_hits_wt_24px)
                             inclueBestDetail.tviewInfo2.text =
                                 BestRef.decimalToString(data.book.cntFavorite.toInt())
-                            inclueBestDetail.iviewInfo2.setImageResource(R.drawable.ic_favorites_wt_24px)
                             inclueBestDetail.tviewInfo3.text = BestRef.decimalToString(data.book.cntRecom.toInt())
-                            inclueBestDetail.iviewInfo3.setImageResource(R.drawable.ic_recommend_wt_24px)
                             inclueBestDetail.tviewInfo4.text = BestRef.decimalToString(data.book.cntTotalComment.toInt())
 
                             tviewIntro.text = data.book.intro
@@ -319,21 +316,18 @@ class ActivityBestDetail : AppCompatActivity() {
                         .load(doc.select(".section_area_info .pic img").attr("src"))
                         .into(inclueBestDetail.iviewBookCover)
 
-
-
                     bookTitle = doc.select(".book_title").text()
+                    tviewToolbar.text = bookTitle
                     inclueBestDetail.tviewTitle.text = bookTitle
                     inclueBestDetail.tviewWriter.text = doc.select(".writer").text()
 
                     inclueBestDetail.tviewInfo.text =
                         "장르 : ${doc.select(".info_book .genre").text()}"
 
-                    inclueBestDetail.iviewInfo1.setImageResource(R.drawable.ic_favorites_wt_24px)
                     inclueBestDetail.tviewInfo1.text = doc.select(".info_book .like").text().replace("관심", "").replace("명", "")
-
                     inclueBestDetail.tviewInfo2.text = doc.select(".grade_area em").text()
-                    inclueBestDetail.iviewInfo2.setImageResource(R.drawable.ic_recommend_wt_24px)
 
+                    inclueBestDetail.iviewInfo3.setImageResource(R.mipmap.ic_launcher)
                     inclueBestDetail.tviewInfo3.text = doc.select(".info_book .download").text().replace("다운로드", "")
 
                     inclueBestDetail.llayoutTab4.visibility = View.GONE
@@ -373,13 +367,16 @@ class ActivityBestDetail : AppCompatActivity() {
                                 .into(inclueBestDetail.iviewBookCover)
 
                             bookTitle = it.title
+                            tviewToolbar.text = bookTitle
                             inclueBestDetail.tviewTitle.text = bookTitle
                             inclueBestDetail.tviewWriter.text = it.author_name
 
                             inclueBestDetail.tviewInfo.text = "총 ${it.open_counts}화"
-                            inclueBestDetail.tviewInfo2.text = it.sub_category
-                            inclueBestDetail.tviewInfo3.text = it.read_count
-                            inclueBestDetail.tviewInfo4.text = it.page_comment_count
+
+                            inclueBestDetail.tviewInfo1.text = BestRef.decimalToString(it.page_rating_count.toInt())
+                            inclueBestDetail.tviewInfo2.text = BestRef.decimalToString(it.page_rating_summary.replace(".0","").toInt())
+                            inclueBestDetail.tviewInfo3.text = BestRef.decimalToString(it.read_count.toInt())
+                            inclueBestDetail.tviewInfo4.text = BestRef.decimalToString(it.page_comment_count.toInt())
 
                             tviewIntro.text = it.description
                         }
@@ -399,7 +396,7 @@ class ActivityBestDetail : AppCompatActivity() {
                         }
 
                         for (item in keyword) {
-                            typeItems.add(BestType("#${item}", ""))
+                            typeItems.add(BestType("#${item.item_name}", ""))
                         }
                         adapterType.notifyDataSetChanged()
                     }
@@ -432,14 +429,16 @@ class ActivityBestDetail : AppCompatActivity() {
                                 .into(inclueBestDetail.iviewBookCover)
 
                             bookTitle = it.title
+                            tviewToolbar.text = bookTitle
 
                             inclueBestDetail.tviewTitle.text = bookTitle
                             inclueBestDetail.tviewWriter.text = it.nickname.name
 
                             inclueBestDetail.tviewInfo.text = "총 ${it.publishedEpisodeCount}화"
-                            inclueBestDetail.tviewInfo2.text = it.favoriteCount
-                            inclueBestDetail.tviewInfo3.text = it.viewCount
-                            inclueBestDetail.tviewInfo4.text = it.visitorCount
+                            inclueBestDetail.tviewInfo1.text = BestRef.decimalToString(it.favoriteCount.toInt())
+                            inclueBestDetail.tviewInfo2.text = BestRef.decimalToString(it.viewCount.toInt())
+                            inclueBestDetail.tviewInfo3.text = BestRef.decimalToString(it.visitorCount.toInt())
+                            inclueBestDetail.tviewInfo4.text = BestRef.decimalToString(it.episodeLikeCount.toInt())
 
                             tviewIntro.text = it.synopsis
                         }
@@ -464,7 +463,6 @@ class ActivityBestDetail : AppCompatActivity() {
 
             runOnUiThread {
                 binding.llayoutIntro.visibility = View.GONE
-
                 binding.loading.root.visibility = View.GONE
                 binding.coorWrap.visibility = View.VISIBLE
                 window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
@@ -475,20 +473,28 @@ class ActivityBestDetail : AppCompatActivity() {
                         .into(inclueBestDetail.iviewBookCover)
 
                     bookTitle = doc.select(".header_info_wrap .info_title_wrap h3").text()
+                    tviewToolbar.text = bookTitle
                     inclueBestDetail.tviewTitle.text = bookTitle
                     inclueBestDetail.tviewWriter.text =
                         doc.select(".metadata_writer .author_detail_link").text()
-
                     inclueBestDetail.tviewInfo.text =
                         doc.select(".header_info_wrap .info_category_wrap").text()
-                    inclueBestDetail.tviewInfo2.text =
+
+                    inclueBestDetail.tviewInfo1.text =
                         doc.select(".header_info_wrap .StarRate_Score").text()
-                    inclueBestDetail.tviewInfo3.text =
+                    inclueBestDetail.tviewInfo2.text =
                         doc.select(".header_info_wrap .StarRate_ParticipantCount").text()
-                    inclueBestDetail.tviewInfo4.text =
+
+                    inclueBestDetail.llayoutTab3.visibility = View.GONE
+                    inclueBestDetail.llayoutTab4.visibility = View.GONE
+                    inclueBestDetail.viewTab4.visibility = View.GONE
+                    inclueBestDetail.viewTab3.visibility = View.GONE
+
+                    inclueBestDetail.tviewInfo3.text =
                         doc.select(".metadata_info_series_complete_wrap .metadata_item").text()
 
                     tviewIntro.text = doc.select(".introduce_book .introduce_paragraph").text()
+
                 }
 
                 mFragmentBestDetailAnalyze =
@@ -507,7 +513,7 @@ class ActivityBestDetail : AppCompatActivity() {
         param["channelId"] = bookCode
         param["bookpassYn"] = "N"
 
-        apiOnestory.getBestKakaoStageDetail(
+        apiOnestory.getOneStoreDetail(
             bookCode,
             param,
             object : RetrofitDataListener<OnestoreBookDetail> {
@@ -524,16 +530,16 @@ class ActivityBestDetail : AppCompatActivity() {
                                 .into(inclueBestDetail.iviewBookCover)
 
                             bookTitle = it?.prodNm ?: ""
-
+                            tviewToolbar.text = bookTitle
                             inclueBestDetail.tviewTitle.text = bookTitle
                             inclueBestDetail.tviewWriter.text = it?.artistNm
+                            inclueBestDetail.tviewInfo.text = it?.menuNm
 
-                            inclueBestDetail.tviewInfo.text = "별점 : ${it?.ratingAvgScore}점"
-                            inclueBestDetail.tviewInfo2.text = it?.pageViewTotal
-                            inclueBestDetail.tviewInfo3.text = it?.serialCount
-                            inclueBestDetail.tviewInfo4.text = it?.favoriteCount
-
-                            binding.llayoutIntro.visibility = View.GONE
+                            inclueBestDetail.tviewInfo1.text = it?.ratingAvgScore
+                            inclueBestDetail.tviewInfo2.text = it?.favoriteCount
+                            inclueBestDetail.tviewInfo3.text = it?.pageViewTotal
+                            inclueBestDetail.tviewInfo4.text = it?.commentCount
+                            llayoutIntro.visibility = View.GONE
 
                             if (it != null) {
                                 val keyword = it.tagList
@@ -553,7 +559,7 @@ class ActivityBestDetail : AppCompatActivity() {
                                     }
 
                                     for (item in keyword) {
-                                        typeItems.add(BestType("#${item}", ""))
+                                        typeItems.add(BestType("#${item.tagNm}", ""))
                                     }
                                     adapterType.notifyDataSetChanged()
                                 }
@@ -570,7 +576,7 @@ class ActivityBestDetail : AppCompatActivity() {
         }
     }
 
-    fun setLayoutMunpia() {
+    private fun setLayoutMunpia() {
         Thread {
             val doc: Document = Jsoup.connect("https://novel.munpia.com/${bookCode}").get()
 
@@ -586,16 +592,21 @@ class ActivityBestDetail : AppCompatActivity() {
 
                     bookTitle = doc.select(".detail-box h2 a").text()
                         .replace(doc.select(".detail-box h2 a span").text() + " ", "")
+                    tviewToolbar.text = bookTitle
                     inclueBestDetail.tviewTitle.text = bookTitle
                     inclueBestDetail.tviewWriter.text = doc.select(".member-trigger strong").text()
 
                     inclueBestDetail.tviewInfo.text = doc.select(".meta-path strong").text()
-                    inclueBestDetail.tviewInfo2.text =
+
+                    inclueBestDetail.tviewInfo1.text =
                         doc.select(".meta-etc dd").next().next()[1].text()
-                    inclueBestDetail.tviewInfo3.text =
+                    inclueBestDetail.tviewInfo2.text =
                         doc.select(".meta-etc dd").next().next()[2].text()
-                    inclueBestDetail.tviewInfo4.text =
-                        doc.select(".meta-etc dt").next()[2].text()
+
+                    inclueBestDetail.llayoutTab3.visibility = View.GONE
+                    inclueBestDetail.llayoutTab4.visibility = View.GONE
+                    inclueBestDetail.viewTab4.visibility = View.GONE
+                    inclueBestDetail.viewTab3.visibility = View.GONE
 
                     tviewIntro.text = doc.select(".story").text()
                 }
@@ -635,12 +646,17 @@ class ActivityBestDetail : AppCompatActivity() {
                             bookWriter = it.athrnm
 
                             inclueBestDetail.tviewTitle.text = bookTitle
+                            tviewToolbar.text = bookTitle
                             inclueBestDetail.tviewWriter.text = bookWriter
 
                             inclueBestDetail.tviewInfo.text = "장르 :  ${it.lgctgrNm}"
-                            inclueBestDetail.tviewInfo2.text = it.inqrCnt
+
+                            inclueBestDetail.tviewInfo1.text = it.inqrCnt
+                            inclueBestDetail.tviewInfo2.text = it.goodCnt
                             inclueBestDetail.tviewInfo3.text = it.intrstCnt
-                            inclueBestDetail.tviewInfo4.text = it.goodCnt
+
+                            inclueBestDetail.llayoutTab4.visibility = View.GONE
+                            inclueBestDetail.viewTab4.visibility = View.GONE
 
                             tviewIntro.text = it.lnIntro
 
@@ -660,7 +676,7 @@ class ActivityBestDetail : AppCompatActivity() {
                                 }
 
                                 for (item in keyword) {
-                                    typeItems.add(BestType("#${item}", ""))
+                                    typeItems.add(BestType("#${item.hashtagNm}", ""))
                                 }
                                 adapterType.notifyDataSetChanged()
                             }

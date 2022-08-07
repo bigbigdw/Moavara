@@ -89,9 +89,17 @@ class OnestoreBookDetailContents {
     @SerializedName("tagList")
     @Expose
     var tagList: List<OnestoreBookDetailKeywords>? = null
+
+    @SerializedName("commentCount")
+    @Expose
+    var commentCount: String = ""
+
+    @SerializedName("ratingPaticpersCount")
+    @Expose
+    var ratingPaticpersCount: String = ""
 }
 
-class OnestoreBookDetailKeywords{
+class OnestoreBookDetailKeywords {
     @SerializedName("tagNm")
     @Expose
     var tagNm: String = ""
@@ -103,7 +111,7 @@ class OnestoreBookDetailComment {
     var params: OnestoreBookDetailCommentContents? = null
 }
 
-class OnestoreBookDetailCommentContents{
+class OnestoreBookDetailCommentContents {
     @SerializedName("commentList")
     @Expose
     var commentList: List<OnestoreBookDetailCommentContentsList>? = null
@@ -125,13 +133,13 @@ class BestMoonpiaResult {
     val api: BestMoonpiaContents? = null
 }
 
-class BestMoonpiaContents{
+class BestMoonpiaContents {
     @SerializedName("items")
     @Expose
     val items: List<BestMoonpiaContentsItems>? = null
 }
 
-class BestMoonpiaContentsItems{
+class BestMoonpiaContentsItems {
     @SerializedName("author")
     @Expose
     var author: String = ""
@@ -185,7 +193,7 @@ class BestToksodaResult {
     val resultList: List<BestToksodaToksodaResultList>? = null
 }
 
-class BestToksodaToksodaResultList{
+class BestToksodaToksodaResultList {
     @SerializedName("athrnm")
     @Expose
     var athrnm: String = ""
@@ -233,7 +241,7 @@ class BestToksodaDetailResult {
     val result: BestToksodaDetailResultContents? = null
 }
 
-class BestToksodaDetailResultContents{
+class BestToksodaDetailResultContents {
     @SerializedName("athrnm")
     @Expose
     var athrnm: String = ""
@@ -287,13 +295,13 @@ class BestToksodaDetailCommentResult {
     val result: BestToksodaDetailCommentContents? = null
 }
 
-class BestToksodaDetailCommentContents{
+class BestToksodaDetailCommentContents {
     @SerializedName("commentList")
     @Expose
     val commentList: List<BestToksodaDetailCommentList>? = null
 }
 
-class BestToksodaDetailCommentList{
+class BestToksodaDetailCommentList {
     @SerializedName("cmntCntts")
     @Expose
     var cmntCntts: String = ""
@@ -309,7 +317,7 @@ class BestToksodaSearchResult {
     val resultList: List<BestToksodaSearchList>? = null
 }
 
-class BestToksodaSearchList{
+class BestToksodaSearchList {
     @SerializedName("BOOK_NM")
     @Expose
     var BOOK_NM: String = ""
@@ -349,7 +357,7 @@ class BestBannerListResult {
     val resultList: List<BestBannerListContents>? = null
 }
 
-class BestBannerListContents{
+class BestBannerListContents {
     @SerializedName("imgPath")
     @Expose
     var imgPath: String = ""

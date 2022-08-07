@@ -326,7 +326,7 @@ object Mining {
 
     }
 
-    fun getNaverChallenge(genre: String) {
+    private fun getNaverChallenge(genre: String) {
         try {
             val doc: Document =
                 Jsoup.connect(Genre.setNaverChallengeGenre(genre)).post()
@@ -393,7 +393,7 @@ object Mining {
         }
     }
 
-    fun getNaverBest(genre: String) {
+    private fun getNaverBest(genre: String) {
         try {
 
             val doc: Document =
@@ -612,7 +612,7 @@ object Mining {
         }
     }
 
-    fun getKakaoStageBest(genre: String) {
+    private fun getKakaoStageBest(genre: String) {
         val KakaoRef: MutableMap<String?, Any> = HashMap()
 
         val apiKakao = RetrofitKaKao()
@@ -705,7 +705,7 @@ object Mining {
             })
     }
 
-    fun getKakaoBest(genre: String) {
+    private fun getKakaoBest(genre: String) {
         val apiKakao = RetrofitKaKao()
         val param: MutableMap<String?, Any> = HashMap()
         val KakaoRef: MutableMap<String?, Any> = HashMap()
@@ -1022,7 +1022,7 @@ object Mining {
 
     }
 
-    fun getMoonpiaBest() {
+    private fun getMoonpiaBest() {
         val MoonpiaRef: MutableMap<String?, Any> = HashMap()
 
         val apiMoonPia = RetrofitMoonPia()
@@ -1116,7 +1116,7 @@ object Mining {
             })
     }
 
-    fun getToksodaBest(genre: String) {
+    private fun getToksodaBest(genre: String) {
         val ToksodaRef: MutableMap<String?, Any> = HashMap()
 
         val apiToksoda = RetrofitToksoda()

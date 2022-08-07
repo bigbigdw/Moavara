@@ -17,7 +17,6 @@ import com.github.mikephil.charting.data.RadarDataSet
 import com.github.mikephil.charting.data.RadarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet
-import java.util.*
 
 class InnerFragmentBestDetailRadar(
     BookItem: ArrayList<BookListDataBestAnalyze>,
@@ -48,7 +47,7 @@ class InnerFragmentBestDetailRadar(
         val view = binding.root
 
         if (platform == "Joara" || platform == "Joara_Nobless" || platform == "Joara_Premium") {
-            labels = arrayOf("조회 수", "선호작 수", "추천 수", "트로피")
+            labels = arrayOf("조회", "선호작", "추천 수",  "순위")
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
@@ -59,7 +58,7 @@ class InnerFragmentBestDetailRadar(
             entriesCurrent.add(RadarEntry(valCur3.toFloat()))
             entriesCurrent.add(RadarEntry(numberAvg.toFloat()))
         } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver") {
-            labels = arrayOf("조회 수", "선호작 수", "추천 수", "트로피")
+            labels = arrayOf("별점", "조회", "관심", "순위")
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
@@ -70,7 +69,7 @@ class InnerFragmentBestDetailRadar(
             entriesCurrent.add(RadarEntry(valCur3.toFloat()))
             entriesCurrent.add(RadarEntry(numberAvg.toFloat()))
         } else if (platform == "Kakao") {
-            labels = arrayOf("조회 수", "선호작 수", "추천 수", "트로피" ,"댓글 수")
+            labels = arrayOf("조회 수", "선호작 수", "별점" ,"댓글 수" , "순위")
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
@@ -96,7 +95,7 @@ class InnerFragmentBestDetailRadar(
             entriesCurrent.add(RadarEntry(valCur4.toFloat()))
             entriesCurrent.add(RadarEntry(numberAvg.toFloat()))
         } else if (platform == "Ridi") {
-            labels = arrayOf("조회 수", "선호작 수", "추천 수", "트로피")
+            labels = arrayOf("추천", "평점", "순위")
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
@@ -116,7 +115,7 @@ class InnerFragmentBestDetailRadar(
             entriesCurrent.add(RadarEntry(valCur3.toFloat()))
             entriesCurrent.add(RadarEntry(numberAvg.toFloat()))
         } else if (platform == "Munpia") {
-            labels = arrayOf("조회 수", "선호작 수", "추천 수", "트로피" ,"댓글 수")
+            labels = arrayOf("히트", "조회", "선호", "베스트 시간" ,"순위")
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
@@ -129,8 +128,7 @@ class InnerFragmentBestDetailRadar(
             entriesCurrent.add(RadarEntry(valCur4.toFloat()))
             entriesCurrent.add(RadarEntry(numberAvg.toFloat()))
         } else if (platform == "Toksoda") {
-            labels = arrayOf("조회 수", "선호작 수", "추천 수", "트로피" ,"댓글 수")
-            entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
+            labels = arrayOf("찜", "조회", "선호작", "순위")
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
@@ -139,7 +137,6 @@ class InnerFragmentBestDetailRadar(
             entriesCurrent.add(RadarEntry(valCur1.toFloat()))
             entriesCurrent.add(RadarEntry(valCur2.toFloat()))
             entriesCurrent.add(RadarEntry(valCur3.toFloat()))
-            entriesCurrent.add(RadarEntry(valCur4.toFloat()))
             entriesCurrent.add(RadarEntry(numberAvg.toFloat()))
         }
 

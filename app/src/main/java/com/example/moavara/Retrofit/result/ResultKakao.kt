@@ -281,6 +281,11 @@ class KakaoStageBestBookResult {
     @SerializedName("thumbnail")
     @Expose
     lateinit var thumbnail: KakaoStageBestBookThumbnail
+
+    @SerializedName("episodeLikeCount")
+    @Expose
+    var episodeLikeCount: String = ""
+
 }
 
 class KakaoStageBestBookNickname {

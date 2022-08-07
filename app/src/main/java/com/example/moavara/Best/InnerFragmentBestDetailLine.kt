@@ -61,14 +61,15 @@ class InnerFragmentBestDetailLine(
         } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver") {
             for (i in BookItem.indices) {
                 dateList.add(BookItem[i].date.substring(4))
-                entryList.add(BarEntry(i.toFloat(), BookItem[i].info1.replace("조회 수 : ", "").toFloat()))
-                entryList2.add(BarEntry(i.toFloat(), BookItem[i].info2.replace("선호작 수 : ", "").toFloat()))
-                entryList3.add(BarEntry(i.toFloat(), BookItem[i].info3.replace("추천 수 : ", "").toFloat()))
+                entryList.add(BarEntry(i.toFloat(), BookItem[i].info1.toFloat()))
+                entryList2.add(BarEntry(i.toFloat(), BookItem[i].info2.toFloat()))
+                entryList3.add(BarEntry(i.toFloat(), BookItem[i].info3.toFloat()))
             }
 
-            items.add(BestLineChart(dateList, entryList, "편당 댓글 수", "#00dc64"))
-            items.add(BestLineChart(dateList, entryList2, "편당 조회 수", "#00dc64"))
-            items.add(BestLineChart(dateList, entryList3, "편당 추천 수", "#00dc64"))
+            items.add(BestLineChart(dateList, entryList, "별점 수", "#00dc64"))
+            items.add(BestLineChart(dateList, entryList2, "조회 수", "#00dc64"))
+            items.add(BestLineChart(dateList, entryList3, "관심 수", "#00dc64"))
+
             adapterChart?.notifyDataSetChanged()
         } else if (platform == "Kakao") {
             for (i in BookItem.indices) {
@@ -76,13 +77,15 @@ class InnerFragmentBestDetailLine(
                 entryList.add(BarEntry(i.toFloat(), BookItem[i].info1.replace("조회 수 : ", "").toFloat()))
                 entryList2.add(BarEntry(i.toFloat(), BookItem[i].info2.replace("추천 수 : ", "").toFloat()))
                 entryList3.add(BarEntry(i.toFloat(), BookItem[i].info3.replace("평점 : ", "").toFloat()))
-//                entryList4.add(BarEntry(i.toFloat(), BookItem[i].info4.replace("조회 수 : ", "").toFloat()))
+                //TODO:
+//                entryList4.add(BarEntry(i.toFloat(), BookItem[i].info3.replace("댓글 수 : ", "").toFloat()))
             }
 
-            items.add(BestLineChart(dateList, entryList, "편당 댓글 수", "#ffd200"))
-            items.add(BestLineChart(dateList, entryList2, "편당 조회 수", "#ffd200"))
-            items.add(BestLineChart(dateList, entryList3, "편당 추천 수", "#ffd200"))
-//            items.add(BestChart(dateList, entryList4, "편당 추천 수", "#EDE6FD"))
+            items.add(BestLineChart(dateList, entryList, "조회 수", "#ffd200"))
+            items.add(BestLineChart(dateList, entryList2, "추천 수", "#ffd200"))
+            items.add(BestLineChart(dateList, entryList3, "평점 수", "#ffd200"))
+            //TODO:
+//            items.add(BestLineChart(dateList, entryList4, "댓글 수", "#20459e"))
             adapterChart?.notifyDataSetChanged()
         } else if (platform == "Kakao_Stage") {
             for (i in BookItem.indices) {
@@ -90,13 +93,13 @@ class InnerFragmentBestDetailLine(
                 entryList.add(BarEntry(i.toFloat(), BookItem[i].info1.replace("조회 수 : ", "").toFloat()))
                 entryList2.add(BarEntry(i.toFloat(), BookItem[i].info2.replace("추천 수 : ", "").toFloat()))
                 entryList3.add(BarEntry(i.toFloat(), BookItem[i].info3.replace("평점 : ", "").toFloat()))
-                entryList4.add(BarEntry(i.toFloat(), BookItem[i].info4.replace("조회 수 : ", "").toFloat()))
+                entryList4.add(BarEntry(i.toFloat(), BookItem[i].info4.replace("댓글 수 : ", "").toFloat()))
             }
 
-            items.add(BestLineChart(dateList, entryList, "편당 댓글 수", "#ffd200"))
-            items.add(BestLineChart(dateList, entryList2, "편당 조회 수", "#ffd200"))
-            items.add(BestLineChart(dateList, entryList3, "편당 추천 수", "#ffd200"))
-            items.add(BestLineChart(dateList, entryList4, "편당 추천 수", "#ffd200"))
+            items.add(BestLineChart(dateList, entryList, "조회 수", "#ffd200"))
+            items.add(BestLineChart(dateList, entryList2, "추천 수", "#ffd200"))
+            items.add(BestLineChart(dateList, entryList3, "평점 수", "#ffd200"))
+            items.add(BestLineChart(dateList, entryList4, "댓글 수", "#ffd200"))
             adapterChart?.notifyDataSetChanged()
         } else if (platform == "Ridi") {
             for (i in BookItem.indices) {
@@ -105,8 +108,8 @@ class InnerFragmentBestDetailLine(
                 entryList2.add(BarEntry(i.toFloat(), BookItem[i].info2.replace("평점 : ", "").replace("점", "").toFloat()))
             }
 
-            items.add(BestLineChart(dateList, entryList, "편당 댓글 수", "#1f8ce6"))
-            items.add(BestLineChart(dateList, entryList2, "편당 조회 수", "#1f8ce6"))
+            items.add(BestLineChart(dateList, entryList, "추천 수", "#1f8ce6"))
+            items.add(BestLineChart(dateList, entryList2, "평점 수", "#1f8ce6"))
         } else if (platform == "OneStore") {
             for (i in BookItem.indices) {
                 dateList.add(BookItem[i].date.substring(4))
@@ -128,10 +131,10 @@ class InnerFragmentBestDetailLine(
                 entryList4.add(BarEntry(i.toFloat(), BookItem[i].info4.toFloat()))
             }
 
-            items.add(BestLineChart(dateList, entryList, "편당 댓글 수", "#5f9bd1"))
-            items.add(BestLineChart(dateList, entryList2, "편당 조회 수", "#5f9bd1"))
-            items.add(BestLineChart(dateList, entryList3, "편당 추천 수", "#5f9bd1"))
-            items.add(BestLineChart(dateList, entryList4, "편당 추천 수", "#5f9bd1"))
+            items.add(BestLineChart(dateList, entryList, "히트 수", "#5f9bd1"))
+            items.add(BestLineChart(dateList, entryList2, "조회 수", "#5f9bd1"))
+            items.add(BestLineChart(dateList, entryList3, "선호 수", "#5f9bd1"))
+            items.add(BestLineChart(dateList, entryList4, "베스트 시간", "#5f9bd1"))
             adapterChart?.notifyDataSetChanged()
         } else if (platform == "Toksoda") {
             for (i in BookItem.indices) {
@@ -139,13 +142,11 @@ class InnerFragmentBestDetailLine(
                 entryList.add(BarEntry(i.toFloat(), BookItem[i].info1.toFloat()))
                 entryList2.add(BarEntry(i.toFloat(), BookItem[i].info2.toFloat()))
                 entryList3.add(BarEntry(i.toFloat(), BookItem[i].info3.toFloat()))
-//                entryList4.add(BarEntry(i.toFloat(), BookItem[i].info4.toFloat()))
             }
 
-            items.add(BestLineChart(dateList, entryList, "편당 댓글 수", "#ff442c"))
-            items.add(BestLineChart(dateList, entryList2, "편당 조회 수", "#ff442c"))
-            items.add(BestLineChart(dateList, entryList3, "편당 추천 수", "#ff442c"))
-//            items.add(BestChart(dateList, entryList4, "편당 추천 수", "#ff442c"))
+            items.add(BestLineChart(dateList, entryList, "찜 수", "#ff442c"))
+            items.add(BestLineChart(dateList, entryList2, "조회 수", "#ff442c"))
+            items.add(BestLineChart(dateList, entryList3, "선호작 수", "#ff442c"))
             adapterChart?.notifyDataSetChanged()
         }
 

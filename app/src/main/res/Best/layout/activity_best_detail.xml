@@ -102,6 +102,7 @@
                                     android:paddingTop="16dp"
                                     android:paddingEnd="16dp"
                                     android:paddingBottom="24dp">
+
                                     <TextView
                                         android:id="@+id/tviewIntro"
                                         android:layout_width="match_parent"
@@ -109,7 +110,6 @@
                                         android:breakStrategy="high_quality"
                                         android:ellipsize="end"
                                         android:fontFamily="@font/pretendardvariable"
-                                        android:text="@string/Common_BookIntro"
                                         android:textColor="#EDE6FD"
                                         android:textSize="14sp" />
                                 </LinearLayout>

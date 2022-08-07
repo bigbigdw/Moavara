@@ -114,7 +114,7 @@
                     android:layout_marginBottom="5dp"
                     android:contentDescription="@string/TODO"
                     android:scaleType="fitXY"
-                    android:src="@drawable/ic_launcher_gray" />
+                    android:src="@drawable/ic_favorites_wt_24px" />
 
                 <TextView
                     android:id="@+id/tviewInfo1"
@@ -154,7 +154,7 @@
                     android:layout_marginBottom="5dp"
                     android:contentDescription="@string/TODO"
                     android:scaleType="fitXY"
-                    android:src="@drawable/ic_launcher_gray" />
+                    android:src="@drawable/ic_recommend_wt_24px" />
 
                 <TextView
                     android:id="@+id/tviewInfo2"
@@ -194,7 +194,7 @@
                     android:layout_marginBottom="5dp"
                     android:contentDescription="@string/TODO"
                     android:scaleType="fitXY"
-                    android:src="@drawable/ic_launcher_gray" />
+                    android:src="@drawable/ic_hits_wt_24px" />
 
                 <TextView
                     android:id="@+id/tviewInfo3"
