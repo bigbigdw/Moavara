@@ -42,7 +42,7 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
     var arrayCarousel = ArrayList<BookListDataBest>()
     private val itemWeek = ArrayList<ArrayList<BookListDataBest>?>()
     private var obj = JSONObject()
-    private var month = 0
+    private var originalMonth = 0
     private var originalWeek = 0
     private var weekCount = 0
     val today = DBDate.getDateData(DBDate.DateMMDD())
@@ -66,7 +66,7 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
 
             val currentDate = DBDate.getDateData(DBDate.DateMMDD())
 
-            month = DBDate.Month().toInt()
+            originalMonth = DBDate.Month().toInt()
             originalWeek = (currentDate?.week ?: 0).toInt()
 
             readJsonList()
@@ -82,7 +82,7 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
         }
 
         with(binding) {
-            tviewWeek.text = "${month + 1}월 ${originalWeek - weekCount}주차"
+            tviewWeek.text = "${originalMonth + 1}월 ${originalWeek - weekCount}주차"
             llayoutAfter.visibility = View.INVISIBLE
 
             if (originalWeek - weekCount == 1) {
@@ -93,33 +93,34 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                 binding.blank.root.visibility = View.VISIBLE
                 binding.llayoutWrap.visibility = View.GONE
 
-                if(month == DBDate.Month().toInt() -2 && originalWeek - weekCount == 2){
+                if(originalMonth == DBDate.Month().toInt() -2 && originalWeek - weekCount == 2){
                     binding.llayoutBefore.visibility = View.INVISIBLE
                 }
 
                 weekCount += 1
 
                 if (originalWeek - weekCount == 0) {
-                    month -= 1
-                    weekCount = 0
+                    originalMonth -= 1
+                    weekCount = -2
                 }
 
                 llayoutAfter.visibility = View.VISIBLE
-                getBestWeekListBefore(month, originalWeek, weekCount)
+                getBestWeekListBefore(originalMonth, originalWeek, weekCount)
             }
 
             llayoutAfter.setOnClickListener {
                 binding.blank.root.visibility = View.VISIBLE
                 binding.llayoutWrap.visibility = View.GONE
-//                if(weekCount < 2){
-//                    llayoutAfter.visibility = View.INVISIBLE
-//                } else {
-//                    llayoutBefore.visibility = View.VISIBLE
-//                }
 
                 weekCount -= 1
-                tviewWeek.text = "${month}월 ${originalWeek - weekCount}주차"
-                getBestWeekListBefore(month, originalWeek, weekCount)
+
+                if (weekCount == -1) {
+                    originalMonth += 1
+                    originalWeek = 2
+                    weekCount = 1
+                }
+
+                getBestWeekListBefore(originalMonth, originalWeek, weekCount)
             }
         }
 
@@ -140,9 +141,10 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                     ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                        if (weekCount == 0) {
+                        if (weekCount == -2) {
                             dataWeek = dataSnapshot.childrenCount.toInt()
                             originalWeek = dataSnapshot.childrenCount.toInt()
+                            weekCount = 1
                         } else {
                             dataWeek = week - count
                         }
@@ -176,13 +178,14 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                                 && dataSnapshot.child(dataWeek.toString()).childrenCount.toString() == day.toString()
                                 && DBDate.Week().toInt() == dataWeek
                             ) {
+                                binding.llayoutAfter.visibility = View.INVISIBLE
 
                                 val itemListCarousel = ArrayList<BookListDataBest>()
 
                                 for (numCarousel in 0..8) {
 
                                     val item: BookListDataBest? =
-                                        dataSnapshot.child(day.toString())
+                                        dataSnapshot.child(dataWeek.toString()).child(day.toString())
                                             .child(numCarousel.toString())
                                             .getValue(BookListDataBest::class.java)
 
