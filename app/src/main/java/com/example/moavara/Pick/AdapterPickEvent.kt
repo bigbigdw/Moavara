@@ -43,9 +43,9 @@ class AdapterPickEvent(items: List<EventData>) :
                     .into(iView)
 
                 tviewTitle.text = item.title
-                tviewPlatform.text = item.type
+                tviewWriter.text = item.type
                 tviewMemo.text = item.memo
-                tviewGenre.text = item.genre
+                tviewInfo1.text = item.genre
 
                     val pos = holder.adapterPosition
                     if (pos != RecyclerView.NO_POSITION) {

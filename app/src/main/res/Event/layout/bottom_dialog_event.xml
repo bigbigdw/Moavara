@@ -29,7 +29,7 @@
                 <WebView
                     android:id="@+id/wView"
                     android:layout_width="match_parent"
-                    android:layout_height="400dp"
+                    android:layout_height="wrap_content"
                     android:background="#00FFFFFF"
                     android:visibility="gone"
                     tools:visibility="visible" />

@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.DataBase.BookListDataBestToday
 import com.example.moavara.Main.mRootRef
-import com.example.moavara.Search.UserPickBook
 import com.example.moavara.Util.Genre
 import com.example.moavara.databinding.FragmentPickTabBinding
 import com.google.firebase.database.DataSnapshot
@@ -60,27 +59,29 @@ class FragmentPickTabNovel : Fragment() {
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (postSnapshot in dataSnapshot.children) {
-                    val group: UserPickBook? =
-                        postSnapshot.getValue(UserPickBook::class.java)
-                    items.add(
-                        BookListDataBest(
-                            group!!.writer,
-                            group.title,
-                            group.bookImg,
-                            group.bookCode,
-                            group.info1,
-                            group.info2,
-                            group.info3,
-                            group.info4,
-                            group.info5,
-                            group.info6,
-                            group.number,
-                            group.date,
-                            group.type,
-                            group.memo
+                    val group: BookListDataBest? =
+                        postSnapshot.getValue(BookListDataBest::class.java)
+                    if (group != null) {
+                        items.add(
+                            BookListDataBest(
+                                group.writer,
+                                group.title,
+                                group.bookImg,
+                                group.bookCode,
+                                group.info1,
+                                group.info2,
+                                group.info3,
+                                group.info4,
+                                group.info5,
+                                group.info6,
+                                group.number,
+                                group.date,
+                                group.type,
+                                group.memo
+                            )
                         )
-                    )
-                    adapter!!.notifyDataSetChanged()
+                    }
+                    adapter?.notifyDataSetChanged()
                 }
             }
             override fun onCancelled(databaseError: DatabaseError) {}
@@ -88,25 +89,23 @@ class FragmentPickTabNovel : Fragment() {
 
         adapter.setOnItemClickListener(object : AdapterPickNovel.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int, type : String) {
-                val item: BookListDataBestToday = adapter.getItem(position)
+                val group: BookListDataBest = adapter.getItem(position)
 
-                val data = BookListDataBestToday(
-                    item.writer,
-                    item.title,
-                    item.bookImg,
-                    item.bookCode,
-                    item.info1,
-                    item.info2,
-                    item.info3,
-                    item.info4,
-                    item.info5,
-                    item.number,
-                    item.numberDiff,
-                    item.date,
-                    item.type,
-                    item.status,
-                    item.trophyCount,
-                    adapter.getMemoEdit()
+                val data = BookListDataBest(
+                    group.writer,
+                    group.title,
+                    group.bookImg,
+                    group.bookCode,
+                    group.info1,
+                    group.info2,
+                    group.info3,
+                    group.info4,
+                    group.info5,
+                    group.info6,
+                    group.number,
+                    group.date,
+                    group.type,
+                    group.memo
                 )
 
                 if(type == "Img"){

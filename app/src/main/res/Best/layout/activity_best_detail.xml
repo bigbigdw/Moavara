@@ -24,7 +24,6 @@
                 android:id="@+id/BookAppBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#f9f9f9"
                 android:theme="@style/AppTheme.AppBarOverlay">
 
                 <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -101,7 +100,7 @@
                                     android:paddingStart="16dp"
                                     android:paddingTop="16dp"
                                     android:paddingEnd="16dp"
-                                    android:paddingBottom="24dp">
+                                    android:paddingBottom="48dp">
 
                                     <TextView
                                         android:id="@+id/tviewIntro"
@@ -132,9 +131,10 @@
                         android:id="@+id/tviewToolbar"
                         android:layout_width="match_parent"
                         android:layout_height="55dp"
+                        android:layout_marginStart="70dp"
+                        android:layout_marginEnd="70dp"
                         android:ellipsize="end"
                         android:gravity="center"
-                        android:maxEms="15"
                         android:text="작품명"
                         android:textColor="#EDE6FD"
                         android:textSize="20sp"

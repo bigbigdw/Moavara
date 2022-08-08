@@ -14,17 +14,16 @@
         android:gravity="bottom"
         android:paddingLeft="16dp"
         android:orientation="horizontal">
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-
+            android:fontFamily="@font/pretendardvariable"
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
-            android:text="마이픽"
+            android:text="PICK!"
             android:textColor="#EDE6FD"
-            android:textSize="20sp"
+            android:textSize="27sp"
             android:textStyle="bold" />
 
         <com.google.android.material.tabs.TabLayout
