@@ -2,8 +2,11 @@ package com.example.moavara.Event
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +23,7 @@ import com.example.moavara.Search.EventData
 import com.example.moavara.Search.UserPickEvent
 import com.example.moavara.Util.Genre
 import com.example.moavara.Util.Param
+import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.BottomDialogEventBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.database.DataSnapshot
@@ -56,12 +60,33 @@ class BottomSheetDialogEvent(
         UID = context?.getSharedPreferences("pref", AppCompatActivity.MODE_PRIVATE)
             ?.getString("UID", "").toString()
 
-        if (tabType == "Joara") {
-            getEventJoara()
+        binding.iview.background = GradientDrawable().apply {
+            setColor(Color.TRANSPARENT)
+            shape = GradientDrawable.RECTANGLE
+            cornerRadii = floatArrayOf(
+                20f.dpToPx(),
+                20f.dpToPx(),
+                20f.dpToPx(),
+                20f.dpToPx(),
+                0f,
+                0f,
+                0f,
+                0f
+            )
         }
 
-        Thread {
+        if ((tabType == "Joara" && !item.link.contains("joaralink://event?event_id=") && !item.link.contains("joaralink://notice?notice_id="))
+            || tabType == "OneStore"
+            || tabType == "Munpia"
+            || (tabType == "Kakao" && item.link.contains("kakaopage://exec?open_web_with_auth/store/event"))
+            || tabType == "Toksoda"
+        ) {
+            Glide.with(mContext).load(item.imgfile).into(binding.iview)
+        } else {
             when (tabType) {
+                "Joara" -> {
+                    getEventJoara()
+                }
                 "Ridi" -> {
                     getEventRidi()
                 }
@@ -72,10 +97,10 @@ class BottomSheetDialogEvent(
                     getEventMrBlue()
                 }
             }
-        }.start()
+        }
 
         with(binding){
-            btnLeft.setOnClickListener {
+            btnRight.setOnClickListener {
                 val group = UserPickEvent(
                     item.link,
                     item.imgfile,
@@ -97,7 +122,7 @@ class BottomSheetDialogEvent(
                 dismiss()
             }
 
-            btnRight.setOnClickListener {
+            btnLeft.setOnClickListener {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getUrl(tabType)))
                 startActivity(intent)
             }
@@ -109,56 +134,60 @@ class BottomSheetDialogEvent(
     }
 
     private fun getEventMrBlue(){
-        val doc: Document = Jsoup.connect(item.link).get()
+        Thread {
+            val doc: Document = Jsoup.connect(item.link).get()
 
-        if(doc.select(".event-html img").size > 1){
-            val mrBlue1 = doc.select(".event-html img").first()!!.absUrl("src")
+            if(doc.select(".event-html img").size > 1){
+                val mrBlue1 = doc.select(".event-html img").first()!!.absUrl("src")
+                requireActivity().runOnUiThread {
+                    Glide.with(mContext)
+                        .load(mrBlue1.replace("http", "https"))
+                        .into(binding.iview)
+                }
+            } else if(doc.select(".event-html img").size < 1) {
 
-            requireActivity().runOnUiThread {
-                Glide.with(mContext)
-                    .load(mrBlue1.replace("http", "https"))
-                    .into(binding.iview)
+                val mrBlue2 = doc.select(".event-visual img").first()!!.absUrl("src")
+                title = item.title
+
+                requireActivity().runOnUiThread {
+                    Glide.with(mContext)
+                        .load(mrBlue2)
+                        .into(binding.iview)
+                }
             }
-        } else if(doc.select(".event-html img").size < 1) {
-
-            val mrBlue2 = doc.select(".event-visual img").first()!!.absUrl("src")
-
-            requireActivity().runOnUiThread {
-                Glide.with(mContext)
-                    .load(mrBlue2)
-                    .into(binding.iview)
-            }
-        }
-
-        title = item.title
-
-
+        }.start()
     }
 
     private fun getEventRidi(){
-        val doc: Document = Jsoup.connect(item.link).get()
-        val ridi = doc.select(".event_detail_top img").first()!!.absUrl("src")
+        Log.d("####", item.link)
 
-        title = item.title
+        Thread {
+            val doc: Document = Jsoup.connect(item.link).get()
+            val ridi = doc.select(".event_detail_top img").first()!!.absUrl("src")
 
-        requireActivity().runOnUiThread {
-            Glide.with(mContext)
-                .load(ridi)
-                .into(binding.iview)
-        }
+            title = item.title
+
+            requireActivity().runOnUiThread {
+                Glide.with(mContext)
+                    .load(ridi)
+                    .into(binding.iview)
+            }
+        }.start()
     }
 
     private fun getEventKakao() {
-        val doc: Document = Jsoup.connect("https://page.kakao.com${item.link}").get()
-        val kakao = doc.select(".themeBox img").first()!!.absUrl("src")
+        Thread {
+            val doc: Document = Jsoup.connect("https://page.kakao.com${item.link}").get()
+            val kakao = doc.select(".themeBox img").first()!!.absUrl("src")
 
-        title = item.title
+            title = item.title
 
-        requireActivity().runOnUiThread {
-            Glide.with(mContext)
-                .load(kakao)
-                .into(binding.iview)
-        }
+            requireActivity().runOnUiThread {
+                Glide.with(mContext)
+                    .load(kakao)
+                    .into(binding.iview)
+            }
+        }.start()
     }
 
     private fun getUrl(type: String): String {
@@ -216,16 +245,15 @@ class BottomSheetDialogEvent(
                 param,
                 object : RetrofitDataListener<JoaraEventDetailResult> {
                     override fun onSuccess(it: JoaraEventDetailResult) {
-                        val content = it.event!!.content
+                        val content = it.event?.content
 
-                        title = it.event.title
-
+                        title = it.event?.title ?: ""
 
                         binding.wView.loadDataWithBaseURL(
                             null,
-                            content.replace("http", "https"),
+                            content?.replace("http://", "https://") ?: "",
                             "text/html; charset=utf-8",
-                            "base64",
+                            "utf-8",
                             null
                         )
                     }

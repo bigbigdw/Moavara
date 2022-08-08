@@ -11,11 +11,11 @@ object Param {
 
         mContext ?: return Param
 
-        Param["api_key"] = "mw_8ba234e7801ba288554ca07ae44c7"
-        Param["ver"] = "2.6.3"
-        Param["device"] = "mw"
-        Param["deviceuid"] = "5127d5951c983034a16980c8a893ac99d16dbef988ee36882b793aa14ad33604"
-        Param["devicetoken"] = "mw"
+        Param["api_key"] = "android_iK3303O982ab8e2391dp9498"
+        Param["ver"] = "2.8.5"
+        Param["device"] = "android"
+        Param["deviceuid"] = "fp9v-165SxOz0bpxl7JxZW%3AAPA91bH7o-VcJ6LKjIDZ44LGUJiymDpM-ks7CJ3nnnQBr1zDTKsc4vaa1OPRIZ6jPEVrT5q4hJ6Q5mdhxB4GMIB9XQL5Lbd4JWlBauQQ8REZpc0y6fbjpE7V1mq1xTP4CUMTtQqvtABJ"
+        Param["devicetoken"] = "NULL"
 
         return Param
     }

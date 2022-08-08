@@ -1,5 +1,6 @@
 package com.example.moavara.Best
 
+import android.R.id
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
@@ -7,9 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.commit
@@ -26,9 +25,12 @@ import com.example.moavara.Util.Param
 import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.ActivityBestDetailBinding
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
@@ -52,15 +54,15 @@ class ActivityBestDetail : AppCompatActivity() {
     private val typeItems = ArrayList<BestType>()
 
     val data = ArrayList<BookListDataBestAnalyze>()
-    val lp = LinearLayout.LayoutParams(
-        ViewGroup.LayoutParams.WRAP_CONTENT,
-        ViewGroup.LayoutParams.WRAP_CONTENT
-    )
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityBestDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        firebaseAnalytics = Firebase.analytics
 
         bookCode = intent.getStringExtra("BookCode") ?: ""
         platform = intent.getStringExtra("Type") ?: ""
@@ -71,6 +73,10 @@ class ActivityBestDetail : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         genre = Genre.getGenre(this).toString()
+
+        val bundle = Bundle()
+        bundle.putString("test", "ActivityBestDetail")
+        firebaseAnalytics.logEvent("test", bundle)
 
         binding.llayoutBtnRight.background = GradientDrawable().apply {
             setColor(Color.parseColor("#621CEF"))

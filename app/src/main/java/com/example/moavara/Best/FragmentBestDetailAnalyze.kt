@@ -56,11 +56,6 @@ class FragmentBestDetailAnalyze(
             replace(R.id.InnerFragmentBestDetailLine, mInnerFragmentBestDetailLine)
         }
 
-//        mInnerFragmentBestDetailData = InnerFragmentBestDetailData(BookItem, platform)
-//        childFragmentManager.commit {
-//            replace(R.id.InnerFragmentBestDetailData, mInnerFragmentBestDetailData)
-//        }
-
         return view
     }
 

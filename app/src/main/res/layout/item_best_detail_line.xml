@@ -42,7 +42,7 @@
             android:gravity="center_horizontal|center_vertical"
             android:text="날짜"
             android:textAlignment="center"
-            android:textColor="#FDFDFD"
+            android:textColor="#621CEF"
             android:textSize="14sp"
             android:textStyle="bold" />
 
@@ -61,7 +61,7 @@
             android:gravity="center_horizontal|center_vertical"
             android:text="베스트"
             android:textAlignment="center"
-            android:textColor="#FDFDFD"
+            android:textColor="#621CEF"
             android:textSize="14sp"
             android:textStyle="bold" />
 

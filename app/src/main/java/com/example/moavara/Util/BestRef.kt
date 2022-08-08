@@ -113,6 +113,30 @@ object BestRef {
         )
     }
 
+    fun typeListTitleEvent(): List<String> {
+        return listOf(
+            "조아라",
+            "카카오",
+            "리디북스",
+            "원스토리",
+            "문피아",
+            "톡소다",
+            "미스터블루",
+        )
+    }
+
+    fun typeListEvent(): List<String> {
+        return listOf(
+            "Joara",
+            "Kakao",
+            "Ridi",
+            "OneStore",
+            "Munpia",
+            "Toksoda",
+            "MrBlue"
+        )
+    }
+
 
     fun setBookCode(type: String, genre: String, bookCode: String): DatabaseReference {
         return if(type == "Munpia"){

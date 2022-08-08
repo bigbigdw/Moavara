@@ -125,7 +125,7 @@ class AdapterBestMonth(
                     isSelectBook(items.sun, llayoutCover1)
                     iviewBookImg1.visibility = View.VISIBLE
 
-                    if (((today?.week ?: 0) - 1) == position && today?.date == 1) {
+                    if (((today?.week ?: 0) - 1) == position && today?.date == 1 && monthCount == 0) {
                         llayoutWrap1.background = todayMark()
                     } else {
                         llayoutWrap1.background = null

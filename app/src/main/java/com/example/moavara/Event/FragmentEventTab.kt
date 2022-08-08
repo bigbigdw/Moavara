@@ -3,6 +3,7 @@ package com.example.moavara.Event
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -63,9 +64,6 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                 "Kakao" -> {
                     getEventKakao()
                 }
-                "Naver" -> {
-                    getEventNaver()
-                }
                 "MrBlue" -> {
                     getEventMrBlue()
                 }
@@ -114,34 +112,37 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
 
                     val banner = data.banner
 
-                    for (i in banner!!.indices) {
+                    if (banner != null) {
+                        for (i in banner.indices) {
 
-                        val idx = banner[i].joaralink
-                        val imgfile = banner[i].imgfile
+                            val idx = banner[i].joaralink
+                            val imgfile = banner[i].imgfile.replace("http://", "https://")
 
+                            Log.d("####", imgfile)
 
-                        if (i % 2 == 1) {
-                            itemsRight.add(
-                                EventData(
-                                    idx,
-                                    imgfile,
-                                    "",
-                                    "",
-                                    "",
-                                    "Joara"
+                            if (i % 2 == 1) {
+                                itemsRight.add(
+                                    EventData(
+                                        idx,
+                                        imgfile,
+                                        "",
+                                        "",
+                                        "Joara",
+                                        ""
+                                    )
                                 )
-                            )
-                        } else {
-                            itemsLeft.add(
-                                EventData(
-                                    idx,
-                                    imgfile,
-                                    "",
-                                    "",
-                                    "",
-                                    "Joara"
+                            } else {
+                                itemsLeft.add(
+                                    EventData(
+                                        idx,
+                                        imgfile,
+                                        "",
+                                        "",
+                                        "Joara",
+                                        ""
+                                    )
                                 )
-                            )
+                            }
                         }
                     }
 
@@ -149,47 +150,6 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                     adapterRight.notifyDataSetChanged()
                 }
             })
-    }
-
-    private fun getEventNaver() {
-        val doc: Document = Jsoup.connect("https://www.mrblue.com/event/novel?sortby=recent").get()
-        val mrBlue: Elements = doc.select(".event-list ul li")
-
-        for (i in mrBlue.indices) {
-
-            val imgfile = mrBlue.select("img")[i].absUrl("src")
-            val title = mrBlue.select("img")[i].absUrl("alt")
-            val link = mrBlue.select("a")[i].absUrl("href")
-
-            requireActivity().runOnUiThread {
-                if (i % 2 != 1) {
-                    itemsLeft.add(
-                        EventData(
-                            link,
-                            imgfile,
-                            title,
-                            "",
-                            "",
-                            "MrBlue"
-                        )
-                    )
-                    adapterLeft.notifyDataSetChanged()
-                } else {
-                    itemsRight.add(
-                        EventData(
-                            link,
-                            imgfile,
-                            title,
-                            "",
-                            "",
-                            "MrBlue"
-                        )
-                    )
-                    adapterRight.notifyDataSetChanged()
-                }
-            }
-
-        }
     }
 
     private fun getEventMrBlue() {
@@ -210,8 +170,8 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                             imgfile,
                             title.replace("https://www.mrblue.com/event/",""),
                             "",
-                            "",
-                            "MrBlue"
+                            "MrBlue",
+                            ""
                         )
                     )
                     adapterLeft.notifyDataSetChanged()
@@ -222,8 +182,8 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                             imgfile,
                             title.replace("https://www.mrblue.com/event/",""),
                             "",
-                            "",
-                            "MrBlue"
+                            "MrBlue",
+                            ""
                         )
                     )
                     adapterRight.notifyDataSetChanged()
@@ -251,8 +211,8 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                             imgfile,
                             title,
                             "",
-                            "",
-                            "Ridi"
+                            "Ridi",
+                            ""
                         )
                     )
                     adapterLeft.notifyDataSetChanged()
@@ -263,8 +223,8 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                             imgfile,
                             title,
                             "",
-                            "",
-                            "Ridi"
+                            "Ridi",
+                            ""
                         )
                     )
                     adapterRight.notifyDataSetChanged()
@@ -293,8 +253,8 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                             "https:${imgfile}",
                             title,
                             "",
-                            "",
-                            "Munpia"
+                            "Munpia",
+                            ""
                         )
                     )
 
@@ -306,8 +266,8 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                             "https:${imgfile}",
                             title,
                             "",
-                            "",
-                            "Munpia"
+                            "Munpia",
+                            ""
                         )
                     )
                     adapterRight.notifyDataSetChanged()
@@ -332,7 +292,7 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                             imgfile,
                             "",
                             "",
-                            "",
+                            "OneStore",
                             ""
                         )
                     )
@@ -344,7 +304,7 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                             imgfile,
                             "",
                             "",
-                            "",
+                            "OneStore",
                             ""
                         )
                     )
@@ -374,8 +334,8 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                             "https://$imgfile",
                             title,
                             "",
-                            "",
-                            "Kakao"
+                            "Kakao",
+                            ""
                         )
                     )
                     adapterLeft.notifyDataSetChanged()
@@ -388,8 +348,8 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                             "https://$imgfile",
                             title,
                             "",
-                            "",
-                            "Kakao"
+                            "Kakao",
+                            ""
                         )
                     )
                     adapterRight.notifyDataSetChanged()
@@ -430,8 +390,8 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                                         imgfile,
                                         title,
                                         "",
-                                        "",
-                                        "Toksoda"
+                                        "Toksoda",
+                                        ""
                                     )
                                 )
                                 adapterLeft.notifyDataSetChanged()
@@ -444,8 +404,8 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                                         imgfile,
                                         title,
                                         "",
-                                        "",
-                                        "Toksoda"
+                                        "Toksoda",
+                                        ""
                                     )
                                 )
                                 adapterRight.notifyDataSetChanged()
@@ -459,22 +419,8 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
     }
 
     private fun onClickEvent(item: EventData){
-        if (tabType == "Joara" && !item.link.contains("joaralink://event?event_id=") && !item.link.contains("joaralink://notice?notice_id=")) {
-            Toast.makeText(requireContext(), "이벤트 페이지가 아닙니다.", Toast.LENGTH_SHORT).show()
-        } else if (tabType == "OneStore") {
-            Toast.makeText(requireContext(), "이벤트 페이지가 아닙니다.", Toast.LENGTH_SHORT).show()
-        }else if (tabType == "Munpia") {
-            Toast.makeText(requireContext(), "이벤트 페이지가 아닙니다.", Toast.LENGTH_SHORT).show()
-        } else if (tabType == "Kakao" && item.link.contains("kakaopage://exec?open_web_with_auth/store/event")) {
-            Toast.makeText(requireContext(), "이벤트 페이지가 아닙니다.", Toast.LENGTH_SHORT).show()
-        } else if (tabType == "Toksoda") {
-            Toast.makeText(requireContext(), "톡소다는 지원하지 않습니다.", Toast.LENGTH_SHORT).show()
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(item.link))
-            startActivity(intent)
-        } else {
-            val mBottomSheetDialogEvent =
-                BottomSheetDialogEvent(requireContext(), item, tabType)
-            fragmentManager?.let { mBottomSheetDialogEvent.show(it, null) }
-        }
+        val mBottomSheetDialogEvent =
+            BottomSheetDialogEvent(requireContext(), item, tabType)
+        fragmentManager?.let { mBottomSheetDialogEvent.show(it, null) }
     }
 }

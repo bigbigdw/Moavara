@@ -6,97 +6,97 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
+        android:id="@+id/llayoutWrap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="500dp"
-            android:maxWidth="500dp"
-            android:orientation="vertical"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
-            <androidx.core.widget.NestedScrollView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fillViewport="true">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="56dp"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <LinearLayout
+                <WebView
+                    android:id="@+id/wView"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:background="#00FFFFFF"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+                <ImageView
+                    android:id="@+id/iview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="bottom"
-                    android:orientation="vertical">
+                    android:adjustViewBounds="true" />
 
-                    <ImageView
-                        android:id="@+id/iview"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="40dp"
-                        android:adjustViewBounds="true" />
-
-                    <WebView
-                        android:id="@+id/wView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="#000000"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
-                </LinearLayout>
-            </androidx.core.widget.NestedScrollView>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rviewEvent"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone">
-
-            </androidx.recyclerview.widget.RecyclerView>
-
-        </LinearLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
 
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintBottom_toBottomOf="@+id/llayoutWrap"
+        app:layout_constraintStart_toStartOf="@+id/llayoutWrap">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#888888"
-            tools:layout_editor_absoluteY="19dp">
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <Button
+            <LinearLayout
                 android:id="@+id/btnLeft"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
                 android:layout_weight="1"
-                android:background="#888888"
-                android:text="Pick하기"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                app:backgroundTint="@null" />
+                android:background="#3E424B"
+                android:gravity="center"
+                android:orientation="vertical">
 
-            <Button
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendardvariable"
+                    android:text="페이지 이동"
+                    android:textColor="#A7ACB7"
+                    android:textSize="17sp"
+                    tools:ignore="TextContrastCheck" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/btnRight"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="#00283d"
-                android:text="이벤트 보러가기"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                app:backgroundTint="@null" />
+                android:background="#621CEF"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendardvariable"
+                    android:text="Pick하기"
+                    android:textColor="#EDE6FD"
+                    android:textSize="17sp"
+                    tools:ignore="TextContrastCheck" />
+            </LinearLayout>
+
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
