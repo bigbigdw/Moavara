@@ -9,14 +9,16 @@
     <View
         android:layout_width="1dp"
         android:layout_height="32dp"
-        android:background="#EDE6FD" />
+        android:background="#EDE6FD"
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/tviewData"
@@ -34,14 +36,16 @@
     <View
         android:layout_width="1dp"
         android:layout_height="32dp"
-        android:background="#EDE6FD" />
+        android:background="#EDE6FD"
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="32dp"
         android:layout_weight="1"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/iviewArrow"
@@ -67,6 +71,7 @@
     <View
         android:layout_width="1dp"
         android:layout_height="32dp"
-        android:background="#EDE6FD" />
+        android:background="#EDE6FD"
+        android:visibility="gone" />
 
 </LinearLayout>

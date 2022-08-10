@@ -88,30 +88,38 @@
                                     android:id="@+id/rviewType"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="16dp" />
+                                    android:layout_marginLeft="16dp" >
+
+                                </androidx.recyclerview.widget.RecyclerView>
 
 
-                                <LinearLayout
-                                    android:id="@+id/llayoutIntro"
+                                <androidx.core.widget.NestedScrollView
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginBottom="8dp"
-                                    android:orientation="horizontal"
-                                    android:paddingStart="16dp"
-                                    android:paddingTop="16dp"
-                                    android:paddingEnd="16dp"
-                                    android:paddingBottom="48dp">
+                                    android:layout_height="match_parent"
+                                    android:fillViewport="true">
 
-                                    <TextView
-                                        android:id="@+id/tviewIntro"
+                                    <LinearLayout
+                                        android:id="@+id/llayoutIntro"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:breakStrategy="high_quality"
-                                        android:ellipsize="end"
-                                        android:fontFamily="@font/pretendardvariable"
-                                        android:textColor="#EDE6FD"
-                                        android:textSize="14sp" />
-                                </LinearLayout>
+                                        android:layout_marginBottom="8dp"
+                                        android:orientation="horizontal"
+                                        android:paddingStart="16dp"
+                                        android:paddingTop="16dp"
+                                        android:paddingEnd="16dp"
+                                        android:paddingBottom="48dp">
+
+                                        <TextView
+                                            android:id="@+id/tviewIntro"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:breakStrategy="high_quality"
+                                            android:ellipsize="end"
+                                            android:fontFamily="@font/pretendardvariable"
+                                            android:textColor="#EDE6FD"
+                                            android:textSize="14sp" />
+                                    </LinearLayout>
+                                </androidx.core.widget.NestedScrollView>
 
                             </LinearLayout>
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -135,6 +143,7 @@
                         android:layout_marginEnd="70dp"
                         android:ellipsize="end"
                         android:gravity="center"
+                        android:maxLines="1"
                         android:text="작품명"
                         android:textColor="#EDE6FD"
                         android:textSize="20sp"

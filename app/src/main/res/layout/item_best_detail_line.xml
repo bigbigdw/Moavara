@@ -19,14 +19,16 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_weight="1"
-        android:background="#EDE6FD" />
+        android:background="#EDE6FD"
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#0D0E10"
         android:gravity="right|center_vertical|end"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <View
             android:layout_width="1dp"
@@ -76,14 +78,16 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_weight="1"
-        android:background="#EDE6FD" />
+        android:background="#EDE6FD"
+        android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="#1E1E20">
+        android:background="#1E1E20"
+        android:visibility="gone">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -92,6 +96,7 @@
         android:layout_height="1dp"
         android:layout_marginBottom="30dp"
         android:layout_weight="1"
-        android:background="#EDE6FD" />
+        android:background="#EDE6FD"
+        android:visibility="gone" />
 
 </LinearLayout>

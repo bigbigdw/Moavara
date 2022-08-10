@@ -1,7 +1,6 @@
 package com.example.moavara.Search
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
@@ -122,7 +121,7 @@ class ActivitySearch : AppCompatActivity() {
                                     "조아라",
                                     books[i].subject,
                                     books[i].writer_name,
-                                    books[i].book_img,
+                                    books[i].book_img.replace("http://","https://"),
                                     books[i].bookCode,
                                     "선호작 수 : ${books[i].cntFavorite}",
                                     "조회 수 : ${books[i].cntPageRead}",

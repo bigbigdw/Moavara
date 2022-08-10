@@ -41,15 +41,16 @@ class AdapterBestData(
 
                 if(position > 0){
                     tviewData.text = data.date
-                    tviewData1.text = "${data.info}(${items[position].info.toFloat() - items[position - 1].info.toFloat()})"
 
                     if(items[position].info.toFloat() - items[position - 1].info.toFloat() > 0){
+                        tviewData1.text = "${data.info}(${(items[position].info.toFloat() - items[position - 1].info.toFloat()).toString().replace(".0", "")})"
                         tviewData1.setTextColor(Color.parseColor("#02BC77"))
                         iviewArrow.setImageResource(R.drawable.ic_arrow_drop_up_24px)
                     } else if(items[position].info.toFloat() - items[position - 1].info.toFloat() == 0F){
                         tviewData1.setTextColor(Color.parseColor("#ffffff"))
                         iviewArrow.visibility = View.GONE
                     } else {
+                        tviewData1.text = "${data.info}(${(items[position].info.toFloat() - items[position - 1].info.toFloat()).toString().replace(".0", "")})"
                         tviewData1.setTextColor(Color.parseColor("#FF2366"))
                         iviewArrow.setImageResource(R.drawable.ic_arrow_drop_down_24px)
                     }

@@ -116,7 +116,7 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
                                                 BookListDataBest(
                                                     group.writer,
                                                     group.title,
-                                                    group.bookImg,
+                                                    group.bookImg.replace("http://","https://"),
                                                     group.bookCode,
                                                     group.info1,
                                                     group.info2,

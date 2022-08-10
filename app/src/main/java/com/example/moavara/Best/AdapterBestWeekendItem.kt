@@ -47,7 +47,7 @@ class AdapterBestWeekendItem(
                         tviewWriter.visibility = View.VISIBLE
 
                         Glide.with(root.context)
-                            .load (bookItem.bookImg)
+                            .load (bookItem.bookImg.replace("http://","https://"))
                             .into(iviewImg)
 
                         tviewTitle.text = bookItem.title

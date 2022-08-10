@@ -1,6 +1,5 @@
 package com.example.moavara.Best
 
-import android.R.id
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
@@ -254,7 +253,7 @@ class ActivityBestDetail : AppCompatActivity() {
                             window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
 
                             Glide.with(this@ActivityBestDetail)
-                                .load(data.book.bookImg)
+                                .load(data.book.bookImg.replace("http://","https://"))
                                 .into(inclueBestDetail.iviewBookCover)
 
                             bookTitle = data.book.subject

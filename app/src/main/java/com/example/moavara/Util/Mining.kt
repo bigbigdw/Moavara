@@ -813,7 +813,7 @@ object Mining {
 
                             JoaraRef["writerName"] = books[i].writerName
                             JoaraRef["subject"] = books[i].subject
-                            JoaraRef["bookImg"] = books[i].bookImg
+                            JoaraRef["bookImg"] = books[i].bookImg.replace("http://","https://")
                             JoaraRef["bookCode"] = books[i].bookCode
                             JoaraRef["info1"] = books[i].intro
                             JoaraRef["info2"] = "총 ${books[i].cntChapter}화"
@@ -890,7 +890,7 @@ object Mining {
 
                             JoaraRef["writerName"] = books[i].writerName
                             JoaraRef["subject"] = books[i].subject
-                            JoaraRef["bookImg"] = books[i].bookImg
+                            JoaraRef["bookImg"] = books[i].bookImg.replace("http://","https://")
                             JoaraRef["bookCode"] = books[i].bookCode
                             JoaraRef["info1"] = books[i].intro
                             JoaraRef["info2"] = "총 ${books[i].cntChapter}화"
@@ -969,7 +969,7 @@ object Mining {
                             JoaraRef["status"] = "NEW"
                             JoaraRef["writerName"] = books[i].writerName
                             JoaraRef["subject"] = books[i].subject
-                            JoaraRef["bookImg"] = books[i].bookImg
+                            JoaraRef["bookImg"] = books[i].bookImg.replace("http://","https://")
                             JoaraRef["bookCode"] = books[i].bookCode
                             JoaraRef["info1"] = books[i].intro
                             JoaraRef["info2"] = "총 ${books[i].cntChapter}화"
