@@ -261,10 +261,10 @@ object Genre {
                 "20"
             }
             str == "FANTASY" -> {
-                "1"
+                "1,22"
             }
             str == "ROMANCE" -> {
-                "5"
+                "5,22"
             }
             else -> {
                 "0"
