@@ -1,6 +1,7 @@
 package com.example.moavara.Best
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,9 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moavara.DataBase.BookListDataBestAnalyze
 import com.example.moavara.R
 import com.example.moavara.Search.BestChart
+import com.example.moavara.Search.BestLineChart
 import com.example.moavara.Soon.Best.AdapterChart
 import com.example.moavara.databinding.FragmentBestDetailAnalyzeBinding
 import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.Entry
 
 class FragmentBestDetailAnalyze(
     private val platform: String,
@@ -60,33 +63,39 @@ class FragmentBestDetailAnalyze(
     }
 
     private fun getAnalyzeJoara() {
-        val adapterChartJoara: AdapterChart?
-        val itemsJoara = ArrayList<BestChart>()
+        val adapterChartJoara: AdapterLine?
+        val itemsJoara = ArrayList<BestLineChart>()
 
-        adapterChartJoara = AdapterChart(itemsJoara)
+        adapterChartJoara = AdapterLine(requireContext(), itemsJoara)
         binding.rViewChartJoara.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rViewChartJoara.adapter = adapterChartJoara
 
         val chapter = (context as ActivityBestDetail).chapter
         val dateList = mutableListOf<String>()
-        val entryList2 = mutableListOf<BarEntry>()
-        val entryList3 = mutableListOf<BarEntry>()
-        val entryList: ArrayList<BarEntry> = ArrayList()
+        val entryList2 = mutableListOf<Entry>()
+        val entryList3 = mutableListOf<Entry>()
+        val entryList: ArrayList<Entry> = ArrayList()
         var num = 0
 
         if (chapter != null) {
             for (i in chapter.indices) {
-                dateList.add(chapter[i].sortno + "화")
-                entryList.add(BarEntry(num.toFloat(), chapter[i].cnt_comment.toFloat()))
-                entryList2.add(BarEntry(num.toFloat(), chapter[i].cnt_page_read.toFloat()))
-                entryList3.add(BarEntry(num.toFloat(), chapter[i].cnt_recom.toFloat()))
+
+                if(i == 0 || i == chapter.size - 1){
+                    dateList.add(chapter[i].sortno + "화")
+                } else {
+                    dateList.add("")
+                }
+
+                entryList.add(Entry(num.toFloat(), chapter[i].cnt_comment.toFloat()))
+                entryList2.add(Entry(num.toFloat(), chapter[i].cnt_page_read.toFloat()))
+                entryList3.add(Entry(num.toFloat(), chapter[i].cnt_recom.toFloat()))
                 num += 1
             }
 
-            itemsJoara.add(BestChart(dateList, entryList, "편당 댓글 수", "#621CEF"))
-            itemsJoara.add(BestChart(dateList, entryList2, "편당 조회 수", "#621CEF"))
-            itemsJoara.add(BestChart(dateList, entryList3, "편당 추천 수", "#621CEF"))
+            itemsJoara.add(BestLineChart(dateList, entryList, "편당 댓글 수", "#621CEF"))
+            itemsJoara.add(BestLineChart(dateList, entryList2, "편당 조회 수", "#621CEF"))
+            itemsJoara.add(BestLineChart(dateList, entryList3, "편당 추천 수", "#621CEF"))
             adapterChartJoara.notifyDataSetChanged()
         }
     }

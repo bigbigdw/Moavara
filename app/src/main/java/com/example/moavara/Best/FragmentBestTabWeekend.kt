@@ -224,7 +224,7 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
 
     private fun getBestWeekList() {
 
-        val file = File(File("/storage/self/primary/MOAVARA"), "Week_${platform}.json")
+        val file = File(File("/storage/self/primary/MOAVARA"), "Week_${platform}_${genre}.json")
         if (file.exists()) {
             file.delete()
         }
@@ -312,7 +312,7 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
 
         File("/storage/self/primary/MOAVARA").mkdir()
 
-        val file = File(File("/storage/self/primary/MOAVARA"), "Week_${platform}.json")
+        val file = File(File("/storage/self/primary/MOAVARA"), "Week_${platform}_${genre}.json")
 
         try {
 
@@ -330,7 +330,7 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
     }
 
     fun readJsonList() {
-        val file = File(File("/storage/self/primary/MOAVARA"), "Week_${platform}.json")
+        val file = File(File("/storage/self/primary/MOAVARA"), "Week_${platform}_${genre}.json")
         try {
             val reader = BufferedReader(FileReader(file))
 

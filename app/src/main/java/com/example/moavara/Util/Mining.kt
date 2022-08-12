@@ -244,9 +244,9 @@ object Mining {
                     miningValue(MrBlueRef, i, "MrBlue", genre)
                 }
 
-                File(File("/storage/self/primary/MOAVARA"), "Today_MrBlue.json").delete()
-                File(File("/storage/self/primary/MOAVARA"), "Week_MrBlue.json").delete()
-                File(File("/storage/self/primary/MOAVARA"), "Month_MrBlue.json").delete()
+                File(File("/storage/self/primary/MOAVARA"), "Today_MrBlue_${genre}.json").delete()
+                File(File("/storage/self/primary/MOAVARA"), "Week_MrBlue_${genre}.json").delete()
+                File(File("/storage/self/primary/MOAVARA"), "Month_MrBlue_${genre}.json").delete()
 
             } catch (exception: SocketTimeoutException) {
                 Log.d("EXCEPTION", "MRBLUE")
@@ -315,9 +315,9 @@ object Mining {
                 BestRef.setBookCode("Naver_Today", genre, books[i].bookCode).child("numInfo3").setValue(i)
             }
 
-            File(File("/storage/self/primary/MOAVARA"), "Today_Naver_Today.json").delete()
-            File(File("/storage/self/primary/MOAVARA"), "Week_Naver_Today.json").delete()
-            File(File("/storage/self/primary/MOAVARA"), "Month_Naver_Today.json").delete()
+            File(File("/storage/self/primary/MOAVARA"), "Today_Naver_Today_${genre}.json").delete()
+            File(File("/storage/self/primary/MOAVARA"), "Week_Naver_Today_${genre}.json").delete()
+            File(File("/storage/self/primary/MOAVARA"), "Month_Naver_Today_${genre}.json").delete()
 
 
         } catch (exception: SocketTimeoutException) {
@@ -384,9 +384,9 @@ object Mining {
                 BestRef.setBookCode("Naver_Challenge", genre, books[i].bookCode).child("numInfo3").setValue(i)
             }
 
-            File(File("/storage/self/primary/MOAVARA"), "Today_Naver_Challenge.json").delete()
-            File(File("/storage/self/primary/MOAVARA"), "Week_Naver_Challenge.json").delete()
-            File(File("/storage/self/primary/MOAVARA"), "Month_Naver_Challenge.json").delete()
+            File(File("/storage/self/primary/MOAVARA"), "Today_Naver_Challenge_${genre}.json").delete()
+            File(File("/storage/self/primary/MOAVARA"), "Week_Naver_Challenge_${genre}.json").delete()
+            File(File("/storage/self/primary/MOAVARA"), "Month_Naver_Challenge_${genre}.json").delete()
 
         } catch (exception: SocketTimeoutException) {
             Log.d("EXCEPTION", "NAVER CHALLANGE")
@@ -452,9 +452,9 @@ object Mining {
                 BestRef.setBookCode("Naver", genre, books[i].bookCode).child("numInfo3").setValue(i)
             }
 
-            File(File("/storage/self/primary/MOAVARA"), "Today_Naver.json").delete()
-            File(File("/storage/self/primary/MOAVARA"), "Week_Naver.json").delete()
-            File(File("/storage/self/primary/MOAVARA"), "Month_Naver.json").delete()
+            File(File("/storage/self/primary/MOAVARA"), "Today_Naver_${genre}.json").delete()
+            File(File("/storage/self/primary/MOAVARA"), "Week_Naver_${genre}.json").delete()
+            File(File("/storage/self/primary/MOAVARA"), "Month_Naver_${genre}.json").delete()
 
 
         } catch (exception: SocketTimeoutException) {
@@ -525,9 +525,9 @@ object Mining {
                 BestRef.setBookCode("Ridi", genre, books[i].bookCode).child("numInfo2").setValue(i)
             }
 
-            File(File("/storage/self/primary/MOAVARA"), "Today_Ridi.json").delete()
-            File(File("/storage/self/primary/MOAVARA"), "Week_Ridi.json").delete()
-            File(File("/storage/self/primary/MOAVARA"), "Month_Ridi.json").delete()
+            File(File("/storage/self/primary/MOAVARA"), "Today_Ridi_${genre}.json").delete()
+            File(File("/storage/self/primary/MOAVARA"), "Week_Ridi_${genre}.json").delete()
+            File(File("/storage/self/primary/MOAVARA"), "Month_Ridi_${genre}.json").delete()
 
         } catch (exception: SocketTimeoutException) {
             Log.d("EXCEPTION", "RIDI")
@@ -602,9 +602,9 @@ object Mining {
                             }
                         }
 
-                        File(File("/storage/self/primary/MOAVARA"), "Today_OneStore.json").delete()
-                        File(File("/storage/self/primary/MOAVARA"), "Week_OneStore.json").delete()
-                        File(File("/storage/self/primary/MOAVARA"), "Month_OneStore.json").delete()
+                        File(File("/storage/self/primary/MOAVARA"), "Today_OneStore_${genre}.json").delete()
+                        File(File("/storage/self/primary/MOAVARA"), "Week_OneStore_${genre}.json").delete()
+                        File(File("/storage/self/primary/MOAVARA"), "Month_OneStore_${genre}.json").delete()
                     }
                 })
         } catch (exception: SocketTimeoutException) {
@@ -689,15 +689,15 @@ object Mining {
 
                         File(
                             File("/storage/self/primary/MOAVARA"),
-                            "Today_Kakao_Stage.json"
+                            "Today_Kakao_Stage_${genre}.json"
                         ).delete()
                         File(
                             File("/storage/self/primary/MOAVARA"),
-                            "Week_Kakao_Stage.json"
+                            "Week_Kakao_Stage_${genre}.json"
                         ).delete()
                         File(
                             File("/storage/self/primary/MOAVARA"),
-                            "Month_Kakao_Stage.json"
+                            "Month_Kakao_Stage_${genre}.json"
                         ).delete()
                     }
 
@@ -782,9 +782,9 @@ object Mining {
                         }
                     }
 
-                    File(File("/storage/self/primary/MOAVARA"), "Today_Kakao.json").delete()
-                    File(File("/storage/self/primary/MOAVARA"), "Week_Kakao.json").delete()
-                    File(File("/storage/self/primary/MOAVARA"), "Month_Kakao.json").delete()
+                    File(File("/storage/self/primary/MOAVARA"), "Today_Kakao_${genre}.json").delete()
+                    File(File("/storage/self/primary/MOAVARA"), "Week_Kakao_${genre}.json").delete()
+                    File(File("/storage/self/primary/MOAVARA"), "Month_Kakao_${genre}.json").delete()
                 }
             })
     }
@@ -858,9 +858,9 @@ object Mining {
                         }
                     }
 
-                    File(File("/storage/self/primary/MOAVARA"), "Today_Joara.json").delete()
-                    File(File("/storage/self/primary/MOAVARA"), "Week_Joara.json").delete()
-                    File(File("/storage/self/primary/MOAVARA"), "Month_Joara.json").delete()
+                    File(File("/storage/self/primary/MOAVARA"), "Today_Joara_${genre}.json").delete()
+                    File(File("/storage/self/primary/MOAVARA"), "Week_Joara_${genre}.json").delete()
+                    File(File("/storage/self/primary/MOAVARA"), "Month_Joara_${genre}.json").delete()
                 }
             })
     }
@@ -935,9 +935,9 @@ object Mining {
                         }
                     }
 
-                    File(File("/storage/self/primary/MOAVARA"), "Today_Joara_Premium.json").delete()
-                    File(File("/storage/self/primary/MOAVARA"), "Week_Joara_Premium.json").delete()
-                    File(File("/storage/self/primary/MOAVARA"), "Month_Joara_Premium.json").delete()
+                    File(File("/storage/self/primary/MOAVARA"), "Today_Joara_Premium_${genre}.json").delete()
+                    File(File("/storage/self/primary/MOAVARA"), "Week_Joara_Premium_${genre}.json").delete()
+                    File(File("/storage/self/primary/MOAVARA"), "Month_Joara_Premium_${genre}.json").delete()
                 }
             })
 
@@ -1014,9 +1014,9 @@ object Mining {
                         }
                     }
 
-                    File(File("/storage/self/primary/MOAVARA"), "Today_Joara_Nobless.json").delete()
-                    File(File("/storage/self/primary/MOAVARA"), "Week_Joara_Nobless.json").delete()
-                    File(File("/storage/self/primary/MOAVARA"), "Month_Joara_Nobless.json").delete()
+                    File(File("/storage/self/primary/MOAVARA"), "Today_Joara_Nobless_${genre}.json").delete()
+                    File(File("/storage/self/primary/MOAVARA"), "Week_Joara_Nobless_${genre}.json").delete()
+                    File(File("/storage/self/primary/MOAVARA"), "Month_Joara_Nobless_${genre}.json").delete()
                 }
             })
 
@@ -1187,9 +1187,9 @@ object Mining {
                             }
                         }
 
-                        File(File("/storage/self/primary/MOAVARA"), "Today_Toksoda.json").delete()
-                        File(File("/storage/self/primary/MOAVARA"), "Week_Toksoda.json").delete()
-                        File(File("/storage/self/primary/MOAVARA"), "Month_Toksoda.json").delete()
+                        File(File("/storage/self/primary/MOAVARA"), "Today_Toksoda_${genre}.json").delete()
+                        File(File("/storage/self/primary/MOAVARA"), "Week_Toksoda_${genre}.json").delete()
+                        File(File("/storage/self/primary/MOAVARA"), "Month_Toksoda_${genre}.json").delete()
                     }
                 }
             })

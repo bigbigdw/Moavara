@@ -467,7 +467,7 @@ class ActivityBestDetail : AppCompatActivity() {
             }"
 
             runOnUiThread {
-                binding.llayoutIntro.visibility = View.GONE
+                binding.tviewIntro.visibility = View.GONE
                 binding.loading.root.visibility = View.GONE
                 binding.coorWrap.visibility = View.VISIBLE
                 window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
@@ -544,7 +544,7 @@ class ActivityBestDetail : AppCompatActivity() {
                             inclueBestDetail.tviewInfo2.text = it?.favoriteCount
                             inclueBestDetail.tviewInfo3.text = it?.pageViewTotal
                             inclueBestDetail.tviewInfo4.text = it?.commentCount
-                            llayoutIntro.visibility = View.GONE
+                            tviewIntro.visibility = View.GONE
 
                             if (it != null) {
                                 val keyword = it.tagList

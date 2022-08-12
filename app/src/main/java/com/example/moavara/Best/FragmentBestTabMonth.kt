@@ -213,7 +213,7 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
         binding.rviewBestMonth.removeAllViews()
         itemMonth.clear()
 
-        val file = File(File("/storage/self/primary/MOAVARA"), "Month_${platform}.json")
+        val file = File(File("/storage/self/primary/MOAVARA"), "Month_${platform}_${genre}.json")
         if (file.exists()) {
             file.delete()
         }
@@ -469,7 +469,7 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
 
         File("/storage/self/primary/MOAVARA").mkdir()
 
-        val file = File(File("/storage/self/primary/MOAVARA"), "Month_${platform}.json")
+        val file = File(File("/storage/self/primary/MOAVARA"), "Month_${platform}_${genre}.json")
 
         try {
 
@@ -486,8 +486,8 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
         }
     }
 
-    fun readJsonList() {
-        val file = File(File("/storage/self/primary/MOAVARA"), "Month_${platform}.json")
+    private fun readJsonList() {
+        val file = File(File("/storage/self/primary/MOAVARA"), "Month_${platform}_${genre}.json")
         try {
             val reader = BufferedReader(FileReader(file))
 

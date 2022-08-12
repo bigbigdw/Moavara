@@ -71,7 +71,7 @@ class AdapterType(private var holder: List<BestType>) :
                         .into(iview)
                 } else if (item.type == "Ridi") {
                     Glide.with(holder.itemView.context)
-                        .load(R.drawable.logo_ridi)
+                        .load(R.drawable.logo_ridibooks)
                         .circleCrop()
                         .into(iview)
                 } else if (item.type == "Toksoda") {

@@ -1,5 +1,6 @@
 package com.example.moavara.Util
 
+import android.icu.text.DecimalFormat
 import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.DataBase.BookListDataBestAnalyze
 import com.google.firebase.database.DatabaseReference
@@ -285,7 +286,10 @@ object BestRef {
     }
 
     fun decimalToString(num : Int) : String {
-        return if(num < 10000){
+        return if(num in 9999 downTo 999){
+            val decFormat = DecimalFormat("#,###")
+            return decFormat.format(num).toString()
+        } else if(num < 10000){
             "$num"
         } else {
             ("${(num / 1000).toFloat() / 10}만").replace(".0","")

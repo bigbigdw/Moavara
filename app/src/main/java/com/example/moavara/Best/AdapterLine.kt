@@ -2,6 +2,7 @@ package com.example.moavara.Best
 
 import android.content.Context
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 
 class AdapterLine(private var context : Context, private var holder: List<BestLineChart>) :
@@ -55,14 +57,21 @@ class AdapterLine(private var context : Context, private var holder: List<BestLi
                 )
             }
 
-            val adapter = AdapterBestData(dataItem)
+//            val adapter = AdapterBestData(dataItem)
+//
+//            holder.binding.rview.layoutManager =
+//                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+//            holder.binding.rview.adapter = adapter
 
-            holder.binding.rview.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            holder.binding.rview.adapter = adapter
+            holder.binding.barChart.xAxis.valueFormatter = object : ValueFormatter() {
+                override fun getFormattedValue(value: Float): String? {
+                    Log.d("!!!!", "${value.toInt()}")
+                    return item.dateList?.get(value.toInt())
+                }
+            }
 
             holder.binding.tviewData.text = item.title
-            holder.binding.barChart.xAxis.isEnabled = false
+            holder.binding.barChart.xAxis.isEnabled = true
             val barDataSet = LineDataSet(item.entryList, item.title)
             val colors = ArrayList<Int>()
             colors.add(Color.parseColor("#621CEF"))
@@ -70,7 +79,7 @@ class AdapterLine(private var context : Context, private var holder: List<BestLi
             barDataSet.color = ColorTemplate.rgb(item.color)
             barDataSet.highLightColor  = ColorTemplate.rgb(item.color)
             barDataSet.isHighlightEnabled = false
-            barDataSet.valueTextSize = 0F
+//            barDataSet.valueTextSize = 0F
             barDataSet.color = Color.parseColor("#621CEF")
             barDataSet.lineWidth = 3f
             barDataSet.circleColors = colors
@@ -103,7 +112,7 @@ class AdapterLine(private var context : Context, private var holder: List<BestLi
             }
 
             barChart.invalidate()
-
+            barChart.setVisibleXRangeMaximum(10F)
         }
     }
 

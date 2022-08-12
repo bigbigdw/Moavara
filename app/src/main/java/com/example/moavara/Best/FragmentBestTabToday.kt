@@ -16,9 +16,12 @@ import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Genre
 import com.example.moavara.databinding.FragmentBestTabTodayBinding
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -39,12 +42,16 @@ class FragmentBestTabToday(private val platform: String) :
     private val binding get() = _binding!!
     private var obj = JSONObject()
 
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentBestTabTodayBinding.inflate(inflater, container, false)
         val view = binding.root
+
+        firebaseAnalytics = Firebase.analytics
 
         genre = Genre.getGenre(requireContext()).toString()
 
@@ -63,6 +70,14 @@ class FragmentBestTabToday(private val platform: String) :
         adapterToday?.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
                 val item: BookListDataBest? = adapterToday?.getItem(position)
+
+                val bundle = Bundle()
+                bundle.putString("test", "FragmentBestTabToday")
+                bundle.putString("test1", "FragmentBestTabToday")
+                bundle.putString("test2", "FragmentBestTabToday")
+                bundle.putString("test3", "FragmentBestTabToday")
+                bundle.putString("test4", "FragmentBestTabToday")
+                firebaseAnalytics.logEvent("test2", bundle)
 
                 if(platform == "MrBlue"){
                     val intent = Intent(
@@ -89,7 +104,7 @@ class FragmentBestTabToday(private val platform: String) :
 
     private fun getBookListToday() {
 
-        val file = File(File("/storage/self/primary/MOAVARA"), "Today_${platform}.json")
+        val file = File(File("/storage/self/primary/MOAVARA"), "Today_${platform}_${genre}.json")
         if (file.exists()) {
             file.delete()
         }
@@ -293,7 +308,7 @@ class FragmentBestTabToday(private val platform: String) :
 
         File("/storage/self/primary/MOAVARA").mkdir()
 
-        val file = File(File("/storage/self/primary/MOAVARA"), "Today_${platform}.json")
+        val file = File(File("/storage/self/primary/MOAVARA"), "Today_${platform}_${genre}.json")
 
         try {
 
@@ -310,8 +325,8 @@ class FragmentBestTabToday(private val platform: String) :
         }
     }
 
-    fun readJsonList() {
-        val file = File(File("/storage/self/primary/MOAVARA"), "Today_${platform}.json")
+    private fun readJsonList() {
+        val file = File(File("/storage/self/primary/MOAVARA"), "Today_${platform}_${genre}.json")
         try {
             val reader = BufferedReader(FileReader(file))
 

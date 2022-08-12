@@ -1,6 +1,7 @@
 package com.example.moavara.Best
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,7 +50,13 @@ class InnerFragmentBestDetailLine(
 
         if (platform == "Joara" || platform == "Joara_Nobless" || platform == "Joara_Premium") {
             for (i in BookItem.indices) {
-                dateList.add(BookItem[i].date.substring(4))
+
+                if(i == 0 || i == BookItem.size - 1){
+                    dateList.add(BookItem[i].date.substring(4))
+                } else {
+                    dateList.add("")
+                }
+
                 entryList.add(BarEntry(i.toFloat(), BookItem[i].info1.replace("조회 수 : ", "").toFloat()))
                 entryList2.add(BarEntry(i.toFloat(), BookItem[i].info2.replace("선호작 수 : ", "").toFloat()))
                 entryList3.add(BarEntry(i.toFloat(), BookItem[i].info3.replace("추천 수 : ", "").toFloat()))
@@ -69,7 +76,14 @@ class InnerFragmentBestDetailLine(
             adapterChart?.notifyDataSetChanged()
         } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver") {
             for (i in BookItem.indices) {
-                dateList.add(BookItem[i].date.substring(4))
+
+                if(i == 0 || i == BookItem.size - 1){
+                    Log.d("####", "${BookItem[i].date.substring(4)}")
+                    dateList.add(BookItem[i].date.substring(4))
+                } else {
+                    dateList.add("")
+                }
+
                 entryList.add(BarEntry(i.toFloat(), BookItem[i].info1.replace("만","0000").replace(",","").toFloat()))
                 entryList2.add(BarEntry(i.toFloat(), BookItem[i].info2.replace("만","0000").replace(",","").toFloat()))
                 entryList3.add(BarEntry(i.toFloat(), BookItem[i].info3.replace("만","0000").replace(",","").toFloat()))
@@ -78,6 +92,8 @@ class InnerFragmentBestDetailLine(
                 dataList2.add(BookItem[i].info2.replace("만","0000").replace(",",""))
                 dataList3.add(BookItem[i].info3.replace("만","0000").replace(",",""))
             }
+
+            Log.d("!!!!", dateList.toString())
 
             items.add(BestLineChart(dateList, entryList, "별점 수", "#00dc64", dataList1))
             items.add(BestLineChart(dateList, entryList2, "조회 수", "#00dc64", dataList2))
