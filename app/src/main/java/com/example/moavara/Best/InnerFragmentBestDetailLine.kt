@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.moavara.DataBase.BookListDataBestAnalyze
 import com.example.moavara.Search.BestLineChart
+import com.example.moavara.Util.ItemTouchHelperListener
 import com.example.moavara.databinding.FragmentBestDetailLineBinding
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
@@ -193,5 +195,4 @@ class InnerFragmentBestDetailLine(
 
         return view
     }
-
 }

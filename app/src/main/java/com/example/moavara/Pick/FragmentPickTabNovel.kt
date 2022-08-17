@@ -7,11 +7,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.DataBase.BookListDataBestToday
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.Util.Genre
+import com.example.moavara.Util.ItemTouchHelperCallback
 import com.example.moavara.databinding.FragmentPickTabBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -42,7 +44,8 @@ class FragmentPickTabNovel : Fragment() {
         UID = context?.getSharedPreferences("pref", AppCompatActivity.MODE_PRIVATE)
             ?.getString("UID", "").toString()
 
-        adapter = AdapterPickNovel(items)
+        adapter = AdapterPickNovel(requireContext(), items)
+        ItemTouchHelper(ItemTouchHelperCallback(requireContext(), adapter)).attachToRecyclerView(binding.rviewPick);
 
         getEventTab()
 
@@ -84,11 +87,12 @@ class FragmentPickTabNovel : Fragment() {
                     adapter?.notifyDataSetChanged()
                 }
             }
+
             override fun onCancelled(databaseError: DatabaseError) {}
         })
 
         adapter.setOnItemClickListener(object : AdapterPickNovel.OnItemClickListener {
-            override fun onItemClick(v: View?, position: Int, type : String) {
+            override fun onItemClick(v: View?, position: Int, type: String) {
                 val group: BookListDataBest = adapter.getItem(position)
 
                 val data = BookListDataBest(
@@ -108,7 +112,7 @@ class FragmentPickTabNovel : Fragment() {
                     group.memo
                 )
 
-                if(type == "Img"){
+                if (type == "Img") {
 //                    val mBottomDialogBest = BottomDialogBest(
 //                        requireContext(),
 //                        data,
@@ -116,13 +120,13 @@ class FragmentPickTabNovel : Fragment() {
 //                        item.number
 //                    )
 //                    fragmentManager?.let { mBottomDialogBest.show(it, null) }
-                } else if(type == "Confirm"){
+                } else if (type == "Confirm") {
 
                     adapter.editItem(data, position)
 //                    dbPickEvent.bestDao().updateItem(adapter.getMemoEdit(), item.bookCode)
 
                     Toast.makeText(requireContext(), "수정되었습니다", Toast.LENGTH_SHORT).show()
-                }  else if(type == "Delete"){
+                } else if (type == "Delete") {
 //                    dbPickEvent.bestDao().deleteItem(item.bookCode)
 //                    items.remove(item)
                     adapter.notifyItemRemoved(position)

@@ -1,5 +1,6 @@
 package com.example.moavara.Pick
 
+import android.content.Context
 import android.text.Editable
 import android.text.SpannableStringBuilder
 import android.text.TextWatcher
@@ -7,14 +8,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.DataBase.BookListDataBestToday
+import com.example.moavara.Util.ItemTouchHelperListener
 import com.example.moavara.databinding.ItemPickEventBinding
 
-class AdapterPickNovel (private var itemsList: ArrayList<BookListDataBest>) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class AdapterPickNovel (private var context: Context, private var itemsList: ArrayList<BookListDataBest>) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>(), ItemTouchHelperListener {
     var memo = ""
 
     interface OnItemClickListener {
@@ -157,6 +161,24 @@ class AdapterPickNovel (private var itemsList: ArrayList<BookListDataBest>) :
 
     fun setMemoEdit(str : String){
         memo = str
+    }
+
+
+    override fun onItemMove(from_position: Int, to_position: Int): Boolean {
+        return true
+    }
+
+    override fun onItemSwipe(position: Int) {
+        itemsList.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
+    override fun onLeftClick(position: Int, viewHolder: RecyclerView.ViewHolder?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onRightClick(position: Int, viewHolder: RecyclerView.ViewHolder?) {
+        Toast.makeText(context, "미래로는 갈 수 없습니다.", Toast.LENGTH_SHORT).show()
     }
 
 }
