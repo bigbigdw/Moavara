@@ -1,7 +1,6 @@
 package com.example.moavara.Best
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,11 +9,9 @@ import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moavara.DataBase.BookListDataBestAnalyze
 import com.example.moavara.R
-import com.example.moavara.Search.BestChart
 import com.example.moavara.Search.BestLineChart
-import com.example.moavara.Soon.Best.AdapterChart
+import com.example.moavara.Soon.Best.InnerFragmentBestDetailRadar
 import com.example.moavara.databinding.FragmentBestDetailAnalyzeBinding
-import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
 
 class FragmentBestDetailAnalyze(
@@ -27,7 +24,6 @@ class FragmentBestDetailAnalyze(
     private val binding get() = _binding!!
 
     private lateinit var mInnerFragmentBestDetailRank: InnerFragmentBestDetailRank
-    private lateinit var mInnerFragmentBestDetailRadar: InnerFragmentBestDetailRadar
     private lateinit var mInnerFragmentBestDetailLine: InnerFragmentBestDetailLine
 
     var status = ""
@@ -47,11 +43,6 @@ class FragmentBestDetailAnalyze(
         mInnerFragmentBestDetailRank = InnerFragmentBestDetailRank(BookItem)
         childFragmentManager.commit {
             replace(R.id.InnerFragmentBestDetailRank, mInnerFragmentBestDetailRank)
-        }
-
-        mInnerFragmentBestDetailRadar = InnerFragmentBestDetailRadar(BookItem, itemCount, platform)
-        childFragmentManager.commit {
-            replace(R.id.InnerFragmentBestDetailRadar, mInnerFragmentBestDetailRadar)
         }
 
         mInnerFragmentBestDetailLine = InnerFragmentBestDetailLine(platform, BookItem)
@@ -80,13 +71,7 @@ class FragmentBestDetailAnalyze(
 
         if (chapter != null) {
             for (i in chapter.indices) {
-
-                if(i == 0 || i == chapter.size - 1){
-                    dateList.add(chapter[i].sortno + "화")
-                } else {
-                    dateList.add("")
-                }
-
+                dateList.add(chapter[i].sortno + "화")
                 entryList.add(Entry(num.toFloat(), chapter[i].cnt_comment.toFloat()))
                 entryList2.add(Entry(num.toFloat(), chapter[i].cnt_page_read.toFloat()))
                 entryList3.add(Entry(num.toFloat(), chapter[i].cnt_recom.toFloat()))

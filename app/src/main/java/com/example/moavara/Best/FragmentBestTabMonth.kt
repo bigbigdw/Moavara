@@ -24,6 +24,7 @@ import com.example.moavara.databinding.FragmentBestMonthBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.google.protobuf.Value
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.*
@@ -76,8 +77,8 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
             rviewBestMonth.adapter = adapterMonth
 
             adapterMonth.setOnItemClickListener(object : AdapterBestMonth.OnItemClickListener {
-
                 override fun onItemClick(v: View?, position: Int, value: String?) {
+
                     ItemMonthDay.clear()
 
                     binding.loading.root.visibility = View.VISIBLE
@@ -134,8 +135,29 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
 
                                     }
                                     getBestTodayList(ItemMonthDay, true)
-
                                     adapterMonthDay?.notifyDataSetChanged()
+
+                                    try{
+                                        val adapterDate = ItemMonthDay[value.toInt() - 1].date
+                                        binding.tviewDay.text = "${adapterDate.substring(4,6)}월 ${adapterDate.substring(6,8)}일 베스트"
+
+                                        val delay: Int = if(binding.llayoutMonthDetail.visibility == View.VISIBLE){
+                                            1500
+                                        } else {
+                                            1000
+                                        }
+
+                                        Looper.myLooper()?.let {
+                                            Handler(it).postDelayed(
+                                                {
+                                                    binding.sView.smoothScrollTo(0, binding.rviewBestMonth.height)
+                                                },
+                                                delay.toLong()
+                                            )
+                                        }
+                                    } catch (e : IndexOutOfBoundsException){
+                                        Toast.makeText(requireContext(), "데이터가 없습니다.", Toast.LENGTH_SHORT).show()
+                                    }
                                 }
 
                                 override fun onCancelled(databaseError: DatabaseError) {}
@@ -303,7 +325,7 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
 
     }
 
-    fun getMonthBefore(month : Int){
+    private fun getMonthBefore(month : Int){
 
         binding.blank.root.visibility = View.VISIBLE
         binding.rviewBestMonth.visibility = View.GONE

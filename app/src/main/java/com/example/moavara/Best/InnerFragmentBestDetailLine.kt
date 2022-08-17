@@ -50,13 +50,7 @@ class InnerFragmentBestDetailLine(
 
         if (platform == "Joara" || platform == "Joara_Nobless" || platform == "Joara_Premium") {
             for (i in BookItem.indices) {
-
-                if(i == 0 || i == BookItem.size - 1){
-                    dateList.add(BookItem[i].date.substring(4))
-                } else {
-                    dateList.add("")
-                }
-
+                dateList.add(BookItem[i].date.substring(4))
                 entryList.add(BarEntry(i.toFloat(), BookItem[i].info1.replace("조회 수 : ", "").toFloat()))
                 entryList2.add(BarEntry(i.toFloat(), BookItem[i].info2.replace("선호작 수 : ", "").toFloat()))
                 entryList3.add(BarEntry(i.toFloat(), BookItem[i].info3.replace("추천 수 : ", "").toFloat()))
@@ -76,14 +70,7 @@ class InnerFragmentBestDetailLine(
             adapterChart?.notifyDataSetChanged()
         } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver") {
             for (i in BookItem.indices) {
-
-                if(i == 0 || i == BookItem.size - 1){
-                    Log.d("####", "${BookItem[i].date.substring(4)}")
-                    dateList.add(BookItem[i].date.substring(4))
-                } else {
-                    dateList.add("")
-                }
-
+                dateList.add(BookItem[i].date.substring(4))
                 entryList.add(BarEntry(i.toFloat(), BookItem[i].info1.replace("만","0000").replace(",","").toFloat()))
                 entryList2.add(BarEntry(i.toFloat(), BookItem[i].info2.replace("만","0000").replace(",","").toFloat()))
                 entryList3.add(BarEntry(i.toFloat(), BookItem[i].info3.replace("만","0000").replace(",","").toFloat()))

@@ -120,7 +120,7 @@ class AdapterBestMonth(
 
                 if (items.sun != null) {
                     Glide.with(holder.itemView.context)
-                        .load(items.sun?.bookImg)
+                        .load(items.sun?.bookImg?.replace("http://","https://"))
                         .into(iviewBookImg1)
                     isSelectBook(items.sun, llayoutCover1)
                     iviewBookImg1.visibility = View.VISIBLE
@@ -137,7 +137,7 @@ class AdapterBestMonth(
 
                 if (items.mon != null) {
                     Glide.with(holder.itemView.context)
-                        .load(items.mon?.bookImg)
+                        .load(items.mon?.bookImg?.replace("http://","https://"))
                         .into(iviewBookImg2)
 
                     isSelectBook(items.mon, llayoutCover2)
@@ -154,7 +154,7 @@ class AdapterBestMonth(
 
                 if (items.tue != null) {
                     Glide.with(holder.itemView.context)
-                        .load(items.tue?.bookImg)
+                        .load(items.tue?.bookImg?.replace("http://","https://"))
                         .into(iviewBookImg3)
 
                     isSelectBook(items.tue, llayoutCover3)
@@ -171,7 +171,7 @@ class AdapterBestMonth(
 
                 if (items.wed != null) {
                     Glide.with(holder.itemView.context)
-                        .load(items.wed?.bookImg)
+                        .load(items.wed?.bookImg?.replace("http://","https://"))
                         .into(iviewBookImg4)
 
                     isSelectBook(items.wed, llayoutCover4)
@@ -188,7 +188,7 @@ class AdapterBestMonth(
 
                 if (items.thur != null) {
                     Glide.with(holder.itemView.context)
-                        .load(items.thur?.bookImg)
+                        .load(items.thur?.bookImg?.replace("http://","https://"))
                         .into(iviewBookImg5)
 
                     isSelectBook(items.thur, llayoutCover5)
@@ -205,7 +205,7 @@ class AdapterBestMonth(
 
                 if (items.fri != null) {
                     Glide.with(holder.itemView.context)
-                        .load(items.fri?.bookImg)
+                        .load(items.fri?.bookImg?.replace("http://","https://"))
                         .into(iviewBookImg6)
 
                     isSelectBook(items.fri, llayoutCover6)
@@ -222,7 +222,7 @@ class AdapterBestMonth(
 
                 if (items.sat != null) {
                     Glide.with(holder.itemView.context)
-                        .load(items.sat?.bookImg)
+                        .load(items.sat?.bookImg?.replace("http://","https://"))
                         .into(iviewBookImg7)
 
                     isSelectBook(items.sat, llayoutCover7)

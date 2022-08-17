@@ -2,21 +2,21 @@ package com.example.moavara.Best
 
 import android.content.Context
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moavara.DataBase.AnayzeData
+import com.example.moavara.R
 import com.example.moavara.Search.BestLineChart
 import com.example.moavara.databinding.ItemBestDetailLineBinding
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.formatter.ValueFormatter
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
+
 
 class AdapterLine(private var context : Context, private var holder: List<BestLineChart>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -48,14 +48,15 @@ class AdapterLine(private var context : Context, private var holder: List<BestLi
 
             val dataItem = ArrayList<AnayzeData>()
 
-            for(i in item.data.indices){
-                dataItem.add(
-                    AnayzeData(
-                        (item.dateList as ArrayList<String>)[i],
-                        item.data[i],
+            with(holder.binding){
+                for(i in item.data.indices){
+                    dataItem.add(
+                        AnayzeData(
+                            (item.dateList as ArrayList<String>)[i],
+                            item.data[i],
+                        )
                     )
-                )
-            }
+                }
 
 //            val adapter = AdapterBestData(dataItem)
 //
@@ -63,56 +64,64 @@ class AdapterLine(private var context : Context, private var holder: List<BestLi
 //                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 //            holder.binding.rview.adapter = adapter
 
-            holder.binding.barChart.xAxis.valueFormatter = object : ValueFormatter() {
-                override fun getFormattedValue(value: Float): String? {
-                    Log.d("!!!!", "${value.toInt()}")
-                    return item.dateList?.get(value.toInt())
+                // create marker to display box when values are selected
+                val mv = ViewMarker(
+                    context,
+                    R.layout.view_marker
+                )
+
+                // Set the marker to the chart
+                mv.chartView = barChart
+                barChart.marker = mv
+
+                barChart.xAxis.valueFormatter = IndexAxisValueFormatter(item.dateList)
+                barChart.xAxis.setLabelCount(2, false)
+
+                tviewData.text = item.title
+                val barDataSet = LineDataSet(item.entryList, item.title)
+                val colors = ArrayList<Int>()
+                colors.add(Color.parseColor("#621CEF"))
+
+                barDataSet.color = ColorTemplate.rgb(item.color)
+                barDataSet.highLightColor  = ColorTemplate.rgb(item.color)
+                barDataSet.isVerticalHighlightIndicatorEnabled
+                barDataSet.valueTextSize = 0F
+                barDataSet.color = Color.parseColor("#621CEF")
+                barDataSet.lineWidth = 3f
+                barDataSet.circleColors = colors
+
+                val barData = LineData(barDataSet)
+
+                val barChart = holder.binding.barChart
+                barChart.data = barData
+
+                barChart.apply {
+                    setScaleEnabled(false)
+                    setPinchZoom(false)
+                    isClickable = false
+
+                    animateXY(800, 800)
+                    description = null
+
+                    barChart.setExtraOffsets(5f,5f,5f,15f)
+                    legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
+                    legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
+
+                    axisRight.setDrawLabels(false)
+                    xAxis.setDrawGridLines(false)
+
+                    xAxis.position = XAxis.XAxisPosition.BOTTOM
+
+                    xAxis.textColor = Color.parseColor("#EDE6FD")
+                    axisLeft.textColor = Color.parseColor("#EDE6FD")
+                    legend.textColor = Color.parseColor("#EDE6FD")
                 }
+
+                barChart.setVisibleXRangeMaximum(10F)
+                barChart.setVisibleXRangeMinimum(1F)
+                barChart.invalidate()
+
             }
-
-            holder.binding.tviewData.text = item.title
-            holder.binding.barChart.xAxis.isEnabled = true
-            val barDataSet = LineDataSet(item.entryList, item.title)
-            val colors = ArrayList<Int>()
-            colors.add(Color.parseColor("#621CEF"))
-
-            barDataSet.color = ColorTemplate.rgb(item.color)
-            barDataSet.highLightColor  = ColorTemplate.rgb(item.color)
-            barDataSet.isHighlightEnabled = false
-//            barDataSet.valueTextSize = 0F
-            barDataSet.color = Color.parseColor("#621CEF")
-            barDataSet.lineWidth = 3f
-            barDataSet.circleColors = colors
-
-            val barData = LineData(barDataSet)
-
-            val barChart = holder.binding.barChart
-            barChart.data = barData
-
-            barChart.apply {
-                setScaleEnabled(false)
-                setPinchZoom(false)
-                isClickable = false
-
-                animateXY(800, 800)
-                description = null
-
-                barChart.setExtraOffsets(5f,5f,5f,15f)
-                legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-                legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
-
-                axisRight.setDrawLabels(false)
-                xAxis.setDrawGridLines(false)
-
-                xAxis.position = XAxis.XAxisPosition.BOTTOM
-
-                xAxis.textColor = Color.parseColor("#EDE6FD")
-                axisLeft.textColor = Color.parseColor("#EDE6FD")
-                legend.textColor = Color.parseColor("#EDE6FD")
-            }
-
-            barChart.invalidate()
-            barChart.setVisibleXRangeMaximum(10F)
         }
     }
 
