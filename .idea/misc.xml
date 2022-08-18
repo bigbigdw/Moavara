@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../../layout/custom_preview.xml" value="0.2716708542713568" />
+        <entry key="../../../Library/Android/sdk/platforms/android-32/data/res/drawable/btn_plus.xml" value="0.131" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Best/layout/activity_best_detail.xml" value="0.25" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Best/layout/bottom_dialog_best.xml" value="0.33" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Best/layout/bottomdialog_best.xml" value="0.3333333333333333" />
@@ -171,7 +172,7 @@
         <entry key="app/src/main/res/Main/layout/item_guide_carousel.xml" value="0.1" />
         <entry key="app/src/main/res/Pick/layout/activity_pick.xml" value="0.1" />
         <entry key="app/src/main/res/Pick/layout/fragment_pick_tab.xml" value="0.1" />
-        <entry key="app/src/main/res/Pick/layout/item_pick_event.xml" value="0.403960396039604" />
+        <entry key="app/src/main/res/Pick/layout/item_pick_event.xml" value="0.1" />
         <entry key="app/src/main/res/Search/layout/activity_best_detail.xml" value="0.1921875" />
         <entry key="app/src/main/res/Search/layout/activity_search.xml" value="0.1" />
         <entry key="app/src/main/res/Search/layout/activity_search_detail.xml" value="0.20677083333333332" />
@@ -257,6 +258,8 @@
         <entry key="app/src/main/res/layout/item_news.xml" value="0.22" />
         <entry key="app/src/main/res/layout/item_notices.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_searchmoavara.xml" value="0.30213160333642264" />
+        <entry key="app/src/main/res/layout/item_test.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/swipe_view.xml" value="0.1" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.1" />
         <entry key="app/src/main/res/menu/main_menu.xml" value="0.17407407407407408" />
       </map>

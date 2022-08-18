@@ -10,10 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moavara.DataBase.BookListDataBest
-import com.example.moavara.DataBase.BookListDataBestToday
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.Util.Genre
-import com.example.moavara.Util.ItemTouchHelperCallback
+import com.example.moavara.Util.SwipeHelperCallback
 import com.example.moavara.databinding.FragmentPickTabBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -45,7 +44,13 @@ class FragmentPickTabNovel : Fragment() {
             ?.getString("UID", "").toString()
 
         adapter = AdapterPickNovel(requireContext(), items)
-        ItemTouchHelper(ItemTouchHelperCallback(requireContext(), adapter)).attachToRecyclerView(binding.rviewPick);
+
+        // 리사이클러뷰에 스와이프, 드래그 기능 달기
+        val swipeHelperCallback = SwipeHelperCallback(adapter).apply {
+            // 스와이프한 뒤 고정시킬 위치 지정
+            setClamp(resources.displayMetrics.widthPixels.toFloat() / 4)    // 1080 / 4 = 270
+        }
+        ItemTouchHelper(swipeHelperCallback).attachToRecyclerView(binding.rviewPick)
 
         getEventTab()
 

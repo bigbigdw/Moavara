@@ -9,16 +9,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.BookListDataBest
-import com.example.moavara.DataBase.BookListDataBestToday
-import com.example.moavara.Util.ItemTouchHelperListener
 import com.example.moavara.databinding.ItemPickEventBinding
+import com.example.moavara.databinding.ItemTestBinding
+import java.util.*
+import kotlin.collections.ArrayList
 
 class AdapterPickNovel (private var context: Context, private var itemsList: ArrayList<BookListDataBest>) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>(), ItemTouchHelperListener {
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var memo = ""
 
     interface OnItemClickListener {
@@ -32,7 +32,7 @@ class AdapterPickNovel (private var context: Context, private var itemsList: Arr
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = ItemPickEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val view = ItemTestBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(view)
     }
 
@@ -74,6 +74,20 @@ class AdapterPickNovel (private var context: Context, private var itemsList: Arr
         }
     }
 
+    // -----------------데이터 조작함수 추가-----------------
+
+    // position 위치의 데이터를 삭제 후 어댑터 갱신
+    fun removeData(position: Int) {
+        itemsList.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
+    // 현재 선택된 데이터와 드래그한 위치에 있는 데이터를 교환
+    fun swapData(fromPos: Int, toPos: Int) {
+        Collections.swap(itemsList, fromPos, toPos)
+        notifyItemMoved(fromPos, toPos)
+    }
+
     override fun getItemCount(): Int {
         return itemsList.size
     }
@@ -83,7 +97,7 @@ class AdapterPickNovel (private var context: Context, private var itemsList: Arr
         notifyItemChanged(position)
     }
 
-    inner class ViewHolder internal constructor(val binding: ItemPickEventBinding) :
+    inner class ViewHolder internal constructor(val binding: ItemTestBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         init {
@@ -161,24 +175,6 @@ class AdapterPickNovel (private var context: Context, private var itemsList: Arr
 
     fun setMemoEdit(str : String){
         memo = str
-    }
-
-
-    override fun onItemMove(from_position: Int, to_position: Int): Boolean {
-        return true
-    }
-
-    override fun onItemSwipe(position: Int) {
-        itemsList.removeAt(position)
-        notifyItemRemoved(position)
-    }
-
-    override fun onLeftClick(position: Int, viewHolder: RecyclerView.ViewHolder?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onRightClick(position: Int, viewHolder: RecyclerView.ViewHolder?) {
-        Toast.makeText(context, "미래로는 갈 수 없습니다.", Toast.LENGTH_SHORT).show()
     }
 
 }

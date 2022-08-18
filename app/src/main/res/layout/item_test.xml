@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!--삭제 버튼 있는 레이아웃-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="4">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#0D0E10" />
+
+            <TextView
+                android:id="@+id/tvRemove"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:background="#4971EF"
+                android:gravity="center"
+                android:text="삭제"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+        <!--기본 레이아웃-->
+        <LinearLayout
+            android:id="@+id/swipe_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#0D0E10"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="8dp">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="79dp"
+                        android:layout_height="115dp"
+                        android:layout_marginEnd="13dp"
+                        app:cardCornerRadius="4dp">
+
+                        <ImageView
+                            android:id="@+id/iView"
+                            android:layout_width="79dp"
+                            android:layout_height="115dp"
+                            android:adjustViewBounds="true"
+                            android:contentDescription="@string/TODO"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/booktest" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tviewTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            android:breakStrategy="high_quality"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/pretendardvariable"
+                            android:maxLines="1"
+                            android:textColor="#E2E3E7"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            tools:text="asdasdads" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="12dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tviewWriter"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:breakStrategy="high_quality"
+                                android:ellipsize="end"
+                                android:fontFamily="@font/pretendardvariable"
+                                android:maxLines="1"
+                                android:textColor="#6E7686"
+                                android:textSize="11sp"
+                                tools:text="@string/Common_BookWriter" />
+
+                            <TextView
+                                android:id="@+id/tviewBar"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:fontFamily="@font/pretendardvariable"
+                                android:maxLines="3"
+                                android:text=" | "
+                                android:textColor="#6E7686"
+                                android:textSize="11sp"
+                                android:visibility="visible" />
+
+                            <TextView
+                                android:id="@+id/tviewInfo1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:fontFamily="@font/pretendardvariable"
+                                android:maxLines="3"
+                                android:textColor="#6E7686"
+                                android:textSize="11sp"
+                                android:visibility="gone"
+                                tools:text="@string/Common_Count"
+                                tools:visibility="visible" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tviewInfo3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/pretendardvariable"
+                            android:maxLines="3"
+                            android:textColor="#E2E3E7"
+                            android:textSize="11sp"
+                            android:visibility="gone"
+                            tools:text="@string/Common_Count"
+                            tools:visibility="visible" />
+
+                        <TextView
+                            android:id="@+id/tviewInfo4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/pretendardvariable"
+                            android:maxLines="3"
+                            android:textColor="#E2E3E7"
+                            android:textSize="11sp"
+                            android:visibility="gone"
+                            tools:text="@string/Common_Count"
+                            tools:visibility="visible" />
+
+                        <TextView
+                            android:id="@+id/tviewInfo5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="12dp"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/pretendardvariable"
+                            android:maxLines="3"
+                            android:textColor="#E2E3E7"
+                            android:textSize="11sp"
+                            android:visibility="gone"
+                            tools:text="@string/Common_Count"
+                            tools:visibility="visible" />
+
+                        <TextView
+                            android:id="@+id/tviewInfo6"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/pretendardvariable"
+                            android:maxLines="2"
+                            android:textColor="#6E7686"
+                            android:textSize="12sp"
+                            android:visibility="gone"
+                            tools:text="@string/Common_Count"
+                            tools:visibility="visible" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tviewEdit"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/pretendardvariable"
+                                android:paddingTop="8dp"
+                                android:paddingEnd="16dp"
+                                android:text="수정"
+                                android:textColor="#009688" />
+
+                            <TextView
+                                android:id="@+id/tviewbtnMemo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/pretendardvariable"
+                                android:paddingTop="8dp"
+                                android:paddingEnd="16dp"
+                                android:text="메모"
+                                android:textColor="#FF5722" />
+
+                            <TextView
+                                android:id="@+id/tviewbtnConfirm"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/pretendardvariable"
+                                android:paddingTop="8dp"
+                                android:paddingEnd="16dp"
+                                android:text="적용"
+                                android:textColor="#2196F3" />
+
+                            <TextView
+                                android:id="@+id/tviewbtnDel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/pretendardvariable"
+                                android:paddingTop="8dp"
+                                android:paddingEnd="16dp"
+                                android:text="삭제"
+                                android:textColor="#9C27B0" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llayoutWrapMemo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#F44336"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/tviewMemo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/pretendardvariable"
+                        android:paddingStart="16dp"
+                        android:paddingTop="8dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="8dp"
+                        android:text="TextView"
+                        android:textColor="#009688" />
+
+                    <EditText
+                        android:id="@+id/etviewMemo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:ems="10"
+                        android:fontFamily="@font/pretendardvariable"
+                        android:textColor="#CDDC39"
+                        android:textColorHint="#CDDC39"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
