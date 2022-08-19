@@ -1,23 +1,17 @@
-package com.example.moavara.Event
+package com.example.moavara.Soon.Event
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.Retrofit.*
 import com.example.moavara.Search.BestChart
-import com.example.moavara.Search.EventData
 import com.example.moavara.Search.EventDetailData
 import com.example.moavara.Search.EventDetailDataMining
-import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.Param
 import com.example.moavara.databinding.FragmentEventDetailBinding
 import com.github.mikephil.charting.data.BarEntry
@@ -52,7 +46,7 @@ class FragmentEventDetail(private val type: String) : Fragment() {
 
         items.clear()
 
-        if (type == "Event") {
+        if (type == "") {
             getEventJoara()
         } else {
             getNoticeJoara()
@@ -71,7 +65,7 @@ class FragmentEventDetail(private val type: String) : Fragment() {
     }
 
     private fun getEventJoara() {
-        val EventRef = FirebaseDatabase.getInstance().reference.child("Event")
+        val EventRef = FirebaseDatabase.getInstance().reference.child("")
         val apiJoara = RetrofitJoara()
         val param = Param.getItemAPI(context)
         param["page"] = "1"

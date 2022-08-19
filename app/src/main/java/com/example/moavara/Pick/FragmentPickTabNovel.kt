@@ -1,5 +1,6 @@
 package com.example.moavara.Pick
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -31,6 +32,7 @@ class FragmentPickTabNovel : Fragment() {
 
     var status = ""
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
@@ -52,6 +54,12 @@ class FragmentPickTabNovel : Fragment() {
         }
         ItemTouchHelper(swipeHelperCallback).attachToRecyclerView(binding.rviewPick)
 
+        // 다른 곳 터치 시 기존 선택했던 뷰 닫기
+        binding.rviewPick.setOnTouchListener { _, _ ->
+            swipeHelperCallback.removePreviousClamp(binding.rviewPick)
+            false
+        }
+
         getEventTab()
 
         return view
@@ -63,7 +71,7 @@ class FragmentPickTabNovel : Fragment() {
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rviewPick.adapter = adapter
 
-        userInfo.child(UID).child("book").addListenerForSingleValueEvent(object :
+        userInfo.child(UID).child("Novel").child("book").addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (postSnapshot in dataSnapshot.children) {
@@ -95,6 +103,8 @@ class FragmentPickTabNovel : Fragment() {
 
             override fun onCancelled(databaseError: DatabaseError) {}
         })
+
+
 
         adapter.setOnItemClickListener(object : AdapterPickNovel.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int, type: String) {

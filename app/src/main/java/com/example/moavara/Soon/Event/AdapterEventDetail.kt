@@ -1,4 +1,4 @@
-package com.example.moavara.Event
+package com.example.moavara.Soon.Event
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -6,9 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.moavara.Search.EventData
 import com.example.moavara.Search.EventDetailData
-import com.example.moavara.databinding.ItemEventBinding
 import com.example.moavara.databinding.ItemEventDetailBinding
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis

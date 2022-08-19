@@ -53,7 +53,6 @@ class ActivityAdmin : AppCompatActivity() {
         val miningRef = FirebaseDatabase.getInstance().reference.child("Mining")
         val workManager = WorkManager.getInstance(applicationContext)
 
-
         with(binding) {
             llayoutBtn1.setOnClickListener {
                 workManager.cancelAllWorkByTag("MoavaraBest")
@@ -76,7 +75,6 @@ class ActivityAdmin : AppCompatActivity() {
                             ExistingPeriodicWorkPolicy.KEEP,
                             workRequest
                         )
-                        FirebaseMessaging.getInstance().subscribeToTopic("all")
                         FirebaseMessaging.getInstance().subscribeToTopic("all")
                         Toast.makeText(applicationContext, "WorkManager 추가됨", Toast.LENGTH_SHORT)
                             .show()

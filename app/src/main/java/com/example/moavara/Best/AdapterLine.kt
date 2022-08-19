@@ -58,7 +58,7 @@ class AdapterLine(private var context : Context, private var holder: List<BestLi
                     )
                 }
 
-//            val adapter = AdapterBestData(dataItem)
+            val adapter = AdapterBestData(dataItem)
 //
 //            holder.binding.rview.layoutManager =
 //                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

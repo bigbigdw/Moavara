@@ -24,7 +24,6 @@ import com.example.moavara.databinding.FragmentBestMonthBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import com.google.protobuf.Value
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.*
@@ -220,7 +219,7 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
                         item,
                         platform,
                         position,
-                        adapterMonthDay?.itemCount ?: 0
+                        adapterMonthDay?.itemCount ?: 0,
                     )
                     childFragmentManager.let { mBottomDialogBest.show(it, null) }
                 }

@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.text.SpannableStringBuilder
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.DataBase.BookListDataBestAnalyze
+import com.example.moavara.DataBase.FCMAlert
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
 import com.example.moavara.Util.BestRef
@@ -31,16 +33,18 @@ class BottomDialogBest(
     private val item: BookListDataBest?,
     private val platform: String,
     private val pos: Int,
-    private var itemCount : Int,
+    private var itemCount: Int,
 ) :
     BottomSheetDialogFragment() {
 
     var UID = ""
     var userInfo = mRootRef.child("User")
     var Genre = ""
+    var bookCodeItems = ArrayList<BookListDataBestAnalyze>()
 
     private var _binding: BottomDialogBestBinding? = null
     private val binding get() = _binding!!
+    private var isPicked = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,6 +59,39 @@ class BottomDialogBest(
 
         Genre = context?.getSharedPreferences("pref", AppCompatActivity.MODE_PRIVATE)
             ?.getString("GENRE", "").toString()
+
+        val Novel = userInfo.child(UID).child("Novel")
+
+        userInfo.child(UID).child("Novel").child("bookCode").addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                for(pickedItem in dataSnapshot.children){
+
+                    if(pickedItem.key.toString() == item?.bookCode){
+                        isPicked = true
+                        binding.llayoutPick.background = GradientDrawable().apply {
+                            setColor(Color.parseColor("#A7ACB7"))
+                            shape = GradientDrawable.RECTANGLE
+                        }
+
+                        binding.tviewPick.text = "Pick 완료"
+                        break
+                    } else {
+                        binding.llayoutPick.background = GradientDrawable().apply {
+                            setColor(Color.parseColor("#621CEF"))
+                            shape = GradientDrawable.RECTANGLE
+                        }
+
+                        binding.tviewPick.text = "Pick 하기"
+                    }
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
+
+
 
         with(binding) {
 
@@ -313,40 +350,6 @@ class BottomDialogBest(
 
             getRankList(item)
 
-            llayoutBtnLeft.setOnClickListener {
-
-                val group = item?.let { it1 ->
-                    BookListDataBest(
-                        it1.writer,
-                        item.title,
-                        item.bookImg,
-                        item.bookCode,
-                        item.info1,
-                        item.info2,
-                        item.info3,
-                        item.info4,
-                        item.info5,
-                        item.info6,
-                        item.number,
-                        item.date,
-                        platform
-                    )
-                }
-
-                userInfo.child(UID).child("book").addListenerForSingleValueEvent(object :
-                    ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        userInfo.child(UID).child("book")
-                            .child(dataSnapshot.childrenCount.toString()).setValue(group)
-                    }
-
-                    override fun onCancelled(databaseError: DatabaseError) {}
-                })
-
-                Toast.makeText(requireContext(), "Pick 성공!", Toast.LENGTH_SHORT).show()
-                dismiss()
-            }
-
             lviewDetail.setOnClickListener {
                 val bookDetailIntent = Intent(mContext, ActivityBestDetail::class.java)
                 bookDetailIntent.putExtra("BookCode",
@@ -356,6 +359,49 @@ class BottomDialogBest(
                 bookDetailIntent.putExtra("COUNT", itemCount)
                 startActivity(bookDetailIntent)
                 dismiss()
+            }
+
+            binding.llayoutPick.setOnClickListener {
+
+                if(isPicked){
+                    Novel.child("book").child(item?.bookCode ?: "").removeValue()
+                    Novel.child("bookCode").child(item?.bookCode ?: "").removeValue()
+
+                    binding.llayoutPick.background = GradientDrawable().apply {
+                        setColor(Color.parseColor("#621CEF"))
+                        shape = GradientDrawable.RECTANGLE
+                    }
+
+                    binding.tviewPick.text = "Pick 하기"
+                    Toast.makeText(requireContext(), "[${item?.title}]이(가) 마이픽에서 제거되었습니다.", Toast.LENGTH_SHORT).show()
+                    dismiss()
+
+                } else {
+
+                    val group = item?.let { it1 ->
+                        BookListDataBest(
+                            it1.writer,
+                            item.title,
+                            item.bookImg,
+                            item.bookCode,
+                            item.info1,
+                            item.info2,
+                            item.info3,
+                            item.info4,
+                            item.info5,
+                            item.info6,
+                            item.number,
+                            item.date,
+                            platform
+                        )
+                    }
+
+                    Novel.child("book").child(item?.bookCode ?: "").setValue(group)
+                    Novel.child("bookCode").child(item?.bookCode ?: "").setValue(bookCodeItems)
+
+                    Toast.makeText(requireContext(), "[${group?.title}]이(가) 마이픽에 등록되었습니다.", Toast.LENGTH_SHORT).show()
+                    dismiss()
+                }
             }
         }
 
@@ -375,6 +421,10 @@ class BottomDialogBest(
                         for (keyItem in dataSnapshot.children) {
                             val group: BookListDataBestAnalyze? =
                                 keyItem.getValue(BookListDataBestAnalyze::class.java)
+
+                            if (group != null) {
+                                bookCodeItems.add(group)
+                            }
 
                             with(binding.includeRank) {
                                 val itemDate = group?.let { DBDate.getDateData(it.date) }

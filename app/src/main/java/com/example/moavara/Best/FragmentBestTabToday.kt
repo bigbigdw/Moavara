@@ -28,7 +28,7 @@ import org.json.JSONObject
 import java.io.*
 
 
-class FragmentBestTabToday(private val platform: String) :
+class FragmentBestTabToday(private val platform: String, private val pickItems: ArrayList<String>) :
     Fragment(), BestTodayListener {
 
     private var adapterToday: AdapterBestToday? = null

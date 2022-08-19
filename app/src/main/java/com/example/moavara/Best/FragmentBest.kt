@@ -4,15 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
 import com.example.moavara.Search.BestType
 import com.example.moavara.Util.BestRef
 import com.example.moavara.databinding.FragmentBestBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 
 class FragmentBest : Fragment() {
 
@@ -21,6 +26,9 @@ class FragmentBest : Fragment() {
     private lateinit var mFragmentBestTabWeekend: FragmentBestTabWeekend
     private lateinit var adapterType: AdapterType
     private val typeItems = ArrayList<BestType>()
+    var pickItems = ArrayList<String>()
+    var userInfo = mRootRef.child("User")
+    var UID = ""
 
     private var _binding: FragmentBestBinding? = null
     private val binding get() = _binding!!
@@ -34,13 +42,18 @@ class FragmentBest : Fragment() {
 
         _binding = FragmentBestBinding.inflate(inflater, container, false)
         val view = binding.root
-
         val fragmentBestTab = binding.tabs
 
-        mFragmentBestTabToday = FragmentBestTabToday("Joara")
+        UID = context?.getSharedPreferences("pref", AppCompatActivity.MODE_PRIVATE)
+            ?.getString("UID", "").toString()
+
+        mFragmentBestTabToday = FragmentBestTabToday("Joara", pickItems)
         childFragmentManager.commit {
             replace(R.id.llayoutWrap, mFragmentBestTabToday)
         }
+
+
+
         getType("Today")
 
         fragmentBestTab.addTab(fragmentBestTab.newTab().setText(R.string.Best_Tab1))
@@ -51,7 +64,7 @@ class FragmentBest : Fragment() {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 when(tab.position){
                     0->{
-                        mFragmentBestTabToday = FragmentBestTabToday("Joara")
+                        mFragmentBestTabToday = FragmentBestTabToday("Joara", pickItems)
                         childFragmentManager.commit {
                             replace(R.id.llayoutWrap, mFragmentBestTabToday)
                         }
@@ -111,7 +124,7 @@ class FragmentBest : Fragment() {
                 when (type) {
                     "Today" -> {
                         if (item != null) {
-                            mFragmentBestTabToday = FragmentBestTabToday(item.type?: "")
+                            mFragmentBestTabToday = FragmentBestTabToday(item.type?: "", pickItems)
                         }
                         childFragmentManager.commit {
                             replace(R.id.llayoutWrap, mFragmentBestTabToday)

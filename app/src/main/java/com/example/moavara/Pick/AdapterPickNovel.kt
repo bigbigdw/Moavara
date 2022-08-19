@@ -8,12 +8,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.BookListDataBest
-import com.example.moavara.databinding.ItemPickEventBinding
-import com.example.moavara.databinding.ItemTestBinding
+import com.example.moavara.databinding.ItemPickNovelBinding
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -32,7 +30,7 @@ class AdapterPickNovel (private var context: Context, private var itemsList: Arr
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = ItemTestBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val view = ItemPickNovelBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(view)
     }
 
@@ -97,7 +95,7 @@ class AdapterPickNovel (private var context: Context, private var itemsList: Arr
         notifyItemChanged(position)
     }
 
-    inner class ViewHolder internal constructor(val binding: ItemTestBinding) :
+    inner class ViewHolder internal constructor(val binding: ItemPickNovelBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         init {
@@ -160,6 +158,8 @@ class AdapterPickNovel (private var context: Context, private var itemsList: Arr
                         listener?.onItemClick(it, pos, "Delete")
                     }
                 }
+
+
 
             }
         }
