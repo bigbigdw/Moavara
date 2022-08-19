@@ -30,6 +30,12 @@ object DBDate {
         return format.format(currentTime).toString()
     }
 
+    fun DateMMDDHHMMSS(): String {
+        val currentTime: Date = Calendar.getInstance().time
+        val format = SimpleDateFormat("YYYYMMddhhmmss")
+        return format.format(currentTime).toString()
+    }
+
     fun DateMMDD(): String {
         val currentTime: Date = Calendar.getInstance().time
         val format = SimpleDateFormat("YYYYMMdd")

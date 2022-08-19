@@ -392,7 +392,8 @@ class BottomDialogBest(
                             item.info6,
                             item.number,
                             item.date,
-                            platform
+                            platform,
+                            ""
                         )
                     }
 

@@ -1,6 +1,8 @@
 package com.example.moavara.Pick
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +20,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 
 
-class FragmentPickTabEvent() : Fragment() {
+class FragmentPickTabEvent : Fragment() {
 
     private lateinit var adapter: AdapterPickEvent
     private var cate = ""
@@ -40,6 +42,8 @@ class FragmentPickTabEvent() : Fragment() {
 
         UID = context?.getSharedPreferences("pref", AppCompatActivity.MODE_PRIVATE)
             ?.getString("UID", "").toString()
+
+        binding.blank.tviewblank.text = "마이픽을 한 이벤트가 없습니다."
 
         cate = Genre.getGenre(requireContext()).toString()
 
@@ -105,18 +109,20 @@ class FragmentPickTabEvent() : Fragment() {
                     )
 
                     adapter.editItem(data, position)
-
-//                    dbPickEvent.eventDao().updateItem(adapter.getMemoEdit(), item.link)
-
                     Toast.makeText(requireContext(), "수정되었습니다", Toast.LENGTH_SHORT).show()
                 }  else if(type == "Delete"){
-//                    dbPickEvent.eventDao().deleteItem(item.link)
                     items.remove(item)
                     adapter.notifyItemRemoved(position)
-
                     Toast.makeText(requireContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show()
                 }
             }
         })
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        for(item in items){
+
+        }
     }
 }

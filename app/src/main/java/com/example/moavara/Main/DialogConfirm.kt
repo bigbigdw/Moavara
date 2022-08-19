@@ -11,12 +11,14 @@ import android.view.WindowManager
 import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.DialogLoginConfirmBinding
 
-class DialogConfirmLogin(
+class DialogConfirm(
     context: Context,
     private val textHead: String,
     private val textBody: String,
     private val LeftListner: View.OnClickListener,
     private val RightListener: View.OnClickListener,
+    private val leftBtnText: String,
+    private val rightBtnText: String,
 ) : Dialog(context) {
 
     private lateinit var binding: DialogLoginConfirmBinding
@@ -39,10 +41,25 @@ class DialogConfirmLogin(
         }
 
         if(textHead == ""){
-            binding.tviewHeadWht.visibility = View.VISIBLE
+            binding.tviewUnderline.visibility = View.VISIBLE
         } else {
-            binding.tviewHeadWht.visibility = View.GONE
-            binding.tviewUnderline.text = textHead
+            binding.tviewUnderline.visibility = View.GONE
+            binding.tviewHeadWht.text = textHead
+        }
+
+        if(textBody == ""){
+            binding.tviewBody.visibility = View.GONE
+        } else {
+            binding.tviewBody.visibility = View.VISIBLE
+            binding.tviewBody.text = textHead
+        }
+
+        if(leftBtnText != ""){
+            binding.btnLeft.text = leftBtnText
+        }
+
+        if(rightBtnText != ""){
+            binding.btnRight.text = rightBtnText
         }
 
         binding.llayoutBodyInner.background = body
@@ -62,8 +79,6 @@ class DialogConfirmLogin(
         }
 
         binding.btnRight.background = btnRightBG
-
-        binding.tviewBody.text = textBody
 
         binding.tviewUnderline.paintFlags = Paint.UNDERLINE_TEXT_FLAG
 

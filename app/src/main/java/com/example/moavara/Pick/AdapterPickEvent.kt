@@ -37,36 +37,7 @@ class AdapterPickEvent(items: List<EventData>) :
 
             val item = this.itemsList[position]
 
-            with(holder.binding){
-                Glide.with(holder.itemView.context)
-                    .load(item.imgfile)
-                    .into(iView)
 
-                tviewTitle.text = item.title
-                tviewWriter.text = item.type
-                tviewMemo.text = item.memo
-                tviewInfo1.text = item.genre
-
-                    val pos = holder.adapterPosition
-                    if (pos != RecyclerView.NO_POSITION) {
-
-                        etviewMemo.addTextChangedListener(object :
-                            TextWatcher {
-                            override fun beforeTextChanged(text: CharSequence, start: Int, count: Int, after: Int) {
-                                Log.d("holder.Comment_EditText", "beforeTextChanged")
-                            }
-
-                            override fun onTextChanged(text: CharSequence, start: Int, before: Int, count: Int) {
-                                tviewMemo.text = text
-                                setMemoEdit(text.toString())
-                            }
-
-                            override fun afterTextChanged(s: Editable) {
-                                Log.d("holder.Comment_EditText", "onTextChanged")
-                            }
-                        })
-                    }
-            }
         }
     }
 
@@ -90,59 +61,6 @@ class AdapterPickEvent(items: List<EventData>) :
                         listener?.onItemClick(it, pos, "Img")
                     }
                 }
-
-                tviewbtnMemo.setOnClickListener {
-                    val pos = adapterPosition
-                    if (pos != RecyclerView.NO_POSITION) {
-                        listener?.onItemClick(it, pos, "Memo")
-
-                        if(llayoutWrapMemo.visibility == View.VISIBLE){
-                            llayoutWrapMemo.visibility = View.GONE
-                        } else {
-                            llayoutWrapMemo.visibility = View.VISIBLE
-                        }
-                    }
-                }
-
-                tviewEdit.setOnClickListener {
-                    val pos = adapterPosition
-                    if (pos != RecyclerView.NO_POSITION) {
-                        listener?.onItemClick(it, pos, "Edit")
-
-                        if(etviewMemo.visibility == View.VISIBLE){
-                            etviewMemo.visibility = View.GONE
-                               tviewMemo.visibility = View.VISIBLE
-                        } else {
-                            etviewMemo.visibility = View.VISIBLE
-
-                            if(tviewMemo.text == ""){
-                                etviewMemo.hint = "메모를 입력해주세요"
-                            } else {
-                                val editable: Editable = SpannableStringBuilder(tviewMemo.text)
-                                etviewMemo.text = editable
-                            }
-
-                            tviewMemo.visibility = View.GONE
-                        }
-                    }
-                }
-
-                tviewbtnConfirm.setOnClickListener {
-                    val pos = adapterPosition
-                    if (pos != RecyclerView.NO_POSITION) {
-                        listener?.onItemClick(it, pos, "Confirm")
-                        etviewMemo.visibility = View.GONE
-                        tviewMemo.visibility = View.VISIBLE
-                    }
-                }
-
-                tviewbtnDel.setOnClickListener {
-                    val pos = adapterPosition
-                    if (pos != RecyclerView.NO_POSITION) {
-                        listener?.onItemClick(it, pos, "Delete")
-                    }
-                }
-
             }
         }
     }

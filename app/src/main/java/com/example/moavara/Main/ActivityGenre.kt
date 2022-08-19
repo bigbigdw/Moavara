@@ -220,7 +220,7 @@ class ActivityGenre : AppCompatActivity() {
                     } else {
                         userInfo.child(UID).child("Nickname").setValue(etviewNickname.text.toString())
 
-                        var dialogLogin: DialogConfirmLogin? = null
+                        var dialogLogin: DialogConfirm? = null
 
                         val leftListener = View.OnClickListener { v: View? ->
                             dialogLogin?.dismiss()
@@ -236,12 +236,14 @@ class ActivityGenre : AppCompatActivity() {
                         }
 
                         // 안내 팝업
-                        dialogLogin = DialogConfirmLogin(
+                        dialogLogin = DialogConfirm(
                             context,
                             "",
                             "닉네임 : " + etviewNickname.text + "\n선호장르 : $genre",
                             leftListener,
-                            rightListener
+                            rightListener,
+                            "",
+                            ""
                         )
 
                         dialogLogin.window?.setBackgroundDrawable(
@@ -260,7 +262,7 @@ class ActivityGenre : AppCompatActivity() {
         if(mode != "USER") {
             if(binding.llayoutNickname.visibility == View.VISIBLE){
 
-                var dialogLogin: DialogConfirmLogin? = null
+                var dialogLogin: DialogConfirm? = null
 
                 val leftListener = View.OnClickListener { v: View? ->
                     dialogLogin?.dismiss()
@@ -275,12 +277,14 @@ class ActivityGenre : AppCompatActivity() {
                 }
 
                 // 안내 팝업
-                dialogLogin = DialogConfirmLogin(
+                dialogLogin = DialogConfirm(
                     context,
                     "안내",
                     "가입을 그만두고 로그인 화면으로 돌아가시겠습니까?",
                     leftListener,
-                    rightListener
+                    rightListener,
+                    "",
+                    ""
                 )
 
                 dialogLogin.window?.setBackgroundDrawable(
