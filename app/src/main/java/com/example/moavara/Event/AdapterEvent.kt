@@ -5,16 +5,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.moavara.Search.EventData
+import com.example.moavara.Search.EventDataGroup
 import com.example.moavara.databinding.ItemEventBinding
-import java.util.ArrayList
 
-class AdapterEvent(items: List<EventData>) :
+class AdapterEvent(private var items: List<EventDataGroup>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var holder: ArrayList<EventData> = items as ArrayList<EventData>
 
     interface OnItemClickListener {
-        fun onItemClick(v: View?, position: Int)
+        fun onItemClick(v: View?, position: Int, type: String)
     }
 
     private var listener: OnItemClickListener? = null
@@ -31,16 +29,37 @@ class AdapterEvent(items: List<EventData>) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ViewHoderEvent) {
 
-            val item = this.holder[position]
+            val item = items[position]
 
-            Glide.with(holder.itemView.context)
-                .load(item.imgfile)
-                .into(holder.binding.iview)
+            with(holder.binding){
+                if(item.left?.imgfile == ""){
+                    iviewLeft.visibility = View.INVISIBLE
+                    tviewLeft.text = item.left?.title
+                } else {
+                    iviewLeft.visibility = View.VISIBLE
+                    Glide.with(holder.itemView.context)
+                        .load(item.left?.imgfile)
+                        .into(iviewLeft)
+                }
+
+                if(item.right?.imgfile == ""){
+                    iviewRight.visibility = View.INVISIBLE
+                    tviewRight.text = item.right?.title
+                } else {
+                    iviewRight.visibility = View.VISIBLE
+                    Glide.with(holder.itemView.context)
+                        .load(item.right?.imgfile)
+                        .into(iviewRight)
+                }
+            }
+
+
+
         }
     }
 
     override fun getItemCount(): Int {
-        return if (holder == null) 0 else holder.size
+        return if (items == null) 0 else items.size
     }
 
     inner class ViewHoderEvent internal constructor(val binding: ItemEventBinding) :
@@ -48,10 +67,17 @@ class AdapterEvent(items: List<EventData>) :
 
         init {
             with(binding){
-                llayoutWrap.setOnClickListener { v: View? ->
+                flayoutLeft.setOnClickListener { v: View? ->
                     val pos = adapterPosition
                     if (pos != RecyclerView.NO_POSITION) {
-                        listener!!.onItemClick(v, pos)
+                        listener?.onItemClick(v, pos, "Left")
+                    }
+                }
+
+                flayoutRight.setOnClickListener { v: View? ->
+                    val pos = adapterPosition
+                    if (pos != RecyclerView.NO_POSITION) {
+                        listener?.onItemClick(v, pos, "Right")
                     }
                 }
             }
@@ -60,8 +86,8 @@ class AdapterEvent(items: List<EventData>) :
 
     }
 
-    fun getItem(position: Int): EventData {
-        return holder[position]
+    fun getItem(position: Int): EventDataGroup {
+        return items[position]
     }
 
 }

@@ -12,15 +12,91 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 
-    <ImageView
-        android:id="@+id/iview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:adjustViewBounds="true"
-        android:contentDescription="@string/TODO"
-        android:scaleType="fitXY"
-        app:srcCompat="@drawable/likeit_3" />
+    <FrameLayout
+        android:id="@+id/flayoutLeft"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginBottom="2dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/llayoutNullLeft"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#0D0E10"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="4dp">
+
+            <TextView
+                android:id="@+id/tviewLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendardvariable"
+                android:text="TextView"
+                android:textAlignment="center"
+                android:textColor="#EDE6FD"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iviewLeft"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/TODO"
+            android:scaleType="fitXY"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/event_ex" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/flayoutRight"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginBottom="2dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/llayoutNullRight"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#0D0E10"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="4dp">
+
+            <TextView
+                android:id="@+id/tviewRight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendardvariable"
+                android:text="TextView"
+                android:textAlignment="center"
+                android:textColor="#EDE6FD"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iviewRight"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/TODO"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/event_ex" />
+    </FrameLayout>
 
 
 </LinearLayout>

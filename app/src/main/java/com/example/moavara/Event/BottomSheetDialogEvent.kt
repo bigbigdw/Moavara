@@ -18,7 +18,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
-import com.example.moavara.Retrofit.*
+import com.example.moavara.Retrofit.JoaraEventDetailResult
+import com.example.moavara.Retrofit.RetrofitDataListener
+import com.example.moavara.Retrofit.RetrofitJoara
 import com.example.moavara.Search.EventData
 import com.example.moavara.Search.UserPickEvent
 import com.example.moavara.Util.Genre
@@ -75,8 +77,7 @@ class BottomSheetDialogEvent(
             )
         }
 
-        if ((tabType == "Joara" && !item.link.contains("joaralink://event?event_id=") && !item.link.contains("joaralink://notice?notice_id="))
-            || tabType == "OneStore"
+        if (tabType == "OneStore"
             || tabType == "Munpia"
             || (tabType == "Kakao" && item.link.contains("kakaopage://exec?open_web_with_auth/store/event"))
             || tabType == "Toksoda"
@@ -193,17 +194,7 @@ class BottomSheetDialogEvent(
     private fun getUrl(type: String): String {
         when (type) {
             "Joara" -> {
-                return if(item.link.contains("joaralink://event?event_id=")){
-                    "https://www.joara.com/event/" + item.link.replace(
-                        "joaralink://event?event_id=",
-                        ""
-                    )
-                } else {
-                    "https://www.joara.com/notice/" + item.link.replace(
-                        "joaralink://notice?notice_id=",
-                        ""
-                    )
-                }
+                return "https://www.joara.com/event/" + item.link
             }
             "Ridi" -> {
                 return item.link
@@ -232,60 +223,80 @@ class BottomSheetDialogEvent(
         binding.wView.webChromeClient = WebChromeClient()
         binding.wView.getSettings().setJavaScriptEnabled(true)
 
-        if(item.link.contains("joaralink://event?event_id=")){
+        val apiJoara = RetrofitJoara()
+        val param = Param.getItemAPI(context)
+        param["event_id"] = item.link
 
-            val apiJoara = RetrofitJoara()
-            val param = Param.getItemAPI(context)
-            param["event_id"] = item.link.replace(
-                "joaralink://event?event_id=",
-                ""
-            )
+        apiJoara.getJoaraEventDetail(
+            param,
+            object : RetrofitDataListener<JoaraEventDetailResult> {
+                override fun onSuccess(data: JoaraEventDetailResult) {
+                    val content = data.event?.content
 
-            apiJoara.getJoaraEventDetail(
-                param,
-                object : RetrofitDataListener<JoaraEventDetailResult> {
-                    override fun onSuccess(it: JoaraEventDetailResult) {
-                        val content = it.event?.content
+                    title = data.event?.title ?: ""
 
-                        title = it.event?.title ?: ""
+                    binding.wView.loadDataWithBaseURL(
+                        null,
+                        content?.replace("http://", "https://") ?: "",
+                        "text/html; charset=utf-8",
+                        "utf-8",
+                        null
+                    )
+                }
+            })
 
-                        binding.wView.loadDataWithBaseURL(
-                            null,
-                            content?.replace("http://", "https://") ?: "",
-                            "text/html; charset=utf-8",
-                            "utf-8",
-                            null
-                        )
-                    }
-                })
-
-        } else {
-            val apiJoara = RetrofitJoara()
-            val param = Param.getItemAPI(context)
-            param["notice_id"] = item.link.replace(
-                "joaralink://notice?notice_id=",
-                ""
-            )
-
-            apiJoara.getNoticeDetail(
-                param,
-                object : RetrofitDataListener<JoaraNoticeDetailResult> {
-                    override fun onSuccess(it: JoaraNoticeDetailResult) {
-
-                        val content = it.notice!!.content
-
-                        title = it.notice.title
-
-                        binding.wView.loadDataWithBaseURL(
-                            null,
-                            content.replace("<br />", ""),
-                            "text/html; charset=utf-8",
-                            "base64",
-                            null
-                        )
-                    }
-                })
-        }
+//        if(item.link.contains("joaralink://event?event_id=")){
+//
+//            val apiJoara = RetrofitJoara()
+//            val param = Param.getItemAPI(context)
+//            param["event_id"] = item.link
+//
+//
+//            apiJoara.getJoaraEventDetail(
+//                param,
+//                object : RetrofitDataListener<JoaraEventDetailResult> {
+//                    override fun onSuccess(it: JoaraEventDetailResult) {
+//                        val content = it.event?.content
+//
+//                        title = it.event?.title ?: ""
+//
+//                        binding.wView.loadDataWithBaseURL(
+//                            null,
+//                            content?.replace("http://", "https://") ?: "",
+//                            "text/html; charset=utf-8",
+//                            "utf-8",
+//                            null
+//                        )
+//                    }
+//                })
+//
+//        } else {
+//            val apiJoara = RetrofitJoara()
+//            val param = Param.getItemAPI(context)
+//            param["notice_id"] = item.link.replace(
+//                "joaralink://notice?notice_id=",
+//                ""
+//            )
+//
+//            apiJoara.getNoticeDetail(
+//                param,
+//                object : RetrofitDataListener<JoaraNoticeDetailResult> {
+//                    override fun onSuccess(it: JoaraNoticeDetailResult) {
+//
+//                        val content = it.notice!!.content
+//
+//                        title = it.notice.title
+//
+//                        binding.wView.loadDataWithBaseURL(
+//                            null,
+//                            content.replace("<br />", ""),
+//                            "text/html; charset=utf-8",
+//                            "base64",
+//                            null
+//                        )
+//                    }
+//                })
+//        }
 
 
     }

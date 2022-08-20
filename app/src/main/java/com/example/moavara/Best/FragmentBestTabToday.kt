@@ -72,11 +72,11 @@ class FragmentBestTabToday(private val platform: String, private val pickItems: 
                 val item: BookListDataBest? = adapterToday?.getItem(position)
 
                 val bundle = Bundle()
-                bundle.putString("test", "FragmentBestTabToday")
-                bundle.putString("test1", "FragmentBestTabToday")
-                bundle.putString("test2", "FragmentBestTabToday")
-                bundle.putString("test3", "FragmentBestTabToday")
-                bundle.putString("test4", "FragmentBestTabToday")
+                bundle.putString("test_test", "FragmentBestTabToday")
+                bundle.putString("test_test1", "FragmentBestTabToday")
+                bundle.putString("test_test2", "FragmentBestTabToday")
+                bundle.putString("test_test3", "FragmentBestTabToday")
+                bundle.putString("test_test4", "FragmentBestTabToday")
                 firebaseAnalytics.logEvent("test2", bundle)
 
                 if(platform == "MrBlue"){

@@ -74,7 +74,7 @@ class ActivityBestDetail : AppCompatActivity() {
         genre = Genre.getGenre(this).toString()
 
         val bundle = Bundle()
-        bundle.putString("test", "ActivityBestDetail")
+        bundle.putString("test_test", "ActivityBestDetail")
         firebaseAnalytics.logEvent("test", bundle)
 
         binding.llayoutBtnRight.background = GradientDrawable().apply {

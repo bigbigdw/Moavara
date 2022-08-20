@@ -82,11 +82,17 @@ class EventDetailDataMining(
     var cntRead: String = "",
 )
 
+class EventDataGroup(
+    var left: EventData? = null,
+    var right: EventData? = null,
+)
+
+
 class EventData(
     var link: String = "",
     var imgfile: String = "",
     var title: String = "",
-    var genre: String = "",
+    var data: String = "",
     var type: String = "",
     var memo: String = ""
 )

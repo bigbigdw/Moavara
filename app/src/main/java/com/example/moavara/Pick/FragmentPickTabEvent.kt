@@ -1,8 +1,6 @@
 package com.example.moavara.Pick
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -70,7 +68,7 @@ class FragmentPickTabEvent : Fragment() {
                             group!!.link,
                             group.imgfile,
                             group.title,
-                            group.genre,
+                            group.data,
                             group.type,
                             group.memo
                         )
@@ -103,7 +101,7 @@ class FragmentPickTabEvent : Fragment() {
                         item.link,
                         item.imgfile,
                         item.title,
-                        item.genre,
+                        item.data,
                         item.type,
                         adapter.getMemoEdit()
                     )
