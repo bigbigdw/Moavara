@@ -1,19 +1,22 @@
 package com.example.moavara.Event
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.moavara.Retrofit.JoaraEventResult
-import com.example.moavara.Retrofit.JoaraEventsResult
-import com.example.moavara.Retrofit.RetrofitDataListener
-import com.example.moavara.Retrofit.RetrofitJoara
+import com.example.moavara.Retrofit.*
 import com.example.moavara.Search.EventData
 import com.example.moavara.Search.EventDataGroup
+import com.example.moavara.Util.DBDate
+import com.example.moavara.Util.Genre
 import com.example.moavara.Util.Param
 import com.example.moavara.databinding.FragmentEventTabBinding
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
+import org.jsoup.select.Elements
 
 class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
 
@@ -44,26 +47,26 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                 "Joara" -> {
                     getEventJoara()
                 }
-//                "Ridi" -> {
-//                    getEventRidi()
-//                }
+                "Ridi" -> {
+                    getEventRidi()
+                }
 //                "OneStore" -> {
 //                    getEventOneStore()
 //                }
-//                "Kakao" -> {
-//                    getEventKakao()
-//                }
-//                "MrBlue" -> {
-//                    getEventMrBlue()
-//                }
-//                "Munpia" -> {
-//                    getEventMunpia()
-//                } "Toksoda" -> {
-//                    getEventToksoda("ALL")
-//                    getEventToksoda("BL")
-//                    getEventToksoda("FANTASY")
-//                    getEventToksoda("ROMANCE")
-//                }
+                "Kakao" -> {
+                    getEventKakao()
+                }
+                "MrBlue" -> {
+                    getEventMrBlue()
+                }
+                "Munpia" -> {
+                    getEventMunpia()
+                } "Toksoda" -> {
+                    getEventToksoda("ALL")
+                    getEventToksoda("BL")
+                    getEventToksoda("FANTASY")
+                    getEventToksoda("ROMANCE")
+                }
             }
         }.start()
 
@@ -101,9 +104,6 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                                 val left = data[2 * i]
                                 val right = data[2 * i + 1]
 
-//                                Log.d("####-Left", left.ingimg)
-//                                Log.d("####-Right", right.ingimg)
-
                                 items.add(
                                     EventDataGroup(
                                         EventData(
@@ -111,6 +111,7 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                                             left.ingimg.replace("http://", "https://"),
                                             left.title,
                                             left.cnt_read,
+                                            DBDate.DateMMDD(),
                                             "Joara",
                                             ""
                                         ),
@@ -119,14 +120,13 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                                             right.ingimg.replace("http://", "https://"),
                                             right.title,
                                             right.cnt_read,
+                                            DBDate.DateMMDD(),
                                             "Joara",
                                             ""
                                         )
                                     )
                                 )
-                            } catch (e : IndexOutOfBoundsException){
-
-                            }
+                            } catch (e : IndexOutOfBoundsException){}
                         }
                     }
                     adapter.notifyDataSetChanged()
@@ -184,271 +184,245 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
             })
     }
 
-//    private fun getEventMrBlue() {
-//        val doc: Document = Jsoup.connect("https://www.mrblue.com/event/novel?sortby=recent").get()
-//        val mrBlue: Elements = doc.select(".event-list ul li")
-//
-//        for (i in mrBlue.indices) {
-//
-//            val imgfile = mrBlue.select("img")[i].absUrl("src")
-//            val title = mrBlue.select("img")[i].absUrl("alt")
-//            val link = mrBlue.select("a")[i].absUrl("href")
-//
-//            requireActivity().runOnUiThread {
-//                if (i % 2 != 1) {
-//                    itemsLeft.add(
-//                        EventData(
-//                            link,
-//                            imgfile,
-//                            title.replace("https://www.mrblue.com/event/",""),
-//                            "",
-//                            "MrBlue",
-//                            ""
-//                        )
-//                    )
-//                    adapterLeft.notifyDataSetChanged()
-//                } else {
-//                    itemsRight.add(
-//                        EventData(
-//                            link,
-//                            imgfile,
-//                            title.replace("https://www.mrblue.com/event/",""),
-//                            "",
-//                            "MrBlue",
-//                            ""
-//                        )
-//                    )
-//                    adapterRight.notifyDataSetChanged()
-//                }
-//            }
-//
-//        }
-//    }
-//
-//    private fun getEventRidi() {
-//        val doc: Document = Jsoup.connect("https://ridibooks.com/event/romance_serial").get()
-//        val ridiKeyword: Elements = doc.select("ul .event_list")
-//
-//        for (i in ridiKeyword.indices) {
-//
-//            val imgfile = doc.select(".image_link img")[i].absUrl("src")
-//            val link = doc.select(".event_title a")[i].absUrl("href")
-//            val title = doc.select(".event_title a")[i].text()
-//
-//            requireActivity().runOnUiThread {
-//                if (i % 2 != 1) {
-//                    itemsLeft.add(
-//                        EventData(
-//                            link,
-//                            imgfile,
-//                            title,
-//                            "",
-//                            "Ridi",
-//                            ""
-//                        )
-//                    )
-//                    adapterLeft.notifyDataSetChanged()
-//                } else {
-//                    itemsRight.add(
-//                        EventData(
-//                            link,
-//                            imgfile,
-//                            title,
-//                            "",
-//                            "Ridi",
-//                            ""
-//                        )
-//                    )
-//                    adapterRight.notifyDataSetChanged()
-//                }
-//            }
-//
-//        }
-//    }
-//
-//    private fun getEventMunpia() {
-//
-//        val doc: Document = Jsoup.connect("https://square.munpia.com/event").get()
-//        val MunpiaWrap: Elements = doc.select(".light .entries tbody tr a img")
-//
-//        for (i in MunpiaWrap.indices) {
-//
-//            val link = doc.select(".light .entries tbody tr td a")[i].attr("href")
-//            val imgfile = doc.select(".light .entries tbody tr a img")[i].attr("src")
-//            val title = doc.select(".light .entries .subject td a")[i].text()
-//
-//            requireActivity().runOnUiThread {
-//                if (i % 2 != 1) {
-//                    itemsLeft.add(
-//                        EventData(
-//                            "https://square.munpia.com${link}",
-//                            "https:${imgfile}",
-//                            title,
-//                            "",
-//                            "Munpia",
-//                            ""
-//                        )
-//                    )
-//
-//                    adapterLeft.notifyDataSetChanged()
-//                } else {
-//                    itemsRight.add(
-//                        EventData(
-//                            "https://www.munpia.com${link}",
-//                            "https:${imgfile}",
-//                            title,
-//                            "",
-//                            "Munpia",
-//                            ""
-//                        )
-//                    )
-//                    adapterRight.notifyDataSetChanged()
-//                }
-//            }
-//        }
-//    }
-//
-//    private fun getEventOneStore() {
-//        val doc: Document = Jsoup.connect("https://onestory.co.kr/main/PN83003001").get()
-//        val ridiKeyword: Elements = doc.select("div .BannerSwiperItem")
-//
-//        for (i in ridiKeyword.indices) {
-//
-//            val imgfile = doc.select(".BannerSwiperItemPic")[i].absUrl("src")
-//
-//            requireActivity().runOnUiThread {
-//                if (i % 2 != 1) {
-//                    itemsLeft.add(
-//                        EventData(
-//                            "",
-//                            imgfile,
-//                            "",
-//                            "",
-//                            "OneStore",
-//                            ""
-//                        )
-//                    )
-//                    adapterLeft.notifyDataSetChanged()
-//                } else {
-//                    itemsRight.add(
-//                        EventData(
-//                            "",
-//                            imgfile,
-//                            "",
-//                            "",
-//                            "OneStore",
-//                            ""
-//                        )
-//                    )
-//                    adapterRight.notifyDataSetChanged()
-//                }
-//            }
-//
-//        }
-//    }
-//
-//    private fun getEventKakao() {
-//        val doc: Document = Jsoup.connect("https://page.kakao.com/main/recommend-events").get()
-//        val kakao: Elements = doc.select(".eventsBox .cellWrapper")
-//        var num = 0
-//
-//
-//        for (elem in kakao) {
-//            val imgfile = elem.select(".imageWrapper img").attr("data-src")
-//            val link = elem.attr("data-url")
-//            val title = elem.select(".imageWrapper img").attr("alt")
-//
-//            if (num % 2 != 1) {
-//                requireActivity().runOnUiThread {
-//                    itemsLeft.add(
-//                        EventData(
-//                            link,
-//                            "https://$imgfile",
-//                            title,
-//                            "",
-//                            "Kakao",
-//                            ""
-//                        )
-//                    )
-//                    adapterLeft.notifyDataSetChanged()
-//                }
-//            } else {
-//                requireActivity().runOnUiThread {
-//                    itemsRight.add(
-//                        EventData(
-//                            link,
-//                            "https://$imgfile",
-//                            title,
-//                            "",
-//                            "Kakao",
-//                            ""
-//                        )
-//                    )
-//                    adapterRight.notifyDataSetChanged()
-//                }
-//            }
-//
-//            num += 1
-//        }
-//    }
-//
-//    fun getEventToksoda(cate : String){
-//        val apiToksoda = RetrofitToksoda()
-//        val param : MutableMap<String?, Any> = HashMap()
-//        var num = 0
-//
-//        param["bnnrPstnCd"] = "00023"
-//        param["bnnrClsfCd"] = "00320"
-//        param["expsClsfCd"] = Genre.setToksodaGenre(cate)
-//        param["fileNo"] = "1"
-//        param["pageRowCount"] = "10"
-//        param["_"] = "1657271613642"
-//
-//        apiToksoda.getEventList(
-//            param,
-//            object : RetrofitDataListener<BestBannerListResult> {
-//                override fun onSuccess(data: BestBannerListResult) {
-//
-//                    for (item in data.resultList!!) {
-//                        val imgfile = "https:${item.imgPath}"
-//                        val link = "https://www.tocsoda.co.kr/event/eventDetail?eventmngSeq=${item.linkInfo}"
-//                        val title = item.bnnrNm
-//
-//                        if (num % 2 != 1) {
-//                            requireActivity().runOnUiThread {
-//                                itemsLeft.add(
-//                                    EventData(
-//                                        link,
-//                                        imgfile,
-//                                        title,
-//                                        "",
-//                                        "Toksoda",
-//                                        ""
-//                                    )
-//                                )
-//                                adapterLeft.notifyDataSetChanged()
-//                            }
-//                        } else {
-//                            requireActivity().runOnUiThread {
-//                                itemsRight.add(
-//                                    EventData(
-//                                        link,
-//                                        imgfile,
-//                                        title,
-//                                        "",
-//                                        "Toksoda",
-//                                        ""
-//                                    )
-//                                )
-//                                adapterRight.notifyDataSetChanged()
-//                            }
-//                        }
-//
-//                        num += 1
-//                    }
-//                }
-//            })
-//    }
+    private fun getEventMrBlue() {
+        val doc: Document = Jsoup.connect("https://www.mrblue.com/event/novel?sortby=recent").get()
+        val mrBlue: Elements = doc.select(".event-list ul li")
+
+        for (i in mrBlue.indices) {
+
+            requireActivity().runOnUiThread {
+
+                try{
+                    items.add(
+                        EventDataGroup(
+                            EventData(
+                                mrBlue.select("a")[2 * i].absUrl("href"),
+                                mrBlue.select("img")[2 * i].absUrl("src"),
+                                mrBlue.select("img")[2 * i].absUrl("alt"),
+                                "",
+                                DBDate.DateMMDD(),
+                                "MrBlue",
+                                ""
+                            ),
+                            EventData(
+                                mrBlue.select("a")[2 * i + 1].absUrl("href"),
+                                mrBlue.select("img")[2 * i + 1].absUrl("src"),
+                                mrBlue.select("img")[2 * i + 1].absUrl("alt"),
+                                "",
+                                DBDate.DateMMDD(),
+                                "MrBlue",
+                                ""
+                            )
+                        )
+                    )
+                } catch (e : IndexOutOfBoundsException){}
+                adapter.notifyDataSetChanged()
+            }
+        }
+    }
+
+    private fun getEventRidi() {
+        val doc: Document = Jsoup.connect("https://ridibooks.com/event/romance_serial").get()
+        val ridiKeyword: Elements = doc.select("ul .event_list")
+
+        for (i in ridiKeyword.indices) {
+            requireActivity().runOnUiThread {
+                try {
+                    items.add(
+                        EventDataGroup(
+                            EventData(
+                                doc.select(".event_title a")[2 * i].absUrl("href"),
+                                doc.select(".image_link img")[2 * i].absUrl("src"),
+                                doc.select(".event_title a")[2 * i].text(),
+                                "",
+                                DBDate.DateMMDD(),
+                                "Ridi",
+                                ""
+                            ),
+                            EventData(
+                                doc.select(".event_title a")[2 * i + 1].absUrl("href"),
+                                doc.select(".image_link img")[2 * i + 1].absUrl("src"),
+                                doc.select(".event_title a")[2 * i + 1].text(),
+                                "",
+                                DBDate.DateMMDD(),
+                                "Ridi",
+                                ""
+                            )
+                        )
+                    )
+                } catch (e: IndexOutOfBoundsException) { }
+                adapter.notifyDataSetChanged()
+            }
+        }
+    }
+
+
+
+    private fun getEventMunpia() {
+
+        val doc: Document = Jsoup.connect("https://square.munpia.com/event").get()
+        val MunpiaWrap: Elements = doc.select(".light .entries tbody tr a img")
+
+        requireActivity().runOnUiThread {
+
+            for (i in MunpiaWrap.indices) {
+
+                try {
+                    items.add(
+                        EventDataGroup(
+                            EventData(
+                                doc.select(".light .entries tbody tr td a")[2 * i].attr("href"),
+                                "https://${doc.select(".light .entries tbody tr a img")[2 * i].attr("src")}",
+                                doc.select(".light .entries .subject td a")[2 * i].text(),
+                                "",
+                                DBDate.DateMMDD(),
+                                "Munpia",
+                                ""
+                            ),
+                            EventData(
+                                doc.select(".light .entries tbody tr td a")[2 * i + 1].attr("href"),
+                                "https://${doc.select(".light .entries tbody tr a img")[2 * i + 1].attr("src")}",
+                                doc.select(".light .entries .subject td a")[2 * i + 1].text(),
+                                "",
+                                DBDate.DateMMDD(),
+                                "Munpia",
+                                ""
+                            )
+                        )
+                    )
+                } catch (e: IndexOutOfBoundsException) { }
+                adapter.notifyDataSetChanged()
+            }
+        }
+
+    }
+
+    private fun getEventOneStore() {
+        val doc: Document = Jsoup.connect("https://onestory.co.kr/main/PN83003001").get()
+        val ridiKeyword: Elements = doc.select("div .BannerSwiperItem")
+
+        for (i in ridiKeyword.indices) {
+
+            val imgfile = doc.select(".BannerSwiperItemPic")[i].absUrl("src")
+
+            requireActivity().runOnUiThread {
+
+                try {
+                    items.add(
+                        EventDataGroup(
+                            EventData(
+                                "",
+                                imgfile,
+                                "",
+                                "",
+                                DBDate.DateMMDD(),
+                                "OneStore",
+                                ""
+                            ),
+                            EventData(
+                                "",
+                                imgfile,
+                                "",
+                                "",
+                                DBDate.DateMMDD(),
+                                "OneStore",
+                                ""
+                            )
+                        )
+                    )
+                } catch (e: IndexOutOfBoundsException) { }
+                adapter.notifyDataSetChanged()
+            }
+
+        }
+    }
+
+    private fun getEventKakao() {
+        val doc: Document = Jsoup.connect("https://page.kakao.com/main/recommend-events").get()
+        val kakao: Elements = doc.select(".eventsBox .cellWrapper")
+
+        requireActivity().runOnUiThread {
+            for (i in kakao.indices) {
+                try {
+                    Log.d("####-Left", "https://${kakao[2 * i + 1].select(".imageWrapper img").attr("data-src")}")
+
+                    items.add(
+                        EventDataGroup(
+                            EventData(
+                                kakao[2 * i].attr("data-url"),
+                                "https://${kakao[2 * i].select(".imageWrapper img").attr("data-src")}",
+                                kakao[2 * i].select(".imageWrapper img").attr("alt"),
+                                "",
+                                DBDate.DateMMDD(),
+                                "Kakao",
+                                ""
+                            ),
+                            EventData(
+                                kakao[2 * i + 1].attr("data-url"),
+                                "https://${kakao[2 * i + 1].select(".imageWrapper img").attr("data-src")}",
+                                kakao[2 * i + 1].select(".imageWrapper img").attr("alt"),
+                                "",
+                                DBDate.DateMMDD(),
+                                "Kakao",
+                                ""
+                            )
+                        )
+                    )
+                } catch (e: IndexOutOfBoundsException) { }
+                adapter.notifyDataSetChanged()
+            }
+        }
+    }
+
+    private fun getEventToksoda(cate : String){
+        val apiToksoda = RetrofitToksoda()
+        val param : MutableMap<String?, Any> = HashMap()
+
+        param["bnnrPstnCd"] = "00023"
+        param["bnnrClsfCd"] = "00320"
+        param["expsClsfCd"] = Genre.setToksodaGenre(cate)
+        param["fileNo"] = "1"
+        param["pageRowCount"] = "10"
+        param["_"] = "1657271613642"
+
+        apiToksoda.getEventList(
+            param,
+            object : RetrofitDataListener<BestBannerListResult> {
+                override fun onSuccess(data: BestBannerListResult) {
+
+                    if(data.resultList != null){
+                        for (i in data.resultList.indices) {
+
+                            try {
+                                items.add(
+                                    EventDataGroup(
+                                        EventData(
+                                            "https://www.tocsoda.co.kr/event/eventDetail?eventmngSeq=${data.resultList[2 * i].linkInfo}",
+                                            "https:${data.resultList[2 * i].imgPath}",
+                                            data.resultList[2 * i].bnnrNm,
+                                            "",
+                                            DBDate.DateMMDD(),
+                                            "Toksoda",
+                                            ""
+                                        ),
+                                        EventData(
+                                            "https://www.tocsoda.co.kr/event/eventDetail?eventmngSeq=${data.resultList[2 * i + 1].linkInfo}",
+                                            "https:${data.resultList[2 * i + 1].imgPath}",
+                                            data.resultList[2 * i + 1].bnnrNm,
+                                            "",
+                                            DBDate.DateMMDD(),
+                                            "Toksoda",
+                                            ""
+                                        )
+                                    )
+                                )
+                            } catch (e: IndexOutOfBoundsException) { }
+                            adapter.notifyDataSetChanged()
+                        }
+                    }
+                }
+            })
+    }
 
     private fun onClickEvent(item: EventDataGroup, type: String){
 
@@ -456,6 +430,10 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
             item.left
         } else {
             item.right
+        }
+
+        if (eventItem != null) {
+            Log.d("####", eventItem.imgfile)
         }
 
         if(eventItem != null){

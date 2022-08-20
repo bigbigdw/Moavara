@@ -119,7 +119,7 @@ object BestRef {
             "조아라",
             "카카오",
             "리디북스",
-            "원스토리",
+//            "원스토리",
             "문피아",
             "톡소다",
             "미스터블루",
@@ -131,7 +131,7 @@ object BestRef {
             "Joara",
             "Kakao",
             "Ridi",
-            "OneStore",
+//            "OneStore",
             "Munpia",
             "Toksoda",
             "MrBlue"

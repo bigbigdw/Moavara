@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,15 +21,11 @@ import com.example.moavara.Retrofit.JoaraEventDetailResult
 import com.example.moavara.Retrofit.RetrofitDataListener
 import com.example.moavara.Retrofit.RetrofitJoara
 import com.example.moavara.Search.EventData
-import com.example.moavara.Search.UserPickEvent
 import com.example.moavara.Util.Genre
 import com.example.moavara.Util.Param
 import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.BottomDialogEventBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
@@ -102,22 +97,17 @@ class BottomSheetDialogEvent(
 
         with(binding){
             btnRight.setOnClickListener {
-                val group = UserPickEvent(
+                val group = EventData(
                     item.link,
                     item.imgfile,
-                    title,
-                    cate,
-                    tabType,
-                    ""
+                    item.title,
+                    item.data,
+                    item.date,
+                    item.type,
+                    "",
                 )
 
-                userInfo.child(UID).child("event").addListenerForSingleValueEvent(object :
-                        ValueEventListener {
-                        override fun onDataChange(dataSnapshot: DataSnapshot) {
-                            userInfo.child(UID).child("event").child(dataSnapshot.childrenCount.toString()).setValue(group)
-                        }
-                        override fun onCancelled(databaseError: DatabaseError) {}
-                    })
+                userInfo.child(UID).child("Event").child(item.link).setValue(group)
 
                 Toast.makeText(requireContext(), "Pick 성공!", Toast.LENGTH_SHORT).show()
                 dismiss()
@@ -139,15 +129,19 @@ class BottomSheetDialogEvent(
             val doc: Document = Jsoup.connect(item.link).get()
 
             if(doc.select(".event-html img").size > 1){
-                val mrBlue1 = doc.select(".event-html img").first()!!.absUrl("src")
+                val mrBlue1 = doc.select(".event-html img").first()?.absUrl("src")
                 requireActivity().runOnUiThread {
-                    Glide.with(mContext)
-                        .load(mrBlue1.replace("http", "https"))
-                        .into(binding.iview)
+                    if (mrBlue1 != null) {
+                        binding?.let {
+                            Glide.with(mContext)
+                                .load(mrBlue1.replace("http", "https"))
+                                .into(it.iview)
+                        }
+                    }
                 }
             } else if(doc.select(".event-html img").size < 1) {
 
-                val mrBlue2 = doc.select(".event-visual img").first()!!.absUrl("src")
+                val mrBlue2 = doc.select(".event-visual img").first()?.absUrl("src")
                 title = item.title
 
                 requireActivity().runOnUiThread {
@@ -160,11 +154,10 @@ class BottomSheetDialogEvent(
     }
 
     private fun getEventRidi(){
-        Log.d("####", item.link)
 
         Thread {
             val doc: Document = Jsoup.connect(item.link).get()
-            val ridi = doc.select(".event_detail_top img").first()!!.absUrl("src")
+            val ridi = doc.select(".event_detail_top img").first()?.absUrl("src")
 
             title = item.title
 
@@ -179,7 +172,7 @@ class BottomSheetDialogEvent(
     private fun getEventKakao() {
         Thread {
             val doc: Document = Jsoup.connect("https://page.kakao.com${item.link}").get()
-            val kakao = doc.select(".themeBox img").first()!!.absUrl("src")
+            val kakao = doc.select(".themeBox img").first()?.absUrl("src")
 
             title = item.title
 
@@ -283,7 +276,7 @@ class BottomSheetDialogEvent(
 //                object : RetrofitDataListener<JoaraNoticeDetailResult> {
 //                    override fun onSuccess(it: JoaraNoticeDetailResult) {
 //
-//                        val content = it.notice!!.content
+//                        val content = it.notice?.content
 //
 //                        title = it.notice.title
 //

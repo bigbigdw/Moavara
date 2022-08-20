@@ -93,6 +93,7 @@ class EventData(
     var imgfile: String = "",
     var title: String = "",
     var data: String = "",
+    var date: String = "",
     var type: String = "",
     var memo: String = ""
 )
@@ -126,15 +127,6 @@ data class BestLineChart(
 data class UserInfo(
     var Nickname: String = "",
     var Genre: String = "",
-)
-
-data class UserPickEvent(
-    var link: String = "",
-    var imgfile: String = "",
-    var title: String = "",
-    var genre: String = "",
-    var type: String = "",
-    var memo: String = ""
 )
 
 data class NewsBX(
