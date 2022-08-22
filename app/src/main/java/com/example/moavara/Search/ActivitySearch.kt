@@ -1,6 +1,7 @@
 package com.example.moavara.Search
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
@@ -170,9 +171,8 @@ class ActivitySearch : AppCompatActivity() {
                     val results = data.results
 
                     if (results != null) {
-                        val items: List<KakaoBookItem>?
 
-                        items = if (page == 0) {
+                        val items: List<KakaoBookItem>? = if (page == 0) {
                             results[2].items
                         } else {
                             results[0].items
@@ -250,7 +250,7 @@ class ActivitySearch : AppCompatActivity() {
                                 items.subGenre.name,
                                 items.favoriteCount,
                                 items.viewCount,
-                                "총 ${items.publishedEpisodeCount}화",
+                                "총 ${items.publishedEpisodeCount}",
                                 "",
                                 999,
                                 DBDate.DateMMDDHHMM(),
@@ -267,8 +267,6 @@ class ActivitySearch : AppCompatActivity() {
                     }
                     adapter?.notifyDataSetChanged()
 
-                    adapter?.notifyDataSetChanged()
-
                     with(binding) {
                         blank.root.visibility = View.GONE
                         rviewSearch.visibility = View.VISIBLE
@@ -280,23 +278,23 @@ class ActivitySearch : AppCompatActivity() {
     fun searchNaver(text: String, platform: String) {
         Thread {
             var doc: Document? = null
-            var title = ""
 
-            if (platform == "Naver") {
-                doc =
-                    Jsoup.connect("https://novel.naver.com/search?keyword=${text}&section=webnovel&target=novel")
-                        .post()
-                title = "네이버 시리즈"
-            } else if (platform == "Naver_Today") {
-                doc =
-                    Jsoup.connect("https://novel.naver.com/search?keyword=${text}&section=best&target=novel")
-                        .post()
-                title = "네이버 베스트"
-            } else if (platform == "Naver_Challenge") {
-                doc =
-                    Jsoup.connect("https://novel.naver.com/search?keyword=${text}&section=challenge&target=novel")
-                        .post()
-                title = "네이버 챌린지"
+            when (platform) {
+                "Naver" -> {
+                    doc =
+                        Jsoup.connect("https://novel.naver.com/search?keyword=${text}&section=webnovel&target=novel")
+                            .post()
+                }
+                "Naver_Today" -> {
+                    doc =
+                        Jsoup.connect("https://novel.naver.com/search?keyword=${text}&section=best&target=novel")
+                            .post()
+                }
+                "Naver_Challenge" -> {
+                    doc =
+                        Jsoup.connect("https://novel.naver.com/search?keyword=${text}&section=challenge&target=novel")
+                            .post()
+                }
             }
 
             val Naver: Elements = (doc?.select(".srch_cont .list_type2 li") ?: "") as Elements
@@ -310,13 +308,13 @@ class ActivitySearch : AppCompatActivity() {
                 for (items in Naver) {
                     searchItems.add(
                         BookListDataBest(
+                            items.select(".league").text(),
                             items.select(".ellipsis").text(),
-                            title,
                             items.select("div img").attr("src"),
                             items.select("a").attr("href"),
                             "",
-                            "",
                             items.select(".bullet_comp").text(),
+                            "",
                             "",
                             "",
                             "",
@@ -333,8 +331,6 @@ class ActivitySearch : AppCompatActivity() {
                         Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
                     Collections.sort(searchItems, cmpAsc)
                 }
-                adapter?.notifyDataSetChanged()
-
                 adapter?.notifyDataSetChanged()
 
                 with(binding) {
@@ -367,12 +363,12 @@ class ActivitySearch : AppCompatActivity() {
                             items.select(".detail a").text(),
                             "https://${items.select(".thumb img").attr("src")}",
                             items.select(".detail a").attr("href"),
-                            "",
-                            "",
-                            "",
+                            items.select(".synopsis").text(),
+                            items.select(".info span").first()?.text().toString(),
                             items.select(".info span").next().get(0).text(),
                             items.select(".info span").next().get(1).text(),
                             items.select(".info span").next().get(2).text(),
+                            "",
                             999,
                             DBDate.DateMMDDHHMM(),
                             "Munpia",
@@ -429,11 +425,11 @@ class ActivitySearch : AppCompatActivity() {
                                         it[i].BOOK_NM,
                                         "https:${it[i].IMG_PATH}",
                                         it[i].BARCODE,
-                                        it[i].LGCTGR_NM,
-                                        it[i].PUB_NM,
                                         it[i].HASHTAG_NM,
-                                        "",
-                                        "",
+                                        it[i].PUB_NM,
+                                        it[i].LGCTGR_NM,
+                                        it[i].INQR_CNT,
+                                        it[i].INTRST_CNT,
                                         "",
                                         999,
                                         DBDate.DateMMDDHHMM(),
@@ -490,15 +486,15 @@ class ActivitySearch : AppCompatActivity() {
 
                     searchItems.add(
                         BookListDataBest(
-                            items.select(".name").text(),
+                            items.select(".authorname").text(),
                             items.select(".tit").text(),
                             bookImg,
                             items.select("a").attr("href"),
+                            "${items.select(".price span").get(0).text()} \n${items.select(".price span").get(1).text()}",
                             items.select(".genre").text(),
-                            items.select(".price").text(),
                             items.select(".review").text(),
-                            "",
-                            "",
+                            items.select(".info span").get(1).text(),
+                            items.select(".info span").get(2).text(),
                             "",
                             999,
                             DBDate.DateMMDDHHMM(),
@@ -551,14 +547,15 @@ class ActivitySearch : AppCompatActivity() {
                 adapterType.setSelectedBtn(position)
                 adapterType.notifyDataSetChanged()
 
-                searchItems.clear()
-                adapter?.notifyDataSetChanged()
+
                 page = 1
                 type = item.type.toString()
 
                 if (item.type != "Keyword") {
                     binding.rviewSearch.addOnScrollListener(recyclerViewScroll)
                 }
+
+                searchItems.clear()
 
                 if (item.type == "Keyword") {
                     searchJoara(page, text)
@@ -589,6 +586,7 @@ class ActivitySearch : AppCompatActivity() {
                 } else if (item.type == "MrBlue") {
                     searchMrBlue(text)
                 }
+                adapter?.notifyDataSetChanged()
             }
         })
     }

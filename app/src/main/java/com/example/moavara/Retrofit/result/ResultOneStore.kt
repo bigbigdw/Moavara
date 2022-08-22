@@ -349,6 +349,14 @@ class BestToksodaSearchList {
     @SerializedName("PUB_NM")
     @Expose
     var PUB_NM: String = ""
+
+    @SerializedName("INTRST_CNT")
+    @Expose
+    var INTRST_CNT: String = ""
+
+    @SerializedName("INQR_CNT")
+    @Expose
+    var INQR_CNT: String = ""
 }
 
 class BestBannerListResult {
