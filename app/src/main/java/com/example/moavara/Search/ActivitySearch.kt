@@ -1,7 +1,6 @@
 package com.example.moavara.Search
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
@@ -85,6 +84,8 @@ class ActivitySearch : AppCompatActivity() {
             }
         })
 
+        binding.blank.tviewblank.text = "검색어를 입력해주세요"
+
         getType()
     }
 
@@ -147,10 +148,15 @@ class ActivitySearch : AppCompatActivity() {
                         adapter?.notifyDataSetChanged()
 
                         with(binding) {
-                            blank.root.visibility = View.GONE
-                            rviewSearch.visibility = View.VISIBLE
+                            if(searchItems.size == 0){
+                                blank.root.visibility = View.VISIBLE
+                                rviewSearch.visibility = View.GONE
+                                binding.blank.tviewblank.text = "검색 결과가 없습니다."
+                            } else {
+                                blank.root.visibility = View.GONE
+                                rviewSearch.visibility = View.VISIBLE
+                            }
                         }
-
                     }
                 }
             })
@@ -215,8 +221,14 @@ class ActivitySearch : AppCompatActivity() {
                     adapter?.notifyDataSetChanged()
 
                     with(binding) {
-                        blank.root.visibility = View.GONE
-                        rviewSearch.visibility = View.VISIBLE
+                        if(searchItems.size == 0){
+                            blank.root.visibility = View.VISIBLE
+                            rviewSearch.visibility = View.GONE
+                            binding.blank.tviewblank.text = "검색 결과가 없습니다."
+                        } else {
+                            blank.root.visibility = View.GONE
+                            rviewSearch.visibility = View.VISIBLE
+                        }
                     }
                 }
             })
@@ -268,8 +280,14 @@ class ActivitySearch : AppCompatActivity() {
                     adapter?.notifyDataSetChanged()
 
                     with(binding) {
-                        blank.root.visibility = View.GONE
-                        rviewSearch.visibility = View.VISIBLE
+                        if(searchItems.size == 0){
+                            blank.root.visibility = View.VISIBLE
+                            rviewSearch.visibility = View.GONE
+                            binding.blank.tviewblank.text = "검색 결과가 없습니다."
+                        } else {
+                            blank.root.visibility = View.GONE
+                            rviewSearch.visibility = View.VISIBLE
+                        }
                     }
                 }
             })
@@ -334,8 +352,14 @@ class ActivitySearch : AppCompatActivity() {
                 adapter?.notifyDataSetChanged()
 
                 with(binding) {
-                    blank.root.visibility = View.GONE
-                    rviewSearch.visibility = View.VISIBLE
+                    if(searchItems.size == 0){
+                        blank.root.visibility = View.VISIBLE
+                        rviewSearch.visibility = View.GONE
+                        binding.blank.tviewblank.text = "검색 결과가 없습니다."
+                    } else {
+                        blank.root.visibility = View.GONE
+                        rviewSearch.visibility = View.VISIBLE
+                    }
                 }
             }
         }.start()
@@ -385,8 +409,14 @@ class ActivitySearch : AppCompatActivity() {
                 adapter?.notifyDataSetChanged()
 
                 with(binding) {
-                    blank.root.visibility = View.GONE
-                    rviewSearch.visibility = View.VISIBLE
+                    if(searchItems.size == 0){
+                        blank.root.visibility = View.VISIBLE
+                        rviewSearch.visibility = View.GONE
+                        binding.blank.tviewblank.text = "검색 결과가 없습니다."
+                    } else {
+                        blank.root.visibility = View.GONE
+                        rviewSearch.visibility = View.VISIBLE
+                    }
                 }
             }
         }.start()
@@ -447,8 +477,14 @@ class ActivitySearch : AppCompatActivity() {
                             adapter?.notifyDataSetChanged()
 
                             with(binding) {
-                                blank.root.visibility = View.GONE
-                                rviewSearch.visibility = View.VISIBLE
+                                if(searchItems.size == 0){
+                                    blank.root.visibility = View.VISIBLE
+                                    rviewSearch.visibility = View.GONE
+                                    binding.blank.tviewblank.text = "검색 결과가 없습니다."
+                                } else {
+                                    blank.root.visibility = View.GONE
+                                    rviewSearch.visibility = View.VISIBLE
+                                }
                             }
                         }
                     }
@@ -490,7 +526,7 @@ class ActivitySearch : AppCompatActivity() {
                             items.select(".tit").text(),
                             bookImg,
                             items.select("a").attr("href"),
-                            "${items.select(".price span").get(0).text()} \n${items.select(".price span").get(1).text()}",
+                            "${items.select(".price span").get(0).text()}",
                             items.select(".genre").text(),
                             items.select(".review").text(),
                             items.select(".info span").get(1).text(),
@@ -512,8 +548,14 @@ class ActivitySearch : AppCompatActivity() {
                 adapter?.notifyDataSetChanged()
 
                 with(binding) {
-                    blank.root.visibility = View.GONE
-                    rviewSearch.visibility = View.VISIBLE
+                    if(searchItems.size == 0){
+                        blank.root.visibility = View.VISIBLE
+                        rviewSearch.visibility = View.GONE
+                        binding.blank.tviewblank.text = "검색 결과가 없습니다."
+                    } else {
+                        blank.root.visibility = View.GONE
+                        rviewSearch.visibility = View.VISIBLE
+                    }
                 }
             }
         }.start()

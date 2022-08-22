@@ -1,8 +1,6 @@
 package com.example.moavara.Search
 
 import android.text.SpannableStringBuilder
-import android.text.TextUtils.replace
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -92,8 +90,19 @@ class AdapterBookSearch(private var holder: ArrayList<BookListDataBest>) :
                     else -> {}
                 }
 
-                tviewTitle.text = item.title
+
                 tviewWriter.text = item.writer
+
+                if(item.title.contains(item.title)){
+                    val title = SpannableStringBuilder(item.title)
+                    title.applyingTextColor(
+                        item.title,
+                        "#844DF3"
+                    )
+                    tviewTitle.text = title
+                } else {
+                    tviewTitle.text = item.title
+                }
 
                 if (item.info1.isEmpty()) {
                     tviewIntro.visibility = View.GONE
@@ -271,28 +280,29 @@ class AdapterBookSearch(private var holder: ArrayList<BookListDataBest>) :
                     }
                     "MrBlue" -> {
 
-                        val info5 = SpannableStringBuilder("${item.info5.replace("리뷰 ", "평가 수 : ")}")
+                        val info5 = SpannableStringBuilder("${item.info3.replace("리뷰 ", "평가 수 : ").replace("건", "")}")
                         info5.applyingTextColor(
                             "평가 수 : ",
                             "#6E7686"
                         )
 
-                        val info4 = SpannableStringBuilder("선호작 수 : ${item.info4}")
+
+                        val info4 = SpannableStringBuilder(item.info4)
                         info4.applyingTextColor(
-                            "선호작 수 : ",
+                            "권 완결",
                             "#6E7686"
                         )
 
-                        val info3 = SpannableStringBuilder("출판사 : ${item.info3}")
+                        val info3 = SpannableStringBuilder("출판사 : ${item.info5}")
                         info3.applyingTextColor(
                             "출판사 : ",
                             "#6E7686"
                         )
 
                         tviewInfo.text = item.info2
-                        tviewInfo5.text = item.info3
-                        tviewInfo4.text = item.info4
-                        tviewInfo3.text = item.info5
+                        tviewInfo5.text = info5
+                        tviewInfo4.text = info3
+                        tviewInfo3.text = info4
                         tviewIntro.text = item.info1
                     }
                 }

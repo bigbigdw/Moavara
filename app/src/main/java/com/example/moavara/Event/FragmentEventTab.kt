@@ -5,10 +5,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.moavara.Main.mRootRef
 import com.example.moavara.Retrofit.*
 import com.example.moavara.Search.EventData
 import com.example.moavara.Search.EventDataGroup
@@ -38,7 +36,7 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
         val view = binding.root
         adapter = AdapterEvent(items)
 
-        with(binding){
+        with(binding) {
             rview.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             rview.adapter = adapter
@@ -64,18 +62,17 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
             }
             "Munpia" -> {
                 getEventMunpia()
-            } "Toksoda" -> {
-            getEventToksoda("ALL")
-            getEventToksoda("BL")
-            getEventToksoda("FANTASY")
-            getEventToksoda("ROMANCE")
+            }
+            "Toksoda" -> {
+                getEventToksoda("ALL")
+                getEventToksoda("BL")
+                getEventToksoda("FANTASY")
+                getEventToksoda("ROMANCE")
+            }
         }
-        }
-
-
 
         adapter.setOnItemClickListener(object : AdapterEvent.OnItemClickListener {
-            override fun onItemClick(v: View?, position: Int, type : String) {
+            override fun onItemClick(v: View?, position: Int, type: String) {
                 val item: EventDataGroup = adapter.getItem(position)
 
                 onClickEvent(item, type)
@@ -104,7 +101,7 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                     if (data != null) {
                         for (i in data.indices) {
 
-                            try{
+                            try {
                                 val left = data[2 * i]
                                 val right = data[2 * i + 1]
 
@@ -132,9 +129,22 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                                         )
                                     )
                                 )
-                            } catch (e : IndexOutOfBoundsException){}
+                            } catch (e: IndexOutOfBoundsException) {
+                            }
                         }
                     }
+
+                    if (data != null) {
+                        if (data.size == 0) {
+                            binding.rview.visibility = View.GONE
+                            binding.blank.tviewblank.text = "현재 진행중인 이벤트가 없습니다."
+                            binding.blank.root.visibility = View.VISIBLE
+                        } else {
+                            binding.blank.root.visibility = View.GONE
+                            binding.rview.visibility = View.VISIBLE
+                        }
+                    }
+
                     adapter.notifyDataSetChanged()
                 }
             })
@@ -187,6 +197,17 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                         }
                     }
 
+                    if (banner != null) {
+                        if (banner.isEmpty()) {
+                            binding.rview.visibility = View.GONE
+                            binding.blank.tviewblank.text = "현재 진행중인 이벤트가 없습니다."
+                            binding.blank.root.visibility = View.VISIBLE
+                        } else {
+                            binding.blank.root.visibility = View.GONE
+                            binding.rview.visibility = View.VISIBLE
+                        }
+                    }
+
                     adapter.notifyDataSetChanged()
                 }
             })
@@ -194,18 +215,18 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
 
     private fun getEventMrBlue() {
         Thread {
-            val doc: Document = Jsoup.connect("https://www.mrblue.com/event/novel?sortby=recent").get()
+            val doc: Document =
+                Jsoup.connect("https://www.mrblue.com/event/novel?sortby=recent").get()
             val mrBlue: Elements = doc.select(".event-list ul li")
 
-            for (i in mrBlue.indices) {
-
-                requireActivity().runOnUiThread {
-
-                    try{
+            requireActivity().runOnUiThread {
+                for (i in mrBlue.indices) {
+                    try {
                         items.add(
                             EventDataGroup(
                                 EventData(
-                                    mrBlue.select("a")[2 * i].absUrl("href").replace("https://www.mrblue.com/event/detail/", ""),
+                                    mrBlue.select("a")[2 * i].absUrl("href")
+                                        .replace("https://www.mrblue.com/event/detail/", ""),
                                     mrBlue.select("img")[2 * i].absUrl("src"),
                                     mrBlue.select("img")[2 * i].absUrl("alt"),
                                     "",
@@ -215,7 +236,8 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                                     ""
                                 ),
                                 EventData(
-                                    mrBlue.select("a")[2 * i + 1].absUrl("href").replace("https://www.mrblue.com/event/detail/", ""),
+                                    mrBlue.select("a")[2 * i + 1].absUrl("href")
+                                        .replace("https://www.mrblue.com/event/detail/", ""),
                                     mrBlue.select("img")[2 * i + 1].absUrl("src"),
                                     mrBlue.select("img")[2 * i + 1].absUrl("alt"),
                                     "",
@@ -226,9 +248,17 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                                 )
                             )
                         )
-                    } catch (e : IndexOutOfBoundsException){}
-                    adapter.notifyDataSetChanged()
+                    } catch (e: IndexOutOfBoundsException) { }
                 }
+                if (items.size == 0) {
+                    binding.rview.visibility = View.GONE
+                    binding.blank.tviewblank.text = "현재 진행중인 이벤트가 없습니다."
+                    binding.blank.root.visibility = View.VISIBLE
+                } else {
+                    binding.blank.root.visibility = View.GONE
+                    binding.rview.visibility = View.VISIBLE
+                }
+                adapter.notifyDataSetChanged()
             }
         }.start()
     }
@@ -238,13 +268,15 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
             val doc: Document = Jsoup.connect("https://ridibooks.com/event/romance_serial").get()
             val ridiKeyword: Elements = doc.select("ul .event_list")
 
-            for (i in ridiKeyword.indices) {
-                requireActivity().runOnUiThread {
+
+            requireActivity().runOnUiThread {
+                for (i in ridiKeyword.indices) {
                     try {
                         items.add(
                             EventDataGroup(
                                 EventData(
-                                    doc.select(".event_title a")[2 * i].absUrl("href").replace("https://ridibooks.com/event/", ""),
+                                    doc.select(".event_title a")[2 * i].absUrl("href")
+                                        .replace("https://ridibooks.com/event/", ""),
                                     doc.select(".image_link img")[2 * i].absUrl("src"),
                                     doc.select(".event_title a")[2 * i].text(),
                                     "",
@@ -254,7 +286,8 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                                     ""
                                 ),
                                 EventData(
-                                    doc.select(".event_title a")[2 * i + 1].absUrl("href").replace("https://ridibooks.com/event/", ""),
+                                    doc.select(".event_title a")[2 * i + 1].absUrl("href")
+                                        .replace("https://ridibooks.com/event/", ""),
                                     doc.select(".image_link img")[2 * i + 1].absUrl("src"),
                                     doc.select(".event_title a")[2 * i + 1].text(),
                                     "",
@@ -265,13 +298,23 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                                 )
                             )
                         )
-                    } catch (e: IndexOutOfBoundsException) { }
-                    adapter.notifyDataSetChanged()
+                    } catch (e: IndexOutOfBoundsException) {
+                    }
                 }
+                if (items.size == 0) {
+                    binding.rview.visibility = View.GONE
+                    binding.blank.tviewblank.text = "현재 진행중인 이벤트가 없습니다."
+                    binding.blank.root.visibility = View.VISIBLE
+                } else {
+                    binding.blank.root.visibility = View.GONE
+                    binding.rview.visibility = View.VISIBLE
+                }
+                adapter.notifyDataSetChanged()
             }
+
+
         }.start()
     }
-
 
 
     private fun getEventMunpia() {
@@ -287,8 +330,16 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                         items.add(
                             EventDataGroup(
                                 EventData(
-                                    URLEncoder.encode(doc.select(".light .entries tbody tr td a")[2 * i].attr("href"), "utf-8"),
-                                    "https:${doc.select(".light .entries tbody tr a img")[2 * i].attr("src")}",
+                                    URLEncoder.encode(
+                                        doc.select(".light .entries tbody tr td a")[2 * i].attr(
+                                            "href"
+                                        ), "utf-8"
+                                    ),
+                                    "https:${
+                                        doc.select(".light .entries tbody tr a img")[2 * i].attr(
+                                            "src"
+                                        )
+                                    }",
                                     doc.select(".light .entries .subject td a")[2 * i].text(),
                                     "",
                                     DBDate.DateMMDD(),
@@ -297,8 +348,16 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                                     ""
                                 ),
                                 EventData(
-                                    URLEncoder.encode(doc.select(".light .entries tbody tr td a")[2 * i + 1].attr("href"), "utf-8"),
-                                    "https:${doc.select(".light .entries tbody tr a img")[2 * i + 1].attr("src")}",
+                                    URLEncoder.encode(
+                                        doc.select(".light .entries tbody tr td a")[2 * i + 1].attr(
+                                            "href"
+                                        ), "utf-8"
+                                    ),
+                                    "https:${
+                                        doc.select(".light .entries tbody tr a img")[2 * i + 1].attr(
+                                            "src"
+                                        )
+                                    }",
                                     doc.select(".light .entries .subject td a")[2 * i + 1].text(),
                                     "",
                                     DBDate.DateMMDD(),
@@ -308,9 +367,19 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                                 )
                             )
                         )
-                    } catch (e: IndexOutOfBoundsException) { }
-                    adapter.notifyDataSetChanged()
+                    } catch (e: IndexOutOfBoundsException) {
+                    }
                 }
+
+                if (items.size == 0) {
+                    binding.rview.visibility = View.GONE
+                    binding.blank.tviewblank.text = "현재 진행중인 이벤트가 없습니다."
+                    binding.blank.root.visibility = View.VISIBLE
+                } else {
+                    binding.blank.root.visibility = View.GONE
+                    binding.rview.visibility = View.VISIBLE
+                }
+                adapter.notifyDataSetChanged()
             }
         }.start()
     }
@@ -350,7 +419,8 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                             )
                         )
                     )
-                } catch (e: IndexOutOfBoundsException) { }
+                } catch (e: IndexOutOfBoundsException) {
+                }
                 adapter.notifyDataSetChanged()
             }
 
@@ -368,8 +438,13 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                         items.add(
                             EventDataGroup(
                                 EventData(
-                                    kakao[2 * i].attr("data-url").replace("kakaopage://exec?open_web_with_auth/store/event/v2/", ""),
-                                    "https:${kakao[2 * i].select(".imageWrapper img").attr("data-src")}",
+                                    kakao[2 * i].attr("data-url").replace(
+                                        "kakaopage://exec?open_web_with_auth/store/event/v2/",
+                                        ""
+                                    ),
+                                    "https:${
+                                        kakao[2 * i].select(".imageWrapper img").attr("data-src")
+                                    }",
                                     kakao[2 * i].select(".imageWrapper img").attr("alt"),
                                     "",
                                     DBDate.DateMMDD(),
@@ -378,8 +453,14 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                                     ""
                                 ),
                                 EventData(
-                                    kakao[2 * i + 1].attr("data-url").replace("kakaopage://exec?open_web_with_auth/store/event/v2/", ""),
-                                    "https:${kakao[2 * i + 1].select(".imageWrapper img").attr("data-src")}",
+                                    kakao[2 * i + 1].attr("data-url").replace(
+                                        "kakaopage://exec?open_web_with_auth/store/event/v2/",
+                                        ""
+                                    ),
+                                    "https:${
+                                        kakao[2 * i + 1].select(".imageWrapper img")
+                                            .attr("data-src")
+                                    }",
                                     kakao[2 * i + 1].select(".imageWrapper img").attr("alt"),
                                     "",
                                     DBDate.DateMMDD(),
@@ -390,15 +471,23 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                             )
                         )
                     } catch (e: IndexOutOfBoundsException) { }
-                    adapter.notifyDataSetChanged()
                 }
+                if (items.size == 0) {
+                    binding.rview.visibility = View.GONE
+                    binding.blank.tviewblank.text = "현재 진행중인 이벤트가 없습니다."
+                    binding.blank.root.visibility = View.VISIBLE
+                } else {
+                    binding.blank.root.visibility = View.GONE
+                    binding.rview.visibility = View.VISIBLE
+                }
+                adapter.notifyDataSetChanged()
             }
         }.start()
     }
 
-    private fun getEventToksoda(cate : String){
+    private fun getEventToksoda(cate: String) {
         val apiToksoda = RetrofitToksoda()
-        val param : MutableMap<String?, Any> = HashMap()
+        val param: MutableMap<String?, Any> = HashMap()
 
         param["bnnrPstnCd"] = "00023"
         param["bnnrClsfCd"] = "00320"
@@ -412,7 +501,7 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
             object : RetrofitDataListener<BestBannerListResult> {
                 override fun onSuccess(data: BestBannerListResult) {
 
-                    if(data.resultList != null){
+                    if (data.resultList != null) {
                         for (i in data.resultList.indices) {
 
                             try {
@@ -440,17 +529,26 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                                         )
                                     )
                                 )
-                            } catch (e: IndexOutOfBoundsException) { }
-                            adapter.notifyDataSetChanged()
+                            } catch (e: IndexOutOfBoundsException) {
+                            }
                         }
+                        if (items.size == 0) {
+                            binding.rview.visibility = View.GONE
+                            binding.blank.tviewblank.text = "현재 진행중인 이벤트가 없습니다."
+                            binding.blank.root.visibility = View.VISIBLE
+                        } else {
+                            binding.blank.root.visibility = View.GONE
+                            binding.rview.visibility = View.VISIBLE
+                        }
+                        adapter.notifyDataSetChanged()
                     }
                 }
             })
     }
 
-    private fun onClickEvent(item: EventDataGroup, type: String){
+    private fun onClickEvent(item: EventDataGroup, type: String) {
 
-        val eventItem: EventData? = if(type == "Left"){
+        val eventItem: EventData? = if (type == "Left") {
             item.left
         } else {
             item.right
@@ -460,7 +558,7 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
             Log.d("####", eventItem.link)
         }
 
-        if(eventItem != null){
+        if (eventItem != null) {
             val mBottomSheetDialogEvent =
                 BottomSheetDialogEvent(requireContext(), eventItem, tabType)
             fragmentManager?.let { mBottomSheetDialogEvent.show(it, null) }
