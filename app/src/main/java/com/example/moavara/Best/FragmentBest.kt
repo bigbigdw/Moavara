@@ -52,8 +52,6 @@ class FragmentBest : Fragment() {
             replace(R.id.llayoutWrap, mFragmentBestTabToday)
         }
 
-
-
         getType("Today")
 
         fragmentBestTab.addTab(fragmentBestTab.newTab().setText(R.string.Best_Tab1))

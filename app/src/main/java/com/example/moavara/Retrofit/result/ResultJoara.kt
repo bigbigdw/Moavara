@@ -378,6 +378,10 @@ class JoaraBooksValue {
     @Expose
     var intro: String = ""
 
+    @SerializedName("cntChapter")
+    @Expose
+    var cntChapter: String = ""
+
     @SerializedName("is_favorite")
     @Expose
     var isFavorite: String = ""
@@ -389,6 +393,10 @@ class JoaraBooksValue {
     @SerializedName("cnt_recom")
     @Expose
     var cntRecom: String = ""
+
+    @SerializedName("cntTotalComment")
+    @Expose
+    var cntTotalComment: String = ""
 
     @SerializedName("cnt_favorite")
     @Expose

@@ -122,7 +122,7 @@
         <entry key="..\:/ANDROID_SDK/platforms/android-31/data/res/layout/simple_list_item_checked.xml" value="0.1" />
         <entry key="app/src/main/res/Best/layout/activity_best_detail.xml" value="0.25" />
         <entry key="app/src/main/res/Best/layout/activity_bestdetail.xml" value="0.1" />
-        <entry key="app/src/main/res/Best/layout/bottom_dialog_best.xml" value="0.33" />
+        <entry key="app/src/main/res/Best/layout/bottom_dialog_best.xml" value="0.22" />
         <entry key="app/src/main/res/Best/layout/collapse_best_detail.xml" value="0.1921875" />
         <entry key="app/src/main/res/Best/layout/cu_item_best_weekend.xml" value="0.1" />
         <entry key="app/src/main/res/Best/layout/fragment_best.xml" value="0.1" />
@@ -182,7 +182,7 @@
         <entry key="app/src/main/res/Search/layout/fragment_search.xml" value="0.1" />
         <entry key="app/src/main/res/Search/layout/fragment_searchmoavara.xml" value="0.1" />
         <entry key="app/src/main/res/Search/layout/fragment_searchtab.xml" value="0.1" />
-        <entry key="app/src/main/res/Search/layout/item_search.xml" value="0.15833333333333333" />
+        <entry key="app/src/main/res/Search/layout/item_search.xml" value="0.33" />
         <entry key="app/src/main/res/Search/layout/item_searchmoavara.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/bottom_community.xml" value="0.151" />
         <entry key="app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.151" />

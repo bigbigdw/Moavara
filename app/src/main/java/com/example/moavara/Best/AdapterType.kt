@@ -84,6 +84,10 @@ class AdapterType(private var holder: List<BestType>) :
                         .load(R.drawable.logo_mrblue)
                         .circleCrop()
                         .into(iview)
+                } else {
+                    Glide.with(holder.itemView.context)
+                        .load(R.mipmap.ic_launcher)
+                        .into(iview)
                 }
 
                 if(getSelectedBtn() == position){

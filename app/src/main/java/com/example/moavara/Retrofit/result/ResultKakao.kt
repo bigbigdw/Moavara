@@ -46,6 +46,11 @@ class KakaoBookItem {
     @SerializedName("title")
     @Expose
     var title: String = ""
+
+    @SerializedName("page")
+    @Expose
+    var page: String = ""
+
 }
 
 class BestResultKakaoStageNovel {
@@ -350,4 +355,18 @@ class KakaoStageSearchContents {
     @SerializedName("stageSeriesNumber")
     @Expose
     var stageSeriesNumber: String = ""
+
+    @SerializedName("synopsis")
+    @Expose
+    var synopsis: String = ""
+
+    @SerializedName("subGenre")
+    @Expose
+    lateinit var subGenre: KakaoBestStageSubGenre
+}
+
+class KakaoBestStageSubGenre {
+    @SerializedName("name")
+    @Expose
+    var name: String = ""
 }

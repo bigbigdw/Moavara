@@ -8,9 +8,11 @@ import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moavara.Best.AdapterType
+import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.R
 import com.example.moavara.Retrofit.*
 import com.example.moavara.Util.BestRef
+import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Param
 import com.example.moavara.databinding.ActivitySearchBinding
 import org.jsoup.Jsoup
@@ -26,7 +28,7 @@ class ActivitySearch : AppCompatActivity() {
     private lateinit var binding: ActivitySearchBinding
 
     private var adapter: AdapterBookSearch? = null
-    private val searchItems = ArrayList<BookListData>()
+    private val searchItems = ArrayList<BookListDataBest>()
     var page = 1
     var linearLayoutManager: LinearLayoutManager? = null
     private var joaraOffset = 20
@@ -117,21 +119,27 @@ class ActivitySearch : AppCompatActivity() {
                     if (books != null) {
                         for (i in books.indices) {
                             searchItems.add(
-                                BookListData(
-                                    "조아라",
-                                    books[i].subject,
+                                BookListDataBest(
                                     books[i].writer_name,
+                                    books[i].subject,
                                     books[i].book_img.replace("http://","https://"),
                                     books[i].bookCode,
-                                    "선호작 수 : ${books[i].cntFavorite}",
-                                    "조회 수 : ${books[i].cntPageRead}",
-                                    "추천 수 : ${books[i].cntRecom}",
+                                    books[i].intro,
+                                    books[i].categoryKoName,
+                                    books[i].cntPageRead,
+                                    books[i].cntFavorite,
+                                    books[i].cntRecom,
+                                    books[i].cntTotalComment,
+                                    999,
+                                    DBDate.DateMMDDHHMM(),
+                                    "Joara",
+                                    "",
                                 )
                             )
                         }
 
                         if (type == "Keyword") {
-                            val cmpAsc: Comparator<BookListData> =
+                            val cmpAsc: Comparator<BookListDataBest> =
                                 Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
                             Collections.sort(searchItems, cmpAsc)
                         }
@@ -164,10 +172,10 @@ class ActivitySearch : AppCompatActivity() {
                     if (results != null) {
                         val items: List<KakaoBookItem>?
 
-                        if (page == 0) {
-                            items = results[2].items
+                        items = if (page == 0) {
+                            results[2].items
                         } else {
-                            items = results[0].items
+                            results[0].items
                         }
 
                         if (items != null) {
@@ -177,15 +185,21 @@ class ActivitySearch : AppCompatActivity() {
                         if (items != null) {
                             for (j in items.indices) {
                                 searchItems.add(
-                                    BookListData(
-                                        "카카오",
-                                        items[j].title,
+                                    BookListDataBest(
                                         items[j].author,
-                                        "https://dn-img-page.kakao.com/download/resource?kid=" + items[j].image_url,
+                                        items[j].title,
+                                        "https://dn-img-page.kakao.com/download/resource?kid=${items[j].image_url}",
                                         items[j].id,
-                                        "출판사 : ${items[j].publisher_name}",
-                                        "장르 : ${items[j].sub_category}",
-                                        "조회수 : ${items[j].read_count}",
+                                        items[j].publisher_name,
+                                        items[j].sub_category,
+                                        items[j].read_count,
+                                        "총 ${items[j].page}화",
+                                        "",
+                                        "",
+                                        999,
+                                        DBDate.DateMMDDHHMM(),
+                                        "Kakao",
+                                        "",
                                     )
                                 )
                             }
@@ -193,11 +207,10 @@ class ActivitySearch : AppCompatActivity() {
                     }
 
                     if (type == "Keyword") {
-                        val cmpAsc: Comparator<BookListData> =
+                        val cmpAsc: Comparator<BookListDataBest> =
                             Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
                         Collections.sort(searchItems, cmpAsc)
                     }
-                    adapter?.notifyDataSetChanged()
 
                     adapter?.notifyDataSetChanged()
 
@@ -228,21 +241,27 @@ class ActivitySearch : AppCompatActivity() {
 
                     for (items in results) {
                         searchItems.add(
-                            BookListData(
-                                "카카오 스테이지",
-                                items.title,
+                            BookListDataBest(
                                 items.nickname.name,
+                                items.title,
                                 items.thumbnail.url,
                                 items.stageSeriesNumber,
-                                "관심 : ${items.favoriteCount}",
-                                "조회 : ${items.viewCount}",
-                                "총 ${items.publishedEpisodeCount} 화",
+                                items.synopsis,
+                                items.subGenre.name,
+                                items.favoriteCount,
+                                items.viewCount,
+                                "총 ${items.publishedEpisodeCount}화",
+                                "",
+                                999,
+                                DBDate.DateMMDDHHMM(),
+                                "Kakao_Stage",
+                                "",
                             )
                         )
                     }
 
                     if (type == "Keyword") {
-                        val cmpAsc: Comparator<BookListData> =
+                        val cmpAsc: Comparator<BookListDataBest> =
                             Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
                         Collections.sort(searchItems, cmpAsc)
                     }
@@ -290,21 +309,27 @@ class ActivitySearch : AppCompatActivity() {
 
                 for (items in Naver) {
                     searchItems.add(
-                        BookListData(
-                            title,
+                        BookListDataBest(
                             items.select(".ellipsis").text(),
-                            items.select(".league").text(),
+                            title,
                             items.select("div img").attr("src"),
                             items.select("a").attr("href"),
+                            "",
+                            "",
                             items.select(".bullet_comp").text(),
                             "",
+                            "",
+                            "",
+                            999,
+                            DBDate.DateMMDDHHMM(),
+                            "Naver",
                             "",
                         )
                     )
                 }
 
                 if (type == "Keyword") {
-                    val cmpAsc: Comparator<BookListData> =
+                    val cmpAsc: Comparator<BookListDataBest> =
                         Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
                     Collections.sort(searchItems, cmpAsc)
                 }
@@ -337,21 +362,27 @@ class ActivitySearch : AppCompatActivity() {
                 for (items in Munpia) {
 
                     searchItems.add(
-                        BookListData(
-                            "문피아",
-                            items.select(".detail a").text(),
+                        BookListDataBest(
                             items.select(".author").text(),
+                            items.select(".detail a").text(),
                             "https://${items.select(".thumb img").attr("src")}",
                             items.select(".detail a").attr("href"),
+                            "",
+                            "",
+                            "",
                             items.select(".info span").next().get(0).text(),
                             items.select(".info span").next().get(1).text(),
                             items.select(".info span").next().get(2).text(),
+                            999,
+                            DBDate.DateMMDDHHMM(),
+                            "Munpia",
+                            "",
                         )
                     )
                 }
 
                 if (type == "Keyword") {
-                    val cmpAsc: Comparator<BookListData> =
+                    val cmpAsc: Comparator<BookListDataBest> =
                         Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
                     Collections.sort(searchItems, cmpAsc)
                 }
@@ -393,21 +424,27 @@ class ActivitySearch : AppCompatActivity() {
                             for (i in it.indices) {
 
                                 searchItems.add(
-                                    BookListData(
-                                        "톡소다",
-                                        it[i].BOOK_NM,
+                                    BookListDataBest(
                                         it[i].AUTHOR,
+                                        it[i].BOOK_NM,
                                         "https:${it[i].IMG_PATH}",
                                         it[i].BARCODE,
-                                        "장르 : ${it[i].LGCTGR_NM}",
-                                        "유통사 : ${it[i].PUB_NM}",
-                                        "키워드 : ${it[i].HASHTAG_NM}",
+                                        it[i].LGCTGR_NM,
+                                        it[i].PUB_NM,
+                                        it[i].HASHTAG_NM,
+                                        "",
+                                        "",
+                                        "",
+                                        999,
+                                        DBDate.DateMMDDHHMM(),
+                                        "Toksoda",
+                                        "",
                                     )
                                 )
                             }
 
                             if (type == "Keyword") {
-                                val cmpAsc: Comparator<BookListData> =
+                                val cmpAsc: Comparator<BookListDataBest> =
                                     Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
                                 Collections.sort(searchItems, cmpAsc)
                             }
@@ -452,21 +489,27 @@ class ActivitySearch : AppCompatActivity() {
                     }
 
                     searchItems.add(
-                        BookListData(
-                            "미스터 블루",
-                            items.select(".tit").text(),
+                        BookListDataBest(
                             items.select(".name").text(),
+                            items.select(".tit").text(),
                             bookImg,
                             items.select("a").attr("href"),
                             items.select(".genre").text(),
                             items.select(".price").text(),
                             items.select(".review").text(),
+                            "",
+                            "",
+                            "",
+                            999,
+                            DBDate.DateMMDDHHMM(),
+                            "MrBlue",
+                            "",
                         )
                     )
                 }
 
                 if (type == "Keyword") {
-                    val cmpAsc: Comparator<BookListData> =
+                    val cmpAsc: Comparator<BookListDataBest> =
                         Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
                     Collections.sort(searchItems, cmpAsc)
                 }
