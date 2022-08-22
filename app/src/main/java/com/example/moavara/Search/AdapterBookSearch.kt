@@ -12,7 +12,7 @@ import com.example.moavara.Util.applyingTextColor
 import com.example.moavara.databinding.ItemSearchBinding
 
 
-class AdapterBookSearch(private var holder: ArrayList<BookListDataBest>) :
+class AdapterBookSearch(private var holder: ArrayList<BookListDataBest>, private var query: String) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     interface OnItemClickListener {
@@ -90,13 +90,21 @@ class AdapterBookSearch(private var holder: ArrayList<BookListDataBest>) :
                     else -> {}
                 }
 
+                if(item.writer.contains(query)){
+                    val writer = SpannableStringBuilder(item.writer)
+                    writer.applyingTextColor(
+                        query,
+                        "#844DF3"
+                    )
+                    tviewWriter.text = writer
+                } else {
+                    tviewWriter.text = item.writer
+                }
 
-                tviewWriter.text = item.writer
-
-                if(item.title.contains(item.title)){
+                if(item.title.contains(query)){
                     val title = SpannableStringBuilder(item.title)
                     title.applyingTextColor(
-                        item.title,
+                        query,
                         "#844DF3"
                     )
                     tviewTitle.text = title

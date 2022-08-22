@@ -50,8 +50,10 @@ class ActivitySearch : AppCompatActivity() {
         binding.sview.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
 
+                text = query.toString()
+
                 with(binding) {
-                    adapter = AdapterBookSearch(searchItems)
+                    adapter = AdapterBookSearch(searchItems, text)
                     rviewSearch.adapter = adapter
                     rviewSearch.layoutManager =
                         LinearLayoutManager(
@@ -64,7 +66,6 @@ class ActivitySearch : AppCompatActivity() {
                     llayoutResult.visibility = View.VISIBLE
                 }
 
-                text = query.toString()
 
                 searchMrBlue(text)
                 searchToksoda(text)
@@ -389,9 +390,9 @@ class ActivitySearch : AppCompatActivity() {
                             items.select(".detail a").attr("href"),
                             items.select(".synopsis").text(),
                             items.select(".info span").first()?.text().toString(),
-                            items.select(".info span").next().get(0).text(),
-                            items.select(".info span").next().get(1).text(),
-                            items.select(".info span").next().get(2).text(),
+                            items.select(".info span").next().get(0)?.text() ?: "",
+                            items.select(".info span").next().get(1)?.text() ?: "",
+                            items.select(".info span").next().get(2)?.text() ?: "",
                             "",
                             999,
                             DBDate.DateMMDDHHMM(),
@@ -529,8 +530,8 @@ class ActivitySearch : AppCompatActivity() {
                             "${items.select(".price span").get(0).text()}",
                             items.select(".genre").text(),
                             items.select(".review").text(),
-                            items.select(".info span").get(1).text(),
-                            items.select(".info span").get(2).text(),
+                            items.select(".info span").get(1)?.text() ?: "",
+                            items.select(".info span").get(2)?.text() ?: "",
                             "",
                             999,
                             DBDate.DateMMDDHHMM(),
