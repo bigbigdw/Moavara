@@ -5,240 +5,236 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#0D0E10"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!--삭제 버튼 있는 레이아웃-->
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:weightSum="4">
+            android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="4">
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/llayoutDel"
-                android:layout_width="64dp"
-                android:layout_height="match_parent"
-                android:background="#DB234E"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/iviewInfo"
-                    android:layout_width="14dp"
-                    android:layout_height="18dp"
-                    android:layout_marginBottom="5dp"
-                    android:contentDescription="@string/TODO"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_launcher_gray" />
-
-                <TextView
-                    android:id="@+id/tvRemove"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/pretendardvariable"
-                    android:gravity="center"
-                    android:text="삭제"
-                    android:textColor="@color/white"
-                    android:textSize="11sp" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <!--기본 레이아웃-->
-        <LinearLayout
-            android:id="@+id/swipe_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white"
-            android:clickable="true"
-            android:focusable="true"
-            android:orientation="horizontal">
-
+            <!--삭제 버튼 있는 레이아웃-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#0D0E10"
-                android:orientation="vertical"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:orientation="horizontal"
+                android:weightSum="4">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clipChildren="false"
-                    android:orientation="horizontal"
-                    android:paddingStart="8dp"
-                    android:paddingTop="8dp"
-                    android:paddingEnd="8dp">
-
-                    <LinearLayout
-                        android:id="@+id/llayoutBookImg"
-                        android:layout_width="120dp"
-                        android:layout_height="70dp"
-                        android:layout_gravity="clip_horizontal"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginRight="13dp"
-                        android:layout_marginBottom="10dp"
-                        android:clipChildren="false">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-
-                            <androidx.cardview.widget.CardView
-                                android:layout_width="120dp"
-                                android:layout_height="70dp"
-                                app:cardCornerRadius="4dp"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent">
-
-                                <ImageView
-                                    android:id="@+id/iView"
-                                    android:layout_width="120dp"
-                                    android:layout_height="70dp"
-                                    android:adjustViewBounds="true"
-                                    android:contentDescription="@string/TODO"
-                                    android:scaleType="fitXY"
-                                    app:srcCompat="@drawable/booktest" />
-
-                            </androidx.cardview.widget.CardView>
-
-                            <androidx.cardview.widget.CardView
-                                android:layout_width="27dp"
-                                android:layout_height="27dp"
-                                android:layout_gravity="bottom|right"
-                                android:layout_marginEnd="-4dp"
-                                android:layout_marginBottom="-4dp"
-                                app:cardCornerRadius="4dp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent">
-
-                                <ImageView
-                                    android:id="@+id/iviewPlatfrom"
-                                    android:layout_width="27dp"
-                                    android:layout_height="27dp"
-                                    android:layout_gravity="right|end"
-                                    android:adjustViewBounds="true"
-                                    android:contentDescription="@string/TODO"
-                                    android:scaleType="fitXY"
-                                    app:srcCompat="@drawable/logo_joara" />
-
-                            </androidx.cardview.widget.CardView>
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/tviewTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="2dp"
-                            android:breakStrategy="high_quality"
-                            android:ellipsize="end"
-                            android:fontFamily="@font/pretendardvariable"
-                            android:maxLines="1"
-                            android:textColor="#E2E3E7"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            tools:text="HAHAHAHAHA" />
-
-                        <TextView
-                            android:id="@+id/tviewInfo2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:fontFamily="@font/pretendardvariable"
-                            android:maxLines="3"
-                            android:textColor="#E2E3E7"
-                            android:textSize="11sp"
-                            android:visibility="gone"
-                            tools:text="@string/Common_Count"
-                            tools:visibility="visible" />
-
-                        <TextView
-                            android:id="@+id/tviewInfo3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:fontFamily="@font/pretendardvariable"
-                            android:maxLines="3"
-                            android:textColor="#E2E3E7"
-                            android:textSize="11sp"
-                            android:visibility="gone"
-                            tools:text="@string/Common_Count"
-                            tools:visibility="visible" />
-
-                        <TextView
-                            android:id="@+id/tviewInfo4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="12dp"
-                            android:ellipsize="end"
-                            android:fontFamily="@font/pretendardvariable"
-                            android:maxLines="3"
-                            android:textColor="#E2E3E7"
-                            android:textSize="11sp"
-                            android:visibility="gone"
-                            tools:text="@string/Common_Count"
-                            tools:visibility="visible" />
-
-                    </LinearLayout>
-
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4">
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/llayoutMemo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="#F44336"
-                    android:orientation="vertical"
-                    android:visibility="visible"
-                    tools:visibility="visible">
+                    android:id="@+id/llayoutDel"
+                    android:layout_width="64dp"
+                    android:layout_height="match_parent"
+                    android:background="#DB234E"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-                    <EditText
-                        android:id="@+id/etviewMemo"
-                        android:layout_width="match_parent"
+                    <ImageView
+                        android:id="@+id/iviewInfo"
+                        android:layout_width="14dp"
+                        android:layout_height="18dp"
+                        android:layout_marginBottom="5dp"
+                        android:contentDescription="@string/TODO"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_launcher_gray" />
+
+                    <TextView
+                        android:id="@+id/tvRemove"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:ems="10"
-                        android:focusedByDefault="true"
                         android:fontFamily="@font/pretendardvariable"
-                        android:hint="메모를 입력해 주세요"
-                        android:imeOptions="actionDone"
-                        android:inputType="text"
-                        android:padding="8dp"
-                        android:textColor="#E2E3E7"
-                        android:textColorHint="#E2E3E7"
-                        android:textCursorDrawable="@null"
-                        android:textSize="18sp" />
-
+                        android:gravity="center"
+                        android:text="삭제"
+                        android:textColor="@color/white"
+                        android:textSize="11sp" />
                 </LinearLayout>
-
 
             </LinearLayout>
-        </LinearLayout>
 
-    </FrameLayout>
+            <!--기본 레이아웃-->
+            <LinearLayout
+                android:id="@+id/swipe_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#0D0E10"
+                    android:orientation="vertical"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clipChildren="false"
+                        android:orientation="horizontal"
+                        android:paddingStart="8dp"
+                        android:paddingTop="8dp"
+                        android:paddingEnd="8dp">
+
+                        <LinearLayout
+                            android:id="@+id/llayoutBookImg"
+                            android:layout_width="120dp"
+                            android:layout_height="70dp"
+                            android:layout_gravity="clip_horizontal"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="13dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="#3E424B"
+                            android:clipChildren="false"
+                            android:gravity="center">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <androidx.cardview.widget.CardView
+                                    android:id="@+id/cviewImage"
+                                    android:layout_width="120dp"
+                                    android:layout_height="70dp"
+                                    android:visibility="visible"
+                                    app:cardBackgroundColor="#3E424B"
+                                    app:cardCornerRadius="4dp"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+                                    <ImageView
+                                        android:id="@+id/iviewBlank"
+                                        android:layout_width="30dp"
+                                        android:layout_height="30dp"
+                                        android:layout_gravity="center"
+                                        android:adjustViewBounds="true"
+                                        android:contentDescription="@string/TODO"
+                                        android:scaleType="fitXY"
+                                        android:visibility="gone"
+                                        app:srcCompat="@drawable/ic_launcher_gray" />
+
+                                    <ImageView
+                                        android:id="@+id/iView"
+                                        android:layout_width="120dp"
+                                        android:layout_height="70dp"
+                                        android:adjustViewBounds="true"
+                                        android:contentDescription="@string/TODO"
+                                        android:scaleType="fitXY"
+                                        app:srcCompat="@drawable/booktest" />
+
+                                </androidx.cardview.widget.CardView>
+
+                                <androidx.cardview.widget.CardView
+                                    android:id="@+id/cardView"
+                                    android:layout_width="27dp"
+                                    android:layout_height="27dp"
+                                    android:layout_gravity="bottom|right"
+                                    android:layout_marginEnd="-4dp"
+                                    android:layout_marginBottom="-4dp"
+                                    app:cardCornerRadius="4dp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    tools:visibility="visible">
+
+                                    <ImageView
+                                        android:id="@+id/iviewPlatfrom"
+                                        android:layout_width="27dp"
+                                        android:layout_height="27dp"
+                                        android:layout_gravity="right|end"
+                                        android:adjustViewBounds="true"
+                                        android:contentDescription="@string/TODO"
+                                        android:scaleType="fitXY"
+                                        app:srcCompat="@drawable/logo_joara" />
+
+                                </androidx.cardview.widget.CardView>
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tviewTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="2dp"
+                                android:breakStrategy="high_quality"
+                                android:ellipsize="end"
+                                android:fontFamily="@font/pretendardvariable"
+                                android:textColor="#E2E3E7"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                tools:text="HAHAHAHAHA" />
+
+                            <TextView
+                                android:id="@+id/tviewInfo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:fontFamily="@font/pretendardvariable"
+                                android:maxLines="3"
+                                android:textColor="#E2E3E7"
+                                android:textSize="11sp"
+                                android:visibility="visible"
+                                tools:text="@string/Common_Count" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/llayoutMemo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="16dp"
+            android:background="#F44336"
+            android:orientation="vertical"
+            android:visibility="visible"
+            tools:visibility="visible">
+
+            <EditText
+                android:id="@+id/etviewMemo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:ems="10"
+                android:focusedByDefault="true"
+                android:fontFamily="@font/pretendardvariable"
+                android:hint="메모를 입력해 주세요"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:padding="8dp"
+                android:textColor="#E2E3E7"
+                android:textColorHint="#3E424B"
+                android:textCursorDrawable="@null"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,6 +7,7 @@ import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -109,12 +110,14 @@ class BottomSheetDialogEvent(
 
             override fun onCancelled(databaseError: DatabaseError) {}
         })
-
+        Log.d("####", "HIHI ${tabType} ${item.link} ${(tabType == "Ridi" && item.link.contains("https://ridibooks.com/books"))}")
         if (tabType == "OneStore"
+            || (tabType == "Ridi" && item.link.contains("https://ridibooks.com/books"))
             || tabType == "Munpia"
-            || (tabType == "Kakao")
+            || (tabType == "Kakao_Stage")
             || tabType == "Toksoda"
         ) {
+
             Glide.with(mContext).load(item.imgfile).into(binding.iview)
             binding.llayoutWrapResult.setOnClickListener{
                 dismiss()
@@ -163,7 +166,7 @@ class BottomSheetDialogEvent(
 
             btnLeft.setOnClickListener {
 
-                if(item.type == "Kakao"){
+                if(item.type == "Kakao_Stage"){
                     getEventKakao()
                 } else {
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getUrl(tabType)))
@@ -179,7 +182,7 @@ class BottomSheetDialogEvent(
 
     private fun getEventMrBlue(){
         Thread {
-            val doc: Document = Jsoup.connect(item.link).get()
+            val doc: Document = Jsoup.connect("https://www.mrblue.com/event/detail/${item.link}" ).get()
 
             if(doc.select(".event-html img").size > 1){
                 val mrBlue1 = doc.select(".event-html img").first()?.absUrl("src")
@@ -209,8 +212,15 @@ class BottomSheetDialogEvent(
     private fun getEventRidi(){
 
         Thread {
-            val doc: Document = Jsoup.connect("https://ridibooks.com/event/${item.link}").get()
-            val ridi = doc.select(".event_detail_top img").first()?.absUrl("src")
+            val doc: Document
+            val ridi : String
+
+            if (item.link.contains("https://ridibooks.com/books/")) {
+                ridi = item.link
+            } else {
+                doc = Jsoup.connect("https://ridibooks.com/event/${item.link}").get()
+                ridi = doc.select(".event_detail_top img").first()?.absUrl("src").toString()
+            }
 
             title = item.title
 
@@ -248,16 +258,20 @@ class BottomSheetDialogEvent(
                 return "https://www.joara.com/event/" + item.link
             }
             "Ridi" -> {
-                return "https://ridibooks.com/event/${item.link}"
+                return if (item.link.contains("https://ridibooks.com/books/")) {
+                    item.link
+                } else {
+                    "https://ridibooks.com/event/${item.link}"
+                }
             }
-            "Kakao" -> {
+            "Kakao_Stage" -> {
                 return "https://page.kakao.com${item.link}"
             }
             "Munpia" -> {
                 return "https://square.munpia.com/${URLDecoder.decode(item.link, "utf-8")}"
             }
             "MrBlue" -> {
-                return item.link
+                return "https://www.mrblue.com/event/detail/${item.link}"
             }
             "Toksoda" -> {
                 return "https://www.tocsoda.co.kr/event/eventDetail?eventmngSeq=${item.link}"

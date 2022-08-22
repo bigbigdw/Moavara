@@ -5,8 +5,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.moavara.Main.mRootRef
 import com.example.moavara.Retrofit.*
 import com.example.moavara.Search.EventData
 import com.example.moavara.Search.EventDataGroup
@@ -27,6 +29,7 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
     private var _binding: FragmentEventTabBinding? = null
     private val binding get() = _binding!!
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
@@ -43,33 +46,33 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
 
         items.clear()
 
-        Thread {
-            when (tabType) {
-                "Joara" -> {
-                    getEventJoara()
-                }
-                "Ridi" -> {
-                    getEventRidi()
-                }
+        when (tabType) {
+            "Joara" -> {
+                getEventJoara()
+            }
+            "Ridi" -> {
+                getEventRidi()
+            }
 //                "OneStore" -> {
 //                    getEventOneStore()
 //                }
-                "Kakao" -> {
-                    getEventKakao()
-                }
-                "MrBlue" -> {
-                    getEventMrBlue()
-                }
-                "Munpia" -> {
-                    getEventMunpia()
-                } "Toksoda" -> {
-                    getEventToksoda("ALL")
-                    getEventToksoda("BL")
-                    getEventToksoda("FANTASY")
-                    getEventToksoda("ROMANCE")
-                }
+            "Kakao_Stage" -> {
+                getEventKakao()
             }
-        }.start()
+            "MrBlue" -> {
+                getEventMrBlue()
+            }
+            "Munpia" -> {
+                getEventMunpia()
+            } "Toksoda" -> {
+            getEventToksoda("ALL")
+            getEventToksoda("BL")
+            getEventToksoda("FANTASY")
+            getEventToksoda("ROMANCE")
+        }
+        }
+
+
 
         adapter.setOnItemClickListener(object : AdapterEvent.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int, type : String) {
@@ -190,125 +193,126 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
     }
 
     private fun getEventMrBlue() {
-        val doc: Document = Jsoup.connect("https://www.mrblue.com/event/novel?sortby=recent").get()
-        val mrBlue: Elements = doc.select(".event-list ul li")
+        Thread {
+            val doc: Document = Jsoup.connect("https://www.mrblue.com/event/novel?sortby=recent").get()
+            val mrBlue: Elements = doc.select(".event-list ul li")
 
-        for (i in mrBlue.indices) {
+            for (i in mrBlue.indices) {
 
-            requireActivity().runOnUiThread {
+                requireActivity().runOnUiThread {
 
-                try{
-                    items.add(
-                        EventDataGroup(
-                            EventData(
-                                mrBlue.select("a")[2 * i].absUrl("href"),
-                                mrBlue.select("img")[2 * i].absUrl("src"),
-                                mrBlue.select("img")[2 * i].absUrl("alt"),
-                                "",
-                                DBDate.DateMMDD(),
-                                999,
-                                "MrBlue",
-                                ""
-                            ),
-                            EventData(
-                                mrBlue.select("a")[2 * i + 1].absUrl("href"),
-                                mrBlue.select("img")[2 * i + 1].absUrl("src"),
-                                mrBlue.select("img")[2 * i + 1].absUrl("alt"),
-                                "",
-                                DBDate.DateMMDD(),
-                                999,
-                                "MrBlue",
-                                ""
+                    try{
+                        items.add(
+                            EventDataGroup(
+                                EventData(
+                                    mrBlue.select("a")[2 * i].absUrl("href").replace("https://www.mrblue.com/event/detail/", ""),
+                                    mrBlue.select("img")[2 * i].absUrl("src"),
+                                    mrBlue.select("img")[2 * i].absUrl("alt"),
+                                    "",
+                                    DBDate.DateMMDD(),
+                                    999,
+                                    "MrBlue",
+                                    ""
+                                ),
+                                EventData(
+                                    mrBlue.select("a")[2 * i + 1].absUrl("href").replace("https://www.mrblue.com/event/detail/", ""),
+                                    mrBlue.select("img")[2 * i + 1].absUrl("src"),
+                                    mrBlue.select("img")[2 * i + 1].absUrl("alt"),
+                                    "",
+                                    DBDate.DateMMDD(),
+                                    999,
+                                    "MrBlue",
+                                    ""
+                                )
                             )
                         )
-                    )
-                } catch (e : IndexOutOfBoundsException){}
-                adapter.notifyDataSetChanged()
+                    } catch (e : IndexOutOfBoundsException){}
+                    adapter.notifyDataSetChanged()
+                }
             }
-        }
+        }.start()
     }
 
     private fun getEventRidi() {
-        val doc: Document = Jsoup.connect("https://ridibooks.com/event/romance_serial").get()
-        val ridiKeyword: Elements = doc.select("ul .event_list")
+        Thread {
+            val doc: Document = Jsoup.connect("https://ridibooks.com/event/romance_serial").get()
+            val ridiKeyword: Elements = doc.select("ul .event_list")
 
-        for (i in ridiKeyword.indices) {
-            requireActivity().runOnUiThread {
-                try {
-                    items.add(
-                        EventDataGroup(
-                            EventData(
-                                doc.select(".event_title a")[2 * i].absUrl("href").replace("https://ridibooks.com/event/", ""),
-                                doc.select(".image_link img")[2 * i].absUrl("src"),
-                                doc.select(".event_title a")[2 * i].text(),
-                                "",
-                                DBDate.DateMMDD(),
-                                999,
-                                "Ridi",
-                                ""
-                            ),
-                            EventData(
-                                doc.select(".event_title a")[2 * i + 1].absUrl("href").replace("https://ridibooks.com/event/", ""),
-                                doc.select(".image_link img")[2 * i + 1].absUrl("src"),
-                                doc.select(".event_title a")[2 * i + 1].text(),
-                                "",
-                                DBDate.DateMMDD(),
-                                999,
-                                "Ridi",
-                                ""
+            for (i in ridiKeyword.indices) {
+                requireActivity().runOnUiThread {
+                    try {
+                        items.add(
+                            EventDataGroup(
+                                EventData(
+                                    doc.select(".event_title a")[2 * i].absUrl("href").replace("https://ridibooks.com/event/", ""),
+                                    doc.select(".image_link img")[2 * i].absUrl("src"),
+                                    doc.select(".event_title a")[2 * i].text(),
+                                    "",
+                                    DBDate.DateMMDD(),
+                                    999,
+                                    "Ridi",
+                                    ""
+                                ),
+                                EventData(
+                                    doc.select(".event_title a")[2 * i + 1].absUrl("href").replace("https://ridibooks.com/event/", ""),
+                                    doc.select(".image_link img")[2 * i + 1].absUrl("src"),
+                                    doc.select(".event_title a")[2 * i + 1].text(),
+                                    "",
+                                    DBDate.DateMMDD(),
+                                    999,
+                                    "Ridi",
+                                    ""
+                                )
                             )
                         )
-                    )
-                } catch (e: IndexOutOfBoundsException) { }
-                adapter.notifyDataSetChanged()
+                    } catch (e: IndexOutOfBoundsException) { }
+                    adapter.notifyDataSetChanged()
+                }
             }
-        }
+        }.start()
     }
 
 
 
     private fun getEventMunpia() {
+        Thread {
+            val doc: Document = Jsoup.connect("https://square.munpia.com/event").get()
+            val MunpiaWrap: Elements = doc.select(".light .entries tbody tr a img")
 
-        val doc: Document = Jsoup.connect("https://square.munpia.com/event").get()
-        val MunpiaWrap: Elements = doc.select(".light .entries tbody tr a img")
+            requireActivity().runOnUiThread {
 
-        requireActivity().runOnUiThread {
+                for (i in MunpiaWrap.indices) {
 
-            for (i in MunpiaWrap.indices) {
-
-                Log.d("####", doc.select(".light .entries tbody tr td a")[2 * i].attr("href"))
-
-
-                try {
-                    items.add(
-                        EventDataGroup(
-                            EventData(
-                                URLEncoder.encode(doc.select(".light .entries tbody tr td a")[2 * i].attr("href"), "utf-8"),
-                                "https:${doc.select(".light .entries tbody tr a img")[2 * i].attr("src")}",
-                                doc.select(".light .entries .subject td a")[2 * i].text(),
-                                "",
-                                DBDate.DateMMDD(),
-                                999,
-                                "Munpia",
-                                ""
-                            ),
-                            EventData(
-                                URLEncoder.encode(doc.select(".light .entries tbody tr td a")[2 * i + 1].attr("href"), "utf-8"),
-                                "https:${doc.select(".light .entries tbody tr a img")[2 * i + 1].attr("src")}",
-                                doc.select(".light .entries .subject td a")[2 * i + 1].text(),
-                                "",
-                                DBDate.DateMMDD(),
-                                999,
-                                "Munpia",
-                                ""
+                    try {
+                        items.add(
+                            EventDataGroup(
+                                EventData(
+                                    URLEncoder.encode(doc.select(".light .entries tbody tr td a")[2 * i].attr("href"), "utf-8"),
+                                    "https:${doc.select(".light .entries tbody tr a img")[2 * i].attr("src")}",
+                                    doc.select(".light .entries .subject td a")[2 * i].text(),
+                                    "",
+                                    DBDate.DateMMDD(),
+                                    999,
+                                    "Munpia",
+                                    ""
+                                ),
+                                EventData(
+                                    URLEncoder.encode(doc.select(".light .entries tbody tr td a")[2 * i + 1].attr("href"), "utf-8"),
+                                    "https:${doc.select(".light .entries tbody tr a img")[2 * i + 1].attr("src")}",
+                                    doc.select(".light .entries .subject td a")[2 * i + 1].text(),
+                                    "",
+                                    DBDate.DateMMDD(),
+                                    999,
+                                    "Munpia",
+                                    ""
+                                )
                             )
                         )
-                    )
-                } catch (e: IndexOutOfBoundsException) { }
-                adapter.notifyDataSetChanged()
+                    } catch (e: IndexOutOfBoundsException) { }
+                    adapter.notifyDataSetChanged()
+                }
             }
-        }
-
+        }.start()
     }
 
     private fun getEventOneStore() {
@@ -354,41 +358,42 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
     }
 
     private fun getEventKakao() {
-        val doc: Document = Jsoup.connect("https://page.kakao.com/main/recommend-events").get()
-        val kakao: Elements = doc.select(".eventsBox .cellWrapper")
+        Thread {
+            val doc: Document = Jsoup.connect("https://page.kakao.com/main/recommend-events").get()
+            val kakao: Elements = doc.select(".eventsBox .cellWrapper")
 
-        requireActivity().runOnUiThread {
-            for (i in kakao.indices) {
-                try {
-
-                    items.add(
-                        EventDataGroup(
-                            EventData(
-                                kakao[2 * i].attr("data-url").replace("kakaopage://exec?open_web_with_auth/store/event/v2/", ""),
-                                "https:${kakao[2 * i].select(".imageWrapper img").attr("data-src")}",
-                                kakao[2 * i].select(".imageWrapper img").attr("alt"),
-                                "",
-                                DBDate.DateMMDD(),
-                                999,
-                                "Kakao",
-                                ""
-                            ),
-                            EventData(
-                                kakao[2 * i + 1].attr("data-url").replace("kakaopage://exec?open_web_with_auth/store/event/v2/", ""),
-                                "https:${kakao[2 * i + 1].select(".imageWrapper img").attr("data-src")}",
-                                kakao[2 * i + 1].select(".imageWrapper img").attr("alt"),
-                                "",
-                                DBDate.DateMMDD(),
-                                999,
-                                "Kakao",
-                                ""
+            requireActivity().runOnUiThread {
+                for (i in kakao.indices) {
+                    try {
+                        items.add(
+                            EventDataGroup(
+                                EventData(
+                                    kakao[2 * i].attr("data-url").replace("kakaopage://exec?open_web_with_auth/store/event/v2/", ""),
+                                    "https:${kakao[2 * i].select(".imageWrapper img").attr("data-src")}",
+                                    kakao[2 * i].select(".imageWrapper img").attr("alt"),
+                                    "",
+                                    DBDate.DateMMDD(),
+                                    999,
+                                    "Kakao_Stage",
+                                    ""
+                                ),
+                                EventData(
+                                    kakao[2 * i + 1].attr("data-url").replace("kakaopage://exec?open_web_with_auth/store/event/v2/", ""),
+                                    "https:${kakao[2 * i + 1].select(".imageWrapper img").attr("data-src")}",
+                                    kakao[2 * i + 1].select(".imageWrapper img").attr("alt"),
+                                    "",
+                                    DBDate.DateMMDD(),
+                                    999,
+                                    "Kakao_Stage",
+                                    ""
+                                )
                             )
                         )
-                    )
-                } catch (e: IndexOutOfBoundsException) { }
-                adapter.notifyDataSetChanged()
+                    } catch (e: IndexOutOfBoundsException) { }
+                    adapter.notifyDataSetChanged()
+                }
             }
-        }
+        }.start()
     }
 
     private fun getEventToksoda(cate : String){
@@ -452,7 +457,7 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
         }
 
         if (eventItem != null) {
-            Log.d("####", eventItem.imgfile)
+            Log.d("####", eventItem.link)
         }
 
         if(eventItem != null){

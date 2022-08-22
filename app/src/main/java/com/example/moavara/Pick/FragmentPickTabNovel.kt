@@ -130,20 +130,20 @@ class FragmentPickTabNovel : Fragment() {
                 val group: BookListDataBest = adapter.getItem(position)
 
                 when (type) {
-                    "Img" -> {
-                        val bookDetailIntent =
-                            Intent(requireContext(), ActivityBestDetail::class.java)
-                        bookDetailIntent.putExtra("BookCode", group.bookCode)
-                        bookDetailIntent.putExtra("Type", String.format("%s", group.type))
-                        bookDetailIntent.putExtra("POSITION", position)
-                        startActivity(bookDetailIntent)
-                    }
                     "Confirm" -> {
                         adapter.editItem(position)
                         Toast.makeText(requireContext(), "수정되었습니다", Toast.LENGTH_SHORT).show()
                     }
                     "Delete" -> {
                         Toast.makeText(requireContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show()
+                    }
+                    "Item" -> {
+                        val bookDetailIntent =
+                            Intent(requireContext(), ActivityBestDetail::class.java)
+                        bookDetailIntent.putExtra("BookCode", group.bookCode)
+                        bookDetailIntent.putExtra("Type", String.format("%s", group.type))
+                        bookDetailIntent.putExtra("POSITION", position)
+                        startActivity(bookDetailIntent)
                     }
                 }
             }

@@ -392,10 +392,10 @@ class AdapterPickNovel(private var context: Context, private var itemsList: Arra
 
         init {
             with(binding){
-                iView.setOnClickListener {
+                swipeView.setOnClickListener {
                     val pos = adapterPosition
                     if (pos != RecyclerView.NO_POSITION) {
-                        listener?.onItemClick(it, pos, "Img")
+                        listener?.onItemClick(it, pos, "Item")
                     }
                 }
 

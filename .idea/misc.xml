@@ -173,8 +173,8 @@
         <entry key="app/src/main/res/Main/layout/item_guide_carousel.xml" value="0.1" />
         <entry key="app/src/main/res/Pick/layout/activity_pick.xml" value="0.1" />
         <entry key="app/src/main/res/Pick/layout/fragment_pick_tab.xml" value="0.1" />
-        <entry key="app/src/main/res/Pick/layout/item_pick_event.xml" value="0.33" />
-        <entry key="app/src/main/res/Pick/layout/item_pick_novel.xml" value="0.43510506798516685" />
+        <entry key="app/src/main/res/Pick/layout/item_pick_event.xml" value="0.18" />
+        <entry key="app/src/main/res/Pick/layout/item_pick_novel.xml" value="0.1" />
         <entry key="app/src/main/res/Search/layout/activity_best_detail.xml" value="0.1921875" />
         <entry key="app/src/main/res/Search/layout/activity_search.xml" value="0.1" />
         <entry key="app/src/main/res/Search/layout/activity_search_detail.xml" value="0.20677083333333332" />
