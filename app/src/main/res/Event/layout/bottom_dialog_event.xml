@@ -20,6 +20,7 @@
             android:fillViewport="true">
 
             <LinearLayout
+                android:id="@+id/llayoutWrapResult"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="56dp"
@@ -80,7 +81,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/btnRight"
+                android:id="@+id/llayoutPick"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -89,6 +90,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tviewPick"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/pretendardvariable"

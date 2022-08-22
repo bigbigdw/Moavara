@@ -17,6 +17,7 @@ import com.example.moavara.databinding.FragmentEventTabBinding
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
+import java.net.URLEncoder
 
 class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
 
@@ -112,6 +113,7 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                                             left.title,
                                             left.cnt_read,
                                             DBDate.DateMMDD(),
+                                            999,
                                             "Joara",
                                             ""
                                         ),
@@ -121,6 +123,7 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                                             right.title,
                                             right.cnt_read,
                                             DBDate.DateMMDD(),
+                                            999,
                                             "Joara",
                                             ""
                                         )
@@ -164,6 +167,7 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                                         "",
                                         "",
                                         "Joara",
+                                        999,
                                         ""
                                     ),
                                     EventData(
@@ -172,6 +176,7 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                                         "",
                                         "",
                                         "Joara",
+                                        999,
                                         ""
                                     )
                                 )
@@ -201,6 +206,7 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                                 mrBlue.select("img")[2 * i].absUrl("alt"),
                                 "",
                                 DBDate.DateMMDD(),
+                                999,
                                 "MrBlue",
                                 ""
                             ),
@@ -210,6 +216,7 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                                 mrBlue.select("img")[2 * i + 1].absUrl("alt"),
                                 "",
                                 DBDate.DateMMDD(),
+                                999,
                                 "MrBlue",
                                 ""
                             )
@@ -231,20 +238,22 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                     items.add(
                         EventDataGroup(
                             EventData(
-                                doc.select(".event_title a")[2 * i].absUrl("href"),
+                                doc.select(".event_title a")[2 * i].absUrl("href").replace("https://ridibooks.com/event/", ""),
                                 doc.select(".image_link img")[2 * i].absUrl("src"),
                                 doc.select(".event_title a")[2 * i].text(),
                                 "",
                                 DBDate.DateMMDD(),
+                                999,
                                 "Ridi",
                                 ""
                             ),
                             EventData(
-                                doc.select(".event_title a")[2 * i + 1].absUrl("href"),
+                                doc.select(".event_title a")[2 * i + 1].absUrl("href").replace("https://ridibooks.com/event/", ""),
                                 doc.select(".image_link img")[2 * i + 1].absUrl("src"),
                                 doc.select(".event_title a")[2 * i + 1].text(),
                                 "",
                                 DBDate.DateMMDD(),
+                                999,
                                 "Ridi",
                                 ""
                             )
@@ -267,24 +276,29 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
 
             for (i in MunpiaWrap.indices) {
 
+                Log.d("####", doc.select(".light .entries tbody tr td a")[2 * i].attr("href"))
+
+
                 try {
                     items.add(
                         EventDataGroup(
                             EventData(
-                                doc.select(".light .entries tbody tr td a")[2 * i].attr("href"),
-                                "https://${doc.select(".light .entries tbody tr a img")[2 * i].attr("src")}",
+                                URLEncoder.encode(doc.select(".light .entries tbody tr td a")[2 * i].attr("href"), "utf-8"),
+                                "https:${doc.select(".light .entries tbody tr a img")[2 * i].attr("src")}",
                                 doc.select(".light .entries .subject td a")[2 * i].text(),
                                 "",
                                 DBDate.DateMMDD(),
+                                999,
                                 "Munpia",
                                 ""
                             ),
                             EventData(
-                                doc.select(".light .entries tbody tr td a")[2 * i + 1].attr("href"),
-                                "https://${doc.select(".light .entries tbody tr a img")[2 * i + 1].attr("src")}",
+                                URLEncoder.encode(doc.select(".light .entries tbody tr td a")[2 * i + 1].attr("href"), "utf-8"),
+                                "https:${doc.select(".light .entries tbody tr a img")[2 * i + 1].attr("src")}",
                                 doc.select(".light .entries .subject td a")[2 * i + 1].text(),
                                 "",
                                 DBDate.DateMMDD(),
+                                999,
                                 "Munpia",
                                 ""
                             )
@@ -316,6 +330,7 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                                 "",
                                 "",
                                 DBDate.DateMMDD(),
+                                999,
                                 "OneStore",
                                 ""
                             ),
@@ -325,6 +340,7 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                                 "",
                                 "",
                                 DBDate.DateMMDD(),
+                                999,
                                 "OneStore",
                                 ""
                             )
@@ -344,25 +360,26 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
         requireActivity().runOnUiThread {
             for (i in kakao.indices) {
                 try {
-                    Log.d("####-Left", "https://${kakao[2 * i + 1].select(".imageWrapper img").attr("data-src")}")
 
                     items.add(
                         EventDataGroup(
                             EventData(
-                                kakao[2 * i].attr("data-url"),
-                                "https://${kakao[2 * i].select(".imageWrapper img").attr("data-src")}",
+                                kakao[2 * i].attr("data-url").replace("kakaopage://exec?open_web_with_auth/store/event/v2/", ""),
+                                "https:${kakao[2 * i].select(".imageWrapper img").attr("data-src")}",
                                 kakao[2 * i].select(".imageWrapper img").attr("alt"),
                                 "",
                                 DBDate.DateMMDD(),
+                                999,
                                 "Kakao",
                                 ""
                             ),
                             EventData(
-                                kakao[2 * i + 1].attr("data-url"),
-                                "https://${kakao[2 * i + 1].select(".imageWrapper img").attr("data-src")}",
+                                kakao[2 * i + 1].attr("data-url").replace("kakaopage://exec?open_web_with_auth/store/event/v2/", ""),
+                                "https:${kakao[2 * i + 1].select(".imageWrapper img").attr("data-src")}",
                                 kakao[2 * i + 1].select(".imageWrapper img").attr("alt"),
                                 "",
                                 DBDate.DateMMDD(),
+                                999,
                                 "Kakao",
                                 ""
                             )
@@ -397,20 +414,22 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                                 items.add(
                                     EventDataGroup(
                                         EventData(
-                                            "https://www.tocsoda.co.kr/event/eventDetail?eventmngSeq=${data.resultList[2 * i].linkInfo}",
+                                            data.resultList[2 * i].linkInfo,
                                             "https:${data.resultList[2 * i].imgPath}",
                                             data.resultList[2 * i].bnnrNm,
                                             "",
                                             DBDate.DateMMDD(),
+                                            999,
                                             "Toksoda",
                                             ""
                                         ),
                                         EventData(
-                                            "https://www.tocsoda.co.kr/event/eventDetail?eventmngSeq=${data.resultList[2 * i + 1].linkInfo}",
+                                            data.resultList[2 * i + 1].linkInfo,
                                             "https:${data.resultList[2 * i + 1].imgPath}",
                                             data.resultList[2 * i + 1].bnnrNm,
                                             "",
                                             DBDate.DateMMDD(),
+                                            999,
                                             "Toksoda",
                                             ""
                                         )

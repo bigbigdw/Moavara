@@ -94,6 +94,7 @@ class EventData(
     var title: String = "",
     var data: String = "",
     var date: String = "",
+    var number: Int = 0,
     var type: String = "",
     var memo: String = ""
 )

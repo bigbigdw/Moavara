@@ -117,7 +117,7 @@ object BestRef {
     fun typeListTitleEvent(): List<String> {
         return listOf(
             "조아라",
-            "카카오",
+            "카카오페이지",
             "리디북스",
 //            "원스토리",
             "문피아",

@@ -157,7 +157,7 @@
         <entry key="app/src/main/res/ETC/layout/custom_marker_view.xml" value="0.75" />
         <entry key="app/src/main/res/ETC/layout/etc_blank.xml" value="0.1" />
         <entry key="app/src/main/res/ETC/layout/loading.xml" value="0.22" />
-        <entry key="app/src/main/res/Event/layout/bottom_dialog_event.xml" value="0.18" />
+        <entry key="app/src/main/res/Event/layout/bottom_dialog_event.xml" value="0.1" />
         <entry key="app/src/main/res/Event/layout/fragment_event.xml" value="0.25" />
         <entry key="app/src/main/res/Event/layout/item_event.xml" value="0.1" />
         <entry key="app/src/main/res/Event/layout/item_search.xml" value="0.1" />

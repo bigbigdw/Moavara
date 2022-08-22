@@ -58,23 +58,28 @@ class FragmentPickTabEvent : Fragment() {
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rviewPick.adapter = adapter
 
-        userInfo.child(UID).child("event").addListenerForSingleValueEvent(object :
+        userInfo.child(UID).child("Event").addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+
                 for (postSnapshot in dataSnapshot.children) {
                     val group: EventData? = postSnapshot.getValue(EventData::class.java)
-                    items.add(
-                        EventData(
-                            group!!.link,
-                            group.imgfile,
-                            group.title,
-                            group.data,
-                            group.type,
-                            group.memo
+                    if (group != null) {
+                        items.add(
+                            EventData(
+                                group.link,
+                                group.imgfile,
+                                group.title,
+                                group.data,
+                                group.date,
+                                group.number,
+                                group.type,
+                                group.memo
+                            )
                         )
-                    )
-                    adapter.notifyDataSetChanged()
+                    }
                 }
+                adapter.notifyDataSetChanged()
             }
             override fun onCancelled(databaseError: DatabaseError) {}
         })
@@ -103,6 +108,8 @@ class FragmentPickTabEvent : Fragment() {
                         item.title,
                         item.data,
                         item.type,
+                        item.number,
+                        item.type,
                         adapter.getMemoEdit()
                     )
 
@@ -118,9 +125,9 @@ class FragmentPickTabEvent : Fragment() {
     }
 
     override fun onDetach() {
-        super.onDetach()
-        for(item in items){
-
+        for(i in items.indices){
+            userInfo.child(UID).child("Event").child(items[i].link).child("number").setValue((items.size - i))
         }
+        super.onDetach()
     }
 }

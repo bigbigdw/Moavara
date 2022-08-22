@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,8 +14,10 @@ import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
 import com.example.moavara.Retrofit.JoaraEventDetailResult
@@ -26,8 +29,12 @@ import com.example.moavara.Util.Param
 import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.BottomDialogEventBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import java.net.URLDecoder
 
 class BottomSheetDialogEvent(
     private val mContext: Context,
@@ -43,7 +50,9 @@ class BottomSheetDialogEvent(
     private var title : String = ""
     var UID = ""
     var userInfo = mRootRef.child("User")
+    private var isPicked = false
 
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -72,12 +81,44 @@ class BottomSheetDialogEvent(
             )
         }
 
+        userInfo.child(UID).child("Event").addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                for(pickedItem in dataSnapshot.children){
+
+                    if(pickedItem.key.toString() == item.link){
+                        isPicked = true
+                        binding.llayoutPick.background = GradientDrawable().apply {
+                            setColor(Color.parseColor("#A7ACB7"))
+                            shape = GradientDrawable.RECTANGLE
+                        }
+
+                        binding.tviewPick.text = "Pick 완료"
+                        break
+                    } else {
+                        binding.llayoutPick.background = GradientDrawable().apply {
+                            setColor(Color.parseColor("#621CEF"))
+                            shape = GradientDrawable.RECTANGLE
+                        }
+
+                        binding.tviewPick.text = "Pick 하기"
+                    }
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
+
         if (tabType == "OneStore"
             || tabType == "Munpia"
-            || (tabType == "Kakao" && item.link.contains("kakaopage://exec?open_web_with_auth/store/event"))
+            || (tabType == "Kakao")
             || tabType == "Toksoda"
         ) {
             Glide.with(mContext).load(item.imgfile).into(binding.iview)
+            binding.llayoutWrapResult.setOnClickListener{
+                dismiss()
+            }
         } else {
             when (tabType) {
                 "Joara" -> {
@@ -86,9 +127,6 @@ class BottomSheetDialogEvent(
                 "Ridi" -> {
                     getEventRidi()
                 }
-                "Kakao" -> {
-                    getEventKakao()
-                }
                 "MrBlue" -> {
                     getEventMrBlue()
                 }
@@ -96,26 +134,41 @@ class BottomSheetDialogEvent(
         }
 
         with(binding){
-            btnRight.setOnClickListener {
-                val group = EventData(
-                    item.link,
-                    item.imgfile,
-                    item.title,
-                    item.data,
-                    item.date,
-                    item.type,
-                    "",
-                )
+            llayoutPick.setOnClickListener {
 
-                userInfo.child(UID).child("Event").child(item.link).setValue(group)
+                if(isPicked){
+                    userInfo.child(UID).child("Event").child(item.link).removeValue()
+                    Toast.makeText(requireContext(), "[${item.title}]이(가) 마이픽에서 제거되었습니다.", Toast.LENGTH_SHORT).show()
+                    dismiss()
 
-                Toast.makeText(requireContext(), "Pick 성공!", Toast.LENGTH_SHORT).show()
-                dismiss()
+                } else {
+
+                    val group = EventData(
+                        item.link,
+                        item.imgfile,
+                        item.title,
+                        item.data,
+                        item.date,
+                        item.number,
+                        item.type,
+                        "",
+                    )
+
+                    userInfo.child(UID).child("Event").child(item.link).setValue(group)
+                    Toast.makeText(requireContext(), "[${group.title}]이(가) 마이픽에 등록되었습니다.", Toast.LENGTH_SHORT).show()
+                    dismiss()
+
+                }
             }
 
             btnLeft.setOnClickListener {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getUrl(tabType)))
-                startActivity(intent)
+
+                if(item.type == "Kakao"){
+                    getEventKakao()
+                } else {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getUrl(tabType)))
+                    startActivity(intent)
+                }
             }
         }
 
@@ -132,7 +185,7 @@ class BottomSheetDialogEvent(
                 val mrBlue1 = doc.select(".event-html img").first()?.absUrl("src")
                 requireActivity().runOnUiThread {
                     if (mrBlue1 != null) {
-                        binding?.let {
+                        binding.let {
                             Glide.with(mContext)
                                 .load(mrBlue1.replace("http", "https"))
                                 .into(it.iview)
@@ -156,7 +209,7 @@ class BottomSheetDialogEvent(
     private fun getEventRidi(){
 
         Thread {
-            val doc: Document = Jsoup.connect(item.link).get()
+            val doc: Document = Jsoup.connect("https://ridibooks.com/event/${item.link}").get()
             val ridi = doc.select(".event_detail_top img").first()?.absUrl("src")
 
             title = item.title
@@ -169,19 +222,24 @@ class BottomSheetDialogEvent(
         }.start()
     }
 
+    @RequiresApi(Build.VERSION_CODES.R)
     private fun getEventKakao() {
-        Thread {
-            val doc: Document = Jsoup.connect("https://page.kakao.com${item.link}").get()
-            val kakao = doc.select(".themeBox img").first()?.absUrl("src")
+        val linkUrl = "kakaopage://exec?open_web_with_auth/store/event/v2/${item.link}"
 
-            title = item.title
+        val intent = Intent.parseUri(linkUrl, Intent.URI_INTENT_SCHEME)
+        val existPackage = mContext.packageManager.getLaunchIntentForPackage(
+            "com.kakao.page"
+        )
 
-            requireActivity().runOnUiThread {
-                Glide.with(mContext)
-                    .load(kakao)
-                    .into(binding.iview)
-            }
-        }.start()
+        if (existPackage != null) {
+            intent.addCategory(Intent.CATEGORY_BROWSABLE)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_REQUIRE_NON_BROWSER
+            mContext.startActivity(intent)
+        } else {
+            val marketIntent = Intent(Intent.ACTION_VIEW)
+            marketIntent.data = Uri.parse("market://details?id=com.kakao.page")
+            mContext.startActivity(marketIntent)
+        }
     }
 
     private fun getUrl(type: String): String {
@@ -190,13 +248,19 @@ class BottomSheetDialogEvent(
                 return "https://www.joara.com/event/" + item.link
             }
             "Ridi" -> {
-                return item.link
+                return "https://ridibooks.com/event/${item.link}"
             }
             "Kakao" -> {
                 return "https://page.kakao.com${item.link}"
             }
+            "Munpia" -> {
+                return "https://square.munpia.com/${URLDecoder.decode(item.link, "utf-8")}"
+            }
             "MrBlue" -> {
                 return item.link
+            }
+            "Toksoda" -> {
+                return "https://www.tocsoda.co.kr/event/eventDetail?eventmngSeq=${item.link}"
             }
             else -> return ""
         }
