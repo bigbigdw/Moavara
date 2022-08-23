@@ -16,7 +16,7 @@ class AdapterBookSearch(private var holder: ArrayList<BookListDataBest>, private
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     interface OnItemClickListener {
-        fun onItemClick(v: View?, position: Int, value: String?)
+        fun onItemClick(v: View?, position: Int)
     }
 
     private var listener: OnItemClickListener? = null
@@ -325,6 +325,14 @@ class AdapterBookSearch(private var holder: ArrayList<BookListDataBest>, private
     inner class MainBookViewHolder internal constructor(val binding: ItemSearchBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+        init {
+            binding.root.setOnClickListener { v: View? ->
+                val pos = adapterPosition
+                if (pos != RecyclerView.NO_POSITION) {
+                    listener?.onItemClick(v, pos)
+                }
+            }
+        }
     }
 
     fun getItem(position: Int): BookListDataBest {

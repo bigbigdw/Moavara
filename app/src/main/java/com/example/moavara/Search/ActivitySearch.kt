@@ -1,12 +1,16 @@
 package com.example.moavara.Search
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.moavara.Best.ActivityBestDetail
 import com.example.moavara.Best.AdapterType
 import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.R
@@ -74,8 +78,31 @@ class ActivitySearch : AppCompatActivity() {
                 searchNaver(text, "Naver_Today")
                 searchNaver(text, "Naver")
                 searchKakao(page - 1, text)
-                searchKakaoStage(text)
+                searchKakaoStage(page - 1, text)
                 searchJoara(page, text)
+
+                adapter?.setOnItemClickListener(object : AdapterBookSearch.OnItemClickListener {
+                    override fun onItemClick(v: View?, position: Int) {
+                        val item: BookListDataBest? = adapter?.getItem(position)
+
+                        if(item?.type == "MrBlue"){
+                            val intent = Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse( "https://www.mrblue.com${item.bookCode}")
+                            )
+                            startActivity(intent)
+                        } else {
+                            Log.d("####-2", "${item?.type} ${item?.bookCode}")
+
+                            val bookDetailIntent =
+                                Intent(this@ActivitySearch, ActivityBestDetail::class.java)
+                            bookDetailIntent.putExtra("BookCode", item?.bookCode)
+                            bookDetailIntent.putExtra("Type", "Search_${item?.type}")
+                            bookDetailIntent.putExtra("POSITION", position)
+                            startActivity(bookDetailIntent)
+                        }
+                    }
+                })
 
                 return false
             }
@@ -88,6 +115,8 @@ class ActivitySearch : AppCompatActivity() {
         binding.blank.tviewblank.text = "검색어를 입력해주세요"
 
         getType()
+
+
     }
 
     fun searchJoara(page: Int, text: String) {
@@ -235,7 +264,7 @@ class ActivitySearch : AppCompatActivity() {
             })
     }
 
-    fun searchKakaoStage(text: String) {
+    fun searchKakaoStage(page: Int, text: String) {
         val apiKakaoStage = RetrofitKaKao()
         val param: MutableMap<String?, Any> = HashMap()
         param["genreIds"] = "1,2,3,4,5,6,7"
@@ -330,7 +359,7 @@ class ActivitySearch : AppCompatActivity() {
                             items.select(".league").text(),
                             items.select(".ellipsis").text(),
                             items.select("div img").attr("src"),
-                            items.select("a").attr("href"),
+                            items.select("a").attr("href").replace("/webnovel/list?novelId=","").replace("/best/list?novelId=", "").replace("/challenge/list?novelId=", ""),
                             "",
                             items.select(".bullet_comp").text(),
                             "",
@@ -387,12 +416,12 @@ class ActivitySearch : AppCompatActivity() {
                             items.select(".author").text(),
                             items.select(".detail a").text(),
                             "https://${items.select(".thumb img").attr("src")}",
-                            items.select(".detail a").attr("href"),
+                            items.select(".detail a").attr("href").replace("https://novel.munpia.com/",""),
                             items.select(".synopsis").text(),
                             items.select(".info span").first()?.text().toString(),
-                            items.select(".info span").next().get(0)?.text() ?: "",
-                            items.select(".info span").next().get(1)?.text() ?: "",
-                            items.select(".info span").next().get(2)?.text() ?: "",
+                            items.select(".info span").next()?.get(0)?.text() ?: "",
+                            items.select(".info span").next()?.get(1)?.text() ?: "",
+                            items.select(".info span").next()?.get(2)?.text() ?: "",
                             "",
                             999,
                             DBDate.DateMMDDHHMM(),
@@ -527,7 +556,7 @@ class ActivitySearch : AppCompatActivity() {
                             items.select(".tit").text(),
                             bookImg,
                             items.select("a").attr("href"),
-                            "${items.select(".price span").get(0).text()}",
+                            items.select(".price span").get(0).text(),
                             items.select(".genre").text(),
                             items.select(".review").text(),
                             items.select(".info span").get(1)?.text() ?: "",
@@ -600,34 +629,45 @@ class ActivitySearch : AppCompatActivity() {
 
                 searchItems.clear()
 
-                if (item.type == "Keyword") {
-                    searchJoara(page, text)
-                    searchKakaoStage(text)
-                    searchKakao(page - 1, text)
-                    searchNaver(text, "Naver")
-                    searchNaver(text, "Naver_Today")
-                    searchNaver(text, "Naver_Challenge")
-                    searchMunpia(text)
-                    searchToksoda(text)
-                    searchMrBlue(text)
-                } else if (item.type == "Joara") {
-                    searchJoara(page, text)
-                } else if (item.type == "Naver_Today") {
-                    searchNaver(text, "Naver_Today")
-                } else if (item.type == "Naver_Challenge") {
-                    searchNaver(text, "Naver_Challenge")
-                } else if (item.type == "Naver") {
-                    searchNaver(text, "Naver")
-                } else if (item.type == "Kakao") {
-                    searchKakao(page - 1, text)
-                } else if (item.type == "Kakao_Stage") {
-                    searchKakaoStage(text)
-                } else if (item.type == "Munpia") {
-                    searchMunpia(text)
-                } else if (item.type == "Toksoda") {
-                    searchToksoda(text)
-                } else if (item.type == "MrBlue") {
-                    searchMrBlue(text)
+                when (item.type) {
+                    "Keyword" -> {
+                        searchJoara(page, text)
+                        searchKakaoStage(page - 1, text)
+                        searchKakao(page - 1, text)
+                        searchNaver(text, "Naver")
+                        searchNaver(text, "Naver_Today")
+                        searchNaver(text, "Naver_Challenge")
+                        searchMunpia(text)
+                        searchToksoda(text)
+                        searchMrBlue(text)
+                    }
+                    "Joara" -> {
+                        searchJoara(page, text)
+                    }
+                    "Naver_Today" -> {
+                        searchNaver(text, "Naver_Today")
+                    }
+                    "Naver_Challenge" -> {
+                        searchNaver(text, "Naver_Challenge")
+                    }
+                    "Naver" -> {
+                        searchNaver(text, "Naver")
+                    }
+                    "Kakao" -> {
+                        searchKakao(page - 1, text)
+                    }
+                    "Kakao_Stage" -> {
+                        searchKakaoStage(page - 1, text)
+                    }
+                    "Munpia" -> {
+                        searchMunpia(text)
+                    }
+                    "Toksoda" -> {
+                        searchToksoda(text)
+                    }
+                    "MrBlue" -> {
+                        searchMrBlue(text)
+                    }
                 }
                 adapter?.notifyDataSetChanged()
             }
@@ -642,14 +682,19 @@ class ActivitySearch : AppCompatActivity() {
                 if (!recyclerView.canScrollVertically(1)) {
                     page++
 
-                    if (type == "Joara") {
-                        searchJoara(page, text)
-                    } else if (type == "Kakao") {
-                        searchKakao(page - 1, text)
-                    } else if (type == "Kakao_Stage") {
-                        searchKakaoStage(text)
-                    } else if (type == "Toksoda") {
-                        searchToksoda(text)
+                    when (type) {
+                        "Joara" -> {
+                            searchJoara(page, text)
+                        }
+                        "Kakao" -> {
+                            searchKakao(page - 1, text)
+                        }
+                        "Kakao_Stage" -> {
+                            searchKakaoStage(page - 1, text)
+                        }
+                        "Toksoda" -> {
+                            searchToksoda(text)
+                        }
                     }
                 }
             }

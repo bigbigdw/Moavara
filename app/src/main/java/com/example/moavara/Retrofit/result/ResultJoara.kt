@@ -402,7 +402,7 @@ class JoaraBooksValue {
     @Expose
     var cntFavorite: String = ""
 
-    @SerializedName("bookCode")
+    @SerializedName("book_code")
     @Expose
     var bookCode: String = ""
 

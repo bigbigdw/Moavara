@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
@@ -89,40 +90,45 @@ class ActivityBestDetail : AppCompatActivity() {
 
         setUserPick()
 
-        BestRef.getBookCode(platform, genre).child(bookCode).addListenerForSingleValueEvent(object :
-            ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
+        Log.d("####", "${platform} ${bookCode}")
 
-                for (item in dataSnapshot.children) {
-                    val group: BookListDataBestAnalyze? =
-                        item.getValue(BookListDataBestAnalyze::class.java)
+        if(platform.contains("Search")){
+            setLayoutSearch()
+        } else {
+            BestRef.getBookCode(platform, genre).child(bookCode).addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                    if (group != null) {
-                        data.add(
-                            BookListDataBestAnalyze(
-                                group.info1,
-                                group.info2,
-                                group.info3,
-                                group.info4,
-                                group.number,
-                                group.numInfo1,
-                                group.numInfo2,
-                                group.numInfo3,
-                                group.numInfo4,
-                                group.date,
-                                group.numberDiff,
-                                group.trophyCount,
+                    for (item in dataSnapshot.children) {
+                        val group: BookListDataBestAnalyze? =
+                            item.getValue(BookListDataBestAnalyze::class.java)
+
+                        if (group != null) {
+                            data.add(
+                                BookListDataBestAnalyze(
+                                    group.info1,
+                                    group.info2,
+                                    group.info3,
+                                    group.info4,
+                                    group.number,
+                                    group.numInfo1,
+                                    group.numInfo2,
+                                    group.numInfo3,
+                                    group.numInfo4,
+                                    group.date,
+                                    group.numberDiff,
+                                    group.trophyCount,
+                                )
                             )
-                        )
+                        }
                     }
+
+                    setLayout()
                 }
 
-                setLayout()
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
-
+                override fun onCancelled(databaseError: DatabaseError) {}
+            })
+        }
 
     }
 
@@ -152,6 +158,8 @@ class ActivityBestDetail : AppCompatActivity() {
                 override fun onCancelled(databaseError: DatabaseError) {}
             })
     }
+
+
 
     fun setLayout() {
 
@@ -234,6 +242,76 @@ class ActivityBestDetail : AppCompatActivity() {
         })
     }
 
+    fun setLayoutSearch() {
+
+        if (platform == "Search_Joara" || platform == "Search_Joara_Nobless" || platform == "Search_Joara_Premium") {
+            setLayoutJoara()
+        } else if (platform == "Search_Naver_Today" || platform == "Search_Naver_Challenge" || platform == "Search_Naver") {
+            setLayoutNaverToday()
+        } else if (platform == "Search_Kakao") {
+            setLayoutKaKao()
+        } else if (platform == "Search_Kakao_Stage") {
+            setLayoutKaKaoStage()
+        } else if (platform == "Search_Ridi") {
+            setLayoutRidi()
+        } else if (platform == "Search_OneStore") {
+            setLayoutOneStory()
+        } else if (platform == "Search_Munpia") {
+            setLayoutMunpia()
+        } else if (platform == "Search_Toksoda") {
+            setLayoutToksoda()
+        }
+
+        if (platform == "Search_Naver_Today" || platform == "Search_Naver_Challenge" || platform == "Search_Naver") {
+            binding.tabs.addTab(binding.tabs.newTab().setText("다른 작품"))
+        } else if (platform == "Search_Kakao" || platform == "Search_Kakao_Stage" || platform == "Search_OneStore" || platform == "Search_Munpia") {
+            binding.tabs.addTab(binding.tabs.newTab().setText("댓글"))
+        } else if (platform == "Search_Ridi") {
+            binding.tabs.addTab(binding.tabs.newTab().setText("다른 작품"))
+        } else {
+            binding.tabs.addTab(binding.tabs.newTab().setText("댓글"))
+            binding.tabs.addTab(binding.tabs.newTab().setText("다른 작품"))
+        }
+
+        binding.tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                when (tab.position) {
+                    0 -> {
+                        if (platform == "Search_Joara" || platform == "Search_Joara_Nobless" || platform == "Search_Joara_Premium" || platform == "Search_Kakao" || platform == "Search_Kakao_Stage" || platform == "Search_OneStore" || platform == "Search_Munpia" || platform == "Search_Toksoda") {
+                            mFragmentBestDetailComment =
+                                FragmentBestDetailComment(platform, bookCode)
+                            supportFragmentManager.commit {
+                                replace(R.id.llayoutWrap, mFragmentBestDetailComment)
+                            }
+                        } else if (platform == "Search_Naver_Today" || platform == "Search_Naver_Challenge" || platform == "Search_Naver" || platform == "Search_Ridi") {
+                            mFragmentBestDetailBooks = FragmentBestDetailBooks(platform, bookCode)
+                            supportFragmentManager.commit {
+                                replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
+                            }
+                        }
+                    }
+                    1 -> {
+                        if (platform == "Search_Joara" || platform == "Search_Joara_Nobless" || platform == "Search_Joara_Premium" || platform == "Search_Toksoda") {
+                            mFragmentBestDetailBooks = FragmentBestDetailBooks(platform, bookCode)
+                            supportFragmentManager.commit {
+                                replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
+                            }
+                        } else if (platform == "Search_Naver_Today" || platform == "Search_Naver_Challenge" || platform == "Search_Naver" || platform == "Search_Kakao" || platform == "Search_Kakao_Stage" || platform == "Search_Ridi" || platform == "Search_OneStore" || platform == "Search_Munpia") {
+                            mFragmentBestDetailAnalyze =
+                                FragmentBestDetailAnalyze(platform, data, itemCount)
+                            supportFragmentManager.commit {
+                                replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
+                            }
+                        }
+                    }
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        })
+    }
+
     private fun setLayoutJoara() {
         val apiJoara = RetrofitJoara()
         val JoaraRef = Param.getItemAPI(this)
@@ -294,12 +372,20 @@ class ActivityBestDetail : AppCompatActivity() {
                         }
                     }
 
-                    mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(
-                        platform,
-                        this@ActivityBestDetail.data, itemCount
-                    )
-                    supportFragmentManager.commit {
-                        replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
+                    if(platform.contains("Search")){
+                        mFragmentBestDetailComment =
+                            FragmentBestDetailComment(platform, bookCode)
+                        supportFragmentManager.commit {
+                            replace(R.id.llayoutWrap, mFragmentBestDetailComment)
+                        }
+                    } else {
+                        mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(
+                            platform,
+                            this@ActivityBestDetail.data, itemCount
+                        )
+                        supportFragmentManager.commit {
+                            replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
+                        }
                     }
                 }
             })
@@ -341,10 +427,19 @@ class ActivityBestDetail : AppCompatActivity() {
                     tviewIntro.text = doc.select(".section_area_info .dsc").text()
                 }
 
-                mFragmentBestDetailAnalyze =
-                    FragmentBestDetailAnalyze(platform, data, itemCount)
-                supportFragmentManager.commit {
-                    replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
+
+
+                if(platform.contains("Search")){
+                    mFragmentBestDetailBooks = FragmentBestDetailBooks(platform, bookCode)
+                    supportFragmentManager.commit {
+                        replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
+                    }
+                } else {
+                    mFragmentBestDetailAnalyze =
+                        FragmentBestDetailAnalyze(platform, data, itemCount)
+                    supportFragmentManager.commit {
+                        replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
+                    }
                 }
             }
         }.start()
@@ -408,10 +503,18 @@ class ActivityBestDetail : AppCompatActivity() {
                 }
             })
 
-        mFragmentBestDetailAnalyze =
-            FragmentBestDetailAnalyze(platform, data, itemCount)
-        supportFragmentManager.commit {
-            replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
+        if(platform.contains("Search")){
+            mFragmentBestDetailComment =
+                FragmentBestDetailComment(platform, bookCode)
+            supportFragmentManager.commit {
+                replace(R.id.llayoutWrap, mFragmentBestDetailComment)
+            }
+        } else {
+            mFragmentBestDetailAnalyze =
+                FragmentBestDetailAnalyze(platform, data, itemCount)
+            supportFragmentManager.commit {
+                replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
+            }
         }
     }
 
@@ -451,10 +554,18 @@ class ActivityBestDetail : AppCompatActivity() {
                 }
             })
 
-        mFragmentBestDetailAnalyze =
-            FragmentBestDetailAnalyze(platform, data, itemCount)
-        supportFragmentManager.commit {
-            replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
+        if(platform.contains("Search")){
+            mFragmentBestDetailComment =
+                FragmentBestDetailComment(platform, bookCode)
+            supportFragmentManager.commit {
+                replace(R.id.llayoutWrap, mFragmentBestDetailComment)
+            }
+        } else {
+            mFragmentBestDetailAnalyze =
+                FragmentBestDetailAnalyze(platform, data, itemCount)
+            supportFragmentManager.commit {
+                replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
+            }
         }
     }
 
@@ -502,10 +613,17 @@ class ActivityBestDetail : AppCompatActivity() {
 
                 }
 
-                mFragmentBestDetailAnalyze =
-                    FragmentBestDetailAnalyze(platform, data, itemCount)
-                supportFragmentManager.commit {
-                    replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
+                if(platform.contains("Search")){
+                    mFragmentBestDetailBooks = FragmentBestDetailBooks(platform, bookCode)
+                    supportFragmentManager.commit {
+                        replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
+                    }
+                } else {
+                    mFragmentBestDetailAnalyze =
+                        FragmentBestDetailAnalyze(platform, data, itemCount)
+                    supportFragmentManager.commit {
+                        replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
+                    }
                 }
             }
         }.start()
@@ -574,10 +692,18 @@ class ActivityBestDetail : AppCompatActivity() {
                 }
             })
 
-        mFragmentBestDetailAnalyze =
-            FragmentBestDetailAnalyze(platform, data, itemCount)
-        supportFragmentManager.commit {
-            replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
+        if(platform.contains("Search")){
+            mFragmentBestDetailComment =
+                FragmentBestDetailComment(platform, bookCode)
+            supportFragmentManager.commit {
+                replace(R.id.llayoutWrap, mFragmentBestDetailComment)
+            }
+        } else {
+            mFragmentBestDetailAnalyze =
+                FragmentBestDetailAnalyze(platform, data, itemCount)
+            supportFragmentManager.commit {
+                replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
+            }
         }
     }
 
@@ -603,10 +729,15 @@ class ActivityBestDetail : AppCompatActivity() {
 
                     inclueBestDetail.tviewInfo.text = doc.select(".meta-path strong").text()
 
-                    inclueBestDetail.tviewInfo1.text =
-                        doc.select(".meta-etc dd").next().next()[1].text()
-                    inclueBestDetail.tviewInfo2.text =
-                        doc.select(".meta-etc dd").next().next()[2].text()
+                    try{
+                        inclueBestDetail.tviewInfo1.text =
+                            doc.select(".meta-etc dd").next().next()[1]?.text() ?: ""
+                        inclueBestDetail.tviewInfo2.text =
+                            doc.select(".meta-etc dd").next().next()[2]?.text() ?: ""
+                    } catch (e: IndexOutOfBoundsException){
+                        inclueBestDetail.tviewInfo1.visibility = View.GONE
+                        inclueBestDetail.tviewInfo2.visibility = View.GONE
+                    }
 
                     inclueBestDetail.llayoutTab3.visibility = View.GONE
                     inclueBestDetail.llayoutTab4.visibility = View.GONE
@@ -616,10 +747,18 @@ class ActivityBestDetail : AppCompatActivity() {
                     tviewIntro.text = doc.select(".story").text()
                 }
 
-                mFragmentBestDetailAnalyze =
-                    FragmentBestDetailAnalyze(platform, data, itemCount)
-                supportFragmentManager.commit {
-                    replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
+                if(platform.contains("Search")){
+                    mFragmentBestDetailComment =
+                        FragmentBestDetailComment(platform, bookCode)
+                    supportFragmentManager.commit {
+                        replace(R.id.llayoutWrap, mFragmentBestDetailComment)
+                    }
+                } else {
+                    mFragmentBestDetailAnalyze =
+                        FragmentBestDetailAnalyze(platform, data, itemCount)
+                    supportFragmentManager.commit {
+                        replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
+                    }
                 }
             }
         }.start()
@@ -690,10 +829,18 @@ class ActivityBestDetail : AppCompatActivity() {
                 }
             })
 
-        mFragmentBestDetailAnalyze =
-            FragmentBestDetailAnalyze(platform, data, itemCount)
-        supportFragmentManager.commit {
-            replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
+        if(platform.contains("Search")){
+            mFragmentBestDetailComment =
+                FragmentBestDetailComment(platform, bookCode)
+            supportFragmentManager.commit {
+                replace(R.id.llayoutWrap, mFragmentBestDetailComment)
+            }
+        } else {
+            mFragmentBestDetailAnalyze =
+                FragmentBestDetailAnalyze(platform, data, itemCount)
+            supportFragmentManager.commit {
+                replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
+            }
         }
     }
 
