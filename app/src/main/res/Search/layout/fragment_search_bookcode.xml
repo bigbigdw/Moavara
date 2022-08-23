@@ -30,6 +30,50 @@
             layout="@layout/include_best_detail"
             android:animateLayoutChanges="true" />
 
+        <LinearLayout
+            android:id="@+id/llayoutBtn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="24dp"
+            android:background="#1E1E20"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="260dp"
+                android:layout_height="41dp"
+                android:background="#621CEF"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendardvariable"
+                    android:text="@string/Best_BottomDialogBtn"
+                    android:textColor="#EDE6FD"
+                    android:textSize="20dp"
+                    tools:ignore="TextContrastCheck" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="260dp"
+                android:layout_height="41dp"
+                android:background="#621CEF"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendardvariable"
+                    android:text="@string/Best_BottomDialogBtn"
+                    android:textColor="#EDE6FD"
+                    android:textSize="20dp"
+                    tools:ignore="TextContrastCheck" />
+            </LinearLayout>
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout

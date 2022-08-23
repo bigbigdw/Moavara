@@ -173,7 +173,7 @@ class BestKakaoBookDetail {
 
     @SerializedName("related_keytalk_list")
     @Expose
-    lateinit var related_keytalk_list: ArrayList<BestKakaoBookDetailKeyword>
+    var related_keytalk_list = ArrayList<BestKakaoBookDetailKeyword>()
 }
 
 class BestKakaoBookDetailKeyword{
@@ -241,7 +241,7 @@ class BestKakaoBookDetailHome {
 class BestKakaoBookDetailComment {
     @SerializedName("comment_list")
     @Expose
-    lateinit var comment_list: ArrayList<BestKakaoBookDetailCommentList>
+    var comment_list = ArrayList<BestKakaoBookDetailCommentList>()
 }
 
 class BestKakaoBookDetailCommentList {
@@ -308,7 +308,7 @@ class KakaoStageBestBookThumbnail {
 class KakaoStageBestBookCommentResult {
     @SerializedName("content")
     @Expose
-    lateinit var content: List<KakaoStageBestBookCommentContents>
+    var content = ArrayList<KakaoStageBestBookCommentContents>()
 }
 
 class KakaoStageBestBookCommentContents {
@@ -324,7 +324,7 @@ class KakaoStageBestBookCommentContents {
 class KakaoStageSearchResult {
     @SerializedName("content")
     @Expose
-    lateinit var content: List<KakaoStageSearchContents>
+    var content = ArrayList<KakaoStageSearchContents>()
 }
 
 class KakaoStageSearchContents {
@@ -334,11 +334,11 @@ class KakaoStageSearchContents {
 
     @SerializedName("nickname")
     @Expose
-    lateinit var nickname: KakaoBestStageNickNameResult
+    var nickname = KakaoBestStageNickNameResult()
 
     @SerializedName("thumbnail")
     @Expose
-    lateinit var thumbnail: KakaoBestStageThumbnailResult
+    var thumbnail = KakaoBestStageThumbnailResult()
 
     @SerializedName("favoriteCount")
     @Expose
@@ -362,7 +362,7 @@ class KakaoStageSearchContents {
 
     @SerializedName("subGenre")
     @Expose
-    lateinit var subGenre: KakaoBestStageSubGenre
+    var subGenre = KakaoBestStageSubGenre()
 }
 
 class KakaoBestStageSubGenre {
