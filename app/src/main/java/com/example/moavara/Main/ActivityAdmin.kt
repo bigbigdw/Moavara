@@ -40,6 +40,10 @@ class ActivityAdmin : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
+        val inputData = Data.Builder()
+            .putString(FirebaseWorkManager.TYPE, "BEST")
+            .build()
+
         /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
         val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(3, TimeUnit.HOURS)
             .setBackoffCriteria(
@@ -48,6 +52,7 @@ class ActivityAdmin : AppCompatActivity() {
                 TimeUnit.MILLISECONDS
             )
             .addTag("MoavaraBest")
+            .setInputData(inputData)
             .build()
 
         val miningRef = FirebaseDatabase.getInstance().reference.child("Mining")
@@ -97,12 +102,10 @@ class ActivityAdmin : AppCompatActivity() {
                     workRequest
                 )
                 FirebaseMessaging.getInstance().subscribeToTopic("all")
-                FirebaseMessaging.getInstance().subscribeToTopic("all")
                 Toast.makeText(applicationContext, "WorkManager 추가", Toast.LENGTH_SHORT).show()
             }
 
             llayoutBtn5.setOnClickListener {
-                Log.d("####-5", workManager.getWorkInfosByTag("MoavaraBest").toString())
                 Toast.makeText(applicationContext, "${workManager.getWorkInfosByTag("MoavaraBest").get()}", Toast.LENGTH_SHORT)
             }
 

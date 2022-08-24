@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
 import android.text.Editable
-import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.TextWatcher
 import android.util.Log
@@ -30,7 +29,7 @@ import com.example.moavara.databinding.ItemPickNovelBinding
 import java.util.*
 
 
-class AdapterPickNovel(private var context: Context, private var itemsList: ArrayList<BookListDataBest>) :
+class AdapterPickNovel(private var context: Context, private var itemsList: ArrayList<BookListDataBest>, private var fragment: FragmentPickTabNovel) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var memo = ""
     var userInfo = mRootRef.child("User")
@@ -378,6 +377,10 @@ class AdapterPickNovel(private var context: Context, private var itemsList: Arra
         notifyItemMoved(fromPos, toPos)
     }
 
+    fun selectedItem(position: Int) {
+        Toast.makeText(context, "이동하실 위치로 드래그해주세요.", Toast.LENGTH_SHORT).show()
+    }
+
     override fun getItemCount(): Int {
         return itemsList.size
     }
@@ -418,6 +421,7 @@ class AdapterPickNovel(private var context: Context, private var itemsList: Arra
                                 removeData(adapterPosition)
                                 Toast.makeText(context, "삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show()
                                 dialogLogin?.dismiss()
+                                fragment.initScreen(itemCount)
                             }
                         },
                         "취소",

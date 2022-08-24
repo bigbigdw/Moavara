@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,13 +13,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.moavara.DataBase.BookListDataBest
-import com.example.moavara.Event.BottomSheetDialogEvent
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.Search.EventData
 import com.example.moavara.Util.Genre
 import com.example.moavara.Util.SwipeEvent
-import com.example.moavara.Util.SwipeHelperCallback
 import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.FragmentPickTabBinding
 import com.google.firebase.database.DataSnapshot
@@ -28,8 +24,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import java.net.URLDecoder
 import java.util.*
-import kotlin.Comparator
-import kotlin.collections.ArrayList
 
 
 class FragmentPickTabEvent : Fragment() {
@@ -59,7 +53,7 @@ class FragmentPickTabEvent : Fragment() {
 
         cate = Genre.getGenre(requireContext()).toString()
 
-        adapter = AdapterPickEvent(requireContext(), items)
+        adapter = AdapterPickEvent(requireContext(), items, this@FragmentPickTabEvent)
 
         // 리사이클러뷰에 스와이프, 드래그 기능 달기
         val swipeHelperCallback = SwipeEvent(adapter).apply {
@@ -107,7 +101,7 @@ class FragmentPickTabEvent : Fragment() {
                 } else {
                     binding.blank.root.visibility = View.GONE
                 }
-                val cmpAsc: java.util.Comparator<EventData> =
+                val cmpAsc: Comparator<EventData> =
                     Comparator { o1, o2 -> o2.number.compareTo(o1.number) }
                 Collections.sort(items, cmpAsc)
                 adapter.notifyDataSetChanged()
@@ -135,6 +129,11 @@ class FragmentPickTabEvent : Fragment() {
                     adapter.editItem(position)
                     Toast.makeText(requireContext(), "수정되었습니다", Toast.LENGTH_SHORT).show()
                 }  else if(type == "Delete"){
+                    if(adapter.itemCount == 0){
+                        binding.blank.root.visibility = View.VISIBLE
+                    } else {
+                        binding.blank.root.visibility = View.GONE
+                    }
                     Toast.makeText(requireContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -190,5 +189,13 @@ class FragmentPickTabEvent : Fragment() {
             userInfo.child(UID).child("Event").child(items[i].link).child("number").setValue((items.size - i))
         }
         super.onDetach()
+    }
+
+    fun initScreen(itemCount : Int){
+        if(itemCount == 0){
+            binding.blank.root.visibility = View.VISIBLE
+        } else {
+            binding.blank.root.visibility = View.GONE
+        }
     }
 }

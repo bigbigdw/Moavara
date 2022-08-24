@@ -17,6 +17,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.work.WorkManager
 import com.example.moavara.Best.BottomDialogMain
 import com.example.moavara.Firebase.*
 import com.example.moavara.Main.ActivityLogin
@@ -76,6 +77,8 @@ class ActivityUser : AppCompatActivity() {
             ?.getString("UID", "").toString()
 
 
+
+
         with(binding){
 
             loading.root.visibility = View.VISIBLE
@@ -94,6 +97,7 @@ class ActivityUser : AppCompatActivity() {
             llayoutGuide.background = btnBG
             llayoutCall.background = btnBG
             llayoutPickFCM.background = btnBG
+            llayoutPickFCMStop.background = btnBG
 
             llayoutUpper.background = GradientDrawable().apply {
                 setColor(Color.parseColor("#0D0E10"))
@@ -302,6 +306,12 @@ class ActivityUser : AppCompatActivity() {
 
                     override fun onFailure(call: Call<FWorkManagerResult?>, t: Throwable) {}
                 })
+            }
+
+            llayoutPickFCMStop.setOnClickListener {
+                val workManager = WorkManager.getInstance(applicationContext)
+                workManager.cancelAllWorkByTag("MoavaraPick")
+                Toast.makeText(applicationContext, "선호작 최신화 해제됨", Toast.LENGTH_SHORT).show()
             }
         }
     }

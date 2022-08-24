@@ -51,7 +51,7 @@ class DialogConfirm(
             binding.tviewBody.visibility = View.GONE
         } else {
             binding.tviewBody.visibility = View.VISIBLE
-            binding.tviewBody.text = textHead
+            binding.tviewBody.text = textBody
         }
 
         if(leftBtnText != ""){

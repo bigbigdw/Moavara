@@ -5,7 +5,6 @@ import android.app.NotificationManager
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -18,7 +17,6 @@ import androidx.navigation.ui.NavigationUI
 import com.example.moavara.R
 import com.example.moavara.Search.ActivitySearch
 import com.example.moavara.User.ActivityUser
-import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Genre
 import com.example.moavara.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -69,17 +67,17 @@ class ActivityMain : AppCompatActivity() {
     }
 
     fun registPickNotification(){
-        FirebaseMessaging.getInstance().subscribeToTopic(
-            getSharedPreferences("pref", MODE_PRIVATE)
-                ?.getString("UID", "").toString()
-        )
+        val UID = getSharedPreferences("pref", MODE_PRIVATE)
+            ?.getString("UID", "").toString()
+
+        FirebaseMessaging.getInstance().subscribeToTopic(UID)
         // NotificationManager 객체 생성
         notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
         // API Level 26 버전 이상부터는 NotificationChannel을 사용하여 NotificationCompat.Builder를 생성하기에 분기
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channelId = "모아바라"
-            val channelName = "모아바라 PICK"
+            val channelId = "모아바라 Pick"
+            val channelName = "모아바라 Pick"
             val channelDescription = "모아바라 선호작 최신화 알림"
 
             val notificationChannel: NotificationChannel?
@@ -102,7 +100,7 @@ class ActivityMain : AppCompatActivity() {
 
         // API Level 26 버전 이상부터는 NotificationChannel을 사용하여 NotificationCompat.Builder를 생성하기에 분기
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channelId = "모아바라"
+            val channelId = "모아바라 Best"
             val channelName = "모아바라 Best"
             val channelDescription = "Channel One Description"
 

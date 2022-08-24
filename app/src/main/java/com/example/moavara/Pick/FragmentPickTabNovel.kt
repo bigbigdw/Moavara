@@ -12,9 +12,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.work.WorkManager
 import com.example.moavara.Best.ActivityBestDetail
 import com.example.moavara.DataBase.BookListDataBest
-import com.example.moavara.DataBase.FCMAlert
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.Util.Genre
 import com.example.moavara.Util.SwipeHelperCallback
@@ -24,8 +24,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import java.util.*
-import kotlin.Comparator
-import kotlin.collections.ArrayList
 
 class FragmentPickTabNovel : Fragment() {
 
@@ -53,7 +51,7 @@ class FragmentPickTabNovel : Fragment() {
         UID = context?.getSharedPreferences("pref", AppCompatActivity.MODE_PRIVATE)
             ?.getString("UID", "").toString()
 
-        adapter = AdapterPickNovel(requireContext(), items)
+        adapter = AdapterPickNovel(requireContext(), items, this@FragmentPickTabNovel)
 
         binding.blank.tviewblank.text = "마이픽을 한 작품이 없습니다."
 
@@ -115,7 +113,7 @@ class FragmentPickTabNovel : Fragment() {
                         binding.blank.root.visibility = View.GONE
                     }
 
-                    val cmpAsc: java.util.Comparator<BookListDataBest> =
+                    val cmpAsc: Comparator<BookListDataBest> =
                         Comparator { o1, o2 -> o2.number.compareTo(o1.number) }
                     Collections.sort(items, cmpAsc)
                     adapter?.notifyDataSetChanged()
@@ -135,7 +133,7 @@ class FragmentPickTabNovel : Fragment() {
                         Toast.makeText(requireContext(), "수정되었습니다", Toast.LENGTH_SHORT).show()
                     }
                     "Delete" -> {
-                        Toast.makeText(requireContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show()
+                        Log.d("####","${adapter.itemCount}")
                     }
                     "Item" -> {
                         val bookDetailIntent =
@@ -157,5 +155,16 @@ class FragmentPickTabNovel : Fragment() {
             userInfo.child(UID).child("Novel").child("book").child(items[i].bookCode).child("number").setValue((items.size - i))
         }
         super.onDetach()
+    }
+
+    fun initScreen(itemCount : Int){
+        if(itemCount == 0){
+            val workManager = WorkManager.getInstance(requireContext().applicationContext)
+            workManager.cancelAllWorkByTag("MoavaraPick")
+            Toast.makeText(requireContext().applicationContext, "선호작 최신화 해제됨", Toast.LENGTH_SHORT).show()
+            binding.blank.root.visibility = View.VISIBLE
+        } else {
+            binding.blank.root.visibility = View.GONE
+        }
     }
 }

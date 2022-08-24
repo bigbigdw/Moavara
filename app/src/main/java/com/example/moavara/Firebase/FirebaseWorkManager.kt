@@ -11,17 +11,30 @@ import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+
 class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
     Worker(context, workerParams) {
 
+    companion object {
+        const val TYPE = "type"
+        const val UID = "uid"
+        const val USER = "user"
+    }
+
     override fun doWork(): Result {
 
-        Mining.runMining(applicationContext, "FANTASY")
-        Mining.runMining(applicationContext, "ALL")
-        Mining.runMining(applicationContext, "ROMANCE")
-        Mining.runMining(applicationContext, "BL")
+        Log.d("####", inputData.getString(TYPE).toString())
 
-        postFCM()
+        if(inputData.getString(TYPE).equals("BEST")){
+            Mining.runMining(applicationContext, "FANTASY")
+            Mining.runMining(applicationContext, "ALL")
+            Mining.runMining(applicationContext, "ROMANCE")
+            Mining.runMining(applicationContext, "BL")
+            postFCM()
+        } else if(inputData.getString(TYPE).equals("PICK")) {
+            Mining.getMyPickMining(applicationContext)
+            postFCMPick(inputData.getString(UID).toString(), inputData.getString(USER).toString())
+        }
 
         return Result.success()
     }
@@ -60,6 +73,37 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
             override fun onFailure(call: Call<FWorkManagerResult?>, t: Throwable) {
                 Log.d("FCM", "실패");
             }
+        })
+    }
+
+    private fun postFCMPick(UID : String, User : String) {
+
+        val fcmBody = DataFCMBody(
+            "/topics/${UID}",
+            "high",
+            DataFCMBodyData("모아바라 PICK 최신화", "${User}님의 마이픽 리스트가 최신화 되었습니다."),
+            DataFCMBodyNotification("모아바라 PICK 최신화", "${User}님의 마이픽 리스트가 최신화 되었습니다.", "default", "ic_stat_ic_notification"),
+        )
+
+        val call = Retrofit.Builder()
+            .baseUrl("https://fcm.googleapis.com")
+            .addConverterFactory(GsonConverterFactory.create()).build()
+            .create(FirebaseService::class.java)
+            .postRetrofit(
+                fcmBody
+            )
+
+        call.enqueue(object : Callback<FWorkManagerResult?> {
+            override fun onResponse(
+                call: Call<FWorkManagerResult?>,
+                response: retrofit2.Response<FWorkManagerResult?>
+            ) {
+                if (response.isSuccessful) {
+                    Mining.getMyPickMining(applicationContext)
+                }
+            }
+
+            override fun onFailure(call: Call<FWorkManagerResult?>, t: Throwable) {}
         })
     }
 

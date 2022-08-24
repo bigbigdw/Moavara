@@ -12,7 +12,7 @@ import com.example.moavara.databinding.DialogLoginAlertBinding
 
 class DialogLogin(
     context: Context,
-    private val mBtnRightListener: View.OnClickListener,
+    private val btnListner: View.OnClickListener,
 ) : Dialog(context) {
 
     private lateinit var binding: DialogLoginAlertBinding
@@ -53,7 +53,7 @@ class DialogLogin(
         }
 
         //클릭 리스너 셋팅 (클릭버튼이 동작하도록 만들어줌.)
-        binding.btnEnable.setOnClickListener(mBtnRightListener)
+        binding.btnEnable.setOnClickListener(btnListner)
 
     }
 

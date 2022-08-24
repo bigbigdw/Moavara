@@ -7,14 +7,12 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.SystemClock
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.Person
 import androidx.core.graphics.drawable.IconCompat
 import com.example.moavara.DataBase.FCMAlert
 import com.example.moavara.Main.ActivitySplash
 import com.example.moavara.R
-import com.example.moavara.Search.BestType
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.BootReceiver
 import com.example.moavara.Util.DBDate
@@ -55,19 +53,19 @@ class FCM : FirebaseMessagingService() {
                 File(File("/storage/self/primary/MOAVARA"), "Today_${plaform}.json").delete()
             }
             miningAlert(title, message, "Alert")
+            FirebaseMessaging.getInstance().subscribeToTopic("all")
         } else if(message.contains("마이픽 리스트가 최신화 되었습니다.")) {
             miningAlert(title, message, "Alert")
         } else {
             miningAlert(title, message, "Notice")
         }
 
-        FirebaseMessaging.getInstance().subscribeToTopic("all")
         // NotificationManager 객체 생성
         notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
         // API Level 26 버전 이상부터는 NotificationChannel을 사용하여 NotificationCompat.Builder를 생성하기에 분기
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channelId = "모아바라"
+            val channelId = "모아바라 Best"
             val channelName = "모아바라 Best"
             val channelDescription = "Channel One Description"
 
@@ -85,7 +83,7 @@ class FCM : FirebaseMessagingService() {
 
         // API Level 26 버전 이상부터는 NotificationChannel을 사용하여 NotificationCompat.Builder를 생성하기에 분기
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channelId = "모아바라"
+            val channelId = "모아바라 Best"
             notificationBuilder = NotificationCompat.Builder(this, channelId)
         } else {
             // Api Level 26 버전 미만

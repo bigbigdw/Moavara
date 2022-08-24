@@ -26,7 +26,7 @@ import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.ItemPickEventBinding
 import java.util.*
 
-class AdapterPickEvent(private var context : Context, private var itemsList: ArrayList<EventData>) :
+class AdapterPickEvent(private var context : Context, private var itemsList: ArrayList<EventData>, private var fragment: FragmentPickTabEvent) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var memo = ""
 
@@ -217,6 +217,7 @@ class AdapterPickEvent(private var context : Context, private var itemsList: Arr
                                 removeData(adapterPosition)
                                 Toast.makeText(context, "삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show()
                                 dialogLogin?.dismiss()
+                                fragment.initScreen(itemCount)
                             }
                         },
                         "취소",
@@ -277,6 +278,10 @@ class AdapterPickEvent(private var context : Context, private var itemsList: Arr
 
     fun setMemoEdit(str : String){
         memo = str
+    }
+
+    fun selectedItem(position: Int) {
+        Toast.makeText(context, "이동하실 위치로 드래그해주세요.", Toast.LENGTH_SHORT).show()
     }
 
 }

@@ -5,7 +5,6 @@ import android.view.View
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moavara.Pick.AdapterPickEvent
-import com.example.moavara.Pick.AdapterPickNovel
 import com.example.moavara.R
 import kotlin.math.min
 
@@ -61,6 +60,9 @@ class SwipeEvent(private val recyclerViewAdapter : AdapterPickEvent)  : ItemTouc
         viewHolder?.let {
             currentPosition = viewHolder.adapterPosition    // 현재 드래그 또는 스와이프 중인 view 의 position 기억하기
             getDefaultUIUtil().onSelected(getView(it))
+        }
+        if(actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
+            recyclerViewAdapter.selectedItem(viewHolder?.adapterPosition ?: -1)
         }
     }
 

@@ -2,6 +2,7 @@ package com.example.moavara.Best
 
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
@@ -14,9 +15,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.work.*
 import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.DataBase.BookListDataBestAnalyze
+import com.example.moavara.Firebase.FirebaseWorkManager
+import com.example.moavara.Main.DialogConfirm
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
 import com.example.moavara.Retrofit.*
@@ -30,8 +34,10 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import java.util.concurrent.TimeUnit
 
 
 class ActivityBestDetail : AppCompatActivity() {
@@ -61,6 +67,7 @@ class ActivityBestDetail : AppCompatActivity() {
     private var hasBookData = false
     private var fromPick = false
     private var fromSearch = false
+    private var isFirstPick = false
 
     var pickItem = BookListDataBest()
     var pickBookCodeItem = BookListDataBestAnalyze()
@@ -109,6 +116,10 @@ class ActivityBestDetail : AppCompatActivity() {
                     .addListenerForSingleValueEvent(object :
                         ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                            if(!dataSnapshot.exists()){
+                                isFirstPick = true
+                            }
 
                             for (item in dataSnapshot.children) {
                                 val group: BookListDataBestAnalyze? =
@@ -245,15 +256,90 @@ class ActivityBestDetail : AppCompatActivity() {
 
                 binding.tviewPick.text = "Pick 완료"
 
-                Novel.child("book").child(bookCode).setValue(pickItem)
+                if(isFirstPick){
+                    isFirstPick = false
 
-                if(bookData.isEmpty()){
-                    Novel.child("bookCode").child(bookCode).child(DBDate.DateMMDD()).setValue(pickBookCodeItem)
+                    var dialogLogin: DialogConfirm? = null
+
+                    val USER = getSharedPreferences("pref", MODE_PRIVATE)
+                        ?.getString("NICKNAME", "").toString()
+
+                    // 안내 팝업
+                    dialogLogin = DialogConfirm(
+                        this,
+                        "환영합니다!",
+                        "모아바라에서는 마이픽으로 선택한 작품을 6시간 주기로 데이터를 최신화 하고 있습니다.\n 이 옵션은 유저페이지 -> 마이픽 최신화 ON/OFF로 설정 가능합니다. 지금부터 주기적으로 마이픽 작품들을 최신화 하시겠습니까?",
+                        { v: View? ->
+                            Novel.child("book").child(bookCode).setValue(pickItem)
+
+                            if(bookData.isEmpty()){
+                                Novel.child("bookCode").child(bookCode).child(DBDate.DateMMDD()).setValue(pickBookCodeItem)
+                            } else {
+                                Novel.child("bookCode").child(bookCode).setValue(bookData)
+                            }
+
+                            Toast.makeText(this, "[${bookTitle}]이(가) 마이픽에 등록되었습니다.", Toast.LENGTH_SHORT).show()
+                            dialogLogin?.dismiss()
+                        },
+                        {
+                            val inputData = Data.Builder()
+                                .putString(FirebaseWorkManager.TYPE, "PICK")
+                                .putString(FirebaseWorkManager.UID, UID)
+                                .putString(FirebaseWorkManager.USER, USER)
+                                .build()
+
+                            /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
+                            val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(6, TimeUnit.HOURS)
+                                .setBackoffCriteria(
+                                    BackoffPolicy.LINEAR,
+                                    PeriodicWorkRequest.MIN_BACKOFF_MILLIS,
+                                    TimeUnit.MILLISECONDS
+                                )
+                                .addTag("MoavaraPick")
+                                .setInputData(inputData)
+                                .build()
+
+                            val workManager = WorkManager.getInstance(applicationContext)
+
+                            workManager.enqueueUniquePeriodicWork(
+                                "MoavaraPick",
+                                ExistingPeriodicWorkPolicy.KEEP,
+                                workRequest
+                            )
+                            FirebaseMessaging.getInstance().subscribeToTopic(UID)
+
+                            Novel.child("book").child(bookCode).setValue(pickItem)
+
+                            if(bookData.isEmpty()){
+                                Novel.child("bookCode").child(bookCode).child(DBDate.DateMMDD()).setValue(pickBookCodeItem)
+                            } else {
+                                Novel.child("bookCode").child(bookCode).setValue(bookData)
+                            }
+
+                            Toast.makeText(this, "[${bookTitle}]이(가) 마이픽에 등록되었습니다.", Toast.LENGTH_SHORT).show()
+                            dialogLogin?.dismiss()
+
+                        },
+                        "비활성화",
+                        "활성화"
+                    )
+
+                    dialogLogin.window?.setBackgroundDrawable(
+                        ColorDrawable(
+                            Color.TRANSPARENT)
+                    )
+                    dialogLogin.show()
                 } else {
-                    Novel.child("bookCode").child(bookCode).setValue(bookData)
-                }
+                    Novel.child("book").child(bookCode).setValue(pickItem)
 
-                Toast.makeText(this, "[${bookTitle}]이(가) 마이픽에 등록되었습니다.", Toast.LENGTH_SHORT).show()
+                    if(bookData.isEmpty()){
+                        Novel.child("bookCode").child(bookCode).child(DBDate.DateMMDD()).setValue(pickBookCodeItem)
+                    } else {
+                        Novel.child("bookCode").child(bookCode).setValue(bookData)
+                    }
+
+                    Toast.makeText(this, "[${bookTitle}]이(가) 마이픽에 등록되었습니다.", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 

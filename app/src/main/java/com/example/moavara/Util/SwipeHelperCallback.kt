@@ -1,21 +1,17 @@
 package com.example.moavara.Util
 
-import android.content.Context
-import android.graphics.*
-import android.view.MotionEvent
+import android.graphics.Canvas
 import android.view.View
-import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moavara.Pick.AdapterPickNovel
-import kotlin.math.min
 import com.example.moavara.R
+import kotlin.math.min
 
 
 // 롱터치 후 드래그, 스와이프 동작 제어
-class SwipeHelperCallback(private val recyclerViewAdapter : AdapterPickNovel)  : ItemTouchHelper.Callback() {
+class SwipeHelperCallback(private val adapter : AdapterPickNovel)  : ItemTouchHelper.Callback() {
 
     // swipe_view 를 swipe 했을 때 <삭제> 화면이 보이도록 고정하기 위한 변수들
     private var currentPosition: Int? = null    // 현재 선택된 recycler view의 position
@@ -40,14 +36,14 @@ class SwipeHelperCallback(private val recyclerViewAdapter : AdapterPickNovel)  :
         // 리사이클러뷰에서 현재 선택된 데이터와 드래그한 위치에 있는 데이터를 교환
         val fromPos: Int = viewHolder.adapterPosition
         val toPos: Int = target.adapterPosition
-        recyclerViewAdapter.swapData(fromPos, toPos)
+        adapter.swapData(fromPos, toPos)
         return true
     }
 
     // 스와이프 일어날 때 동작
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         // 스와와이프 끝까지 하면 해당 데이터 삭제하기 -> 스와이프 후 <삭제> 버튼 눌러야 삭제 되도록 변경
-         recyclerViewAdapter.removeData(viewHolder.layoutPosition)
+         adapter.removeData(viewHolder.layoutPosition)
     }
 
     // -------------swipe 됐을 때 일어날 동작---------------
@@ -67,6 +63,10 @@ class SwipeHelperCallback(private val recyclerViewAdapter : AdapterPickNovel)  :
             currentPosition = viewHolder.adapterPosition    // 현재 드래그 또는 스와이프 중인 view 의 position 기억하기
             getDefaultUIUtil().onSelected(getView(it))
         }
+
+        if(actionState == ACTION_STATE_DRAG) {
+            adapter.selectedItem(viewHolder?.adapterPosition ?: -1)
+        }
     }
 
     // 아이템을 터치하거나 스와이프하는 등 뷰에 변화가 생길 경우 호출
@@ -79,6 +79,7 @@ class SwipeHelperCallback(private val recyclerViewAdapter : AdapterPickNovel)  :
         actionState: Int,
         isCurrentlyActive: Boolean
     ) {
+
         if (actionState == ACTION_STATE_SWIPE) {
             val view = getView(viewHolder)
             val isClamped = getTag(viewHolder)      // 고정할지 말지 결정, true : 고정함 false : 고정 안 함
