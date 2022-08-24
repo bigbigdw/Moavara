@@ -22,6 +22,7 @@ import com.example.moavara.databinding.ActivitySearchBinding
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
+import java.lang.IndexOutOfBoundsException
 import java.util.*
 
 class ActivitySearch : AppCompatActivity() {
@@ -409,7 +410,17 @@ class ActivitySearch : AppCompatActivity() {
                     rviewSearch.visibility = View.VISIBLE
                 }
 
+                var info3 = ""
+                var info4 = ""
+                var info5 = ""
+
                 for (items in Munpia) {
+
+                    try{
+                        info3 = items.select(".info span").next().get(0)?.text() ?: ""
+                        info4 = items.select(".info span").next().get(1)?.text() ?: ""
+                        info5 = items.select(".info span").next().get(2)?.text() ?: ""
+                    } catch (e : IndexOutOfBoundsException){}
 
                     searchItems.add(
                         BookListDataBest(
@@ -419,9 +430,9 @@ class ActivitySearch : AppCompatActivity() {
                             items.select(".detail a").attr("href").replace("https://novel.munpia.com/",""),
                             items.select(".synopsis").text(),
                             items.select(".info span").first()?.text().toString(),
-                            items.select(".info span").next()?.get(0)?.text() ?: "",
-                            items.select(".info span").next()?.get(1)?.text() ?: "",
-                            items.select(".info span").next()?.get(2)?.text() ?: "",
+                            info3,
+                            info4,
+                            info5,
                             "",
                             999,
                             DBDate.DateMMDDHHMM(),

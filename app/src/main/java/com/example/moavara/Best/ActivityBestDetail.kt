@@ -394,15 +394,15 @@ class ActivityBestDetail : AppCompatActivity() {
                                 data.book.subject,
                                 data.book.bookImg.replace("http://", "https://"),
                                 data.book.bookCode,
+                                data.book.intro,
+                                "총 ${data.book.cntChapter}화",
                                 data.book.cntPageRead,
                                 data.book.cntFavorite,
                                 data.book.cntRecom,
                                 data.book.cntTotalComment,
-                                "",
-                                "",
                                 pos,
                                 DBDate.DateMMDD(),
-                                "Joara",
+                                platform,
                                 "",
                             )
 
@@ -489,7 +489,7 @@ class ActivityBestDetail : AppCompatActivity() {
                         doc.select(".info_book .like").text().replace("관심", "").replace("명", "")
                     inclueBestDetail.tviewInfo2.text = doc.select(".grade_area em").text()
 
-                    inclueBestDetail.iviewInfo3.setImageResource(R.mipmap.ic_launcher)
+                    inclueBestDetail.iviewInfo3.setImageResource(R.drawable.ic_launcher_gray)
                     inclueBestDetail.tviewInfo3.text =
                         doc.select(".info_book .download").text().replace("다운로드", "")
 
@@ -499,26 +499,26 @@ class ActivityBestDetail : AppCompatActivity() {
                     tviewIntro.text = doc.select(".section_area_info .dsc").text()
 
                     pickItem = BookListDataBest(
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
+                        doc.select(".writer").text(),
+                        bookTitle,
+                        doc.select(".section_area_info .pic img").attr("src"),
+                        bookCode,
+                        "장르 : ${doc.select(".info_book .genre").text()}",
+                        doc.select(".section_area_info .dsc").text(),
+                        doc.select(".info_book .like").text().replace("관심", "").replace("명", ""),
+                        doc.select(".grade_area em").text(),
+                        doc.select(".info_book .download").text().replace("다운로드", ""),
                         "",
                         999,
                         DBDate.DateMMDD(),
-                        "",
+                        platform,
                         "",
                     )
 
                     pickBookCodeItem = BookListDataBestAnalyze(
-                        "",
-                        "",
-                        "",
+                        doc.select(".info_book .like").text().replace("관심", "").replace("명", ""),
+                        doc.select(".grade_area em").text(),
+                        doc.select(".info_book .download").text().replace("다운로드", ""),
                         "",
                         999,
                         0,
@@ -571,6 +571,8 @@ class ActivityBestDetail : AppCompatActivity() {
                                 .load("https://dn-img-page.kakao.com/download/resource?kid=${it.land_thumbnail_url}")
                                 .into(inclueBestDetail.iviewBookCover)
 
+                            Log.d("####", "https://dn-img-page.kakao.com/download/resource?kid=${it.land_thumbnail_url}")
+
                             bookTitle = it.title
                             tviewToolbar.text = bookTitle
                             inclueBestDetail.tviewTitle.text = bookTitle
@@ -591,27 +593,27 @@ class ActivityBestDetail : AppCompatActivity() {
                             tviewIntro.text = it.description
 
                             pickItem = BookListDataBest(
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
+                                it.author_name,
+                                bookTitle,
+                                "https://dn-img-page.kakao.com/download/resource?kid=${it.land_thumbnail_url}",
+                                bookCode,
+                                it.description,
+                                "총 ${it.open_counts}화",
+                                it.page_rating_count,
+                                it.page_rating_summary.replace(".0", ""),
+                                it.read_count,
+                                it.page_comment_count,
                                 999,
                                 DBDate.DateMMDD(),
-                                "",
+                                platform,
                                 "",
                             )
 
                             pickBookCodeItem = BookListDataBestAnalyze(
-                                "",
-                                "",
-                                "",
-                                "",
+                                it.page_rating_count,
+                                it.page_rating_summary.replace(".0", ""),
+                                it.read_count,
+                                it.page_comment_count,
                                 999,
                                 0,
                                 0,
@@ -698,27 +700,27 @@ class ActivityBestDetail : AppCompatActivity() {
                             tviewIntro.text = it.synopsis
 
                             pickItem = BookListDataBest(
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
+                                it.nickname.name,
+                                bookTitle,
+                                data.thumbnail.url,
+                                bookCode,
+                                it.synopsis,
+                                "총 ${it.publishedEpisodeCount}화",
+                                it.favoriteCount,
+                                it.viewCount,
+                                it.visitorCount,
+                                it.episodeLikeCount,
                                 999,
                                 DBDate.DateMMDD(),
-                                "",
+                                platform,
                                 "",
                             )
 
                             pickBookCodeItem = BookListDataBestAnalyze(
-                                "",
-                                "",
-                                "",
-                                "",
+                                it.favoriteCount,
+                                it.viewCount,
+                                it.visitorCount,
+                                it.episodeLikeCount,
                                 999,
                                 0,
                                 0,
@@ -760,6 +762,7 @@ class ActivityBestDetail : AppCompatActivity() {
                 binding.tviewIntro.visibility = View.GONE
                 binding.loading.root.visibility = View.GONE
                 binding.coorWrap.visibility = View.VISIBLE
+                binding.llayoutBtn.visibility = View.VISIBLE
                 window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
 
                 with(binding) {
@@ -791,25 +794,25 @@ class ActivityBestDetail : AppCompatActivity() {
                     tviewIntro.text = doc.select(".introduce_book .introduce_paragraph").text()
 
                     pickItem = BookListDataBest(
+                        doc.select(".metadata_writer .author_detail_link").text(),
+                        bookTitle,
+                        "https:${doc.select(".thumbnail_image img").attr("src")}",
+                        bookCode,
                         "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
+                        doc.select(".header_info_wrap .info_category_wrap").text(),
+                        doc.select(".metadata_writer .author_detail_link").text(),
+                        doc.select(".header_info_wrap .StarRate_ParticipantCount").text(),
                         "",
                         "",
                         999,
                         DBDate.DateMMDD(),
-                        "",
+                        platform,
                         "",
                     )
 
                     pickBookCodeItem = BookListDataBestAnalyze(
-                        "",
-                        "",
+                        doc.select(".metadata_writer .author_detail_link").text(),
+                        doc.select(".header_info_wrap .StarRate_ParticipantCount").text(),
                         "",
                         "",
                         999,
@@ -855,6 +858,7 @@ class ActivityBestDetail : AppCompatActivity() {
                     with(binding) {
                         binding.loading.root.visibility = View.GONE
                         binding.coorWrap.visibility = View.VISIBLE
+                        binding.llayoutBtn.visibility = View.VISIBLE
                         window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
 
                         data.params.let {
@@ -875,27 +879,27 @@ class ActivityBestDetail : AppCompatActivity() {
                             tviewIntro.visibility = View.GONE
 
                             pickItem = BookListDataBest(
+                                it?.artistNm ?: "",
+                                bookTitle,
+                                it?.orgFilePos ?: "",
+                                bookCode,
                                 "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
+                                it?.menuNm ?: "",
+                                it?.ratingAvgScore ?: "",
+                                it?.favoriteCount ?: "",
+                                it?.pageViewTotal ?: "",
+                                it?.commentCount ?: "",
                                 999,
                                 DBDate.DateMMDD(),
-                                "",
+                                platform,
                                 "",
                             )
 
                             pickBookCodeItem = BookListDataBestAnalyze(
-                                "",
-                                "",
-                                "",
-                                "",
+                                it?.ratingAvgScore ?: "",
+                                it?.favoriteCount ?: "",
+                                it?.pageViewTotal ?: "",
+                                it?.commentCount ?: "",
                                 999,
                                 0,
                                 0,
@@ -957,6 +961,7 @@ class ActivityBestDetail : AppCompatActivity() {
                 with(binding) {
                     binding.loading.root.visibility = View.GONE
                     binding.coorWrap.visibility = View.VISIBLE
+                    binding.llayoutBtn.visibility = View.VISIBLE
                     window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
 
                     Glide.with(this@ActivityBestDetail)
@@ -989,25 +994,25 @@ class ActivityBestDetail : AppCompatActivity() {
                     tviewIntro.text = doc.select(".story").text()
 
                     pickItem = BookListDataBest(
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
+                        doc.select(".member-trigger strong").text(),
+                        bookTitle,
+                        "https:${doc.select(".cover-box img").attr("src")}",
+                        bookCode,
+                        doc.select(".story").text(),
+                        doc.select(".meta-path strong").text(),
+                        doc.select(".meta-etc dd").next().next()[1]?.text() ?: "",
+                        doc.select(".meta-etc dd").next().next()[2]?.text() ?: "",
                         "",
                         "",
                         999,
-                        DBDate.DateMMDDHHMM(),
-                        "",
+                        DBDate.DateMMDD(),
+                        platform,
                         "",
                     )
 
                     pickBookCodeItem = BookListDataBestAnalyze(
-                        "",
-                        "",
+                        doc.select(".meta-etc dd").next().next()[1]?.text() ?: "",
+                        doc.select(".meta-etc dd").next().next()[2]?.text() ?: "",
                         "",
                         "",
                         999,
@@ -1015,7 +1020,7 @@ class ActivityBestDetail : AppCompatActivity() {
                         0,
                         0,
                         0,
-                        DBDate.DateMMDDHHMM(),
+                        DBDate.DateMMDD(),
                         0,
                         0,
                     )
@@ -1053,6 +1058,7 @@ class ActivityBestDetail : AppCompatActivity() {
                     with(binding) {
                         binding.loading.root.visibility = View.GONE
                         binding.coorWrap.visibility = View.VISIBLE
+                        binding.llayoutBtn.visibility = View.VISIBLE
                         window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
 
                         data.result?.let {
@@ -1079,33 +1085,33 @@ class ActivityBestDetail : AppCompatActivity() {
                             tviewIntro.text = it.lnIntro
 
                             pickItem = BookListDataBest(
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
+                                it.athrnm,
+                                it.wrknm,
+                                "https:${it.imgPath}",
+                                bookCode,
+                                it.lnIntro,
+                                "장르 :  ${it.lgctgrNm}",
+                                it.inqrCnt,
+                                it.goodCnt,
+                                it.intrstCnt,
                                 "",
                                 999,
-                                DBDate.DateMMDDHHMM(),
-                                "",
+                                DBDate.DateMMDD(),
+                                platform,
                                 "",
                             )
 
                             pickBookCodeItem = BookListDataBestAnalyze(
-                                "",
-                                "",
-                                "",
+                                it.inqrCnt,
+                                it.goodCnt,
+                                it.intrstCnt,
                                 "",
                                 999,
                                 0,
                                 0,
                                 0,
                                 0,
-                                DBDate.DateMMDDHHMM(),
+                                DBDate.DateMMDD(),
                                 0,
                                 0,
                             )

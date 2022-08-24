@@ -69,6 +69,7 @@
         android:id="@+id/rviewType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingStart="16dp"
         android:paddingTop="20dp"
         android:paddingBottom="20dp" />
 
@@ -129,7 +130,7 @@
             android:id="@+id/rviewSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="16dp"
+
             android:paddingTop="16dp"
             android:paddingEnd="0dp" />
 

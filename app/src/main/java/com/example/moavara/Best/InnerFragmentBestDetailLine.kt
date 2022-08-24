@@ -1,6 +1,7 @@
 package com.example.moavara.Best
 
 import android.os.Bundle
+import android.util.Half.toFloat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -73,18 +74,22 @@ class InnerFragmentBestDetailLine(
                 dateList.add(BookItem[i].date.substring(4))
                 entryList.add(BarEntry(i.toFloat(), BookItem[i].info1.replace("만","0000").replace(",","").toFloat()))
                 entryList2.add(BarEntry(i.toFloat(), BookItem[i].info2.replace("만","0000").replace(",","").toFloat()))
-                entryList3.add(BarEntry(i.toFloat(), BookItem[i].info3.replace("만","0000").replace(",","").toFloat()))
+
+                if(BookItem[i].info3.isNotEmpty()){
+                    entryList3.add(BarEntry(i.toFloat(), BookItem[i].info3.replace("만","0000").replace(",","").toFloat()))
+                    dataList3.add(BookItem[i].info3.replace("만","0000").replace(",",""))
+                }
 
                 dataList1.add(BookItem[i].info1.replace("만","0000").replace(",",""))
                 dataList2.add(BookItem[i].info2.replace("만","0000").replace(",",""))
-                dataList3.add(BookItem[i].info3.replace("만","0000").replace(",",""))
-            }
 
-            Log.d("!!!!", dateList.toString())
+            }
 
             items.add(BestLineChart(dateList, entryList, "별점 수", "#00dc64", dataList1))
             items.add(BestLineChart(dateList, entryList2, "조회 수", "#00dc64", dataList2))
-            items.add(BestLineChart(dateList, entryList3, "관심 수", "#00dc64", dataList3))
+            if(BookItem[0].info3.isNotEmpty()){
+                items.add(BestLineChart(dateList, entryList3, "관심 수", "#00dc64", dataList3))
+            }
 
             adapterChart?.notifyDataSetChanged()
         } else if (platform == "Kakao") {
@@ -157,21 +162,34 @@ class InnerFragmentBestDetailLine(
         } else if (platform == "Munpia") {
             for (i in BookItem.indices) {
                 dateList.add(BookItem[i].date.substring(4))
-                entryList.add(BarEntry(i.toFloat(), BookItem[i].info1.toFloat()))
-                entryList2.add(BarEntry(i.toFloat(), BookItem[i].info2.toFloat()))
-                entryList3.add(BarEntry(i.toFloat(), BookItem[i].info3.toFloat()))
-                entryList4.add(BarEntry(i.toFloat(), BookItem[i].info4.toFloat()))
+                entryList.add(BarEntry(i.toFloat(), BookItem[i].info1.replace(",","").toFloat()))
+                entryList2.add(BarEntry(i.toFloat(), BookItem[i].info2.replace(",","").toFloat()))
 
-                dataList1.add(BookItem[i].info1)
-                dataList2.add(BookItem[i].info2)
-                dataList3.add(BookItem[i].info3)
-                dataList4.add(BookItem[i].info4)
+                if(BookItem[i].info3.isNotEmpty()){
+                    entryList3.add(BarEntry(i.toFloat(), BookItem[i].info3.replace(",","").toFloat()))
+                    dataList3.add(BookItem[i].info3.replace(",",""))
+                }
+
+                if(BookItem[i].info4.isNotEmpty()){
+                    entryList4.add(BarEntry(i.toFloat(), BookItem[i].info4.replace(",","").toFloat()))
+                    dataList4.add(BookItem[i].info4.replace(",",""))
+                }
+
+                dataList1.add(BookItem[i].info1.replace(",",""))
+                dataList2.add(BookItem[i].info2.replace(",",""))
             }
 
             items.add(BestLineChart(dateList, entryList, "히트 수", "#5f9bd1", dataList1))
             items.add(BestLineChart(dateList, entryList2, "조회 수", "#5f9bd1", dataList2))
-            items.add(BestLineChart(dateList, entryList3, "선호 수", "#5f9bd1", dataList3))
-            items.add(BestLineChart(dateList, entryList4, "베스트 시간", "#5f9bd1", dataList4))
+
+            if(BookItem[0].info3.isNotEmpty()){
+                items.add(BestLineChart(dateList, entryList3, "선호 수", "#5f9bd1", dataList3))
+            }
+
+            if(BookItem[0].info4.isNotEmpty()){
+                items.add(BestLineChart(dateList, entryList4, "베스트 시간", "#5f9bd1", dataList4))
+            }
+
             adapterChart?.notifyDataSetChanged()
         } else if (platform == "Toksoda") {
             for (i in BookItem.indices) {

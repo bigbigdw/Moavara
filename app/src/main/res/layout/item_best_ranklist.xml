@@ -62,6 +62,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="100등"
+                            android:textAlignment="center"
                             android:textColor="#FFFFFF"
                             android:visibility="gone"
                             tools:visibility="visible" />
@@ -130,6 +131,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="100등"
+                            android:textAlignment="center"
                             android:textColor="#FFFFFF"
                             android:visibility="gone"
                             tools:visibility="visible" />
@@ -199,6 +201,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="100등"
+                            android:textAlignment="center"
                             android:textColor="#FFFFFF"
                             android:visibility="gone"
                             tools:visibility="visible" />
@@ -268,6 +271,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="100등"
+                            android:textAlignment="center"
                             android:textColor="#FFFFFF"
                             android:visibility="gone"
                             tools:visibility="visible" />
@@ -337,6 +341,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="100등"
+                            android:textAlignment="center"
                             android:textColor="#FFFFFF"
                             android:visibility="gone"
                             tools:visibility="visible" />
@@ -406,6 +411,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="100등"
+                            android:textAlignment="center"
                             android:textColor="#FFFFFF"
                             android:visibility="gone"
                             tools:visibility="visible" />
@@ -475,6 +481,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="100등"
+                            android:textAlignment="center"
                             android:textColor="#FFFFFF"
                             android:visibility="gone"
                             tools:visibility="visible" />
