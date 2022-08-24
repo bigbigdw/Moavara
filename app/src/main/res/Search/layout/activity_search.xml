@@ -57,6 +57,9 @@
             android:layout_weight="5"
             android:background="#0D0E10"
             android:gravity="right|end"
+            android:textColor="#E2E3E7"
+            android:textColorHint="#3E424B"
+
             android:iconifiedByDefault="false"
             android:layoutDirection="rtl"
             android:queryHint='찾으실 작품을 검색해주세요'
@@ -92,7 +95,8 @@
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:context=".Search.FragmentSearch">
+        tools:context=".Soon.Search.FragmentSearch"
+        tools:visibility="visible">
 
         <ImageView
             android:layout_width="125dp"

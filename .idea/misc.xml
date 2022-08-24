@@ -174,16 +174,16 @@
         <entry key="app/src/main/res/Pick/layout/activity_pick.xml" value="0.1" />
         <entry key="app/src/main/res/Pick/layout/fragment_pick_tab.xml" value="0.1" />
         <entry key="app/src/main/res/Pick/layout/item_pick_event.xml" value="0.18" />
-        <entry key="app/src/main/res/Pick/layout/item_pick_novel.xml" value="0.1" />
+        <entry key="app/src/main/res/Pick/layout/item_pick_novel.xml" value="0.18" />
         <entry key="app/src/main/res/Search/layout/activity_best_detail.xml" value="0.1921875" />
         <entry key="app/src/main/res/Search/layout/activity_search.xml" value="0.1" />
         <entry key="app/src/main/res/Search/layout/activity_search_detail.xml" value="0.20677083333333332" />
         <entry key="app/src/main/res/Search/layout/collapse_best_detail.xml" value="0.1921875" />
         <entry key="app/src/main/res/Search/layout/fragment_search.xml" value="0.1" />
-        <entry key="app/src/main/res/Search/layout/fragment_search_bookcode.xml" value="0.2798887859128823" />
+        <entry key="app/src/main/res/Search/layout/fragment_search_bookcode.xml" value="0.22" />
         <entry key="app/src/main/res/Search/layout/fragment_searchmoavara.xml" value="0.1" />
         <entry key="app/src/main/res/Search/layout/fragment_searchtab.xml" value="0.1" />
-        <entry key="app/src/main/res/Search/layout/item_search.xml" value="0.33" />
+        <entry key="app/src/main/res/Search/layout/item_search.xml" value="0.1" />
         <entry key="app/src/main/res/Search/layout/item_searchmoavara.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/bottom_community.xml" value="0.151" />
         <entry key="app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.151" />

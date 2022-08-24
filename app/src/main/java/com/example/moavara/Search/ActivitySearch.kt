@@ -1,9 +1,10 @@
 package com.example.moavara.Search
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +19,7 @@ import com.example.moavara.Retrofit.*
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Param
+import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.ActivitySearchBinding
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -27,7 +29,6 @@ import java.util.*
 
 class ActivitySearch : AppCompatActivity() {
 
-    private lateinit var mFragmentSearch: FragmentSearch
     private lateinit var adapterType: AdapterType
     private val typeItems = ArrayList<BestType>()
     private lateinit var binding: ActivitySearchBinding
@@ -46,11 +47,6 @@ class ActivitySearch : AppCompatActivity() {
 
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        mFragmentSearch = FragmentSearch()
-        supportFragmentManager.commit {
-            replace(R.id.llayoutWrap, mFragmentSearch)
-        }
 
         binding.sview.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {

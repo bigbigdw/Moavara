@@ -13,9 +13,9 @@
 
     <fragment
         android:id="@+id/Fragment_Search"
-        android:name="com.example.moavara.Search.FragmentSearch"
+        android:name="com.example.moavara.Search.FragmentSearchBookcode"
         android:label=""
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search_bookcode" />
 
     <fragment
         android:id="@+id/Fragment_Pick"

@@ -1,5 +1,7 @@
 package com.example.moavara.Search
 
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
@@ -8,11 +10,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.moavara.Best.AdapterType
+import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.R
 import com.example.moavara.Retrofit.*
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.Param
+import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.FragmentSearchBookcodeBinding
 import org.jsoup.HttpStatusException
 import org.jsoup.Jsoup
@@ -23,6 +30,8 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
     private var _binding: FragmentSearchBookcodeBinding? = null
     private val binding get() = _binding!!
     var bookCode = ""
+    private lateinit var adapterType: AdapterType
+    private val typeItems = ArrayList<BestType>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,72 +42,117 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
         _binding = FragmentSearchBookcodeBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        with(binding) {
+        adapterType = AdapterType(typeItems)
+        typeItems.clear()
 
-            if (platform == "Joara") {
-                tviewSearch.text = "https://www.joara.com/book/1452405"
-                sview.inputType = InputType.TYPE_CLASS_NUMBER
-            } else if (platform == "Kakao") {
-                tviewSearch.text = "https://page.kakao.com/home?seriesId=57530778"
-                sview.inputType = InputType.TYPE_CLASS_NUMBER
-            } else if (platform == "Kakao_Stage") {
-                tviewSearch.text = "https://pagestage.kakao.com/novels/74312919"
-                sview.inputType = InputType.TYPE_CLASS_NUMBER
-            } else if (platform == "Naver") {
-                tviewSearch.text = "https://novel.naver.com/webnovel/list?novelId=252934"
-                sview.inputType = InputType.TYPE_CLASS_NUMBER
-            } else if (platform == "Naver_Challenge") {
-                tviewSearch.text = "https://novel.naver.com/challenge/list?novelId=75595"
-                sview.inputType = InputType.TYPE_CLASS_NUMBER
-            } else if (platform == "Naver_Today") {
-                tviewSearch.text = "https://novel.naver.com/best/list?novelId=268129"
-                sview.inputType = InputType.TYPE_CLASS_NUMBER
-            } else if (platform == "Ridi") {
-                tviewSearch.text = "https://ridibooks.com/books/425295076"
-                sview.inputType = InputType.TYPE_CLASS_NUMBER
-            } else if (platform == "OneStore") {
-                tviewSearch.text = "https://onestory.co.kr/detail/H042820022"
-                sview.inputType = InputType.TYPE_CLASS_TEXT
-            } else if (platform == "Munpia") {
-                tviewSearch.text = "https://novel.munpia.com/284801"
-                sview.inputType = InputType.TYPE_CLASS_NUMBER
-            } else if (platform == "Toksoda") {
-                tviewSearch.text =
-                    "https://www.tocsoda.co.kr/product/productView?brcd=76M2207187389"
-                sview.inputType = InputType.TYPE_CLASS_TEXT
+        with(binding){
+            tviewSearch.text = "https://www.joara.com/book/1452405"
+            sview.inputType = InputType.TYPE_CLASS_NUMBER
+
+            rviewType.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            rviewType.adapter = adapterType
+
+
+            binding.llayoutFav.background = GradientDrawable().apply {
+                setColor(Color.parseColor("#621CEF"))
+                shape = GradientDrawable.RECTANGLE
+                cornerRadius = 100f.dpToPx()
             }
+        }
 
-            binding.sview.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
+        for(i in BestRef.typeListTitleBookCode().indices){
+            typeItems.add(
+                BestType(
+                    BestRef.typeListTitleBookCode()[i],
+                    BestRef.typeListBookcode()[i]
+                )
+            )
+        }
+        adapterType.notifyDataSetChanged()
 
-                    bookCode = query.toString()
+        adapterType.setOnItemClickListener(object : AdapterType.OnItemClickListener {
+            override fun onItemClick(v: View?, position: Int) {
+                adapterType.setSelectedBtn(position)
+                adapterType.notifyDataSetChanged()
+
+                val item: BestType = adapterType.getItem(position)
+                platform = item.type.toString()
+
+                with(binding) {
+                    llayoutResult.visibility = View.GONE
+                    llayoutSearch.visibility = View.VISIBLE
 
                     if (platform == "Joara") {
-                        setLayoutJoara()
+                        tviewSearch.text = "https://www.joara.com/book/1452405"
+                        sview.inputType = InputType.TYPE_CLASS_NUMBER
                     } else if (platform == "Kakao") {
-                        setLayoutKaKao()
+                        tviewSearch.text = "https://page.kakao.com/home?seriesId=57530778"
+                        sview.inputType = InputType.TYPE_CLASS_NUMBER
                     } else if (platform == "Kakao_Stage") {
-                        setLayoutKaKaoStage()
-                    } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver") {
-                        setLayoutNaverToday()
+                        tviewSearch.text = "https://pagestage.kakao.com/novels/74312919"
+                        sview.inputType = InputType.TYPE_CLASS_NUMBER
+                    } else if (platform == "Naver") {
+                        tviewSearch.text = "https://novel.naver.com/webnovel/list?novelId=252934"
+                        sview.inputType = InputType.TYPE_CLASS_NUMBER
+                    } else if (platform == "Naver_Challenge") {
+                        tviewSearch.text = "https://novel.naver.com/challenge/list?novelId=75595"
+                        sview.inputType = InputType.TYPE_CLASS_NUMBER
+                    } else if (platform == "Naver_Today") {
+                        tviewSearch.text = "https://novel.naver.com/best/list?novelId=268129"
+                        sview.inputType = InputType.TYPE_CLASS_NUMBER
                     } else if (platform == "Ridi") {
-                        setLayoutRidi()
-                    } else if (platform == "Munpia") {
-                        setLayoutMunpia()
+                        tviewSearch.text = "https://ridibooks.com/books/425295076"
+                        sview.inputType = InputType.TYPE_CLASS_NUMBER
                     } else if (platform == "OneStore") {
-                        setLayoutOneStore()
+                        tviewSearch.text = "https://onestory.co.kr/detail/H042820022"
+                        sview.inputType = InputType.TYPE_CLASS_TEXT
+                    } else if (platform == "Munpia") {
+                        tviewSearch.text = "https://novel.munpia.com/284801"
+                        sview.inputType = InputType.TYPE_CLASS_NUMBER
                     } else if (platform == "Toksoda") {
-                        setLayoutToksoda()
+                        tviewSearch.text =
+                            "https://www.tocsoda.co.kr/product/productView?brcd=76M2207187389"
+                        sview.inputType = InputType.TYPE_CLASS_TEXT
                     }
-                    return false
-
                 }
+            }
+        })
 
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    return false
+        binding.sview.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+
+                bookCode = query.toString()
+
+                if (platform == "Joara") {
+                    setLayoutJoara()
+                } else if (platform == "Kakao") {
+                    setLayoutKaKao()
+                } else if (platform == "Kakao_Stage") {
+                    setLayoutKaKaoStage()
+                } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver") {
+                    setLayoutNaverToday()
+                } else if (platform == "Ridi") {
+                    setLayoutRidi()
+                } else if (platform == "Munpia") {
+                    setLayoutMunpia()
+                } else if (platform == "OneStore") {
+                    setLayoutOneStore()
+                } else if (platform == "Toksoda") {
+                    setLayoutToksoda()
                 }
-            })
-        }
+                binding.sview.setQuery("", false)
+                bookCode = ""
+
+                return false
+
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        })
+
 
         return view
     }
@@ -265,7 +319,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                             searchResult.tviewInfo1.text = doc.select(".info_book .like").text().replace("관심", "").replace("명", "")
                             searchResult.tviewInfo2.text = doc.select(".grade_area em").text()
 
-                            searchResult.iviewInfo3.setImageResource(R.mipmap.ic_launcher)
+                            searchResult.iviewInfo3.setImageResource(R.drawable.ic_launcher_gray)
                             searchResult.tviewInfo3.text = doc.select(".info_book .download").text().replace("다운로드", "")
 
                             searchResult.llayoutTab4.visibility = View.GONE
