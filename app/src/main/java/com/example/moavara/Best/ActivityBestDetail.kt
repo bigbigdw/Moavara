@@ -220,6 +220,7 @@ class ActivityBestDetail : AppCompatActivity() {
             val Novel = userInfo.child(UID).child("Novel")
 
             if (isPicked) {
+                isPicked = false
                 Novel.child("book").child(bookCode).removeValue()
                 Novel.child("bookCode").child(bookCode).removeValue()
 
@@ -235,6 +236,8 @@ class ActivityBestDetail : AppCompatActivity() {
                 Toast.makeText(this, "[${bookTitle}]이(가) 마이픽에서 제거되었습니다.", Toast.LENGTH_SHORT).show()
 
             } else {
+                isPicked = true
+
                 binding.llayoutPick.background = GradientDrawable().apply {
                     setColor(Color.parseColor("#A7ACB7"))
                     shape = GradientDrawable.RECTANGLE
@@ -582,9 +585,7 @@ class ActivityBestDetail : AppCompatActivity() {
 
                             inclueBestDetail.tviewInfo1.text =
                                 BestRef.decimalToString(it.page_rating_count.toInt())
-                            inclueBestDetail.tviewInfo2.text = BestRef.decimalToString(
-                                it.page_rating_summary.replace(".0", "").toInt()
-                            )
+                            inclueBestDetail.tviewInfo2.text = it.page_rating_summary
                             inclueBestDetail.tviewInfo3.text =
                                 BestRef.decimalToString(it.read_count.toInt())
                             inclueBestDetail.tviewInfo4.text =

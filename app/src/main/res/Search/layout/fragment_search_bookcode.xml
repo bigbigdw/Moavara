@@ -85,7 +85,7 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/llayoutFav"
+                android:id="@+id/llayoutPick"
                 android:layout_width="260dp"
                 android:layout_height="41dp"
                 android:background="#621CEF"
@@ -93,10 +93,11 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tviewPick"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/pretendardvariable"
-                    android:text="@string/Best_BottomDialogBtn"
+                    android:text="Pick 하기"
                     android:textColor="#EDE6FD"
                     android:textSize="20dp"
                     tools:ignore="TextContrastCheck" />
@@ -107,7 +108,7 @@
                 android:layout_width="260dp"
                 android:layout_height="41dp"
                 android:layout_marginTop="18dp"
-                android:background="#621CEF"
+                android:background="#3E424B"
                 android:gravity="center"
                 android:orientation="vertical">
 
