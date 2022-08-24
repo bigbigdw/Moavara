@@ -41,7 +41,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
             .create(FirebaseService::class.java)
             .postRetrofit(
                 fcmBody
-            )!!
+            )
 
         call.enqueue(object : Callback<FWorkManagerResult?> {
             override fun onResponse(

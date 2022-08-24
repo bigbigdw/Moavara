@@ -1,13 +1,30 @@
 package com.example.moavara.Util
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.util.Log
+import android.view.View
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.commit
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.example.moavara.Best.AdapterKeyword
+import com.example.moavara.Best.FragmentBestDetailAnalyze
+import com.example.moavara.Best.FragmentBestDetailComment
 import com.example.moavara.DataBase.BookListDataBest
+import com.example.moavara.DataBase.BookListDataBestAnalyze
+import com.example.moavara.Main.mRootRef
+import com.example.moavara.R
 import com.example.moavara.Retrofit.*
+import com.example.moavara.Search.BestType
 import com.example.moavara.Search.EventDetailDataMining
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
@@ -295,24 +312,27 @@ object Mining {
                 Comparator { o1, o2 -> o1.info3.compareTo(o2.info3) }
             Collections.sort(books, sort1)
 
-            for(i in books.indices){
-                BestRef.setBookCode("Naver_Today", genre, books[i].bookCode).child("numInfo1").setValue(i)
+            for (i in books.indices) {
+                BestRef.setBookCode("Naver_Today", genre, books[i].bookCode).child("numInfo1")
+                    .setValue(i)
             }
 
             val sort2: Comparator<BookListDataBest> =
                 Comparator { o1, o2 -> o1.info4.compareTo(o2.info4) }
             Collections.sort(books, sort2)
 
-            for(i in books.indices){
-                BestRef.setBookCode("Naver_Today", genre, books[i].bookCode).child("numInfo2").setValue(i)
+            for (i in books.indices) {
+                BestRef.setBookCode("Naver_Today", genre, books[i].bookCode).child("numInfo2")
+                    .setValue(i)
             }
 
             val sort3: Comparator<BookListDataBest> =
                 Comparator { o1, o2 -> o1.info5.compareTo(o2.info5) }
             Collections.sort(books, sort3)
 
-            for(i in books.indices){
-                BestRef.setBookCode("Naver_Today", genre, books[i].bookCode).child("numInfo3").setValue(i)
+            for (i in books.indices) {
+                BestRef.setBookCode("Naver_Today", genre, books[i].bookCode).child("numInfo3")
+                    .setValue(i)
             }
 
             File(File("/storage/self/primary/MOAVARA"), "Today_Naver_Today_${genre}.json").delete()
@@ -364,29 +384,41 @@ object Mining {
                 Comparator { o1, o2 -> o1.info3.compareTo(o2.info3) }
             Collections.sort(books, sort1)
 
-            for(i in books.indices){
-                BestRef.setBookCode("Naver_Challenge", genre, books[i].bookCode).child("numInfo1").setValue(i)
+            for (i in books.indices) {
+                BestRef.setBookCode("Naver_Challenge", genre, books[i].bookCode).child("numInfo1")
+                    .setValue(i)
             }
 
             val sort2: Comparator<BookListDataBest> =
                 Comparator { o1, o2 -> o1.info4.compareTo(o2.info4) }
             Collections.sort(books, sort2)
 
-            for(i in books.indices){
-                BestRef.setBookCode("Naver_Challenge", genre, books[i].bookCode).child("numInfo2").setValue(i)
+            for (i in books.indices) {
+                BestRef.setBookCode("Naver_Challenge", genre, books[i].bookCode).child("numInfo2")
+                    .setValue(i)
             }
 
             val sort3: Comparator<BookListDataBest> =
                 Comparator { o1, o2 -> o1.info5.compareTo(o2.info5) }
             Collections.sort(books, sort3)
 
-            for(i in books.indices){
-                BestRef.setBookCode("Naver_Challenge", genre, books[i].bookCode).child("numInfo3").setValue(i)
+            for (i in books.indices) {
+                BestRef.setBookCode("Naver_Challenge", genre, books[i].bookCode).child("numInfo3")
+                    .setValue(i)
             }
 
-            File(File("/storage/self/primary/MOAVARA"), "Today_Naver_Challenge_${genre}.json").delete()
-            File(File("/storage/self/primary/MOAVARA"), "Week_Naver_Challenge_${genre}.json").delete()
-            File(File("/storage/self/primary/MOAVARA"), "Month_Naver_Challenge_${genre}.json").delete()
+            File(
+                File("/storage/self/primary/MOAVARA"),
+                "Today_Naver_Challenge_${genre}.json"
+            ).delete()
+            File(
+                File("/storage/self/primary/MOAVARA"),
+                "Week_Naver_Challenge_${genre}.json"
+            ).delete()
+            File(
+                File("/storage/self/primary/MOAVARA"),
+                "Month_Naver_Challenge_${genre}.json"
+            ).delete()
 
         } catch (exception: SocketTimeoutException) {
             Log.d("EXCEPTION", "NAVER CHALLANGE")
@@ -432,7 +464,7 @@ object Mining {
                 Comparator { o1, o2 -> o1.info3.compareTo(o2.info3) }
             Collections.sort(books, sort1)
 
-            for(i in books.indices){
+            for (i in books.indices) {
                 BestRef.setBookCode("Naver", genre, books[i].bookCode).child("numInfo1").setValue(i)
             }
 
@@ -440,7 +472,7 @@ object Mining {
                 Comparator { o1, o2 -> o1.info4.compareTo(o2.info4) }
             Collections.sort(books, sort2)
 
-            for(i in books.indices){
+            for (i in books.indices) {
                 BestRef.setBookCode("Naver", genre, books[i].bookCode).child("numInfo2").setValue(i)
             }
 
@@ -448,7 +480,7 @@ object Mining {
                 Comparator { o1, o2 -> o1.info5.compareTo(o2.info5) }
             Collections.sort(books, sort3)
 
-            for(i in books.indices){
+            for (i in books.indices) {
                 BestRef.setBookCode("Naver", genre, books[i].bookCode).child("numInfo3").setValue(i)
             }
 
@@ -513,7 +545,7 @@ object Mining {
                 Comparator { o1, o2 -> o1.info3.compareTo(o2.info3) }
             Collections.sort(books, sort1)
 
-            for(i in books.indices){
+            for (i in books.indices) {
                 BestRef.setBookCode("Ridi", genre, books[i].bookCode).child("numInfo1").setValue(i)
             }
 
@@ -521,7 +553,7 @@ object Mining {
                 Comparator { o1, o2 -> o1.info4.compareTo(o2.info4) }
             Collections.sort(books, sort2)
 
-            for(i in books.indices){
+            for (i in books.indices) {
                 BestRef.setBookCode("Ridi", genre, books[i].bookCode).child("numInfo2").setValue(i)
             }
 
@@ -581,30 +613,42 @@ object Mining {
                                 Comparator { o1, o2 -> o1.totalCount.compareTo(o2.totalCount) }
                             Collections.sort(productList, sort1)
 
-                            for(i in productList.indices){
-                                BestRef.setBookCode("OneStore", genre, productList[i].prodId).child("numInfo1").setValue(i)
+                            for (i in productList.indices) {
+                                BestRef.setBookCode("OneStore", genre, productList[i].prodId)
+                                    .child("numInfo1").setValue(i)
                             }
 
                             val sort2: Comparator<OnestoreBookItem> =
                                 Comparator { o1, o2 -> o1.avgScore.compareTo(o2.avgScore) }
                             Collections.sort(productList, sort2)
 
-                            for(i in productList.indices){
-                                BestRef.setBookCode("OneStore", genre, productList[i].prodId).child("numInfo2").setValue(i)
+                            for (i in productList.indices) {
+                                BestRef.setBookCode("OneStore", genre, productList[i].prodId)
+                                    .child("numInfo2").setValue(i)
                             }
 
                             val sort3: Comparator<OnestoreBookItem> =
                                 Comparator { o1, o2 -> o1.commentCount.compareTo(o2.commentCount) }
                             Collections.sort(productList, sort3)
 
-                            for(i in productList.indices){
-                                BestRef.setBookCode("OneStore", genre, productList[i].prodId).child("numInfo3").setValue(i)
+                            for (i in productList.indices) {
+                                BestRef.setBookCode("OneStore", genre, productList[i].prodId)
+                                    .child("numInfo3").setValue(i)
                             }
                         }
 
-                        File(File("/storage/self/primary/MOAVARA"), "Today_OneStore_${genre}.json").delete()
-                        File(File("/storage/self/primary/MOAVARA"), "Week_OneStore_${genre}.json").delete()
-                        File(File("/storage/self/primary/MOAVARA"), "Month_OneStore_${genre}.json").delete()
+                        File(
+                            File("/storage/self/primary/MOAVARA"),
+                            "Today_OneStore_${genre}.json"
+                        ).delete()
+                        File(
+                            File("/storage/self/primary/MOAVARA"),
+                            "Week_OneStore_${genre}.json"
+                        ).delete()
+                        File(
+                            File("/storage/self/primary/MOAVARA"),
+                            "Month_OneStore_${genre}.json"
+                        ).delete()
                     }
                 })
         } catch (exception: SocketTimeoutException) {
@@ -659,32 +703,36 @@ object Mining {
                             Comparator { o1, o2 -> o1.info3.compareTo(o2.info3) }
                         Collections.sort(books, sort1)
 
-                        for(i in books.indices){
-                            BestRef.setBookCode("Kakao_Stage", genre, books[i].bookCode).child("numInfo1").setValue(i)
+                        for (i in books.indices) {
+                            BestRef.setBookCode("Kakao_Stage", genre, books[i].bookCode)
+                                .child("numInfo1").setValue(i)
                         }
 
                         val sort2: Comparator<BookListDataBest> =
                             Comparator { o1, o2 -> o1.info4.compareTo(o2.info4) }
                         Collections.sort(books, sort2)
 
-                        for(i in books.indices){
-                            BestRef.setBookCode("Kakao_Stage", genre, books[i].bookCode).child("numInfo2").setValue(i)
+                        for (i in books.indices) {
+                            BestRef.setBookCode("Kakao_Stage", genre, books[i].bookCode)
+                                .child("numInfo2").setValue(i)
                         }
 
                         val sort3: Comparator<BookListDataBest> =
                             Comparator { o1, o2 -> o1.info5.compareTo(o2.info5) }
                         Collections.sort(books, sort3)
 
-                        for(i in books.indices){
-                            BestRef.setBookCode("Kakao_Stage", genre, books[i].bookCode).child("numInfo3").setValue(i)
+                        for (i in books.indices) {
+                            BestRef.setBookCode("Kakao_Stage", genre, books[i].bookCode)
+                                .child("numInfo3").setValue(i)
                         }
 
                         val sort4: Comparator<BookListDataBest> =
                             Comparator { o1, o2 -> o1.info6.compareTo(o2.info6) }
                         Collections.sort(books, sort4)
 
-                        for(i in books.indices){
-                            BestRef.setBookCode("Kakao_Stage", genre, books[i].bookCode).child("numInfo4").setValue(i)
+                        for (i in books.indices) {
+                            BestRef.setBookCode("Kakao_Stage", genre, books[i].bookCode)
+                                .child("numInfo4").setValue(i)
                         }
 
                         File(
@@ -753,43 +801,53 @@ object Mining {
                             Comparator { o1, o2 -> o1.read_count.compareTo(o2.read_count) }
                         Collections.sort(list, sort1)
 
-                        for(i in list.indices){
-                            BestRef.setBookCode("Kakao", genre, list[i].series_id).child("numInfo1").setValue(i)
+                        for (i in list.indices) {
+                            BestRef.setBookCode("Kakao", genre, list[i].series_id).child("numInfo1")
+                                .setValue(i)
                         }
 
                         val sort2: Comparator<KakaoBestBookResult> =
                             Comparator { o1, o2 -> o1.like_count.compareTo(o2.like_count) }
                         Collections.sort(list, sort2)
 
-                        for(i in list.indices){
-                            BestRef.setBookCode("Kakao", genre, list[i].series_id).child("numInfo2").setValue(i)
+                        for (i in list.indices) {
+                            BestRef.setBookCode("Kakao", genre, list[i].series_id).child("numInfo2")
+                                .setValue(i)
                         }
 
                         val sort3: Comparator<KakaoBestBookResult> =
                             Comparator { o1, o2 -> o1.rating.compareTo(o2.rating) }
                         Collections.sort(list, sort3)
 
-                        for(i in list.indices){
-                            BestRef.setBookCode("Kakao", genre, list[i].series_id).child("numInfo3").setValue(i)
+                        for (i in list.indices) {
+                            BestRef.setBookCode("Kakao", genre, list[i].series_id).child("numInfo3")
+                                .setValue(i)
                         }
 
                         val sort4: Comparator<KakaoBestBookResult> =
                             Comparator { o1, o2 -> o1.comment_count.compareTo(o2.comment_count) }
                         Collections.sort(list, sort4)
 
-                        for(i in list.indices){
-                            BestRef.setBookCode("Kakao", genre, list[i].series_id).child("numInfo4").setValue(i)
+                        for (i in list.indices) {
+                            BestRef.setBookCode("Kakao", genre, list[i].series_id).child("numInfo4")
+                                .setValue(i)
                         }
                     }
 
-                    File(File("/storage/self/primary/MOAVARA"), "Today_Kakao_${genre}.json").delete()
+                    File(
+                        File("/storage/self/primary/MOAVARA"),
+                        "Today_Kakao_${genre}.json"
+                    ).delete()
                     File(File("/storage/self/primary/MOAVARA"), "Week_Kakao_${genre}.json").delete()
-                    File(File("/storage/self/primary/MOAVARA"), "Month_Kakao_${genre}.json").delete()
+                    File(
+                        File("/storage/self/primary/MOAVARA"),
+                        "Month_Kakao_${genre}.json"
+                    ).delete()
                 }
             })
     }
 
-    fun getJoaraBest(context: Context, genre: String) {
+    private fun getJoaraBest(context: Context, genre: String) {
         val JoaraRef: MutableMap<String?, Any> = HashMap()
         val apiJoara = RetrofitJoara()
         val param = Param.getItemAPI(context)
@@ -813,7 +871,7 @@ object Mining {
 
                             JoaraRef["writerName"] = books[i].writerName
                             JoaraRef["subject"] = books[i].subject
-                            JoaraRef["bookImg"] = books[i].bookImg.replace("http://","https://")
+                            JoaraRef["bookImg"] = books[i].bookImg.replace("http://", "https://")
                             JoaraRef["bookCode"] = books[i].bookCode
                             JoaraRef["info1"] = books[i].intro
                             JoaraRef["info2"] = "총 ${books[i].cntChapter}화"
@@ -837,35 +895,44 @@ object Mining {
                             Comparator { o1, o2 -> o1.cntPageRead.compareTo(o2.cntPageRead) }
                         Collections.sort(books, sort1)
 
-                        for(i in books.indices){
-                            BestRef.setBookCode("Joara", genre, books[i].bookCode).child("numInfo1").setValue(i)
+                        for (i in books.indices) {
+                            BestRef.setBookCode("Joara", genre, books[i].bookCode).child("numInfo1")
+                                .setValue(i)
                         }
 
                         val sort2: Comparator<JoaraBestListValue> =
                             Comparator { o1, o2 -> o1.cntFavorite.compareTo(o2.cntFavorite) }
                         Collections.sort(books, sort2)
 
-                        for(i in books.indices){
-                            BestRef.setBookCode("Joara", genre, books[i].bookCode).child("numInfo2").setValue(i)
+                        for (i in books.indices) {
+                            BestRef.setBookCode("Joara", genre, books[i].bookCode).child("numInfo2")
+                                .setValue(i)
                         }
 
                         val sort3: Comparator<JoaraBestListValue> =
                             Comparator { o1, o2 -> o1.cntRecom.compareTo(o2.cntRecom) }
                         Collections.sort(books, sort3)
 
-                        for(i in books.indices){
-                            BestRef.setBookCode("Joara", genre, books[i].bookCode).child("numInfo3").setValue(i)
+                        for (i in books.indices) {
+                            BestRef.setBookCode("Joara", genre, books[i].bookCode).child("numInfo3")
+                                .setValue(i)
                         }
                     }
 
-                    File(File("/storage/self/primary/MOAVARA"), "Today_Joara_${genre}.json").delete()
+                    File(
+                        File("/storage/self/primary/MOAVARA"),
+                        "Today_Joara_${genre}.json"
+                    ).delete()
                     File(File("/storage/self/primary/MOAVARA"), "Week_Joara_${genre}.json").delete()
-                    File(File("/storage/self/primary/MOAVARA"), "Month_Joara_${genre}.json").delete()
+                    File(
+                        File("/storage/self/primary/MOAVARA"),
+                        "Month_Joara_${genre}.json"
+                    ).delete()
                 }
             })
     }
 
-    fun getJoaraBestPremium(context: Context, genre: String) {
+    private fun getJoaraBestPremium(context: Context, genre: String) {
 
         val JoaraRef: MutableMap<String?, Any> = HashMap()
 
@@ -890,7 +957,7 @@ object Mining {
 
                             JoaraRef["writerName"] = books[i].writerName
                             JoaraRef["subject"] = books[i].subject
-                            JoaraRef["bookImg"] = books[i].bookImg.replace("http://","https://")
+                            JoaraRef["bookImg"] = books[i].bookImg.replace("http://", "https://")
                             JoaraRef["bookCode"] = books[i].bookCode
                             JoaraRef["info1"] = books[i].intro
                             JoaraRef["info2"] = "총 ${books[i].cntChapter}화"
@@ -914,36 +981,48 @@ object Mining {
                             Comparator { o1, o2 -> o1.cntPageRead.compareTo(o2.cntPageRead) }
                         Collections.sort(books, sort1)
 
-                        for(i in books.indices){
-                            BestRef.setBookCode("Joara_Premium", genre, books[i].bookCode).child("numInfo1").setValue(i)
+                        for (i in books.indices) {
+                            BestRef.setBookCode("Joara_Premium", genre, books[i].bookCode)
+                                .child("numInfo1").setValue(i)
                         }
 
                         val sort2: Comparator<JoaraBestListValue> =
                             Comparator { o1, o2 -> o1.cntFavorite.compareTo(o2.cntFavorite) }
                         Collections.sort(books, sort2)
 
-                        for(i in books.indices){
-                            BestRef.setBookCode("Joara_Premium", genre, books[i].bookCode).child("numInfo2").setValue(i)
+                        for (i in books.indices) {
+                            BestRef.setBookCode("Joara_Premium", genre, books[i].bookCode)
+                                .child("numInfo2").setValue(i)
                         }
 
                         val sort3: Comparator<JoaraBestListValue> =
                             Comparator { o1, o2 -> o1.cntRecom.compareTo(o2.cntRecom) }
                         Collections.sort(books, sort3)
 
-                        for(i in books.indices){
-                            BestRef.setBookCode("Joara_Premium", genre, books[i].bookCode).child("numInfo3").setValue(i)
+                        for (i in books.indices) {
+                            BestRef.setBookCode("Joara_Premium", genre, books[i].bookCode)
+                                .child("numInfo3").setValue(i)
                         }
                     }
 
-                    File(File("/storage/self/primary/MOAVARA"), "Today_Joara_Premium_${genre}.json").delete()
-                    File(File("/storage/self/primary/MOAVARA"), "Week_Joara_Premium_${genre}.json").delete()
-                    File(File("/storage/self/primary/MOAVARA"), "Month_Joara_Premium_${genre}.json").delete()
+                    File(
+                        File("/storage/self/primary/MOAVARA"),
+                        "Today_Joara_Premium_${genre}.json"
+                    ).delete()
+                    File(
+                        File("/storage/self/primary/MOAVARA"),
+                        "Week_Joara_Premium_${genre}.json"
+                    ).delete()
+                    File(
+                        File("/storage/self/primary/MOAVARA"),
+                        "Month_Joara_Premium_${genre}.json"
+                    ).delete()
                 }
             })
 
     }
 
-    fun getJoaraBestNobless(context: Context, genre: String) {
+    private fun getJoaraBestNobless(context: Context, genre: String) {
 
         val JoaraRef: MutableMap<String?, Any> = HashMap()
 
@@ -969,7 +1048,7 @@ object Mining {
                             JoaraRef["status"] = "NEW"
                             JoaraRef["writerName"] = books[i].writerName
                             JoaraRef["subject"] = books[i].subject
-                            JoaraRef["bookImg"] = books[i].bookImg.replace("http://","https://")
+                            JoaraRef["bookImg"] = books[i].bookImg.replace("http://", "https://")
                             JoaraRef["bookCode"] = books[i].bookCode
                             JoaraRef["info1"] = books[i].intro
                             JoaraRef["info2"] = "총 ${books[i].cntChapter}화"
@@ -993,30 +1072,42 @@ object Mining {
                             Comparator { o1, o2 -> o1.cntPageRead.compareTo(o2.cntPageRead) }
                         Collections.sort(books, sort1)
 
-                        for(i in books.indices){
-                            BestRef.setBookCode("Joara_Nobless", genre, books[i].bookCode).child("numInfo1").setValue(i)
+                        for (i in books.indices) {
+                            BestRef.setBookCode("Joara_Nobless", genre, books[i].bookCode)
+                                .child("numInfo1").setValue(i)
                         }
 
                         val sort2: Comparator<JoaraBestListValue> =
                             Comparator { o1, o2 -> o1.cntFavorite.compareTo(o2.cntFavorite) }
                         Collections.sort(books, sort2)
 
-                        for(i in books.indices){
-                            BestRef.setBookCode("Joara_Nobless", genre, books[i].bookCode).child("numInfo2").setValue(i)
+                        for (i in books.indices) {
+                            BestRef.setBookCode("Joara_Nobless", genre, books[i].bookCode)
+                                .child("numInfo2").setValue(i)
                         }
 
                         val sort3: Comparator<JoaraBestListValue> =
                             Comparator { o1, o2 -> o1.cntRecom.compareTo(o2.cntRecom) }
                         Collections.sort(books, sort3)
 
-                        for(i in books.indices){
-                            BestRef.setBookCode("Joara_Nobless", genre, books[i].bookCode).child("numInfo3").setValue(i)
+                        for (i in books.indices) {
+                            BestRef.setBookCode("Joara_Nobless", genre, books[i].bookCode)
+                                .child("numInfo3").setValue(i)
                         }
                     }
 
-                    File(File("/storage/self/primary/MOAVARA"), "Today_Joara_Nobless_${genre}.json").delete()
-                    File(File("/storage/self/primary/MOAVARA"), "Week_Joara_Nobless_${genre}.json").delete()
-                    File(File("/storage/self/primary/MOAVARA"), "Month_Joara_Nobless_${genre}.json").delete()
+                    File(
+                        File("/storage/self/primary/MOAVARA"),
+                        "Today_Joara_Nobless_${genre}.json"
+                    ).delete()
+                    File(
+                        File("/storage/self/primary/MOAVARA"),
+                        "Week_Joara_Nobless_${genre}.json"
+                    ).delete()
+                    File(
+                        File("/storage/self/primary/MOAVARA"),
+                        "Month_Joara_Nobless_${genre}.json"
+                    ).delete()
                 }
             })
 
@@ -1068,35 +1159,51 @@ object Mining {
 
                             data.api?.items?.let { it1 ->
                                 val sort1: Comparator<BestMoonpiaContentsItems> =
-                                    Comparator { o1, o2 -> (o1.nsrData?.hit?.toInt() ?: 0).compareTo(o2.nsrData?.hit?.toInt() ?: 0) }
+                                    Comparator { o1, o2 ->
+                                        (o1.nsrData?.hit?.toInt()
+                                            ?: 0).compareTo(o2.nsrData?.hit?.toInt() ?: 0)
+                                    }
                                 Collections.sort(it1, sort1)
 
-                                for(i in it1.indices){
-                                    BestRef.setBookCode("Munpia", "ALL", it1[i].nvSrl).child("numInfo1").setValue(i)
+                                for (i in it1.indices) {
+                                    BestRef.setBookCode("Munpia", "ALL", it1[i].nvSrl)
+                                        .child("numInfo1").setValue(i)
                                 }
 
                                 val sort2: Comparator<BestMoonpiaContentsItems> =
-                                    Comparator { o1, o2 -> (o1.nsrData?.number?.toInt() ?: 0).compareTo(o2.nsrData?.number?.toInt() ?: 0) }
+                                    Comparator { o1, o2 ->
+                                        (o1.nsrData?.number?.toInt()
+                                            ?: 0).compareTo(o2.nsrData?.number?.toInt() ?: 0)
+                                    }
                                 Collections.sort(it1, sort2)
 
-                                for(i in it1.indices){
-                                    BestRef.setBookCode("Munpia", "ALL", it1[i].nvSrl).child("numInfo2").setValue(i)
+                                for (i in it1.indices) {
+                                    BestRef.setBookCode("Munpia", "ALL", it1[i].nvSrl)
+                                        .child("numInfo2").setValue(i)
                                 }
 
                                 val sort3: Comparator<BestMoonpiaContentsItems> =
-                                    Comparator { o1, o2 -> (o1.nsrData?.prefer?.toInt() ?: 0).compareTo(o2.nsrData?.prefer?.toInt() ?: 0) }
+                                    Comparator { o1, o2 ->
+                                        (o1.nsrData?.prefer?.toInt()
+                                            ?: 0).compareTo(o2.nsrData?.prefer?.toInt() ?: 0)
+                                    }
                                 Collections.sort(it1, sort3)
 
-                                for(i in it1.indices){
-                                    BestRef.setBookCode("Munpia", "ALL", it1[i].nvSrl).child("numInfo3").setValue(i)
+                                for (i in it1.indices) {
+                                    BestRef.setBookCode("Munpia", "ALL", it1[i].nvSrl)
+                                        .child("numInfo3").setValue(i)
                                 }
 
                                 val sort4: Comparator<BestMoonpiaContentsItems> =
-                                    Comparator { o1, o2 -> (o1.nsrData?.hour?.toInt() ?: 0).compareTo(o2.nsrData?.hour?.toInt() ?: 0) }
+                                    Comparator { o1, o2 ->
+                                        (o1.nsrData?.hour?.toInt()
+                                            ?: 0).compareTo(o2.nsrData?.hour?.toInt() ?: 0)
+                                    }
                                 Collections.sort(it1, sort4)
 
-                                for(i in it1.indices){
-                                    BestRef.setBookCode("Munpia", "ALL", it1[i].nvSrl).child("numInfo4").setValue(i)
+                                for (i in it1.indices) {
+                                    BestRef.setBookCode("Munpia", "ALL", it1[i].nvSrl)
+                                        .child("numInfo4").setValue(i)
                                 }
                             }
 
@@ -1166,30 +1273,105 @@ object Mining {
                                 Comparator { o1, o2 -> o1.inqrCnt.compareTo(o2.inqrCnt) }
                             Collections.sort(it1, sort1)
 
-                            for(i in it1.indices){
-                                BestRef.setBookCode("Toksoda", genre, it1[i].brcd).child("numInfo1").setValue(i)
+                            for (i in it1.indices) {
+                                BestRef.setBookCode("Toksoda", genre, it1[i].brcd).child("numInfo1")
+                                    .setValue(i)
                             }
 
                             val sort2: Comparator<BestToksodaToksodaResultList> =
                                 Comparator { o1, o2 -> o1.goodAllCnt.compareTo(o2.goodAllCnt) }
                             Collections.sort(it1, sort2)
 
-                            for(i in it1.indices){
-                                BestRef.setBookCode("Toksoda", genre, it1[i].brcd).child("numInfo2").setValue(i)
+                            for (i in it1.indices) {
+                                BestRef.setBookCode("Toksoda", genre, it1[i].brcd).child("numInfo2")
+                                    .setValue(i)
                             }
 
                             val sort3: Comparator<BestToksodaToksodaResultList> =
                                 Comparator { o1, o2 -> o1.intrstCnt.compareTo(o2.intrstCnt) }
                             Collections.sort(it1, sort3)
 
-                            for(i in it1.indices){
-                                BestRef.setBookCode("Toksoda", genre, it1[i].brcd).child("numInfo3").setValue(i)
+                            for (i in it1.indices) {
+                                BestRef.setBookCode("Toksoda", genre, it1[i].brcd).child("numInfo3")
+                                    .setValue(i)
                             }
                         }
 
-                        File(File("/storage/self/primary/MOAVARA"), "Today_Toksoda_${genre}.json").delete()
-                        File(File("/storage/self/primary/MOAVARA"), "Week_Toksoda_${genre}.json").delete()
-                        File(File("/storage/self/primary/MOAVARA"), "Month_Toksoda_${genre}.json").delete()
+                        File(
+                            File("/storage/self/primary/MOAVARA"),
+                            "Today_Toksoda_${genre}.json"
+                        ).delete()
+                        File(
+                            File("/storage/self/primary/MOAVARA"),
+                            "Week_Toksoda_${genre}.json"
+                        ).delete()
+                        File(
+                            File("/storage/self/primary/MOAVARA"),
+                            "Month_Toksoda_${genre}.json"
+                        ).delete()
+                    }
+                }
+            })
+    }
+
+    fun getMyPickMining(context: Context) {
+        val UID = context.getSharedPreferences("pref", AppCompatActivity.MODE_PRIVATE)
+            ?.getString("UID", "").toString()
+
+        mRootRef.child("User").child(UID).child("Novel").child("book")
+            .addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                    for (pickedItem in dataSnapshot.children) {
+                        val group: BookListDataBest? =
+                            pickedItem.getValue(BookListDataBest::class.java)
+
+                        if (group != null) {
+                            if (group.type == "Joara" || group.type == "Joara_Nobless" || group.type == "Joara_Premium") {
+                                getPickJoara(context, group.bookCode, UID)
+                            }
+                        }
+
+
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {}
+            })
+    }
+
+    fun getPickJoara(context: Context, bookCode: String, UID : String) {
+        val apiJoara = RetrofitJoara()
+        val JoaraRef = Param.getItemAPI(context)
+        JoaraRef["book_code"] = bookCode
+        JoaraRef["category"] = "1"
+
+        var pickBookCodeItem: BookListDataBestAnalyze
+
+        apiJoara.getBookDetailJoa(
+            JoaraRef,
+            object : RetrofitDataListener<JoaraBestDetailResult> {
+                override fun onSuccess(data: JoaraBestDetailResult) {
+
+                    if (data.status == "1" && data.book != null) {
+
+                        pickBookCodeItem = BookListDataBestAnalyze(
+                            data.book.cntPageRead,
+                            data.book.cntFavorite,
+                            data.book.cntRecom,
+                            data.book.cntTotalComment,
+                            999,
+                            0,
+                            0,
+                            0,
+                            0,
+                            DBDate.DateMMDD(),
+                            0,
+                            0,
+                        )
+
+                        mRootRef.child("User").child(UID).child("Novel").child("bookCode").child(bookCode).child(DBDate.DateMMDD()).setValue(pickBookCodeItem)
                     }
                 }
             })

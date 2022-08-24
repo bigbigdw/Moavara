@@ -23,6 +23,7 @@ import com.example.moavara.Main.ActivityLogin
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
 import com.example.moavara.Search.ActivitySearch
+import com.example.moavara.Util.Mining
 import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.ActivityUserBinding
 import com.facebook.CallbackManager
@@ -92,6 +93,7 @@ class ActivityUser : AppCompatActivity() {
             tviewBtnGenre.background = btnBG
             llayoutGuide.background = btnBG
             llayoutCall.background = btnBG
+            llayoutPickFCM.background = btnBG
 
             llayoutUpper.background = GradientDrawable().apply {
                 setColor(Color.parseColor("#0D0E10"))
@@ -241,15 +243,13 @@ class ActivityUser : AppCompatActivity() {
                         response: retrofit2.Response<FWorkManagerResult?>
                     ) {
                         if (response.isSuccessful) {
-                            response.body()?.let { it ->
-                                Log.d("@@@@FCM", "성공");
+                            response.body()?.let {
                                 pushTitle = ""
                                 pushBody = ""
                                 etviewTitle.text = SpannableStringBuilder("제목")
                                 etviewBody.text = SpannableStringBuilder("내용")
                             }
                         } else {
-                            Log.d("@@@@FCM", "실패2");
                             pushTitle = ""
                             pushBody = ""
                             etviewTitle.text = SpannableStringBuilder("제목")
@@ -258,12 +258,49 @@ class ActivityUser : AppCompatActivity() {
                     }
 
                     override fun onFailure(call: Call<FWorkManagerResult?>, t: Throwable) {
-                        Log.d("@@@@FCM", "실패");
                         pushTitle = ""
                         pushBody = ""
                         etviewTitle.text = SpannableStringBuilder("제목")
                         etviewBody.text = SpannableStringBuilder("내용")
                     }
+                })
+            }
+
+            llayoutPickFCM.setOnClickListener {
+                val fcm = Intent(applicationContext, FCM::class.java)
+                startService(fcm)
+
+                val User = getSharedPreferences("pref", MODE_PRIVATE)
+                    ?.getString("NICKNAME", "").toString()
+                val UID = getSharedPreferences("pref", MODE_PRIVATE)
+                    ?.getString("UID", "").toString()
+
+                val fcmBody = DataFCMBody(
+                    "/topics/${UID}",
+                    "high",
+                    DataFCMBodyData("모아바라 PICK 최신화", "${User}님의 마이픽 리스트가 최신화 되었습니다."),
+                    DataFCMBodyNotification("모아바라 PICK 최신화", "${User}님의 마이픽 리스트가 최신화 되었습니다.", "default", "ic_stat_ic_notification"),
+                )
+
+                val call = Retrofit.Builder()
+                    .baseUrl("https://fcm.googleapis.com")
+                    .addConverterFactory(GsonConverterFactory.create()).build()
+                    .create(FirebaseService::class.java)
+                    .postRetrofit(
+                        fcmBody
+                    )
+
+                call.enqueue(object : Callback<FWorkManagerResult?> {
+                    override fun onResponse(
+                        call: Call<FWorkManagerResult?>,
+                        response: retrofit2.Response<FWorkManagerResult?>
+                    ) {
+                        if (response.isSuccessful) {
+                            Mining.getMyPickMining(applicationContext)
+                        }
+                    }
+
+                    override fun onFailure(call: Call<FWorkManagerResult?>, t: Throwable) {}
                 })
             }
         }

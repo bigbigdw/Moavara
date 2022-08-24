@@ -65,7 +65,34 @@ class ActivityMain : AppCompatActivity() {
         navView.itemIconTintList = null
 
         registNotification()
+        registPickNotification()
+    }
 
+    fun registPickNotification(){
+        FirebaseMessaging.getInstance().subscribeToTopic(
+            getSharedPreferences("pref", MODE_PRIVATE)
+                ?.getString("UID", "").toString()
+        )
+        // NotificationManager 객체 생성
+        notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+
+        // API Level 26 버전 이상부터는 NotificationChannel을 사용하여 NotificationCompat.Builder를 생성하기에 분기
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channelId = "모아바라"
+            val channelName = "모아바라 PICK"
+            val channelDescription = "모아바라 선호작 최신화 알림"
+
+            val notificationChannel: NotificationChannel?
+            // HeadsUp은 Importance를 High로 설정해야하기에 분기
+            // NotificationChannel 객체 생성
+            notificationChannel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
+
+            notificationChannel.description = channelDescription
+            // NotificationChannel이 등록된 Builder
+            // 이 Builder에 의해 만들어진 Notification은 이곳에 등록된 Channel에 의해 관리
+            notificationManager?.createNotificationChannel(notificationChannel)
+            notificationBuilder = NotificationCompat.Builder(this, channelId)
+        }
     }
 
     fun registNotification(){

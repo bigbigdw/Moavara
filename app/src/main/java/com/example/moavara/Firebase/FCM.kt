@@ -55,6 +55,8 @@ class FCM : FirebaseMessagingService() {
                 File(File("/storage/self/primary/MOAVARA"), "Today_${plaform}.json").delete()
             }
             miningAlert(title, message, "Alert")
+        } else if(message.contains("마이픽 리스트가 최신화 되었습니다.")) {
+            miningAlert(title, message, "Alert")
         } else {
             miningAlert(title, message, "Notice")
         }
