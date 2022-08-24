@@ -40,7 +40,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical" >
+                            android:orientation="vertical">
 
                             <FrameLayout
                                 android:layout_width="match_parent"
@@ -73,7 +73,8 @@
                                             android:layout_marginBottom="24dp"
                                             android:background="#1E1E20"
                                             android:gravity="center_horizontal|center_vertical"
-                                            android:orientation="vertical">
+                                            android:orientation="vertical"
+                                            android:visibility="gone">
 
                                             <LinearLayout
                                                 android:id="@+id/llayoutBtnRight"
@@ -103,10 +104,10 @@
                                         </androidx.recyclerview.widget.RecyclerView>
 
                                         <TextView
-                                            android:layout_margin="16dp"
                                             android:id="@+id/tviewIntro"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
+                                            android:layout_margin="16dp"
                                             android:breakStrategy="high_quality"
                                             android:ellipsize="end"
                                             android:fontFamily="@font/pretendardvariable"
@@ -201,6 +202,56 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/llayoutBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <LinearLayout
+                android:id="@+id/lview_detail"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:background="#3E424B"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendardvariable"
+                    android:text="작품 보기"
+                    android:textColor="#A7ACB7"
+                    android:textSize="17sp"
+                    tools:ignore="TextContrastCheck" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llayoutPick"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:background="#621CEF"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tviewPick"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendardvariable"
+                    android:text="Pick하기"
+                    android:textColor="#EDE6FD"
+                    android:textSize="17sp"
+                    tools:ignore="TextContrastCheck" />
+            </LinearLayout>
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

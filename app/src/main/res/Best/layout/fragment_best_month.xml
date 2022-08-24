@@ -194,7 +194,6 @@
                         android:layout_margin="16dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/pretendardvariable"
-                        android:text="123123"
                         android:textColor="#FAFAF9"
                         android:textSize="20sp"
                         android:textStyle="bold" />

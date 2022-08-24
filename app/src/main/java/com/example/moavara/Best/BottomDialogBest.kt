@@ -62,7 +62,7 @@ class BottomDialogBest(
 
         val Novel = userInfo.child(UID).child("Novel")
 
-        userInfo.child(UID).child("Novel").child("bookCode").addListenerForSingleValueEvent(object :
+        userInfo.child(UID).child("Novel").child("book").addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
@@ -357,6 +357,7 @@ class BottomDialogBest(
                 bookDetailIntent.putExtra("Type", String.format("%s", platform))
                 bookDetailIntent.putExtra("POSITION", pos)
                 bookDetailIntent.putExtra("COUNT", itemCount)
+                bookDetailIntent.putExtra("HASDATA", true)
                 startActivity(bookDetailIntent)
                 dismiss()
             }
@@ -365,7 +366,6 @@ class BottomDialogBest(
 
                 if(isPicked){
                     Novel.child("book").child(item?.bookCode ?: "").removeValue()
-                    Novel.child("bookCode").child(item?.bookCode ?: "").removeValue()
 
                     binding.llayoutPick.background = GradientDrawable().apply {
                         setColor(Color.parseColor("#621CEF"))
@@ -398,7 +398,7 @@ class BottomDialogBest(
                     }
 
                     Novel.child("book").child(item?.bookCode ?: "").setValue(group)
-                    Novel.child("bookCode").child(item?.bookCode ?: "").setValue(bookCodeItems)
+                    Novel.child("bookCode").child(item?.bookCode ?: "").setValue(group)
 
                     Toast.makeText(requireContext(), "[${group?.title}]이(가) 마이픽에 등록되었습니다.", Toast.LENGTH_SHORT).show()
                     dismiss()

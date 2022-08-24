@@ -97,7 +97,7 @@ class ActivitySearch : AppCompatActivity() {
                             val bookDetailIntent =
                                 Intent(this@ActivitySearch, ActivityBestDetail::class.java)
                             bookDetailIntent.putExtra("BookCode", item?.bookCode)
-                            bookDetailIntent.putExtra("Type", "Search_${item?.type}")
+                            bookDetailIntent.putExtra("Type", item?.type)
                             bookDetailIntent.putExtra("POSITION", position)
                             startActivity(bookDetailIntent)
                         }

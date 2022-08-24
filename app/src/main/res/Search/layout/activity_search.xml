@@ -67,7 +67,6 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rviewType"
-        android:layout_marginStart="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="20dp"

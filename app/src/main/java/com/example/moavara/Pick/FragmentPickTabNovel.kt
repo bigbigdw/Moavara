@@ -143,6 +143,8 @@ class FragmentPickTabNovel : Fragment() {
                         bookDetailIntent.putExtra("BookCode", group.bookCode)
                         bookDetailIntent.putExtra("Type", String.format("%s", group.type))
                         bookDetailIntent.putExtra("POSITION", position)
+                        bookDetailIntent.putExtra("HASDATA", true)
+
                         startActivity(bookDetailIntent)
                     }
                 }

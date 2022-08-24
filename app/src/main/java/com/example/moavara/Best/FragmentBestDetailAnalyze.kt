@@ -1,12 +1,14 @@
 package com.example.moavara.Best
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.DataBase.BookListDataBestAnalyze
 import com.example.moavara.R
 import com.example.moavara.Search.BestLineChart
@@ -17,7 +19,7 @@ import com.github.mikephil.charting.data.Entry
 class FragmentBestDetailAnalyze(
     private val platform: String,
     private val BookItem: ArrayList<BookListDataBestAnalyze>,
-    private var itemCount: Int,
+    private var hasBookData: Boolean,
 ) : Fragment() {
 
     private var _binding: FragmentBestDetailAnalyzeBinding? = null
@@ -40,9 +42,11 @@ class FragmentBestDetailAnalyze(
             getAnalyzeJoara()
         }
 
-        mInnerFragmentBestDetailRank = InnerFragmentBestDetailRank(BookItem)
-        childFragmentManager.commit {
-            replace(R.id.InnerFragmentBestDetailRank, mInnerFragmentBestDetailRank)
+        if(hasBookData){
+            mInnerFragmentBestDetailRank = InnerFragmentBestDetailRank(BookItem)
+            childFragmentManager.commit {
+                replace(R.id.InnerFragmentBestDetailRank, mInnerFragmentBestDetailRank)
+            }
         }
 
         mInnerFragmentBestDetailLine = InnerFragmentBestDetailLine(platform, BookItem)

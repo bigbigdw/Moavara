@@ -9,20 +9,19 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.DataBase.BookListDataBestAnalyze
-import com.example.moavara.DataBase.BookListDataBestToday
+import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
 import com.example.moavara.Retrofit.*
 import com.example.moavara.Search.BestType
-import com.example.moavara.Util.BestRef
-import com.example.moavara.Util.Genre
-import com.example.moavara.Util.Param
-import com.example.moavara.Util.dpToPx
+import com.example.moavara.Util.*
 import com.example.moavara.databinding.ActivityBestDetailBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -41,6 +40,7 @@ class ActivityBestDetail : AppCompatActivity() {
     var platform = ""
     var bookTitle = ""
     var bookWriter = ""
+    var bookLink = ""
     var chapter: List<JoaraBestChapter>? = null
     var pos = 0
     var itemCount = 0
@@ -53,9 +53,16 @@ class ActivityBestDetail : AppCompatActivity() {
     private lateinit var adapterType: AdapterKeyword
     private val typeItems = ArrayList<BestType>()
 
-    val data = ArrayList<BookListDataBestAnalyze>()
+    val bookData = ArrayList<BookListDataBestAnalyze>()
     private lateinit var firebaseAnalytics: FirebaseAnalytics
+    var UID = ""
+    var userInfo = mRootRef.child("User")
+    private var isPicked = false
+    private var hasBookData = false
+    private var fromPick = false
 
+    var pickItem = BookListDataBest()
+    var pickBookCodeItem = BookListDataBestAnalyze()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,10 +71,17 @@ class ActivityBestDetail : AppCompatActivity() {
 
         firebaseAnalytics = Firebase.analytics
 
+        UID = getSharedPreferences("pref", MODE_PRIVATE)
+            ?.getString("UID", "").toString()
+
         bookCode = intent.getStringExtra("BookCode") ?: ""
         platform = intent.getStringExtra("Type") ?: ""
         pos = intent.getIntExtra("POSITION", 0)
         itemCount = intent.getIntExtra("COUNT", 0)
+        hasBookData  = intent.getBooleanExtra("HASDATA", false)
+        fromPick  = intent.getBooleanExtra("FROMPICK", false)
+
+        Log.d("####", "${hasBookData}")
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -90,75 +104,159 @@ class ActivityBestDetail : AppCompatActivity() {
 
         setUserPick()
 
-        Log.d("####", "${platform} ${bookCode}")
+        if(hasBookData){
+            if(fromPick){
+                userInfo.child(UID).child("Novel").child("bookCode").child(bookCode)
+                    .addListenerForSingleValueEvent(object :
+                        ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-        if(platform.contains("Search")){
-            setLayoutSearch()
-        } else {
-            BestRef.getBookCode(platform, genre).child(bookCode).addListenerForSingleValueEvent(object :
-                ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            hasBookData = true
+                            for (item in dataSnapshot.children) {
+                                val group: BookListDataBestAnalyze? =
+                                    item.getValue(BookListDataBestAnalyze::class.java)
 
-                    for (item in dataSnapshot.children) {
-                        val group: BookListDataBestAnalyze? =
-                            item.getValue(BookListDataBestAnalyze::class.java)
+                                if (group != null) {
+                                    bookData.add(
+                                        BookListDataBestAnalyze(
+                                            group.info1,
+                                            group.info2,
+                                            group.info3,
+                                            group.info4,
+                                            group.number,
+                                            group.numInfo1,
+                                            group.numInfo2,
+                                            group.numInfo3,
+                                            group.numInfo4,
+                                            group.date,
+                                            group.numberDiff,
+                                            group.trophyCount,
+                                        )
+                                    )
+                                }
+                            }
 
-                        if (group != null) {
-                            data.add(
-                                BookListDataBestAnalyze(
-                                    group.info1,
-                                    group.info2,
-                                    group.info3,
-                                    group.info4,
-                                    group.number,
-                                    group.numInfo1,
-                                    group.numInfo2,
-                                    group.numInfo3,
-                                    group.numInfo4,
-                                    group.date,
-                                    group.numberDiff,
-                                    group.trophyCount,
-                                )
-                            )
+                            setLayout()
                         }
-                    }
 
-                    setLayout()
-                }
+                        override fun onCancelled(databaseError: DatabaseError) {}
+                    })
+            } else {
+                BestRef.getBookCode(platform, genre).child(bookCode)
+                    .addListenerForSingleValueEvent(object :
+                        ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                override fun onCancelled(databaseError: DatabaseError) {}
-            })
+                            for (item in dataSnapshot.children) {
+                                val group: BookListDataBestAnalyze? =
+                                    item.getValue(BookListDataBestAnalyze::class.java)
+
+                                if (group != null) {
+                                    bookData.add(
+                                        BookListDataBestAnalyze(
+                                            group.info1,
+                                            group.info2,
+                                            group.info3,
+                                            group.info4,
+                                            group.number,
+                                            group.numInfo1,
+                                            group.numInfo2,
+                                            group.numInfo3,
+                                            group.numInfo4,
+                                            group.date,
+                                            group.numberDiff,
+                                            group.trophyCount,
+                                        )
+                                    )
+                                }
+                            }
+
+                            setLayout()
+                        }
+
+                        override fun onCancelled(databaseError: DatabaseError) {}
+                    })
+            }
+        } else {
+            setLayoutWithoutBookData()
         }
-
     }
 
     private fun setUserPick() {
-        BestRef.getBestRefToday(platform, genre).child(pos.toString())
-            .addListenerForSingleValueEvent(object :
-                ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val group: BookListDataBestToday? =
-                        dataSnapshot.getValue(BookListDataBestToday::class.java)
+        userInfo.child(UID).child("Novel").child("book").addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                    runOnUiThread {
+                for (pickedItem in dataSnapshot.children) {
 
-                        with(binding) {
-
-                            llayoutBtnRight.setOnClickListener {
-                                val intent = Intent(
-                                    Intent.ACTION_VIEW,
-                                    Uri.parse(getUrl(bookCode))
-                                )
-                                startActivity(intent)
-                            }
+                    if (pickedItem.key.toString() == bookCode) {
+                        isPicked = true
+                        binding.llayoutPick.background = GradientDrawable().apply {
+                            setColor(Color.parseColor("#A7ACB7"))
+                            shape = GradientDrawable.RECTANGLE
                         }
+
+                        binding.tviewPick.text = "Pick 완료"
+                        break
+                    } else {
+                        binding.llayoutPick.background = GradientDrawable().apply {
+                            setColor(Color.parseColor("#621CEF"))
+                            shape = GradientDrawable.RECTANGLE
+                        }
+
+                        binding.tviewPick.text = "Pick 하기"
                     }
                 }
+            }
 
-                override fun onCancelled(databaseError: DatabaseError) {}
-            })
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
+
+        binding.llayoutPick.setOnClickListener {
+
+            val Novel = userInfo.child(UID).child("Novel")
+
+            if (isPicked) {
+                Novel.child("book").child(bookCode).removeValue()
+                Novel.child("bookCode").child(bookCode).removeValue()
+
+                binding.llayoutPick.background = GradientDrawable().apply {
+                    setColor(Color.parseColor("#621CEF"))
+                    shape = GradientDrawable.RECTANGLE
+                }
+
+                binding.tviewPick.text = "Pick 하기"
+
+                Novel.child("book").child(bookCode).removeValue()
+                Novel.child("bookCode").child(bookCode).removeValue()
+                Toast.makeText(this, "[${bookTitle}]이(가) 마이픽에서 제거되었습니다.", Toast.LENGTH_SHORT).show()
+
+            } else {
+                binding.llayoutPick.background = GradientDrawable().apply {
+                    setColor(Color.parseColor("#A7ACB7"))
+                    shape = GradientDrawable.RECTANGLE
+                }
+
+                binding.tviewPick.text = "Pick 완료"
+
+                Novel.child("book").child(bookCode).setValue(pickItem)
+
+                if(hasBookData){
+                    Novel.child("bookCode").child(bookCode).setValue(bookData)
+                } else {
+                    Novel.child("bookCode").child(bookCode).child(DBDate.DateMMDD()).setValue(pickBookCodeItem)
+                }
+
+                Toast.makeText(this, "[${bookTitle}]이(가) 마이픽에 등록되었습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        binding.lviewDetail.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getUrl(bookLink)))
+            startActivity(intent)
+        }
+
     }
-
 
 
     fun setLayout() {
@@ -201,7 +299,7 @@ class ActivityBestDetail : AppCompatActivity() {
                 when (tab.position) {
                     0 -> {
                         mFragmentBestDetailAnalyze =
-                            FragmentBestDetailAnalyze(platform, data, itemCount)
+                            FragmentBestDetailAnalyze(platform, bookData, hasBookData)
                         supportFragmentManager.commit {
                             replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
                         }
@@ -228,7 +326,7 @@ class ActivityBestDetail : AppCompatActivity() {
                             }
                         } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver" || platform == "Kakao" || platform == "Kakao_Stage" || platform == "Ridi" || platform == "OneStore" || platform == "Munpia") {
                             mFragmentBestDetailAnalyze =
-                                FragmentBestDetailAnalyze(platform, data, itemCount)
+                                FragmentBestDetailAnalyze(platform, bookData, hasBookData)
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
                             }
@@ -242,75 +340,7 @@ class ActivityBestDetail : AppCompatActivity() {
         })
     }
 
-    fun setLayoutSearch() {
 
-        if (platform == "Search_Joara" || platform == "Search_Joara_Nobless" || platform == "Search_Joara_Premium") {
-            setLayoutJoara()
-        } else if (platform == "Search_Naver_Today" || platform == "Search_Naver_Challenge" || platform == "Search_Naver") {
-            setLayoutNaverToday()
-        } else if (platform == "Search_Kakao") {
-            setLayoutKaKao()
-        } else if (platform == "Search_Kakao_Stage") {
-            setLayoutKaKaoStage()
-        } else if (platform == "Search_Ridi") {
-            setLayoutRidi()
-        } else if (platform == "Search_OneStore") {
-            setLayoutOneStory()
-        } else if (platform == "Search_Munpia") {
-            setLayoutMunpia()
-        } else if (platform == "Search_Toksoda") {
-            setLayoutToksoda()
-        }
-
-        if (platform == "Search_Naver_Today" || platform == "Search_Naver_Challenge" || platform == "Search_Naver") {
-            binding.tabs.addTab(binding.tabs.newTab().setText("다른 작품"))
-        } else if (platform == "Search_Kakao" || platform == "Search_Kakao_Stage" || platform == "Search_OneStore" || platform == "Search_Munpia") {
-            binding.tabs.addTab(binding.tabs.newTab().setText("댓글"))
-        } else if (platform == "Search_Ridi") {
-            binding.tabs.addTab(binding.tabs.newTab().setText("다른 작품"))
-        } else {
-            binding.tabs.addTab(binding.tabs.newTab().setText("댓글"))
-            binding.tabs.addTab(binding.tabs.newTab().setText("다른 작품"))
-        }
-
-        binding.tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                when (tab.position) {
-                    0 -> {
-                        if (platform == "Search_Joara" || platform == "Search_Joara_Nobless" || platform == "Search_Joara_Premium" || platform == "Search_Kakao" || platform == "Search_Kakao_Stage" || platform == "Search_OneStore" || platform == "Search_Munpia" || platform == "Search_Toksoda") {
-                            mFragmentBestDetailComment =
-                                FragmentBestDetailComment(platform, bookCode)
-                            supportFragmentManager.commit {
-                                replace(R.id.llayoutWrap, mFragmentBestDetailComment)
-                            }
-                        } else if (platform == "Search_Naver_Today" || platform == "Search_Naver_Challenge" || platform == "Search_Naver" || platform == "Search_Ridi") {
-                            mFragmentBestDetailBooks = FragmentBestDetailBooks(platform, bookCode)
-                            supportFragmentManager.commit {
-                                replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
-                            }
-                        }
-                    }
-                    1 -> {
-                        if (platform == "Search_Joara" || platform == "Search_Joara_Nobless" || platform == "Search_Joara_Premium" || platform == "Search_Toksoda") {
-                            mFragmentBestDetailBooks = FragmentBestDetailBooks(platform, bookCode)
-                            supportFragmentManager.commit {
-                                replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
-                            }
-                        } else if (platform == "Search_Naver_Today" || platform == "Search_Naver_Challenge" || platform == "Search_Naver" || platform == "Search_Kakao" || platform == "Search_Kakao_Stage" || platform == "Search_Ridi" || platform == "Search_OneStore" || platform == "Search_Munpia") {
-                            mFragmentBestDetailAnalyze =
-                                FragmentBestDetailAnalyze(platform, data, itemCount)
-                            supportFragmentManager.commit {
-                                replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
-                            }
-                        }
-                    }
-                }
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab) {}
-            override fun onTabReselected(tab: TabLayout.Tab) {}
-        })
-    }
 
     private fun setLayoutJoara() {
         val apiJoara = RetrofitJoara()
@@ -328,14 +358,16 @@ class ActivityBestDetail : AppCompatActivity() {
 
                             loading.root.visibility = View.GONE
                             coorWrap.visibility = View.VISIBLE
+                            llayoutBtn.visibility = View.VISIBLE
                             window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
 
                             Glide.with(this@ActivityBestDetail)
-                                .load(data.book.bookImg.replace("http://","https://"))
+                                .load(data.book.bookImg.replace("http://", "https://"))
                                 .into(inclueBestDetail.iviewBookCover)
 
                             bookTitle = data.book.subject
                             chapter = data.book.chapter
+                            bookLink = data.book.bookCode
 
                             tviewToolbar.text = data.book.subject
 
@@ -347,10 +379,44 @@ class ActivityBestDetail : AppCompatActivity() {
                                 BestRef.decimalToString(data.book.cntPageRead.toInt())
                             inclueBestDetail.tviewInfo2.text =
                                 BestRef.decimalToString(data.book.cntFavorite.toInt())
-                            inclueBestDetail.tviewInfo3.text = BestRef.decimalToString(data.book.cntRecom.toInt())
-                            inclueBestDetail.tviewInfo4.text = BestRef.decimalToString(data.book.cntTotalComment.toInt())
+                            inclueBestDetail.tviewInfo3.text =
+                                BestRef.decimalToString(data.book.cntRecom.toInt())
+                            inclueBestDetail.tviewInfo4.text =
+                                BestRef.decimalToString(data.book.cntTotalComment.toInt())
 
                             tviewIntro.text = data.book.intro
+
+                            pickItem = BookListDataBest(
+                                data.book.writerName,
+                                data.book.subject,
+                                data.book.bookImg.replace("http://", "https://"),
+                                data.book.bookCode,
+                                data.book.cntPageRead,
+                                data.book.cntFavorite,
+                                data.book.cntRecom,
+                                data.book.cntTotalComment,
+                                "",
+                                "",
+                                999,
+                                DBDate.DateMMDD(),
+                                "Joara",
+                                "",
+                            )
+
+                            pickBookCodeItem = BookListDataBestAnalyze(
+                                data.book.cntPageRead,
+                                data.book.cntFavorite,
+                                data.book.cntRecom,
+                                data.book.cntTotalComment,
+                                999,
+                                0,
+                                0,
+                                0,
+                                0,
+                                DBDate.DateMMDD(),
+                                0,
+                                0,
+                            )
 
                             adapterType = AdapterKeyword(typeItems)
 
@@ -372,7 +438,7 @@ class ActivityBestDetail : AppCompatActivity() {
                         }
                     }
 
-                    if(platform.contains("Search")){
+                    if (platform.contains("Search")) {
                         mFragmentBestDetailComment =
                             FragmentBestDetailComment(platform, bookCode)
                         supportFragmentManager.commit {
@@ -381,7 +447,7 @@ class ActivityBestDetail : AppCompatActivity() {
                     } else {
                         mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(
                             platform,
-                            this@ActivityBestDetail.data, itemCount
+                            this@ActivityBestDetail.bookData, hasBookData
                         )
                         supportFragmentManager.commit {
                             replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
@@ -401,6 +467,7 @@ class ActivityBestDetail : AppCompatActivity() {
                 with(binding) {
                     binding.loading.root.visibility = View.GONE
                     binding.coorWrap.visibility = View.VISIBLE
+                    llayoutBtn.visibility = View.VISIBLE
                     window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
 
                     Glide.with(this@ActivityBestDetail)
@@ -415,28 +482,62 @@ class ActivityBestDetail : AppCompatActivity() {
                     inclueBestDetail.tviewInfo.text =
                         "장르 : ${doc.select(".info_book .genre").text()}"
 
-                    inclueBestDetail.tviewInfo1.text = doc.select(".info_book .like").text().replace("관심", "").replace("명", "")
+                    inclueBestDetail.tviewInfo1.text =
+                        doc.select(".info_book .like").text().replace("관심", "").replace("명", "")
                     inclueBestDetail.tviewInfo2.text = doc.select(".grade_area em").text()
 
                     inclueBestDetail.iviewInfo3.setImageResource(R.mipmap.ic_launcher)
-                    inclueBestDetail.tviewInfo3.text = doc.select(".info_book .download").text().replace("다운로드", "")
+                    inclueBestDetail.tviewInfo3.text =
+                        doc.select(".info_book .download").text().replace("다운로드", "")
 
                     inclueBestDetail.llayoutTab4.visibility = View.GONE
                     inclueBestDetail.viewTab4.visibility = View.GONE
 
                     tviewIntro.text = doc.select(".section_area_info .dsc").text()
+
+                    pickItem = BookListDataBest(
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        999,
+                        DBDate.DateMMDD(),
+                        "",
+                        "",
+                    )
+
+                    pickBookCodeItem = BookListDataBestAnalyze(
+                        "",
+                        "",
+                        "",
+                        "",
+                        999,
+                        0,
+                        0,
+                        0,
+                        0,
+                        DBDate.DateMMDD(),
+                        0,
+                        0,
+                    )
                 }
 
 
 
-                if(platform.contains("Search")){
+                if (platform.contains("Search")) {
                     mFragmentBestDetailBooks = FragmentBestDetailBooks(platform, bookCode)
                     supportFragmentManager.commit {
                         replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
                     }
                 } else {
                     mFragmentBestDetailAnalyze =
-                        FragmentBestDetailAnalyze(platform, data, itemCount)
+                        FragmentBestDetailAnalyze(platform, bookData, hasBookData)
                     supportFragmentManager.commit {
                         replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
                     }
@@ -459,6 +560,7 @@ class ActivityBestDetail : AppCompatActivity() {
                     with(binding) {
                         loading.root.visibility = View.GONE
                         coorWrap.visibility = View.VISIBLE
+                        llayoutBtn.visibility = View.VISIBLE
                         window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
 
                         data.home?.let { it ->
@@ -473,12 +575,49 @@ class ActivityBestDetail : AppCompatActivity() {
 
                             inclueBestDetail.tviewInfo.text = "총 ${it.open_counts}화"
 
-                            inclueBestDetail.tviewInfo1.text = BestRef.decimalToString(it.page_rating_count.toInt())
-                            inclueBestDetail.tviewInfo2.text = BestRef.decimalToString(it.page_rating_summary.replace(".0","").toInt())
-                            inclueBestDetail.tviewInfo3.text = BestRef.decimalToString(it.read_count.toInt())
-                            inclueBestDetail.tviewInfo4.text = BestRef.decimalToString(it.page_comment_count.toInt())
+                            inclueBestDetail.tviewInfo1.text =
+                                BestRef.decimalToString(it.page_rating_count.toInt())
+                            inclueBestDetail.tviewInfo2.text = BestRef.decimalToString(
+                                it.page_rating_summary.replace(".0", "").toInt()
+                            )
+                            inclueBestDetail.tviewInfo3.text =
+                                BestRef.decimalToString(it.read_count.toInt())
+                            inclueBestDetail.tviewInfo4.text =
+                                BestRef.decimalToString(it.page_comment_count.toInt())
 
                             tviewIntro.text = it.description
+
+                            pickItem = BookListDataBest(
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                999,
+                                DBDate.DateMMDD(),
+                                "",
+                                "",
+                            )
+
+                            pickBookCodeItem = BookListDataBestAnalyze(
+                                "",
+                                "",
+                                "",
+                                "",
+                                999,
+                                0,
+                                0,
+                                0,
+                                0,
+                                DBDate.DateMMDD(),
+                                0,
+                                0,
+                            )
                         }
 
                         val keyword = data.related_keytalk_list
@@ -503,7 +642,7 @@ class ActivityBestDetail : AppCompatActivity() {
                 }
             })
 
-        if(platform.contains("Search")){
+        if (platform.contains("Search")) {
             mFragmentBestDetailComment =
                 FragmentBestDetailComment(platform, bookCode)
             supportFragmentManager.commit {
@@ -511,7 +650,7 @@ class ActivityBestDetail : AppCompatActivity() {
             }
         } else {
             mFragmentBestDetailAnalyze =
-                FragmentBestDetailAnalyze(platform, data, itemCount)
+                FragmentBestDetailAnalyze(platform, bookData, hasBookData)
             supportFragmentManager.commit {
                 replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
             }
@@ -529,6 +668,7 @@ class ActivityBestDetail : AppCompatActivity() {
                     with(binding) {
                         loading.root.visibility = View.GONE
                         coorWrap.visibility = View.VISIBLE
+                        llayoutBtn.visibility = View.VISIBLE
                         window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
 
                         data.let {
@@ -543,18 +683,54 @@ class ActivityBestDetail : AppCompatActivity() {
                             inclueBestDetail.tviewWriter.text = it.nickname.name
 
                             inclueBestDetail.tviewInfo.text = "총 ${it.publishedEpisodeCount}화"
-                            inclueBestDetail.tviewInfo1.text = BestRef.decimalToString(it.favoriteCount.toInt())
-                            inclueBestDetail.tviewInfo2.text = BestRef.decimalToString(it.viewCount.toInt())
-                            inclueBestDetail.tviewInfo3.text = BestRef.decimalToString(it.visitorCount.toInt())
-                            inclueBestDetail.tviewInfo4.text = BestRef.decimalToString(it.episodeLikeCount.toInt())
+                            inclueBestDetail.tviewInfo1.text =
+                                BestRef.decimalToString(it.favoriteCount.toInt())
+                            inclueBestDetail.tviewInfo2.text =
+                                BestRef.decimalToString(it.viewCount.toInt())
+                            inclueBestDetail.tviewInfo3.text =
+                                BestRef.decimalToString(it.visitorCount.toInt())
+                            inclueBestDetail.tviewInfo4.text =
+                                BestRef.decimalToString(it.episodeLikeCount.toInt())
 
                             tviewIntro.text = it.synopsis
+
+                            pickItem = BookListDataBest(
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                999,
+                                DBDate.DateMMDD(),
+                                "",
+                                "",
+                            )
+
+                            pickBookCodeItem = BookListDataBestAnalyze(
+                                "",
+                                "",
+                                "",
+                                "",
+                                999,
+                                0,
+                                0,
+                                0,
+                                0,
+                                DBDate.DateMMDD(),
+                                0,
+                                0,
+                            )
                         }
                     }
                 }
             })
 
-        if(platform.contains("Search")){
+        if (platform.contains("Search")) {
             mFragmentBestDetailComment =
                 FragmentBestDetailComment(platform, bookCode)
             supportFragmentManager.commit {
@@ -562,7 +738,7 @@ class ActivityBestDetail : AppCompatActivity() {
             }
         } else {
             mFragmentBestDetailAnalyze =
-                FragmentBestDetailAnalyze(platform, data, itemCount)
+                FragmentBestDetailAnalyze(platform, bookData, hasBookData)
             supportFragmentManager.commit {
                 replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
             }
@@ -611,16 +787,47 @@ class ActivityBestDetail : AppCompatActivity() {
 
                     tviewIntro.text = doc.select(".introduce_book .introduce_paragraph").text()
 
+                    pickItem = BookListDataBest(
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        999,
+                        DBDate.DateMMDD(),
+                        "",
+                        "",
+                    )
+
+                    pickBookCodeItem = BookListDataBestAnalyze(
+                        "",
+                        "",
+                        "",
+                        "",
+                        999,
+                        0,
+                        0,
+                        0,
+                        0,
+                        DBDate.DateMMDD(),
+                        0,
+                        0,
+                    )
                 }
 
-                if(platform.contains("Search")){
+                if (platform.contains("Search")) {
                     mFragmentBestDetailBooks = FragmentBestDetailBooks(platform, bookCode)
                     supportFragmentManager.commit {
                         replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
                     }
                 } else {
                     mFragmentBestDetailAnalyze =
-                        FragmentBestDetailAnalyze(platform, data, itemCount)
+                        FragmentBestDetailAnalyze(platform, bookData, hasBookData)
                     supportFragmentManager.commit {
                         replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
                     }
@@ -664,6 +871,38 @@ class ActivityBestDetail : AppCompatActivity() {
                             inclueBestDetail.tviewInfo4.text = it?.commentCount
                             tviewIntro.visibility = View.GONE
 
+                            pickItem = BookListDataBest(
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                999,
+                                DBDate.DateMMDD(),
+                                "",
+                                "",
+                            )
+
+                            pickBookCodeItem = BookListDataBestAnalyze(
+                                "",
+                                "",
+                                "",
+                                "",
+                                999,
+                                0,
+                                0,
+                                0,
+                                0,
+                                DBDate.DateMMDD(),
+                                0,
+                                0,
+                            )
+
                             if (it != null) {
                                 val keyword = it.tagList
 
@@ -692,7 +931,7 @@ class ActivityBestDetail : AppCompatActivity() {
                 }
             })
 
-        if(platform.contains("Search")){
+        if (platform.contains("Search")) {
             mFragmentBestDetailComment =
                 FragmentBestDetailComment(platform, bookCode)
             supportFragmentManager.commit {
@@ -700,7 +939,7 @@ class ActivityBestDetail : AppCompatActivity() {
             }
         } else {
             mFragmentBestDetailAnalyze =
-                FragmentBestDetailAnalyze(platform, data, itemCount)
+                FragmentBestDetailAnalyze(platform, bookData, hasBookData)
             supportFragmentManager.commit {
                 replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
             }
@@ -729,12 +968,12 @@ class ActivityBestDetail : AppCompatActivity() {
 
                     inclueBestDetail.tviewInfo.text = doc.select(".meta-path strong").text()
 
-                    try{
+                    try {
                         inclueBestDetail.tviewInfo1.text =
                             doc.select(".meta-etc dd").next().next()[1]?.text() ?: ""
                         inclueBestDetail.tviewInfo2.text =
                             doc.select(".meta-etc dd").next().next()[2]?.text() ?: ""
-                    } catch (e: IndexOutOfBoundsException){
+                    } catch (e: IndexOutOfBoundsException) {
                         inclueBestDetail.tviewInfo1.visibility = View.GONE
                         inclueBestDetail.tviewInfo2.visibility = View.GONE
                     }
@@ -745,9 +984,41 @@ class ActivityBestDetail : AppCompatActivity() {
                     inclueBestDetail.viewTab3.visibility = View.GONE
 
                     tviewIntro.text = doc.select(".story").text()
+
+                    pickItem = BookListDataBest(
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        999,
+                        DBDate.DateMMDDHHMM(),
+                        "",
+                        "",
+                    )
+
+                    pickBookCodeItem = BookListDataBestAnalyze(
+                        "",
+                        "",
+                        "",
+                        "",
+                        999,
+                        0,
+                        0,
+                        0,
+                        0,
+                        DBDate.DateMMDDHHMM(),
+                        0,
+                        0,
+                    )
                 }
 
-                if(platform.contains("Search")){
+                if (platform.contains("Search")) {
                     mFragmentBestDetailComment =
                         FragmentBestDetailComment(platform, bookCode)
                     supportFragmentManager.commit {
@@ -755,7 +1026,7 @@ class ActivityBestDetail : AppCompatActivity() {
                     }
                 } else {
                     mFragmentBestDetailAnalyze =
-                        FragmentBestDetailAnalyze(platform, data, itemCount)
+                        FragmentBestDetailAnalyze(platform, bookData, hasBookData)
                     supportFragmentManager.commit {
                         replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
                     }
@@ -804,6 +1075,38 @@ class ActivityBestDetail : AppCompatActivity() {
 
                             tviewIntro.text = it.lnIntro
 
+                            pickItem = BookListDataBest(
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                999,
+                                DBDate.DateMMDDHHMM(),
+                                "",
+                                "",
+                            )
+
+                            pickBookCodeItem = BookListDataBestAnalyze(
+                                "",
+                                "",
+                                "",
+                                "",
+                                999,
+                                0,
+                                0,
+                                0,
+                                0,
+                                DBDate.DateMMDDHHMM(),
+                                0,
+                                0,
+                            )
+
                             val keyword = it.hashTagList
 
                             if (keyword != null) {
@@ -829,7 +1132,7 @@ class ActivityBestDetail : AppCompatActivity() {
                 }
             })
 
-        if(platform.contains("Search")){
+        if (platform.contains("Search")) {
             mFragmentBestDetailComment =
                 FragmentBestDetailComment(platform, bookCode)
             supportFragmentManager.commit {
@@ -837,11 +1140,81 @@ class ActivityBestDetail : AppCompatActivity() {
             }
         } else {
             mFragmentBestDetailAnalyze =
-                FragmentBestDetailAnalyze(platform, data, itemCount)
+                FragmentBestDetailAnalyze(platform, bookData, hasBookData)
             supportFragmentManager.commit {
                 replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
             }
         }
+    }
+
+    fun setLayoutWithoutBookData() {
+
+        if (platform == "Joara" || platform == "Joara_Nobless" || platform == "Joara_Premium") {
+            setLayoutJoara()
+        } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver") {
+            setLayoutNaverToday()
+        } else if (platform == "Kakao") {
+            setLayoutKaKao()
+        } else if (platform == "Kakao_Stage") {
+            setLayoutKaKaoStage()
+        } else if (platform == "Ridi") {
+            setLayoutRidi()
+        } else if (platform == "OneStore") {
+            setLayoutOneStory()
+        } else if (platform == "Munpia") {
+            setLayoutMunpia()
+        } else if (platform == "Toksoda") {
+            setLayoutToksoda()
+        }
+
+        if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver") {
+            binding.tabs.addTab(binding.tabs.newTab().setText("다른 작품"))
+        } else if (platform == "Kakao" || platform == "Kakao_Stage" || platform == "OneStore" || platform == "Munpia") {
+            binding.tabs.addTab(binding.tabs.newTab().setText("댓글"))
+        } else if (platform == "Ridi") {
+            binding.tabs.addTab(binding.tabs.newTab().setText("다른 작품"))
+        } else {
+            binding.tabs.addTab(binding.tabs.newTab().setText("댓글"))
+            binding.tabs.addTab(binding.tabs.newTab().setText("다른 작품"))
+        }
+
+        binding.tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                when (tab.position) {
+                    0 -> {
+                        if (platform == "Joara" || platform == "Joara_Nobless" || platform == "Joara_Premium" || platform == "Kakao" || platform == "Kakao_Stage" || platform == "OneStore" || platform == "Munpia" || platform == "Toksoda") {
+                            mFragmentBestDetailComment =
+                                FragmentBestDetailComment(platform, bookCode)
+                            supportFragmentManager.commit {
+                                replace(R.id.llayoutWrap, mFragmentBestDetailComment)
+                            }
+                        } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver" || platform == "Ridi") {
+                            mFragmentBestDetailBooks = FragmentBestDetailBooks(platform, bookCode)
+                            supportFragmentManager.commit {
+                                replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
+                            }
+                        }
+                    }
+                    1 -> {
+                        if (platform == "Joara" || platform == "Joara_Nobless" || platform == "Joara_Premium" || platform == "Toksoda") {
+                            mFragmentBestDetailBooks = FragmentBestDetailBooks(platform, bookCode)
+                            supportFragmentManager.commit {
+                                replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
+                            }
+                        } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver" || platform == "Kakao" || platform == "Kakao_Stage" || platform == "Ridi" || platform == "OneStore" || platform == "Munpia") {
+                            mFragmentBestDetailAnalyze =
+                                FragmentBestDetailAnalyze(platform, bookData, hasBookData)
+                            supportFragmentManager.commit {
+                                replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
+                            }
+                        }
+                    }
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        })
     }
 
     private fun getUrl(bookCode: String): String {
