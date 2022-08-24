@@ -1,9 +1,8 @@
 package com.example.moavara.Util
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.net.Uri
+import android.text.TextUtils.replace
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
@@ -13,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.moavara.Best.AdapterKeyword
 import com.example.moavara.Best.FragmentBestDetailAnalyze
+import com.example.moavara.Best.FragmentBestDetailBooks
 import com.example.moavara.Best.FragmentBestDetailComment
 import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.DataBase.BookListDataBestAnalyze
@@ -1328,12 +1328,33 @@ object Mining {
                             pickedItem.getValue(BookListDataBest::class.java)
 
                         if (group != null) {
-                            if (group.type == "Joara" || group.type == "Joara_Nobless" || group.type == "Joara_Premium") {
-                                getPickJoara(context, group.bookCode, UID)
+                            when (group.type) {
+                                "Joara", "Joara_Nobless", "Joara_Premium" -> {
+                                    getPickJoara(context, group.bookCode, UID)
+                                }
+                                "Naver_Today", "Naver_Challenge", "Naver" -> {
+                                    getPickNaver(group.bookCode, UID)
+                                }
+                                "Kakao" -> {
+                                    getPickKakao(group.bookCode, UID)
+                                }
+                                "Kakao_Stage" -> {
+                                    getPickKakaoStage(group.bookCode, UID)
+                                }
+                                "Ridi" -> {
+                                    getPickRidi(group.bookCode, UID)
+                                }
+                                "OneStore" -> {
+                                    getPickOneStory(group.bookCode, UID)
+                                }
+                                "Munpia" -> {
+                                    getPickMunpia(group.bookCode, UID)
+                                }
+                                "Toksoda" -> {
+                                    getPickToksoda(group.bookCode, UID)
+                                }
                             }
                         }
-
-
                     }
                 }
 
@@ -1341,7 +1362,7 @@ object Mining {
             })
     }
 
-    fun getPickJoara(context: Context, bookCode: String, UID : String) {
+    fun getPickJoara(context: Context, bookCode: String, UID: String) {
         val apiJoara = RetrofitJoara()
         val JoaraRef = Param.getItemAPI(context)
         JoaraRef["book_code"] = bookCode
@@ -1371,7 +1392,232 @@ object Mining {
                             0,
                         )
 
-                        mRootRef.child("User").child(UID).child("Novel").child("bookCode").child(bookCode).child(DBDate.DateMMDD()).setValue(pickBookCodeItem)
+                        mRootRef.child("User").child(UID).child("Novel").child("bookCode")
+                            .child(bookCode).child(DBDate.DateMMDD()).setValue(pickBookCodeItem)
+                    }
+                }
+            })
+    }
+
+    fun getPickNaver(bookCode: String, UID: String) {
+        Thread {
+            val pickBookCodeItem: BookListDataBestAnalyze
+
+            val doc: Document =
+                Jsoup.connect("https://novel.naver.com/webnovel/list?novelId=${bookCode}").post()
+
+            pickBookCodeItem = BookListDataBestAnalyze(
+                doc.select(".info_book .like").text().replace("관심", "").replace("명", ""),
+                doc.select(".grade_area em").text(),
+                doc.select(".info_book .download").text().replace("다운로드", ""),
+                "",
+                999,
+                0,
+                0,
+                0,
+                0,
+                DBDate.DateMMDD(),
+                0,
+                0,
+            )
+
+            mRootRef.child("User").child(UID).child("Novel").child("bookCode").child(bookCode)
+                .child(DBDate.DateMMDD()).setValue(pickBookCodeItem)
+        }.start()
+    }
+
+    fun getPickKakao(bookCode: String, UID: String) {
+        val apiKakao = RetrofitKaKao()
+        val param: MutableMap<String?, Any> = HashMap()
+        var pickBookCodeItem = BookListDataBestAnalyze()
+
+        param["seriesid"] = bookCode
+
+        apiKakao.postKakaoBookDetail(
+            param,
+            object : RetrofitDataListener<BestKakaoBookDetail> {
+                override fun onSuccess(data: BestKakaoBookDetail) {
+
+
+                    data.home?.let { it ->
+
+                        pickBookCodeItem = BookListDataBestAnalyze(
+                            it.page_rating_count,
+                            it.page_rating_summary.replace(".0", ""),
+                            it.read_count,
+                            it.page_comment_count,
+                            999,
+                            0,
+                            0,
+                            0,
+                            0,
+                            DBDate.DateMMDD(),
+                            0,
+                            0,
+                        )
+                    }
+
+                    mRootRef.child("User").child(UID).child("Novel").child("bookCode")
+                        .child(bookCode).child(DBDate.DateMMDD()).setValue(pickBookCodeItem)
+
+                }
+            })
+    }
+
+    fun getPickKakaoStage(bookCode: String, UID: String) {
+        val apiKakaoStage = RetrofitKaKao()
+        var pickBookCodeItem: BookListDataBestAnalyze
+
+        apiKakaoStage.getBestKakaoStageDetail(
+            bookCode,
+            object : RetrofitDataListener<KakaoStageBestBookResult> {
+                override fun onSuccess(data: KakaoStageBestBookResult) {
+
+                    data.let {
+                        pickBookCodeItem = BookListDataBestAnalyze(
+                            it.favoriteCount,
+                            it.viewCount,
+                            it.visitorCount,
+                            it.episodeLikeCount,
+                            999,
+                            0,
+                            0,
+                            0,
+                            0,
+                            DBDate.DateMMDD(),
+                            0,
+                            0,
+                        )
+
+                        mRootRef.child("User").child(UID).child("Novel").child("bookCode")
+                            .child(bookCode).child(DBDate.DateMMDD()).setValue(pickBookCodeItem)
+                    }
+                }
+            })
+    }
+
+    fun getPickRidi(bookCode: String, UID: String) {
+        Thread {
+            val pickBookCodeItem: BookListDataBestAnalyze
+            val doc: Document = Jsoup.connect("https://ridibooks.com/books/${bookCode}").get()
+
+            pickBookCodeItem = BookListDataBestAnalyze(
+                doc.select(".metadata_writer .author_detail_link").text(),
+                doc.select(".header_info_wrap .StarRate_ParticipantCount").text(),
+                "",
+                "",
+                999,
+                0,
+                0,
+                0,
+                0,
+                DBDate.DateMMDD(),
+                0,
+                0,
+            )
+
+            mRootRef.child("User").child(UID).child("Novel").child("bookCode")
+                .child(bookCode).child(DBDate.DateMMDD()).setValue(pickBookCodeItem)
+
+        }.start()
+    }
+
+    fun getPickOneStory(bookCode: String, UID: String) {
+        val apiOnestory = RetrofitOnestore()
+        val param: MutableMap<String?, Any> = HashMap()
+        var pickBookCodeItem: BookListDataBestAnalyze
+
+        param["channelId"] = bookCode
+        param["bookpassYn"] = "N"
+
+        apiOnestory.getOneStoreDetail(
+            bookCode,
+            param,
+            object : RetrofitDataListener<OnestoreBookDetail> {
+                override fun onSuccess(data: OnestoreBookDetail) {
+
+                    data.params.let {
+
+                        pickBookCodeItem = BookListDataBestAnalyze(
+                            it?.ratingAvgScore ?: "",
+                            it?.favoriteCount ?: "",
+                            it?.pageViewTotal ?: "",
+                            it?.commentCount ?: "",
+                            999,
+                            0,
+                            0,
+                            0,
+                            0,
+                            DBDate.DateMMDD(),
+                            0,
+                            0,
+                        )
+
+                        mRootRef.child("User").child(UID).child("Novel").child("bookCode")
+                            .child(bookCode).child(DBDate.DateMMDD()).setValue(pickBookCodeItem)
+                    }
+                }
+            })
+    }
+
+    fun getPickMunpia(bookCode: String, UID: String) {
+        Thread {
+            val doc: Document = Jsoup.connect("https://novel.munpia.com/${bookCode}").get()
+
+            val pickBookCodeItem = BookListDataBestAnalyze(
+                doc.select(".meta-etc dd").next().next()[1]?.text() ?: "",
+                doc.select(".meta-etc dd").next().next()[2]?.text() ?: "",
+                "",
+                "",
+                999,
+                0,
+                0,
+                0,
+                0,
+                DBDate.DateMMDD(),
+                0,
+                0,
+            )
+
+            mRootRef.child("User").child(UID).child("Novel").child("bookCode")
+                .child(bookCode).child(DBDate.DateMMDD()).setValue(pickBookCodeItem)
+
+
+        }.start()
+    }
+
+    fun getPickToksoda(bookCode: String, UID: String) {
+        val apiToksoda = RetrofitToksoda()
+        val param: MutableMap<String?, Any> = HashMap()
+
+        param["brcd"] = bookCode
+        param["_"] = "1657265744728"
+        var pickBookCodeItem: BookListDataBestAnalyze
+
+        apiToksoda.getBestDetail(
+            param,
+            object : RetrofitDataListener<BestToksodaDetailResult> {
+                override fun onSuccess(data: BestToksodaDetailResult) {
+
+                    data.result?.let {
+
+                        pickBookCodeItem = BookListDataBestAnalyze(
+                            it.inqrCnt,
+                            it.goodCnt,
+                            it.intrstCnt,
+                            "",
+                            999,
+                            0,
+                            0,
+                            0,
+                            0,
+                            com.example.moavara.Util.DBDate.DateMMDD(),
+                            0,
+                            0,
+                        )
+
+                        mRootRef.child("User").child(UID).child("Novel").child("bookCode")
+                            .child(bookCode).child(DBDate.DateMMDD()).setValue(pickBookCodeItem)
                     }
                 }
             })
