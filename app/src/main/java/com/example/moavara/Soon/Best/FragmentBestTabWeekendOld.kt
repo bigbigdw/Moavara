@@ -341,8 +341,7 @@ class FragmentBestTabWeekendOld(private val tabType: String) : Fragment() {
                     requireContext(),
                     item,
                     tabType,
-                    item.number,
-                    adapterWeek?.itemCount ?: 0
+                    item.number
                 )
                 fragmentManager?.let { mBottomDialogBest.show(it, null) }
                 adapterWeek?.setSelectedBook("")

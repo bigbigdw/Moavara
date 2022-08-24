@@ -33,7 +33,6 @@ class BottomDialogBest(
     private val item: BookListDataBest?,
     private val platform: String,
     private val pos: Int,
-    private var itemCount: Int,
 ) :
     BottomSheetDialogFragment() {
 
@@ -356,7 +355,7 @@ class BottomDialogBest(
                     item?.let { it1 -> String.format("%s", it1.bookCode) })
                 bookDetailIntent.putExtra("Type", String.format("%s", platform))
                 bookDetailIntent.putExtra("POSITION", pos)
-                bookDetailIntent.putExtra("COUNT", itemCount)
+                item?.let { it1 -> bookDetailIntent.putExtra("COUNT", it1.number) }
                 bookDetailIntent.putExtra("HASDATA", true)
                 startActivity(bookDetailIntent)
                 dismiss()
@@ -398,7 +397,7 @@ class BottomDialogBest(
                     }
 
                     Novel.child("book").child(item?.bookCode ?: "").setValue(group)
-                    Novel.child("bookCode").child(item?.bookCode ?: "").setValue(group)
+                    Novel.child("bookCode").child(item?.bookCode ?: "").setValue(bookCodeItems)
 
                     Toast.makeText(requireContext(), "[${group?.title}]이(가) 마이픽에 등록되었습니다.", Toast.LENGTH_SHORT).show()
                     dismiss()

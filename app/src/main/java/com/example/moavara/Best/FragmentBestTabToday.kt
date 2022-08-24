@@ -90,8 +90,7 @@ class FragmentBestTabToday(private val platform: String, private val pickItems: 
                         requireContext(),
                         item,
                         platform,
-                        position,
-                        adapterToday?.itemCount ?: 0
+                        position
                     )
 
                     fragmentManager?.let { mBottomDialogBest.show(it, null) }

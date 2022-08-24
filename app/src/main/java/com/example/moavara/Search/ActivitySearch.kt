@@ -92,13 +92,13 @@ class ActivitySearch : AppCompatActivity() {
                             )
                             startActivity(intent)
                         } else {
-                            Log.d("####-2", "${item?.type} ${item?.bookCode}")
 
                             val bookDetailIntent =
                                 Intent(this@ActivitySearch, ActivityBestDetail::class.java)
                             bookDetailIntent.putExtra("BookCode", item?.bookCode)
                             bookDetailIntent.putExtra("Type", item?.type)
                             bookDetailIntent.putExtra("POSITION", position)
+                            bookDetailIntent.putExtra("HASDATA", true)
                             startActivity(bookDetailIntent)
                         }
                     }

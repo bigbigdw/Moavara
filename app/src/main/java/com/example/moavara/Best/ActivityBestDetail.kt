@@ -43,7 +43,7 @@ class ActivityBestDetail : AppCompatActivity() {
     var bookLink = ""
     var chapter: List<JoaraBestChapter>? = null
     var pos = 0
-    var itemCount = 0
+
     var genre = ""
     private lateinit var binding: ActivityBestDetailBinding
     private lateinit var mFragmentBestDetailAnalyze: FragmentBestDetailAnalyze
@@ -60,6 +60,7 @@ class ActivityBestDetail : AppCompatActivity() {
     private var isPicked = false
     private var hasBookData = false
     private var fromPick = false
+    private var fromSearch = false
 
     var pickItem = BookListDataBest()
     var pickBookCodeItem = BookListDataBestAnalyze()
@@ -77,11 +78,9 @@ class ActivityBestDetail : AppCompatActivity() {
         bookCode = intent.getStringExtra("BookCode") ?: ""
         platform = intent.getStringExtra("Type") ?: ""
         pos = intent.getIntExtra("POSITION", 0)
-        itemCount = intent.getIntExtra("COUNT", 0)
         hasBookData  = intent.getBooleanExtra("HASDATA", false)
         fromPick  = intent.getBooleanExtra("FROMPICK", false)
-
-        Log.d("####", "${hasBookData}")
+        fromSearch  = intent.getBooleanExtra("FROMSEARCH", false)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -111,7 +110,6 @@ class ActivityBestDetail : AppCompatActivity() {
                         ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                            hasBookData = true
                             for (item in dataSnapshot.children) {
                                 val group: BookListDataBestAnalyze? =
                                     item.getValue(BookListDataBestAnalyze::class.java)
@@ -147,31 +145,36 @@ class ActivityBestDetail : AppCompatActivity() {
                         ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                            for (item in dataSnapshot.children) {
-                                val group: BookListDataBestAnalyze? =
-                                    item.getValue(BookListDataBestAnalyze::class.java)
+                            if(dataSnapshot.exists()){
+                                for (item in dataSnapshot.children) {
+                                    val group: BookListDataBestAnalyze? =
+                                        item.getValue(BookListDataBestAnalyze::class.java)
 
-                                if (group != null) {
-                                    bookData.add(
-                                        BookListDataBestAnalyze(
-                                            group.info1,
-                                            group.info2,
-                                            group.info3,
-                                            group.info4,
-                                            group.number,
-                                            group.numInfo1,
-                                            group.numInfo2,
-                                            group.numInfo3,
-                                            group.numInfo4,
-                                            group.date,
-                                            group.numberDiff,
-                                            group.trophyCount,
+                                    if (group != null) {
+                                        bookData.add(
+                                            BookListDataBestAnalyze(
+                                                group.info1,
+                                                group.info2,
+                                                group.info3,
+                                                group.info4,
+                                                group.number,
+                                                group.numInfo1,
+                                                group.numInfo2,
+                                                group.numInfo3,
+                                                group.numInfo4,
+                                                group.date,
+                                                group.numberDiff,
+                                                group.trophyCount,
+                                            )
                                         )
-                                    )
+                                    }
                                 }
-                            }
 
-                            setLayout()
+                                setLayout()
+                            } else {
+                                hasBookData = false
+                                setLayoutWithoutBookData()
+                            }
                         }
 
                         override fun onCancelled(databaseError: DatabaseError) {}
@@ -241,10 +244,10 @@ class ActivityBestDetail : AppCompatActivity() {
 
                 Novel.child("book").child(bookCode).setValue(pickItem)
 
-                if(hasBookData){
-                    Novel.child("bookCode").child(bookCode).setValue(bookData)
-                } else {
+                if(bookData.isEmpty()){
                     Novel.child("bookCode").child(bookCode).child(DBDate.DateMMDD()).setValue(pickBookCodeItem)
+                } else {
+                    Novel.child("bookCode").child(bookCode).setValue(bookData)
                 }
 
                 Toast.makeText(this, "[${bookTitle}]이(가) 마이픽에 등록되었습니다.", Toast.LENGTH_SHORT).show()
@@ -397,7 +400,7 @@ class ActivityBestDetail : AppCompatActivity() {
                                 data.book.cntTotalComment,
                                 "",
                                 "",
-                                999,
+                                pos,
                                 DBDate.DateMMDD(),
                                 "Joara",
                                 "",
@@ -438,19 +441,19 @@ class ActivityBestDetail : AppCompatActivity() {
                         }
                     }
 
-                    if (platform.contains("Search")) {
-                        mFragmentBestDetailComment =
-                            FragmentBestDetailComment(platform, bookCode)
-                        supportFragmentManager.commit {
-                            replace(R.id.llayoutWrap, mFragmentBestDetailComment)
-                        }
-                    } else {
+                    if (hasBookData) {
                         mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(
                             platform,
                             this@ActivityBestDetail.bookData, hasBookData
                         )
                         supportFragmentManager.commit {
                             replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
+                        }
+                    } else {
+                        mFragmentBestDetailComment =
+                            FragmentBestDetailComment(platform, bookCode)
+                        supportFragmentManager.commit {
+                            replace(R.id.llayoutWrap, mFragmentBestDetailComment)
                         }
                     }
                 }
@@ -530,16 +533,16 @@ class ActivityBestDetail : AppCompatActivity() {
 
 
 
-                if (platform.contains("Search")) {
-                    mFragmentBestDetailBooks = FragmentBestDetailBooks(platform, bookCode)
-                    supportFragmentManager.commit {
-                        replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
-                    }
-                } else {
+                if (hasBookData) {
                     mFragmentBestDetailAnalyze =
                         FragmentBestDetailAnalyze(platform, bookData, hasBookData)
                     supportFragmentManager.commit {
                         replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
+                    }
+                } else {
+                    mFragmentBestDetailBooks = FragmentBestDetailBooks(platform, bookCode)
+                    supportFragmentManager.commit {
+                        replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
                     }
                 }
             }
@@ -642,17 +645,17 @@ class ActivityBestDetail : AppCompatActivity() {
                 }
             })
 
-        if (platform.contains("Search")) {
-            mFragmentBestDetailComment =
-                FragmentBestDetailComment(platform, bookCode)
-            supportFragmentManager.commit {
-                replace(R.id.llayoutWrap, mFragmentBestDetailComment)
-            }
-        } else {
+        if (hasBookData) {
             mFragmentBestDetailAnalyze =
                 FragmentBestDetailAnalyze(platform, bookData, hasBookData)
             supportFragmentManager.commit {
                 replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
+            }
+        } else {
+            mFragmentBestDetailComment =
+                FragmentBestDetailComment(platform, bookCode)
+            supportFragmentManager.commit {
+                replace(R.id.llayoutWrap, mFragmentBestDetailComment)
             }
         }
     }
@@ -730,17 +733,17 @@ class ActivityBestDetail : AppCompatActivity() {
                 }
             })
 
-        if (platform.contains("Search")) {
-            mFragmentBestDetailComment =
-                FragmentBestDetailComment(platform, bookCode)
-            supportFragmentManager.commit {
-                replace(R.id.llayoutWrap, mFragmentBestDetailComment)
-            }
-        } else {
+        if (hasBookData) {
             mFragmentBestDetailAnalyze =
                 FragmentBestDetailAnalyze(platform, bookData, hasBookData)
             supportFragmentManager.commit {
                 replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
+            }
+        } else {
+            mFragmentBestDetailComment =
+                FragmentBestDetailComment(platform, bookCode)
+            supportFragmentManager.commit {
+                replace(R.id.llayoutWrap, mFragmentBestDetailComment)
             }
         }
     }
@@ -820,16 +823,16 @@ class ActivityBestDetail : AppCompatActivity() {
                     )
                 }
 
-                if (platform.contains("Search")) {
-                    mFragmentBestDetailBooks = FragmentBestDetailBooks(platform, bookCode)
-                    supportFragmentManager.commit {
-                        replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
-                    }
-                } else {
+                if (hasBookData) {
                     mFragmentBestDetailAnalyze =
                         FragmentBestDetailAnalyze(platform, bookData, hasBookData)
                     supportFragmentManager.commit {
                         replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
+                    }
+                } else {
+                    mFragmentBestDetailBooks = FragmentBestDetailBooks(platform, bookCode)
+                    supportFragmentManager.commit {
+                        replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
                     }
                 }
             }
@@ -931,17 +934,17 @@ class ActivityBestDetail : AppCompatActivity() {
                 }
             })
 
-        if (platform.contains("Search")) {
-            mFragmentBestDetailComment =
-                FragmentBestDetailComment(platform, bookCode)
-            supportFragmentManager.commit {
-                replace(R.id.llayoutWrap, mFragmentBestDetailComment)
-            }
-        } else {
+        if (hasBookData) {
             mFragmentBestDetailAnalyze =
                 FragmentBestDetailAnalyze(platform, bookData, hasBookData)
             supportFragmentManager.commit {
                 replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
+            }
+        } else {
+            mFragmentBestDetailComment =
+                FragmentBestDetailComment(platform, bookCode)
+            supportFragmentManager.commit {
+                replace(R.id.llayoutWrap, mFragmentBestDetailComment)
             }
         }
     }
@@ -1018,17 +1021,17 @@ class ActivityBestDetail : AppCompatActivity() {
                     )
                 }
 
-                if (platform.contains("Search")) {
-                    mFragmentBestDetailComment =
-                        FragmentBestDetailComment(platform, bookCode)
-                    supportFragmentManager.commit {
-                        replace(R.id.llayoutWrap, mFragmentBestDetailComment)
-                    }
-                } else {
+                if (hasBookData) {
                     mFragmentBestDetailAnalyze =
                         FragmentBestDetailAnalyze(platform, bookData, hasBookData)
                     supportFragmentManager.commit {
                         replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
+                    }
+                } else {
+                    mFragmentBestDetailComment =
+                        FragmentBestDetailComment(platform, bookCode)
+                    supportFragmentManager.commit {
+                        replace(R.id.llayoutWrap, mFragmentBestDetailComment)
                     }
                 }
             }
@@ -1132,17 +1135,17 @@ class ActivityBestDetail : AppCompatActivity() {
                 }
             })
 
-        if (platform.contains("Search")) {
-            mFragmentBestDetailComment =
-                FragmentBestDetailComment(platform, bookCode)
-            supportFragmentManager.commit {
-                replace(R.id.llayoutWrap, mFragmentBestDetailComment)
-            }
-        } else {
+        if (hasBookData) {
             mFragmentBestDetailAnalyze =
                 FragmentBestDetailAnalyze(platform, bookData, hasBookData)
             supportFragmentManager.commit {
                 replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
+            }
+        } else {
+            mFragmentBestDetailComment =
+                FragmentBestDetailComment(platform, bookCode)
+            supportFragmentManager.commit {
+                replace(R.id.llayoutWrap, mFragmentBestDetailComment)
             }
         }
     }

@@ -66,7 +66,6 @@ class AdapterBestWeekend(
                                 item,
                                 platform,
                                 item?.number ?: 0,
-                                adapter.itemCount,
                             )
                             mBottomDialogBest.show((context as AppCompatActivity).supportFragmentManager, null)
                         }
