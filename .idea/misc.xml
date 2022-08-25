@@ -177,7 +177,7 @@
         <entry key="app/src/main/res/Pick/layout/item_pick_event.xml" value="0.18" />
         <entry key="app/src/main/res/Pick/layout/item_pick_novel.xml" value="0.18" />
         <entry key="app/src/main/res/Search/layout/activity_best_detail.xml" value="0.1921875" />
-        <entry key="app/src/main/res/Search/layout/activity_search.xml" value="0.1" />
+        <entry key="app/src/main/res/Search/layout/activity_search.xml" value="0.33" />
         <entry key="app/src/main/res/Search/layout/activity_search_detail.xml" value="0.20677083333333332" />
         <entry key="app/src/main/res/Search/layout/collapse_best_detail.xml" value="0.1921875" />
         <entry key="app/src/main/res/Search/layout/fragment_search.xml" value="0.1" />
@@ -264,6 +264,7 @@
         <entry key="app/src/main/res/layout/item_guide_carousel.xml" value="0.2774690038477982" />
         <entry key="app/src/main/res/layout/item_news.xml" value="0.22" />
         <entry key="app/src/main/res/layout/item_notices.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/item_search_keyword.xml" value="0.5" />
         <entry key="app/src/main/res/layout/item_searchmoavara.xml" value="0.30213160333642264" />
         <entry key="app/src/main/res/layout/item_test.xml" value="0.1" />
         <entry key="app/src/main/res/layout/swipe_view.xml" value="0.1" />

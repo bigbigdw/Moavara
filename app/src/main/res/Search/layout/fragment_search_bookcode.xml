@@ -8,44 +8,6 @@
     android:orientation="vertical">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#0D0E10"
-        android:gravity="bottom"
-        android:orientation="horizontal"
-        android:paddingLeft="16dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp"
-            android:text="퀵서치"
-            android:textColor="#EDE6FD"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <SearchView
-            android:id="@+id/sview"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="right"
-            android:layout_weight="5"
-            android:background="#0D0E10"
-            android:gravity="right|end"
-            android:iconifiedByDefault="false"
-            android:layoutDirection="rtl"
-
-            android:queryHint='찾으실 작품을 검색해주세요'
-            android:searchHintIcon="@android:drawable/ic_menu_search"
-            android:searchIcon="@android:drawable/ic_menu_search"
-            android:textColor="#E2E3E7"
-            android:textColorHint="#3E424B" />
-
-    </LinearLayout>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rviewType"
         android:layout_width="match_parent"
@@ -53,6 +15,25 @@
         android:paddingLeft="16dp"
         android:paddingTop="20dp"
         android:paddingBottom="20dp" />
+
+    <SearchView
+        android:id="@+id/sview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="12dp"
+        android:gravity="right|end"
+        android:iconifiedByDefault="false"
+
+        android:layoutDirection="rtl"
+        android:queryHint='찾으실 작품을 검색해주세요'
+        android:searchHintIcon="@android:drawable/ic_menu_search"
+        android:searchIcon="@android:drawable/ic_menu_search"
+        android:textColor="#E2E3E7"
+        android:textColorHint="#3E424B" />
 
     <LinearLayout
         android:id="@+id/llayoutResult"

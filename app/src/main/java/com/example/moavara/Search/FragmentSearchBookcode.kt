@@ -39,7 +39,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
     private var _binding: FragmentSearchBookcodeBinding? = null
     private val binding get() = _binding!!
     var bookCode = ""
-    private lateinit var adapterType: AdapterType
+    private lateinit var adapterType: AdapterSearchKeyword
     private val typeItems = ArrayList<BestType>()
     var UID = ""
     var userInfo = mRootRef.child("User")
@@ -59,7 +59,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
         _binding = FragmentSearchBookcodeBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        adapterType = AdapterType(typeItems)
+        adapterType = AdapterSearchKeyword(typeItems)
         typeItems.clear()
 
         UID = requireActivity().getSharedPreferences("pref", AppCompatActivity.MODE_PRIVATE)
@@ -98,7 +98,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
         }
         adapterType.notifyDataSetChanged()
 
-        adapterType.setOnItemClickListener(object : AdapterType.OnItemClickListener {
+        adapterType.setOnItemClickListener(object : AdapterSearchKeyword.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
                 adapterType.setSelectedBtn(position)
                 adapterType.notifyDataSetChanged()
@@ -113,34 +113,44 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                     if (platform == "Joara") {
                         tviewSearch.text = "https://www.joara.com/book/1452405"
                         sview.inputType = InputType.TYPE_CLASS_NUMBER
+                        binding.sview.queryHint = "조아라 검색"
                     } else if (platform == "Kakao") {
                         tviewSearch.text = "https://page.kakao.com/home?seriesId=56325530"
+                        binding.sview.queryHint = "카카오페이지 검색"
                         sview.inputType = InputType.TYPE_CLASS_NUMBER
                     } else if (platform == "Kakao_Stage") {
                         tviewSearch.text = "https://pagestage.kakao.com/novels/74312919"
+                        binding.sview.queryHint = "카카오스테이지 검색"
                         sview.inputType = InputType.TYPE_CLASS_NUMBER
                     } else if (platform == "Naver") {
                         tviewSearch.text = "https://novel.naver.com/webnovel/list?novelId=252934"
                         sview.inputType = InputType.TYPE_CLASS_NUMBER
+                        binding.sview.queryHint = "네이버 시리즈 검색"
                     } else if (platform == "Naver_Challenge") {
                         tviewSearch.text = "https://novel.naver.com/challenge/list?novelId=75595"
                         sview.inputType = InputType.TYPE_CLASS_NUMBER
+                        binding.sview.queryHint = "네이버 챌린지리그 검색"
                     } else if (platform == "Naver_Today") {
                         tviewSearch.text = "https://novel.naver.com/best/list?novelId=268129"
                         sview.inputType = InputType.TYPE_CLASS_NUMBER
+                        binding.sview.queryHint = "네이버 베스트리그 검색"
                     } else if (platform == "Ridi") {
                         tviewSearch.text = "https://ridibooks.com/books/425295076"
                         sview.inputType = InputType.TYPE_CLASS_NUMBER
+                        binding.sview.queryHint = "리디북스 검색"
                     } else if (platform == "OneStore") {
                         tviewSearch.text = "https://onestory.co.kr/detail/H042820022"
                         sview.inputType = InputType.TYPE_CLASS_TEXT
                     } else if (platform == "Munpia") {
                         tviewSearch.text = "https://novel.munpia.com/284801"
                         sview.inputType = InputType.TYPE_CLASS_NUMBER
+                        binding.sview.queryHint = "문피아 검색"
+
                     } else if (platform == "Toksoda") {
                         tviewSearch.text =
                             "https://www.tocsoda.co.kr/product/productView?brcd=76M2207187389"
                         sview.inputType = InputType.TYPE_CLASS_TEXT
+                        binding.sview.queryHint = "톡소다 검색"
                     }
                 }
             }

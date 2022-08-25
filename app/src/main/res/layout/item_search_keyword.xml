@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/llayout_Wrap"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="8dp"
+    android:gravity="center|center_vertical"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cviewWrap"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        app:cardCornerRadius="15dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iview"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:src="@mipmap/ic_launcher" />
+
+            <LinearLayout
+                android:id="@+id/llayoutShadow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#B3000000"
+                android:orientation="vertical"></LinearLayout>
+
+        </FrameLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/tveiwTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_weight="1"
+        android:fontFamily="@font/pretendardvariable"
+        android:text="리디"
+        android:textColor="#FFFFFF"
+        android:textSize="13sp" />
+</LinearLayout>

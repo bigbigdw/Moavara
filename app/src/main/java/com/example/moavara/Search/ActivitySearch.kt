@@ -29,7 +29,7 @@ import java.util.*
 
 class ActivitySearch : AppCompatActivity() {
 
-    private lateinit var adapterType: AdapterType
+    private lateinit var adapterType: AdapterSearchKeyword
     private val typeItems = ArrayList<BestType>()
     private lateinit var binding: ActivitySearchBinding
 
@@ -47,6 +47,7 @@ class ActivitySearch : AppCompatActivity() {
 
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.sview.queryHint = "통합 검색"
 
         binding.sview.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -635,7 +636,7 @@ class ActivitySearch : AppCompatActivity() {
 
     private fun getType() {
 
-        adapterType = AdapterType(typeItems)
+        adapterType = AdapterSearchKeyword(typeItems)
         typeItems.clear()
 
         with(binding) {
@@ -654,12 +655,11 @@ class ActivitySearch : AppCompatActivity() {
         }
         adapterType.notifyDataSetChanged()
 
-        adapterType.setOnItemClickListener(object : AdapterType.OnItemClickListener {
+        adapterType.setOnItemClickListener(object : AdapterSearchKeyword.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
                 val item: BestType = adapterType.getItem(position)
                 adapterType.setSelectedBtn(position)
                 adapterType.notifyDataSetChanged()
-
 
                 page = 1
                 type = item.type.toString()
@@ -673,6 +673,39 @@ class ActivitySearch : AppCompatActivity() {
 
                 if (item.type != "Keyword") {
                     binding.rviewSearch.addOnScrollListener(recyclerViewScroll)
+                }
+
+                when (type) {
+                    "Keyword" -> {
+                        binding.sview.queryHint = "통합 검색"
+                    }
+                    "Joara" -> {
+                        binding.sview.queryHint = "조아라 검색"
+                    }
+                    "Naver_Today" -> {
+                        binding.sview.queryHint = "네이버 시리즈 검색"
+                    }
+                    "Naver_Challenge" -> {
+                        binding.sview.queryHint = "네이버 챌린지리그 검색"
+                    }
+                    "Naver" -> {
+                        binding.sview.queryHint = "네이버 베스트리그 검색"
+                    }
+                    "Kakao" -> {
+                        binding.sview.queryHint = "카카오페이지 검색"
+                    }
+                    "Kakao_Stage" -> {
+                        binding.sview.queryHint = "카카오스테이지 검색"
+                    }
+                    "Munpia" -> {
+                        binding.sview.queryHint = "문피아 검색"
+                    }
+                    "Toksoda" -> {
+                        binding.sview.queryHint = "톡소다 검색"
+                    }
+                    "MrBlue" -> {
+                        binding.sview.queryHint = "미스터블루 검색"
+                    }
                 }
 
                 searchItems.clear()
