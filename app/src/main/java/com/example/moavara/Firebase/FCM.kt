@@ -7,6 +7,7 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.SystemClock
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.Person
 import androidx.core.graphics.drawable.IconCompat
@@ -52,11 +53,13 @@ class FCM : FirebaseMessagingService() {
             for(plaform in BestRef.typeList()){
                 File(File("/storage/self/primary/MOAVARA"), "Today_${plaform}.json").delete()
             }
-            miningAlert(title, message, "Alert")
             FirebaseMessaging.getInstance().subscribeToTopic("all")
-        } else if(message.contains("마이픽 리스트가 최신화 되었습니다.")) {
             miningAlert(title, message, "Alert")
+            Log.d("####","BEST")
+        } else if(message.contains("마이픽 리스트가 최신화 되었습니다.")) {
+           Log.d("####","####")
         } else {
+            Log.d("####","${title} ${message}")
             miningAlert(title, message, "Notice")
         }
 
@@ -95,7 +98,7 @@ class FCM : FirebaseMessagingService() {
         notificationBuilder?.setContentTitle(title)
         notificationBuilder?.setContentText(message)
         notificationBuilder?.setAutoCancel(true)
-        notificationBuilder?.setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.moabara_logo))
+//        notificationBuilder?.setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.moabara_logo))
 
         // Activity Intent
         val mainIntent = Intent(this, ActivitySplash::class.java).apply {
@@ -112,7 +115,7 @@ class FCM : FirebaseMessagingService() {
         val broadcastPendingIntent = PendingIntent.getBroadcast(this, 0, broadIntent, PendingIntent.FLAG_IMMUTABLE)
 
         // ActionButton을 추가하여 클릭 시 PendingIntent 설정
-        notificationBuilder?.addAction(NotificationCompat.Action.Builder(android.R.drawable.ic_menu_share, "Action 문자열", broadcastPendingIntent).build())
+//        notificationBuilder?.addAction(NotificationCompat.Action.Builder(R.mipmap.ic_launcher, "모아바라 열기", broadcastPendingIntent).build())
 
         // BigPictureStyle Notification
         if(it == "pictureButton") {
@@ -186,14 +189,8 @@ class FCM : FirebaseMessagingService() {
     }
 
     private fun miningAlert(title: String, message: String, child : String) {
-        ref.child(child).addListenerForSingleValueEvent(object :
-            ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                ref.child(child).child(dataSnapshot.childrenCount.toString()).setValue(FCMAlert(DBDate.DateMMDD(),
-                    title, message
-                ))
-            }
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
+        ref.child(child).child(DBDate.DateMMDDHHMM()).setValue(FCMAlert(DBDate.DateMMDDHHMM(),
+            title, message
+        ))
     }
 }

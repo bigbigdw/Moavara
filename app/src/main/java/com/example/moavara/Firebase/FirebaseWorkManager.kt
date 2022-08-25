@@ -23,8 +23,6 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
 
     override fun doWork(): Result {
 
-        Log.d("####", inputData.getString(TYPE).toString())
-
         if(inputData.getString(TYPE).equals("BEST")){
             Mining.runMining(applicationContext, "FANTASY")
             Mining.runMining(applicationContext, "ALL")
@@ -41,11 +39,17 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
 
     private fun postFCM() {
 
+        val year = DBDate.DateMMDDHHMM().substring(0,4)
+        val month = DBDate.DateMMDDHHMM().substring(4,6)
+        val day = DBDate.DateMMDDHHMM().substring(6,8)
+        val hour = DBDate.DateMMDDHHMM().substring(8,10)
+        val min = DBDate.DateMMDDHHMM().substring(10,12)
+
         val fcmBody = DataFCMBody(
             "/topics/all",
             "high",
-            DataFCMBodyData("data", "body"),
-            DataFCMBodyNotification("모아바라", "베스트 리스트가 갱신되었습니다-${DBDate.DateMMDDHHMM()}", "default", "ic_stat_ic_notification", "best"),
+            DataFCMBodyData("모아바라", "베스트 리스트가 갱신되었습니다"),
+            DataFCMBodyNotification("모아바라", "${year}.${month}.${day} ${hour}:${min} 베스트 리스트가 갱신되었습니다", "default", "ic_stat_ic_notification", "best"),
         )
 
         val call = Retrofit.Builder()

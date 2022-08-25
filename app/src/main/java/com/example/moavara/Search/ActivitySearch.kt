@@ -52,6 +52,8 @@ class ActivitySearch : AppCompatActivity() {
             override fun onQueryTextSubmit(query: String?): Boolean {
 
                 text = query.toString()
+                searchItems.clear()
+                adapter?.notifyDataSetChanged()
 
                 with(binding) {
                     adapter = AdapterBookSearch(searchItems, text)

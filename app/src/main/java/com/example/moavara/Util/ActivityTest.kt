@@ -84,11 +84,12 @@ class ActivityTest : AppCompatActivity() {
         }
 
         // Builder의 setter를 사용하여 Notification 설정
-        notificationBuilder?.setSmallIcon(android.R.drawable.ic_notification_overlay)
+        notificationBuilder?.setSmallIcon(R.mipmap.ic_launcher)
         notificationBuilder?.setContentTitle("Content Title")
         notificationBuilder?.setContentText("Content Message")
         notificationBuilder?.setAutoCancel(true)
-        notificationBuilder?.setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.booktest))
+
+//        notificationBuilder?.setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.booktest))
 
         // Activity Intent
         val mainIntent = Intent(this, ActivityMain::class.java).apply {
@@ -105,7 +106,7 @@ class ActivityTest : AppCompatActivity() {
         val broadcastPendingIntent = PendingIntent.getBroadcast(this, 0, broadIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         // ActionButton을 추가하여 클릭 시 PendingIntent 설정
-        notificationBuilder?.addAction(NotificationCompat.Action.Builder(android.R.drawable.ic_menu_share, "Action 문자열", broadcastPendingIntent).build())
+        notificationBuilder?.addAction(NotificationCompat.Action.Builder(R.mipmap.ic_launcher, "모아바라 열기", broadcastPendingIntent).build())
 
         // BigPictureStyle Notification
         if(it == pictureButton) {

@@ -1,5 +1,6 @@
 package com.example.moavara.User
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,10 +34,12 @@ class AdapterNotice(
 
             val item = this.holder[position]
 
-            var date = DBDate.getDateData(item.date)
+            val year = item.date.substring(0,4)
+            val month = item.date.substring(4,6)
+            val day = item.date.substring(6,8)
 
             with(holder.binding){
-                tviewDate.text = item.date
+                tviewDate.text = "${year}년 ${month}월 ${day}일"
                 tviewTitle.text = item.title
                 tviewBody.text = item.body
             }

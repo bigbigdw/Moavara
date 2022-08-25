@@ -13,6 +13,7 @@ import com.example.moavara.Retrofit.*
 import com.example.moavara.Search.CommunityBoard
 import com.example.moavara.Util.Param
 import com.example.moavara.databinding.FragmentBestDetailTabsBinding
+import com.example.moavara.databinding.FragmentBoardBinding
 import java.util.ArrayList
 
 class FragmentBoard :
@@ -21,7 +22,7 @@ class FragmentBoard :
     private var adapterCommunity: AdapterCommunity? = null
     private val items = ArrayList<CommunityBoard?>()
 
-    private var _binding: FragmentBestDetailTabsBinding? = null
+    private var _binding: FragmentBoardBinding? = null
     private val binding get() = _binding!!
 
     var status = ""
@@ -32,7 +33,7 @@ class FragmentBoard :
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentBestDetailTabsBinding.inflate(inflater, container, false)
+        _binding = FragmentBoardBinding.inflate(inflater, container, false)
         val view = binding.root
         adapterCommunity = AdapterCommunity(items)
 

@@ -37,7 +37,6 @@
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Event/layout/item_event.xml" value="0.4466666666666667" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Login/layout/activity_login.xml" value="0.23055555555555557" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Main/layout/aacasc.xml" value="0.37135416666666665" />
-        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Main/layout/activity_user.xml" value="0.2242817423540315" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Main/layout/component_main_drawer.xml" value="0.37135416666666665" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Main/layout/component_wrap_main.xml" value="0.37135416666666665" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Pick/layout/activity_pick.xml" value="0.15477293790546803" />
@@ -165,6 +164,7 @@
         <entry key="app/src/main/res/Main/layout/activity_admin.xml" value="0.1" />
         <entry key="app/src/main/res/Main/layout/activity_guide.xml" value="0.1" />
         <entry key="app/src/main/res/Main/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/Main/layout/activity_notice.xml" value="0.2798887859128823" />
         <entry key="app/src/main/res/Main/layout/activity_user.xml" value="0.1" />
         <entry key="app/src/main/res/Main/layout/bottom_dialog_main.xml" value="0.1" />
         <entry key="app/src/main/res/Main/layout/component_wrap_main.xml" value="0.1" />
@@ -238,6 +238,7 @@
         <entry key="app/src/main/res/layout/fragment_best_v2.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_best_weekend.xml" value="0.17916666666666667" />
         <entry key="app/src/main/res/layout/fragment_bestdetail_radar.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_board.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_event.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_event_detail.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_event_tab.xml" value="0.1" />
@@ -262,7 +263,7 @@
         <entry key="app/src/main/res/layout/item_event_detail.xml" value="0.33" />
         <entry key="app/src/main/res/layout/item_guide_carousel.xml" value="0.2774690038477982" />
         <entry key="app/src/main/res/layout/item_news.xml" value="0.22" />
-        <entry key="app/src/main/res/layout/item_notices.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_notices.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_searchmoavara.xml" value="0.30213160333642264" />
         <entry key="app/src/main/res/layout/item_test.xml" value="0.1" />
         <entry key="app/src/main/res/layout/swipe_view.xml" value="0.1" />

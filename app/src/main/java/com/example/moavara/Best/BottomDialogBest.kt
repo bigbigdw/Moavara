@@ -463,6 +463,7 @@ class BottomDialogBest(
 
                                 Novel.child("book").child(item?.bookCode ?: "").setValue(group)
                                 Novel.child("bookCode").child(item?.bookCode ?: "").setValue(bookCodeItems)
+                                userInfo.child(UID).child("Mining").setValue(true)
 
                                 Toast.makeText(requireContext(), "[${group?.title}]이(가) 마이픽에 등록되었습니다.", Toast.LENGTH_SHORT).show()
                                 dialogLogin?.dismiss()

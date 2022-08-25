@@ -17,6 +17,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.WorkManager
 import com.example.moavara.Best.BottomDialogMain
 import com.example.moavara.Firebase.*
@@ -35,6 +36,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.messaging.FirebaseMessaging
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Retrofit
@@ -271,44 +276,55 @@ class ActivityUser : AppCompatActivity() {
             }
 
             llayoutPickFCM.setOnClickListener {
-                val fcm = Intent(applicationContext, FCM::class.java)
-                startService(fcm)
 
-                val User = getSharedPreferences("pref", MODE_PRIVATE)
-                    ?.getString("NICKNAME", "").toString()
-                val UID = getSharedPreferences("pref", MODE_PRIVATE)
-                    ?.getString("UID", "").toString()
+                userInfo.child(UID).child("Mining").get().addOnSuccessListener {
+                    if (it.value != null || it.value == false) {
+                        val fcm = Intent(applicationContext, FCM::class.java)
+                        startService(fcm)
 
-                val fcmBody = DataFCMBody(
-                    "/topics/${UID}",
-                    "high",
-                    DataFCMBodyData("모아바라 PICK 최신화", "${User}님의 마이픽 리스트가 최신화 되었습니다."),
-                    DataFCMBodyNotification("모아바라 PICK 최신화", "${User}님의 마이픽 리스트가 최신화 되었습니다.", "default", "ic_stat_ic_notification"),
-                )
+                        val User = getSharedPreferences("pref", MODE_PRIVATE)
+                            ?.getString("NICKNAME", "").toString()
+                        val UID = getSharedPreferences("pref", MODE_PRIVATE)
+                            ?.getString("UID", "").toString()
 
-                val call = Retrofit.Builder()
-                    .baseUrl("https://fcm.googleapis.com")
-                    .addConverterFactory(GsonConverterFactory.create()).build()
-                    .create(FirebaseService::class.java)
-                    .postRetrofit(
-                        fcmBody
-                    )
+                        val fcmBody = DataFCMBody(
+                            "/topics/${UID}",
+                            "high",
+                            DataFCMBodyData("모아바라 PICK 최신화", "${User}님의 마이픽 리스트가 최신화 되었습니다."),
+                            DataFCMBodyNotification("모아바라 PICK 최신화", "${User}님의 마이픽 리스트가 최신화 되었습니다.", "default", "ic_stat_ic_notification"),
+                        )
 
-                call.enqueue(object : Callback<FWorkManagerResult?> {
-                    override fun onResponse(
-                        call: Call<FWorkManagerResult?>,
-                        response: retrofit2.Response<FWorkManagerResult?>
-                    ) {
-                        if (response.isSuccessful) {
-                            Mining.getMyPickMining(applicationContext)
-                        }
+                        val call = Retrofit.Builder()
+                            .baseUrl("https://fcm.googleapis.com")
+                            .addConverterFactory(GsonConverterFactory.create()).build()
+                            .create(FirebaseService::class.java)
+                            .postRetrofit(
+                                fcmBody
+                            )
+
+                        call.enqueue(object : Callback<FWorkManagerResult?> {
+                            override fun onResponse(
+                                call: Call<FWorkManagerResult?>,
+                                response: retrofit2.Response<FWorkManagerResult?>
+                            ) {
+                                if (response.isSuccessful) {
+                                    Mining.getMyPickMining(applicationContext)
+                                }
+                            }
+
+                            override fun onFailure(call: Call<FWorkManagerResult?>, t: Throwable) {}
+                        })
+                        userInfo.child(UID).child("Mining").setValue(true)
+                    } else {
+                        Toast.makeText(applicationContext, "이미 최신화 기능이 활성화 되어있습니다.", Toast.LENGTH_SHORT).show()
                     }
+                }.addOnFailureListener {}
 
-                    override fun onFailure(call: Call<FWorkManagerResult?>, t: Throwable) {}
-                })
+
             }
 
             llayoutPickFCMStop.setOnClickListener {
+                userInfo.child(UID).child("Mining").setValue(false)
                 val workManager = WorkManager.getInstance(applicationContext)
                 workManager.cancelAllWorkByTag("MoavaraPick")
                 Toast.makeText(applicationContext, "선호작 최신화 해제됨", Toast.LENGTH_SHORT).show()

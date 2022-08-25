@@ -26,7 +26,7 @@ object DBDate {
 
     fun DateMMDDHHMM(): String {
         val currentTime: Date = Calendar.getInstance().time
-        val format = SimpleDateFormat("YYYYMMddhhmm")
+        val format = SimpleDateFormat("YYYYMMddHHmm")
         return format.format(currentTime).toString()
     }
 

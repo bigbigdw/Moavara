@@ -61,12 +61,6 @@
 
     </LinearLayout>
 
-    <View
-        android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#6E7686" />
-
     <LinearLayout
         android:id="@+id/llayoutContents"
         android:layout_width="match_parent"
@@ -85,5 +79,11 @@
             android:text="걱정도 아침이 어머니, 언덕 있습니다. 다하지 별에도 옥 어머님, 이름과, 프랑시스 별 이름자 버리었습니다. 내린 언덕 써 별을 마리아 새겨지는 듯합니다. 추억과 별을 마리아 어머님, 소녀들의 우는 프랑시스 위에 봅니다. 프랑시스 멀리 라이너 그리고 까닭입니다. 그리고 마리아 새겨지는 불러 어머니 한 걱정도 속의 거외다. 다 같이 소학교 이름을 풀이 별 이름과, 하나에 슬퍼하는 있습니다. 쉬이 어머님, 당신은 별빛이 한 까닭입니다. 슬퍼하는 하나에 않은 묻힌 봅니다. 내일 이제 겨울이 헤는 불러 가을로 다 버리었습니다. 새워 하나에 별 봄이 패, 거외다. 하나에 같이 밤이 계십니다. 써 이름과, 무덤 별 된 지나가는 때 하나에 흙으로 봅니다. 시인의 별 가을 릴케 이런 이름과, 자랑처럼 불러 있습니다. 멀듯이, 별빛이 이웃 별 봅니다. 아스라히 언덕 별들을 풀이 가난한 옥 걱정도 아름다운 계십니다. 된 이름을 흙으로 노새, 이름을 시와 언덕 버리었습니다. 그리워 내린 무성할 가난한 새워 계십니다. 라이너 패, 이름을 피어나듯이 나는 까닭입니다. 하나에 사랑과 추억과 계집애들의 불러 이름과, 까닭입니다. 아스라히 파란 노루, 릴케 있습니다."
             android:textColor="#A7ACB7" />
     </LinearLayout>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#6E7686" />
 
 </LinearLayout>

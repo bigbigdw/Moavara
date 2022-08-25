@@ -309,6 +309,7 @@ class ActivityBestDetail : AppCompatActivity() {
                             FirebaseMessaging.getInstance().subscribeToTopic(UID)
 
                             Novel.child("book").child(bookCode).setValue(pickItem)
+                            userInfo.child(UID).child("Mining").setValue(true)
 
                             if(bookData.isEmpty()){
                                 Novel.child("bookCode").child(bookCode).child(DBDate.DateMMDD()).setValue(pickBookCodeItem)

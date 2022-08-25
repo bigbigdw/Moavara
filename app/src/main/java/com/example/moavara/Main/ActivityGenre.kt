@@ -145,6 +145,7 @@ class ActivityGenre : AppCompatActivity() {
             llayoutBtn1.setOnClickListener {
                 savePreferences("GENRE","FANTASY")
                 userInfo.child(UID).child("Genre").setValue("FANTASY")
+                userInfo.child(UID).child("Mining").setValue(false)
 
                 if(mode == "USER"){
                     val novelIntent = Intent(context, ActivityMain::class.java)
