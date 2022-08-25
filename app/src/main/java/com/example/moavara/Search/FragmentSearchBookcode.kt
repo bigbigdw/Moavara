@@ -61,6 +61,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
 
         adapterType = AdapterSearchKeyword(typeItems)
         typeItems.clear()
+        binding.sview.queryHint = "조아라 검색"
 
         UID = requireActivity().getSharedPreferences("pref", AppCompatActivity.MODE_PRIVATE)
             ?.getString("UID", "").toString()
