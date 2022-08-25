@@ -159,11 +159,16 @@ class AdapterPickNovel(private var context: Context, private var itemsList: Arra
                     tviewInfo1.visibility = View.VISIBLE
                     tviewInfo2.visibility = View.VISIBLE
                     tviewInfo3.visibility = View.VISIBLE
-                    tviewInfo4.visibility = View.VISIBLE
 
-                    val info3 = SpannableStringBuilder("별점 수 : ${item.info3.replace("별점", "별점 : ")}")
+                    if(item.type == "Naver_Challenge"){
+                        tviewInfo4.visibility = View.GONE
+                    } else {
+                        tviewInfo4.visibility = View.VISIBLE
+                    }
+
+                    val info3 = SpannableStringBuilder("별점 수 : ${item.info3.replace("별점", "")}")
                     info3.applyingTextColor(
-                        "별점 : ",
+                        "별점 수 : ",
                         "#6E7686"
                     )
 

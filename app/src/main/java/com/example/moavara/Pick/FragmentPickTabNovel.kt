@@ -132,9 +132,6 @@ class FragmentPickTabNovel : Fragment() {
                         adapter.editItem(position)
                         Toast.makeText(requireContext(), "수정되었습니다", Toast.LENGTH_SHORT).show()
                     }
-                    "Delete" -> {
-                        Log.d("####","${adapter.itemCount}")
-                    }
                     "Item" -> {
                         val bookDetailIntent =
                             Intent(requireContext(), ActivityBestDetail::class.java)

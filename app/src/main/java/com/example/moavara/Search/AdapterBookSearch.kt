@@ -172,20 +172,20 @@ class AdapterBookSearch(private var holder: ArrayList<BookListDataBest>, private
                         )
 
                         tviewInfo.text = info2
-                        tviewInfo5.text = info3
+                        tviewInfo5.text = info5
                         tviewInfo4.text = info4
-                        tviewInfo3.text = info5
+                        tviewInfo3.text = info3
                         tviewIntro.text = item.info1
                     }
                     "Kakao" -> {
 
-                        val info3 = SpannableStringBuilder("조회 수 : ${item.info3}")
-                        info3.applyingTextColor(
+                        val info5 = SpannableStringBuilder("조회 수 : ${item.info5}")
+                        info5.applyingTextColor(
                             "조회 수 : ",
                             "#6E7686"
                         )
 
-                        val info4 = SpannableStringBuilder(item.info4)
+                        val info4 = SpannableStringBuilder("총 ${item.info4}화")
                         info4.applyingTextColor(
                             "총 ",
                             "#6E7686"
@@ -197,7 +197,7 @@ class AdapterBookSearch(private var holder: ArrayList<BookListDataBest>, private
                         )
 
                         tviewInfo.text = item.info2
-                        tviewInfo5.text = info3
+                        tviewInfo5.text = info5
                         tviewInfo4.text = info4
                     }
                     "Kakao_Stage" -> {
@@ -214,7 +214,7 @@ class AdapterBookSearch(private var holder: ArrayList<BookListDataBest>, private
                             "#6E7686"
                         )
 
-                        val info5 = SpannableStringBuilder(item.info5)
+                        val info5 = SpannableStringBuilder("총 ${item.info5}화")
                         info5.applyingTextColor(
                             "총 ",
                             "#6E7686"
@@ -226,9 +226,9 @@ class AdapterBookSearch(private var holder: ArrayList<BookListDataBest>, private
                         )
 
                         tviewInfo.text = item.info2
-                        tviewInfo5.text = info3
+                        tviewInfo5.text = info5
                         tviewInfo4.text = info4
-                        tviewInfo3.text = info5
+                        tviewInfo3.text = info3
                         tviewIntro.text = item.info1
                     }
                     "Naver", "Naver_Today", "Naver_Challenge" -> {

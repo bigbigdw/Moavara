@@ -578,9 +578,14 @@ class ActivityBestDetail : AppCompatActivity() {
                         doc.select(".info_book .like").text().replace("관심", "").replace("명", "")
                     inclueBestDetail.tviewInfo2.text = doc.select(".grade_area em").text()
 
-                    inclueBestDetail.iviewInfo3.setImageResource(R.drawable.ic_launcher_gray)
-                    inclueBestDetail.tviewInfo3.text =
-                        doc.select(".info_book .download").text().replace("다운로드", "")
+                    if(platform != "Naver"){
+                        inclueBestDetail.llayoutTab3.visibility = View.VISIBLE
+                        inclueBestDetail.iviewInfo3.setImageResource(R.drawable.ic_launcher_gray)
+                        inclueBestDetail.tviewInfo3.text =
+                            doc.select(".info_book .download").text().replace("다운로드", "")
+                    } else {
+                        inclueBestDetail.llayoutTab3.visibility = View.GONE
+                    }
 
                     inclueBestDetail.llayoutTab4.visibility = View.GONE
                     inclueBestDetail.viewTab4.visibility = View.GONE
@@ -660,8 +665,6 @@ class ActivityBestDetail : AppCompatActivity() {
                                 .load("https://dn-img-page.kakao.com/download/resource?kid=${it.land_thumbnail_url}")
                                 .into(inclueBestDetail.iviewBookCover)
 
-                            Log.d("####", "https://dn-img-page.kakao.com/download/resource?kid=${it.land_thumbnail_url}")
-
                             bookTitle = it.title
                             tviewToolbar.text = bookTitle
                             inclueBestDetail.tviewTitle.text = bookTitle
@@ -686,9 +689,9 @@ class ActivityBestDetail : AppCompatActivity() {
                                 bookCode,
                                 it.description,
                                 "총 ${it.open_counts}화",
+                                it.read_count,
                                 it.page_rating_count,
                                 it.page_rating_summary.replace(".0", ""),
-                                it.read_count,
                                 it.page_comment_count,
                                 999,
                                 DBDate.DateMMDD(),
@@ -697,9 +700,9 @@ class ActivityBestDetail : AppCompatActivity() {
                             )
 
                             pickBookCodeItem = BookListDataBestAnalyze(
+                                it.read_count,
                                 it.page_rating_count,
                                 it.page_rating_summary.replace(".0", ""),
-                                it.read_count,
                                 it.page_comment_count,
                                 999,
                                 0,
@@ -778,9 +781,9 @@ class ActivityBestDetail : AppCompatActivity() {
                             inclueBestDetail.tviewInfo1.text =
                                 BestRef.decimalToString(it.favoriteCount.toInt())
                             inclueBestDetail.tviewInfo2.text =
-                                BestRef.decimalToString(it.viewCount.toInt())
-                            inclueBestDetail.tviewInfo3.text =
                                 BestRef.decimalToString(it.visitorCount.toInt())
+                            inclueBestDetail.tviewInfo3.text =
+                                BestRef.decimalToString(it.viewCount.toInt())
                             inclueBestDetail.tviewInfo4.text =
                                 BestRef.decimalToString(it.episodeLikeCount.toInt())
 
@@ -793,9 +796,9 @@ class ActivityBestDetail : AppCompatActivity() {
                                 bookCode,
                                 it.synopsis,
                                 "총 ${it.publishedEpisodeCount}화",
-                                it.favoriteCount,
                                 it.viewCount,
                                 it.visitorCount,
+                                it.favoriteCount,
                                 it.episodeLikeCount,
                                 999,
                                 DBDate.DateMMDD(),
@@ -804,9 +807,9 @@ class ActivityBestDetail : AppCompatActivity() {
                             )
 
                             pickBookCodeItem = BookListDataBestAnalyze(
-                                it.favoriteCount,
                                 it.viewCount,
                                 it.visitorCount,
+                                it.favoriteCount,
                                 it.episodeLikeCount,
                                 999,
                                 0,
@@ -853,6 +856,11 @@ class ActivityBestDetail : AppCompatActivity() {
                 window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
 
                 with(binding) {
+                    inclueBestDetail.llayoutTab3.visibility = View.GONE
+                    inclueBestDetail.llayoutTab4.visibility = View.GONE
+                    inclueBestDetail.viewTab4.visibility = View.GONE
+                    inclueBestDetail.viewTab3.visibility = View.GONE
+
                     Glide.with(this@ActivityBestDetail)
                         .load("https:${doc.select(".thumbnail_image img").attr("src")}")
                         .into(inclueBestDetail.iviewBookCover)
@@ -869,11 +877,6 @@ class ActivityBestDetail : AppCompatActivity() {
                         doc.select(".header_info_wrap .StarRate_Score").text()
                     inclueBestDetail.tviewInfo2.text =
                         doc.select(".header_info_wrap .StarRate_ParticipantCount").text()
-
-                    inclueBestDetail.llayoutTab3.visibility = View.GONE
-                    inclueBestDetail.llayoutTab4.visibility = View.GONE
-                    inclueBestDetail.viewTab4.visibility = View.GONE
-                    inclueBestDetail.viewTab3.visibility = View.GONE
 
                     inclueBestDetail.tviewInfo3.text =
                         doc.select(".metadata_info_series_complete_wrap .metadata_item").text()
@@ -972,10 +975,10 @@ class ActivityBestDetail : AppCompatActivity() {
                                 bookCode,
                                 "",
                                 it?.menuNm ?: "",
-                                it?.ratingAvgScore ?: "",
-                                it?.favoriteCount ?: "",
                                 it?.pageViewTotal ?: "",
+                                it?.ratingAvgScore ?: "",
                                 it?.commentCount ?: "",
+                                it?.favoriteCount ?: "",
                                 999,
                                 DBDate.DateMMDD(),
                                 platform,
@@ -983,10 +986,10 @@ class ActivityBestDetail : AppCompatActivity() {
                             )
 
                             pickBookCodeItem = BookListDataBestAnalyze(
-                                it?.ratingAvgScore ?: "",
-                                it?.favoriteCount ?: "",
                                 it?.pageViewTotal ?: "",
+                                it?.ratingAvgScore ?: "",
                                 it?.commentCount ?: "",
+                                it?.favoriteCount ?: "",
                                 999,
                                 0,
                                 0,

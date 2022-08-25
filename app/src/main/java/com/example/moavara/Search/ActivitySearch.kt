@@ -68,15 +68,47 @@ class ActivitySearch : AppCompatActivity() {
                 }
 
 
-                searchMrBlue(text)
-                searchToksoda(text)
-                searchMunpia(text)
-                searchNaver(text, "Naver_Challenge")
-                searchNaver(text, "Naver_Today")
-                searchNaver(text, "Naver")
-                searchKakao(page - 1, text)
-                searchKakaoStage(page - 1, text)
-                searchJoara(page, text)
+                when (type) {
+                    "Keyword" -> {
+                        searchJoara(page, text)
+                        searchKakaoStage(page - 1, text)
+                        searchKakao(page - 1, text)
+                        searchNaver(text, "Naver")
+                        searchNaver(text, "Naver_Today")
+                        searchNaver(text, "Naver_Challenge")
+                        searchMunpia(text)
+                        searchToksoda(text)
+                        searchMrBlue(text)
+                    }
+                    "Joara" -> {
+                        searchJoara(page, text)
+                    }
+                    "Naver_Today" -> {
+                        searchNaver(text, "Naver_Today")
+                    }
+                    "Naver_Challenge" -> {
+                        searchNaver(text, "Naver_Challenge")
+                    }
+                    "Naver" -> {
+                        searchNaver(text, "Naver")
+                    }
+                    "Kakao" -> {
+                        searchKakao(page - 1, text)
+                    }
+                    "Kakao_Stage" -> {
+                        searchKakaoStage(page - 1, text)
+                    }
+                    "Munpia" -> {
+                        searchMunpia(text)
+                    }
+                    "Toksoda" -> {
+                        searchToksoda(text)
+                    }
+                    "MrBlue" -> {
+                        searchMrBlue(text)
+                    }
+                }
+                adapter?.notifyDataSetChanged()
 
                 adapter?.setOnItemClickListener(object : AdapterBookSearch.OnItemClickListener {
                     override fun onItemClick(v: View?, position: Int) {
@@ -225,9 +257,9 @@ class ActivitySearch : AppCompatActivity() {
                                         items[j].id,
                                         items[j].publisher_name,
                                         items[j].sub_category,
-                                        items[j].read_count,
-                                        "총 ${items[j].page}화",
                                         "",
+                                        items[j].page,
+                                        items[j].read_count,
                                         "",
                                         999,
                                         DBDate.DateMMDDHHMM(),
@@ -289,7 +321,7 @@ class ActivitySearch : AppCompatActivity() {
                                 items.subGenre.name,
                                 items.favoriteCount,
                                 items.viewCount,
-                                "총 ${items.publishedEpisodeCount}",
+                                items.publishedEpisodeCount,
                                 "",
                                 999,
                                 DBDate.DateMMDDHHMM(),
@@ -630,53 +662,20 @@ class ActivitySearch : AppCompatActivity() {
                 page = 1
                 type = item.type.toString()
 
+                with(binding){
+                    blank.root.visibility = View.VISIBLE
+                    rviewSearch.visibility = View.GONE
+                    blank.tviewblank.text = "검색어를 입력해주세요."
+                    sview.setQuery("",false)
+                }
+
                 if (item.type != "Keyword") {
                     binding.rviewSearch.addOnScrollListener(recyclerViewScroll)
                 }
 
                 searchItems.clear()
 
-                when (item.type) {
-                    "Keyword" -> {
-                        searchJoara(page, text)
-                        searchKakaoStage(page - 1, text)
-                        searchKakao(page - 1, text)
-                        searchNaver(text, "Naver")
-                        searchNaver(text, "Naver_Today")
-                        searchNaver(text, "Naver_Challenge")
-                        searchMunpia(text)
-                        searchToksoda(text)
-                        searchMrBlue(text)
-                    }
-                    "Joara" -> {
-                        searchJoara(page, text)
-                    }
-                    "Naver_Today" -> {
-                        searchNaver(text, "Naver_Today")
-                    }
-                    "Naver_Challenge" -> {
-                        searchNaver(text, "Naver_Challenge")
-                    }
-                    "Naver" -> {
-                        searchNaver(text, "Naver")
-                    }
-                    "Kakao" -> {
-                        searchKakao(page - 1, text)
-                    }
-                    "Kakao_Stage" -> {
-                        searchKakaoStage(page - 1, text)
-                    }
-                    "Munpia" -> {
-                        searchMunpia(text)
-                    }
-                    "Toksoda" -> {
-                        searchToksoda(text)
-                    }
-                    "MrBlue" -> {
-                        searchMrBlue(text)
-                    }
-                }
-                adapter?.notifyDataSetChanged()
+
             }
         })
     }

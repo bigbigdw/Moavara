@@ -104,6 +104,16 @@
             android:layout_marginTop="14dp"
             android:src="@drawable/likeit_4" />
 
+        <TextView
+            android:id="@+id/tviewSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendardvariable"
+            android:text="작품을 불러오는 중..."
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+
     </LinearLayout>
 
     <LinearLayout

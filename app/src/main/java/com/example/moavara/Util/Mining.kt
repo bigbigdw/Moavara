@@ -592,8 +592,7 @@ object Mining {
                                 OneStoryRef["info1"] = " "
                                 OneStoryRef["info2"] = " "
                                 OneStoryRef["info3"] = productList[i].totalCount
-                                OneStoryRef["info4"] =
-                                    productList[i].avgScore
+                                OneStoryRef["info4"] = productList[i].avgScore
                                 OneStoryRef["info5"] = productList[i].commentCount
                                 OneStoryRef["info6"] = ""
                                 OneStoryRef["number"] = i

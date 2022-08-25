@@ -124,17 +124,9 @@ class FragmentPickTabEvent : Fragment() {
                         startActivity(intent)
                     }
 
-
                 } else if(type == "Confirm"){
                     adapter.editItem(position)
                     Toast.makeText(requireContext(), "수정되었습니다", Toast.LENGTH_SHORT).show()
-                }  else if(type == "Delete"){
-                    if(adapter.itemCount == 0){
-                        binding.blank.root.visibility = View.VISIBLE
-                    } else {
-                        binding.blank.root.visibility = View.GONE
-                    }
-                    Toast.makeText(requireContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show()
                 }
             }
         })

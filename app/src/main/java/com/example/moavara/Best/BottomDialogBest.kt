@@ -168,12 +168,18 @@ class BottomDialogBest(
                 tviewInfo1.visibility = View.VISIBLE
                 tviewInfo2.visibility = View.VISIBLE
                 tviewInfo3.visibility = View.VISIBLE
-                tviewInfo4.visibility = View.VISIBLE
+
+                if(platform != "Naver"){
+                    tviewInfo4.visibility = View.GONE
+                } else {
+                    tviewInfo4.visibility = View.VISIBLE
+                }
+
                 tviewInfo5.visibility = View.GONE
 
-                val info3 = SpannableStringBuilder("별점 수 : ${item?.info3?.replace("별점", "별점 : ")}")
+                val info3 = SpannableStringBuilder("별점 수 : ${item?.info3?.replace("별점", "")}")
                 info3.applyingTextColor(
-                    "별점 : ",
+                    "별점 수 : ",
                     "#6E7686"
                 )
 
