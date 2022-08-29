@@ -18,7 +18,7 @@ interface ApiKakao {
     fun postKakaoBookDetailComment(@FieldMap queryMap: MutableMap<String?, Any>): Call<BestKakaoBookDetailComment>
 
     @FormUrlEncoded
-    @POST("/api/v5/store/search")
+    @POST("api/v5/store/search")
     fun postKakaoSearch(@FieldMap queryMap: MutableMap<String?, Any>): Call<SearchResultKakao>
 }
 
@@ -35,4 +35,7 @@ interface ApiKakaoStage {
 
     @GET("search")
     fun getSearchKakaoStage(@QueryMap queryMap: MutableMap<String?, Any>): Call<KakaoStageSearchResult>
+
+    @GET("events")
+    fun getKakaoStageEventList(@QueryMap queryMap: MutableMap<String?, Any>): Call<KakaoStageEventList>
 }

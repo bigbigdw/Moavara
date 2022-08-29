@@ -46,5 +46,9 @@ class RetrofitKaKao {
     fun postKakaoBookDetailComment(map: MutableMap<String?, Any>, dataListener: RetrofitDataListener<BestKakaoBookDetailComment>) {
         apiKakao.postKakaoBookDetailComment(map).enqueue(baseCallback(dataListener))
     }
+
+    fun getKakaoStageEventList(map: MutableMap<String?, Any>, dataListener: RetrofitDataListener<KakaoStageEventList>) {
+        apiKakaoStage.getKakaoStageEventList(map).enqueue(baseCallback(dataListener))
+    }
 }
 

@@ -370,3 +370,62 @@ class KakaoBestStageSubGenre {
     @Expose
     var name: String = ""
 }
+
+class KakaoStageEventList {
+    @SerializedName("content")
+    @Expose
+    var content = ArrayList<KakaoStageEventListContents>()
+
+    @SerializedName("totalElements")
+    @Expose
+    var totalElements: String = ""
+}
+
+class KakaoStageEventListContents {
+    @SerializedName("active")
+    @Expose
+    var active: String = ""
+
+    @SerializedName("title")
+    @Expose
+    var title: String = ""
+
+    @SerializedName("id")
+    @Expose
+    var id: String = ""
+
+    @SerializedName("startedAt")
+    @Expose
+    var startedAt: String = ""
+
+    @SerializedName("endedAt")
+    @Expose
+    var endedAt: String = ""
+
+    @SerializedName("desktopListImage")
+    @Expose
+    var desktopListImage: KakaoStageEventListDesktopListImage? = null
+
+    @SerializedName("desktopDetailImage")
+    @Expose
+    var desktopDetailImage: KakaoStageEventListDesktopDetailImage? = null
+}
+
+class KakaoStageEventListDesktopListImage {
+
+    @SerializedName("image")
+    @Expose
+    var image: KakaoStageEventListDesktopListImageImage? = null
+}
+
+class KakaoStageEventListDesktopListImageImage{
+    @SerializedName("url")
+    @Expose
+    var url: String = ""
+}
+
+class KakaoStageEventListDesktopDetailImage{
+    @SerializedName("image")
+    @Expose
+    var image: KakaoStageEventListDesktopListImageImage? = null
+}

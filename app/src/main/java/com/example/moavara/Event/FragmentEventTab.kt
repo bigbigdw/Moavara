@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moavara.Retrofit.*
+import com.example.moavara.Retrofit.Retrofit.apiToksoda
 import com.example.moavara.Search.EventData
 import com.example.moavara.Search.EventDataGroup
 import com.example.moavara.Util.DBDate
@@ -40,6 +41,8 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
             rview.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             rview.adapter = adapter
+
+            blank.tviewblank.text = "이벤트를 불러오는 중..."
         }
 
         items.clear()
@@ -54,9 +57,13 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
 //                "OneStore" -> {
 //                    getEventOneStore()
 //                }
-            "Kakao_Stage" -> {
+            "Kakao" -> {
                 getEventKakao()
             }
+            "Kakao_Stage" -> {
+                getEventKakaoStage()
+            }
+
             "MrBlue" -> {
                 getEventMrBlue()
             }
@@ -86,75 +93,6 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
 
         val apiJoara = RetrofitJoara()
         val param = Param.getItemAPI(context)
-        param["page"] = "1"
-        param["show_type"] = "android"
-        param["event_type"] = "normal"
-        param["offset"] = "25"
-
-        apiJoara.getJoaraEventList(
-            param,
-            object : RetrofitDataListener<JoaraEventsResult> {
-                override fun onSuccess(it: JoaraEventsResult) {
-
-                    val data = it.data
-
-                    if (data != null) {
-                        for (i in data.indices) {
-
-                            try {
-                                val left = data[2 * i]
-                                val right = data[2 * i + 1]
-
-                                items.add(
-                                    EventDataGroup(
-                                        EventData(
-                                            left.idx,
-                                            left.ingimg.replace("http://", "https://"),
-                                            left.title,
-                                            left.cnt_read,
-                                            DBDate.DateMMDD(),
-                                            999,
-                                            "Joara",
-                                            ""
-                                        ),
-                                        EventData(
-                                            right.idx,
-                                            right.ingimg.replace("http://", "https://"),
-                                            right.title,
-                                            right.cnt_read,
-                                            DBDate.DateMMDD(),
-                                            999,
-                                            "Joara",
-                                            ""
-                                        )
-                                    )
-                                )
-                            } catch (e: IndexOutOfBoundsException) {
-                            }
-                        }
-                    }
-
-                    if (data != null) {
-                        if (data.size == 0) {
-                            binding.rview.visibility = View.GONE
-                            binding.blank.tviewblank.text = "현재 진행중인 이벤트가 없습니다."
-                            binding.blank.root.visibility = View.VISIBLE
-                        } else {
-                            binding.blank.root.visibility = View.GONE
-                            binding.rview.visibility = View.VISIBLE
-                        }
-                    }
-
-                    adapter.notifyDataSetChanged()
-                }
-            })
-
-    }
-
-    private fun getEventJoaraOld() {
-
-        val apiJoara = RetrofitJoara()
-        val param = Param.getItemAPI(context)
         param["page"] = "0"
         param["banner_type"] = "app_home_top_banner"
         param["category"] = "0"
@@ -167,33 +105,33 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                     val banner = data.banner
 
                     if (banner != null) {
+
                         for (i in banner.indices) {
 
-                            val idx = banner[i].joaralink
-                            val imgfile = banner[i].imgfile.replace("http://", "https://")
-
-                            items.add(
-                                EventDataGroup(
-                                    EventData(
-                                        idx,
-                                        imgfile,
-                                        "",
-                                        "",
-                                        "Joara",
-                                        999,
-                                        ""
-                                    ),
-                                    EventData(
-                                        idx,
-                                        imgfile,
-                                        "",
-                                        "",
-                                        "Joara",
-                                        999,
-                                        ""
+                            try {
+                                items.add(
+                                    EventDataGroup(
+                                        EventData(
+                                            banner[2 * i].joaralink,
+                                            banner[2 * i].imgfile.replace("http://", "https://"),
+                                            "",
+                                            "",
+                                            "Joara",
+                                            999,
+                                            ""
+                                        ),
+                                        EventData(
+                                            banner[2 * i + 1].joaralink,
+                                            banner[2 * i + 1].imgfile.replace("http://", "https://"),
+                                            "",
+                                            "",
+                                            "Joara",
+                                            999,
+                                            ""
+                                        )
                                     )
                                 )
-                            )
+                            } catch (e: IndexOutOfBoundsException) { }
                         }
                     }
 
@@ -449,7 +387,7 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                                     "",
                                     DBDate.DateMMDD(),
                                     999,
-                                    "Kakao_Stage",
+                                    "Kakao",
                                     ""
                                 ),
                                 EventData(
@@ -465,7 +403,7 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                                     "",
                                     DBDate.DateMMDD(),
                                     999,
-                                    "Kakao_Stage",
+                                    "Kakao",
                                     ""
                                 )
                             )
@@ -483,6 +421,61 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                 adapter.notifyDataSetChanged()
             }
         }.start()
+    }
+
+    private fun getEventKakaoStage(){
+        val apiKakaoStage = RetrofitKaKao()
+        val param: MutableMap<String?, Any> = HashMap()
+
+        param["page"] = "0"
+        param["progress"] = "true"
+        param["size"] = "9"
+
+        apiKakaoStage.getKakaoStageEventList(
+            param,
+            object : RetrofitDataListener<KakaoStageEventList> {
+                override fun onSuccess(data: KakaoStageEventList) {
+                    for (i in data.content.indices) {
+                        try {
+
+                            items.add(
+                                EventDataGroup(
+                                    EventData(
+                                        data.content[2 * i].id,
+                                        data.content[2 * i].desktopListImage?.image?.url ?: "",
+                                        data.content[2 * i].title,
+                                        data.content[2 * i].desktopDetailImage?.image?.url ?: "",
+                                        DBDate.DateMMDD(),
+                                        999,
+                                        "Kakao_Stage",
+                                        ""
+                                    ),
+                                    EventData(
+                                        data.content[2 * i + 1].id,
+                                        data.content[2 * i + 1].desktopListImage?.image?.url ?: "",
+                                        data.content[2 * i + 1].title,
+                                        data.content[2 * i + 1].desktopDetailImage?.image?.url ?: "",
+                                        DBDate.DateMMDD(),
+                                        999,
+                                        "Kakao_Stage",
+                                        ""
+                                    )
+                                )
+                            )
+                        } catch (e: IndexOutOfBoundsException) {
+                        }
+                    }
+                    if (items.size == 0) {
+                        binding.rview.visibility = View.GONE
+                        binding.blank.tviewblank.text = "현재 진행중인 이벤트가 없습니다."
+                        binding.blank.root.visibility = View.VISIBLE
+                    } else {
+                        binding.blank.root.visibility = View.GONE
+                        binding.rview.visibility = View.VISIBLE
+                    }
+                    adapter.notifyDataSetChanged()
+                }
+            })
     }
 
     private fun getEventToksoda(cate: String) {

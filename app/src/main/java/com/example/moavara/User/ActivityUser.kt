@@ -65,6 +65,7 @@ class ActivityUser : AppCompatActivity() {
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val nickname = getSharedPreferences("pref", MODE_PRIVATE).getString("NICKNAME", "")
         val genre = getSharedPreferences("pref", MODE_PRIVATE).getString("GENRE", "")
@@ -398,5 +399,4 @@ class ActivityUser : AppCompatActivity() {
         editor.putString(key, value)
         editor.apply()
     }
-
 }

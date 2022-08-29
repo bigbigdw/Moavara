@@ -31,7 +31,6 @@ class FCM : FirebaseMessagingService() {
     var notificationManager: NotificationManager? = null
     var notificationBuilder: NotificationCompat.Builder? = null
     var it = ""
-    val ref = FirebaseDatabase.getInstance().reference.child("Message")
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
 
@@ -55,9 +54,7 @@ class FCM : FirebaseMessagingService() {
             }
             FirebaseMessaging.getInstance().subscribeToTopic("all")
             miningAlert(title, message, "Alert")
-            Log.d("####","BEST")
         } else if(message.contains("마이픽 리스트가 최신화 되었습니다.")) {
-           Log.d("####","####")
         } else {
             Log.d("####","${title} ${message}")
             miningAlert(title, message, "Notice")
@@ -189,7 +186,7 @@ class FCM : FirebaseMessagingService() {
     }
 
     private fun miningAlert(title: String, message: String, child : String) {
-        ref.child(child).child(DBDate.DateMMDDHHMM()).setValue(FCMAlert(DBDate.DateMMDDHHMM(),
+        FirebaseDatabase.getInstance().reference.child("Message").child(child).child(DBDate.DateMMDDHHMM()).setValue(FCMAlert(DBDate.DateMMDDHHMM(),
             title, message
         ))
     }

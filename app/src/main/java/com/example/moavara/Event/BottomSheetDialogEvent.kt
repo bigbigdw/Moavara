@@ -22,6 +22,7 @@ import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
 import com.example.moavara.Retrofit.JoaraEventDetailResult
+import com.example.moavara.Retrofit.JoaraNoticeDetailResult
 import com.example.moavara.Retrofit.RetrofitDataListener
 import com.example.moavara.Retrofit.RetrofitJoara
 import com.example.moavara.Search.EventData
@@ -45,7 +46,6 @@ class BottomSheetDialogEvent(
     BottomSheetDialogFragment() {
 
     var cate = ""
-
     private var _binding: BottomDialogEventBinding? = null
     private val binding get() = _binding!!
     private var title : String = ""
@@ -110,11 +110,11 @@ class BottomSheetDialogEvent(
 
             override fun onCancelled(databaseError: DatabaseError) {}
         })
-        Log.d("####", "HIHI ${tabType} ${item.link} ${(tabType == "Ridi" && item.link.contains("https://ridibooks.com/books"))}")
+
         if (tabType == "OneStore"
             || (tabType == "Ridi" && item.link.contains("https://ridibooks.com/books"))
             || tabType == "Munpia"
-            || (tabType == "Kakao_Stage")
+            || (tabType == "Kakao")
             || tabType == "Toksoda"
         ) {
 
@@ -132,6 +132,9 @@ class BottomSheetDialogEvent(
                 }
                 "MrBlue" -> {
                     getEventMrBlue()
+                }
+                "Kakao_Stage" -> {
+                    getEventKakaoStage()
                 }
             }
         }
@@ -166,7 +169,7 @@ class BottomSheetDialogEvent(
 
             btnLeft.setOnClickListener {
 
-                if(item.type == "Kakao_Stage"){
+                if(item.type == "Kakao"){
                     getEventKakao()
                 } else {
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getUrl(tabType)))
@@ -264,8 +267,11 @@ class BottomSheetDialogEvent(
                     "https://ridibooks.com/event/${item.link}"
                 }
             }
-            "Kakao_Stage" -> {
+            "Kakao" -> {
                 return "https://page.kakao.com${item.link}"
+            }
+            "Kakao_Stage" -> {
+                return "https://pagestage.kakao.com/events/${item.link}"
             }
             "Munpia" -> {
                 return "https://square.munpia.com/${URLDecoder.decode(item.link, "utf-8")}"
@@ -294,82 +300,71 @@ class BottomSheetDialogEvent(
         binding.wView.webChromeClient = WebChromeClient()
         binding.wView.getSettings().setJavaScriptEnabled(true)
 
-        val apiJoara = RetrofitJoara()
-        val param = Param.getItemAPI(context)
-        param["event_id"] = item.link
 
-        apiJoara.getJoaraEventDetail(
-            param,
-            object : RetrofitDataListener<JoaraEventDetailResult> {
-                override fun onSuccess(data: JoaraEventDetailResult) {
-                    val content = data.event?.content
+        if(item.link.contains("joaralink://event?event_id=")){
 
-                    title = data.event?.title ?: ""
+            val apiJoara = RetrofitJoara()
+            val param = Param.getItemAPI(context)
+            param["event_id"] = item.link.replace("joaralink://event?event_id=","")
 
-                    binding.wView.loadDataWithBaseURL(
-                        null,
-                        content?.replace("http://", "https://") ?: "",
-                        "text/html; charset=utf-8",
-                        "utf-8",
-                        null
-                    )
-                }
-            })
+            apiJoara.getJoaraEventDetail(
+                param,
+                object : RetrofitDataListener<JoaraEventDetailResult> {
+                    override fun onSuccess(data: JoaraEventDetailResult) {
+                        val content = data.event?.content
 
-//        if(item.link.contains("joaralink://event?event_id=")){
-//
-//            val apiJoara = RetrofitJoara()
-//            val param = Param.getItemAPI(context)
-//            param["event_id"] = item.link
-//
-//
-//            apiJoara.getJoaraEventDetail(
-//                param,
-//                object : RetrofitDataListener<JoaraEventDetailResult> {
-//                    override fun onSuccess(it: JoaraEventDetailResult) {
-//                        val content = it.event?.content
-//
-//                        title = it.event?.title ?: ""
-//
-//                        binding.wView.loadDataWithBaseURL(
-//                            null,
-//                            content?.replace("http://", "https://") ?: "",
-//                            "text/html; charset=utf-8",
-//                            "utf-8",
-//                            null
-//                        )
-//                    }
-//                })
-//
-//        } else {
-//            val apiJoara = RetrofitJoara()
-//            val param = Param.getItemAPI(context)
-//            param["notice_id"] = item.link.replace(
-//                "joaralink://notice?notice_id=",
-//                ""
-//            )
-//
-//            apiJoara.getNoticeDetail(
-//                param,
-//                object : RetrofitDataListener<JoaraNoticeDetailResult> {
-//                    override fun onSuccess(it: JoaraNoticeDetailResult) {
-//
-//                        val content = it.notice?.content
-//
-//                        title = it.notice.title
-//
-//                        binding.wView.loadDataWithBaseURL(
-//                            null,
-//                            content.replace("<br />", ""),
-//                            "text/html; charset=utf-8",
-//                            "base64",
-//                            null
-//                        )
-//                    }
-//                })
-//        }
+                        title = data.event?.title ?: ""
 
+                        binding.wView.loadDataWithBaseURL(
+                            null,
+                            content?.replace("http://", "https://") ?: "",
+                            "text/html; charset=utf-8",
+                            "utf-8",
+                            null
+                        )
+                    }
+                })
 
+        } else if(item.link.contains("joaralink://notice?notice_id=")) {
+            val apiJoara = RetrofitJoara()
+            val param = Param.getItemAPI(context)
+            param["notice_id"] = item.link.replace(
+                "joaralink://notice?notice_id=",
+                ""
+            )
+
+            apiJoara.getNoticeDetail(
+                param,
+                object : RetrofitDataListener<JoaraNoticeDetailResult> {
+                    override fun onSuccess(it: JoaraNoticeDetailResult) {
+
+                        val content = it.notice?.content
+
+                        title = it.notice?.title ?: ""
+
+                        binding.wView.loadDataWithBaseURL(
+                            null,
+                            content?.replace("<br />", "") ?: "",
+                            "text/html; charset=utf-8",
+                            "base64",
+                            null
+                        )
+                    }
+                })
+        } else {
+            Glide.with(mContext).load(item.imgfile).into(binding.iview)
+            binding.llayoutWrapResult.setOnClickListener{
+                dismiss()
+            }
+        }
+
+    }
+
+    private fun getEventKakaoStage(){
+        Glide.with(mContext).load(item.data).into(binding.iview)
+        binding.llayoutWrapResult.setOnClickListener{
+            dismiss()
+        }
     }
 
     override fun getTheme() = R.style.CustomBottomSheetDialogTheme

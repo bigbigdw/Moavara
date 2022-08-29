@@ -52,17 +52,20 @@
 
         <activity
             android:name=".Main.ActivityLogin"
+            android:label=""
             android:noHistory="true"
             android:exported="true" />
 
         <activity
             android:name="com.example.moavara.Search.ActivitySearch"
+            android:label=""
             android:windowSoftInputMode="adjustResize"
             android:exported="true">
         </activity>
 
         <activity
             android:name="com.example.moavara.Main.ActivityGenre"
+            android:label=""
             android:noHistory="true"
             android:exported="true">
         </activity>

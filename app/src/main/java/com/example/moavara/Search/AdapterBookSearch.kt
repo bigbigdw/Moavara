@@ -300,6 +300,10 @@ class AdapterBookSearch(private var holder: ArrayList<BookListDataBest>, private
                             "권 완결",
                             "#6E7686"
                         )
+                        info4.applyingTextColor(
+                            "화 완결",
+                            "#6E7686"
+                        )
 
                         val info3 = SpannableStringBuilder("출판사 : ${item.info5}")
                         info3.applyingTextColor(
