@@ -6,10 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.moavara.DataBase.BookListDataBestAnalyze
-import com.example.moavara.DataBase.TrophyInfo
 import com.example.moavara.R
 import com.example.moavara.Search.BestRankListWeekend
+import com.example.moavara.Search.BookListDataBestAnalyze
+import com.example.moavara.Search.TrophyInfo
 import com.example.moavara.Util.DBDate
 import com.example.moavara.databinding.FragmentBestDetailRankBinding
 import java.util.*

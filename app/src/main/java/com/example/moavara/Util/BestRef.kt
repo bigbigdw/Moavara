@@ -1,8 +1,8 @@
 package com.example.moavara.Util
 
 import android.icu.text.DecimalFormat
-import com.example.moavara.DataBase.BookListDataBest
-import com.example.moavara.DataBase.BookListDataBestAnalyze
+import com.example.moavara.Search.BookListDataBest
+import com.example.moavara.Search.BookListDataBestAnalyze
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import org.json.JSONObject
@@ -10,7 +10,7 @@ import org.json.JSONObject
 object BestRef {
     private val mRootRef = FirebaseDatabase.getInstance().reference
 
-    private fun setBestRef(platform: String, genre: String): DatabaseReference {
+    fun setBestRef(platform: String, genre: String): DatabaseReference {
         return mRootRef.child("Best").child(platform).child(genre)
     }
 

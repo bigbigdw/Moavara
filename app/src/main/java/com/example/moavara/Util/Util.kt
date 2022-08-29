@@ -2,8 +2,8 @@ package com.example.moavara.Util
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
-import com.example.moavara.DataBase.TrophyInfo
 import com.example.moavara.Search.BookListDataBestMonthNum
+import com.example.moavara.Search.TrophyInfo
 import java.text.SimpleDateFormat
 import java.util.*
 

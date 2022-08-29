@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.moavara.DataBase.BookListDataBestAnalyze
+import com.example.moavara.Search.BookListDataBestAnalyze
 import com.example.moavara.databinding.FragmentBestdetailRadarBinding
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.Legend

@@ -5,8 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moavara.DataBase.FCMAlert
-import com.example.moavara.Util.DBDate
+import com.example.moavara.Search.FCMAlert
 import com.example.moavara.databinding.ItemNoticesBinding
 
 class AdapterNotice(

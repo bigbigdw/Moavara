@@ -9,6 +9,9 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.room.Room
+import com.example.moavara.DataBase.DBUser
+import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.R
 import com.example.moavara.Search.UserInfo
 import com.example.moavara.Util.DBDate
@@ -34,6 +37,7 @@ class ActivityLogin : AppCompatActivity() {
     private var callbackManager: CallbackManager? = null
     private lateinit var binding: ActivityLoginBinding
     var context = this
+    var userDao: DBUser? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,6 +107,14 @@ class ActivityLogin : AppCompatActivity() {
 
                                     if (dataSnapshot.exists()) {
                                         if(dataSnapshot.getValue(UserInfo::class.java) != null){
+
+                                            userDao?.daoUser()?.update(
+                                                DataBaseUser(
+                                                    group?.Nickname ?: "",
+                                                    group?.Genre ?: "",
+                                                    task.result?.user?.uid ?: ""
+                                                )
+                                            )
 
                                             savePreferences("NICKNAME", group?.Nickname ?: "")
                                             savePreferences("GENRE", group?.Genre ?: "")
@@ -219,11 +231,27 @@ class ActivityLogin : AppCompatActivity() {
                         if (dataSnapshot.exists()) {
                             val group: UserInfo? = dataSnapshot.getValue(UserInfo::class.java)
 
+                            userDao = Room.databaseBuilder(
+                                context,
+                                DBUser::class.java,
+                                "UserInfo"
+                            ).allowMainThreadQueries().build()
+
+                            userDao?.daoUser()?.init()
+
+                            userDao?.daoUser()?.insert(
+                                DataBaseUser(
+                                    group?.Nickname ?: "",
+                                    group?.Genre ?: "",
+                                    user.uid
+                                )
+                            )
+
                             savePreferences("NICKNAME", group?.Nickname ?: "")
                             savePreferences("GENRE", group?.Genre ?: "")
                             savePreferences("UID", user.uid)
 
-                            Toast.makeText(context, "환영한다 " + group?.Nickname, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "환영합니다! ${group?.Nickname}님", Toast.LENGTH_SHORT).show()
                             startActivity(Intent(context, ActivityMain::class.java))
                             binding.loading.root.visibility = View.GONE
                             window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)

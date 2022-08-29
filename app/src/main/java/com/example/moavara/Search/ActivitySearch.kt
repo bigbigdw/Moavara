@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moavara.Best.ActivityBestDetail
 import com.example.moavara.Best.AdapterType
-import com.example.moavara.DataBase.BookListDataBest
 import com.example.moavara.R
 import com.example.moavara.Retrofit.*
 import com.example.moavara.Util.BestRef

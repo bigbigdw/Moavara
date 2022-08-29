@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moavara.DataBase.BookListDataBest
+import com.example.moavara.Search.BookListDataBest
 import com.example.moavara.databinding.ItemBooklistBestWeekendBinding
 
 

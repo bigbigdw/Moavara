@@ -1,18 +1,15 @@
 package com.example.moavara.Best
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.moavara.DataBase.BookListDataBest
-import com.example.moavara.DataBase.BookListDataBestAnalyze
 import com.example.moavara.R
 import com.example.moavara.Search.BestLineChart
-import com.example.moavara.Soon.Best.InnerFragmentBestDetailRadar
+import com.example.moavara.Search.BookListDataBestAnalyze
 import com.example.moavara.databinding.FragmentBestDetailAnalyzeBinding
 import com.github.mikephil.charting.data.Entry
 

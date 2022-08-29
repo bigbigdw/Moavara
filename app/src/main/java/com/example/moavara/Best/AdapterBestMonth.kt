@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.moavara.DataBase.BookListDataBest
+import com.example.moavara.Search.BookListDataBest
 import com.example.moavara.Search.BookListDataBestMonthNum
 import com.example.moavara.Search.BookListDataBestWeekend
 import com.example.moavara.Util.DBDate

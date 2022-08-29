@@ -10,11 +10,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.moavara.DataBase.BookListDataBest
-import com.example.moavara.DataBase.BookListDataBestAnalyze
+import androidx.room.Room
+import com.example.moavara.DataBase.*
+import com.example.moavara.Search.BookListDataBest
+import com.example.moavara.Search.BookListDataBestAnalyze
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.DBDate
-import com.example.moavara.Util.Genre
 import com.example.moavara.databinding.FragmentBestTabTodayBinding
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
@@ -37,12 +38,15 @@ class FragmentBestTabToday(private val platform: String, private val pickItems: 
     private val bookCodeItems = ArrayList<BookListDataBestAnalyze>()
     var status = ""
     lateinit var root: View
-    var genre = ""
     private var _binding: FragmentBestTabTodayBinding? = null
     private val binding get() = _binding!!
     private var obj = JSONObject()
 
     private lateinit var firebaseAnalytics: FirebaseAnalytics
+    var userDao: DBUser? = null
+    var bestDao: DBBest? = null
+    var bestDaoBookCode: DBBestBookCode? = null
+    var UserInfo : DataBaseUser? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,7 +57,28 @@ class FragmentBestTabToday(private val platform: String, private val pickItems: 
 
         firebaseAnalytics = Firebase.analytics
 
-        genre = Genre.getGenre(requireContext()).toString()
+        userDao = Room.databaseBuilder(
+            requireContext(),
+            DBUser::class.java,
+            "UserInfo"
+        ).allowMainThreadQueries().build()
+
+        if(userDao?.daoUser() != null){
+            UserInfo = userDao?.daoUser()?.get()
+            Log.d("####", "${UserInfo}")
+        }
+
+        bestDao = Room.databaseBuilder(
+            requireContext(),
+            DBBest::class.java,
+            "Today_${platform}_${UserInfo?.Genre}"
+        ).allowMainThreadQueries().build()
+
+        bestDaoBookCode = Room.databaseBuilder(
+            requireContext(),
+            DBBestBookCode::class.java,
+            "Today_${platform}_${UserInfo?.Genre}_BookCode"
+        ).allowMainThreadQueries().build()
 
         adapterToday = AdapterBestToday(items, bookCodeItems)
 
@@ -65,7 +90,14 @@ class FragmentBestTabToday(private val platform: String, private val pickItems: 
         binding.blank.tviewblank.text = "작품을 불러오는 중..."
         binding.rviewBest.visibility = View.GONE
 
-        readJsonList()
+        //TODO:
+//        if(bestDao?.bestDao()?.getAll()?.size == 0){
+//            getBookListToday()
+//        } else {
+//            readJsonList()
+//        }
+
+        getBookListToday()
 
         adapterToday?.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
@@ -103,14 +135,16 @@ class FragmentBestTabToday(private val platform: String, private val pickItems: 
 
     private fun getBookListToday() {
 
-        val file = File(File("/storage/self/primary/MOAVARA"), "Today_${platform}_${genre}.json")
+        bestDao?.bestDao()?.initAll()
+
+        val file = File(File("/storage/self/primary/MOAVARA"), "Today_${platform}_${UserInfo?.Genre}.json")
         if (file.exists()) {
             file.delete()
         }
 
         val jsonArray = JSONArray()
 
-        BestRef.getBestDataToday(platform, genre).addListenerForSingleValueEvent(object :
+        BestRef.getBestDataToday(platform, UserInfo?.Genre ?: "").addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 try {
@@ -157,8 +191,28 @@ class FragmentBestTabToday(private val platform: String, private val pickItems: 
                             ))
 
                             jsonArray.put(jsonObject)
+
+                            bestDao?.bestDao()?.insert(
+                                RoomBookListDataBest(
+                                group.writer,
+                                group.title,
+                                group.bookImg,
+                                group.bookCode,
+                                group.info1,
+                                group.info2,
+                                group.info3,
+                                group.info4,
+                                group.info5,
+                                group.info6,
+                                group.number,
+                                group.date,
+                                group.type,
+                                group.memo
+                            )
+                            )
                         }
                     }
+
                     obj.putOpt("items", jsonArray)
 
                     getBestTodayList(items, true)
@@ -178,7 +232,9 @@ class FragmentBestTabToday(private val platform: String, private val pickItems: 
 
     override fun getBestTodayList(items: ArrayList<BookListDataBest>, status: Boolean) {
 
-        BestRef.getBookCode(platform, genre).addListenerForSingleValueEvent(object :
+        bestDaoBookCode?.bestDaoBookCode()?.initAll()
+
+        BestRef.getBookCode(platform, UserInfo?.Genre ?: "").addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
@@ -223,6 +279,23 @@ class FragmentBestTabToday(private val platform: String, private val pickItems: 
 
                             bookCodeItems.add(
                                 BookListDataBestAnalyze(
+                                    lastItem.info1,
+                                    lastItem.info2,
+                                    lastItem.info3,
+                                    lastItem.info4,
+                                    lastItem.number,
+                                    lastItem.numInfo1,
+                                    lastItem.numInfo2,
+                                    lastItem.numInfo3,
+                                    lastItem.numInfo4,
+                                    lastItem.date,
+                                    moreLastItem.number - lastItem.number,
+                                    bookCodes.size
+                                )
+                            )
+
+                            bestDaoBookCode?.bestDaoBookCode()?.insert(
+                                RoomBookListDataBestAnalyze(
                                     lastItem.info1,
                                     lastItem.info2,
                                     lastItem.info3,
@@ -307,7 +380,7 @@ class FragmentBestTabToday(private val platform: String, private val pickItems: 
 
         File("/storage/self/primary/MOAVARA").mkdir()
 
-        val file = File(File("/storage/self/primary/MOAVARA"), "Today_${platform}_${genre}.json")
+        val file = File(File("/storage/self/primary/MOAVARA"), "Today_${platform}_${UserInfo?.Genre}.json")
 
         try {
 
@@ -325,7 +398,7 @@ class FragmentBestTabToday(private val platform: String, private val pickItems: 
     }
 
     private fun readJsonList() {
-        val file = File(File("/storage/self/primary/MOAVARA"), "Today_${platform}_${genre}.json")
+        val file = File(File("/storage/self/primary/MOAVARA"), "Today_${platform}_${UserInfo?.Genre}.json")
         try {
             val reader = BufferedReader(FileReader(file))
 

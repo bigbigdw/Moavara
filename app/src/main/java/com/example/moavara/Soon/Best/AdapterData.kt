@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moavara.DataBase.AnayzeData
 import com.example.moavara.R
+import com.example.moavara.Search.AnayzeData
 import com.example.moavara.databinding.ItemBestDetailDataBinding
 
 class AdapterBestData(

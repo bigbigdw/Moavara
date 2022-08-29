@@ -1,35 +1,12 @@
 package com.example.moavara.Search
 
-import com.example.moavara.DataBase.BookListDataBest
-import com.example.moavara.DataBase.BookListDataBestAnalyze
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
 
 
-class BookListData(
-    var platform: String = "",
-    var title: String = "",
-    var writer: String = "",
-    var bookImg: String = "",
-    var bookCode: String = "",
-    var info1: String = "",
-    var info2: String = "",
-    var info3: String = "",
-)
-
 class BestType(
     var title: String? = null,
     var type: String? = null,
-)
-
-class WeekendDate(
-    var sun: String = "",
-    var mon: String = "",
-    var tue: String = "",
-    var wed: String = "",
-    var thur: String = "",
-    var fri: String = "",
-    var sat: String = "",
 )
 
 class BestRankListWeekend(
@@ -41,6 +18,62 @@ class BestRankListWeekend(
     var fri: BookListDataBestAnalyze? = null,
     var sat: BookListDataBestAnalyze? = null,
     var mode: String = ""
+)
+
+data class BestTodayAverage (
+    var info1: String = "",
+    var info2: String = "",
+    var info3: String = "",
+    var info4: String = "",
+)
+
+data class BookListDataBestAnalyze (
+    var info1: String = "",
+    var info2: String = "",
+    var info3: String = "",
+    var info4: String = "",
+    var number: Int = 0,
+    var numInfo1: Int = 0,
+    var numInfo2: Int = 0,
+    var numInfo3: Int = 0,
+    var numInfo4: Int = 0,
+    var date: String = "",
+    var numberDiff: Int = 0,
+    var trophyCount: Int = 0,
+)
+
+data class AnayzeData(
+    var date: String = "",
+    var info: String = "",
+)
+
+data class TrophyInfo (
+    var month: Int = 0,
+    var week: Int = 0,
+    var date: Int = 0,
+)
+
+data class FCMAlert (
+    var date: String = "",
+    var title: String = "",
+    var body: String = "",
+)
+
+data class BookListDataBest (
+    var writer: String = "",
+    var title: String = "",
+    var bookImg: String = "",
+    var bookCode: String = "",
+    var info1: String = "",
+    var info2: String = "",
+    var info3: String = "",
+    var info4: String = "",
+    var info5: String = "",
+    var info6: String = "",
+    var number: Int = 0,
+    var date: String = "",
+    var type: String = "",
+    var memo: String = "",
 )
 
 class BookListDataBestWeekend(
@@ -61,11 +94,6 @@ class BookListDataBestMonthNum(
     var thur: Int = 0,
     var fri: Int = 0,
     var sat: Int = 0,
-)
-
-class CalculNum(
-    var num: Int = 0,
-    var status: String = ""
 )
 
 class EventDetailData(
@@ -128,6 +156,7 @@ data class BestLineChart(
 data class UserInfo(
     var Nickname: String = "",
     var Genre: String = "",
+    var UID: String = "",
 )
 
 data class NewsBX(

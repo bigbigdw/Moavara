@@ -7,9 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.moavara.DataBase.BookListDataBest
-import com.example.moavara.DataBase.BookListDataBestAnalyze
 import com.example.moavara.R
+import com.example.moavara.Search.BookListDataBest
+import com.example.moavara.Search.BookListDataBestAnalyze
 import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.ItemBooklistBestTodayBinding
 

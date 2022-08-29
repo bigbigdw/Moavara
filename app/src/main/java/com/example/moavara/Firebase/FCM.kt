@@ -11,16 +11,13 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.Person
 import androidx.core.graphics.drawable.IconCompat
-import com.example.moavara.DataBase.FCMAlert
 import com.example.moavara.Main.ActivitySplash
 import com.example.moavara.R
+import com.example.moavara.Search.FCMAlert
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.BootReceiver
 import com.example.moavara.Util.DBDate
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -186,8 +183,10 @@ class FCM : FirebaseMessagingService() {
     }
 
     private fun miningAlert(title: String, message: String, child : String) {
-        FirebaseDatabase.getInstance().reference.child("Message").child(child).child(DBDate.DateMMDDHHMM()).setValue(FCMAlert(DBDate.DateMMDDHHMM(),
+        FirebaseDatabase.getInstance().reference.child("Message").child(child).child(DBDate.DateMMDDHHMM()).setValue(
+            FCMAlert(DBDate.DateMMDDHHMM(),
             title, message
-        ))
+        )
+        )
     }
 }

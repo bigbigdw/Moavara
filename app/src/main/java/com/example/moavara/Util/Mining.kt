@@ -2,24 +2,12 @@ package com.example.moavara.Util
 
 import android.content.Context
 import android.net.Uri
-import android.text.TextUtils.replace
 import android.util.Log
-import android.view.View
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.commit
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.example.moavara.Best.AdapterKeyword
-import com.example.moavara.Best.FragmentBestDetailAnalyze
-import com.example.moavara.Best.FragmentBestDetailBooks
-import com.example.moavara.Best.FragmentBestDetailComment
-import com.example.moavara.DataBase.BookListDataBest
-import com.example.moavara.DataBase.BookListDataBestAnalyze
 import com.example.moavara.Main.mRootRef
-import com.example.moavara.R
 import com.example.moavara.Retrofit.*
-import com.example.moavara.Search.BestType
+import com.example.moavara.Search.BookListDataBest
+import com.example.moavara.Search.BookListDataBestAnalyze
 import com.example.moavara.Search.EventDetailDataMining
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.moavara.DataBase.FCMAlert
+import com.example.moavara.Search.FCMAlert
 import com.example.moavara.databinding.FragmentNoticesBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

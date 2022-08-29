@@ -1,7 +1,6 @@
 package com.example.moavara.Best
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.moavara.DataBase.BookListDataBestToday
 import com.example.moavara.Retrofit.*
+import com.example.moavara.Search.BookListDataBest
 import com.example.moavara.Util.Param
 import com.example.moavara.databinding.FragmentBestDetailTabsBinding
 import com.example.moavara.databinding.ItemBestDetailOtherBinding
@@ -22,7 +21,7 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
     Fragment() {
 
     private var adapterBestOthers: AdapterBestComment? = null
-    private val items = ArrayList<BookListDataBestToday?>()
+    private val items = ArrayList<BookListDataBest?>()
 
     private var _binding: FragmentBestDetailTabsBinding? = null
     private val binding get() = _binding!!
@@ -81,7 +80,7 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
 
                         for(i in data.bookLists.indices){
                             items.add(
-                                BookListDataBestToday(
+                                BookListDataBest(
                                     data.bookLists[i].writerName,
                                     data.bookLists[i].subject,
                                     data.bookLists[i].bookImg,
@@ -91,7 +90,7 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
                                     "조회 수 : " + data.bookLists[i].cntPageRead,
                                     "선호작 수 : " + data.bookLists[i].cntFavorite,
                                     "추천 수 : " + data.bookLists[i].cntRecom,
-                                    0,
+                                    "",
                                     0,
                                     "",
                                     ""
@@ -112,7 +111,7 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
             requireActivity().runOnUiThread {
                 for (i in Naver.indices) {
                     items.add(
-                        BookListDataBestToday(
+                        BookListDataBest(
                             Naver[i].select("strong").text(),
                             Naver[i].select("p .ellipsis").text(),
                             Naver.select("div img")[i].absUrl("src"),
@@ -122,7 +121,7 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
                             "",
                             "",
                             "",
-                            0,
+                            "",
                             0,
                             "",
                             ""
@@ -156,7 +155,7 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
                     }
 
                     items.add(
-                        BookListDataBestToday(
+                        BookListDataBest(
                             other[i].select(".author_name_wrapper h4 .lang_kor").text(),
                             other[i].select(".title_text").text(),
                             img,
@@ -166,7 +165,7 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
                             other[i].select(".book_metadata_wrapper .meta_description").text(),
                             other[i].select(".rental_price_info").text(),
                             other[i].select(".buy_price_info").text(),
-                            0,
+                            "",
                             0,
                             "",
                             ""
@@ -216,7 +215,7 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
 
                             for (i in it.indices) {
                                 items.add(
-                                    BookListDataBestToday(
+                                    BookListDataBest(
                                         it[i].AUTHOR,
                                         it[i].BOOK_NM,
                                         "https:${it[i].IMG_PATH}",
@@ -226,7 +225,7 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
                                         "유통사 : ${it[i].PUB_NM}",
                                         "키워드 : ${it[i].HASHTAG_NM}",
                                         "",
-                                        0,
+                                        "",
                                         0,
                                         "",
                                         ""
@@ -247,9 +246,9 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
     }
 }
 
-class AdapterBestComment(items: List<BookListDataBestToday?>?) :
+class AdapterBestComment(items: List<BookListDataBest?>?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var holder: ArrayList<BookListDataBestToday?>? = items as ArrayList<BookListDataBestToday?>?
+    var holder: ArrayList<BookListDataBest?>? = items as ArrayList<BookListDataBest?>?
 
     interface OnItemClickListener {
         fun onItemClick(v: View?, position: Int)
@@ -303,8 +302,8 @@ class AdapterBestComment(items: List<BookListDataBestToday?>?) :
         }
     }
 
-    fun getItem(position: Int): BookListDataBestToday? {
-        return holder!![position]
+    fun getItem(position: Int): BookListDataBest? {
+        return holder?.get(position)
     }
 
 }
