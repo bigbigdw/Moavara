@@ -50,6 +50,26 @@ object DBDate {
         return Calendar.getInstance().get(Calendar.YEAR).toString()
     }
 
+    fun getDayInt(date : String) : Int?{
+        val parse_date: Date?
+        val dateFormat1 = SimpleDateFormat("yyyyMMdd")
+
+        try {
+            parse_date = dateFormat1.parse(date)
+
+            val cal = Calendar.getInstance()
+            if (parse_date != null) {
+                cal.time = parse_date
+            }
+
+            return cal[Calendar.DAY_OF_WEEK]
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return null
+    }
 
     fun getDateData(date : String) : TrophyInfo?{
         val parse_date: Date?

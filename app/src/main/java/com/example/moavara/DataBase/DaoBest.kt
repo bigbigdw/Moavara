@@ -26,9 +26,6 @@ interface DaoBest {
     @Query("DELETE FROM RoomBookListDataBest WHERE type = :type")
     fun initWeek(type: String)
 
-    @Query("DELETE FROM RoomBookListDataBest")
-    fun initAll()
-
     @Query("UPDATE RoomBookListDataBest SET memo = :memo WHERE bookCode = :bookCode")
     fun updateItem(memo: String, bookCode: String)
 
@@ -37,6 +34,15 @@ interface DaoBest {
 
     @Query("SELECT COUNT(title) FROM RoomBookListDataBest WHERE title =:title")
     fun countTrophy(title: String): Int
+
+    @Query("SELECT * FROM RoomBookListDataBest WHERE week = :week")
+    fun getWeek(week: String): List<RoomBookListDataBest>
+
+    @Query("SELECT * FROM RoomBookListDataBest WHERE week = :week AND month = :month")
+    fun getMonth(week: String, month: String): RoomBookListDataBest
+
+    @Query("DELETE FROM RoomBookListDataBest")
+    fun initAll()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(user: RoomBookListDataBest)

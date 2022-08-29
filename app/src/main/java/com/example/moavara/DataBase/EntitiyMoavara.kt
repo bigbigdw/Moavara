@@ -32,6 +32,8 @@ data class RoomBookListDataBest (
     var date: String = "",
     var type: String = "",
     var memo: String = "",
+    var week: Int = 0,
+    var month: Int = 0,
 ){
     @PrimaryKey(autoGenerate = true) var id: Int = 0
 }

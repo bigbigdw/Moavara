@@ -65,7 +65,6 @@ class FragmentBestTabToday(private val platform: String, private val pickItems: 
 
         if(userDao?.daoUser() != null){
             UserInfo = userDao?.daoUser()?.get()
-            Log.d("####", "${UserInfo}")
         }
 
         bestDao = Room.databaseBuilder(
@@ -90,14 +89,7 @@ class FragmentBestTabToday(private val platform: String, private val pickItems: 
         binding.blank.tviewblank.text = "작품을 불러오는 중..."
         binding.rviewBest.visibility = View.GONE
 
-        //TODO:
-//        if(bestDao?.bestDao()?.getAll()?.size == 0){
-//            getBookListToday()
-//        } else {
-//            readJsonList()
-//        }
-
-        getBookListToday()
+        readJsonList()
 
         adapterToday?.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
@@ -458,9 +450,75 @@ class FragmentBestTabToday(private val platform: String, private val pickItems: 
             binding.rviewBest.visibility = View.VISIBLE
             adapterToday?.notifyDataSetChanged()
         } catch (e1: FileNotFoundException) {
-            Log.i("파일못찾음", e1.message.toString())
-            getBookListToday()
-            Toast.makeText(requireContext(), "리스트를 다운받고 있습니다", Toast.LENGTH_SHORT).show()
+
+            bestDao = Room.databaseBuilder(
+                requireContext(),
+                DBBest::class.java,
+                "Today_${platform}_${UserInfo?.Genre}"
+            ).allowMainThreadQueries().build()
+
+            bestDaoBookCode = Room.databaseBuilder(
+                requireContext(),
+                DBBestBookCode::class.java,
+                "Today_${platform}_${UserInfo?.Genre}_BookCode"
+            ).allowMainThreadQueries().build()
+
+            if(bestDao?.bestDao()?.getAll()?.size == 0){
+                Log.i("파일못찾음", e1.message.toString())
+                getBookListToday()
+                Toast.makeText(requireContext(), "리스트를 다운받고 있습니다", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "Room 리스트를 다운받고 있습니다", Toast.LENGTH_SHORT).show()
+                val bookItem = bestDao?.bestDao()?.getAll()
+                val bookCodeItem = bestDaoBookCode?.bestDaoBookCode()?.get()
+                binding.blank.root.visibility = View.GONE
+                binding.rviewBest.visibility = View.VISIBLE
+
+                if (bookItem != null) {
+                    for(item in bookItem){
+                        items.add(BookListDataBest(
+                            item.writer,
+                            item.title,
+                            item.bookImg,
+                            item.bookCode,
+                            item.info1,
+                            item.info2,
+                            item.info3,
+                            item.info4,
+                            item.info5,
+                            item.info6,
+                            item.number,
+                            item.date,
+                            item.type,
+                            item.memo
+                        ))
+                    }
+                }
+
+                if (bookCodeItem != null) {
+                    for(item in bookCodeItem){
+                        bookCodeItems.add(
+                            BookListDataBestAnalyze(
+                                item.info1,
+                                item.info2,
+                                item.info3,
+                                item.info4,
+                                item.number,
+                                item.numInfo1,
+                                item.numInfo2,
+                                item.numInfo3,
+                                item.numInfo4,
+                                item.date,
+                                item.numberDiff,
+                                item.trophyCount,
+                            )
+                        )
+                    }
+                }
+
+                adapterToday?.notifyDataSetChanged()
+            }
+
         } catch (e2: IOException) {
             Log.i("읽기오류", e2.message.toString())
         }

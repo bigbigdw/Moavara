@@ -108,7 +108,15 @@ class ActivityLogin : AppCompatActivity() {
                                     if (dataSnapshot.exists()) {
                                         if(dataSnapshot.getValue(UserInfo::class.java) != null){
 
-                                            userDao?.daoUser()?.update(
+                                            userDao = Room.databaseBuilder(
+                                                context,
+                                                DBUser::class.java,
+                                                "UserInfo"
+                                            ).allowMainThreadQueries().build()
+
+                                            userDao?.daoUser()?.init()
+
+                                            userDao?.daoUser()?.insert(
                                                 DataBaseUser(
                                                     group?.Nickname ?: "",
                                                     group?.Genre ?: "",

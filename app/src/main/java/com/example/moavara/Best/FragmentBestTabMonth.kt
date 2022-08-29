@@ -13,13 +13,17 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.room.Room
+import com.example.moavara.DataBase.DBBest
+import com.example.moavara.DataBase.DBUser
+import com.example.moavara.DataBase.DataBaseUser
+import com.example.moavara.DataBase.RoomBookListDataBest
 import com.example.moavara.Search.BookListDataBest
 import com.example.moavara.Search.BookListDataBestAnalyze
 import com.example.moavara.Search.BookListDataBestWeekend
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.BestRef.putItem
 import com.example.moavara.Util.DBDate
-import com.example.moavara.Util.Genre
 import com.example.moavara.databinding.FragmentBestMonthBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -39,11 +43,14 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
 
     private var _binding: FragmentBestMonthBinding? = null
     private val binding get() = _binding!!
-    var genre = ""
+
     private var obj = JSONObject()
     private var year = 0
     private var month = 0
     private var monthCount = 0
+    var userDao: DBUser? = null
+    var bestDao: DBBest? = null
+    var UserInfo : DataBaseUser? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,7 +59,22 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
         _binding = FragmentBestMonthBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        genre = Genre.getGenre(requireContext()).toString()
+        userDao = Room.databaseBuilder(
+            requireContext(),
+            DBUser::class.java,
+            "UserInfo"
+        ).allowMainThreadQueries().build()
+
+        if(userDao?.daoUser() != null){
+            UserInfo = userDao?.daoUser()?.get()
+        }
+
+        bestDao = Room.databaseBuilder(
+            requireContext(),
+            DBBest::class.java,
+            "Month_${platform}_${UserInfo?.Genre}"
+        ).allowMainThreadQueries().build()
+
         adapterMonth = AdapterBestMonth(itemMonth)
         adapterMonthDay = AdapterBestToday(ItemMonthDay, bookCodeItems)
 
@@ -61,14 +83,9 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
         binding.rviewBestMonth.visibility = View.GONE
 
         itemMonth.clear()
-        Looper.myLooper()?.let {
-            Handler(it).postDelayed(
-                {
-                    readJsonList()
-                },
-                300
-            )
-        }
+
+        readJsonList()
+//        getBestMonth()
 
         with(binding) {
             rviewBestMonth.layoutManager =
@@ -85,7 +102,7 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
                     binding.rviewBestMonthDay.visibility = View.GONE
 
                     if (value != null) {
-                        BestRef.getBestDataMonth(platform, genre).child((position + 1).toString())
+                        BestRef.getBestDataMonth(platform, UserInfo?.Genre ?: "").child((position + 1).toString())
                             .child(value).addListenerForSingleValueEvent(object :
                                 ValueEventListener {
                                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -232,15 +249,16 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
 
         binding.rviewBestMonth.removeAllViews()
         itemMonth.clear()
+        bestDao?.bestDao()?.initAll()
 
-        val file = File(File("/storage/self/primary/MOAVARA"), "Month_${platform}_${genre}.json")
+        val file = File(File("/storage/self/primary/MOAVARA"), "Month_${platform}_${UserInfo?.Genre ?: ""}.json")
         if (file.exists()) {
             file.delete()
         }
 
         try {
 
-            BestRef.getBestDataMonth(platform, genre)
+            BestRef.getBestDataMonth(platform, UserInfo?.Genre ?: "")
                 .addListenerForSingleValueEvent(object :
                     ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -262,42 +280,182 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
                                         if (item != null) {
                                             weekItem.sun = item
                                             putItem(jsonObject, item)
+                                            bestDao?.bestDao()?.insert(
+                                                RoomBookListDataBest(
+                                                    item.writer,
+                                                    item.title,
+                                                    item.bookImg,
+                                                    item.bookCode,
+                                                    item.info1,
+                                                    item.info2,
+                                                    item.info3,
+                                                    item.info4,
+                                                    item.info5,
+                                                    item.info6,
+                                                    item.number,
+                                                    item.date,
+                                                    item.type,
+                                                    item.memo,
+                                                    day,
+                                                    week
+                                                )
+                                            )
                                         }
                                     }
                                     2 -> {
                                         if (item != null) {
                                             weekItem.mon = item
                                             putItem(jsonObject, item)
+                                            bestDao?.bestDao()?.insert(
+                                                RoomBookListDataBest(
+                                                    item.writer,
+                                                    item.title,
+                                                    item.bookImg,
+                                                    item.bookCode,
+                                                    item.info1,
+                                                    item.info2,
+                                                    item.info3,
+                                                    item.info4,
+                                                    item.info5,
+                                                    item.info6,
+                                                    item.number,
+                                                    item.date,
+                                                    item.type,
+                                                    item.memo,
+                                                    day,
+                                                    week
+                                                )
+                                            )
                                         }
                                     }
                                     3 -> {
                                         if (item != null) {
                                             weekItem.tue = item
                                             putItem(jsonObject, item)
+                                            bestDao?.bestDao()?.insert(
+                                                RoomBookListDataBest(
+                                                    item.writer,
+                                                    item.title,
+                                                    item.bookImg,
+                                                    item.bookCode,
+                                                    item.info1,
+                                                    item.info2,
+                                                    item.info3,
+                                                    item.info4,
+                                                    item.info5,
+                                                    item.info6,
+                                                    item.number,
+                                                    item.date,
+                                                    item.type,
+                                                    item.memo,
+                                                    day,
+                                                    week
+                                                )
+                                            )
                                         }
                                     }
                                     4 -> {
                                         if (item != null) {
                                             weekItem.wed = item
                                             putItem(jsonObject, item)
+                                            bestDao?.bestDao()?.insert(
+                                                RoomBookListDataBest(
+                                                    item.writer,
+                                                    item.title,
+                                                    item.bookImg,
+                                                    item.bookCode,
+                                                    item.info1,
+                                                    item.info2,
+                                                    item.info3,
+                                                    item.info4,
+                                                    item.info5,
+                                                    item.info6,
+                                                    item.number,
+                                                    item.date,
+                                                    item.type,
+                                                    item.memo,
+                                                    day,
+                                                    week
+                                                )
+                                            )
                                         }
                                     }
                                     5 -> {
                                         if (item != null) {
                                             weekItem.thur = item
                                             putItem(jsonObject, item)
+                                            bestDao?.bestDao()?.insert(
+                                                RoomBookListDataBest(
+                                                    item.writer,
+                                                    item.title,
+                                                    item.bookImg,
+                                                    item.bookCode,
+                                                    item.info1,
+                                                    item.info2,
+                                                    item.info3,
+                                                    item.info4,
+                                                    item.info5,
+                                                    item.info6,
+                                                    item.number,
+                                                    item.date,
+                                                    item.type,
+                                                    item.memo,
+                                                    day,
+                                                    week
+                                                )
+                                            )
                                         }
                                     }
                                     6 -> {
                                         if (item != null) {
                                             putItem(jsonObject, item)
                                             weekItem.fri = item
+                                            bestDao?.bestDao()?.insert(
+                                                RoomBookListDataBest(
+                                                    item.writer,
+                                                    item.title,
+                                                    item.bookImg,
+                                                    item.bookCode,
+                                                    item.info1,
+                                                    item.info2,
+                                                    item.info3,
+                                                    item.info4,
+                                                    item.info5,
+                                                    item.info6,
+                                                    item.number,
+                                                    item.date,
+                                                    item.type,
+                                                    item.memo,
+                                                    day,
+                                                    week
+                                                )
+                                            )
                                         }
                                     }
                                     7 -> {
                                         if (item != null) {
                                             putItem(jsonObject, item)
                                             weekItem.sat = item
+                                            bestDao?.bestDao()?.insert(
+                                                RoomBookListDataBest(
+                                                    item.writer,
+                                                    item.title,
+                                                    item.bookImg,
+                                                    item.bookCode,
+                                                    item.info1,
+                                                    item.info2,
+                                                    item.info3,
+                                                    item.info4,
+                                                    item.info5,
+                                                    item.info6,
+                                                    item.number,
+                                                    item.date,
+                                                    item.type,
+                                                    item.memo,
+                                                    day,
+                                                    week
+                                                )
+                                            )
                                         }
                                     }
                                 }
@@ -330,7 +488,7 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
         binding.rviewBestMonth.removeAllViews()
         itemMonth.clear()
 
-        BestRef.getBestDataMonthBefore(platform, genre).child((month - 1).toString())
+        BestRef.getBestDataMonthBefore(platform, UserInfo?.Genre ?: "").child((month - 1).toString())
             .addListenerForSingleValueEvent(object :
                 ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -395,7 +553,7 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
     }
 
     override fun getBestTodayList(items: ArrayList<BookListDataBest>, status: Boolean) {
-        BestRef.getBookCode(platform, genre).addListenerForSingleValueEvent(object :
+        BestRef.getBookCode(platform, UserInfo?.Genre ?: "").addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (bookCodeList in items) {
@@ -489,7 +647,7 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
 
         File("/storage/self/primary/MOAVARA").mkdir()
 
-        val file = File(File("/storage/self/primary/MOAVARA"), "Month_${platform}_${genre}.json")
+        val file = File(File("/storage/self/primary/MOAVARA"), "Month_${platform}_${UserInfo?.Genre ?: ""}.json")
 
         try {
 
@@ -507,7 +665,7 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
     }
 
     private fun readJsonList() {
-        val file = File(File("/storage/self/primary/MOAVARA"), "Month_${platform}_${genre}.json")
+        val file = File(File("/storage/self/primary/MOAVARA"), "Month_${platform}_${UserInfo?.Genre ?: ""}.json")
         try {
             val reader = BufferedReader(FileReader(file))
 
@@ -552,9 +710,164 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
             binding.rviewBestMonth.visibility = View.VISIBLE
             adapterMonth.notifyDataSetChanged()
         } catch (e1: FileNotFoundException) {
-            Log.i("파일못찾음", e1.message.toString())
-            getBestMonth()
-            Toast.makeText(requireContext(), "리스트를 다운받고 있습니다", Toast.LENGTH_SHORT).show()
+
+            if(bestDao?.bestDao()?.getAll()?.size == 0){
+                Log.i("파일못찾음", e1.message.toString())
+                getBestMonth()
+                Toast.makeText(requireContext(), "리스트를 다운받고 있습니다", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "Room 리스트를 다운받고 있습니다", Toast.LENGTH_SHORT).show()
+
+                for (num in 1..6) {
+                    val weekItem = BookListDataBestWeekend()
+
+                    for (day in 0..6) {
+                        val item = bestDao?.bestDao()?.getMonth((day + 1).toString(), num.toString())
+
+                        if (day == 0) {
+                            if (item != null) {
+                                weekItem.sun = BookListDataBest(
+                                    item.writer,
+                                    item.title,
+                                    item.bookImg,
+                                    item.bookCode,
+                                    item.info1,
+                                    item.info2,
+                                    item.info3,
+                                    item.info4,
+                                    item.info5,
+                                    item.info6,
+                                    item.number,
+                                    item.date,
+                                    item.type,
+                                    item.memo
+                                )
+                            }
+                        } else if (day == 1) {
+                            if (item != null) {
+                                weekItem.mon = BookListDataBest(
+                                    item.writer,
+                                    item.title,
+                                    item.bookImg,
+                                    item.bookCode,
+                                    item.info1,
+                                    item.info2,
+                                    item.info3,
+                                    item.info4,
+                                    item.info5,
+                                    item.info6,
+                                    item.number,
+                                    item.date,
+                                    item.type,
+                                    item.memo
+                                )
+                            }
+                        } else if (day == 2) {
+                            if (item != null) {
+                                weekItem.tue = BookListDataBest(
+                                    item.writer,
+                                    item.title,
+                                    item.bookImg,
+                                    item.bookCode,
+                                    item.info1,
+                                    item.info2,
+                                    item.info3,
+                                    item.info4,
+                                    item.info5,
+                                    item.info6,
+                                    item.number,
+                                    item.date,
+                                    item.type,
+                                    item.memo
+                                )
+                            }
+                        } else if (day == 3) {
+                            if (item != null) {
+                                weekItem.wed = BookListDataBest(
+                                    item.writer,
+                                    item.title,
+                                    item.bookImg,
+                                    item.bookCode,
+                                    item.info1,
+                                    item.info2,
+                                    item.info3,
+                                    item.info4,
+                                    item.info5,
+                                    item.info6,
+                                    item.number,
+                                    item.date,
+                                    item.type,
+                                    item.memo
+                                )
+                            }
+                        } else if (day == 4) {
+                            if (item != null) {
+                                weekItem.thur = BookListDataBest(
+                                    item.writer,
+                                    item.title,
+                                    item.bookImg,
+                                    item.bookCode,
+                                    item.info1,
+                                    item.info2,
+                                    item.info3,
+                                    item.info4,
+                                    item.info5,
+                                    item.info6,
+                                    item.number,
+                                    item.date,
+                                    item.type,
+                                    item.memo
+                                )
+                            }
+                        } else if (day == 5) {
+                            if (item != null) {
+                                weekItem.fri = BookListDataBest(
+                                    item.writer,
+                                    item.title,
+                                    item.bookImg,
+                                    item.bookCode,
+                                    item.info1,
+                                    item.info2,
+                                    item.info3,
+                                    item.info4,
+                                    item.info5,
+                                    item.info6,
+                                    item.number,
+                                    item.date,
+                                    item.type,
+                                    item.memo
+                                )
+                            }
+                        } else if (day == 6) {
+                            if (item != null) {
+                                weekItem.sat = BookListDataBest(
+                                    item.writer,
+                                    item.title,
+                                    item.bookImg,
+                                    item.bookCode,
+                                    item.info1,
+                                    item.info2,
+                                    item.info3,
+                                    item.info4,
+                                    item.info5,
+                                    item.info6,
+                                    item.number,
+                                    item.date,
+                                    item.type,
+                                    item.memo
+                                )
+                            }
+                        }
+                    }
+
+                    itemMonth.add(weekItem)
+                }
+
+                binding.blank.root.visibility = View.GONE
+                binding.rviewBestMonth.visibility = View.VISIBLE
+                adapterMonth.notifyDataSetChanged()
+            }
+
         } catch (e2: IOException) {
             Log.i("읽기오류", e2.message.toString())
         }
