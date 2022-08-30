@@ -84,8 +84,11 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
 
         itemMonth.clear()
 
-        readJsonList()
-//        getBestMonth()
+        if(bestDao?.bestDao()?.getAll()?.size == 0){
+            getBestMonth()
+        } else {
+            readJsonList()
+        }
 
         with(binding) {
             rviewBestMonth.layoutManager =

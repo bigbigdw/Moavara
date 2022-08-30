@@ -4,6 +4,9 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.room.Room
+import com.example.moavara.DataBase.DBBest
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.Retrofit.*
 import com.example.moavara.Search.BookListDataBest
@@ -109,19 +112,19 @@ object Mining {
         }
 
         val Ridi = Thread {
-            getRidiBest(genre)
+            getRidiBest(context, genre)
         }
 
         val OneStore = Thread {
-            getOneStoreBest(genre)
+            getOneStoreBest(context, genre)
         }
 
         val Kakao = Thread {
-            getKakaoBest(genre)
+            getKakaoBest(context, genre)
         }
 
         val KakaoStage = Thread {
-            getKakaoStageBest(genre)
+            getKakaoStageBest(context, genre)
         }
 
         val Joara = Thread {
@@ -137,27 +140,27 @@ object Mining {
         }
 
         val NaverToday = Thread {
-            getNaverToday(genre)
+            getNaverToday(context, genre)
         }
 
         val NaverChallenge = Thread {
-            getNaverChallenge(genre)
+            getNaverChallenge(context, genre)
         }
 
         val NaverBest = Thread {
-            getNaverBest(genre)
+            getNaverBest(context, genre)
         }
 
         val Moonpia = Thread {
-            getMoonpiaBest()
+            getMoonpiaBest(context)
         }
 
         val Toksoda = Thread {
-            getToksodaBest(genre)
+            getToksodaBest(context, genre)
         }
 
         val MrBlue = Thread {
-            getMrBlueBest(genre)
+            getMrBlueBest(context, genre)
         }
 
         try {
@@ -218,7 +221,7 @@ object Mining {
         }
     }
 
-    private fun getMrBlueBest(genre: String) {
+    private fun getMrBlueBest(context: Context, genre: String) {
         Thread {
 
             try {
@@ -249,6 +252,28 @@ object Mining {
                     miningValue(MrBlueRef, i, "MrBlue", genre)
                 }
 
+                val bestDaoToday = Room.databaseBuilder(
+                    context,
+                    DBBest::class.java,
+                    "Today_MrBlue_${genre}"
+                ).allowMainThreadQueries().build()
+
+                val bestDaoWeek = Room.databaseBuilder(
+                    context,
+                    DBBest::class.java,
+                    "Week_MrBlue_${genre}"
+                ).allowMainThreadQueries().build()
+
+                val bestDaoMonth = Room.databaseBuilder(
+                    context,
+                    DBBest::class.java,
+                    "Month_MrBlue_${genre}"
+                ).allowMainThreadQueries().build()
+
+                bestDaoToday.bestDao().initAll()
+                bestDaoWeek.bestDao().initAll()
+                bestDaoMonth.bestDao().initAll()
+
                 File(File("/storage/self/primary/MOAVARA"), "Today_MrBlue_${genre}.json").delete()
                 File(File("/storage/self/primary/MOAVARA"), "Week_MrBlue_${genre}.json").delete()
                 File(File("/storage/self/primary/MOAVARA"), "Month_MrBlue_${genre}.json").delete()
@@ -260,7 +285,7 @@ object Mining {
 
     }
 
-    private fun getNaverToday(genre: String) {
+    private fun getNaverToday(context : Context, genre: String) {
         try {
             val doc: Document =
                 Jsoup.connect(Genre.setNaverTodayGenre(genre)).post()
@@ -323,6 +348,28 @@ object Mining {
                     .setValue(i)
             }
 
+            val bestDaoToday = Room.databaseBuilder(
+                context,
+                DBBest::class.java,
+                "Today_Naver_Today_${genre}"
+            ).allowMainThreadQueries().build()
+
+            val bestDaoWeek = Room.databaseBuilder(
+                context,
+                DBBest::class.java,
+                "Week_Naver_Today_${genre}"
+            ).allowMainThreadQueries().build()
+
+            val bestDaoMonth = Room.databaseBuilder(
+                context,
+                DBBest::class.java,
+                "Month_Naver_Today_${genre}"
+            ).allowMainThreadQueries().build()
+
+            bestDaoToday.bestDao().initAll()
+            bestDaoWeek.bestDao().initAll()
+            bestDaoMonth.bestDao().initAll()
+
             File(File("/storage/self/primary/MOAVARA"), "Today_Naver_Today_${genre}.json").delete()
             File(File("/storage/self/primary/MOAVARA"), "Week_Naver_Today_${genre}.json").delete()
             File(File("/storage/self/primary/MOAVARA"), "Month_Naver_Today_${genre}.json").delete()
@@ -334,7 +381,7 @@ object Mining {
 
     }
 
-    private fun getNaverChallenge(genre: String) {
+    private fun getNaverChallenge(context : Context, genre: String) {
         try {
             val doc: Document =
                 Jsoup.connect(Genre.setNaverChallengeGenre(genre)).post()
@@ -395,6 +442,28 @@ object Mining {
                     .setValue(i)
             }
 
+            val bestDaoToday = Room.databaseBuilder(
+                context,
+                DBBest::class.java,
+                "Today_Naver_Challenge_${genre}"
+            ).allowMainThreadQueries().build()
+
+            val bestDaoWeek = Room.databaseBuilder(
+                context,
+                DBBest::class.java,
+                "Week_Naver_Challenge_${genre}"
+            ).allowMainThreadQueries().build()
+
+            val bestDaoMonth = Room.databaseBuilder(
+                context,
+                DBBest::class.java,
+                "Month_Naver_Challenge_${genre}"
+            ).allowMainThreadQueries().build()
+
+            bestDaoToday.bestDao().initAll()
+            bestDaoWeek.bestDao().initAll()
+            bestDaoMonth.bestDao().initAll()
+
             File(
                 File("/storage/self/primary/MOAVARA"),
                 "Today_Naver_Challenge_${genre}.json"
@@ -413,7 +482,7 @@ object Mining {
         }
     }
 
-    private fun getNaverBest(genre: String) {
+    private fun getNaverBest(context: Context, genre: String) {
         try {
 
             val doc: Document =
@@ -472,6 +541,28 @@ object Mining {
                 BestRef.setBookCode("Naver", genre, books[i].bookCode).child("numInfo3").setValue(i)
             }
 
+            val bestDaoToday = Room.databaseBuilder(
+                context,
+                DBBest::class.java,
+                "Today_Naver_${genre}"
+            ).allowMainThreadQueries().build()
+
+            val bestDaoWeek = Room.databaseBuilder(
+                context,
+                DBBest::class.java,
+                "Week_Naver_${genre}"
+            ).allowMainThreadQueries().build()
+
+            val bestDaoMonth = Room.databaseBuilder(
+                context,
+                DBBest::class.java,
+                "Month_Naver_${genre}"
+            ).allowMainThreadQueries().build()
+
+            bestDaoToday.bestDao().initAll()
+            bestDaoWeek.bestDao().initAll()
+            bestDaoMonth.bestDao().initAll()
+
             File(File("/storage/self/primary/MOAVARA"), "Today_Naver_${genre}.json").delete()
             File(File("/storage/self/primary/MOAVARA"), "Week_Naver_${genre}.json").delete()
             File(File("/storage/self/primary/MOAVARA"), "Month_Naver_${genre}.json").delete()
@@ -482,7 +573,7 @@ object Mining {
         }
     }
 
-    private fun getRidiBest(genre: String) {
+    private fun getRidiBest(context : Context, genre: String) {
         try {
             val doc: Document =
                 Jsoup.connect(Genre.setRidiGenre(genre)).post()
@@ -545,6 +636,28 @@ object Mining {
                 BestRef.setBookCode("Ridi", genre, books[i].bookCode).child("numInfo2").setValue(i)
             }
 
+            val bestDaoToday = Room.databaseBuilder(
+                context,
+                DBBest::class.java,
+                "Today_Ridi_${genre}"
+            ).allowMainThreadQueries().build()
+
+            val bestDaoWeek = Room.databaseBuilder(
+                context,
+                DBBest::class.java,
+                "Week_Ridi_${genre}"
+            ).allowMainThreadQueries().build()
+
+            val bestDaoMonth = Room.databaseBuilder(
+                context,
+                DBBest::class.java,
+                "Month_Ridi_${genre}"
+            ).allowMainThreadQueries().build()
+
+            bestDaoToday.bestDao().initAll()
+            bestDaoWeek.bestDao().initAll()
+            bestDaoMonth.bestDao().initAll()
+
             File(File("/storage/self/primary/MOAVARA"), "Today_Ridi_${genre}.json").delete()
             File(File("/storage/self/primary/MOAVARA"), "Week_Ridi_${genre}.json").delete()
             File(File("/storage/self/primary/MOAVARA"), "Month_Ridi_${genre}.json").delete()
@@ -554,7 +667,7 @@ object Mining {
         }
     }
 
-    private fun getOneStoreBest(genre: String) {
+    private fun getOneStoreBest(context : Context, genre: String) {
         try {
             val OneStoryRef: MutableMap<String?, Any> = HashMap()
 
@@ -624,6 +737,28 @@ object Mining {
                             }
                         }
 
+                        val bestDaoToday = Room.databaseBuilder(
+                            context,
+                            DBBest::class.java,
+                            "Today_OneStore_${genre}"
+                        ).allowMainThreadQueries().build()
+
+                        val bestDaoWeek = Room.databaseBuilder(
+                            context,
+                            DBBest::class.java,
+                            "Week_OneStore_${genre}"
+                        ).allowMainThreadQueries().build()
+
+                        val bestDaoMonth = Room.databaseBuilder(
+                            context,
+                            DBBest::class.java,
+                            "Month_OneStore_${genre}"
+                        ).allowMainThreadQueries().build()
+
+                        bestDaoToday.bestDao().initAll()
+                        bestDaoWeek.bestDao().initAll()
+                        bestDaoMonth.bestDao().initAll()
+
                         File(
                             File("/storage/self/primary/MOAVARA"),
                             "Today_OneStore_${genre}.json"
@@ -643,7 +778,7 @@ object Mining {
         }
     }
 
-    private fun getKakaoStageBest(genre: String) {
+    private fun getKakaoStageBest(context : Context, genre: String) {
         val KakaoRef: MutableMap<String?, Any> = HashMap()
 
         val apiKakao = RetrofitKaKao()
@@ -722,6 +857,28 @@ object Mining {
                                 .child("numInfo4").setValue(i)
                         }
 
+                        val bestDaoToday = Room.databaseBuilder(
+                            context,
+                            DBBest::class.java,
+                            "Today_Kakao_Stage_${genre}"
+                        ).allowMainThreadQueries().build()
+
+                        val bestDaoWeek = Room.databaseBuilder(
+                            context,
+                            DBBest::class.java,
+                            "Week_Kakao_Stage_${genre}"
+                        ).allowMainThreadQueries().build()
+
+                        val bestDaoMonth = Room.databaseBuilder(
+                            context,
+                            DBBest::class.java,
+                            "Month_Kakao_Stage_${genre}"
+                        ).allowMainThreadQueries().build()
+
+                        bestDaoToday.bestDao().initAll()
+                        bestDaoWeek.bestDao().initAll()
+                        bestDaoMonth.bestDao().initAll()
+
                         File(
                             File("/storage/self/primary/MOAVARA"),
                             "Today_Kakao_Stage_${genre}.json"
@@ -740,7 +897,7 @@ object Mining {
             })
     }
 
-    private fun getKakaoBest(genre: String) {
+    private fun getKakaoBest(context : Context, genre: String) {
         val apiKakao = RetrofitKaKao()
         val param: MutableMap<String?, Any> = HashMap()
         val KakaoRef: MutableMap<String?, Any> = HashMap()
@@ -820,6 +977,29 @@ object Mining {
                                 .setValue(i)
                         }
                     }
+
+                    val bestDaoToday = Room.databaseBuilder(
+                        context,
+                        DBBest::class.java,
+                        "Today_Kakao_${genre}"
+                    ).allowMainThreadQueries().build()
+
+                    val bestDaoWeek = Room.databaseBuilder(
+                        context,
+                        DBBest::class.java,
+                        "Week_Kakao_${genre}"
+                    ).allowMainThreadQueries().build()
+
+                    val bestDaoMonth = Room.databaseBuilder(
+                        context,
+                        DBBest::class.java,
+                        "Month_Kakao_${genre}"
+                    ).allowMainThreadQueries().build()
+
+                    bestDaoToday.bestDao().initAll()
+                    bestDaoWeek.bestDao().initAll()
+                    bestDaoMonth.bestDao().initAll()
+
 
                     File(
                         File("/storage/self/primary/MOAVARA"),
@@ -906,6 +1086,29 @@ object Mining {
                         }
                     }
 
+                    val bestDaoToday = Room.databaseBuilder(
+                        context,
+                        DBBest::class.java,
+                        "Today_Joara_${genre}"
+                    ).allowMainThreadQueries().build()
+
+                    val bestDaoMonth = Room.databaseBuilder(
+                        context,
+                        DBBest::class.java,
+                        "Month_Joara_${genre}"
+                    ).allowMainThreadQueries().build()
+
+                    val bestDaoWeek = Room.databaseBuilder(
+                        context,
+                        DBBest::class.java,
+                        "Week_Joara_${genre}"
+                    ).allowMainThreadQueries().build()
+
+                    bestDaoToday.bestDao().initAll()
+                    bestDaoMonth.bestDao().initAll()
+                    bestDaoWeek.bestDao().initAll()
+
+
                     File(
                         File("/storage/self/primary/MOAVARA"),
                         "Today_Joara_${genre}.json"
@@ -991,6 +1194,28 @@ object Mining {
                                 .child("numInfo3").setValue(i)
                         }
                     }
+
+                    val bestDaoToday = Room.databaseBuilder(
+                        context,
+                        DBBest::class.java,
+                        "Today_Joara_Premium_${genre}"
+                    ).allowMainThreadQueries().build()
+
+                    val bestDaoWeek = Room.databaseBuilder(
+                        context,
+                        DBBest::class.java,
+                        "Week_Joara_Premium_${genre}"
+                    ).allowMainThreadQueries().build()
+
+                    val bestDaoMonth = Room.databaseBuilder(
+                        context,
+                        DBBest::class.java,
+                        "Month_Joara_Premium_${genre}"
+                    ).allowMainThreadQueries().build()
+
+                    bestDaoToday.bestDao().initAll()
+                    bestDaoWeek.bestDao().initAll()
+                    bestDaoMonth.bestDao().initAll()
 
                     File(
                         File("/storage/self/primary/MOAVARA"),
@@ -1083,6 +1308,28 @@ object Mining {
                         }
                     }
 
+                    val bestDaoToday = Room.databaseBuilder(
+                        context,
+                        DBBest::class.java,
+                        "Today_Joara_Nobless_${genre}"
+                    ).allowMainThreadQueries().build()
+
+                    val bestDaoWeek = Room.databaseBuilder(
+                        context,
+                        DBBest::class.java,
+                        "Week_Joara_Nobless_${genre}"
+                    ).allowMainThreadQueries().build()
+
+                    val bestDaoMonth = Room.databaseBuilder(
+                        context,
+                        DBBest::class.java,
+                        "Month_Joara_Nobless_${genre}"
+                    ).allowMainThreadQueries().build()
+
+                    bestDaoToday.bestDao().initAll()
+                    bestDaoWeek.bestDao().initAll()
+                    bestDaoMonth.bestDao().initAll()
+
                     File(
                         File("/storage/self/primary/MOAVARA"),
                         "Today_Joara_Nobless_${genre}.json"
@@ -1100,7 +1347,7 @@ object Mining {
 
     }
 
-    private fun getMoonpiaBest() {
+    private fun getMoonpiaBest(context : Context) {
         val MoonpiaRef: MutableMap<String?, Any> = HashMap()
 
         val apiMoonPia = RetrofitMoonPia()
@@ -1194,6 +1441,28 @@ object Mining {
                                 }
                             }
 
+                            val bestDaoToday = Room.databaseBuilder(
+                                context,
+                                DBBest::class.java,
+                                "Today_Munpia"
+                            ).allowMainThreadQueries().build()
+
+                            val bestDaoWeek = Room.databaseBuilder(
+                                context,
+                                DBBest::class.java,
+                                "Week_Munpia"
+                            ).allowMainThreadQueries().build()
+
+                            val bestDaoMonth = Room.databaseBuilder(
+                                context,
+                                DBBest::class.java,
+                                "Month_Munpia"
+                            ).allowMainThreadQueries().build()
+
+                            bestDaoToday.bestDao().initAll()
+                            bestDaoWeek.bestDao().initAll()
+                            bestDaoMonth.bestDao().initAll()
+
                             File(
                                 File("/storage/self/primary/MOAVARA"),
                                 "Today_Munpia.json"
@@ -1210,7 +1479,7 @@ object Mining {
             })
     }
 
-    private fun getToksodaBest(genre: String) {
+    private fun getToksodaBest(context : Context, genre: String) {
         val ToksodaRef: MutableMap<String?, Any> = HashMap()
 
         val apiToksoda = RetrofitToksoda()
@@ -1283,6 +1552,28 @@ object Mining {
                                     .setValue(i)
                             }
                         }
+
+                        val bestDaoToday = Room.databaseBuilder(
+                            context,
+                            DBBest::class.java,
+                            "Today_Toksoda_${genre}"
+                        ).allowMainThreadQueries().build()
+
+                        val bestDaoWeek = Room.databaseBuilder(
+                            context,
+                            DBBest::class.java,
+                            "Week_Toksoda_${genre}"
+                        ).allowMainThreadQueries().build()
+
+                        val bestDaoMonth = Room.databaseBuilder(
+                            context,
+                            DBBest::class.java,
+                            "Month_Toksoda_${genre}"
+                        ).allowMainThreadQueries().build()
+
+                        bestDaoToday.bestDao().initAll()
+                        bestDaoWeek.bestDao().initAll()
+                        bestDaoMonth.bestDao().initAll()
 
                         File(
                             File("/storage/self/primary/MOAVARA"),

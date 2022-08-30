@@ -88,8 +88,11 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
             originalMonth = DBDate.Month().toInt()
             originalWeek = (currentDate?.week ?: 0).toInt()
 
-            readJsonList()
-//            getBestWeekList()
+            if(bestDao?.bestDao()?.getAll()?.size == 0){
+                getBestWeekList()
+            } else {
+                readJsonList()
+            }
 
             carousel.setViewListener(viewListenerBest)
             carousel.setImageClickListener { position ->

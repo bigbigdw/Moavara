@@ -89,7 +89,11 @@ class FragmentBestTabToday(private val platform: String, private val pickItems: 
         binding.blank.tviewblank.text = "작품을 불러오는 중..."
         binding.rviewBest.visibility = View.GONE
 
-        readJsonList()
+        if(bestDao?.bestDao()?.getAll()?.size == 0){
+            getBookListToday()
+        } else {
+            readJsonList()
+        }
 
         adapterToday?.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
