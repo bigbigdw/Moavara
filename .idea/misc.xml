@@ -123,7 +123,7 @@
         <entry key="..\:/ANDROID_SDK/platforms/android-31/data/res/layout/simple_list_item_checked.xml" value="0.1" />
         <entry key="app/src/main/res/Best/layout/activity_best_detail.xml" value="0.1" />
         <entry key="app/src/main/res/Best/layout/activity_bestdetail.xml" value="0.1" />
-        <entry key="app/src/main/res/Best/layout/bottom_dialog_best.xml" value="0.1" />
+        <entry key="app/src/main/res/Best/layout/bottom_dialog_best.xml" value="0.75" />
         <entry key="app/src/main/res/Best/layout/collapse_best_detail.xml" value="0.1921875" />
         <entry key="app/src/main/res/Best/layout/cu_item_best_weekend.xml" value="0.1" />
         <entry key="app/src/main/res/Best/layout/fragment_best.xml" value="0.1" />

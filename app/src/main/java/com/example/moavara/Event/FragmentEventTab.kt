@@ -548,10 +548,6 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
         }
 
         if (eventItem != null) {
-            Log.d("####", eventItem.link)
-        }
-
-        if (eventItem != null) {
             val mBottomSheetDialogEvent =
                 BottomSheetDialogEvent(requireContext(), eventItem, tabType)
             fragmentManager?.let { mBottomSheetDialogEvent.show(it, null) }

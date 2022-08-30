@@ -343,6 +343,23 @@ class FragmentBestTabToday(private val platform: String, private val pickItems: 
                                     )
                                 )
 
+                                bestDaoBookCode?.bestDaoBookCode()?.insert(
+                                    RoomBookListDataBestAnalyze(
+                                        group.info1,
+                                        group.info2,
+                                        group.info3,
+                                        group.info4,
+                                        group.number,
+                                        group.numInfo1,
+                                        group.numInfo2,
+                                        group.numInfo3,
+                                        group.numInfo4,
+                                        group.date,
+                                        0,
+                                        1
+                                    )
+                                )
+
                                 jsonObject.put("info1", group.info1)
                                 jsonObject.put("info2", group.info2)
                                 jsonObject.put("info3", group.info3)

@@ -74,8 +74,6 @@ class BottomDialogBest(
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                Log.d("####", dataSnapshot.exists().toString())
-
                 if(!dataSnapshot.exists()){
                     isFirstPick = true
                 }
@@ -175,6 +173,10 @@ class BottomDialogBest(
                     tviewInfo4.visibility = View.VISIBLE
                 }
 
+                if(platform == "Naver"){
+                    tviewBar.visibility = View.GONE
+                }
+
                 tviewInfo5.visibility = View.GONE
 
                 val info3 = SpannableStringBuilder("별점 수 : ${item?.info3?.replace("별점", "")}")
@@ -250,6 +252,7 @@ class BottomDialogBest(
                 tviewInfo3.visibility = View.VISIBLE
                 tviewInfo4.visibility = View.VISIBLE
                 tviewInfo5.visibility = View.GONE
+                tviewBar.visibility = View.GONE
 
                 val info3 = SpannableStringBuilder("조회 수 : ${item?.info3?.replace("별점", "별점 : ")}" )
                 info3.applyingTextColor(

@@ -1889,7 +1889,7 @@ object Mining {
                             0,
                             0,
                             0,
-                            com.example.moavara.Util.DBDate.DateMMDD(),
+                            DBDate.DateMMDD(),
                             0,
                             0,
                         )
