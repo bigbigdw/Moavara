@@ -43,7 +43,6 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
     private var adapter: AdapterBestWeekend? = null
     var arrayCarousel = ArrayList<BookListDataBest>()
     private val itemWeek = ArrayList<ArrayList<BookListDataBest>?>()
-    private var obj = JSONObject()
     private var originalMonth = 0
     private var originalWeek = 0
     private var weekCount = 0
@@ -91,7 +90,7 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
             if(bestDao?.bestDao()?.getAll()?.size == 0){
                 getBestWeekList()
             } else {
-                readJsonList()
+                setRoomData()
             }
 
             carousel.setViewListener(viewListenerBest)
@@ -249,11 +248,6 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
 
         bestDao?.bestDao()?.initAll()
 
-        val file = File(File("/storage/self/primary/MOAVARA"), "Week_${platform}_${UserInfo?.Genre ?: ""}.json")
-        if (file.exists()) {
-            file.delete()
-        }
-
         binding.rviewBest.removeAllViews()
         itemWeek.clear()
 
@@ -264,21 +258,17 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
 
                     for (day in 1..7) {
                         val itemResult = dataSnapshot.child(day.toString())
-                        val jsonArray = JSONArray()
                         val itemList = ArrayList<BookListDataBest>()
 
                         if (itemResult.value == null) {
                             for (num in 0..19) {
-                                val jsonObject = JSONObject()
                                 itemList.add(BookListDataBest())
                                 bestDao?.bestDao()?.insert(RoomBookListDataBest())
-                                jsonArray.put(BestRef.putItem(jsonObject, BookListDataBest()))
                             }
                             itemWeek.add(itemList)
 
                         } else {
                             for (num in 0..19) {
-                                val jsonObject = JSONObject()
                                 val item: BookListDataBest? =
                                     itemResult.child(num.toString())
                                         .getValue(BookListDataBest::class.java)
@@ -304,7 +294,6 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                                             DBDate.getDayInt(item.date) ?: 0
                                         )
                                     )
-                                    jsonArray.put(BestRef.putItem(jsonObject, item))
                                 }
                             }
                             itemWeek.add(itemList)
@@ -325,12 +314,10 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                         }
 
                         arrayCarousel.addAll(itemListCarousel)
-                        obj.putOpt(day.toString(), jsonArray)
                     }
 
                     binding.blank.root.visibility = View.GONE
                     binding.llayoutWrap.visibility = View.VISIBLE
-                    writeFile(obj)
                     adapter?.notifyDataSetChanged()
 
                     if (arrayCarousel.size > 0) {
@@ -350,199 +337,6 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
 
         } catch (e: JSONException) {
             e.printStackTrace()
-        }
-    }
-
-    fun writeFile(obj: JSONObject) {
-
-        File("/storage/self/primary/MOAVARA").mkdir()
-
-        val file = File(File("/storage/self/primary/MOAVARA"), "Week_${platform}_${UserInfo?.Genre ?: ""}.json")
-
-        try {
-
-            if (!file.exists()) {
-                file.createNewFile()
-            }
-
-            val bw = BufferedWriter(FileWriter(file, true))
-            bw.write(obj.toString())
-            bw.newLine()
-            bw.close()
-        } catch (e: IOException) {
-            Log.i("저장오류", e.message.toString())
-        }
-    }
-
-    private fun readJsonList() {
-        val file = File(File("/storage/self/primary/MOAVARA"), "Week_${platform}_${UserInfo?.Genre ?: ""}.json")
-        try {
-            val reader = BufferedReader(FileReader(file))
-
-            val buffer = StringBuilder()
-            var line = reader.readLine()
-            while (line != null) {
-                buffer.append(line).append("\n")
-                line = reader.readLine()
-            }
-
-            val jsonData = buffer.toString()
-            val jsonObject = JSONObject(jsonData)
-
-            for (day in 1..7) {
-                val itemList = ArrayList<BookListDataBest>()
-                val itemResult = jsonObject.getJSONArray(day.toString())
-
-                if (itemResult.length() == 0) {
-                    for (num in 0..19) {
-                        itemList.add(BookListDataBest())
-                    }
-                    itemWeek.add(itemList)
-                } else {
-                    for (num in 0..19) {
-                        val item = itemResult.getJSONObject(num)
-
-                        if (item != null) {
-                            itemList.add(BestRef.getItem(item))
-                        }
-                    }
-
-                    if (today?.date == day) {
-
-                        val itemListCarousel = ArrayList<BookListDataBest>()
-
-                        for (numCarousel in 0..8) {
-                            val item = itemResult.getJSONObject(numCarousel)
-
-                            if (item != null) {
-                                itemListCarousel.add(BestRef.getItem(item))
-                                binding.llayoutCarousel.visibility = View.VISIBLE
-                            }
-                        }
-
-                        arrayCarousel.addAll(itemListCarousel)
-                    }
-
-                    itemWeek.add(itemList)
-                }
-            }
-
-            adapter?.notifyDataSetChanged()
-
-            if (arrayCarousel.size > 0) {
-                with(binding) {
-                    carousel.pageCount = arrayCarousel.size
-                    carousel.slideInterval = 4000
-                    binding.llayoutCarousel.visibility = View.VISIBLE
-                }
-            } else {
-                binding.llayoutCarousel.visibility = View.GONE
-            }
-
-            reader.close()
-            binding.blank.root.visibility = View.GONE
-            binding.llayoutWrap.visibility = View.VISIBLE
-            adapter?.notifyDataSetChanged()
-
-        } catch (e1: FileNotFoundException) {
-
-            if(bestDao?.bestDao()?.getAll()?.size == 0){
-                Log.i("파일못찾음", e1.message.toString())
-                getBestWeekList()
-                Toast.makeText(requireContext(), "리스트를 다운받고 있습니다", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(requireContext(), "Room 리스트를 다운받고 있습니다", Toast.LENGTH_SHORT).show()
-
-                for (day in 1..7) {
-                    val itemList = ArrayList<BookListDataBest>()
-                    val itemResult = bestDao?.bestDao()?.getWeek(day.toString())
-
-                    if (itemResult?.size == 0) {
-                        for (num in 0..19) {
-                            itemList.add(BookListDataBest())
-                        }
-                        itemWeek.add(itemList)
-                    } else {
-                        for (num in 0..19) {
-                            if(itemResult != null){
-                                itemList.add(BookListDataBest(
-                                    itemResult[num].writer,
-                                    itemResult[num].title,
-                                    itemResult[num].bookImg,
-                                    itemResult[num].bookCode,
-                                    itemResult[num].info1,
-                                    itemResult[num].info2,
-                                    itemResult[num].info3,
-                                    itemResult[num].info4,
-                                    itemResult[num].info5,
-                                    itemResult[num].info6,
-                                    itemResult[num].number,
-                                    itemResult[num].date,
-                                    itemResult[num].type,
-                                    itemResult[num].memo
-                                ))
-                            }
-                        }
-
-                        if (today?.date == day) {
-
-                            val itemListCarousel = ArrayList<BookListDataBest>()
-                            val itemResultCarousel = bestDao?.bestDao()?.getWeek(day.toString())
-
-                            for (numCarousel in 0..8) {
-
-                                if(itemResultCarousel != null){
-                                    itemListCarousel.add(BookListDataBest(
-                                        itemResultCarousel[numCarousel].writer,
-                                        itemResultCarousel[numCarousel].title,
-                                        itemResultCarousel[numCarousel].bookImg,
-                                        itemResultCarousel[numCarousel].bookCode,
-                                        itemResultCarousel[numCarousel].info1,
-                                        itemResultCarousel[numCarousel].info2,
-                                        itemResultCarousel[numCarousel].info3,
-                                        itemResultCarousel[numCarousel].info4,
-                                        itemResultCarousel[numCarousel].info5,
-                                        itemResultCarousel[numCarousel].info6,
-                                        itemResultCarousel[numCarousel].number,
-                                        itemResultCarousel[numCarousel].date,
-                                        itemResultCarousel[numCarousel].type,
-                                        itemResultCarousel[numCarousel].memo
-                                    ))
-                                }
-
-                                if (itemResultCarousel != null) {
-                                    binding.llayoutCarousel.visibility = View.VISIBLE
-                                }
-                            }
-
-                            arrayCarousel.addAll(itemListCarousel)
-                        }
-
-                        itemWeek.add(itemList)
-                    }
-                }
-
-                binding.blank.root.visibility = View.GONE
-                binding.rviewBest.visibility = View.VISIBLE
-                adapter?.notifyDataSetChanged()
-
-                if (arrayCarousel.size > 0) {
-                    with(binding) {
-                        carousel.pageCount = arrayCarousel.size
-                        carousel.slideInterval = 4000
-                        binding.llayoutCarousel.visibility = View.VISIBLE
-                    }
-                } else {
-                    binding.llayoutCarousel.visibility = View.GONE
-                }
-
-                binding.blank.root.visibility = View.GONE
-                binding.llayoutWrap.visibility = View.VISIBLE
-                adapter?.notifyDataSetChanged()
-
-            }
-        } catch (e2: IOException) {
-            Log.i("읽기오류", e2.message.toString())
         }
     }
 
@@ -835,4 +629,95 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
             binding.carousel.indicatorGravity = Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM
             customView
         }
+
+    private fun setRoomData(){
+        Toast.makeText(requireContext(), "Room 리스트를 다운받고 있습니다", Toast.LENGTH_SHORT).show()
+
+        for (day in 1..7) {
+            val itemList = ArrayList<BookListDataBest>()
+            val itemResult = bestDao?.bestDao()?.getWeek(day.toString())
+
+            if (itemResult?.size == 0) {
+                for (num in 0..19) {
+                    itemList.add(BookListDataBest())
+                }
+                itemWeek.add(itemList)
+            } else {
+                for (num in 0..19) {
+                    if(itemResult != null){
+                        itemList.add(BookListDataBest(
+                            itemResult[num].writer,
+                            itemResult[num].title,
+                            itemResult[num].bookImg,
+                            itemResult[num].bookCode,
+                            itemResult[num].info1,
+                            itemResult[num].info2,
+                            itemResult[num].info3,
+                            itemResult[num].info4,
+                            itemResult[num].info5,
+                            itemResult[num].info6,
+                            itemResult[num].number,
+                            itemResult[num].date,
+                            itemResult[num].type,
+                            itemResult[num].memo
+                        ))
+                    }
+                }
+
+                if (today?.date == day) {
+
+                    val itemListCarousel = ArrayList<BookListDataBest>()
+                    val itemResultCarousel = bestDao?.bestDao()?.getWeek(day.toString())
+
+                    for (numCarousel in 0..8) {
+
+                        if(itemResultCarousel != null){
+                            itemListCarousel.add(BookListDataBest(
+                                itemResultCarousel[numCarousel].writer,
+                                itemResultCarousel[numCarousel].title,
+                                itemResultCarousel[numCarousel].bookImg,
+                                itemResultCarousel[numCarousel].bookCode,
+                                itemResultCarousel[numCarousel].info1,
+                                itemResultCarousel[numCarousel].info2,
+                                itemResultCarousel[numCarousel].info3,
+                                itemResultCarousel[numCarousel].info4,
+                                itemResultCarousel[numCarousel].info5,
+                                itemResultCarousel[numCarousel].info6,
+                                itemResultCarousel[numCarousel].number,
+                                itemResultCarousel[numCarousel].date,
+                                itemResultCarousel[numCarousel].type,
+                                itemResultCarousel[numCarousel].memo
+                            ))
+                        }
+
+                        if (itemResultCarousel != null) {
+                            binding.llayoutCarousel.visibility = View.VISIBLE
+                        }
+                    }
+
+                    arrayCarousel.addAll(itemListCarousel)
+                }
+
+                itemWeek.add(itemList)
+            }
+        }
+
+        binding.blank.root.visibility = View.GONE
+        binding.rviewBest.visibility = View.VISIBLE
+        adapter?.notifyDataSetChanged()
+
+        if (arrayCarousel.size > 0) {
+            with(binding) {
+                carousel.pageCount = arrayCarousel.size
+                carousel.slideInterval = 4000
+                binding.llayoutCarousel.visibility = View.VISIBLE
+            }
+        } else {
+            binding.llayoutCarousel.visibility = View.GONE
+        }
+
+        binding.blank.root.visibility = View.GONE
+        binding.llayoutWrap.visibility = View.VISIBLE
+        adapter?.notifyDataSetChanged()
+    }
 }

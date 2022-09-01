@@ -40,7 +40,6 @@ class FragmentBestTabToday(private val platform: String, private val pickItems: 
     lateinit var root: View
     private var _binding: FragmentBestTabTodayBinding? = null
     private val binding get() = _binding!!
-    private var obj = JSONObject()
 
     private lateinit var firebaseAnalytics: FirebaseAnalytics
     var userDao: DBUser? = null
@@ -92,7 +91,7 @@ class FragmentBestTabToday(private val platform: String, private val pickItems: 
         if(bestDao?.bestDao()?.getAll()?.size == 0){
             getBookListToday()
         } else {
-            readJsonList()
+            setRoomData()
         }
 
         adapterToday?.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
@@ -100,12 +99,8 @@ class FragmentBestTabToday(private val platform: String, private val pickItems: 
                 val item: BookListDataBest? = adapterToday?.getItem(position)
 
                 val bundle = Bundle()
-                bundle.putString("test_test", "FragmentBestTabToday")
-                bundle.putString("test_test1", "FragmentBestTabToday")
-                bundle.putString("test_test2", "FragmentBestTabToday")
-                bundle.putString("test_test3", "FragmentBestTabToday")
-                bundle.putString("test_test4", "FragmentBestTabToday")
-                firebaseAnalytics.logEvent("test2", bundle)
+                bundle.putString("BEST_platform", item?.type)
+                firebaseAnalytics.logEvent("BEST_bottomDialog", bundle)
 
                 if(platform == "MrBlue"){
                     val intent = Intent(
@@ -133,13 +128,6 @@ class FragmentBestTabToday(private val platform: String, private val pickItems: 
 
         bestDao?.bestDao()?.initAll()
 
-        val file = File(File("/storage/self/primary/MOAVARA"), "Today_${platform}_${UserInfo?.Genre}.json")
-        if (file.exists()) {
-            file.delete()
-        }
-
-        val jsonArray = JSONArray()
-
         BestRef.getBestDataToday(platform, UserInfo?.Genre ?: "").addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -148,26 +136,11 @@ class FragmentBestTabToday(private val platform: String, private val pickItems: 
                     binding.rviewBest.visibility = View.VISIBLE
 
                     for (postSnapshot in dataSnapshot.children) {
-                        val jsonObject = JSONObject() //배열 내에 들어갈 json
 
                         val group: BookListDataBest? =
                             postSnapshot.getValue(BookListDataBest::class.java)
 
                         if (group != null) {
-
-                            jsonObject.put("writer", group.writer)
-                            jsonObject.put("title", group.title)
-                            jsonObject.put("bookImg", group.bookImg)
-                            jsonObject.put("bookCode", group.bookCode)
-                            jsonObject.put("info1", group.info1)
-                            jsonObject.put("info2", group.info2)
-                            jsonObject.put("info3", group.info3)
-                            jsonObject.put("info4", group.info4)
-                            jsonObject.put("info5", group.info5)
-                            jsonObject.put("number", group.number)
-                            jsonObject.put("date", group.date)
-                            jsonObject.put("type", group.type)
-                            jsonObject.put("memo", group.memo)
 
                             items.add(BookListDataBest(
                                 group.writer,
@@ -185,8 +158,6 @@ class FragmentBestTabToday(private val platform: String, private val pickItems: 
                                 group.type,
                                 group.memo
                             ))
-
-                            jsonArray.put(jsonObject)
 
                             bestDao?.bestDao()?.insert(
                                 RoomBookListDataBest(
@@ -209,10 +180,7 @@ class FragmentBestTabToday(private val platform: String, private val pickItems: 
                         }
                     }
 
-                    obj.putOpt("items", jsonArray)
-
                     getBestTodayList(items, true)
-
 
                     adapterToday?.notifyDataSetChanged()
                 } catch (e: JSONException) {
@@ -234,16 +202,12 @@ class FragmentBestTabToday(private val platform: String, private val pickItems: 
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                val jsonArray = JSONArray()
-
                 try {
                     for (bookCodeList in items) {
 
                         val items = dataSnapshot.child(bookCodeList.bookCode)
 
                         if (items.childrenCount > 1) {
-
-                            val jsonObject = JSONObject()
 
                             val bookCodes = ArrayList<BookListDataBestAnalyze>()
 
@@ -307,19 +271,7 @@ class FragmentBestTabToday(private val platform: String, private val pickItems: 
                                 )
                             )
 
-                            jsonObject.put("info1", lastItem.info1)
-                            jsonObject.put("info2", lastItem.info2)
-                            jsonObject.put("info3", lastItem.info3)
-                            jsonObject.put("number", lastItem.number)
-                            jsonObject.put("date", lastItem.date)
-                            jsonObject.put("numberDiff", moreLastItem.number - lastItem.number)
-                            jsonObject.put("trophyCount", bookCodes.size)
-
-                            jsonArray.put(jsonObject)
-
                         } else if (items.childrenCount.toInt() == 1) {
-
-                            val jsonObject = JSONObject()
 
                             val group: BookListDataBestAnalyze? =
                                 dataSnapshot.child(bookCodeList.bookCode).child(DBDate.DateMMDD())
@@ -359,24 +311,12 @@ class FragmentBestTabToday(private val platform: String, private val pickItems: 
                                         1
                                     )
                                 )
-
-                                jsonObject.put("info1", group.info1)
-                                jsonObject.put("info2", group.info2)
-                                jsonObject.put("info3", group.info3)
-                                jsonObject.put("number", group.number)
-                                jsonObject.put("date", group.date)
-                                jsonObject.put("numberDiff", 0)
-                                jsonObject.put("trophyCount", 1)
-
-                                jsonArray.put(jsonObject)
                             }
                         }
                     }
                 } catch (e: JSONException) {
                     e.printStackTrace()
                 }
-
-                writeJsonList(obj.putOpt("itemStatus", jsonArray))
 
                 binding.blank.root.visibility = View.GONE
                 binding.rviewBest.visibility = View.VISIBLE
@@ -389,159 +329,54 @@ class FragmentBestTabToday(private val platform: String, private val pickItems: 
         })
     }
 
-    fun writeJsonList(obj: JSONObject) {
+    private fun setRoomData(){
+        val bookItem = bestDao?.bestDao()?.getAll()
+        val bookCodeItem = bestDaoBookCode?.bestDaoBookCode()?.get()
+        binding.blank.root.visibility = View.GONE
+        binding.rviewBest.visibility = View.VISIBLE
 
-        File("/storage/self/primary/MOAVARA").mkdir()
-
-        val file = File(File("/storage/self/primary/MOAVARA"), "Today_${platform}_${UserInfo?.Genre}.json")
-
-        try {
-
-            if (!file.exists()) {
-                file.createNewFile()
-            }
-
-            val bw = BufferedWriter(FileWriter(file, true))
-            bw.write(obj.toString())
-            bw.newLine()
-            bw.close()
-        } catch (e: IOException) {
-            Log.i("저장오류", e.message.toString())
-        }
-    }
-
-    private fun readJsonList() {
-        val file = File(File("/storage/self/primary/MOAVARA"), "Today_${platform}_${UserInfo?.Genre}.json")
-        try {
-            val reader = BufferedReader(FileReader(file))
-
-            val buffer = StringBuilder()
-            var line = reader.readLine()
-            while (line != null) {
-                buffer.append(line).append("\n")
-                line = reader.readLine()
-            }
-
-            val jsonData = buffer.toString()
-
-            val jsonObject = JSONObject(jsonData)
-            val itemsFlag = jsonObject.getJSONArray("items")
-            val itemStatusFlag = jsonObject.getJSONArray("itemStatus")
-
-            for (i in 0 until itemsFlag.length()) {
-                val jo = itemsFlag.getJSONObject(i)
+        if (bookItem != null) {
+            for(item in bookItem){
                 items.add(BookListDataBest(
-                    jo.optString("writer"),
-                    jo.optString("title"),
-                    jo.optString("bookImg"),
-                    jo.optString("bookCode"),
-                    jo.optString("info1"),
-                    jo.optString("info2"),
-                    jo.optString("info3"),
-                    jo.optString("info4"),
-                    jo.optString("info5"),
-                    jo.optString("info6"),
-                    jo.optInt("number"),
-                    jo.optString("date"),
-                    jo.optString("type"),
-                    jo.optString("memo"),
+                    item.writer,
+                    item.title,
+                    item.bookImg,
+                    item.bookCode,
+                    item.info1,
+                    item.info2,
+                    item.info3,
+                    item.info4,
+                    item.info5,
+                    item.info6,
+                    item.number,
+                    item.date,
+                    item.type,
+                    item.memo
                 ))
             }
-
-            for (i in 0 until itemStatusFlag.length()) {
-                val jo = itemStatusFlag.getJSONObject(i)
-                bookCodeItems.add(BookListDataBestAnalyze(
-                    jo.optString("info1"),
-                    jo.optString("info2"),
-                    jo.optString("info3"),
-                    jo.optString("info4"),
-                    jo.optInt("number"),
-                    jo.optInt("numInfo1"),
-                    jo.optInt("numInfo2"),
-                    jo.optInt("numInfo3"),
-                    jo.optInt("numInfo4"),
-                    jo.optString("date"),
-                    jo.optInt("numberDiff"),
-                    jo.optInt("trophyCount"),
-                ))
-            }
-
-            reader.close()
-            binding.blank.root.visibility = View.GONE
-            binding.rviewBest.visibility = View.VISIBLE
-            adapterToday?.notifyDataSetChanged()
-        } catch (e1: FileNotFoundException) {
-
-            bestDao = Room.databaseBuilder(
-                requireContext(),
-                DBBest::class.java,
-                "Today_${platform}_${UserInfo?.Genre}"
-            ).allowMainThreadQueries().build()
-
-            bestDaoBookCode = Room.databaseBuilder(
-                requireContext(),
-                DBBestBookCode::class.java,
-                "Today_${platform}_${UserInfo?.Genre}_BookCode"
-            ).allowMainThreadQueries().build()
-
-            if(bestDao?.bestDao()?.getAll()?.size == 0){
-                Log.i("파일못찾음", e1.message.toString())
-                getBookListToday()
-                Toast.makeText(requireContext(), "리스트를 다운받고 있습니다", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(requireContext(), "Room 리스트를 다운받고 있습니다", Toast.LENGTH_SHORT).show()
-                val bookItem = bestDao?.bestDao()?.getAll()
-                val bookCodeItem = bestDaoBookCode?.bestDaoBookCode()?.get()
-                binding.blank.root.visibility = View.GONE
-                binding.rviewBest.visibility = View.VISIBLE
-
-                if (bookItem != null) {
-                    for(item in bookItem){
-                        items.add(BookListDataBest(
-                            item.writer,
-                            item.title,
-                            item.bookImg,
-                            item.bookCode,
-                            item.info1,
-                            item.info2,
-                            item.info3,
-                            item.info4,
-                            item.info5,
-                            item.info6,
-                            item.number,
-                            item.date,
-                            item.type,
-                            item.memo
-                        ))
-                    }
-                }
-
-                if (bookCodeItem != null) {
-                    for(item in bookCodeItem){
-                        bookCodeItems.add(
-                            BookListDataBestAnalyze(
-                                item.info1,
-                                item.info2,
-                                item.info3,
-                                item.info4,
-                                item.number,
-                                item.numInfo1,
-                                item.numInfo2,
-                                item.numInfo3,
-                                item.numInfo4,
-                                item.date,
-                                item.numberDiff,
-                                item.trophyCount,
-                            )
-                        )
-                    }
-                }
-
-                adapterToday?.notifyDataSetChanged()
-            }
-
-        } catch (e2: IOException) {
-            Log.i("읽기오류", e2.message.toString())
         }
+
+        if (bookCodeItem != null) {
+            for(item in bookCodeItem){
+                bookCodeItems.add(
+                    BookListDataBestAnalyze(
+                        item.info1,
+                        item.info2,
+                        item.info3,
+                        item.info4,
+                        item.number,
+                        item.numInfo1,
+                        item.numInfo2,
+                        item.numInfo3,
+                        item.numInfo4,
+                        item.date,
+                        item.numberDiff,
+                        item.trophyCount,
+                    )
+                )
+            }
+        }
+
+        adapterToday?.notifyDataSetChanged()
     }
 }

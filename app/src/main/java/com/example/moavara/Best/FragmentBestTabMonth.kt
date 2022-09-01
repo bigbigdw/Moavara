@@ -44,7 +44,6 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
     private var _binding: FragmentBestMonthBinding? = null
     private val binding get() = _binding!!
 
-    private var obj = JSONObject()
     private var year = 0
     private var month = 0
     private var monthCount = 0
@@ -87,7 +86,7 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
         if(bestDao?.bestDao()?.getAll()?.size == 0){
             getBestMonth()
         } else {
-            readJsonList()
+            setRoomData()
         }
 
         with(binding) {
@@ -267,7 +266,6 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                         for (week in 1..6) {
-                            val jsonArray = JSONArray()
                             val weekItem = BookListDataBestWeekend()
 
                             for (day in 1..7) {
@@ -276,13 +274,10 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
                                         .child("0")
                                         .getValue(BookListDataBest::class.java)
 
-                                val jsonObject = JSONObject()
-
                                 when (day) {
                                     1 -> {
                                         if (item != null) {
                                             weekItem.sun = item
-                                            putItem(jsonObject, item)
                                             bestDao?.bestDao()?.insert(
                                                 RoomBookListDataBest(
                                                     item.writer,
@@ -308,7 +303,6 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
                                     2 -> {
                                         if (item != null) {
                                             weekItem.mon = item
-                                            putItem(jsonObject, item)
                                             bestDao?.bestDao()?.insert(
                                                 RoomBookListDataBest(
                                                     item.writer,
@@ -334,7 +328,6 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
                                     3 -> {
                                         if (item != null) {
                                             weekItem.tue = item
-                                            putItem(jsonObject, item)
                                             bestDao?.bestDao()?.insert(
                                                 RoomBookListDataBest(
                                                     item.writer,
@@ -360,7 +353,6 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
                                     4 -> {
                                         if (item != null) {
                                             weekItem.wed = item
-                                            putItem(jsonObject, item)
                                             bestDao?.bestDao()?.insert(
                                                 RoomBookListDataBest(
                                                     item.writer,
@@ -386,7 +378,6 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
                                     5 -> {
                                         if (item != null) {
                                             weekItem.thur = item
-                                            putItem(jsonObject, item)
                                             bestDao?.bestDao()?.insert(
                                                 RoomBookListDataBest(
                                                     item.writer,
@@ -411,7 +402,6 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
                                     }
                                     6 -> {
                                         if (item != null) {
-                                            putItem(jsonObject, item)
                                             weekItem.fri = item
                                             bestDao?.bestDao()?.insert(
                                                 RoomBookListDataBest(
@@ -437,7 +427,6 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
                                     }
                                     7 -> {
                                         if (item != null) {
-                                            putItem(jsonObject, item)
                                             weekItem.sat = item
                                             bestDao?.bestDao()?.insert(
                                                 RoomBookListDataBest(
@@ -462,17 +451,14 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
                                         }
                                     }
                                 }
-                                jsonArray.put(jsonObject)
                             }
 
                             itemMonth.add(weekItem)
-                            obj.putOpt(week.toString(), jsonArray)
 
                             binding.blank.root.visibility = View.GONE
                             binding.rviewBestMonth.visibility = View.VISIBLE
                             adapterMonth.notifyDataSetChanged()
                         }
-                        writeFile(obj)
                     }
 
                     override fun onCancelled(databaseError: DatabaseError) {}
@@ -646,233 +632,156 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
         })
     }
 
-    fun writeFile(obj: JSONObject) {
+    fun setRoomData(){
+        Toast.makeText(requireContext(), "Room 리스트를 다운받고 있습니다", Toast.LENGTH_SHORT).show()
 
-        File("/storage/self/primary/MOAVARA").mkdir()
+        for (num in 1..6) {
+            val weekItem = BookListDataBestWeekend()
 
-        val file = File(File("/storage/self/primary/MOAVARA"), "Month_${platform}_${UserInfo?.Genre ?: ""}.json")
+            for (day in 0..6) {
+                val item = bestDao?.bestDao()?.getMonth((day + 1).toString(), num.toString())
 
-        try {
-
-            if (!file.exists()) {
-                file.createNewFile()
-            }
-
-            val bw = BufferedWriter(FileWriter(file, true))
-            bw.write(obj.toString())
-            bw.newLine()
-            bw.close()
-        } catch (e: IOException) {
-            Log.i("저장오류", e.message.toString())
-        }
-    }
-
-    private fun readJsonList() {
-        val file = File(File("/storage/self/primary/MOAVARA"), "Month_${platform}_${UserInfo?.Genre ?: ""}.json")
-        try {
-            val reader = BufferedReader(FileReader(file))
-
-            val buffer = StringBuilder()
-            var line = reader.readLine()
-            while (line != null) {
-                buffer.append(line).append("\n")
-                line = reader.readLine()
-            }
-
-            val jsonData = buffer.toString()
-            val jsonObject = JSONObject(jsonData)
-
-            for (num in 1..6) {
-                val weekItem = BookListDataBestWeekend()
-
-                for (day in 0..6) {
-                    val item = jsonObject.getJSONArray(num.toString()).getJSONObject(day)
-
-                    if (day == 0) {
-                        weekItem.sun = BestRef.getItem(item)
-                    } else if (day == 1) {
-                        weekItem.mon = BestRef.getItem(item)
-                    } else if (day == 2) {
-                        weekItem.tue = BestRef.getItem(item)
-                    } else if (day == 3) {
-                        weekItem.wed = BestRef.getItem(item)
-                    } else if (day == 4) {
-                        weekItem.thur = BestRef.getItem(item)
-                    } else if (day == 5) {
-                        weekItem.fri = BestRef.getItem(item)
-                    } else if (day == 6) {
-                        weekItem.sat = BestRef.getItem(item)
+                if (day == 0) {
+                    if (item != null) {
+                        weekItem.sun = BookListDataBest(
+                            item.writer,
+                            item.title,
+                            item.bookImg,
+                            item.bookCode,
+                            item.info1,
+                            item.info2,
+                            item.info3,
+                            item.info4,
+                            item.info5,
+                            item.info6,
+                            item.number,
+                            item.date,
+                            item.type,
+                            item.memo
+                        )
+                    }
+                } else if (day == 1) {
+                    if (item != null) {
+                        weekItem.mon = BookListDataBest(
+                            item.writer,
+                            item.title,
+                            item.bookImg,
+                            item.bookCode,
+                            item.info1,
+                            item.info2,
+                            item.info3,
+                            item.info4,
+                            item.info5,
+                            item.info6,
+                            item.number,
+                            item.date,
+                            item.type,
+                            item.memo
+                        )
+                    }
+                } else if (day == 2) {
+                    if (item != null) {
+                        weekItem.tue = BookListDataBest(
+                            item.writer,
+                            item.title,
+                            item.bookImg,
+                            item.bookCode,
+                            item.info1,
+                            item.info2,
+                            item.info3,
+                            item.info4,
+                            item.info5,
+                            item.info6,
+                            item.number,
+                            item.date,
+                            item.type,
+                            item.memo
+                        )
+                    }
+                } else if (day == 3) {
+                    if (item != null) {
+                        weekItem.wed = BookListDataBest(
+                            item.writer,
+                            item.title,
+                            item.bookImg,
+                            item.bookCode,
+                            item.info1,
+                            item.info2,
+                            item.info3,
+                            item.info4,
+                            item.info5,
+                            item.info6,
+                            item.number,
+                            item.date,
+                            item.type,
+                            item.memo
+                        )
+                    }
+                } else if (day == 4) {
+                    if (item != null) {
+                        weekItem.thur = BookListDataBest(
+                            item.writer,
+                            item.title,
+                            item.bookImg,
+                            item.bookCode,
+                            item.info1,
+                            item.info2,
+                            item.info3,
+                            item.info4,
+                            item.info5,
+                            item.info6,
+                            item.number,
+                            item.date,
+                            item.type,
+                            item.memo
+                        )
+                    }
+                } else if (day == 5) {
+                    if (item != null) {
+                        weekItem.fri = BookListDataBest(
+                            item.writer,
+                            item.title,
+                            item.bookImg,
+                            item.bookCode,
+                            item.info1,
+                            item.info2,
+                            item.info3,
+                            item.info4,
+                            item.info5,
+                            item.info6,
+                            item.number,
+                            item.date,
+                            item.type,
+                            item.memo
+                        )
+                    }
+                } else if (day == 6) {
+                    if (item != null) {
+                        weekItem.sat = BookListDataBest(
+                            item.writer,
+                            item.title,
+                            item.bookImg,
+                            item.bookCode,
+                            item.info1,
+                            item.info2,
+                            item.info3,
+                            item.info4,
+                            item.info5,
+                            item.info6,
+                            item.number,
+                            item.date,
+                            item.type,
+                            item.memo
+                        )
                     }
                 }
-
-                itemMonth.add(weekItem)
             }
 
-            reader.close()
-            binding.blank.root.visibility = View.GONE
-            binding.rviewBestMonth.visibility = View.VISIBLE
-            adapterMonth.notifyDataSetChanged()
-        } catch (e1: FileNotFoundException) {
-
-            if(bestDao?.bestDao()?.getAll()?.size == 0){
-                Log.i("파일못찾음", e1.message.toString())
-                getBestMonth()
-                Toast.makeText(requireContext(), "리스트를 다운받고 있습니다", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(requireContext(), "Room 리스트를 다운받고 있습니다", Toast.LENGTH_SHORT).show()
-
-                for (num in 1..6) {
-                    val weekItem = BookListDataBestWeekend()
-
-                    for (day in 0..6) {
-                        val item = bestDao?.bestDao()?.getMonth((day + 1).toString(), num.toString())
-
-                        if (day == 0) {
-                            if (item != null) {
-                                weekItem.sun = BookListDataBest(
-                                    item.writer,
-                                    item.title,
-                                    item.bookImg,
-                                    item.bookCode,
-                                    item.info1,
-                                    item.info2,
-                                    item.info3,
-                                    item.info4,
-                                    item.info5,
-                                    item.info6,
-                                    item.number,
-                                    item.date,
-                                    item.type,
-                                    item.memo
-                                )
-                            }
-                        } else if (day == 1) {
-                            if (item != null) {
-                                weekItem.mon = BookListDataBest(
-                                    item.writer,
-                                    item.title,
-                                    item.bookImg,
-                                    item.bookCode,
-                                    item.info1,
-                                    item.info2,
-                                    item.info3,
-                                    item.info4,
-                                    item.info5,
-                                    item.info6,
-                                    item.number,
-                                    item.date,
-                                    item.type,
-                                    item.memo
-                                )
-                            }
-                        } else if (day == 2) {
-                            if (item != null) {
-                                weekItem.tue = BookListDataBest(
-                                    item.writer,
-                                    item.title,
-                                    item.bookImg,
-                                    item.bookCode,
-                                    item.info1,
-                                    item.info2,
-                                    item.info3,
-                                    item.info4,
-                                    item.info5,
-                                    item.info6,
-                                    item.number,
-                                    item.date,
-                                    item.type,
-                                    item.memo
-                                )
-                            }
-                        } else if (day == 3) {
-                            if (item != null) {
-                                weekItem.wed = BookListDataBest(
-                                    item.writer,
-                                    item.title,
-                                    item.bookImg,
-                                    item.bookCode,
-                                    item.info1,
-                                    item.info2,
-                                    item.info3,
-                                    item.info4,
-                                    item.info5,
-                                    item.info6,
-                                    item.number,
-                                    item.date,
-                                    item.type,
-                                    item.memo
-                                )
-                            }
-                        } else if (day == 4) {
-                            if (item != null) {
-                                weekItem.thur = BookListDataBest(
-                                    item.writer,
-                                    item.title,
-                                    item.bookImg,
-                                    item.bookCode,
-                                    item.info1,
-                                    item.info2,
-                                    item.info3,
-                                    item.info4,
-                                    item.info5,
-                                    item.info6,
-                                    item.number,
-                                    item.date,
-                                    item.type,
-                                    item.memo
-                                )
-                            }
-                        } else if (day == 5) {
-                            if (item != null) {
-                                weekItem.fri = BookListDataBest(
-                                    item.writer,
-                                    item.title,
-                                    item.bookImg,
-                                    item.bookCode,
-                                    item.info1,
-                                    item.info2,
-                                    item.info3,
-                                    item.info4,
-                                    item.info5,
-                                    item.info6,
-                                    item.number,
-                                    item.date,
-                                    item.type,
-                                    item.memo
-                                )
-                            }
-                        } else if (day == 6) {
-                            if (item != null) {
-                                weekItem.sat = BookListDataBest(
-                                    item.writer,
-                                    item.title,
-                                    item.bookImg,
-                                    item.bookCode,
-                                    item.info1,
-                                    item.info2,
-                                    item.info3,
-                                    item.info4,
-                                    item.info5,
-                                    item.info6,
-                                    item.number,
-                                    item.date,
-                                    item.type,
-                                    item.memo
-                                )
-                            }
-                        }
-                    }
-
-                    itemMonth.add(weekItem)
-                }
-
-                binding.blank.root.visibility = View.GONE
-                binding.rviewBestMonth.visibility = View.VISIBLE
-                adapterMonth.notifyDataSetChanged()
-            }
-
-        } catch (e2: IOException) {
-            Log.i("읽기오류", e2.message.toString())
+            itemMonth.add(weekItem)
         }
+
+        binding.blank.root.visibility = View.GONE
+        binding.rviewBestMonth.visibility = View.VISIBLE
+        adapterMonth.notifyDataSetChanged()
     }
 }
