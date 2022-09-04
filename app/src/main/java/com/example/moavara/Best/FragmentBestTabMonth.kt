@@ -633,7 +633,6 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
     }
 
     fun setRoomData(){
-        Toast.makeText(requireContext(), "Room 리스트를 다운받고 있습니다", Toast.LENGTH_SHORT).show()
 
         for (num in 1..6) {
             val weekItem = BookListDataBestWeekend()

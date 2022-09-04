@@ -9,23 +9,20 @@ import android.text.Editable
 import android.text.SpannableStringBuilder
 import android.text.TextWatcher
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.WorkManager
+import androidx.room.Room
 import com.example.moavara.Best.BottomDialogMain
+import com.example.moavara.DataBase.DBUser
+import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Firebase.*
 import com.example.moavara.Main.ActivityLogin
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
-import com.example.moavara.Search.ActivitySearch
-import com.example.moavara.Util.Mining
 import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.ActivityUserBinding
 import com.facebook.CallbackManager
@@ -36,10 +33,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.messaging.FirebaseMessaging
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Retrofit
@@ -52,11 +45,12 @@ class ActivityUser : AppCompatActivity() {
     private var GOOGLE_LOGIN_CODE = 9001
     private var callbackManager: CallbackManager? = null
 
-    var userInfo = mRootRef.child("User")
-    var UID = ""
     private lateinit var binding: ActivityUserBinding
     private var pushTitle = ""
     private var pushBody = ""
+
+    var userDao: DBUser? = null
+    var UserInfo : DataBaseUser? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,8 +61,15 @@ class ActivityUser : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val nickname = getSharedPreferences("pref", MODE_PRIVATE).getString("NICKNAME", "")
-        val genre = getSharedPreferences("pref", MODE_PRIVATE).getString("GENRE", "")
+        userDao = Room.databaseBuilder(
+            this,
+            DBUser::class.java,
+            "UserInfo"
+        ).allowMainThreadQueries().build()
+
+        if(userDao?.daoUser() != null){
+            UserInfo = userDao?.daoUser()?.get()
+        }
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -78,12 +79,6 @@ class ActivityUser : AppCompatActivity() {
 
         val signInIntent = googleSignInClient?.signInIntent
         startActivityForResult(signInIntent, GOOGLE_LOGIN_CODE)
-
-        UID = getSharedPreferences("pref", MODE_PRIVATE)
-            ?.getString("UID", "").toString()
-
-
-
 
         with(binding){
 
@@ -102,8 +97,6 @@ class ActivityUser : AppCompatActivity() {
             tviewBtnGenre.background = btnBG
             llayoutGuide.background = btnBG
             llayoutCall.background = btnBG
-            llayoutPickFCM.background = btnBG
-            llayoutPickFCMStop.background = btnBG
 
             llayoutUpper.background = GradientDrawable().apply {
                 setColor(Color.parseColor("#0D0E10"))
@@ -116,9 +109,9 @@ class ActivityUser : AppCompatActivity() {
                 shape = GradientDrawable.OVAL
             }
 
-            tviewNickName.text = nickname
+            tviewNickName.text = UserInfo?.Nickname
 
-            when (genre) {
+            when (UserInfo?.Genre) {
                 "ALL" -> {
                     tviewGenre.text = "선택장르 : 장르 무관"
                 }
@@ -143,7 +136,7 @@ class ActivityUser : AppCompatActivity() {
                     etviewNickname.visibility = View.GONE
                     tviewNickName.visibility = View.VISIBLE
                     tviewNickName.text = etviewNickname.text.toString()
-                    userInfo.child(UID).child("Nickname").setValue(etviewNickname.text.toString())
+                    mRootRef.child("User").child(UserInfo?.UID ?: "").child("Nickname").setValue(etviewNickname.text.toString())
                     Toast.makeText(this@ActivityUser, "닉네임이 변경되었습니다", Toast.LENGTH_SHORT).show()
                     savePreferences("NICKNAME", etviewNickname.text.toString() ?: "")
                 }
@@ -275,98 +268,19 @@ class ActivityUser : AppCompatActivity() {
                     }
                 })
             }
-
-            llayoutPickFCM.setOnClickListener {
-
-                userInfo.child(UID).child("Mining").get().addOnSuccessListener {
-                    if (it.value != null || it.value == false) {
-                        val fcm = Intent(applicationContext, FCM::class.java)
-                        startService(fcm)
-
-                        val User = getSharedPreferences("pref", MODE_PRIVATE)
-                            ?.getString("NICKNAME", "").toString()
-                        val UID = getSharedPreferences("pref", MODE_PRIVATE)
-                            ?.getString("UID", "").toString()
-
-                        val fcmBody = DataFCMBody(
-                            "/topics/${UID}",
-                            "high",
-                            DataFCMBodyData("모아바라 PICK 최신화", "${User}님의 마이픽 리스트가 최신화 되었습니다."),
-                            DataFCMBodyNotification("모아바라 PICK 최신화", "${User}님의 마이픽 리스트가 최신화 되었습니다.", "default", "ic_stat_ic_notification"),
-                        )
-
-                        val call = Retrofit.Builder()
-                            .baseUrl("https://fcm.googleapis.com")
-                            .addConverterFactory(GsonConverterFactory.create()).build()
-                            .create(FirebaseService::class.java)
-                            .postRetrofit(
-                                fcmBody
-                            )
-
-                        call.enqueue(object : Callback<FWorkManagerResult?> {
-                            override fun onResponse(
-                                call: Call<FWorkManagerResult?>,
-                                response: retrofit2.Response<FWorkManagerResult?>
-                            ) {
-                                if (response.isSuccessful) {
-                                    Mining.getMyPickMining(applicationContext)
-                                }
-                            }
-
-                            override fun onFailure(call: Call<FWorkManagerResult?>, t: Throwable) {}
-                        })
-                        userInfo.child(UID).child("Mining").setValue(true)
-                    } else {
-                        Toast.makeText(applicationContext, "이미 최신화 기능이 활성화 되어있습니다.", Toast.LENGTH_SHORT).show()
-                    }
-                }.addOnFailureListener {}
-
-
-            }
-
-            llayoutPickFCMStop.setOnClickListener {
-                userInfo.child(UID).child("Mining").setValue(false)
-                val workManager = WorkManager.getInstance(applicationContext)
-                workManager.cancelAllWorkByTag("MoavaraPick")
-                Toast.makeText(applicationContext, "선호작 최신화 해제됨", Toast.LENGTH_SHORT).show()
-            }
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // 클릭된 메뉴 아이템의 아이디 마다 when 구절로 클릭시 동작을 설정한다.
-        when (item.itemId) {
-            R.id.ActivitySearch -> {
-                val intent = Intent(this, ActivitySearch::class.java)
-                startActivity(intent)
-            }
-            R.id.ActivityUser -> {
-                val intent = Intent(this, ActivityUser::class.java)
-                startActivity(intent)
-            }
-            android.R.id.home -> {
-                finish()
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    fun firebaseAuthWithGoogle(account: GoogleSignInAccount?) {
+    private fun firebaseAuthWithGoogle(account: GoogleSignInAccount?) {
         val credential = GoogleAuthProvider.getCredential(account?.idToken, null)
 
         auth?.signInWithCredential(credential)
             ?.addOnCompleteListener { task ->
 
                 if (task.isSuccessful) {
-                    Log.d("####", "성공")
+                    Log.d("####LOGIN####", "성공")
                 } else {
-                    Log.d("####", task.exception?.message.toString())
+                    Log.d("####LOGIN####", task.exception?.message.toString())
                 }
             }
     }
@@ -386,9 +300,8 @@ class ActivityUser : AppCompatActivity() {
                 firebaseAuthWithGoogle(accout)
                 binding.loading.root.visibility = View.GONE
                 window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-                Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "로그인 실패!!!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "로그인 실패", Toast.LENGTH_SHORT).show()
             }
         }
     }

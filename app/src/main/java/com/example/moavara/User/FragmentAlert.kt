@@ -14,8 +14,6 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import org.json.JSONException
 import java.util.*
-import kotlin.Comparator
-import kotlin.collections.ArrayList
 
 class FragmentAlert : Fragment() {
 
@@ -71,13 +69,6 @@ class FragmentAlert : Fragment() {
             }
 
             override fun onCancelled(databaseError: DatabaseError) {}
-        })
-
-        adapter?.setOnItemClickListener(object : AdapterNotice.OnItemClickListener {
-            override fun onItemClick(v: View?, position: Int) {
-                val item: FCMAlert? = adapter?.getItem(position)
-
-            }
         })
 
         return view

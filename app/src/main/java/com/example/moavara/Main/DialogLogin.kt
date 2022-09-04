@@ -39,7 +39,7 @@ class DialogLogin(
         val bgBtnEnable = GradientDrawable().apply {
             setColor(Color.parseColor("#844DF3"))
             shape = GradientDrawable.RECTANGLE
-            cornerRadii = floatArrayOf(0f,0f,0f,0f, 50f.dpToPx(), 15f.dpToPx(), 15f.dpToPx(), 15f.dpToPx())
+            cornerRadii = floatArrayOf(0f,0f,0f,0f, 15f.dpToPx(), 15f.dpToPx(), 15f.dpToPx(), 15f.dpToPx())
         }
 
         binding.btnEnable.background = bgBtnEnable

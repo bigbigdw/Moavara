@@ -390,6 +390,46 @@
                                     </LinearLayout>
 
                                     <LinearLayout
+                                        android:id="@+id/llayoutPickFCM"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="48dp"
+                                        android:layout_marginStart="50dp"
+                                        android:layout_marginEnd="50dp"
+                                        android:layout_marginBottom="8dp"
+                                        android:gravity="center"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/pretendardvariable"
+                                            android:text="선호작 즉시 최신화"
+                                            android:textColor="#6E7686"
+                                            android:textSize="16sp"
+                                            android:textStyle="bold" />
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:id="@+id/llayoutPickFCMStop"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="48dp"
+                                        android:layout_marginStart="50dp"
+                                        android:layout_marginEnd="50dp"
+                                        android:layout_marginBottom="8dp"
+                                        android:gravity="center"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/pretendardvariable"
+                                            android:text="선호작 최신화 중지"
+                                            android:textColor="#6E7686"
+                                            android:textSize="16sp"
+                                            android:textStyle="bold" />
+                                    </LinearLayout>
+
+                                    <LinearLayout
                                         android:id="@+id/llayout_btn14"
                                         android:layout_width="260dp"
                                         android:layout_height="56dp"

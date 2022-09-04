@@ -187,7 +187,8 @@
                             android:fontFamily="@font/pretendardvariable"
                             android:inputType="textPersonName"
                             android:text="제목"
-                            android:textColor="#EDE6FD" />
+                            android:textColor="#EDE6FD"
+                            android:visibility="gone" />
 
                         <EditText
                             android:id="@+id/etviewBody"
@@ -199,7 +200,8 @@
                             android:fontFamily="@font/pretendardvariable"
                             android:inputType="textPersonName"
                             android:text="내용"
-                            android:textColor="#EDE6FD" />
+                            android:textColor="#EDE6FD"
+                            android:visibility="gone" />
 
                         <LinearLayout
                             android:id="@+id/llayoutPush"
@@ -209,7 +211,8 @@
                             android:layout_marginEnd="50dp"
                             android:layout_marginBottom="8dp"
                             android:gravity="center"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:visibility="gone">
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -256,7 +259,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/pretendardvariable"
-                                android:text="초기 장르설정 변경"
+                                android:text="장르변경"
                                 android:textColor="#6E7686"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -277,46 +280,6 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/pretendardvariable"
                                 android:text="가이드 다시보기"
-                                android:textColor="#6E7686"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/llayoutPickFCM"
-                            android:layout_width="match_parent"
-                            android:layout_height="48dp"
-                            android:layout_marginStart="50dp"
-                            android:layout_marginEnd="50dp"
-                            android:layout_marginBottom="8dp"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/pretendardvariable"
-                                android:text="선호작 즉시 최신화"
-                                android:textColor="#6E7686"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/llayoutPickFCMStop"
-                            android:layout_width="match_parent"
-                            android:layout_height="48dp"
-                            android:layout_marginStart="50dp"
-                            android:layout_marginEnd="50dp"
-                            android:layout_marginBottom="8dp"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/pretendardvariable"
-                                android:text="선호작 최신화 중지"
                                 android:textColor="#6E7686"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />

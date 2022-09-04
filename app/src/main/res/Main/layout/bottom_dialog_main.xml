@@ -52,19 +52,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/pretendardvariable"
-            android:text="플랫폼 별 세부장르 변경을 "
-            android:textAlignment="center"
-            android:textColor="#EDE6FD"
-            android:textSize="17sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:fontFamily="@font/pretendardvariable"
-            android:text="진행하시겠습니까?"
+            android:text="변경하시겠습니까?"
             android:textAlignment="center"
             android:textColor="#EDE6FD"
             android:textSize="17sp" />

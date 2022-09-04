@@ -93,7 +93,7 @@
                     android:gravity="center_horizontal"
                     android:orientation="vertical"
                     android:visibility="visible"
-                    tools:visibility="visible">
+                    tools:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -233,7 +233,7 @@
                     android:gravity="center_horizontal|center_vertical"
                     android:orientation="vertical"
                     android:visibility="visible"
-                    tools:visibility="gone">
+                    tools:visibility="visible">
 
                     <EditText
                         android:id="@+id/etviewNickname"
@@ -259,7 +259,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/btnNickname"
+                android:id="@+id/llayoutBtnNickname"
                 android:layout_width="match_parent"
                 android:layout_height="62dp"
                 android:background="#26292E"
@@ -267,13 +267,12 @@
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:visibility="gone">
+                tools:visibility="visible">
 
 
                 <TextView
                     android:id="@+id/tviewNickname"
                     android:layout_width="wrap_content"
-
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/pretendardvariable"
                     android:text="다음으로"
@@ -301,6 +300,29 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/pretendardvariable"
                     android:text="다음으로"
+                    android:textAlignment="center"
+                    android:textColor="#EDE6FD"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llayoutApplyGenre"
+                android:layout_width="match_parent"
+                android:layout_height="62dp"
+                android:background="#26292E"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:visibility="gone">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendardvariable"
+                    android:text="변경하기"
                     android:textAlignment="center"
                     android:textColor="#EDE6FD"
                     android:textSize="20sp" />

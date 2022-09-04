@@ -8,13 +8,15 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.room.Room
 import androidx.work.*
+import com.example.moavara.DataBase.DBUser
+import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Firebase.*
 import com.example.moavara.R
 import com.example.moavara.Search.ActivitySearch
 import com.example.moavara.User.ActivityUser
 import com.example.moavara.Util.ActivityTest
-import com.example.moavara.Util.Genre
 import com.example.moavara.Util.Mining
 import com.example.moavara.databinding.ActivityAdminBinding
 import com.google.firebase.database.FirebaseDatabase
@@ -27,15 +29,25 @@ import java.util.concurrent.TimeUnit
 
 class ActivityAdmin : AppCompatActivity() {
 
-    var cate = "ALL"
     var status = ""
+    var userDao: DBUser? = null
+    var UserInfo : DataBaseUser? = null
     private lateinit var binding: ActivityAdminBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAdminBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        cate = Genre.getGenre(this).toString()
+
+        userDao = Room.databaseBuilder(
+            this,
+            DBUser::class.java,
+            "UserInfo"
+        ).allowMainThreadQueries().build()
+
+        if(userDao?.daoUser() != null){
+            UserInfo = userDao?.daoUser()?.get()
+        }
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -156,6 +168,62 @@ class ActivityAdmin : AppCompatActivity() {
 
                 val intent = Intent(this@ActivityAdmin, ActivityTest::class.java)
                 startActivity(intent)
+            }
+
+            llayoutPickFCM.setOnClickListener {
+                mRootRef.child("User").child(UserInfo?.UID ?: "").child("Mining").get().addOnSuccessListener {
+                    if (it.value != null || it.value == false) {
+                        val fcm = Intent(applicationContext, FCM::class.java)
+                        startService(fcm)
+
+                        val User = getSharedPreferences("pref",
+                            MODE_PRIVATE
+                        )
+                            ?.getString("NICKNAME", "").toString()
+                        val UID = getSharedPreferences("pref",
+                            MODE_PRIVATE
+                        )
+                            ?.getString("UID", "").toString()
+
+                        val fcmBody = DataFCMBody(
+                            "/topics/${UID}",
+                            "high",
+                            DataFCMBodyData("모아바라 PICK 최신화", "${User}님의 마이픽 리스트가 최신화 되었습니다."),
+                            DataFCMBodyNotification("모아바라 PICK 최신화", "${User}님의 마이픽 리스트가 최신화 되었습니다.", "default", "ic_stat_ic_notification"),
+                        )
+
+                        val call = Retrofit.Builder()
+                            .baseUrl("https://fcm.googleapis.com")
+                            .addConverterFactory(GsonConverterFactory.create()).build()
+                            .create(FirebaseService::class.java)
+                            .postRetrofit(
+                                fcmBody
+                            )
+
+                        call.enqueue(object : Callback<FWorkManagerResult?> {
+                            override fun onResponse(
+                                call: Call<FWorkManagerResult?>,
+                                response: retrofit2.Response<FWorkManagerResult?>
+                            ) {
+                                if (response.isSuccessful) {
+                                    Mining.getMyPickMining(applicationContext)
+                                }
+                            }
+
+                            override fun onFailure(call: Call<FWorkManagerResult?>, t: Throwable) {}
+                        })
+                        mRootRef.child("User").child(UID).child("Mining").setValue(true)
+                    } else {
+                        Toast.makeText(applicationContext, "이미 최신화 기능이 활성화 되어있습니다.", Toast.LENGTH_SHORT).show()
+                    }
+                }.addOnFailureListener {}
+            }
+
+            llayoutPickFCMStop.setOnClickListener {
+                mRootRef.child("User").child(UserInfo?.UID ?: "").child("Mining").removeValue()
+                val workManager = WorkManager.getInstance(applicationContext)
+                workManager.cancelAllWorkByTag("MoavaraPick")
+                Toast.makeText(applicationContext, "선호작 최신화 해제됨", Toast.LENGTH_SHORT).show()
             }
         }
 

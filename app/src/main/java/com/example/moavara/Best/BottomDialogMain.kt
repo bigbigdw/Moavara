@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,8 +54,11 @@ class BottomDialogMain :
         binding.llayoutSubmit.setOnClickListener {
 //            Snackbar.make(toolbar, "Menu pressed", Snackbar.LENGTH_SHORT).show()
             val intent = Intent(context, ActivityGenre::class.java)
+
             intent.putExtra("MODE", "USER")
             intent.putExtra("UID",requireContext().getSharedPreferences("pref", AppCompatActivity.MODE_PRIVATE).getString("UID", ""))
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context?.startActivity(intent)
         }
 

@@ -11,6 +11,9 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.room.Room
+import com.example.moavara.DataBase.DBUser
+import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.User.ActivityGuide
 import com.example.moavara.Util.Genre
 import com.example.moavara.Util.dpToPx
@@ -20,18 +23,28 @@ import com.example.moavara.databinding.ActivityGenreBinding
 class ActivityGenre : AppCompatActivity() {
 
     private lateinit var binding: ActivityGenreBinding
-    var context = this
     var mode = ""
-    var userInfo = mRootRef.child("User")
     var genre = ""
     var UID = ""
+
+    var userDao: DBUser? = null
+    var UserInfo : DataBaseUser? = null
+    var userGenre = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityGenreBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val context = this
+        userDao = Room.databaseBuilder(
+            this,
+            DBUser::class.java,
+            "UserInfo"
+        ).allowMainThreadQueries().build()
+
+        if(userDao?.daoUser() != null){
+            UserInfo = userDao?.daoUser()?.get()
+        }
 
         mode = intent.getStringExtra("MODE") ?: "USER"
         UID = intent.getStringExtra("UID") ?: ""
@@ -46,47 +59,47 @@ class ActivityGenre : AppCompatActivity() {
 
             llayoutUpper.background = llayoutUpperBG
 
-            val llayout_btnBG = GradientDrawable().apply {
+            val llayoutBtnBG = GradientDrawable().apply {
                 setColor(Color.parseColor("#0D0E10"))
                 shape = GradientDrawable.RECTANGLE
                 cornerRadius = 100f.dpToPx()
                 setStroke(2f.dpToPx().toInt(), Color.parseColor("#773E424B"))
             }
 
-            val llayout_btnOnBG = GradientDrawable().apply {
+            val llayoutBtnOnBG = GradientDrawable().apply {
                 setColor(Color.parseColor("#0D0E10"))
                 shape = GradientDrawable.RECTANGLE
                 cornerRadius = 100f.dpToPx()
                 setStroke(2f.dpToPx().toInt(), Color.parseColor("#844DF3"))
             }
 
-            llayoutBtn1.background = llayout_btnBG
-            llayoutBtn2.background = llayout_btnBG
-            llayoutBtn3.background = llayout_btnBG
-            llayoutBtn4.background = llayout_btnBG
+            llayoutBtn1.background = llayoutBtnBG
+            llayoutBtn2.background = llayoutBtnBG
+            llayoutBtn3.background = llayoutBtnBG
+            llayoutBtn4.background = llayoutBtnBG
 
             if(mode == "USER" && UID != ""){
                 llayoutNickname.visibility = View.GONE
                 llayoutNickname.visibility = View.GONE
                 llayoutBtnGenre.visibility = View.GONE
-                btnNickname.visibility = View.GONE
+                llayoutBtnNickname.visibility = View.GONE
                 llayoutGenre.visibility = View.VISIBLE
 
-                if(Genre.getGenre(context).toString() == "FANTASY"){
-                    llayoutBtn1.background = llayout_btnOnBG
-                } else if(Genre.getGenre(context).toString() == "ROMANCE"){
-                    llayoutBtn2.background = llayout_btnOnBG
+                if(Genre.getGenre(this@ActivityGenre).toString() == "FANTASY"){
+                    llayoutBtn1.background = llayoutBtnOnBG
+                } else if(Genre.getGenre(this@ActivityGenre).toString() == "ROMANCE"){
+                    llayoutBtn2.background = llayoutBtnOnBG
                 }
-                else if(Genre.getGenre(context).toString() == "ALL"){
-                    llayoutBtn3.background = llayout_btnOnBG
+                else if(Genre.getGenre(this@ActivityGenre).toString() == "ALL"){
+                    llayoutBtn3.background = llayoutBtnOnBG
                 }
-                else if(Genre.getGenre(context).toString() == "BL"){
-                    llayoutBtn4.background = llayout_btnOnBG
+                else if(Genre.getGenre(this@ActivityGenre).toString() == "BL"){
+                    llayoutBtn4.background = llayoutBtnOnBG
                 }
 
                 tviewTitle.text = "환영합니다."
                 tviewUserName.visibility = View.VISIBLE
-                tviewUserName.text = context.getSharedPreferences("pref", MODE_PRIVATE)?.getString("NICKNAME", "")
+                tviewUserName.text = getSharedPreferences("pref", MODE_PRIVATE)?.getString("NICKNAME", "")
                 tviewUserName2.text = "님"
 
                 llayoutNickname.visibility = View.GONE
@@ -115,26 +128,18 @@ class ActivityGenre : AppCompatActivity() {
 
                         override fun afterTextChanged(s: Editable) {
                             if (s.toString().isEmpty()) {
-                                btnNickname.setBackgroundColor(Color.parseColor("#26292E"))
+                                llayoutBtnNickname.setBackgroundColor(Color.parseColor("#26292E"))
                             } else {
-                                btnNickname.setBackgroundColor(Color.parseColor("#844DF3"))
+                                llayoutBtnNickname.setBackgroundColor(Color.parseColor("#844DF3"))
                             }
                         }
                     })
 
-                btnNickname.setOnClickListener{
+                llayoutBtnNickname.setOnClickListener{
                     if(etviewNickname.text.toString() == ""){
-                        Toast.makeText(context, "닉네임을 설정해 주세요", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@ActivityGenre, "닉네임을 설정해 주세요", Toast.LENGTH_SHORT).show()
                     } else {
-                        llayoutNickname.visibility = View.GONE
-                        llayoutNickname.visibility = View.GONE
-                        llayoutGenre.visibility = View.VISIBLE
-                        llayoutBtnGenre.visibility = View.VISIBLE
-                        tviewTitle.text = "환영합니다."
-                        tviewUserName.visibility = View.VISIBLE
-                        tviewUserName.text = etviewNickname.text
-                        tviewUserName2.text = "님 모아바라 입니다."
-                        tviewTitle.visibility = View.GONE
+                        nicknameConfirm()
                     }
                 }
             }
@@ -144,93 +149,113 @@ class ActivityGenre : AppCompatActivity() {
 
             llayoutBtn1.setOnClickListener {
                 savePreferences("GENRE","FANTASY")
-                userInfo.child(UID).child("Genre").setValue("FANTASY")
-                userInfo.child(UID).child("Mining").setValue(false)
+                mRootRef.child("User").child(UID).child("Genre").setValue("FANTASY")
 
                 if(mode == "USER"){
-                    val novelIntent = Intent(context, ActivityMain::class.java)
-                    startActivity(novelIntent)
+                    userGenre = "FANTASY"
                 } else {
                     genre = "FANTASY"
-                    llayoutBtn1.background = llayout_btnOnBG
-                    llayoutBtn2.background = llayout_btnBG
-                    llayoutBtn3.background = llayout_btnBG
-                    llayoutBtn4.background = llayout_btnBG
-                    userInfo.child(UID).child("Genre").setValue("FANTASY")
+                    mRootRef.child("User").child(UID).child("Genre").setValue("FANTASY")
                     llayoutBtnGenre.setBackgroundColor(Color.parseColor("#844DF3"))
                 }
+                llayoutBtn1.background = llayoutBtnOnBG
+                llayoutBtn2.background = llayoutBtnBG
+                llayoutBtn3.background = llayoutBtnBG
+                llayoutBtn4.background = llayoutBtnBG
 
+                if(UserInfo?.Genre != "FANTASY"){
+                    llayoutApplyGenre.visibility = View.VISIBLE
+                    llayoutApplyGenre.setBackgroundColor(Color.parseColor("#844DF3"))
+                } else {
+                    llayoutApplyGenre.visibility = View.GONE
+                }
             }
 
             llayoutBtn2.setOnClickListener {
                 savePreferences("GENRE","ROMANCE")
-                userInfo.child(UID).child("Genre").setValue("ROMANCE")
+                mRootRef.child("User").child(UID).child("Genre").setValue("ROMANCE")
 
                 if(mode == "USER"){
-                    val novelIntent = Intent(context, ActivityMain::class.java)
-                    startActivity(novelIntent)
+                    userGenre = "ROMANCE"
                 } else {
                     genre = "ROMANCE"
-                    userInfo.child(UID).child("Genre").setValue("ROMANCE")
-                    llayoutBtn1.background = llayout_btnBG
-                    llayoutBtn2.background = llayout_btnOnBG
-                    llayoutBtn3.background = llayout_btnBG
-                    llayoutBtn4.background = llayout_btnBG
+                    mRootRef.child("User").child(UID).child("Genre").setValue("ROMANCE")
                     llayoutBtnGenre.setBackgroundColor(Color.parseColor("#844DF3"))
+                }
+                llayoutBtn1.background = llayoutBtnBG
+                llayoutBtn2.background = llayoutBtnOnBG
+                llayoutBtn3.background = llayoutBtnBG
+                llayoutBtn4.background = llayoutBtnBG
+
+                if(UserInfo?.Genre != "ROMANCE"){
+                    llayoutApplyGenre.visibility = View.VISIBLE
+                    llayoutApplyGenre.setBackgroundColor(Color.parseColor("#844DF3"))
+                } else {
+                    llayoutApplyGenre.visibility = View.GONE
                 }
             }
 
             llayoutBtn3.setOnClickListener {
                 savePreferences("GENRE","ALL")
-                userInfo.child(UID).child("Genre").setValue("ALL")
+                mRootRef.child("User").child(UID).child("Genre").setValue("ALL")
 
                 if(mode == "USER"){
-                    val novelIntent = Intent(context, ActivityMain::class.java)
-                    startActivity(novelIntent)
+                    userGenre = "ALL"
                 } else {
                     genre = "ALL"
-                    llayoutBtn1.background = llayout_btnBG
-                    llayoutBtn2.background = llayout_btnBG
-                    llayoutBtn3.background = llayout_btnOnBG
-                    llayoutBtn4.background = llayout_btnBG
                     llayoutBtnGenre.setBackgroundColor(Color.parseColor("#844DF3"))
+                }
+                llayoutBtn1.background = llayoutBtnBG
+                llayoutBtn2.background = llayoutBtnBG
+                llayoutBtn3.background = llayoutBtnOnBG
+                llayoutBtn4.background = llayoutBtnBG
+                if(UserInfo?.Genre != "ALL"){
+                    llayoutApplyGenre.visibility = View.VISIBLE
+                    llayoutApplyGenre.setBackgroundColor(Color.parseColor("#844DF3"))
+                } else {
+                    llayoutApplyGenre.visibility = View.GONE
                 }
             }
 
             llayoutBtn4.setOnClickListener {
                 savePreferences("GENRE","BL")
-                userInfo.child(UID).child("Genre").setValue("BL")
+                mRootRef.child("User").child(UID).child("Genre").setValue("BL")
 
                 if(mode == "USER"){
-                    val novelIntent = Intent(context, ActivityMain::class.java)
-                    startActivity(novelIntent)
+                    userGenre = "BL"
                 } else {
                     genre = "BL"
-                    llayoutBtn1.background = llayout_btnBG
-                    llayoutBtn2.background = llayout_btnBG
-                    llayoutBtn3.background = llayout_btnBG
-                    llayoutBtn4.background = llayout_btnOnBG
                     llayoutBtnGenre.setBackgroundColor(Color.parseColor("#844DF3"))
+                }
+                llayoutBtn1.background = llayoutBtnBG
+                llayoutBtn2.background = llayoutBtnBG
+                llayoutBtn3.background = llayoutBtnBG
+                llayoutBtn4.background = llayoutBtnOnBG
+                if(UserInfo?.Genre != "BL"){
+                    llayoutApplyGenre.visibility = View.VISIBLE
+                    llayoutApplyGenre.setBackgroundColor(Color.parseColor("#844DF3"))
+                } else {
+                    llayoutApplyGenre.visibility = View.GONE
                 }
             }
 
             llayoutBtnGenre.setOnClickListener {
                 with(binding){
                     if(genre == ""){
-                        Toast.makeText(context, "장르를 선택해 주세요", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@ActivityGenre, "장르를 선택해 주세요", Toast.LENGTH_SHORT).show()
                     } else {
-                        userInfo.child(UID).child("Nickname").setValue(etviewNickname.text.toString())
+                        mRootRef.child("User").child(UID).child("Nickname").setValue(etviewNickname.text.toString())
 
                         var dialogLogin: DialogConfirm? = null
 
-                        val leftListener = View.OnClickListener { v: View? ->
+                        val leftListener = View.OnClickListener {
                             dialogLogin?.dismiss()
                         }
 
-                        val rightListener = View.OnClickListener { v: View? ->
+                        val rightListener = View.OnClickListener {
 
                             savePreferences("NICKNAME", etviewNickname.text.toString())
-                            val intent = Intent(context, ActivityGuide::class.java)
+                            val intent = Intent(this@ActivityGenre, ActivityGuide::class.java)
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             startActivity(intent)
@@ -238,7 +263,7 @@ class ActivityGenre : AppCompatActivity() {
 
                         // 안내 팝업
                         dialogLogin = DialogConfirm(
-                            context,
+                            this@ActivityGenre,
                             "",
                             "닉네임 : " + etviewNickname.text + "\n선호장르 : $genre",
                             leftListener,
@@ -255,6 +280,63 @@ class ActivityGenre : AppCompatActivity() {
                     }
                 }
             }
+
+            llayoutApplyGenre.setOnClickListener {
+                var dialogGenre: DialogConfirm? = null
+
+                val leftListener = View.OnClickListener {
+                    dialogGenre?.dismiss()
+                }
+
+                val rightListener = View.OnClickListener {
+
+                    userDao?.daoUser()?.init()
+
+                    userDao?.daoUser()?.insert(
+                        DataBaseUser(
+                            UserInfo?.Nickname ?: "",
+                            userGenre,
+                            UserInfo?.UID ?: ""
+                        )
+                    )
+
+                    Toast.makeText(this@ActivityGenre, "변경이 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                    val novelIntent = Intent(this@ActivityGenre, ActivityMain::class.java)
+                    novelIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    novelIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(novelIntent)
+                }
+
+                var genre = ""
+
+                when (userGenre) {
+                    "ALL" -> {
+                        genre = "장르 무관으"
+                    }
+                    "FANTASY" -> {
+                        genre = "판타지"
+                    }
+                    "ROMANCE" -> {
+                        genre = "로맨스"
+                    }
+                }
+
+                // 안내 팝업
+                dialogGenre = DialogConfirm(
+                    this@ActivityGenre,
+                    "선호장르를 ${genre}로 변경하시겠습니까?",
+                    "",
+                    leftListener,
+                    rightListener,
+                    "",
+                    ""
+                )
+
+                dialogGenre.window?.setBackgroundDrawable(
+                    ColorDrawable(Color.TRANSPARENT)
+                )
+                dialogGenre.show()
+            }
         }
     }
 
@@ -269,9 +351,12 @@ class ActivityGenre : AppCompatActivity() {
                     dialogLogin?.dismiss()
                 }
 
-                val rightListener = View.OnClickListener { v: View? ->
+                val rightListener = View.OnClickListener {
                     savePreferences("NICKNAME", binding.etviewNickname.text.toString())
-                    val intent = Intent(context, ActivityGuide::class.java)
+
+                    mRootRef.child("User").child(UID).removeValue()
+
+                    val intent = Intent(this@ActivityGenre, ActivityLogin::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     startActivity(intent)
@@ -279,7 +364,7 @@ class ActivityGenre : AppCompatActivity() {
 
                 // 안내 팝업
                 dialogLogin = DialogConfirm(
-                    context,
+                    this@ActivityGenre,
                     "안내",
                     "가입을 그만두고 로그인 화면으로 돌아가시겠습니까?",
                     leftListener,
@@ -297,11 +382,55 @@ class ActivityGenre : AppCompatActivity() {
             } else if(binding.llayoutGenre.visibility == View.VISIBLE){
                 binding.llayoutNickname.visibility = View.VISIBLE
                 binding.llayoutGenre.visibility = View.GONE
+                binding.llayoutBtnGenre.visibility = View.GONE
+                binding.llayoutBtnNickname.visibility = View.VISIBLE
             }
 
         } else {
             super.onBackPressed()
         }
+    }
+
+    private fun nicknameConfirm(){
+        var dialogLogin: DialogConfirm? = null
+
+        val leftListener = View.OnClickListener {
+            dialogLogin?.dismiss()
+        }
+
+        val rightListener = View.OnClickListener {
+
+            dialogLogin?.dismiss()
+
+            with(binding){
+                llayoutNickname.visibility = View.GONE
+                llayoutNickname.visibility = View.GONE
+                llayoutGenre.visibility = View.VISIBLE
+                llayoutBtnGenre.visibility = View.VISIBLE
+                tviewTitle.text = "환영합니다."
+                tviewUserName.visibility = View.VISIBLE
+                tviewUserName.text = etviewNickname.text
+                tviewUserName2.text = "님 모아바라 입니다."
+                tviewTitle.visibility = View.GONE
+            }
+        }
+
+        // 안내 팝업
+        dialogLogin = DialogConfirm(
+            this@ActivityGenre,
+            "",
+            "닉네임 : ${binding.etviewNickname.text} \n으로 진행하시겠습니까?",
+            leftListener,
+            rightListener,
+            "취소",
+            "확인"
+        )
+
+        dialogLogin.window?.setBackgroundDrawable(
+            ColorDrawable(
+                Color.TRANSPARENT)
+        )
+        dialogLogin.show()
     }
 
     private fun savePreferences(key : String, value: String) {

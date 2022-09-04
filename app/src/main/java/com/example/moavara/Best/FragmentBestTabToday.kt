@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
@@ -23,13 +22,9 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
-import org.json.JSONArray
-import org.json.JSONException
-import org.json.JSONObject
-import java.io.*
 
 
-class FragmentBestTabToday(private val platform: String, private val pickItems: ArrayList<String>) :
+class FragmentBestTabToday(private val platform: String, private val UserInfo: DataBaseUser) :
     Fragment(), BestTodayListener {
 
     private var adapterToday: AdapterBestToday? = null
@@ -42,10 +37,8 @@ class FragmentBestTabToday(private val platform: String, private val pickItems: 
     private val binding get() = _binding!!
 
     private lateinit var firebaseAnalytics: FirebaseAnalytics
-    var userDao: DBUser? = null
     var bestDao: DBBest? = null
     var bestDaoBookCode: DBBestBookCode? = null
-    var UserInfo : DataBaseUser? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,26 +49,16 @@ class FragmentBestTabToday(private val platform: String, private val pickItems: 
 
         firebaseAnalytics = Firebase.analytics
 
-        userDao = Room.databaseBuilder(
-            requireContext(),
-            DBUser::class.java,
-            "UserInfo"
-        ).allowMainThreadQueries().build()
-
-        if(userDao?.daoUser() != null){
-            UserInfo = userDao?.daoUser()?.get()
-        }
-
         bestDao = Room.databaseBuilder(
             requireContext(),
             DBBest::class.java,
-            "Today_${platform}_${UserInfo?.Genre}"
+            "Today_${platform}_${UserInfo.Genre}"
         ).allowMainThreadQueries().build()
 
         bestDaoBookCode = Room.databaseBuilder(
             requireContext(),
             DBBestBookCode::class.java,
-            "Today_${platform}_${UserInfo?.Genre}_BookCode"
+            "Today_${platform}_${UserInfo.Genre}_BookCode"
         ).allowMainThreadQueries().build()
 
         adapterToday = AdapterBestToday(items, bookCodeItems)
@@ -128,39 +111,38 @@ class FragmentBestTabToday(private val platform: String, private val pickItems: 
 
         bestDao?.bestDao()?.initAll()
 
-        BestRef.getBestDataToday(platform, UserInfo?.Genre ?: "").addListenerForSingleValueEvent(object :
+        BestRef.getBestDataToday(platform, UserInfo.Genre ?: "").addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                try {
-                    binding.blank.root.visibility = View.GONE
-                    binding.rviewBest.visibility = View.VISIBLE
 
-                    for (postSnapshot in dataSnapshot.children) {
+                Log.d("####", "${dataSnapshot.childrenCount} ${UserInfo.Genre}")
 
-                        val group: BookListDataBest? =
-                            postSnapshot.getValue(BookListDataBest::class.java)
+                for (postSnapshot in dataSnapshot.children) {
 
-                        if (group != null) {
+                    val group: BookListDataBest? =
+                        postSnapshot.getValue(BookListDataBest::class.java)
 
-                            items.add(BookListDataBest(
-                                group.writer,
-                                group.title,
-                                group.bookImg,
-                                group.bookCode,
-                                group.info1,
-                                group.info2,
-                                group.info3,
-                                group.info4,
-                                group.info5,
-                                group.info6,
-                                group.number,
-                                group.date,
-                                group.type,
-                                group.memo
-                            ))
+                    if (group != null) {
 
-                            bestDao?.bestDao()?.insert(
-                                RoomBookListDataBest(
+                        items.add(BookListDataBest(
+                            group.writer,
+                            group.title,
+                            group.bookImg,
+                            group.bookCode,
+                            group.info1,
+                            group.info2,
+                            group.info3,
+                            group.info4,
+                            group.info5,
+                            group.info6,
+                            group.number,
+                            group.date,
+                            group.type,
+                            group.memo
+                        ))
+
+                        bestDao?.bestDao()?.insert(
+                            RoomBookListDataBest(
                                 group.writer,
                                 group.title,
                                 group.bookImg,
@@ -176,16 +158,11 @@ class FragmentBestTabToday(private val platform: String, private val pickItems: 
                                 group.type,
                                 group.memo
                             )
-                            )
-                        }
+                        )
                     }
-
-                    getBestTodayList(items, true)
-
-                    adapterToday?.notifyDataSetChanged()
-                } catch (e: JSONException) {
-                    e.printStackTrace()
                 }
+
+                getBestTodayList(items, true)
             }
 
             override fun onCancelled(databaseError: DatabaseError) {}
@@ -198,87 +175,23 @@ class FragmentBestTabToday(private val platform: String, private val pickItems: 
 
         bestDaoBookCode?.bestDaoBookCode()?.initAll()
 
-        BestRef.getBookCode(platform, UserInfo?.Genre ?: "").addListenerForSingleValueEvent(object :
+        BestRef.getBookCode(platform, UserInfo.Genre).addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (bookCodeList in items) {
 
-                try {
-                    for (bookCodeList in items) {
+                    val items = dataSnapshot.child(bookCodeList.bookCode)
 
-                        val items = dataSnapshot.child(bookCodeList.bookCode)
+                    if (items.childrenCount > 1) {
 
-                        if (items.childrenCount > 1) {
+                        val bookCodes = ArrayList<BookListDataBestAnalyze>()
 
-                            val bookCodes = ArrayList<BookListDataBestAnalyze>()
+                        for(item in items.children){
 
-                            for(item in items.children){
-
-                                val group: BookListDataBestAnalyze? = item.getValue(BookListDataBestAnalyze::class.java)
-
-                                if (group != null) {
-                                    bookCodes.add(
-                                        BookListDataBestAnalyze(
-                                            group.info1,
-                                            group.info2,
-                                            group.info3,
-                                            group.info4,
-                                            group.number,
-                                            group.numInfo1,
-                                            group.numInfo2,
-                                            group.numInfo3,
-                                            group.numInfo4,
-                                            group.date,
-
-                                        )
-                                    )
-                                }
-                            }
-
-                            val lastItem = bookCodes[bookCodes.size - 1]
-                            val moreLastItem = bookCodes[bookCodes.size - 2]
-
-                            bookCodeItems.add(
-                                BookListDataBestAnalyze(
-                                    lastItem.info1,
-                                    lastItem.info2,
-                                    lastItem.info3,
-                                    lastItem.info4,
-                                    lastItem.number,
-                                    lastItem.numInfo1,
-                                    lastItem.numInfo2,
-                                    lastItem.numInfo3,
-                                    lastItem.numInfo4,
-                                    lastItem.date,
-                                    moreLastItem.number - lastItem.number,
-                                    bookCodes.size
-                                )
-                            )
-
-                            bestDaoBookCode?.bestDaoBookCode()?.insert(
-                                RoomBookListDataBestAnalyze(
-                                    lastItem.info1,
-                                    lastItem.info2,
-                                    lastItem.info3,
-                                    lastItem.info4,
-                                    lastItem.number,
-                                    lastItem.numInfo1,
-                                    lastItem.numInfo2,
-                                    lastItem.numInfo3,
-                                    lastItem.numInfo4,
-                                    lastItem.date,
-                                    moreLastItem.number - lastItem.number,
-                                    bookCodes.size
-                                )
-                            )
-
-                        } else if (items.childrenCount.toInt() == 1) {
-
-                            val group: BookListDataBestAnalyze? =
-                                dataSnapshot.child(bookCodeList.bookCode).child(DBDate.DateMMDD())
-                                    .getValue(BookListDataBestAnalyze::class.java)
+                            val group: BookListDataBestAnalyze? = item.getValue(BookListDataBestAnalyze::class.java)
 
                             if (group != null) {
-                                bookCodeItems.add(
+                                bookCodes.add(
                                     BookListDataBestAnalyze(
                                         group.info1,
                                         group.info2,
@@ -290,32 +203,91 @@ class FragmentBestTabToday(private val platform: String, private val pickItems: 
                                         group.numInfo3,
                                         group.numInfo4,
                                         group.date,
-                                        0,
-                                        1
-                                    )
-                                )
 
-                                bestDaoBookCode?.bestDaoBookCode()?.insert(
-                                    RoomBookListDataBestAnalyze(
-                                        group.info1,
-                                        group.info2,
-                                        group.info3,
-                                        group.info4,
-                                        group.number,
-                                        group.numInfo1,
-                                        group.numInfo2,
-                                        group.numInfo3,
-                                        group.numInfo4,
-                                        group.date,
-                                        0,
-                                        1
-                                    )
+                                        )
                                 )
                             }
                         }
+
+                        val lastItem = bookCodes[bookCodes.size - 1]
+                        val moreLastItem = bookCodes[bookCodes.size - 2]
+
+                        bookCodeItems.add(
+                            BookListDataBestAnalyze(
+                                lastItem.info1,
+                                lastItem.info2,
+                                lastItem.info3,
+                                lastItem.info4,
+                                lastItem.number,
+                                lastItem.numInfo1,
+                                lastItem.numInfo2,
+                                lastItem.numInfo3,
+                                lastItem.numInfo4,
+                                lastItem.date,
+                                moreLastItem.number - lastItem.number,
+                                bookCodes.size
+                            )
+                        )
+
+                        bestDaoBookCode?.bestDaoBookCode()?.insert(
+                            RoomBookListDataBestAnalyze(
+                                lastItem.info1,
+                                lastItem.info2,
+                                lastItem.info3,
+                                lastItem.info4,
+                                lastItem.number,
+                                lastItem.numInfo1,
+                                lastItem.numInfo2,
+                                lastItem.numInfo3,
+                                lastItem.numInfo4,
+                                lastItem.date,
+                                moreLastItem.number - lastItem.number,
+                                bookCodes.size
+                            )
+                        )
+
+                    } else if (items.childrenCount.toInt() == 1) {
+
+                        val group: BookListDataBestAnalyze? =
+                            dataSnapshot.child(bookCodeList.bookCode).child(DBDate.DateMMDD())
+                                .getValue(BookListDataBestAnalyze::class.java)
+
+                        if (group != null) {
+                            bookCodeItems.add(
+                                BookListDataBestAnalyze(
+                                    group.info1,
+                                    group.info2,
+                                    group.info3,
+                                    group.info4,
+                                    group.number,
+                                    group.numInfo1,
+                                    group.numInfo2,
+                                    group.numInfo3,
+                                    group.numInfo4,
+                                    group.date,
+                                    0,
+                                    1
+                                )
+                            )
+
+                            bestDaoBookCode?.bestDaoBookCode()?.insert(
+                                RoomBookListDataBestAnalyze(
+                                    group.info1,
+                                    group.info2,
+                                    group.info3,
+                                    group.info4,
+                                    group.number,
+                                    group.numInfo1,
+                                    group.numInfo2,
+                                    group.numInfo3,
+                                    group.numInfo4,
+                                    group.date,
+                                    0,
+                                    1
+                                )
+                            )
+                        }
                     }
-                } catch (e: JSONException) {
-                    e.printStackTrace()
                 }
 
                 binding.blank.root.visibility = View.GONE

@@ -5,7 +5,6 @@ import android.app.NotificationManager
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -16,31 +15,44 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import androidx.room.Room
+import androidx.work.*
 import com.example.moavara.DataBase.DBUser
+import com.example.moavara.DataBase.DataBaseUser
+import com.example.moavara.Firebase.FirebaseWorkManager
 import com.example.moavara.R
 import com.example.moavara.Search.ActivitySearch
 import com.example.moavara.User.ActivityUser
-import com.example.moavara.Util.Genre
 import com.example.moavara.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.messaging.FirebaseMessaging
+import java.util.concurrent.TimeUnit
 
 
 class ActivityMain : AppCompatActivity() {
     var navController: NavController? = null
 
-    var cate = "ALL"
     var status = ""
     private lateinit var binding: ActivityMainBinding
     var notificationManager: NotificationManager? = null
     var notificationBuilder: NotificationCompat.Builder? = null
 
+    var userDao: DBUser? = null
+    var UserInfo : DataBaseUser? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        cate = Genre.getGenre(this).toString()
+
+        userDao = Room.databaseBuilder(
+            this,
+            DBUser::class.java,
+            "UserInfo"
+        ).allowMainThreadQueries().build()
+
+        if(userDao?.daoUser() != null){
+            UserInfo = userDao?.daoUser()?.get()
+        }
 
         /** 외부 저장소에에 저장하기 위 권한 설정 **/
         ActivityCompat.requestPermissions(
@@ -52,7 +64,7 @@ class ActivityMain : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(com.example.moavara.R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        navController = Navigation.findNavController(this, com.example.moavara.R.id.navHostFragmentMain)
+        navController = Navigation.findNavController(this, R.id.navHostFragmentMain)
 
         toolbar.setOnClickListener {
 
@@ -65,15 +77,14 @@ class ActivityMain : AppCompatActivity() {
 
         navView.itemIconTintList = null
 
+        setPersonalFCM()
         registNotification()
         registPickNotification()
     }
 
-    fun registPickNotification(){
-        val UID = getSharedPreferences("pref", MODE_PRIVATE)
-            ?.getString("UID", "").toString()
+    private fun registPickNotification(){
 
-        FirebaseMessaging.getInstance().subscribeToTopic(UID)
+        FirebaseMessaging.getInstance().subscribeToTopic(UserInfo?.UID ?: "")
         // NotificationManager 객체 생성
         notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
@@ -96,7 +107,7 @@ class ActivityMain : AppCompatActivity() {
         }
     }
 
-    fun registNotification(){
+    private fun registNotification(){
         FirebaseMessaging.getInstance().subscribeToTopic("all")
         // NotificationManager 객체 생성
         notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
@@ -118,6 +129,44 @@ class ActivityMain : AppCompatActivity() {
             notificationManager?.createNotificationChannel(notificationChannel)
             notificationBuilder = NotificationCompat.Builder(this, channelId)
         }
+    }
+
+    private fun setPersonalFCM(){
+        mRootRef.child("User").child(UserInfo?.UID ?: "").get().addOnSuccessListener {
+            val Novel = it.child("Novel")
+            val Mining = it.child("Mining")
+
+            if(Novel.exists() && !Mining.exists()){
+
+                val inputData = Data.Builder()
+                    .putString(FirebaseWorkManager.TYPE, "PICK")
+                    .putString(FirebaseWorkManager.UID, UserInfo?.UID ?: "")
+                    .putString(FirebaseWorkManager.USER, UserInfo?.Nickname ?: "")
+                    .build()
+
+                /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
+                val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(6, TimeUnit.HOURS)
+                    .setBackoffCriteria(
+                        BackoffPolicy.LINEAR,
+                        PeriodicWorkRequest.MIN_BACKOFF_MILLIS,
+                        TimeUnit.MILLISECONDS
+                    )
+                    .addTag("MoavaraPick")
+                    .setInputData(inputData)
+                    .build()
+
+                val workManager = WorkManager.getInstance(this.applicationContext)
+
+                workManager.enqueueUniquePeriodicWork(
+                    "MoavaraPick",
+                    ExistingPeriodicWorkPolicy.KEEP,
+                    workRequest
+                )
+
+                FirebaseMessaging.getInstance().subscribeToTopic(UserInfo?.UID ?: "")
+            }
+
+        }.addOnFailureListener {}
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

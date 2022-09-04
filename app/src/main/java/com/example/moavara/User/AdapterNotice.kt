@@ -1,6 +1,5 @@
 package com.example.moavara.User
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,25 +51,6 @@ class AdapterNotice(
 
     inner class MainBookViewHolder internal constructor(val binding: ItemNoticesBinding) :
         RecyclerView.ViewHolder(binding.root) {
-
-        init {
-
-            binding.llayoutWrap.setOnClickListener { v: View? ->
-                val pos = adapterPosition
-                if (pos != RecyclerView.NO_POSITION) {
-                    listener?.onItemClick(v, pos)
-
-                    if(binding.llayoutContents.visibility == View.VISIBLE){
-                        binding.llayoutContents.visibility = View.GONE
-                    } else if(binding.llayoutContents.visibility == View.GONE) {
-                        binding.llayoutContents.visibility = View.VISIBLE
-                    }
-                }
-            }
-
-        }
-
-
     }
 
     fun getItem(position: Int): FCMAlert {

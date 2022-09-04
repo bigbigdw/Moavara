@@ -66,7 +66,6 @@ class ActivityLogin : AppCompatActivity() {
             // 구글 로그인 버튼
             btnLogin.setOnClickListener { googleLogin() }
 
-
             // 로그인 버튼
             btnRegister.setOnClickListener {
                 auth?.signOut()
@@ -86,12 +85,12 @@ class ActivityLogin : AppCompatActivity() {
     }
 
     // 구글 로그인 함수
-    fun googleLogin() {
+    private fun googleLogin() {
         val signInIntent = googleSignInClient?.signInIntent
         startActivityForResult(signInIntent, GOOGLE_LOGIN_CODE)
     }
 
-    fun firebaseAuthWithGoogle(account: GoogleSignInAccount?) {
+    private fun firebaseAuthWithGoogle(account: GoogleSignInAccount?) {
         val credential = GoogleAuthProvider.getCredential(account?.idToken, null)
 
         auth?.signInWithCredential(credential)
@@ -128,7 +127,6 @@ class ActivityLogin : AppCompatActivity() {
                                             savePreferences("GENRE", group?.Genre ?: "")
                                             savePreferences("UID", task.result?.user?.uid.toString())
 
-                                            Toast.makeText(context, "환영한다 " + group?.Nickname, Toast.LENGTH_SHORT).show()
                                             startActivity(Intent(context, ActivityMain::class.java))
                                             finish()
                                         }
@@ -137,28 +135,20 @@ class ActivityLogin : AppCompatActivity() {
 
                                         val dialogLogin: DialogLogin?
 
-                                        val btnStep1 = View.OnClickListener { v: View? ->
+                                        val doLogin = View.OnClickListener {
 
-                                            val currentUser = FirebaseAuth.getInstance().currentUser
-                                            currentUser?.delete()
-                                                ?.addOnCompleteListener { task ->
-                                                    if (task.isSuccessful) {
-                                                        auth?.signOut()
-                                                        googleSignInClient?.signOut()
-                                                        Toast.makeText(
-                                                            context,
-                                                            "계정 정보 삭제",
-                                                            Toast.LENGTH_SHORT
-                                                        ).show()
-                                                    }
-                                                }
-                                        }
+                                            userDao?.daoUser()?.init()
 
-                                        val btnStep2 = View.OnClickListener { v: View? ->
+                                            userDao?.daoUser()?.insert(
+                                                DataBaseUser(
+                                                    group?.Nickname ?: "",
+                                                    group?.Genre ?: "",
+                                                    task.result?.user?.uid ?: ""
+                                                )
+                                            )
 
-                                            Toast.makeText(context, "환영한다 뉴비", Toast.LENGTH_SHORT).show()
-                                            mRootRef.child("User").child(task.result?.user?.uid.toString()).setValue("HIHI")
                                             savePreferences("UID", task.result?.user?.uid.toString())
+
                                             val intent = Intent(context, ActivityGenre::class.java)
                                             intent.putExtra("MODE", "NEWBIE")
                                             intent.putExtra("UID", task.result?.user?.uid.toString())
@@ -171,7 +161,7 @@ class ActivityLogin : AppCompatActivity() {
                                         // 안내 팝업
                                         dialogLogin = DialogLogin(
                                             context,
-                                            btnStep2
+                                            doLogin
                                         )
 
                                         dialogLogin.window?.setBackgroundDrawable(
@@ -215,23 +205,17 @@ class ActivityLogin : AppCompatActivity() {
                 firebaseAuthWithGoogle(accout)
                 binding.loading.root.visibility = View.GONE
                 window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-                Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show()
+
             } else {
-                Toast.makeText(this, "로그인 실패!!!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "로그인 실패", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun savePreferences(key : String, value: String) {
-        val pref = getSharedPreferences("pref", MODE_PRIVATE)
-        val editor = pref.edit()
-        editor.putString(key, value)
-        editor.apply()
-    }
-
     // 유저정보 넘겨주고 메인 액티비티 호출
-    fun moveMainPage(user: FirebaseUser?){
+    private fun moveMainPage(user: FirebaseUser?){
         if(user!= null){
+
             mRootRef.child("User").child(user.uid)
                 .addListenerForSingleValueEvent(object :
                     ValueEventListener {
@@ -259,7 +243,6 @@ class ActivityLogin : AppCompatActivity() {
                             savePreferences("GENRE", group?.Genre ?: "")
                             savePreferences("UID", user.uid)
 
-                            Toast.makeText(context, "환영합니다! ${group?.Nickname}님", Toast.LENGTH_SHORT).show()
                             startActivity(Intent(context, ActivityMain::class.java))
                             binding.loading.root.visibility = View.GONE
                             window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
@@ -269,5 +252,12 @@ class ActivityLogin : AppCompatActivity() {
                     override fun onCancelled(databaseError: DatabaseError) {}
                 })
         }
+    }
+
+    private fun savePreferences(key : String, value: String) {
+        val pref = getSharedPreferences("pref", MODE_PRIVATE)
+        val editor = pref.edit()
+        editor.putString(key, value)
+        editor.apply()
     }
 }
