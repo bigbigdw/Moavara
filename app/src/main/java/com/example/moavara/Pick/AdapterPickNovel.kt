@@ -132,8 +132,10 @@ class AdapterPickNovel(private var context: Context, private var itemsList: Arra
                     tviewInfo2.visibility = View.GONE
                     tviewInfo3.visibility = View.GONE
                     tviewInfo4.visibility = View.GONE
+                    tviewBar.visibility = View.GONE
                 }   else if(item.type == "Toksoda"){
                     tviewInfo1.visibility = View.VISIBLE
+                    tviewBar.visibility = View.VISIBLE
                     tviewInfo2.visibility = View.GONE
                     tviewInfo3.visibility = View.VISIBLE
                     tviewInfo4.visibility = View.VISIBLE
@@ -157,6 +159,7 @@ class AdapterPickNovel(private var context: Context, private var itemsList: Arra
                 } else if (item.type == "Naver" || item.type == "Naver_Today" || item.type == "Naver_Challenge") {
                     tviewInfo1.text = item.info1
                     tviewInfo1.visibility = View.VISIBLE
+                    tviewBar.visibility = View.VISIBLE
                     tviewInfo2.visibility = View.VISIBLE
                     tviewInfo3.visibility = View.VISIBLE
 
@@ -191,6 +194,7 @@ class AdapterPickNovel(private var context: Context, private var itemsList: Arra
                     tviewInfo1.text = item.info2
 
                     tviewInfo1.visibility = View.VISIBLE
+                    tviewBar.visibility = View.VISIBLE
                     tviewInfo2.visibility = View.GONE
                     tviewInfo3.visibility = View.VISIBLE
                     tviewInfo4.visibility = View.VISIBLE
@@ -212,6 +216,7 @@ class AdapterPickNovel(private var context: Context, private var itemsList: Arra
                 } else if (item.type == "Ridi") {
                     tviewInfo1.text = item.info1
                     tviewInfo1.visibility = View.VISIBLE
+                    tviewBar.visibility = View.VISIBLE
                     tviewInfo2.visibility = View.GONE
                     tviewInfo3.visibility = View.VISIBLE
                     tviewInfo4.visibility = View.VISIBLE
@@ -259,6 +264,7 @@ class AdapterPickNovel(private var context: Context, private var itemsList: Arra
                     tviewInfo4.text = info5
                 } else if (item.type == "Kakao" || item.type == "Munpia" || item.type == "Toksoda" || item.type == "Joara" || item.type == "Joara_Premium" || item.type == "Joara_Nobless" || item.type == "Munpia" ) {
                     tviewInfo1.visibility = View.VISIBLE
+                    tviewBar.visibility = View.VISIBLE
                     tviewInfo2.visibility = View.VISIBLE
                     tviewInfo3.visibility = View.VISIBLE
                     tviewInfo4.visibility = View.VISIBLE

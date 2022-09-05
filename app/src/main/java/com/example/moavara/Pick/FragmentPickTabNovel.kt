@@ -7,15 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.work.WorkManager
 import com.example.moavara.Best.ActivityBestDetail
+import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.Search.BookListDataBest
-import com.example.moavara.Util.Genre
 import com.example.moavara.Util.SwipeHelperCallback
 import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.FragmentPickTabBinding
@@ -24,18 +23,13 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import java.util.*
 
-class FragmentPickTabNovel : Fragment() {
+class FragmentPickTabNovel(private var UserInfo : DataBaseUser) : Fragment() {
 
     private lateinit var adapter: AdapterPickNovel
-    private var cate = ""
     private val items = ArrayList<BookListDataBest>()
 
     private var _binding: FragmentPickTabBinding? = null
     private val binding get() = _binding!!
-    var UID = ""
-    var userInfo = mRootRef.child("User")
-
-    var status = ""
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -44,11 +38,6 @@ class FragmentPickTabNovel : Fragment() {
     ): View {
         _binding = FragmentPickTabBinding.inflate(inflater, container, false)
         val view = binding.root
-
-        cate = Genre.getGenre(requireContext()).toString()
-
-        UID = context?.getSharedPreferences("pref", AppCompatActivity.MODE_PRIVATE)
-            ?.getString("UID", "").toString()
 
         adapter = AdapterPickNovel(requireContext(), items, this@FragmentPickTabNovel)
 
@@ -78,7 +67,7 @@ class FragmentPickTabNovel : Fragment() {
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rviewPick.adapter = adapter
 
-        userInfo.child(UID).child("Novel").child("book").addListenerForSingleValueEvent(object :
+        mRootRef.child("User").child(UserInfo.UID).child("Novel").child("book").addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
@@ -148,7 +137,7 @@ class FragmentPickTabNovel : Fragment() {
 
     override fun onDetach() {
         for(i in items.indices){
-            userInfo.child(UID).child("Novel").child("book").child(items[i].bookCode).child("number").setValue((items.size - i))
+            mRootRef.child("User").child(UserInfo.UID).child("Novel").child("book").child(items[i].bookCode).child("number").setValue((items.size - i))
         }
         super.onDetach()
     }

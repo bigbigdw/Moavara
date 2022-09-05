@@ -419,7 +419,7 @@ class ActivityGenre : AppCompatActivity() {
         dialogLogin = DialogConfirm(
             this@ActivityGenre,
             "",
-            "닉네임 : ${binding.etviewNickname.text} \n으로 진행하시겠습니까?",
+            "닉네임 : ${binding.etviewNickname.text}",
             leftListener,
             rightListener,
             "취소",

@@ -1,9 +1,6 @@
 package com.example.moavara.Best
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -85,22 +82,15 @@ class FragmentBestTabToday(private val platform: String, private val UserInfo: D
                 bundle.putString("BEST_platform", item?.type)
                 firebaseAnalytics.logEvent("BEST_bottomDialog", bundle)
 
-                if(platform == "MrBlue"){
-                    val intent = Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse( "https://www.mrblue.com/novel/${item?.bookCode}")
-                    )
-                    context?.startActivity(intent)
-                } else {
-                    val mBottomDialogBest = BottomDialogBest(
-                        requireContext(),
-                        item,
-                        platform,
-                        position
-                    )
+                val mBottomDialogBest = BottomDialogBest(
+                    requireContext(),
+                    item,
+                    platform,
+                    position,
+                    UserInfo
+                )
 
-                    fragmentManager?.let { mBottomDialogBest.show(it, null) }
-                }
+                fragmentManager?.let { mBottomDialogBest.show(it, null) }
             }
         })
 
@@ -111,11 +101,9 @@ class FragmentBestTabToday(private val platform: String, private val UserInfo: D
 
         bestDao?.bestDao()?.initAll()
 
-        BestRef.getBestDataToday(platform, UserInfo.Genre ?: "").addListenerForSingleValueEvent(object :
+        BestRef.getBestDataToday(platform, UserInfo.Genre).addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-
-                Log.d("####", "${dataSnapshot.childrenCount} ${UserInfo.Genre}")
 
                 for (postSnapshot in dataSnapshot.children) {
 
@@ -180,15 +168,15 @@ class FragmentBestTabToday(private val platform: String, private val UserInfo: D
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (bookCodeList in items) {
 
-                    val items = dataSnapshot.child(bookCodeList.bookCode)
+                    val item = dataSnapshot.child(bookCodeList.bookCode)
 
-                    if (items.childrenCount > 1) {
+                    if (item.childrenCount > 1) {
 
                         val bookCodes = ArrayList<BookListDataBestAnalyze>()
 
-                        for(item in items.children){
+                        for(childItem in item.children){
 
-                            val group: BookListDataBestAnalyze? = item.getValue(BookListDataBestAnalyze::class.java)
+                            val group: BookListDataBestAnalyze? = childItem.getValue(BookListDataBestAnalyze::class.java)
 
                             if (group != null) {
                                 bookCodes.add(
@@ -246,7 +234,7 @@ class FragmentBestTabToday(private val platform: String, private val UserInfo: D
                             )
                         )
 
-                    } else if (items.childrenCount.toInt() == 1) {
+                    } else if (item.childrenCount.toInt() == 1) {
 
                         val group: BookListDataBestAnalyze? =
                             dataSnapshot.child(bookCodeList.bookCode).child(DBDate.DateMMDD())

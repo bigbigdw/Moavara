@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moavara.Best.BottomDialogBest
+import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Search.AdapterBestMoavara
 import com.example.moavara.Search.BookListDataBest
 import com.example.moavara.Util.BestRef
@@ -25,7 +26,7 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.io.*
 
-class FragmentSearchMoavara : Fragment() {
+class FragmentSearchMoavara(private val UserInfo: DataBaseUser) : Fragment() {
 
     private var adapterToday: AdapterBestMoavara? = null
 
@@ -86,7 +87,8 @@ class FragmentSearchMoavara : Fragment() {
                             requireContext(),
                             item,
                             item.type ?: "",
-                            position
+                            position,
+                            UserInfo
                         )
 
                         fragmentManager?.let { mBottomDialogBest.show(it, null) }

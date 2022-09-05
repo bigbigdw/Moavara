@@ -16,104 +16,62 @@
         android:paddingTop="20dp"
         android:paddingBottom="20dp" />
 
-    <SearchView
-        android:id="@+id/sview"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="12dp"
-        android:gravity="right|end"
-        android:iconifiedByDefault="false"
-
-        android:layoutDirection="rtl"
-        android:queryHint='찾으실 작품을 검색해주세요'
-        android:searchHintIcon="@android:drawable/ic_menu_search"
-        android:searchIcon="@android:drawable/ic_menu_search"
-        android:textColor="#E2E3E7"
-        android:textColorHint="#3E424B" />
-
-    <LinearLayout
-        android:id="@+id/llayoutResult"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="gone"
-        tools:visibility="visible">
-
-        <include
-            android:id="@+id/blank"
-            layout="@layout/etc_blank"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"
-            tools:visibility="gone" />
-
-        <include
-            android:id="@+id/searchResult"
-            layout="@layout/include_best_detail"
-            android:animateLayoutChanges="true" />
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="20dp">
 
         <LinearLayout
-            android:id="@+id/llayoutBtn"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:background="#1E1E20"
-            android:gravity="center_horizontal|center_vertical"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="34dp"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/llayoutPick"
-                android:layout_width="260dp"
-                android:layout_height="41dp"
-                android:background="#621CEF"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tviewPick"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/pretendardvariable"
-                    android:text="Pick 하기"
-                    android:textColor="#EDE6FD"
-                    android:textSize="20dp"
-                    tools:ignore="TextContrastCheck" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/llayoutView"
-                android:layout_width="260dp"
-                android:layout_height="41dp"
-                android:layout_marginTop="18dp"
-                android:background="#3E424B"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/pretendardvariable"
-                    android:text="@string/Best_BottomDialogBtn"
-                    android:textColor="#EDE6FD"
-                    android:textSize="20dp"
-                    tools:ignore="TextContrastCheck" />
-            </LinearLayout>
+            <EditText
+                android:id="@+id/sview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="12dp"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/pretendardvariable"
+                android:hint="찾으실 작품을 검색해주세요"
+                android:inputType="text"
+                android:textColor="#E2E3E7"
+                android:textColorHint="#3E424B"
+                android:textCursorDrawable="@null" />
         </LinearLayout>
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/btnSearch"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center|end"
+            android:contentDescription="@string/TODO"
+            android:padding="8dp"
+            app:srcCompat="@drawable/ic_search_24px" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_gravity="bottom|end"
+
+            android:background="#3E424B" />
+
+    </FrameLayout>
 
     <LinearLayout
-        android:id="@+id/llayoutSearch"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
+
         android:orientation="vertical"
-        android:padding="28dp"
-        tools:visibility="gone">
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        tools:visibility="visible">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -126,13 +84,213 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tviewSearch"
+                <LinearLayout
+                    android:id="@+id/llayoutResult"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="검색검색"
-                    android:textAlignment="center"
-                    android:textColor="#E91E63" />
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="gone">
+
+                    <include
+                        android:id="@+id/blank"
+                        layout="@layout/etc_blank"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="gone"
+                        tools:visibility="gone" />
+
+                    <include
+                        android:id="@+id/searchResult"
+                        layout="@layout/include_best_detail"
+                        android:animateLayoutChanges="true" />
+
+                    <LinearLayout
+                        android:id="@+id/llayoutBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="24dp"
+                        android:background="#1E1E20"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/llayoutPick"
+                            android:layout_width="260dp"
+                            android:layout_height="41dp"
+                            android:background="#621CEF"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tviewPick"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/pretendardvariable"
+                                android:text="Pick"
+                                android:textColor="#EDE6FD"
+                                android:textSize="20dp"
+                                tools:ignore="TextContrastCheck" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/llayoutView"
+                            android:layout_width="260dp"
+                            android:layout_height="41dp"
+                            android:layout_marginTop="18dp"
+                            android:background="#3E424B"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/pretendardvariable"
+                                android:text="@string/Best_BottomDialogBtn"
+                                android:textColor="#EDE6FD"
+                                android:textSize="20dp"
+                                tools:ignore="TextContrastCheck" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llayoutSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#3E424B"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="54dp"
+                        android:background="#26292E"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/btnText"
+                            android:layout_width="24dp"
+                            android:layout_height="16dp"
+                            android:layout_marginRight="6dp"
+                            android:background="#04F5ED"
+                            android:fontFamily="@font/pretendardvariable"
+                            android:text="Tip!"
+                            android:textAlignment="center"
+                            android:textColor="#000000"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/pretendardvariable"
+                            android:text="작품을 더 알아보고 싶다면?"
+                            android:textColor="#A7ACB7"
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tviewSearchNum1"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginTop="26dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="#26292E"
+                        android:fontFamily="@font/pretendardvariable"
+                        android:paddingTop="4dp"
+                        android:text="1"
+                        android:textAlignment="center"
+                        android:textColor="#EDE6FD"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tviewSearch1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:fontFamily="@font/pretendardvariable"
+                        android:text="각 플랫폼 사이트 작품상세페이지 주소에\n북코드가 숨어있어요~"
+                        android:textAlignment="center"
+                        android:textColor="#EDE6FD"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/iviewSearch"
+                        android:layout_width="200dp"
+                        android:layout_height="122dp"
+                        app:srcCompat="@drawable/quick_search_joara_img" />
+
+                    <TextView
+                        android:id="@+id/tviewSearchNum2"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="#26292E"
+                        android:fontFamily="@font/pretendardvariable"
+                        android:paddingTop="4dp"
+                        android:text="2"
+                        android:textAlignment="center"
+                        android:textColor="#EDE6FD"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tviewSearch2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="24dp"
+                        android:fontFamily="@font/pretendardvariable"
+                        android:text="북코드로 검색하면 더 많은\n정보를 볼 수 있어요!"
+                        android:textAlignment="center"
+                        android:textColor="#EDE6FD"
+                        android:textSize="14sp" />
+
+                    <LinearLayout
+                        android:layout_width="200dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="65dp"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="8dp"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center|end"
+                                android:layout_marginRight="4dp"
+                                android:contentDescription="@string/TODO"
+                                app:srcCompat="@drawable/ic_search_24px" />
+
+                            <TextView
+                                android:id="@+id/tviewSearch"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/pretendardvariable"
+                                android:text="검색검색"
+                                android:textAlignment="textStart"
+                                android:textColor="#6E7686"
+                                android:textSize="17sp" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:background="#A780F6" />
+                    </LinearLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

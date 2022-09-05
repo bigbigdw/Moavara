@@ -62,7 +62,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
-                android:id="@+id/btnLeft"
+                android:id="@+id/llayoutBtnDetail"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_weight="1"
@@ -74,7 +74,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/pretendardvariable"
-                    android:text="페이지 이동"
+                    android:text="이벤트 보기"
                     android:textColor="#A7ACB7"
                     android:textSize="17sp"
                     tools:ignore="TextContrastCheck" />
@@ -83,7 +83,7 @@
             <LinearLayout
                 android:id="@+id/llayoutPick"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="56dp"
                 android:layout_weight="1"
                 android:background="#621CEF"
                 android:gravity="center"
@@ -94,7 +94,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/pretendardvariable"
-                    android:text="Pick하기"
+                    android:text="Pick"
                     android:textColor="#EDE6FD"
                     android:textSize="17sp"
                     tools:ignore="TextContrastCheck" />

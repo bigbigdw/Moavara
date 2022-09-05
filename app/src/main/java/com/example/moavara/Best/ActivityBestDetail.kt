@@ -2,11 +2,9 @@ package com.example.moavara.Best
 
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
@@ -17,8 +15,8 @@ import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.work.*
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.Target.SIZE_ORIGINAL
 import com.example.moavara.Firebase.FirebaseWorkManager
-import com.example.moavara.Main.DialogConfirm
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
 import com.example.moavara.Retrofit.*
@@ -218,7 +216,7 @@ class ActivityBestDetail : AppCompatActivity() {
                             shape = GradientDrawable.RECTANGLE
                         }
 
-                        binding.tviewPick.text = "Pick 하기"
+                        binding.tviewPick.text = "Pick"
                     }
                 }
             }
@@ -240,7 +238,7 @@ class ActivityBestDetail : AppCompatActivity() {
                     shape = GradientDrawable.RECTANGLE
                 }
 
-                binding.tviewPick.text = "Pick 하기"
+                binding.tviewPick.text = "Pick"
 
                 Novel.child("book").child(bookCode).removeValue()
                 Novel.child("bookCode").child(bookCode).removeValue()
@@ -259,77 +257,43 @@ class ActivityBestDetail : AppCompatActivity() {
                 if(isFirstPick){
                     isFirstPick = false
 
-                    var dialogLogin: DialogConfirm? = null
-
                     val USER = getSharedPreferences("pref", MODE_PRIVATE)
                         ?.getString("NICKNAME", "").toString()
 
-                    // 안내 팝업
-                    dialogLogin = DialogConfirm(
-                        this,
-                        "환영합니다!",
-                        "모아바라에서는 마이픽으로 선택한 작품을 6시간 주기로 데이터를 최신화 하고 있습니다.\n 이 옵션은 유저페이지 -> 마이픽 최신화 ON/OFF로 설정 가능합니다. 지금부터 주기적으로 마이픽 작품들을 최신화 하시겠습니까?",
-                        { v: View? ->
-                            Novel.child("book").child(bookCode).setValue(pickItem)
+                    val inputData = Data.Builder()
+                        .putString(FirebaseWorkManager.TYPE, "PICK")
+                        .putString(FirebaseWorkManager.UID, UID)
+                        .putString(FirebaseWorkManager.USER, USER)
+                        .build()
 
-                            if(bookData.isEmpty()){
-                                Novel.child("bookCode").child(bookCode).child(DBDate.DateMMDD()).setValue(pickBookCodeItem)
-                            } else {
-                                Novel.child("bookCode").child(bookCode).setValue(bookData)
-                            }
+                    /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
+                    val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(6, TimeUnit.HOURS)
+                        .setBackoffCriteria(
+                            BackoffPolicy.LINEAR,
+                            PeriodicWorkRequest.MIN_BACKOFF_MILLIS,
+                            TimeUnit.MILLISECONDS
+                        )
+                        .addTag("MoavaraPick")
+                        .setInputData(inputData)
+                        .build()
 
-                            Toast.makeText(this, "[${bookTitle}]이(가) 마이픽에 등록되었습니다.", Toast.LENGTH_SHORT).show()
-                            dialogLogin?.dismiss()
-                        },
-                        {
-                            val inputData = Data.Builder()
-                                .putString(FirebaseWorkManager.TYPE, "PICK")
-                                .putString(FirebaseWorkManager.UID, UID)
-                                .putString(FirebaseWorkManager.USER, USER)
-                                .build()
+                    val workManager = WorkManager.getInstance(applicationContext)
 
-                            /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
-                            val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(6, TimeUnit.HOURS)
-                                .setBackoffCriteria(
-                                    BackoffPolicy.LINEAR,
-                                    PeriodicWorkRequest.MIN_BACKOFF_MILLIS,
-                                    TimeUnit.MILLISECONDS
-                                )
-                                .addTag("MoavaraPick")
-                                .setInputData(inputData)
-                                .build()
-
-                            val workManager = WorkManager.getInstance(applicationContext)
-
-                            workManager.enqueueUniquePeriodicWork(
-                                "MoavaraPick",
-                                ExistingPeriodicWorkPolicy.KEEP,
-                                workRequest
-                            )
-                            FirebaseMessaging.getInstance().subscribeToTopic(UID)
-
-                            Novel.child("book").child(bookCode).setValue(pickItem)
-                            userInfo.child(UID).child("Mining").setValue(true)
-
-                            if(bookData.isEmpty()){
-                                Novel.child("bookCode").child(bookCode).child(DBDate.DateMMDD()).setValue(pickBookCodeItem)
-                            } else {
-                                Novel.child("bookCode").child(bookCode).setValue(bookData)
-                            }
-
-                            Toast.makeText(this, "[${bookTitle}]이(가) 마이픽에 등록되었습니다.", Toast.LENGTH_SHORT).show()
-                            dialogLogin?.dismiss()
-
-                        },
-                        "비활성화",
-                        "활성화"
+                    workManager.enqueueUniquePeriodicWork(
+                        "MoavaraPick",
+                        ExistingPeriodicWorkPolicy.KEEP,
+                        workRequest
                     )
+                    FirebaseMessaging.getInstance().subscribeToTopic(UID)
 
-                    dialogLogin.window?.setBackgroundDrawable(
-                        ColorDrawable(
-                            Color.TRANSPARENT)
-                    )
-                    dialogLogin.show()
+                    Novel.child("book").child(bookCode).setValue(pickItem)
+                    userInfo.child(UID).child("Mining").setValue(true)
+
+                    if(bookData.isEmpty()){
+                        Novel.child("bookCode").child(bookCode).child(DBDate.DateMMDD()).setValue(pickBookCodeItem)
+                    } else {
+                        Novel.child("bookCode").child(bookCode).setValue(bookData)
+                    }
                 } else {
                     Novel.child("book").child(bookCode).setValue(pickItem)
 

@@ -74,14 +74,14 @@ class FragmentBest : Fragment() {
                         getType("Today")
                     }
                     1->{
-                        mFragmentBestTabWeekend = FragmentBestTabWeekend("Joara")
+                        mFragmentBestTabWeekend = FragmentBestTabWeekend("Joara", UserInfo)
                         childFragmentManager.commit {
                             replace(R.id.llayoutWrap, mFragmentBestTabWeekend)
                         }
                         getType("Weekend")
                     }
                     2->{
-                        mFragmentBestTabMonth = FragmentBestTabMonth("Joara")
+                        mFragmentBestTabMonth = FragmentBestTabMonth("Joara", UserInfo)
                         childFragmentManager.commit {
                             replace(R.id.llayoutWrap, mFragmentBestTabMonth)
                         }
@@ -132,13 +132,13 @@ class FragmentBest : Fragment() {
                         }
                     }
                     "Weekend" -> {
-                        mFragmentBestTabWeekend = FragmentBestTabWeekend(item.type?: "")
+                        mFragmentBestTabWeekend = FragmentBestTabWeekend(item.type?: "", UserInfo)
                         childFragmentManager.commit {
                             replace(R.id.llayoutWrap, mFragmentBestTabWeekend)
                         }
                     }
                     "Month" -> {
-                        mFragmentBestTabMonth = FragmentBestTabMonth(item.type?: "")
+                        mFragmentBestTabMonth = FragmentBestTabMonth(item.type?: "", UserInfo)
                         childFragmentManager.commit {
                             replace(R.id.llayoutWrap, mFragmentBestTabMonth)
                         }

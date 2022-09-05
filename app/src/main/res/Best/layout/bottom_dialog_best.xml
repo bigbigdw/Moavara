@@ -104,7 +104,7 @@
                             android:text=" | "
                             android:textColor="#6E7686"
                             android:textSize="11sp"
-                            android:visibility="visible" />
+                            android:visibility="gone" />
 
                         <TextView
                             android:id="@+id/tviewInfo1"
@@ -198,7 +198,7 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:id="@+id/lview_detail"
+                android:id="@+id/llayoutBtnDetail"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_weight="1"
@@ -219,7 +219,7 @@
             <LinearLayout
                 android:id="@+id/llayoutPick"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="56dp"
                 android:layout_weight="1"
                 android:background="#621CEF"
                 android:gravity="center"

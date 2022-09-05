@@ -6,20 +6,17 @@ import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.text.InputType
-import android.text.TextUtils.replace
-import android.util.Log
+import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import android.widget.SearchView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.room.Room
 import com.bumptech.glide.Glide
-import com.example.moavara.Best.*
+import com.example.moavara.DataBase.DBUser
+import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
 import com.example.moavara.Retrofit.*
@@ -39,14 +36,14 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
     var bookCode = ""
     private lateinit var adapterType: AdapterSearchKeyword
     private val typeItems = ArrayList<BestType>()
-    var UID = ""
-    var userInfo = mRootRef.child("User")
     private var isPicked = false
     var bookTitle = ""
     var pickItem = BookListDataBest()
     var pickBookCodeItem = BookListDataBestAnalyze()
     val bookData = ArrayList<BookListDataBestAnalyze>()
-    var genre = ""
+
+    var userDao: DBUser? = null
+    var UserInfo = DataBaseUser()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,20 +56,25 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
 
         adapterType = AdapterSearchKeyword(typeItems)
         typeItems.clear()
-        binding.sview.queryHint = "조아라 검색"
+        binding.sview.hint = "조아라 검색"
 
-        UID = requireActivity().getSharedPreferences("pref", AppCompatActivity.MODE_PRIVATE)
-            ?.getString("UID", "").toString()
+        userDao = Room.databaseBuilder(
+            requireContext(),
+            DBUser::class.java,
+            "UserInfo"
+        ).allowMainThreadQueries().build()
+
+        if (userDao?.daoUser()?.get() != null) {
+            UserInfo = userDao?.daoUser()?.get() ?: DataBaseUser()
+        }
 
         with(binding) {
-            tviewSearch.text = "https://www.joara.com/book/1452405"
+            tviewSearch.text = "1452405"
             sview.inputType = InputType.TYPE_CLASS_NUMBER
 
             rviewType.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             rviewType.adapter = adapterType
-
-            genre = Genre.getGenre(requireContext()).toString()
 
             binding.llayoutPick.background = GradientDrawable().apply {
                 setColor(Color.parseColor("#621CEF"))
@@ -85,6 +87,40 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                 shape = GradientDrawable.RECTANGLE
                 cornerRadius = 100f.dpToPx()
             }
+
+            btnText.background = GradientDrawable().apply {
+                setColor(Color.parseColor("#04F5ED"))
+                shape = GradientDrawable.RECTANGLE
+                cornerRadius = 2f.dpToPx()
+            }
+
+            tviewSearchNum1.background = GradientDrawable().apply {
+                setColor(Color.parseColor("#26292E"))
+                shape = GradientDrawable.RECTANGLE
+                cornerRadius = 100f.dpToPx()
+            }
+
+            tviewSearchNum2.background = GradientDrawable().apply {
+                setColor(Color.parseColor("#26292E"))
+                shape = GradientDrawable.RECTANGLE
+                cornerRadius = 100f.dpToPx()
+            }
+
+            val tviewSearch1Text = SpannableStringBuilder("각 플랫폼 사이트 작품상세페이지\n주소에 북코드가 숨어있어요~")
+            tviewSearch1Text.applyingTextColor(
+                "북코드가 숨어있어요~",
+                "#A780F6"
+            )
+
+            tviewSearch1.text = tviewSearch1Text
+
+            val tviewSearch2Text = SpannableStringBuilder("북코드로 검색하면 더 많은\n정보를 볼 수 있어요!")
+            tviewSearch2Text.applyingTextColor(
+                "북코드로 검색",
+                "#A780F6"
+            )
+
+            tviewSearch2.text = tviewSearch2Text
         }
 
         for (i in BestRef.typeListTitleBookCode().indices) {
@@ -110,118 +146,119 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                     llayoutSearch.visibility = View.VISIBLE
 
                     if (platform == "Joara") {
-                        tviewSearch.text = "https://www.joara.com/book/1452405"
+                        tviewSearch.text = "1452405"
                         sview.inputType = InputType.TYPE_CLASS_NUMBER
-                        binding.sview.queryHint = "조아라 검색"
+                        binding.sview.hint = "조아라 검색"
+                        iviewSearch.setImageResource(R.drawable.quick_search_joara_img)
                     } else if (platform == "Kakao") {
-                        tviewSearch.text = "https://page.kakao.com/home?seriesId=56325530"
-                        binding.sview.queryHint = "카카오페이지 검색"
+                        tviewSearch.text = "56325530"
+                        binding.sview.hint = "카카오페이지 검색"
                         sview.inputType = InputType.TYPE_CLASS_NUMBER
+                        iviewSearch.setImageResource(R.drawable.quick_search_kakao_img)
                     } else if (platform == "Kakao_Stage") {
-                        tviewSearch.text = "https://pagestage.kakao.com/novels/74312919"
-                        binding.sview.queryHint = "카카오스테이지 검색"
+                        tviewSearch.text = "74312919"
+                        binding.sview.hint = "카카오스테이지 검색"
                         sview.inputType = InputType.TYPE_CLASS_NUMBER
+                        iviewSearch.setImageResource(R.drawable.quick_search_kakao_img)
                     } else if (platform == "Naver") {
-                        tviewSearch.text = "https://novel.naver.com/webnovel/list?novelId=252934"
+                        tviewSearch.text = "252934"
                         sview.inputType = InputType.TYPE_CLASS_NUMBER
-                        binding.sview.queryHint = "네이버 시리즈 검색"
+                        binding.sview.hint = "시리즈 검색"
+                        iviewSearch.setImageResource(R.drawable.quick_search_naver_img)
                     } else if (platform == "Naver_Challenge") {
-                        tviewSearch.text = "https://novel.naver.com/challenge/list?novelId=75595"
+                        tviewSearch.text = "75595"
                         sview.inputType = InputType.TYPE_CLASS_NUMBER
-                        binding.sview.queryHint = "네이버 챌린지리그 검색"
+                        binding.sview.hint = "챌린지리그 검색"
+                        iviewSearch.setImageResource(R.drawable.quick_search_naver_img)
                     } else if (platform == "Naver_Today") {
-                        tviewSearch.text = "https://novel.naver.com/best/list?novelId=268129"
+                        tviewSearch.text = "268129"
                         sview.inputType = InputType.TYPE_CLASS_NUMBER
-                        binding.sview.queryHint = "네이버 베스트리그 검색"
+                        binding.sview.hint = "베스트리그 검색"
+                        iviewSearch.setImageResource(R.drawable.quick_search_naver_img)
                     } else if (platform == "Ridi") {
-                        tviewSearch.text = "https://ridibooks.com/books/425295076"
+                        tviewSearch.text = "425295076"
                         sview.inputType = InputType.TYPE_CLASS_NUMBER
-                        binding.sview.queryHint = "리디북스 검색"
+                        binding.sview.hint = "리디북스 검색"
+                        iviewSearch.setImageResource(R.drawable.quick_search_ridi_img)
                     } else if (platform == "OneStore") {
-                        tviewSearch.text = "https://onestory.co.kr/detail/H042820022"
+                        tviewSearch.text = "H042820022"
                         sview.inputType = InputType.TYPE_CLASS_TEXT
+                        iviewSearch.setImageResource(R.drawable.quick_search_onestory_img)
                     } else if (platform == "Munpia") {
-                        tviewSearch.text = "https://novel.munpia.com/284801"
+                        tviewSearch.text = "284801"
                         sview.inputType = InputType.TYPE_CLASS_NUMBER
-                        binding.sview.queryHint = "문피아 검색"
-
+                        binding.sview.hint = "문피아 검색"
+                        iviewSearch.setImageResource(R.drawable.quick_search_munpia_img)
                     } else if (platform == "Toksoda") {
                         tviewSearch.text =
-                            "https://www.tocsoda.co.kr/product/productView?brcd=76M2207187389"
+                            "76M2207187389"
                         sview.inputType = InputType.TYPE_CLASS_TEXT
-                        binding.sview.queryHint = "톡소다 검색"
+                        binding.sview.hint = "톡소다 검색"
+                        iviewSearch.setImageResource(R.drawable.quick_search_tocsoda_img)
                     }
                 }
             }
         })
 
-        binding.sview.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
+        binding.btnSearch.setOnClickListener {
+            bookCode = binding.sview.text.toString()
 
-                bookCode = query.toString()
-
-                if (platform == "Joara") {
-                    setLayoutJoara()
-                } else if (platform == "Kakao") {
-                    setLayoutKaKao()
-                } else if (platform == "Kakao_Stage") {
-                    setLayoutKaKaoStage()
-                } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver") {
-                    setLayoutNaverToday()
-                } else if (platform == "Ridi") {
-                    setLayoutRidi()
-                } else if (platform == "Munpia") {
-                    setLayoutMunpia()
-                } else if (platform == "OneStore") {
-                    setLayoutOneStore()
-                } else if (platform == "Toksoda") {
-                    setLayoutToksoda()
-                }
-                binding.sview.setQuery("", false)
-
-                return false
-
+            if (platform == "Joara") {
+                setLayoutJoara()
+            } else if (platform == "Kakao") {
+                setLayoutKaKao()
+            } else if (platform == "Kakao_Stage") {
+                setLayoutKaKaoStage()
+            } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver") {
+                setLayoutNaverToday()
+            } else if (platform == "Ridi") {
+                setLayoutRidi()
+            } else if (platform == "Munpia") {
+                setLayoutMunpia()
+            } else if (platform == "OneStore") {
+                setLayoutOneStore()
+            } else if (platform == "Toksoda") {
+                setLayoutToksoda()
             }
+            binding.sview.text = SpannableStringBuilder("")
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                return false
-            }
-        })
+        }
 
-        userInfo.child(UID).child("Novel").child("book").addListenerForSingleValueEvent(object :
-            ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
+        mRootRef.child("User").child(UserInfo.UID).child("Novel").child("book")
+            .addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                for (pickedItem in dataSnapshot.children) {
+                    for (pickedItem in dataSnapshot.children) {
 
-                    if (pickedItem.key.toString() == bookCode) {
-                        isPicked = true
-                        binding.llayoutPick.background = GradientDrawable().apply {
-                            setColor(Color.parseColor("#A7ACB7"))
-                            shape = GradientDrawable.RECTANGLE
-                            cornerRadius = 100f.dpToPx()
+                        if (pickedItem.key.toString() == bookCode) {
+                            isPicked = true
+                            binding.llayoutPick.background = GradientDrawable().apply {
+                                setColor(Color.parseColor("#A7ACB7"))
+                                shape = GradientDrawable.RECTANGLE
+                                cornerRadius = 100f.dpToPx()
+                            }
+
+                            binding.tviewPick.text = "Pick 완료"
+                            break
+                        } else {
+                            binding.llayoutPick.background = GradientDrawable().apply {
+                                setColor(Color.parseColor("#621CEF"))
+                                shape = GradientDrawable.RECTANGLE
+                                cornerRadius = 100f.dpToPx()
+                            }
+
+                            binding.tviewPick.text = "Pick"
                         }
-
-                        binding.tviewPick.text = "Pick 완료"
-                        break
-                    } else {
-                        binding.llayoutPick.background = GradientDrawable().apply {
-                            setColor(Color.parseColor("#621CEF"))
-                            shape = GradientDrawable.RECTANGLE
-                            cornerRadius = 100f.dpToPx()
-                        }
-
-                        binding.tviewPick.text = "Pick 하기"
                     }
                 }
-            }
 
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
+                override fun onCancelled(databaseError: DatabaseError) {}
+            })
 
         binding.llayoutPick.setOnClickListener {
 
-            val Novel = userInfo.child(UID).child("Novel")
+            val Novel = mRootRef.child("User").child(UserInfo.UID).child("Novel")
 
             if (isPicked) {
                 isPicked = false
@@ -234,7 +271,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                     cornerRadius = 100f.dpToPx()
                 }
 
-                binding.tviewPick.text = "Pick 하기"
+                binding.tviewPick.text = "Pick"
 
                 Novel.child("book").child(bookCode).removeValue()
                 Novel.child("bookCode").child(bookCode).removeValue()
@@ -812,7 +849,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
 
                     with(binding) {
 
-                        if(data.result != null){
+                        if (data.result != null) {
                             llayoutBtn.visibility = View.VISIBLE
                             llayoutSearch.visibility = View.GONE
                             llayoutResult.visibility = View.VISIBLE
@@ -984,7 +1021,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
     }
 
     private fun getBookData() {
-        BestRef.getBookCode(platform, genre).child(bookCode)
+        BestRef.getBookCode(platform, UserInfo.Genre).child(bookCode)
             .addListenerForSingleValueEvent(object :
                 ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {

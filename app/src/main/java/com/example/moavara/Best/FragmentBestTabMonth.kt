@@ -5,7 +5,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,25 +14,22 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.example.moavara.DataBase.DBBest
-import com.example.moavara.DataBase.DBUser
 import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.DataBase.RoomBookListDataBest
 import com.example.moavara.Search.BookListDataBest
 import com.example.moavara.Search.BookListDataBestAnalyze
 import com.example.moavara.Search.BookListDataBestWeekend
 import com.example.moavara.Util.BestRef
-import com.example.moavara.Util.BestRef.putItem
 import com.example.moavara.Util.DBDate
 import com.example.moavara.databinding.FragmentBestMonthBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import org.json.JSONArray
-import org.json.JSONObject
-import java.io.*
+import java.io.File
+import java.io.IOException
 
 
-class FragmentBestTabMonth(private val platform: String) : Fragment(), BestTodayListener {
+class FragmentBestTabMonth(private val platform: String, private val UserInfo: DataBaseUser) : Fragment(), BestTodayListener {
 
     private lateinit var adapterMonth: AdapterBestMonth
     private val itemMonth = ArrayList<BookListDataBestWeekend>()
@@ -47,9 +43,7 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
     private var year = 0
     private var month = 0
     private var monthCount = 0
-    var userDao: DBUser? = null
     var bestDao: DBBest? = null
-    var UserInfo : DataBaseUser? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,20 +52,10 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
         _binding = FragmentBestMonthBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        userDao = Room.databaseBuilder(
-            requireContext(),
-            DBUser::class.java,
-            "UserInfo"
-        ).allowMainThreadQueries().build()
-
-        if(userDao?.daoUser() != null){
-            UserInfo = userDao?.daoUser()?.get()
-        }
-
         bestDao = Room.databaseBuilder(
             requireContext(),
             DBBest::class.java,
-            "Month_${platform}_${UserInfo?.Genre}"
+            "Month_${platform}_${UserInfo.Genre}"
         ).allowMainThreadQueries().build()
 
         adapterMonth = AdapterBestMonth(itemMonth)
@@ -104,7 +88,7 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
                     binding.rviewBestMonthDay.visibility = View.GONE
 
                     if (value != null) {
-                        BestRef.getBestDataMonth(platform, UserInfo?.Genre ?: "").child((position + 1).toString())
+                        BestRef.getBestDataMonth(platform, UserInfo.Genre).child((position + 1).toString())
                             .child(value).addListenerForSingleValueEvent(object :
                                 ValueEventListener {
                                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -238,6 +222,7 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
                         item,
                         platform,
                         position,
+                        UserInfo
                     )
                     childFragmentManager.let { mBottomDialogBest.show(it, null) }
                 }
@@ -253,14 +238,14 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
         itemMonth.clear()
         bestDao?.bestDao()?.initAll()
 
-        val file = File(File("/storage/self/primary/MOAVARA"), "Month_${platform}_${UserInfo?.Genre ?: ""}.json")
+        val file = File(File("/storage/self/primary/MOAVARA"), "Month_${platform}_${UserInfo.Genre}.json")
         if (file.exists()) {
             file.delete()
         }
 
         try {
 
-            BestRef.getBestDataMonth(platform, UserInfo?.Genre ?: "")
+            BestRef.getBestDataMonth(platform, UserInfo.Genre)
                 .addListenerForSingleValueEvent(object :
                     ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -477,7 +462,7 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
         binding.rviewBestMonth.removeAllViews()
         itemMonth.clear()
 
-        BestRef.getBestDataMonthBefore(platform, UserInfo?.Genre ?: "").child((month - 1).toString())
+        BestRef.getBestDataMonthBefore(platform, UserInfo.Genre).child((month - 1).toString())
             .addListenerForSingleValueEvent(object :
                 ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -542,7 +527,7 @@ class FragmentBestTabMonth(private val platform: String) : Fragment(), BestToday
     }
 
     override fun getBestTodayList(items: ArrayList<BookListDataBest>, status: Boolean) {
-        BestRef.getBookCode(platform, UserInfo?.Genre ?: "").addListenerForSingleValueEvent(object :
+        BestRef.getBookCode(platform, UserInfo.Genre).addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (bookCodeList in items) {

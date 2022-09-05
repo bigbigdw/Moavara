@@ -18,7 +18,6 @@ import com.example.moavara.databinding.FragmentSearchBinding
 class FragmentSearch : Fragment() {
 
     private lateinit var mFragmentSearchBookcode: FragmentSearchBookcode
-    private lateinit var mSearchMoavara: FragmentSearchMoavara
     private lateinit var adapterType: AdapterType
     private val typeItems = ArrayList<BestType>()
 

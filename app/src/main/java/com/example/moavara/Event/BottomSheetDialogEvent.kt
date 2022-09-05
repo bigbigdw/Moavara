@@ -15,8 +15,8 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
 import com.example.moavara.Retrofit.JoaraEventDetailResult
@@ -24,7 +24,6 @@ import com.example.moavara.Retrofit.JoaraNoticeDetailResult
 import com.example.moavara.Retrofit.RetrofitDataListener
 import com.example.moavara.Retrofit.RetrofitJoara
 import com.example.moavara.Search.EventData
-import com.example.moavara.Util.Genre
 import com.example.moavara.Util.Param
 import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.BottomDialogEventBinding
@@ -35,20 +34,19 @@ import com.google.firebase.database.ValueEventListener
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.net.URLDecoder
+import java.net.URLEncoder
 
 class BottomSheetDialogEvent(
     private val mContext: Context,
     private val item: EventData,
-    private val tabType: String = ""
+    private val platform: String = "조아라 이벤트",
+    private var UserInfo : DataBaseUser
 ) :
     BottomSheetDialogFragment() {
 
-    var cate = ""
     private var _binding: BottomDialogEventBinding? = null
     private val binding get() = _binding!!
     private var title : String = ""
-    var UID = ""
-    var userInfo = mRootRef.child("User")
     private var isPicked = false
 
     @RequiresApi(Build.VERSION_CODES.R)
@@ -59,11 +57,6 @@ class BottomSheetDialogEvent(
     ): View {
         _binding = BottomDialogEventBinding.inflate(inflater, container, false)
         val view = binding.root
-
-        cate = Genre.getGenre(requireContext()).toString()
-
-        UID = context?.getSharedPreferences("pref", AppCompatActivity.MODE_PRIVATE)
-            ?.getString("UID", "").toString()
 
         binding.iview.background = GradientDrawable().apply {
             setColor(Color.TRANSPARENT)
@@ -80,13 +73,32 @@ class BottomSheetDialogEvent(
             )
         }
 
-        userInfo.child(UID).child("Event").addListenerForSingleValueEvent(object :
+        if(platform == "PICK"){
+            binding.llayoutPick.visibility = View.GONE
+        }
+
+        if(platform == "OneStore"){
+            binding.llayoutBtnDetail.visibility = View.GONE
+        }
+
+        title = item.title
+
+        mRootRef.child("User").child(UserInfo.UID).child("Event").addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                 for(pickedItem in dataSnapshot.children){
 
-                    if(pickedItem.key.toString() == item.link){
+                    if(item.type == "Joara" && URLDecoder.decode(pickedItem.key.toString(), "utf-8") == item.link){
+                        isPicked = true
+                        binding.llayoutPick.background = GradientDrawable().apply {
+                            setColor(Color.parseColor("#A7ACB7"))
+                            shape = GradientDrawable.RECTANGLE
+                        }
+
+                        binding.tviewPick.text = "Pick 완료"
+                        break
+                    } else if(pickedItem.key.toString() == item.link){
                         isPicked = true
                         binding.llayoutPick.background = GradientDrawable().apply {
                             setColor(Color.parseColor("#A7ACB7"))
@@ -101,7 +113,7 @@ class BottomSheetDialogEvent(
                             shape = GradientDrawable.RECTANGLE
                         }
 
-                        binding.tviewPick.text = "Pick 하기"
+                        binding.tviewPick.text = "Pick"
                     }
                 }
             }
@@ -109,19 +121,19 @@ class BottomSheetDialogEvent(
             override fun onCancelled(databaseError: DatabaseError) {}
         })
 
-        if (tabType == "OneStore"
-            || (tabType == "Ridi" && item.link.contains("https://ridibooks.com/books"))
-            || tabType == "Munpia"
-            || (tabType == "Kakao")
-            || tabType == "Toksoda"
+        if (platform == "OneStore"
+            || (platform == "Ridi" && item.link.contains("https://ridibooks.com/books"))
+            || platform == "Munpia"
+            || (platform == "Kakao")
+            || platform == "Toksoda"
+            || platform == "PICK"
         ) {
-
             Glide.with(mContext).load(item.imgfile).into(binding.iview)
             binding.llayoutWrapResult.setOnClickListener{
                 dismiss()
             }
         } else {
-            when (tabType) {
+            when (platform) {
                 "Joara" -> {
                     getEventJoara()
                 }
@@ -141,8 +153,13 @@ class BottomSheetDialogEvent(
             llayoutPick.setOnClickListener {
 
                 if(isPicked){
-                    userInfo.child(UID).child("Event").child(item.link).removeValue()
-                    Toast.makeText(requireContext(), "[${item.title}]이(가) 마이픽에서 제거되었습니다.", Toast.LENGTH_SHORT).show()
+                    if(item.type == "Joara"){
+                        mRootRef.child("User").child(UserInfo.UID).child("Event").child(URLEncoder.encode(item.link, "utf-8")).removeValue()
+                    } else {
+                        mRootRef.child("User").child(UserInfo.UID).child("Event").child(item.link).removeValue()
+                    }
+
+                    Toast.makeText(requireContext(), "선택한 이벤트가 마이픽에 제거되었습니다", Toast.LENGTH_SHORT).show()
                     dismiss()
 
                 } else {
@@ -150,7 +167,7 @@ class BottomSheetDialogEvent(
                     val group = EventData(
                         item.link,
                         item.imgfile,
-                        item.title,
+                        title,
                         item.data,
                         item.date,
                         item.number,
@@ -158,25 +175,32 @@ class BottomSheetDialogEvent(
                         "",
                     )
 
-                    userInfo.child(UID).child("Event").child(item.link).setValue(group)
-                    Toast.makeText(requireContext(), "[${group.title}]이(가) 마이픽에 등록되었습니다.", Toast.LENGTH_SHORT).show()
+                    if(item.type == "Joara"){
+                        mRootRef.child("User").child(UserInfo.UID).child("Event").child(URLEncoder.encode(item.link, "utf-8")).setValue(group)
+                    } else {
+                        mRootRef.child("User").child(UserInfo.UID).child("Event").child(item.link).setValue(group)
+                    }
+
+                    Toast.makeText(requireContext(), "선택한 이벤트가 마이픽에 등록되었습니다", Toast.LENGTH_SHORT).show()
                     dismiss()
 
                 }
             }
 
-            btnLeft.setOnClickListener {
+            llayoutBtnDetail.setOnClickListener {
 
                 if(item.type == "Kakao"){
                     getEventKakao()
                 } else {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getUrl(tabType)))
-                    startActivity(intent)
+                    if(getUrl(platform) != ""){
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getUrl(platform)))
+                        startActivity(intent)
+                    } else {
+                        Toast.makeText(requireContext(), "지원하지 않는 이벤트 형식입니다.", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
-
-
 
         return view
     }
@@ -256,7 +280,13 @@ class BottomSheetDialogEvent(
     private fun getUrl(type: String): String {
         when (type) {
             "Joara" -> {
-                return "https://www.joara.com/event/" + item.link
+                if(item.link.contains("joaralink://event?event_id=")){
+                    return "https://www.joara.com/event/" + item.link.replace("joaralink://event?event_id=", "")
+                } else if(item.link.contains("joaralink://notice?notice_id=")) {
+                    return "https://www.joara.com/notice/" + item.link.replace("joaralink://notice?notice_id=", "")
+                } else {
+                    return ""
+                }
             }
             "Ridi" -> {
                 return if (item.link.contains("https://ridibooks.com/books/")) {

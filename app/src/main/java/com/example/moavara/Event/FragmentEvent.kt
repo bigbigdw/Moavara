@@ -5,15 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewpager.widget.ViewPager
+import androidx.room.Room
 import com.example.moavara.Best.AdapterType
-import com.example.moavara.Best.FragmentBestTabMonth
-import com.example.moavara.Best.FragmentBestTabToday
-import com.example.moavara.Best.FragmentBestTabWeekend
+import com.example.moavara.DataBase.DBUser
+import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.R
 import com.example.moavara.Search.BestType
 import com.example.moavara.Util.BestRef
@@ -28,6 +25,9 @@ class FragmentEvent: Fragment() {
     private val items = ArrayList<BestType>()
     private lateinit var mFragmentEventTab: FragmentEventTab
 
+    var userDao: DBUser? = null
+    var UserInfo = DataBaseUser()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
@@ -35,7 +35,17 @@ class FragmentEvent: Fragment() {
         _binding = FragmentEventBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        mFragmentEventTab = FragmentEventTab("Joara")
+        userDao = Room.databaseBuilder(
+            requireContext(),
+            DBUser::class.java,
+            "UserInfo"
+        ).allowMainThreadQueries().build()
+
+        if(userDao?.daoUser()?.get() != null){
+            UserInfo = userDao?.daoUser()?.get() ?: DataBaseUser()
+        }
+
+        mFragmentEventTab = FragmentEventTab("Joara", UserInfo)
         childFragmentManager.commit {
             replace(R.id.llayoutWrap, mFragmentEventTab)
         }
@@ -65,7 +75,7 @@ class FragmentEvent: Fragment() {
                 adapterType.setSelectedBtn(position)
                 adapterType.notifyDataSetChanged()
 
-                mFragmentEventTab = FragmentEventTab(item.type ?: "")
+                mFragmentEventTab = FragmentEventTab(item.type ?: "", UserInfo)
                 childFragmentManager.commit {
                     replace(R.id.llayoutWrap, mFragmentEventTab)
                 }

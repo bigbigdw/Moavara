@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moavara.Best.BottomDialogBest
+import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Search.BookListDataBest
 import com.example.moavara.Search.BookListDataBestWeekend
 import com.example.moavara.Util.BestRef
@@ -29,7 +30,7 @@ import org.json.JSONObject
 import java.io.*
 
 
-class FragmentBestTabWeekendOld(private val tabType: String) : Fragment() {
+class FragmentBestTabWeekendOld(private val tabType: String,private val UserInfo: DataBaseUser) : Fragment() {
 
     private var adapterWeek: AdapterBestWeekendOld? = null
     private val itemWeek = ArrayList<BookListDataBestWeekend>()
@@ -341,7 +342,8 @@ class FragmentBestTabWeekendOld(private val tabType: String) : Fragment() {
                     requireContext(),
                     item,
                     tabType,
-                    item.number
+                    item.number,
+                    UserInfo
                 )
                 fragmentManager?.let { mBottomDialogBest.show(it, null) }
                 adapterWeek?.setSelectedBook("")

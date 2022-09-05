@@ -1,31 +1,27 @@
 package com.example.moavara.Search
 
+import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.text.SpannableStringBuilder
 import android.view.MenuItem
 import android.view.View
-import android.widget.SearchView
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moavara.Best.ActivityBestDetail
-import com.example.moavara.Best.AdapterType
 import com.example.moavara.R
 import com.example.moavara.Retrofit.*
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Param
-import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.ActivitySearchBinding
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
-import java.lang.IndexOutOfBoundsException
 import java.util.*
 
 class ActivitySearch : AppCompatActivity() {
@@ -48,106 +44,104 @@ class ActivitySearch : AppCompatActivity() {
 
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.sview.queryHint = "통합 검색"
+        binding.sview.hint = "통합 검색"
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        binding.sview.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
+        binding.btnSearch.setOnClickListener {
+            text = binding.sview.text.toString()
+            searchItems.clear()
+            adapter?.notifyDataSetChanged()
+            val view = this.currentFocus
+            if (view != null) {
+                val imm: InputMethodManager =
+                    getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(view.windowToken, 0)
+            }
 
-                text = query.toString()
-                searchItems.clear()
-                adapter?.notifyDataSetChanged()
 
-                with(binding) {
-                    adapter = AdapterBookSearch(searchItems, text)
-                    rviewSearch.adapter = adapter
-                    rviewSearch.layoutManager =
-                        LinearLayoutManager(
-                            this@ActivitySearch,
-                            LinearLayoutManager.VERTICAL,
-                            false
+            with(binding) {
+                adapter = AdapterBookSearch(searchItems, text)
+                rviewSearch.adapter = adapter
+                rviewSearch.layoutManager =
+                    LinearLayoutManager(
+                        this@ActivitySearch,
+                        LinearLayoutManager.VERTICAL,
+                        false
+                    )
+
+                llayoutSearch.visibility = View.GONE
+                llayoutResult.visibility = View.VISIBLE
+            }
+
+
+            when (type) {
+                "Keyword" -> {
+                    searchJoara(page, text)
+                    searchKakaoStage(page - 1, text)
+                    searchKakao(page - 1, text)
+                    searchNaver(text, "Naver")
+                    searchNaver(text, "Naver_Today")
+                    searchNaver(text, "Naver_Challenge")
+                    searchMunpia(text)
+                    searchToksoda(text)
+                    searchMrBlue(text)
+                }
+                "Joara" -> {
+                    searchJoara(page, text)
+                }
+                "Naver_Today" -> {
+                    searchNaver(text, "Naver_Today")
+                }
+                "Naver_Challenge" -> {
+                    searchNaver(text, "Naver_Challenge")
+                }
+                "Naver" -> {
+                    searchNaver(text, "Naver")
+                }
+                "Kakao" -> {
+                    searchKakao(page - 1, text)
+                }
+                "Kakao_Stage" -> {
+                    searchKakaoStage(page - 1, text)
+                }
+                "Munpia" -> {
+                    searchMunpia(text)
+                }
+                "Toksoda" -> {
+                    searchToksoda(text)
+                }
+                "MrBlue" -> {
+                    searchMrBlue(text)
+                }
+            }
+            adapter?.notifyDataSetChanged()
+
+            adapter?.setOnItemClickListener(object : AdapterBookSearch.OnItemClickListener {
+                override fun onItemClick(v: View?, position: Int) {
+                    val item: BookListDataBest? = adapter?.getItem(position)
+
+                    if(item?.type == "MrBlue"){
+                        val intent = Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse( "https://www.mrblue.com${item.bookCode}")
                         )
+                        startActivity(intent)
+                    } else {
 
-                    llayoutSearch.visibility = View.GONE
-                    llayoutResult.visibility = View.VISIBLE
-                }
-
-
-                when (type) {
-                    "Keyword" -> {
-                        searchJoara(page, text)
-                        searchKakaoStage(page - 1, text)
-                        searchKakao(page - 1, text)
-                        searchNaver(text, "Naver")
-                        searchNaver(text, "Naver_Today")
-                        searchNaver(text, "Naver_Challenge")
-                        searchMunpia(text)
-                        searchToksoda(text)
-                        searchMrBlue(text)
-                    }
-                    "Joara" -> {
-                        searchJoara(page, text)
-                    }
-                    "Naver_Today" -> {
-                        searchNaver(text, "Naver_Today")
-                    }
-                    "Naver_Challenge" -> {
-                        searchNaver(text, "Naver_Challenge")
-                    }
-                    "Naver" -> {
-                        searchNaver(text, "Naver")
-                    }
-                    "Kakao" -> {
-                        searchKakao(page - 1, text)
-                    }
-                    "Kakao_Stage" -> {
-                        searchKakaoStage(page - 1, text)
-                    }
-                    "Munpia" -> {
-                        searchMunpia(text)
-                    }
-                    "Toksoda" -> {
-                        searchToksoda(text)
-                    }
-                    "MrBlue" -> {
-                        searchMrBlue(text)
+                        val bookDetailIntent =
+                            Intent(this@ActivitySearch, ActivityBestDetail::class.java)
+                        bookDetailIntent.putExtra("BookCode", item?.bookCode)
+                        bookDetailIntent.putExtra("Type", item?.type)
+                        bookDetailIntent.putExtra("POSITION", position)
+                        bookDetailIntent.putExtra("HASDATA", true)
+                        startActivity(bookDetailIntent)
                     }
                 }
-                adapter?.notifyDataSetChanged()
-
-                adapter?.setOnItemClickListener(object : AdapterBookSearch.OnItemClickListener {
-                    override fun onItemClick(v: View?, position: Int) {
-                        val item: BookListDataBest? = adapter?.getItem(position)
-
-                        if(item?.type == "MrBlue"){
-                            val intent = Intent(
-                                Intent.ACTION_VIEW,
-                                Uri.parse( "https://www.mrblue.com${item.bookCode}")
-                            )
-                            startActivity(intent)
-                        } else {
-
-                            val bookDetailIntent =
-                                Intent(this@ActivitySearch, ActivityBestDetail::class.java)
-                            bookDetailIntent.putExtra("BookCode", item?.bookCode)
-                            bookDetailIntent.putExtra("Type", item?.type)
-                            bookDetailIntent.putExtra("POSITION", position)
-                            bookDetailIntent.putExtra("HASDATA", true)
-                            startActivity(bookDetailIntent)
-                        }
-                    }
-                })
-
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                return false
-            }
-        })
+            })
+        }
 
         binding.blank.tviewblank.text = "검색어를 입력해주세요"
 
@@ -673,7 +667,7 @@ class ActivitySearch : AppCompatActivity() {
                     blank.root.visibility = View.VISIBLE
                     rviewSearch.visibility = View.GONE
                     blank.tviewblank.text = "검색어를 입력해주세요."
-                    sview.setQuery("",false)
+                    sview.text = SpannableStringBuilder("")
                 }
 
                 if (item.type != "Keyword") {
@@ -682,34 +676,34 @@ class ActivitySearch : AppCompatActivity() {
 
                 when (type) {
                     "Keyword" -> {
-                        binding.sview.queryHint = "통합 검색"
+                        binding.sview.hint = "통합 검색"
                     }
                     "Joara" -> {
-                        binding.sview.queryHint = "조아라 검색"
+                        binding.sview.hint = "조아라 검색"
                     }
                     "Naver_Today" -> {
-                        binding.sview.queryHint = "네이버 시리즈 검색"
+                        binding.sview.hint = "시리즈 검색"
                     }
                     "Naver_Challenge" -> {
-                        binding.sview.queryHint = "네이버 챌린지리그 검색"
+                        binding.sview.hint = "챌린지리그 검색"
                     }
                     "Naver" -> {
-                        binding.sview.queryHint = "네이버 베스트리그 검색"
+                        binding.sview.hint = "베스트리그 검색"
                     }
                     "Kakao" -> {
-                        binding.sview.queryHint = "카카오페이지 검색"
+                        binding.sview.hint = "카카오페이지 검색"
                     }
                     "Kakao_Stage" -> {
-                        binding.sview.queryHint = "카카오스테이지 검색"
+                        binding.sview.hint = "카카오스테이지 검색"
                     }
                     "Munpia" -> {
-                        binding.sview.queryHint = "문피아 검색"
+                        binding.sview.hint = "문피아 검색"
                     }
                     "Toksoda" -> {
-                        binding.sview.queryHint = "톡소다 검색"
+                        binding.sview.hint = "톡소다 검색"
                     }
                     "MrBlue" -> {
-                        binding.sview.queryHint = "미스터블루 검색"
+                        binding.sview.hint = "미스터블루 검색"
                     }
                 }
 

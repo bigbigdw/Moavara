@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Search.BookListDataBest
 import com.example.moavara.databinding.ItemBooklistBestWeekendBinding
 
@@ -17,6 +18,7 @@ class AdapterBestWeekend(
     private var context : Context,
     private var items: ArrayList<ArrayList<BookListDataBest>? >,
     private var platform : String,
+    private val UserInfo: DataBaseUser
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     interface OnItemClickListener {
@@ -44,7 +46,7 @@ class AdapterBestWeekend(
             val itemList = items[position]
 
             with(holder.binding) {
-                val adapter = AdapterBestWeekendItem(context, itemList)
+                val adapter = AdapterBestWeekendItem(itemList)
 
                 rview.layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -66,6 +68,7 @@ class AdapterBestWeekend(
                                 item,
                                 platform,
                                 item?.number ?: 0,
+                                UserInfo
                             )
                             mBottomDialogBest.show((context as AppCompatActivity).supportFragmentManager, null)
                         }

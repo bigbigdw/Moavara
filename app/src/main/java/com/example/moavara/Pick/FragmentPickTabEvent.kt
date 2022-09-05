@@ -9,13 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.moavara.DataBase.DataBaseUser
+import com.example.moavara.Event.BottomSheetDialogEvent
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.Search.EventData
-import com.example.moavara.Util.Genre
 import com.example.moavara.Util.SwipeEvent
 import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.FragmentPickTabBinding
@@ -26,18 +26,13 @@ import java.net.URLDecoder
 import java.util.*
 
 
-class FragmentPickTabEvent : Fragment() {
+class FragmentPickTabEvent(private var UserInfo : DataBaseUser) : Fragment() {
 
     private lateinit var adapter: AdapterPickEvent
-    private var cate = ""
     private val items = ArrayList<EventData>()
 
     private var _binding: FragmentPickTabBinding? = null
     private val binding get() = _binding!!
-
-    var status = ""
-    var UID = ""
-    var userInfo = mRootRef.child("User")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,12 +41,7 @@ class FragmentPickTabEvent : Fragment() {
         _binding = FragmentPickTabBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        UID = context?.getSharedPreferences("pref", AppCompatActivity.MODE_PRIVATE)
-            ?.getString("UID", "").toString()
-
         binding.blank.tviewblank.text = "마이픽을 한 이벤트가 없습니다."
-
-        cate = Genre.getGenre(requireContext()).toString()
 
         adapter = AdapterPickEvent(requireContext(), items, this@FragmentPickTabEvent)
 
@@ -73,7 +63,7 @@ class FragmentPickTabEvent : Fragment() {
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rviewPick.adapter = adapter
 
-        userInfo.child(UID).child("Event").addListenerForSingleValueEvent(object :
+        mRootRef.child("User").child(UserInfo.UID).child("Event").addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
@@ -96,7 +86,7 @@ class FragmentPickTabEvent : Fragment() {
                     }
                 }
 
-                if(items.isEmpty()){
+                if (items.isEmpty()) {
                     binding.blank.root.visibility = View.VISIBLE
                 } else {
                     binding.blank.root.visibility = View.GONE
@@ -106,25 +96,31 @@ class FragmentPickTabEvent : Fragment() {
                 Collections.sort(items, cmpAsc)
                 adapter.notifyDataSetChanged()
             }
+
             override fun onCancelled(databaseError: DatabaseError) {}
         })
 
 
         adapter.setOnItemClickListener(object : AdapterPickEvent.OnItemClickListener {
             @RequiresApi(Build.VERSION_CODES.R)
-            override fun onItemClick(v: View?, position: Int, type : String) {
+            override fun onItemClick(v: View?, position: Int, type: String) {
                 val item: EventData = adapter.getItem(position)
 
-                if(type == "Item"){
+                if (type == "Item") {
 
-                    if(item.type == "Kakao_Stage"){
+                    if (item.type == "Kakao_Stage") {
                         getEventKakao(item.link)
+                    } else if (item.type == "OneStore") {
+                        Toast.makeText(requireContext(), "원스토리는 지원하지 않습니다.", Toast.LENGTH_SHORT).show()
+                    } else if (getUrl(item.type, item.link).isEmpty()) {
+                        Toast.makeText(requireContext(), "지원하지 않는 이벤트 형식입니다.", Toast.LENGTH_SHORT).show()
                     } else {
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getUrl(item.type, item.link)))
-                        startActivity(intent)
+                        val mBottomSheetDialogEvent =
+                            BottomSheetDialogEvent(requireContext(), item, "PICK", UserInfo)
+                        fragmentManager?.let { mBottomSheetDialogEvent.show(it, null) }
                     }
 
-                } else if(type == "Confirm"){
+                } else if (type == "Confirm") {
                     adapter.editItem(position)
                     Toast.makeText(requireContext(), "수정되었습니다", Toast.LENGTH_SHORT).show()
                 }
@@ -152,10 +148,16 @@ class FragmentPickTabEvent : Fragment() {
         }
     }
 
-    private fun getUrl(type: String, link : String): String {
+    private fun getUrl(type: String, link: String): String {
         when (type) {
             "Joara" -> {
-                return "https://www.joara.com/event/$link"
+                if(link.contains("joaralink://event?event_id=")){
+                    return "https://www.joara.com/event/" + link.replace("joaralink://event?event_id=", "")
+                } else if(link.contains("joaralink://notice?notice_id=")) {
+                    return "https://www.joara.com/notice/" + link.replace("joaralink://notice?notice_id=", "")
+                } else {
+                    return ""
+                }
             }
             "Ridi" -> {
                 return "https://ridibooks.com/event/${link}"
@@ -177,14 +179,15 @@ class FragmentPickTabEvent : Fragment() {
     }
 
     override fun onDetach() {
-        for(i in items.indices){
-            userInfo.child(UID).child("Event").child(items[i].link).child("number").setValue((items.size - i))
+        for (i in items.indices) {
+            mRootRef.child("User").child(UserInfo.UID).child("Event").child(items[i].link).child("number")
+                .setValue((items.size - i))
         }
         super.onDetach()
     }
 
-    fun initScreen(itemCount : Int){
-        if(itemCount == 0){
+    fun initScreen(itemCount: Int) {
+        if (itemCount == 0) {
             binding.blank.root.visibility = View.VISIBLE
         } else {
             binding.blank.root.visibility = View.GONE

@@ -1,16 +1,15 @@
 package com.example.moavara.Best
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBest
 import com.example.moavara.databinding.CuItemBestWeekendBinding
 
 class AdapterBestWeekendItem(
-    private var context : Context,
     private var items: ArrayList<BookListDataBest>?,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -52,6 +51,27 @@ class AdapterBestWeekendItem(
 
                         tviewTitle.text = bookItem.title
                         tviewWriter.text = bookItem.writer
+
+                        if(bookItem.bookImg.isNotEmpty()){
+                            when (position) {
+                                0 -> {
+                                    iviewRank.setImageResource(R.drawable.icon_best_1)
+                                    iviewRank.visibility = View.VISIBLE
+                                }
+                                1 -> {
+                                    iviewRank.setImageResource(R.drawable.icon_best_2)
+                                    iviewRank.visibility = View.VISIBLE
+                                }
+                                2 -> {
+                                    iviewRank.setImageResource(R.drawable.icon_best_3)
+                                    iviewRank.visibility = View.VISIBLE
+                                }
+                                else -> {
+                                    iviewRank.visibility = View.GONE
+                                }
+                            }
+                        }
+
                     } else {
                         llayoutNull.visibility = View.VISIBLE
                         tviewTitle.visibility = View.GONE

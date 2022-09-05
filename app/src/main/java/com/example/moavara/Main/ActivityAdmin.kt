@@ -89,7 +89,7 @@ class ActivityAdmin : AppCompatActivity() {
 
                         workManager.enqueueUniquePeriodicWork(
                             "MoavaraBest",
-                            ExistingPeriodicWorkPolicy.KEEP,
+                            ExistingPeriodicWorkPolicy.REPLACE,
                             workRequest
                         )
                         FirebaseMessaging.getInstance().subscribeToTopic("all")
@@ -171,52 +171,36 @@ class ActivityAdmin : AppCompatActivity() {
             }
 
             llayoutPickFCM.setOnClickListener {
-                mRootRef.child("User").child(UserInfo?.UID ?: "").child("Mining").get().addOnSuccessListener {
-                    if (it.value != null || it.value == false) {
-                        val fcm = Intent(applicationContext, FCM::class.java)
-                        startService(fcm)
+                val fcm = Intent(applicationContext, FCM::class.java)
+                startService(fcm)
 
-                        val User = getSharedPreferences("pref",
-                            MODE_PRIVATE
-                        )
-                            ?.getString("NICKNAME", "").toString()
-                        val UID = getSharedPreferences("pref",
-                            MODE_PRIVATE
-                        )
-                            ?.getString("UID", "").toString()
+                val inputData = Data.Builder()
+                    .putString(FirebaseWorkManager.TYPE, "PICK")
+                    .putString(FirebaseWorkManager.UID, UserInfo?.UID ?: "")
+                    .putString(FirebaseWorkManager.USER, UserInfo?.Nickname ?: "")
+                    .build()
 
-                        val fcmBody = DataFCMBody(
-                            "/topics/${UID}",
-                            "high",
-                            DataFCMBodyData("모아바라 PICK 최신화", "${User}님의 마이픽 리스트가 최신화 되었습니다."),
-                            DataFCMBodyNotification("모아바라 PICK 최신화", "${User}님의 마이픽 리스트가 최신화 되었습니다.", "default", "ic_stat_ic_notification"),
-                        )
+                /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
+                val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(1, TimeUnit.HOURS)
+                    .setBackoffCriteria(
+                        BackoffPolicy.LINEAR,
+                        PeriodicWorkRequest.MIN_BACKOFF_MILLIS,
+                        TimeUnit.MILLISECONDS
+                    )
+                    .addTag("MoavaraPick")
+                    .setInputData(inputData)
+                    .build()
 
-                        val call = Retrofit.Builder()
-                            .baseUrl("https://fcm.googleapis.com")
-                            .addConverterFactory(GsonConverterFactory.create()).build()
-                            .create(FirebaseService::class.java)
-                            .postRetrofit(
-                                fcmBody
-                            )
+                val workManager = WorkManager.getInstance(applicationContext)
 
-                        call.enqueue(object : Callback<FWorkManagerResult?> {
-                            override fun onResponse(
-                                call: Call<FWorkManagerResult?>,
-                                response: retrofit2.Response<FWorkManagerResult?>
-                            ) {
-                                if (response.isSuccessful) {
-                                    Mining.getMyPickMining(applicationContext)
-                                }
-                            }
+                workManager.enqueueUniquePeriodicWork(
+                    "MoavaraPick",
+                    ExistingPeriodicWorkPolicy.REPLACE,
+                    workRequest
+                )
 
-                            override fun onFailure(call: Call<FWorkManagerResult?>, t: Throwable) {}
-                        })
-                        mRootRef.child("User").child(UID).child("Mining").setValue(true)
-                    } else {
-                        Toast.makeText(applicationContext, "이미 최신화 기능이 활성화 되어있습니다.", Toast.LENGTH_SHORT).show()
-                    }
-                }.addOnFailureListener {}
+                FirebaseMessaging.getInstance().subscribeToTopic(UserInfo?.UID ?: "")
+                mRootRef.child("User").child(UserInfo?.UID ?: "").child("Mining").setValue(true)
             }
 
             llayoutPickFCMStop.setOnClickListener {

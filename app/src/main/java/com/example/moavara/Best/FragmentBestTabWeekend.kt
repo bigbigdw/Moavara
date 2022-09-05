@@ -10,13 +10,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.DBBest
-import com.example.moavara.DataBase.DBUser
 import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.DataBase.RoomBookListDataBest
 import com.example.moavara.R
@@ -29,12 +27,9 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.synnapps.carouselview.ViewListener
-import org.json.JSONArray
 import org.json.JSONException
-import org.json.JSONObject
-import java.io.*
 
-class FragmentBestTabWeekend(private val platform: String) : Fragment() {
+class FragmentBestTabWeekend(private val platform: String, private val UserInfo: DataBaseUser) : Fragment() {
 
     lateinit var root: View
     private var _binding: FragmentBestWeekendBinding? = null
@@ -47,9 +42,8 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
     private var originalWeek = 0
     private var weekCount = 0
     val today = DBDate.getDateData(DBDate.DateMMDD())
-    var userDao: DBUser? = null
+
     var bestDao: DBBest? = null
-    var UserInfo : DataBaseUser? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,25 +52,15 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
         _binding = FragmentBestWeekendBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        userDao = Room.databaseBuilder(
-            requireContext(),
-            DBUser::class.java,
-            "UserInfo"
-        ).allowMainThreadQueries().build()
-
-        if(userDao?.daoUser() != null){
-            UserInfo = userDao?.daoUser()?.get()
-        }
-
         bestDao = Room.databaseBuilder(
             requireContext(),
             DBBest::class.java,
-            "Week_${platform}_${UserInfo?.Genre}"
+            "Week_${platform}_${UserInfo.Genre}"
         ).allowMainThreadQueries().build()
 
         with(binding) {
 
-            adapter = AdapterBestWeekend(requireContext(), itemWeek, platform)
+            adapter = AdapterBestWeekend(requireContext(), itemWeek, platform, UserInfo)
 
             binding.rviewBest.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -155,10 +139,10 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
         itemWeek.clear()
         arrayCarousel.clear()
 
-        var dataWeek = 0
+        var dataWeek: Int
 
         try {
-            BestRef.getBestDataWeekBefore(platform, UserInfo?.Genre ?: "").child(month.toString())
+            BestRef.getBestDataWeekBefore(platform, UserInfo.Genre).child(month.toString())
                 .addListenerForSingleValueEvent(object :
                     ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -252,7 +236,7 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
         itemWeek.clear()
 
         try {
-            BestRef.getBestDataWeek(platform, UserInfo?.Genre ?: "").addListenerForSingleValueEvent(object :
+            BestRef.getBestDataWeek(platform, UserInfo.Genre).addListenerForSingleValueEvent(object :
                 ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
 
@@ -353,6 +337,7 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
             val tviewInfo3: TextView = customView.findViewById(R.id.tviewInfo3)
             val tviewInfo4: TextView = customView.findViewById(R.id.tviewInfo4)
             val tviewInfo5: TextView = customView.findViewById(R.id.tviewInfo5)
+            val tviewBar : TextView = customView.findViewById(R.id.tviewBar)
 
             Glide.with(requireContext()).load(arrayCarousel[position].bookImg)
                 .into(iviewBookBest)
@@ -393,28 +378,17 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
             tviewTitle.text = arrayCarousel[position].title
             tviewWriter.text = arrayCarousel[position].writer
 
-            if (platform == "MrBlue") {
-                tviewInfo1.visibility = View.GONE
-                tviewInfo2.visibility = View.GONE
-                tviewInfo3.visibility = View.GONE
-                tviewInfo4.visibility = View.GONE
-                tviewInfo5.visibility = View.GONE
-            } else if (platform == "Toksoda") {
-                tviewInfo1.visibility = View.VISIBLE
-                tviewInfo2.visibility = View.GONE
-                tviewInfo3.visibility = View.VISIBLE
-                tviewInfo4.visibility = View.VISIBLE
-                tviewInfo5.visibility = View.VISIBLE
+            if (platform == "Toksoda") {
 
                 tviewInfo1.text = arrayCarousel[position].info2
 
-                val info3 = SpannableStringBuilder(arrayCarousel[position].info3)
+                val info3 = SpannableStringBuilder("조회 수 : ${arrayCarousel[position].info3}" )
                 info3.applyingTextColor(
                     "조회 수 : ",
                     "#6E7686"
                 )
 
-                val info5 = SpannableStringBuilder(arrayCarousel[position].info5)
+                val info5 = SpannableStringBuilder("선호작 수 : ${arrayCarousel[position].info5}")
                 info5.applyingTextColor(
                     "선호작 수 : ",
                     "#6E7686"
@@ -422,31 +396,23 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
 
                 tviewInfo3.text = info3
                 tviewInfo4.text = info5
-                tviewInfo5.text = arrayCarousel[position].info1 ?: ""
+                tviewInfo5.text = arrayCarousel[position].info1
             } else if (platform == "Naver" || platform == "Naver_Today" || platform == "Naver_Challenge") {
-                tviewInfo1.text = arrayCarousel[position].info1 ?: ""
-                tviewInfo1.visibility = View.VISIBLE
-                tviewInfo2.visibility = View.VISIBLE
-                tviewInfo3.visibility = View.VISIBLE
-                tviewInfo4.visibility = View.VISIBLE
-                tviewInfo5.visibility = View.GONE
+                tviewInfo1.text = arrayCarousel[position].info1
 
-                val info3 =
-                    SpannableStringBuilder(arrayCarousel[position].info3.replace("별점", "별점 : "))
+                val info3 = SpannableStringBuilder("별점 수 : ${arrayCarousel[position].info3.replace("별점", "별점 : ")}")
                 info3.applyingTextColor(
-                    "별점 : ",
+                    "별점 수 : ",
                     "#6E7686"
                 )
 
-                val info4 =
-                    SpannableStringBuilder(arrayCarousel[position].info4.replace("조회", "조회 수 : "))
+                val info4 = SpannableStringBuilder("조회 수 : ${arrayCarousel[position].info4.replace("조회", "조회 수 : ")}" )
                 info4.applyingTextColor(
                     "조회 수 : ",
                     "#6E7686"
                 )
 
-                val info5 =
-                    SpannableStringBuilder(arrayCarousel[position].info5.replace("관심", "관심 : "))
+                val info5 = SpannableStringBuilder("관심 : ${arrayCarousel[position].info5.replace("관심", "관심 : ")}")
                 info5.applyingTextColor(
                     "관심 : ",
                     "#6E7686"
@@ -456,23 +422,15 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                 tviewInfo3.text = info4
                 tviewInfo4.text = info5
             } else if (platform == "Kakao_Stage") {
-                tviewInfo1.text = arrayCarousel[position].info2 ?: ""
+                tviewInfo1.text = arrayCarousel[position].info2
 
-                tviewInfo1.visibility = View.VISIBLE
-                tviewInfo2.visibility = View.GONE
-                tviewInfo3.visibility = View.VISIBLE
-                tviewInfo4.visibility = View.VISIBLE
-                tviewInfo5.visibility = View.VISIBLE
-
-                val info3 =
-                    SpannableStringBuilder(arrayCarousel[position].info3.replace("별점", "별점 : "))
+                val info3 = SpannableStringBuilder("조회 수 : ${arrayCarousel[position].info3.replace("별점", "별점 : ")}" )
                 info3.applyingTextColor(
                     "조회 수 : ",
                     "#6E7686"
                 )
 
-                val info4 =
-                    SpannableStringBuilder(arrayCarousel[position].info4.replace("조회", "조회 수 : "))
+                val info4 = SpannableStringBuilder("선호작 수 : ${arrayCarousel[position].info4.replace("조회", "조회 수 : ")}" )
                 info4.applyingTextColor(
                     "선호작 수 : ",
                     "#6E7686"
@@ -480,22 +438,17 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
 
                 tviewInfo3.text = info3
                 tviewInfo4.text = info4
-                tviewInfo5.text = arrayCarousel[position].info1 ?: ""
+                tviewInfo5.text = arrayCarousel[position].info1
             } else if (platform == "Ridi") {
-                tviewInfo1.text = arrayCarousel[position].info1 ?: ""
-                tviewInfo1.visibility = View.VISIBLE
-                tviewInfo2.visibility = View.GONE
-                tviewInfo3.visibility = View.VISIBLE
-                tviewInfo4.visibility = View.VISIBLE
-                tviewInfo5.visibility = View.GONE
+                tviewInfo1.text = arrayCarousel[position].info1
 
-                val info3 = SpannableStringBuilder(arrayCarousel[position].info3)
+                val info3 = SpannableStringBuilder("추천 수 : ${arrayCarousel[position].info3}" )
                 info3.applyingTextColor(
                     "추천 수 : ",
                     "#6E7686"
                 )
 
-                val info4 = SpannableStringBuilder(arrayCarousel[position].info4)
+                val info4 = SpannableStringBuilder("평점 : ${arrayCarousel[position].info4}")
                 info4.applyingTextColor(
                     "평점 : ",
                     "#6E7686"
@@ -504,61 +457,49 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                 tviewInfo3.text = info3
                 tviewInfo4.text = info4
             } else if (platform == "OneStore") {
-                tviewInfo1.visibility = View.GONE
-                tviewInfo2.visibility = View.VISIBLE
-                tviewInfo3.visibility = View.VISIBLE
-                tviewInfo4.visibility = View.VISIBLE
-                tviewInfo5.visibility = View.GONE
 
-                val info3 =
-                    SpannableStringBuilder(arrayCarousel[position].info3.replace("별점", "별점 : "))
+                val info3 = SpannableStringBuilder("조회 수 : ${arrayCarousel[position].info3.replace("별점", "별점 : ")}" )
                 info3.applyingTextColor(
                     "조회 수 : ",
                     "#6E7686"
                 )
 
-                val info4 =
-                    SpannableStringBuilder(arrayCarousel[position].info4.replace("조회", "조회 수 : "))
+                val info4 = SpannableStringBuilder("평점 : ${arrayCarousel[position].info4.replace("조회", "조회 수 : ")}" )
                 info4.applyingTextColor(
                     "평점 : ",
                     "#6E7686"
                 )
 
-                val info5 =
-                    SpannableStringBuilder(arrayCarousel[position].info5.replace("관심", "관심 : "))
+                val info5 = SpannableStringBuilder("댓글 수 : ${arrayCarousel[position].info5.replace("관심", "관심 : ")}" )
                 info5.applyingTextColor(
                     "댓글 수 : ",
                     "#6E7686"
                 )
 
+
                 tviewInfo2.text = info3
                 tviewInfo3.text = info4
                 tviewInfo4.text = info5
             } else if (platform == "Kakao" || platform == "Munpia" || platform == "Toksoda" || platform == "Joara" || platform == "Joara_Premium" || platform == "Joara_Nobless" || platform == "Munpia") {
-                tviewInfo1.visibility = View.VISIBLE
-                tviewInfo2.visibility = View.VISIBLE
-                tviewInfo3.visibility = View.VISIBLE
-                tviewInfo4.visibility = View.VISIBLE
-                tviewInfo5.visibility = View.VISIBLE
 
                 if (platform == "Joara" || platform == "Joara_Premium" || platform == "Joara_Nobless") {
-                    tviewInfo1.text = arrayCarousel[position].info2 ?: ""
+                    tviewInfo1.text = arrayCarousel[position].info2
 
-                    val info3 = SpannableStringBuilder(arrayCarousel[position].info3)
+                    val info3 = SpannableStringBuilder("조회 수 : ${arrayCarousel[position].info3}")
                     info3.applyingTextColor(
-                        BestRef.setDetailText(platform, 1),
+                        "조회 수 : ",
                         "#6E7686"
                     )
 
-                    val info4 = SpannableStringBuilder(arrayCarousel[position].info4)
+                    val info4 = SpannableStringBuilder("선호작 수 : ${arrayCarousel[position].info4}")
                     info4.applyingTextColor(
-                        BestRef.setDetailText(platform, 2),
+                        "선호작 수 : ",
                         "#6E7686"
                     )
 
-                    val info5 = SpannableStringBuilder(arrayCarousel[position].info5)
+                    val info5 = SpannableStringBuilder("추천 수 : ${arrayCarousel[position].info5}")
                     info5.applyingTextColor(
-                        BestRef.setDetailText(platform, 3),
+                        "추천 수 : ",
                         "#6E7686"
                     )
 
@@ -566,23 +507,23 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                     tviewInfo3.text = info4
                     tviewInfo4.text = info5
 
-                    tviewInfo5.text = arrayCarousel[position].info1 ?: ""
+                    tviewInfo5.text = arrayCarousel[position].info1
                 } else if (platform == "Kakao") {
-                    tviewInfo1.text = arrayCarousel[position].info2 ?: ""
+                    tviewInfo1.text = arrayCarousel[position].info2
 
-                    val info3 = SpannableStringBuilder(arrayCarousel[position].info3)
+                    val info3 = SpannableStringBuilder("조회 수 : ${arrayCarousel[position].info3}")
                     info3.applyingTextColor(
                         "조회 수 : ",
                         "#6E7686"
                     )
 
-                    val info4 = SpannableStringBuilder(arrayCarousel[position].info4)
+                    val info4 = SpannableStringBuilder("추천 수 : ${arrayCarousel[position].info4}")
                     info4.applyingTextColor(
                         "추천 수 : ",
                         "#6E7686"
                     )
 
-                    val info5 = SpannableStringBuilder(arrayCarousel[position].info5)
+                    val info5 = SpannableStringBuilder("평점 : ${arrayCarousel[position].info5}")
                     info5.applyingTextColor(
                         "평점 : ",
                         "#6E7686"
@@ -595,19 +536,19 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                 } else if (platform == "Munpia") {
                     tviewInfo1.text = arrayCarousel[position].info2
 
-                    val info3 = SpannableStringBuilder(arrayCarousel[position].info3)
+                    val info3 = SpannableStringBuilder("조회 수 : ${arrayCarousel[position].info3}")
                     info3.applyingTextColor(
                         "조회 수 : ",
                         "#6E7686"
                     )
 
-                    val info4 = SpannableStringBuilder(arrayCarousel[position].info4)
+                    val info4 = SpannableStringBuilder("방문 수 : ${arrayCarousel[position].info4}")
                     info4.applyingTextColor(
                         "방문 수 : ",
                         "#6E7686"
                     )
 
-                    val info5 = SpannableStringBuilder(arrayCarousel[position].info5)
+                    val info5 = SpannableStringBuilder("선호작 수 : ${arrayCarousel[position].info5}")
                     info5.applyingTextColor(
                         "선호작 수 : ",
                         "#6E7686"
@@ -624,6 +565,24 @@ class FragmentBestTabWeekend(private val platform: String) : Fragment() {
                     tviewInfo4.text = arrayCarousel[position].info5
                     tviewInfo5.text = arrayCarousel[position].info1
                 }
+
+                if (tviewInfo1.text.isNotEmpty()) {
+                    tviewInfo1.visibility = View.VISIBLE
+                    tviewBar.visibility = View.VISIBLE
+                }
+                if (tviewInfo2.text.isNotEmpty()) {
+                    tviewInfo2.visibility = View.VISIBLE
+                }
+                if (tviewInfo3.text.isNotEmpty()) {
+                    tviewInfo3.visibility = View.VISIBLE
+                }
+                if (tviewInfo4.text.isNotEmpty()) {
+                    tviewInfo4.visibility = View.VISIBLE
+                }
+                if (tviewInfo5.text.isNotEmpty()) {
+                    tviewInfo5.visibility = View.VISIBLE
+                }
+
             }
 
             binding.carousel.indicatorGravity = Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM

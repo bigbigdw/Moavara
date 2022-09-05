@@ -39,6 +39,7 @@ class AdapterEvent(private var items: List<EventDataGroup>) :
                     iviewLeft.visibility = View.VISIBLE
                     Glide.with(holder.itemView.context)
                         .load(item.left?.imgfile)
+                        .override(com.bumptech.glide.request.target.Target.SIZE_ORIGINAL, com.bumptech.glide.request.target.Target.SIZE_ORIGINAL)
                         .into(iviewLeft)
                 }
 
@@ -49,6 +50,7 @@ class AdapterEvent(private var items: List<EventDataGroup>) :
                     iviewRight.visibility = View.VISIBLE
                     Glide.with(holder.itemView.context)
                         .load(item.right?.imgfile)
+                        .override(com.bumptech.glide.request.target.Target.SIZE_ORIGINAL, com.bumptech.glide.request.target.Target.SIZE_ORIGINAL)
                         .into(iviewRight)
                 }
             }

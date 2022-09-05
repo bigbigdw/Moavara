@@ -38,26 +38,52 @@
         android:paddingTop="20dp"
         android:paddingBottom="20dp" />
 
-    <SearchView
-        android:id="@+id/sview"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
+        android:layout_height="wrap_content">
 
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="12dp"
-        android:gravity="right|end"
-        android:iconifiedByDefault="false"
-        android:layoutDirection="rtl"
-        android:queryHint='찾으실 작품을 검색해주세요'
-        android:searchHintIcon="@android:drawable/ic_menu_search"
-        android:searchIcon="@android:drawable/ic_menu_search"
-        android:textColor="#E2E3E7"
-        android:textColorHint="#3E424B">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="64dp"
+            android:orientation="vertical">
 
-    </SearchView>
+            <EditText
+                android:id="@+id/sview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="12dp"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/pretendardvariable"
+                android:hint="찾으실 작품을 검색해주세요"
+                android:inputType="text"
+                android:textColor="#E2E3E7"
+                android:textColorHint="#3E424B"
+                android:textCursorDrawable="@null" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/btnSearch"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center|end"
+            android:layout_marginEnd="36dp"
+            android:contentDescription="@string/TODO"
+            android:padding="8dp"
+            app:srcCompat="@drawable/ic_search_24px" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_gravity="bottom|end"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:background="#3E424B" />
+
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/llayoutWrap"

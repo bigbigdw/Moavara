@@ -3,20 +3,17 @@ package com.example.moavara.Best
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.text.SpannableStringBuilder
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.work.*
 import com.bumptech.glide.Glide
+import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Firebase.FirebaseWorkManager
-import com.example.moavara.Main.DialogConfirm
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBest
@@ -38,12 +35,10 @@ class BottomDialogBest(
     private val item: BookListDataBest?,
     private val platform: String,
     private val pos: Int,
+    private val UserInfo: DataBaseUser
 ) :
     BottomSheetDialogFragment() {
 
-    var UID = ""
-    var userInfo = mRootRef.child("User")
-    var Genre = ""
     var bookCodeItems = ArrayList<BookListDataBestAnalyze>()
 
     private var _binding: BottomDialogBestBinding? = null
@@ -59,18 +54,9 @@ class BottomDialogBest(
         _binding = BottomDialogBestBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        UID = context?.getSharedPreferences("pref", AppCompatActivity.MODE_PRIVATE)
-            ?.getString("UID", "").toString()
+        val Novel = mRootRef.child("User").child(UserInfo.UID).child("Novel")
 
-        Genre = context?.getSharedPreferences("pref", AppCompatActivity.MODE_PRIVATE)
-            ?.getString("GENRE", "").toString()
-
-        val USER = context?.getSharedPreferences("pref", AppCompatActivity.MODE_PRIVATE)
-            ?.getString("NICKNAME", "").toString()
-
-        val Novel = userInfo.child(UID).child("Novel")
-
-        userInfo.child(UID).child("Novel").child("book").addListenerForSingleValueEvent(object :
+        mRootRef.child("User").child(UserInfo.UID).child("Novel").child("book").addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
@@ -95,7 +81,7 @@ class BottomDialogBest(
                             shape = GradientDrawable.RECTANGLE
                         }
 
-                        binding.tviewPick.text = "Pick 하기"
+                        binding.tviewPick.text = "Pick"
                     }
                 }
             }
@@ -131,18 +117,9 @@ class BottomDialogBest(
             tviewTitle.text = item?.title ?: ""
             tviewWriter.text = item?.writer ?: ""
 
-            if (platform == "MrBlue") {
-                tviewInfo1.visibility = View.GONE
-                tviewInfo2.visibility = View.GONE
-                tviewInfo3.visibility = View.GONE
-                tviewInfo4.visibility = View.GONE
-                tviewInfo5.visibility = View.GONE
-            }   else if(platform == "Toksoda"){
-                tviewInfo1.visibility = View.VISIBLE
-                tviewInfo2.visibility = View.GONE
-                tviewInfo3.visibility = View.VISIBLE
-                tviewInfo4.visibility = View.VISIBLE
-                tviewInfo5.visibility = View.VISIBLE
+            if(platform == "MrBlue"){
+                llayoutBtnDetail.visibility = View.GONE
+            }else if(platform == "Toksoda"){
 
                 tviewInfo1.text = item?.info2 ?: ""
 
@@ -163,21 +140,6 @@ class BottomDialogBest(
                 tviewInfo5.text = item?.info1 ?: ""
             } else if (platform == "Naver" || platform == "Naver_Today" || platform == "Naver_Challenge") {
                 tviewInfo1.text = item?.info1 ?: ""
-                tviewInfo1.visibility = View.VISIBLE
-                tviewInfo2.visibility = View.VISIBLE
-                tviewInfo3.visibility = View.VISIBLE
-
-                if(platform != "Naver"){
-                    tviewInfo4.visibility = View.GONE
-                } else {
-                    tviewInfo4.visibility = View.VISIBLE
-                }
-
-                if(platform == "Naver"){
-                    tviewBar.visibility = View.GONE
-                }
-
-                tviewInfo5.visibility = View.GONE
 
                 val info3 = SpannableStringBuilder("별점 수 : ${item?.info3?.replace("별점", "")}")
                 info3.applyingTextColor(
@@ -203,12 +165,6 @@ class BottomDialogBest(
             }  else if (platform == "Kakao_Stage") {
                 tviewInfo1.text = item?.info2 ?: ""
 
-                tviewInfo1.visibility = View.VISIBLE
-                tviewInfo2.visibility = View.GONE
-                tviewInfo3.visibility = View.VISIBLE
-                tviewInfo4.visibility = View.VISIBLE
-                tviewInfo5.visibility = View.VISIBLE
-
                 val info3 = SpannableStringBuilder("조회 수 : ${item?.info3?.replace("별점", "별점 : ")}" )
                 info3.applyingTextColor(
                     "조회 수 : ",
@@ -226,11 +182,6 @@ class BottomDialogBest(
                 tviewInfo5.text = item?.info1 ?: ""
             } else if (platform == "Ridi") {
                 tviewInfo1.text = item?.info1 ?: ""
-                tviewInfo1.visibility = View.VISIBLE
-                tviewInfo2.visibility = View.GONE
-                tviewInfo3.visibility = View.VISIBLE
-                tviewInfo4.visibility = View.VISIBLE
-                tviewInfo5.visibility = View.GONE
 
                 val info3 = SpannableStringBuilder("추천 수 : ${item?.info3}" )
                 info3.applyingTextColor(
@@ -247,12 +198,6 @@ class BottomDialogBest(
                 tviewInfo3.text = info3
                 tviewInfo4.text = info4
             } else if (platform == "OneStore") {
-                tviewInfo1.visibility = View.GONE
-                tviewInfo2.visibility = View.VISIBLE
-                tviewInfo3.visibility = View.VISIBLE
-                tviewInfo4.visibility = View.VISIBLE
-                tviewInfo5.visibility = View.GONE
-                tviewBar.visibility = View.GONE
 
                 val info3 = SpannableStringBuilder("조회 수 : ${item?.info3?.replace("별점", "별점 : ")}" )
                 info3.applyingTextColor(
@@ -276,11 +221,6 @@ class BottomDialogBest(
                 tviewInfo3.text = info4
                 tviewInfo4.text = info5
             } else if (platform == "Kakao" || platform == "Munpia" || platform == "Toksoda" || platform == "Joara" || platform == "Joara_Premium" || platform == "Joara_Nobless" || platform == "Munpia" ) {
-                tviewInfo1.visibility = View.VISIBLE
-                tviewInfo2.visibility = View.VISIBLE
-                tviewInfo3.visibility = View.VISIBLE
-                tviewInfo4.visibility = View.VISIBLE
-                tviewInfo5.visibility = View.VISIBLE
 
                 if(platform == "Joara" || platform == "Joara_Premium" || platform == "Joara_Nobless"){
                     tviewInfo1.text = item?.info2 ?: ""
@@ -367,13 +307,30 @@ class BottomDialogBest(
                 }
             }
 
+            if (tviewInfo1.text.isNotEmpty()) {
+                tviewInfo1.visibility = View.VISIBLE
+                tviewBar.visibility = View.VISIBLE
+            }
+            if (tviewInfo2.text.isNotEmpty()) {
+                tviewInfo2.visibility = View.VISIBLE
+            }
+            if (tviewInfo3.text.isNotEmpty()) {
+                tviewInfo3.visibility = View.VISIBLE
+            }
+            if (tviewInfo4.text.isNotEmpty()) {
+                tviewInfo4.visibility = View.VISIBLE
+            }
+            if (tviewInfo5.text.isNotEmpty()) {
+                tviewInfo5.visibility = View.VISIBLE
+            }
+
             Glide.with(mContext)
                 .load(item?.bookImg)
                 .into(iviewBookImg)
 
             getRankList(item)
 
-            lviewDetail.setOnClickListener {
+            llayoutBtnDetail.setOnClickListener {
                 val bookDetailIntent = Intent(mContext, ActivityBestDetail::class.java)
                 bookDetailIntent.putExtra("BookCode",
                     item?.let { it1 -> String.format("%s", it1.bookCode) })
@@ -395,7 +352,7 @@ class BottomDialogBest(
                         shape = GradientDrawable.RECTANGLE
                     }
 
-                    binding.tviewPick.text = "Pick 하기"
+                    binding.tviewPick.text = "Pick"
                     Toast.makeText(requireContext(), "[${item?.title}]이(가) 마이픽에서 제거되었습니다.", Toast.LENGTH_SHORT).show()
                     dismiss()
 
@@ -422,65 +379,39 @@ class BottomDialogBest(
 
                     if(isFirstPick){
                         isFirstPick = false
-                        var dialogLogin: DialogConfirm? = null
 
-                        // 안내 팝업
-                        dialogLogin = DialogConfirm(
-                            requireContext(),
-                            "환영합니다!",
-                            "모아바라에서는 마이픽으로 선택한 작품을 6시간 주기로 데이터를 최신화 하고 있습니다.\n 이 옵션은 유저페이지 -> 마이픽 최신화 ON/OFF로 설정 가능합니다. 지금부터 주기적으로 마이픽 작품들을 최신화 하시겠습니까?",
-                            { v: View? ->
-                                Novel.child("book").child(item?.bookCode ?: "").setValue(group)
-                                Novel.child("bookCode").child(item?.bookCode ?: "").setValue(bookCodeItems)
+                        val inputData = Data.Builder()
+                            .putString(FirebaseWorkManager.TYPE, "PICK")
+                            .putString(FirebaseWorkManager.UID, UserInfo.UID)
+                            .putString(FirebaseWorkManager.USER, UserInfo.Nickname)
+                            .build()
 
-                                Toast.makeText(requireContext(), "[${group?.title}]이(가) 마이픽에 등록되었습니다.", Toast.LENGTH_SHORT).show()
-                                dialogLogin?.dismiss()
-                                dismiss()
-                            },
-                            {
-                                val inputData = Data.Builder()
-                                    .putString(FirebaseWorkManager.TYPE, "PICK")
-                                    .putString(FirebaseWorkManager.UID, UID)
-                                    .putString(FirebaseWorkManager.USER, USER)
-                                    .build()
+                        /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
+                        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(6, TimeUnit.HOURS)
+                            .setBackoffCriteria(
+                                BackoffPolicy.LINEAR,
+                                PeriodicWorkRequest.MIN_BACKOFF_MILLIS,
+                                TimeUnit.MILLISECONDS
+                            )
+                            .addTag("MoavaraPick")
+                            .setInputData(inputData)
+                            .build()
 
-                                /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
-                                val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(6, TimeUnit.HOURS)
-                                    .setBackoffCriteria(
-                                        BackoffPolicy.LINEAR,
-                                        PeriodicWorkRequest.MIN_BACKOFF_MILLIS,
-                                        TimeUnit.MILLISECONDS
-                                    )
-                                    .addTag("MoavaraPick")
-                                    .setInputData(inputData)
-                                    .build()
+                        val workManager = WorkManager.getInstance(requireContext().applicationContext)
 
-                                val workManager = WorkManager.getInstance(requireContext().applicationContext)
-
-                                workManager.enqueueUniquePeriodicWork(
-                                    "MoavaraPick",
-                                    ExistingPeriodicWorkPolicy.KEEP,
-                                    workRequest
-                                )
-                                FirebaseMessaging.getInstance().subscribeToTopic(UID)
-
-                                Novel.child("book").child(item?.bookCode ?: "").setValue(group)
-                                Novel.child("bookCode").child(item?.bookCode ?: "").setValue(bookCodeItems)
-                                userInfo.child(UID).child("Mining").setValue(true)
-
-                                Toast.makeText(requireContext(), "[${group?.title}]이(가) 마이픽에 등록되었습니다.", Toast.LENGTH_SHORT).show()
-                                dialogLogin?.dismiss()
-                                dismiss()
-                            },
-                            "비활성화",
-                            "활성화"
+                        workManager.enqueueUniquePeriodicWork(
+                            "MoavaraPick",
+                            ExistingPeriodicWorkPolicy.KEEP,
+                            workRequest
                         )
+                        FirebaseMessaging.getInstance().subscribeToTopic(UserInfo.UID)
 
-                        dialogLogin.window?.setBackgroundDrawable(
-                            ColorDrawable(
-                                Color.TRANSPARENT)
-                        )
-                        dialogLogin.show()
+                        Novel.child("book").child(item?.bookCode ?: "").setValue(group)
+                        Novel.child("bookCode").child(item?.bookCode ?: "").setValue(bookCodeItems)
+                        mRootRef.child("User").child(UserInfo.UID).child("Mining").setValue(true)
+
+                        Toast.makeText(requireContext(), "[${group?.title}]이(가) 마이픽에 등록되었습니다.", Toast.LENGTH_SHORT).show()
+
                     } else {
                         Novel.child("book").child(item?.bookCode ?: "").setValue(group)
                         Novel.child("bookCode").child(item?.bookCode ?: "").setValue(bookCodeItems)
@@ -500,7 +431,7 @@ class BottomDialogBest(
     private fun getRankList(item: BookListDataBest?) {
 
         if (item != null) {
-            BestRef.getBookCode(item.type, Genre).child(item.bookCode)
+            BestRef.getBookCode(item.type, UserInfo.Genre).child(item.bookCode)
                 .addListenerForSingleValueEvent(object :
                     ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {

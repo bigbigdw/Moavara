@@ -5,13 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.commit
-import androidx.viewpager.widget.ViewPager
-import com.example.moavara.Best.FragmentBestTabMonth
-import com.example.moavara.Best.FragmentBestTabToday
-import com.example.moavara.Best.FragmentBestTabWeekend
+import androidx.room.Room
+import com.example.moavara.DataBase.DBUser
+import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.R
 import com.example.moavara.databinding.ActivityPickBinding
 import com.google.android.material.tabs.TabLayout
@@ -20,10 +17,11 @@ class FragmentPick : Fragment() {
 
     private var _binding: ActivityPickBinding? = null
     private val binding get() = _binding!!
-    var cate = "ALL"
-    var status = ""
     private lateinit var mFragmentPickTabEvent: FragmentPickTabEvent
     private lateinit var mFragmentPickTabNovel: FragmentPickTabNovel
+
+    var userDao: DBUser? = null
+    var UserInfo = DataBaseUser()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,11 +30,21 @@ class FragmentPick : Fragment() {
         _binding = ActivityPickBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        userDao = Room.databaseBuilder(
+            requireContext(),
+            DBUser::class.java,
+            "UserInfo"
+        ).allowMainThreadQueries().build()
+
+        if(userDao?.daoUser()?.get() != null){
+            UserInfo = userDao?.daoUser()?.get() ?: DataBaseUser()
+        }
+
         with(binding) {
-            tabs.addTab(tabs.newTab().setText("소설"))
+            tabs.addTab(tabs.newTab().setText("작품"))
             tabs.addTab(tabs.newTab().setText("이벤트"))
 
-            mFragmentPickTabNovel = FragmentPickTabNovel()
+            mFragmentPickTabNovel = FragmentPickTabNovel(UserInfo)
             childFragmentManager.commit {
                 replace(R.id.view_pager, mFragmentPickTabNovel)
             }
@@ -45,13 +53,13 @@ class FragmentPick : Fragment() {
                 override fun onTabSelected(tab: TabLayout.Tab) {
                     when(tab.position){
                         0->{
-                            mFragmentPickTabNovel = FragmentPickTabNovel()
+                            mFragmentPickTabNovel = FragmentPickTabNovel(UserInfo)
                             childFragmentManager.commit {
                                 replace(R.id.view_pager, mFragmentPickTabNovel)
                             }
                         }
                         1->{
-                            mFragmentPickTabEvent = FragmentPickTabEvent()
+                            mFragmentPickTabEvent = FragmentPickTabEvent(UserInfo)
                             childFragmentManager.commit {
                                 replace(R.id.view_pager, mFragmentPickTabEvent)
                             }

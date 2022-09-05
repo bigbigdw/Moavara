@@ -1,14 +1,14 @@
 package com.example.moavara.Event
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Retrofit.*
-import com.example.moavara.Retrofit.Retrofit.apiToksoda
 import com.example.moavara.Search.EventData
 import com.example.moavara.Search.EventDataGroup
 import com.example.moavara.Util.DBDate
@@ -20,7 +20,7 @@ import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
 import java.net.URLEncoder
 
-class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
+class FragmentEventTab(private val tabType: String, private var UserInfo : DataBaseUser) : Fragment() {
 
     private lateinit var adapter: AdapterEvent
     private val items = ArrayList<EventDataGroup>()
@@ -54,16 +54,15 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
             "Ridi" -> {
                 getEventRidi()
             }
-//                "OneStore" -> {
-//                    getEventOneStore()
-//                }
+            "OneStore" -> {
+                getEventOneStore()
+            }
             "Kakao" -> {
                 getEventKakao()
             }
             "Kakao_Stage" -> {
                 getEventKakaoStage()
             }
-
             "MrBlue" -> {
                 getEventMrBlue()
             }
@@ -82,7 +81,21 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
             override fun onItemClick(v: View?, position: Int, type: String) {
                 val item: EventDataGroup = adapter.getItem(position)
 
-                onClickEvent(item, type)
+                val eventItem: EventData? = if (type == "Left") {
+                    item.left
+                } else {
+                    item.right
+                }
+
+                if (eventItem != null) {
+                    if(eventItem.type == "Joara" && !eventItem.link.contains("joaralink://event?event_id=") && !eventItem.link.contains("joaralink://notice?notice_id=")){
+                        Toast.makeText(requireContext(), "지원하지 않는 이벤트 형식입니다.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        val mBottomSheetDialogEvent =
+                            BottomSheetDialogEvent(requireContext(), eventItem, tabType, UserInfo)
+                        fragmentManager?.let { mBottomSheetDialogEvent.show(it, null) }
+                    }
+                }
             }
         })
 
@@ -116,22 +129,28 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                                             banner[2 * i].imgfile.replace("http://", "https://"),
                                             "",
                                             "",
-                                            "Joara",
+                                            DBDate.DateMMDD(),
                                             999,
+                                            "Joara",
                                             ""
                                         ),
                                         EventData(
                                             banner[2 * i + 1].joaralink,
-                                            banner[2 * i + 1].imgfile.replace("http://", "https://"),
+                                            banner[2 * i + 1].imgfile.replace(
+                                                "http://",
+                                                "https://"
+                                            ),
                                             "",
                                             "",
-                                            "Joara",
+                                            DBDate.DateMMDD(),
                                             999,
+                                            "Joara",
                                             ""
                                         )
                                     )
                                 )
-                            } catch (e: IndexOutOfBoundsException) { }
+                            } catch (e: IndexOutOfBoundsException) {
+                            }
                         }
                     }
 
@@ -166,7 +185,7 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                                     mrBlue.select("a")[2 * i].absUrl("href")
                                         .replace("https://www.mrblue.com/event/detail/", ""),
                                     mrBlue.select("img")[2 * i].absUrl("src"),
-                                    mrBlue.select("img")[2 * i].absUrl("alt"),
+                                    mrBlue.select("img")[2 * i].absUrl("alt").replace("https://www.mrblue.com/event/", ""),
                                     "",
                                     DBDate.DateMMDD(),
                                     999,
@@ -177,7 +196,7 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                                     mrBlue.select("a")[2 * i + 1].absUrl("href")
                                         .replace("https://www.mrblue.com/event/detail/", ""),
                                     mrBlue.select("img")[2 * i + 1].absUrl("src"),
-                                    mrBlue.select("img")[2 * i + 1].absUrl("alt"),
+                                    mrBlue.select("img")[2 * i + 1].absUrl("alt").replace("https://www.mrblue.com/event/", ""),
                                     "",
                                     DBDate.DateMMDD(),
                                     999,
@@ -186,7 +205,8 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                                 )
                             )
                         )
-                    } catch (e: IndexOutOfBoundsException) { }
+                    } catch (e: IndexOutOfBoundsException) {
+                    }
                 }
                 if (items.size == 0) {
                     binding.rview.visibility = View.GONE
@@ -205,7 +225,6 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
         Thread {
             val doc: Document = Jsoup.connect("https://ridibooks.com/event/romance_serial").get()
             val ridiKeyword: Elements = doc.select("ul .event_list")
-
 
             requireActivity().runOnUiThread {
                 for (i in ridiKeyword.indices) {
@@ -323,46 +342,56 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
     }
 
     private fun getEventOneStore() {
-        val doc: Document = Jsoup.connect("https://onestory.co.kr/main/PN83003001").get()
-        val ridiKeyword: Elements = doc.select("div .BannerSwiperItem")
-
-        for (i in ridiKeyword.indices) {
-
-            val imgfile = doc.select(".BannerSwiperItemPic")[i].absUrl("src")
+        Thread {
+            val doc: Document = Jsoup.connect("https://onestory.co.kr/main/PN83003001").get()
+            val onestoreKeyword: Elements = doc.select("div .BannerSwiperItem")
 
             requireActivity().runOnUiThread {
-
-                try {
-                    items.add(
-                        EventDataGroup(
-                            EventData(
-                                "",
-                                imgfile,
-                                "",
-                                "",
-                                DBDate.DateMMDD(),
-                                999,
-                                "OneStore",
-                                ""
-                            ),
-                            EventData(
-                                "",
-                                imgfile,
-                                "",
-                                "",
-                                DBDate.DateMMDD(),
-                                999,
-                                "OneStore",
-                                ""
-                            )
-                        )
-                    )
-                } catch (e: IndexOutOfBoundsException) {
+                for (i in onestoreKeyword.indices) {
+                    if(i < onestoreKeyword.size / 3){
+                        try {
+                            requireActivity().runOnUiThread {
+                                items.add(
+                                    EventDataGroup(
+                                        EventData(
+                                            "",
+                                            doc.select(".BannerSwiperItemPic")[2 * i].absUrl("src"),
+                                            "",
+                                            "",
+                                            DBDate.DateMMDD(),
+                                            999,
+                                            "OneStore",
+                                            ""
+                                        ),
+                                        EventData(
+                                            "",
+                                            doc.select(".BannerSwiperItemPic")[2 * i + 1].absUrl("src"),
+                                            "",
+                                            "",
+                                            DBDate.DateMMDD(),
+                                            999,
+                                            "OneStore",
+                                            ""
+                                        )
+                                    )
+                                )
+                            }
+                        } catch (e: IndexOutOfBoundsException) {}
+                    }
+                    adapter.notifyDataSetChanged()
+                }
+                if (items.size == 0) {
+                    binding.rview.visibility = View.GONE
+                    binding.blank.tviewblank.text = "현재 진행중인 이벤트가 없습니다."
+                    binding.blank.root.visibility = View.VISIBLE
+                } else {
+                    binding.blank.root.visibility = View.GONE
+                    binding.rview.visibility = View.VISIBLE
                 }
                 adapter.notifyDataSetChanged()
             }
+        }.start()
 
-        }
     }
 
     private fun getEventKakao() {
@@ -408,7 +437,8 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                                 )
                             )
                         )
-                    } catch (e: IndexOutOfBoundsException) { }
+                    } catch (e: IndexOutOfBoundsException) {
+                    }
                 }
                 if (items.size == 0) {
                     binding.rview.visibility = View.GONE
@@ -423,7 +453,7 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
         }.start()
     }
 
-    private fun getEventKakaoStage(){
+    private fun getEventKakaoStage() {
         val apiKakaoStage = RetrofitKaKao()
         val param: MutableMap<String?, Any> = HashMap()
 
@@ -454,7 +484,8 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
                                         data.content[2 * i + 1].id,
                                         data.content[2 * i + 1].desktopListImage?.image?.url ?: "",
                                         data.content[2 * i + 1].title,
-                                        data.content[2 * i + 1].desktopDetailImage?.image?.url ?: "",
+                                        data.content[2 * i + 1].desktopDetailImage?.image?.url
+                                            ?: "",
                                         DBDate.DateMMDD(),
                                         999,
                                         "Kakao_Stage",
@@ -541,16 +572,6 @@ class FragmentEventTab(private val tabType: String = "Joara") : Fragment() {
 
     private fun onClickEvent(item: EventDataGroup, type: String) {
 
-        val eventItem: EventData? = if (type == "Left") {
-            item.left
-        } else {
-            item.right
-        }
 
-        if (eventItem != null) {
-            val mBottomSheetDialogEvent =
-                BottomSheetDialogEvent(requireContext(), eventItem, tabType)
-            fragmentManager?.let { mBottomSheetDialogEvent.show(it, null) }
-        }
     }
 }
