@@ -41,7 +41,6 @@ class FragmentCommunity : Fragment() {
         fragmentBestTab.addTab(fragmentBestTab.newTab().setText("DC 웹소설 연재"))
         fragmentBestTab.addTab(fragmentBestTab.newTab().setText("DC 로맨스 소설"))
         fragmentBestTab.addTab(fragmentBestTab.newTab().setText("DC 판타지"))
-        fragmentBestTab.addTab(fragmentBestTab.newTab().setText("루리웹 베스트"))
 
         fragmentBestTab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
