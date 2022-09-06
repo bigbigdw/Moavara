@@ -85,57 +85,58 @@ class AdapterPickEvent(private var context : Context, private var itemsList: Arr
                 when (item.type) {
                     "Joara", "Joara_Nobless", "Joara_Premium" -> {
                         Glide.with(holder.itemView.context)
-                            .load(R.drawable.logo_joara)
+                            .load(R.drawable.search_logo_joara)
                             .into(iviewPlatfrom)
-                        tviewInfo.text = "조아라 이벤트"
                     }
-                    "Naver_Challenge", "Naver_Today", "Naver" -> {
+                    "Naver_Challenge" -> {
                         Glide.with(holder.itemView.context)
-                            .load(R.drawable.logo_naver)
+                            .load(R.drawable.search_logo_naver_challenge)
                             .into(iviewPlatfrom)
-                        tviewInfo.text = "네이버 이벤트"
+                    }
+                    "Naver_Today" -> {
+                        Glide.with(holder.itemView.context)
+                            .load(R.drawable.search_logo_naver_series)
+                            .into(iviewPlatfrom)
+                    }
+                    "Naver" -> {
+                        Glide.with(holder.itemView.context)
+                            .load(R.drawable.search_logo_naver_best)
+                            .into(iviewPlatfrom)
                     }
                     "Kakao" -> {
                         Glide.with(holder.itemView.context)
-                            .load(R.drawable.logo_kakao)
+                            .load(R.drawable.search_logo_kakao)
                             .into(iviewPlatfrom)
-                        tviewInfo.text = "카카오 이벤트"
                     }
                     "Kakao_Stage" -> {
                         Glide.with(holder.itemView.context)
-                            .load(R.drawable.logo_kakaostage)
+                            .load(R.drawable.search_logo_kakao_stage)
                             .into(iviewPlatfrom)
-                        tviewInfo.text = "카카오 스테이지 이벤트"
                     }
                     "Munpia" -> {
                         Glide.with(holder.itemView.context)
-                            .load(R.drawable.logo_munpia)
+                            .load(R.drawable.search_logo_munpia)
                             .into(iviewPlatfrom)
-                        tviewInfo.text = "문피아 이벤트"
                     }
                     "OneStore" -> {
                         Glide.with(holder.itemView.context)
-                            .load(R.drawable.logo_onestore)
+                            .load(R.drawable.search_logo_onestory)
                             .into(iviewPlatfrom)
-                        tviewInfo.text = "원스토리 이벤트"
                     }
                     "Ridi" -> {
                         Glide.with(holder.itemView.context)
-                            .load(R.drawable.logo_ridibooks)
+                            .load(R.drawable.search_logo_ridi)
                             .into(iviewPlatfrom)
-                        tviewInfo.text = "리디북스 이벤트"
                     }
                     "Toksoda" -> {
                         Glide.with(holder.itemView.context)
-                            .load(R.drawable.logo_toksoda)
+                            .load(R.drawable.search_logo_toksoda)
                             .into(iviewPlatfrom)
-                        tviewInfo.text = "톡소다 이벤트"
                     }
                     "MrBlue" -> {
                         Glide.with(holder.itemView.context)
-                            .load(R.drawable.logo_mrblue)
+                            .load(R.drawable.search_logo_mrblue)
                             .into(iviewPlatfrom)
-                        tviewInfo.text = "미스터블루 이벤트"
                     }
                     else -> {}
                 }

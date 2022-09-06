@@ -9,12 +9,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moavara.Retrofit.*
+import com.example.moavara.Retrofit.JoaraBoardResult
+import com.example.moavara.Retrofit.RetrofitDataListener
+import com.example.moavara.Retrofit.RetrofitJoara
 import com.example.moavara.Search.CommunityBoard
 import com.example.moavara.Util.Param
-import com.example.moavara.databinding.FragmentBestDetailTabsBinding
-import com.example.moavara.databinding.FragmentBoardBinding
-import java.util.ArrayList
+import com.example.moavara.databinding.FragmentCommunityTabBinding
 
 class FragmentBoard :
     Fragment() {
@@ -22,7 +22,7 @@ class FragmentBoard :
     private var adapterCommunity: AdapterCommunity? = null
     private val items = ArrayList<CommunityBoard?>()
 
-    private var _binding: FragmentBoardBinding? = null
+    private var _binding: FragmentCommunityTabBinding? = null
     private val binding get() = _binding!!
 
     var status = ""
@@ -33,7 +33,7 @@ class FragmentBoard :
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentBoardBinding.inflate(inflater, container, false)
+        _binding = FragmentCommunityTabBinding.inflate(inflater, container, false)
         val view = binding.root
         adapterCommunity = AdapterCommunity(items)
 

@@ -26,7 +26,8 @@ class AdapterSearchKeyword(private var holder: List<BestType>) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = ItemSearchKeywordBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val view =
+            ItemSearchKeywordBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MainBookViewHolder(view)
     }
 
@@ -35,44 +36,52 @@ class AdapterSearchKeyword(private var holder: List<BestType>) :
 
             val item = this.holder[position]
 
-            with(holder.binding){
+            with(holder.binding) {
                 tveiwTitle.text = item.title
 
                 if (item.type == "Joara" || item.type == "Joara_Nobless" || item.type == "Joara_Premium") {
                     Glide.with(holder.itemView.context)
-                        .load(R.drawable.logo_joara)
+                        .load(R.drawable.search_logo_joara)
                         .into(iview)
-                } else if (item.type == "Naver_Challenge" || item.type == "Naver_Today" || item.type == "Naver") {
+                } else if (item.type == "Naver_Challenge") {
                     Glide.with(holder.itemView.context)
-                        .load(R.drawable.logo_naver)
+                        .load(R.drawable.search_logo_naver_challenge)
+                        .into(iview)
+                } else if (item.type == "Naver_Today") {
+                    Glide.with(holder.itemView.context)
+                        .load(R.drawable.search_logo_naver_series)
+                        .into(iview)
+                } else if (item.type == "Naver") {
+                    Glide.with(holder.itemView.context)
+                        .load(R.drawable.search_logo_naver_best)
                         .into(iview)
                 } else if (item.type == "Kakao") {
                     Glide.with(holder.itemView.context)
-                        .load(R.drawable.logo_kakao)
+                        .load(R.drawable.search_logo_kakao)
                         .into(iview)
                 } else if (item.type == "Kakao_Stage") {
                     Glide.with(holder.itemView.context)
-                        .load(R.drawable.logo_kakaostage)
+                        .load(R.drawable.search_logo_kakao_stage)
                         .into(iview)
                 } else if (item.type == "Munpia") {
                     Glide.with(holder.itemView.context)
-                        .load(R.drawable.logo_munpia)
+                        .load(R.drawable.search_logo_munpia)
                         .into(iview)
                 } else if (item.type == "OneStore") {
                     Glide.with(holder.itemView.context)
-                        .load(R.drawable.logo_onestore)
+                        .load(R.drawable.search_logo_onestory)
                         .into(iview)
                 } else if (item.type == "Ridi") {
                     Glide.with(holder.itemView.context)
-                        .load(R.drawable.logo_ridibooks)
+                        .load(R.drawable.search_logo_ridi)
                         .into(iview)
                 } else if (item.type == "Toksoda") {
                     Glide.with(holder.itemView.context)
-                        .load(R.drawable.logo_toksoda)
+                        .load(R.drawable.search_logo_toksoda)
                         .into(iview)
                 } else if (item.type == "MrBlue") {
                     Glide.with(holder.itemView.context)
-                        .load(R.drawable.logo_mrblue)
+                        .load(R.drawable.search_logo_mrblue)
                         .into(iview)
                 } else {
                     Glide.with(holder.itemView.context)
@@ -80,7 +89,7 @@ class AdapterSearchKeyword(private var holder: List<BestType>) :
                         .into(iview)
                 }
 
-                if(getSelectedBtn() == position){
+                if (getSelectedBtn() == position) {
                     tveiwTitle.setTextColor(Color.parseColor("#EDE6FD"))
                     llayoutShadow.visibility = View.GONE
 
@@ -109,7 +118,7 @@ class AdapterSearchKeyword(private var holder: List<BestType>) :
         RecyclerView.ViewHolder(binding.root) {
 
         init {
-            with(binding){
+            with(binding) {
 
                 llayoutWrap.setOnClickListener { v: View? ->
                     val pos = adapterPosition

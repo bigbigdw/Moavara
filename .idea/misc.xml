@@ -28,6 +28,7 @@
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Best/layout/item_booklist_best_today.xml" value="0.29322916666666665" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Best/layout/item_booklist_best_weekend.xml" value="0.25" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Community/layout/fragment_community.xml" value="0.15477293790546803" />
+        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/Community/layout/item_community.xml" value="0.12473882156289177" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/ETC/layout/activity_genre.xml" value="0.33" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/ETC/layout/activity_intro.xml" value="0.5" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/ETC/layout/activity_splash.xml" value="0.33" />
@@ -104,6 +105,8 @@
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_best_weekend.xml" value="0.25" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_best_weekend_2.xml" value="0.1" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_bookdetail_rank.xml" value="0.16404077849860982" />
+        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_community.xml" value="0.12473882156289177" />
+        <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_community_tab.xml" value="0.12473882156289177" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_event.xml" value="0.1648148148148148" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_event_tab.xml" value="0.1" />
         <entry key="..\:/ANDROID_EX/TakeALook/app/src/main/res/layout/fragment_login.xml" value="0.3081761006289308" />

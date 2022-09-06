@@ -14,6 +14,7 @@ class FragmentCommunity : Fragment() {
 
     private lateinit var fragmentBoard: FragmentBoard
     private lateinit var fragmentDC: FragmentDC
+    private lateinit var fragmentRuliweb: FragmentRuliweb
 
     private var _binding: FragmentCommunityBinding? = null
     private val binding get() = _binding!!
@@ -40,7 +41,7 @@ class FragmentCommunity : Fragment() {
         fragmentBestTab.addTab(fragmentBestTab.newTab().setText("DC 웹소설 연재"))
         fragmentBestTab.addTab(fragmentBestTab.newTab().setText("DC 로맨스 소설"))
         fragmentBestTab.addTab(fragmentBestTab.newTab().setText("DC 판타지"))
-
+        fragmentBestTab.addTab(fragmentBestTab.newTab().setText("루리웹 베스트"))
 
         fragmentBestTab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
@@ -73,6 +74,12 @@ class FragmentCommunity : Fragment() {
                         fragmentDC = FragmentDC("https://gall.dcinside.com/board/lists?id=fantasy_new2")
                         childFragmentManager.commit {
                             replace(R.id.llayoutWrap, fragmentDC)
+                        }
+                    }
+                    5->{
+                        fragmentRuliweb = FragmentRuliweb("Best")
+                        childFragmentManager.commit {
+                            replace(R.id.llayoutWrap, fragmentRuliweb)
                         }
                     }
                 }

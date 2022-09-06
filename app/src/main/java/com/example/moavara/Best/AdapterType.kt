@@ -39,50 +39,57 @@ class AdapterType(private var holder: List<BestType>) :
             with(holder.binding){
                 tveiwTitle.text = item.title
 
-                if (item.type == "Joara" || item.type == "Joara_Nobless" || item.type == "Joara_Premium") {
+                if (item.type == "Joara") {
                     Glide.with(holder.itemView.context)
                         .load(R.drawable.logo_joara)
-                        .circleCrop()
                         .into(iview)
-                } else if (item.type == "Naver_Challenge" || item.type == "Naver_Today" || item.type == "Naver") {
+                } else if (item.type == "Joara_Nobless") {
+                    Glide.with(holder.itemView.context)
+                        .load(R.drawable.logo_joara_nobless)
+                        .into(iview)
+                } else if (item.type == "Joara_Premium") {
+                    Glide.with(holder.itemView.context)
+                        .load(R.drawable.logo_joara_premium)
+                        .into(iview)
+                } else if (item.type == "Naver_Today") {
                     Glide.with(holder.itemView.context)
                         .load(R.drawable.logo_naver)
-                        .circleCrop()
                         .into(iview)
-                } else if (item.type == "Kakao") {
+                }  else if (item.type == "Naver_Challenge") {
+                    Glide.with(holder.itemView.context)
+                        .load(R.drawable.logo_naver_challenge)
+                        .into(iview)
+                } else if (item.type == "Naver") {
+                    Glide.with(holder.itemView.context)
+                        .load(R.drawable.logo_naver_challenge)
+                        .into(iview)
+                }else if (item.type == "Kakao") {
                     Glide.with(holder.itemView.context)
                         .load(R.drawable.logo_kakao)
-                        .circleCrop()
                         .into(iview)
                 } else if (item.type == "Kakao_Stage") {
                     Glide.with(holder.itemView.context)
                         .load(R.drawable.logo_kakaostage)
-                        .circleCrop()
                         .into(iview)
                 } else if (item.type == "Munpia") {
                     Glide.with(holder.itemView.context)
                         .load(R.drawable.logo_munpia)
-                        .circleCrop()
                         .into(iview)
                 } else if (item.type == "OneStore") {
                     Glide.with(holder.itemView.context)
                         .load(R.drawable.logo_onestore)
-                        .circleCrop()
                         .into(iview)
                 } else if (item.type == "Ridi") {
                     Glide.with(holder.itemView.context)
                         .load(R.drawable.logo_ridibooks)
-                        .circleCrop()
                         .into(iview)
                 } else if (item.type == "Toksoda") {
                     Glide.with(holder.itemView.context)
                         .load(R.drawable.logo_toksoda)
-                        .circleCrop()
                         .into(iview)
                 } else if (item.type == "MrBlue") {
                     Glide.with(holder.itemView.context)
                         .load(R.drawable.logo_mrblue)
-                        .circleCrop()
                         .into(iview)
                 } else {
                     Glide.with(holder.itemView.context)
@@ -94,10 +101,10 @@ class AdapterType(private var holder: List<BestType>) :
                     tveiwTitle.setTextColor(Color.parseColor("#EDE6FD"));
 
                     llayoutWrap.background = GradientDrawable().apply {
-                        setColor(Color.parseColor("#621CEF"))
+                        setColor(Color.parseColor("#0D0E10"))
                         shape = GradientDrawable.RECTANGLE
                         cornerRadius = 100f.dpToPx()
-                        setStroke(1f.dpToPx().toInt(), Color.parseColor("#621CEF"))
+                        setStroke(2f.dpToPx().toInt(), Color.parseColor("#621CEF"))
                     }
                 } else {
                     tveiwTitle.setTextColor(Color.parseColor("#EDE6FD"));
@@ -105,7 +112,7 @@ class AdapterType(private var holder: List<BestType>) :
                         setColor(Color.parseColor("#0D0E10"))
                         shape = GradientDrawable.RECTANGLE
                         cornerRadius = 100f.dpToPx()
-                        setStroke(1f.dpToPx().toInt(), Color.parseColor("#3E424B"))
+                        setStroke(2f.dpToPx().toInt(), Color.parseColor("#3E424B"))
                     }
                 }
             }
