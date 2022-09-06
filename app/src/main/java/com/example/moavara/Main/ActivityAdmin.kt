@@ -181,7 +181,7 @@ class ActivityAdmin : AppCompatActivity() {
                     .build()
 
                 /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
-                val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(1, TimeUnit.HOURS)
+                val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(6, TimeUnit.HOURS)
                     .setBackoffCriteria(
                         BackoffPolicy.LINEAR,
                         PeriodicWorkRequest.MIN_BACKOFF_MILLIS,
