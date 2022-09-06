@@ -7,14 +7,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
+import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Main.ActivityGenre
 import com.example.moavara.Util.Genre
 import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.BottomDialogMainBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class BottomDialogMain :
+class BottomDialogMain(private var UserInfo : DataBaseUser) :
     BottomSheetDialogFragment() {
 
     private var _binding: BottomDialogMainBinding? = null
@@ -56,7 +56,7 @@ class BottomDialogMain :
             val intent = Intent(context, ActivityGenre::class.java)
 
             intent.putExtra("MODE", "USER")
-            intent.putExtra("UID",requireContext().getSharedPreferences("pref", AppCompatActivity.MODE_PRIVATE).getString("UID", ""))
+            intent.putExtra("UID",UserInfo.UID)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context?.startActivity(intent)

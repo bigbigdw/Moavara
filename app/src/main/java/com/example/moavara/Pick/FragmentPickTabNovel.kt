@@ -39,7 +39,7 @@ class FragmentPickTabNovel(private var UserInfo : DataBaseUser) : Fragment() {
         _binding = FragmentPickTabBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        adapter = AdapterPickNovel(requireContext(), items, this@FragmentPickTabNovel)
+        adapter = AdapterPickNovel(requireContext(), items, this@FragmentPickTabNovel, UserInfo)
 
         binding.blank.tviewblank.text = "마이픽을 한 작품이 없습니다."
 

@@ -23,16 +23,18 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import java.net.URLDecoder
+import java.net.URLEncoder
 import java.util.*
 
 
-class FragmentPickTabEvent(private var UserInfo : DataBaseUser) : Fragment() {
+class FragmentPickTabEvent(private var UserInfo: DataBaseUser) : Fragment() {
 
     private lateinit var adapter: AdapterPickEvent
     private val items = ArrayList<EventData>()
 
     private var _binding: FragmentPickTabBinding? = null
     private val binding get() = _binding!!
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,7 +45,7 @@ class FragmentPickTabEvent(private var UserInfo : DataBaseUser) : Fragment() {
 
         binding.blank.tviewblank.text = "마이픽을 한 이벤트가 없습니다."
 
-        adapter = AdapterPickEvent(requireContext(), items, this@FragmentPickTabEvent)
+        adapter = AdapterPickEvent(requireContext(), items, this@FragmentPickTabEvent, UserInfo)
 
         // 리사이클러뷰에 스와이프, 드래그 기능 달기
         val swipeHelperCallback = SwipeEvent(adapter).apply {
@@ -63,42 +65,43 @@ class FragmentPickTabEvent(private var UserInfo : DataBaseUser) : Fragment() {
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rviewPick.adapter = adapter
 
-        mRootRef.child("User").child(UserInfo.UID).child("Event").addListenerForSingleValueEvent(object :
-            ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
+        mRootRef.child("User").child(UserInfo.UID).child("Event")
+            .addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                for (postSnapshot in dataSnapshot.children) {
-                    val group: EventData? = postSnapshot.getValue(EventData::class.java)
+                    for (postSnapshot in dataSnapshot.children) {
+                        val group: EventData? = postSnapshot.getValue(EventData::class.java)
 
-                    if (group != null) {
-                        items.add(
-                            EventData(
-                                group.link,
-                                group.imgfile,
-                                group.title,
-                                group.data,
-                                group.date,
-                                group.number,
-                                group.type,
-                                group.memo
+                        if (group != null) {
+                            items.add(
+                                EventData(
+                                    group.link,
+                                    group.imgfile,
+                                    group.title,
+                                    group.data,
+                                    group.date,
+                                    group.number,
+                                    group.type,
+                                    group.memo
+                                )
                             )
-                        )
+                        }
                     }
+
+                    if (items.isEmpty()) {
+                        binding.blank.root.visibility = View.VISIBLE
+                    } else {
+                        binding.blank.root.visibility = View.GONE
+                    }
+                    val cmpAsc: Comparator<EventData> =
+                        Comparator { o1, o2 -> o2.number.compareTo(o1.number) }
+                    Collections.sort(items, cmpAsc)
+                    adapter.notifyDataSetChanged()
                 }
 
-                if (items.isEmpty()) {
-                    binding.blank.root.visibility = View.VISIBLE
-                } else {
-                    binding.blank.root.visibility = View.GONE
-                }
-                val cmpAsc: Comparator<EventData> =
-                    Comparator { o1, o2 -> o2.number.compareTo(o1.number) }
-                Collections.sort(items, cmpAsc)
-                adapter.notifyDataSetChanged()
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
+                override fun onCancelled(databaseError: DatabaseError) {}
+            })
 
 
         adapter.setOnItemClickListener(object : AdapterPickEvent.OnItemClickListener {
@@ -111,9 +114,11 @@ class FragmentPickTabEvent(private var UserInfo : DataBaseUser) : Fragment() {
                     if (item.type == "Kakao_Stage") {
                         getEventKakao(item.link)
                     } else if (item.type == "OneStore") {
-                        Toast.makeText(requireContext(), "원스토리는 지원하지 않습니다.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "원스토리는 지원하지 않습니다.", Toast.LENGTH_SHORT)
+                            .show()
                     } else if (getUrl(item.type, item.link).isEmpty()) {
-                        Toast.makeText(requireContext(), "지원하지 않는 이벤트 형식입니다.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "지원하지 않는 이벤트 형식입니다.", Toast.LENGTH_SHORT)
+                            .show()
                     } else {
                         val mBottomSheetDialogEvent =
                             BottomSheetDialogEvent(requireContext(), item, "PICK", UserInfo)
@@ -151,10 +156,16 @@ class FragmentPickTabEvent(private var UserInfo : DataBaseUser) : Fragment() {
     private fun getUrl(type: String, link: String): String {
         when (type) {
             "Joara" -> {
-                if(link.contains("joaralink://event?event_id=")){
-                    return "https://www.joara.com/event/" + link.replace("joaralink://event?event_id=", "")
-                } else if(link.contains("joaralink://notice?notice_id=")) {
-                    return "https://www.joara.com/notice/" + link.replace("joaralink://notice?notice_id=", "")
+                if (link.contains("joaralink://event?event_id=")) {
+                    return "https://www.joara.com/event/" + link.replace(
+                        "joaralink://event?event_id=",
+                        ""
+                    )
+                } else if (link.contains("joaralink://notice?notice_id=")) {
+                    return "https://www.joara.com/notice/" + link.replace(
+                        "joaralink://notice?notice_id=",
+                        ""
+                    )
                 } else {
                     return ""
                 }
@@ -180,7 +191,13 @@ class FragmentPickTabEvent(private var UserInfo : DataBaseUser) : Fragment() {
 
     override fun onDetach() {
         for (i in items.indices) {
-            mRootRef.child("User").child(UserInfo.UID).child("Event").child(items[i].link).child("number")
+            val link: String = if (items[i].type == "Joara") {
+                URLEncoder.encode(items[i].link, "utf-8")
+            } else {
+                items[i].link
+            }
+
+            mRootRef.child("User").child(UserInfo.UID).child("Event").child(link).child("number")
                 .setValue((items.size - i))
         }
         super.onDetach()

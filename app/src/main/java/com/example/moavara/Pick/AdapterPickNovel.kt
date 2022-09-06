@@ -16,9 +16,9 @@ import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Main.DialogConfirm
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
@@ -29,14 +29,11 @@ import com.example.moavara.databinding.ItemPickNovelBinding
 import java.util.*
 
 
-class AdapterPickNovel(private var context: Context, private var itemsList: ArrayList<BookListDataBest>, private var fragment: FragmentPickTabNovel) :
+class AdapterPickNovel(private var context: Context, private var itemsList: ArrayList<BookListDataBest>, private var fragment: FragmentPickTabNovel, private var UserInfo : DataBaseUser) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var memo = ""
-    var userInfo = mRootRef.child("User")
-    val UID = context.getSharedPreferences("pref", AppCompatActivity.MODE_PRIVATE)
-        ?.getString("UID", "").toString()
 
-    val Novel = userInfo.child(UID).child("Novel")
+    val Novel = mRootRef.child("User").child(UserInfo.UID).child("Novel")
 
     interface OnItemClickListener {
         fun onItemClick(v: View?, position: Int, type: String)

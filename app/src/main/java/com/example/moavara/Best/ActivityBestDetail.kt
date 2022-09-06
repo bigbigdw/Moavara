@@ -13,9 +13,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.room.Room
 import androidx.work.*
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.Target.SIZE_ORIGINAL
+import com.example.moavara.DataBase.DBUser
+import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Firebase.FirebaseWorkManager
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
@@ -59,8 +61,9 @@ class ActivityBestDetail : AppCompatActivity() {
 
     val bookData = ArrayList<BookListDataBestAnalyze>()
     private lateinit var firebaseAnalytics: FirebaseAnalytics
-    var UID = ""
-    var userInfo = mRootRef.child("User")
+    var userDao: DBUser? = null
+    var UserInfo = DataBaseUser()
+
     private var isPicked = false
     private var hasBookData = false
     private var fromPick = false
@@ -77,8 +80,15 @@ class ActivityBestDetail : AppCompatActivity() {
 
         firebaseAnalytics = Firebase.analytics
 
-        UID = getSharedPreferences("pref", MODE_PRIVATE)
-            ?.getString("UID", "").toString()
+        userDao = Room.databaseBuilder(
+            this,
+            DBUser::class.java,
+            "UserInfo"
+        ).allowMainThreadQueries().build()
+
+        if(userDao?.daoUser()?.get() != null){
+            UserInfo = userDao?.daoUser()?.get() ?: DataBaseUser()
+        }
 
         bookCode = intent.getStringExtra("BookCode") ?: ""
         platform = intent.getStringExtra("Type") ?: ""
@@ -110,7 +120,7 @@ class ActivityBestDetail : AppCompatActivity() {
 
         if(hasBookData){
             if(fromPick){
-                userInfo.child(UID).child("Novel").child("bookCode").child(bookCode)
+                mRootRef.child("User").child(UserInfo.UID).child("Novel").child("bookCode").child(bookCode)
                     .addListenerForSingleValueEvent(object :
                         ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -195,7 +205,7 @@ class ActivityBestDetail : AppCompatActivity() {
     }
 
     private fun setUserPick() {
-        userInfo.child(UID).child("Novel").child("book").addListenerForSingleValueEvent(object :
+        mRootRef.child("User").child(UserInfo.UID).child("Novel").child("book").addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
@@ -226,7 +236,7 @@ class ActivityBestDetail : AppCompatActivity() {
 
         binding.llayoutPick.setOnClickListener {
 
-            val Novel = userInfo.child(UID).child("Novel")
+            val Novel = mRootRef.child("User").child(UserInfo.UID).child("Novel")
 
             if (isPicked) {
                 isPicked = false
@@ -257,13 +267,10 @@ class ActivityBestDetail : AppCompatActivity() {
                 if(isFirstPick){
                     isFirstPick = false
 
-                    val USER = getSharedPreferences("pref", MODE_PRIVATE)
-                        ?.getString("NICKNAME", "").toString()
-
                     val inputData = Data.Builder()
                         .putString(FirebaseWorkManager.TYPE, "PICK")
-                        .putString(FirebaseWorkManager.UID, UID)
-                        .putString(FirebaseWorkManager.USER, USER)
+                        .putString(FirebaseWorkManager.UID, UserInfo.UID)
+                        .putString(FirebaseWorkManager.USER, UserInfo.Nickname)
                         .build()
 
                     /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
@@ -284,10 +291,10 @@ class ActivityBestDetail : AppCompatActivity() {
                         ExistingPeriodicWorkPolicy.KEEP,
                         workRequest
                     )
-                    FirebaseMessaging.getInstance().subscribeToTopic(UID)
+                    FirebaseMessaging.getInstance().subscribeToTopic(UserInfo.UID)
 
                     Novel.child("book").child(bookCode).setValue(pickItem)
-                    userInfo.child(UID).child("Mining").setValue(true)
+                    mRootRef.child("User").child(UserInfo.UID).child("Mining").setValue(true)
 
                     if(bookData.isEmpty()){
                         Novel.child("bookCode").child(bookCode).child(DBDate.DateMMDD()).setValue(pickBookCodeItem)

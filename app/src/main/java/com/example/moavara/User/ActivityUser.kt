@@ -169,7 +169,7 @@ class ActivityUser : AppCompatActivity() {
             }
 
             tviewBtnGenre.setOnClickListener {
-                val bottomDialogMain = BottomDialogMain()
+                val bottomDialogMain = BottomDialogMain(UserInfo ?: DataBaseUser())
                 supportFragmentManager.let { bottomDialogMain.show(it, null) }
             }
 
