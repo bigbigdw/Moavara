@@ -24,7 +24,7 @@ import org.jsoup.nodes.Document
 class FragmentBestDetailComment(private val platfrom: String, private val bookCode: String) :
     Fragment() {
 
-    private var adapterBestComment: AdapterBestOther? = null
+    private var adapterBestComment: AdapterBestComment? = null
     private val items = ArrayList<BestComment?>()
 
     private var _binding: FragmentBestDetailTabsBinding? = null
@@ -39,7 +39,7 @@ class FragmentBestDetailComment(private val platfrom: String, private val bookCo
     ): View {
         _binding = FragmentBestDetailTabsBinding.inflate(inflater, container, false)
         val view = binding.root
-        adapterBestComment = AdapterBestOther(platfrom , items)
+        adapterBestComment = AdapterBestComment(platfrom , items)
 
         binding.rview.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -276,7 +276,7 @@ class FragmentBestDetailComment(private val platfrom: String, private val bookCo
 
 }
 
-class AdapterBestOther(private var platfrom : String, items: List<BestComment?>?) :
+class AdapterBestComment(private var platfrom : String, items: List<BestComment?>?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var holder: ArrayList<BestComment?>? = items as ArrayList<BestComment?>?
 

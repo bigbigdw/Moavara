@@ -4,8 +4,10 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.os.Build.VERSION_CODES.P
 import android.os.Bundle
 import android.text.SpannableStringBuilder
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -56,40 +58,39 @@ class BottomDialogBest(
 
         val Novel = mRootRef.child("User").child(UserInfo.UID).child("Novel")
 
-        mRootRef.child("User").child(UserInfo.UID).child("Novel").child("book").addListenerForSingleValueEvent(object :
-            ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
+        mRootRef.child("User").child(UserInfo.UID).child("Novel").child("book")
+            .addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                if(!dataSnapshot.exists()){
-                    isFirstPick = true
-                }
+                    if (!dataSnapshot.exists()) {
+                        isFirstPick = true
+                    }
 
-                for(pickedItem in dataSnapshot.children){
+                    for (pickedItem in dataSnapshot.children) {
 
-                    if(pickedItem.key.toString() == item?.bookCode){
-                        isPicked = true
-                        binding.llayoutPick.background = GradientDrawable().apply {
-                            setColor(Color.parseColor("#A7ACB7"))
-                            shape = GradientDrawable.RECTANGLE
+                        if (pickedItem.key.toString() == item?.bookCode) {
+                            isPicked = true
+                            binding.llayoutPick.background = GradientDrawable().apply {
+                                setColor(Color.parseColor("#A7ACB7"))
+                                shape = GradientDrawable.RECTANGLE
+                            }
+
+                            binding.tviewPick.text = "Pick 완료"
+                            break
+                        } else {
+                            binding.llayoutPick.background = GradientDrawable().apply {
+                                setColor(Color.parseColor("#621CEF"))
+                                shape = GradientDrawable.RECTANGLE
+                            }
+
+                            binding.tviewPick.text = "Pick"
                         }
-
-                        binding.tviewPick.text = "Pick 완료"
-                        break
-                    } else {
-                        binding.llayoutPick.background = GradientDrawable().apply {
-                            setColor(Color.parseColor("#621CEF"))
-                            shape = GradientDrawable.RECTANGLE
-                        }
-
-                        binding.tviewPick.text = "Pick"
                     }
                 }
-            }
 
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
-
-
+                override fun onCancelled(databaseError: DatabaseError) {}
+            })
 
         with(binding) {
 
@@ -117,13 +118,13 @@ class BottomDialogBest(
             tviewTitle.text = item?.title ?: ""
             tviewWriter.text = item?.writer ?: ""
 
-            if(platform == "MrBlue"){
+            if (platform == "MrBlue") {
                 llayoutBtnDetail.visibility = View.GONE
-            }else if(platform == "Toksoda"){
+            } else if (platform == "Toksoda") {
 
                 tviewInfo1.text = item?.info2 ?: ""
 
-                val info3 = SpannableStringBuilder("조회 수 : ${item?.info3}" )
+                val info3 = SpannableStringBuilder("조회 수 : ${item?.info3}")
                 info3.applyingTextColor(
                     "조회 수 : ",
                     "#6E7686"
@@ -147,7 +148,8 @@ class BottomDialogBest(
                     "#6E7686"
                 )
 
-                val info4 = SpannableStringBuilder("조회 수 : ${item?.info4?.replace("조회", "조회 수 : ")}" )
+                val info4 =
+                    SpannableStringBuilder("조회 수 : ${item?.info4?.replace("조회", "조회 수 : ")}")
                 info4.applyingTextColor(
                     "조회 수 : ",
                     "#6E7686"
@@ -162,16 +164,17 @@ class BottomDialogBest(
                 tviewInfo2.text = info3
                 tviewInfo3.text = info4
                 tviewInfo4.text = info5
-            }  else if (platform == "Kakao_Stage") {
+            } else if (platform == "Kakao_Stage") {
                 tviewInfo1.text = item?.info2 ?: ""
 
-                val info3 = SpannableStringBuilder("조회 수 : ${item?.info3?.replace("별점", "별점 : ")}" )
+                val info3 = SpannableStringBuilder("조회 수 : ${item?.info3?.replace("별점", "별점 : ")}")
                 info3.applyingTextColor(
                     "조회 수 : ",
                     "#6E7686"
                 )
 
-                val info4 = SpannableStringBuilder("선호작 수 : ${item?.info4?.replace("조회", "조회 수 : ")}" )
+                val info4 =
+                    SpannableStringBuilder("선호작 수 : ${item?.info4?.replace("조회", "조회 수 : ")}")
                 info4.applyingTextColor(
                     "선호작 수 : ",
                     "#6E7686"
@@ -183,7 +186,7 @@ class BottomDialogBest(
             } else if (platform == "Ridi") {
                 tviewInfo1.text = item?.info1 ?: ""
 
-                val info3 = SpannableStringBuilder("추천 수 : ${item?.info3}" )
+                val info3 = SpannableStringBuilder("추천 수 : ${item?.info3}")
                 info3.applyingTextColor(
                     "추천 수 : ",
                     "#6E7686"
@@ -199,30 +202,21 @@ class BottomDialogBest(
                 tviewInfo4.text = info4
             } else if (platform == "OneStore") {
 
-                val info3 = SpannableStringBuilder("조회 수 : ${item?.info3?.replace("별점", "별점 : ")}" )
-                info3.applyingTextColor(
-                    "조회 수 : ",
-                    "#6E7686"
-                )
+                val info3 = SpannableStringBuilder("조회 수 : ${item?.info3?.replace("별점", "별점 : ")}")
+                info3.applyingTextColor("조회 수 : ", "#6E7686")
 
-                val info4 = SpannableStringBuilder("평점 : ${item?.info4?.replace("조회", "조회 수 : ")}" )
-                info4.applyingTextColor(
-                    "평점 : ",
-                    "#6E7686"
-                )
+                val info4 = SpannableStringBuilder("평점 : ${item?.info4?.replace("조회", "조회 수 : ")}")
+                info4.applyingTextColor("평점 : ", "#6E7686")
 
-                val info5 = SpannableStringBuilder("댓글 수 : ${item?.info5?.replace("관심", "관심 : ")}" )
-                info5.applyingTextColor(
-                    "댓글 수 : ",
-                    "#6E7686"
-                )
+                val info5 = SpannableStringBuilder("댓글 수 : ${item?.info5?.replace("관심", "관심 : ")}")
+                info5.applyingTextColor("댓글 수 : ", "#6E7686")
 
                 tviewInfo2.text = info3
                 tviewInfo3.text = info4
                 tviewInfo4.text = info5
-            } else if (platform == "Kakao" || platform == "Munpia" || platform == "Toksoda" || platform == "Joara" || platform == "Joara_Premium" || platform == "Joara_Nobless" || platform == "Munpia" ) {
+            } else if (platform == "Kakao" || platform == "Munpia" || platform == "Toksoda" || platform == "Joara" || platform == "Joara_Premium" || platform == "Joara_Nobless" || platform == "Munpia") {
 
-                if(platform == "Joara" || platform == "Joara_Premium" || platform == "Joara_Nobless"){
+                if (platform == "Joara" || platform == "Joara_Premium" || platform == "Joara_Nobless") {
                     tviewInfo1.text = item?.info2 ?: ""
 
                     val info3 = SpannableStringBuilder("조회 수 : ${item?.info3}")
@@ -248,7 +242,7 @@ class BottomDialogBest(
                     tviewInfo4.text = info5
 
                     tviewInfo5.text = item?.info1 ?: ""
-                } else if(platform == "Kakao"){
+                } else if (platform == "Kakao") {
                     tviewInfo1.text = item?.info2 ?: ""
 
                     val info3 = SpannableStringBuilder("조회 수 : ${item?.info3}")
@@ -273,7 +267,7 @@ class BottomDialogBest(
                     tviewInfo3.text = info4
                     tviewInfo4.text = info5
                     tviewInfo5.text = item?.info1 ?: ""
-                } else if(platform == "Munpia"){
+                } else if (platform == "Munpia") {
                     tviewInfo1.text = item?.info2 ?: ""
 
                     val info3 = SpannableStringBuilder("조회 수 : ${item?.info3}")
@@ -344,7 +338,7 @@ class BottomDialogBest(
 
             binding.llayoutPick.setOnClickListener {
 
-                if(isPicked){
+                if (isPicked) {
                     Novel.child("book").child(item?.bookCode ?: "").removeValue()
 
                     binding.llayoutPick.background = GradientDrawable().apply {
@@ -353,7 +347,11 @@ class BottomDialogBest(
                     }
 
                     binding.tviewPick.text = "Pick"
-                    Toast.makeText(requireContext(), "[${item?.title}]이(가) 마이픽에서 제거되었습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "[${item?.title}]이(가) 마이픽에서 제거되었습니다.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     dismiss()
 
                 } else {
@@ -377,7 +375,12 @@ class BottomDialogBest(
                         )
                     }
 
-                    if(isFirstPick){
+                    binding.llayoutPick.background = GradientDrawable().apply {
+                        setColor(Color.parseColor("#A7ACB7"))
+                        shape = GradientDrawable.RECTANGLE
+                    }
+
+                    if (isFirstPick) {
                         isFirstPick = false
 
                         val inputData = Data.Builder()
@@ -387,17 +390,19 @@ class BottomDialogBest(
                             .build()
 
                         /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
-                        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(6, TimeUnit.HOURS)
-                            .setBackoffCriteria(
-                                BackoffPolicy.LINEAR,
-                                PeriodicWorkRequest.MIN_BACKOFF_MILLIS,
-                                TimeUnit.MILLISECONDS
-                            )
-                            .addTag("MoavaraPick")
-                            .setInputData(inputData)
-                            .build()
+                        val workRequest =
+                            PeriodicWorkRequestBuilder<FirebaseWorkManager>(6, TimeUnit.HOURS)
+                                .setBackoffCriteria(
+                                    BackoffPolicy.LINEAR,
+                                    PeriodicWorkRequest.MIN_BACKOFF_MILLIS,
+                                    TimeUnit.MILLISECONDS
+                                )
+                                .addTag("MoavaraPick")
+                                .setInputData(inputData)
+                                .build()
 
-                        val workManager = WorkManager.getInstance(requireContext().applicationContext)
+                        val workManager =
+                            WorkManager.getInstance(requireContext().applicationContext)
 
                         workManager.enqueueUniquePeriodicWork(
                             "MoavaraPick",
@@ -410,13 +415,21 @@ class BottomDialogBest(
                         Novel.child("bookCode").child(item?.bookCode ?: "").setValue(bookCodeItems)
                         mRootRef.child("User").child(UserInfo.UID).child("Mining").setValue(true)
 
-                        Toast.makeText(requireContext(), "[${group?.title}]이(가) 마이픽에 등록되었습니다.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(),
+                            "[${group?.title}]이(가) 마이픽에 등록되었습니다.",
+                            Toast.LENGTH_SHORT
+                        ).show()
 
                     } else {
                         Novel.child("book").child(item?.bookCode ?: "").setValue(group)
                         Novel.child("bookCode").child(item?.bookCode ?: "").setValue(bookCodeItems)
 
-                        Toast.makeText(requireContext(), "[${group?.title}]이(가) 마이픽에 등록되었습니다.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(),
+                            "[${group?.title}]이(가) 마이픽에 등록되었습니다.",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         dismiss()
                     }
                 }
@@ -448,7 +461,7 @@ class BottomDialogBest(
                                 val itemDate = group?.let { DBDate.getDateData(it.date) }
 
                                 if (itemDate != null) {
-                                    if (itemDate.week == DBDate.Week().toInt()) {
+                                    if (itemDate.week.toString() == DBDate.Week() && (itemDate.month + 0).toString() == DBDate.Month()) {
                                         when {
                                             itemDate.date == 1 -> {
                                                 tviewRank1.visibility = View.VISIBLE

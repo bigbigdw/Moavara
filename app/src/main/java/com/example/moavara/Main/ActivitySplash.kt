@@ -2,6 +2,7 @@ package com.example.moavara.Main
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -36,7 +37,5 @@ class ActivitySplash : Activity() {
                 2000
             )
         }
-
     }
-
 }

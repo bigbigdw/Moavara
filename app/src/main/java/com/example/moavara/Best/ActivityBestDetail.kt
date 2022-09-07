@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
@@ -86,16 +87,16 @@ class ActivityBestDetail : AppCompatActivity() {
             "UserInfo"
         ).allowMainThreadQueries().build()
 
-        if(userDao?.daoUser()?.get() != null){
+        if (userDao?.daoUser()?.get() != null) {
             UserInfo = userDao?.daoUser()?.get() ?: DataBaseUser()
         }
 
         bookCode = intent.getStringExtra("BookCode") ?: ""
         platform = intent.getStringExtra("Type") ?: ""
         pos = intent.getIntExtra("POSITION", 0)
-        hasBookData  = intent.getBooleanExtra("HASDATA", false)
-        fromPick  = intent.getBooleanExtra("FROMPICK", false)
-        fromSearch  = intent.getBooleanExtra("FROMSEARCH", false)
+        hasBookData = intent.getBooleanExtra("HASDATA", false)
+        fromPick = intent.getBooleanExtra("FROMPICK", false)
+        fromSearch = intent.getBooleanExtra("FROMSEARCH", false)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -118,14 +119,15 @@ class ActivityBestDetail : AppCompatActivity() {
 
         setUserPick()
 
-        if(hasBookData){
-            if(fromPick){
-                mRootRef.child("User").child(UserInfo.UID).child("Novel").child("bookCode").child(bookCode)
+        if (hasBookData) {
+            if (fromPick) {
+                mRootRef.child("User").child(UserInfo.UID).child("Novel").child("bookCode")
+                    .child(bookCode)
                     .addListenerForSingleValueEvent(object :
                         ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                            if(!dataSnapshot.exists()){
+                            if (!dataSnapshot.exists()) {
                                 isFirstPick = true
                             }
 
@@ -164,7 +166,7 @@ class ActivityBestDetail : AppCompatActivity() {
                         ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                            if(dataSnapshot.exists()){
+                            if (dataSnapshot.exists()) {
                                 for (item in dataSnapshot.children) {
                                     val group: BookListDataBestAnalyze? =
                                         item.getValue(BookListDataBestAnalyze::class.java)
@@ -205,34 +207,35 @@ class ActivityBestDetail : AppCompatActivity() {
     }
 
     private fun setUserPick() {
-        mRootRef.child("User").child(UserInfo.UID).child("Novel").child("book").addListenerForSingleValueEvent(object :
-            ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
+        mRootRef.child("User").child(UserInfo.UID).child("Novel").child("book")
+            .addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                for (pickedItem in dataSnapshot.children) {
+                    for (pickedItem in dataSnapshot.children) {
 
-                    if (pickedItem.key.toString() == bookCode) {
-                        isPicked = true
-                        binding.llayoutPick.background = GradientDrawable().apply {
-                            setColor(Color.parseColor("#A7ACB7"))
-                            shape = GradientDrawable.RECTANGLE
+                        if (pickedItem.key.toString() == bookCode) {
+                            isPicked = true
+                            binding.llayoutPick.background = GradientDrawable().apply {
+                                setColor(Color.parseColor("#A7ACB7"))
+                                shape = GradientDrawable.RECTANGLE
+                            }
+
+                            binding.tviewPick.text = "Pick 완료"
+                            break
+                        } else {
+                            binding.llayoutPick.background = GradientDrawable().apply {
+                                setColor(Color.parseColor("#621CEF"))
+                                shape = GradientDrawable.RECTANGLE
+                            }
+
+                            binding.tviewPick.text = "Pick"
                         }
-
-                        binding.tviewPick.text = "Pick 완료"
-                        break
-                    } else {
-                        binding.llayoutPick.background = GradientDrawable().apply {
-                            setColor(Color.parseColor("#621CEF"))
-                            shape = GradientDrawable.RECTANGLE
-                        }
-
-                        binding.tviewPick.text = "Pick"
                     }
                 }
-            }
 
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
+                override fun onCancelled(databaseError: DatabaseError) {}
+            })
 
         binding.llayoutPick.setOnClickListener {
 
@@ -264,7 +267,7 @@ class ActivityBestDetail : AppCompatActivity() {
 
                 binding.tviewPick.text = "Pick 완료"
 
-                if(isFirstPick){
+                if (isFirstPick) {
                     isFirstPick = false
 
                     val inputData = Data.Builder()
@@ -274,15 +277,16 @@ class ActivityBestDetail : AppCompatActivity() {
                         .build()
 
                     /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
-                    val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(6, TimeUnit.HOURS)
-                        .setBackoffCriteria(
-                            BackoffPolicy.LINEAR,
-                            PeriodicWorkRequest.MIN_BACKOFF_MILLIS,
-                            TimeUnit.MILLISECONDS
-                        )
-                        .addTag("MoavaraPick")
-                        .setInputData(inputData)
-                        .build()
+                    val workRequest =
+                        PeriodicWorkRequestBuilder<FirebaseWorkManager>(6, TimeUnit.HOURS)
+                            .setBackoffCriteria(
+                                BackoffPolicy.LINEAR,
+                                PeriodicWorkRequest.MIN_BACKOFF_MILLIS,
+                                TimeUnit.MILLISECONDS
+                            )
+                            .addTag("MoavaraPick")
+                            .setInputData(inputData)
+                            .build()
 
                     val workManager = WorkManager.getInstance(applicationContext)
 
@@ -296,21 +300,24 @@ class ActivityBestDetail : AppCompatActivity() {
                     Novel.child("book").child(bookCode).setValue(pickItem)
                     mRootRef.child("User").child(UserInfo.UID).child("Mining").setValue(true)
 
-                    if(bookData.isEmpty()){
-                        Novel.child("bookCode").child(bookCode).child(DBDate.DateMMDD()).setValue(pickBookCodeItem)
+                    if (bookData.isEmpty()) {
+                        Novel.child("bookCode").child(bookCode).child(DBDate.DateMMDD())
+                            .setValue(pickBookCodeItem)
                     } else {
                         Novel.child("bookCode").child(bookCode).setValue(bookData)
                     }
                 } else {
                     Novel.child("book").child(bookCode).setValue(pickItem)
 
-                    if(bookData.isEmpty()){
-                        Novel.child("bookCode").child(bookCode).child(DBDate.DateMMDD()).setValue(pickBookCodeItem)
+                    if (bookData.isEmpty()) {
+                        Novel.child("bookCode").child(bookCode).child(DBDate.DateMMDD())
+                            .setValue(pickBookCodeItem)
                     } else {
                         Novel.child("bookCode").child(bookCode).setValue(bookData)
                     }
 
-                    Toast.makeText(this, "[${bookTitle}]이(가) 마이픽에 등록되었습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "[${bookTitle}]이(가) 마이픽에 등록되었습니다.", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         }
@@ -376,7 +383,8 @@ class ActivityBestDetail : AppCompatActivity() {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailComment)
                             }
                         } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver" || platform == "Ridi") {
-                            mFragmentBestDetailBooks = FragmentBestDetailBooks(platform, bookCode)
+                            mFragmentBestDetailBooks =
+                                FragmentBestDetailBooks(platform, bookCode, bookWriter)
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
                             }
@@ -384,7 +392,8 @@ class ActivityBestDetail : AppCompatActivity() {
                     }
                     2 -> {
                         if (platform == "Joara" || platform == "Joara_Nobless" || platform == "Joara_Premium" || platform == "Toksoda") {
-                            mFragmentBestDetailBooks = FragmentBestDetailBooks(platform, bookCode)
+                            mFragmentBestDetailBooks =
+                                FragmentBestDetailBooks(platform, bookCode, bookWriter)
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
                             }
@@ -403,7 +412,6 @@ class ActivityBestDetail : AppCompatActivity() {
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
     }
-
 
 
     private fun setLayoutJoara() {
@@ -550,7 +558,7 @@ class ActivityBestDetail : AppCompatActivity() {
                         doc.select(".info_book .like").text().replace("관심", "").replace("명", "")
                     inclueBestDetail.tviewInfo2.text = doc.select(".grade_area em").text()
 
-                    if(platform != "Naver"){
+                    if (platform != "Naver") {
                         inclueBestDetail.llayoutTab3.visibility = View.VISIBLE
                         inclueBestDetail.iviewInfo3.setImageResource(R.drawable.ic_launcher_gray)
                         inclueBestDetail.tviewInfo3.text =
@@ -606,7 +614,8 @@ class ActivityBestDetail : AppCompatActivity() {
                         replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
                     }
                 } else {
-                    mFragmentBestDetailBooks = FragmentBestDetailBooks(platform, bookCode)
+                    mFragmentBestDetailBooks =
+                        FragmentBestDetailBooks(platform, bookCode, bookWriter)
                     supportFragmentManager.commit {
                         replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
                     }
@@ -816,7 +825,7 @@ class ActivityBestDetail : AppCompatActivity() {
         Thread {
             val doc: Document = Jsoup.connect("https://ridibooks.com/books/${bookCode}").get()
 
-            bookCode = "https://ridibooks.com${
+            bookWriter = "https://ridibooks.com${
                 doc.select(".metadata_writer .author_detail_link").attr("href")
             }"
 
@@ -838,6 +847,7 @@ class ActivityBestDetail : AppCompatActivity() {
                         .into(inclueBestDetail.iviewBookCover)
 
                     bookTitle = doc.select(".header_info_wrap .info_title_wrap h3").text()
+
                     tviewToolbar.text = bookTitle
                     inclueBestDetail.tviewTitle.text = bookTitle
                     inclueBestDetail.tviewWriter.text =
@@ -860,10 +870,10 @@ class ActivityBestDetail : AppCompatActivity() {
                         bookTitle,
                         "https:${doc.select(".thumbnail_image img").attr("src")}",
                         bookCode,
+                        doc.select(".book_count").text(),
                         "",
-                        doc.select(".header_info_wrap .info_category_wrap").text(),
-                        doc.select(".metadata_writer .author_detail_link").text(),
-                        doc.select(".header_info_wrap .StarRate_ParticipantCount").text(),
+                        doc.select(".header_info_wrap .StarRate_ParticipantCount").text().replace("명",""),
+                        ((doc.select(".header_info_wrap .StarRate_Score").text().replace("점","")).toFloat() * 10).toString().replace(".0",""),
                         "",
                         "",
                         999,
@@ -895,7 +905,8 @@ class ActivityBestDetail : AppCompatActivity() {
                         replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
                     }
                 } else {
-                    mFragmentBestDetailBooks = FragmentBestDetailBooks(platform, bookCode)
+                    mFragmentBestDetailBooks =
+                        FragmentBestDetailBooks(platform, bookCode, bookWriter)
                     supportFragmentManager.commit {
                         replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
                     }
@@ -1260,7 +1271,8 @@ class ActivityBestDetail : AppCompatActivity() {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailComment)
                             }
                         } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver" || platform == "Ridi") {
-                            mFragmentBestDetailBooks = FragmentBestDetailBooks(platform, bookCode)
+                            mFragmentBestDetailBooks =
+                                FragmentBestDetailBooks(platform, bookCode, bookWriter)
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
                             }
@@ -1268,7 +1280,8 @@ class ActivityBestDetail : AppCompatActivity() {
                     }
                     1 -> {
                         if (platform == "Joara" || platform == "Joara_Nobless" || platform == "Joara_Premium" || platform == "Toksoda") {
-                            mFragmentBestDetailBooks = FragmentBestDetailBooks(platform, bookCode)
+                            mFragmentBestDetailBooks =
+                                FragmentBestDetailBooks(platform, bookCode, bookWriter)
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
                             }

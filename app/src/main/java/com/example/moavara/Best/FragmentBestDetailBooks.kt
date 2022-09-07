@@ -1,6 +1,8 @@
 package com.example.moavara.Best
 
 import android.os.Bundle
+import android.text.SpannableStringBuilder
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,16 +13,17 @@ import com.bumptech.glide.Glide
 import com.example.moavara.Retrofit.*
 import com.example.moavara.Search.BookListDataBest
 import com.example.moavara.Util.Param
+import com.example.moavara.Util.applyingTextColor
 import com.example.moavara.databinding.FragmentBestDetailTabsBinding
 import com.example.moavara.databinding.ItemBestDetailOtherBinding
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
 
-class FragmentBestDetailBooks(private val platfrom: String, private val bookCode: String) :
+class FragmentBestDetailBooks(private val platfrom: String, private val bookCode: String, private val bookWriter: String) :
     Fragment() {
 
-    private var adapterBestOthers: AdapterBestComment? = null
+    private var adapterBestOthers: AdapterBestOther? = null
     private val items = ArrayList<BookListDataBest?>()
 
     private var _binding: FragmentBestDetailTabsBinding? = null
@@ -35,7 +38,7 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
     ): View {
         _binding = FragmentBestDetailTabsBinding.inflate(inflater, container, false)
         val view = binding.root
-        adapterBestOthers = AdapterBestComment(items)
+        adapterBestOthers = AdapterBestOther(items)
 
         binding.rview.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -48,7 +51,7 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
         if(platfrom == "Joara" || platfrom == "Joara_Nobless" || platfrom == "Joara_Premium"){
             getOthersJoa()
         }  else if (platfrom == "Naver_Today"  || platfrom == "Naver_Challenge") {
-            getCommentsNaverToday()
+            getOtherNaverToday()
         }  else if (platfrom == "Ridi"){
             getOthersRidi()
         } else if (platfrom == "Toksoda"){
@@ -83,17 +86,17 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
                                 BookListDataBest(
                                     data.bookLists[i].writerName,
                                     data.bookLists[i].subject,
-                                    data.bookLists[i].bookImg,
+                                    data.bookLists[i].bookImg.replace("http://", "https://"),
                                     data.bookLists[i].bookCode,
-                                    "줄거리 : " + data.bookLists[i].intro,
-                                    "총 " + data.bookLists[i].cntChapter + " 화",
-                                    "조회 수 : " + data.bookLists[i].cntPageRead,
-                                    "선호작 수 : " + data.bookLists[i].cntFavorite,
-                                    "추천 수 : " + data.bookLists[i].cntRecom,
+                                    data.bookLists[i].intro,
+                                    "총 ${data.bookLists[i].cntChapter}x화",
+                                    data.bookLists[i].cntPageRead,
+                                    data.bookLists[i].cntFavorite,
+                                    data.bookLists[i].cntRecom,
                                     "",
                                     0,
                                     "",
-                                    ""
+                                    platfrom
                                 )
                             )
                         }
@@ -103,7 +106,7 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
             })
     }
 
-    fun getCommentsNaverToday(){
+    private fun getOtherNaverToday(){
         Thread {
             val doc: Document = Jsoup.connect("https://novel.naver.com/webnovel/list?novelId=${bookCode}").get()
             val Naver: Elements = doc.select(".srch_cont .list_type2 li a")
@@ -124,7 +127,7 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
                             "",
                             0,
                             "",
-                            ""
+                            platfrom
                         )
                     )
                 }
@@ -141,7 +144,7 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
 
     private fun getOthersRidi() {
         Thread {
-            val doc: Document = Jsoup.connect(bookCode).get()
+            val doc: Document = Jsoup.connect(bookWriter).get()
 
             val other = doc.select(".book_macro_landscape")
 
@@ -156,19 +159,19 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
 
                     items.add(
                         BookListDataBest(
-                            other[i].select(".author_name_wrapper h4 .lang_kor").text(),
+                            other[i].select(".author_detail_link").text(),
                             other[i].select(".title_text").text(),
                             img,
                             "https://ridibooks.com/books${other[i].select(".thumbnail_btn").attr("href")}",
-                            other[i].select(".book_count .count_num").text(),
-                            other[i].select(".RSGBookMetadata_StarRate .StarRate_ParticipantCount").text(),
                             other[i].select(".book_metadata_wrapper .meta_description").text(),
-                            other[i].select(".rental_price_info").text(),
-                            other[i].select(".buy_price_info").text(),
+                            other[i].select(".genre").text(),
+                            other[i].select(".StarRate_Score").text(),
+                            other[i].select(".book_count .count_num").text(),
+                            other[i].select(".StarRate_ParticipantCount").text(),
                             "",
                             0,
                             "",
-                            ""
+                            platfrom
                         )
                     )
                 }
@@ -228,7 +231,7 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
                                         "",
                                         0,
                                         "",
-                                        ""
+                                        platfrom
                                     )
                                 )
                             }
@@ -246,7 +249,7 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
     }
 }
 
-class AdapterBestComment(items: List<BookListDataBest?>?) :
+class AdapterBestOther(items: List<BookListDataBest?>?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var holder: ArrayList<BookListDataBest?>? = items as ArrayList<BookListDataBest?>?
 
@@ -268,17 +271,145 @@ class AdapterBestComment(items: List<BookListDataBest?>?) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ViewHolder) {
 
-            val item = this.holder!![position]
+            val item = this.holder?.get(position)
 
             if (item != null) {
                 Glide.with(holder.itemView.context)
                     .load(item.bookImg)
-                    .into(holder.binding.iview)
+                    .into(holder.binding.iView)
 
-                holder.binding.tviewTitle.text = item.title
-                holder.binding.tviewInfo1.text = item.info2
-                holder.binding.tviewInfo2.text = item.info3
-                holder.binding.tviewIntro.text = item.info1
+                with(holder.binding){
+
+                    tviewTitle.text = item.title
+                    tviewWriter.text = item.writer
+
+                    if(item.type == "Joara" || item.type == "Joara_Nobless" || item.type == "Joara_Premium"){
+                        val info2 = SpannableStringBuilder("쟝르 : ${item.info2}")
+                        info2.applyingTextColor(
+                            "쟝르 : ",
+                            "#6E7686"
+                        )
+
+                        val info3 = SpannableStringBuilder("조회 수 : ${item.info3}")
+                        info3.applyingTextColor(
+                            "조회 수 : ",
+                            "#6E7686"
+                        )
+
+                        val info4 = SpannableStringBuilder("선호작 수 : ${item.info4}")
+                        info4.applyingTextColor(
+                            "선호작 수 : ",
+                            "#6E7686"
+                        )
+
+                        val info5 = SpannableStringBuilder("추천 수 : ${item.info5}")
+                        info5.applyingTextColor(
+                            "추천 수 : ",
+                            "#6E7686"
+                        )
+
+                        tviewInfo.text = info2
+                        tviewInfo5.text = info5
+                        tviewInfo4.text = info4
+                        tviewInfo3.text = info3
+                        tviewIntro.text = item.info1
+                    }  else if (item.type == "Naver_Today"  || item.type == "Naver_Challenge") {
+                        tviewInfo.text = item.info2
+                    }  else if (item.type == "Ridi"){
+
+                        val info3 = SpannableStringBuilder("${item.info3}")
+                        info3.applyingTextColor(
+                            "점",
+                            "#6E7686"
+                        )
+
+                        val info4 = SpannableStringBuilder(item.info4.replace("총", "총 :"))
+                        info4.applyingTextColor(
+                            "총 : ",
+                            "#6E7686"
+                        )
+                        info4.applyingTextColor(
+                            "권",
+                            "#6E7686"
+                        )
+                        info4.applyingTextColor(
+                            "화",
+                            "#6E7686"
+                        )
+
+                        val info5 = SpannableStringBuilder("평가 수 : ${item.info5}")
+                        info5.applyingTextColor(
+                            "평가 수 : ",
+                            "#6E7686"
+                        )
+                        info5.applyingTextColor(
+                            "명",
+                            "#6E7686"
+                        )
+
+                        tviewInfo.text = item.info2
+                        tviewInfo5.text = info5
+                        tviewInfo4.text = info4
+                        tviewInfo3.text = info3
+                        tviewIntro.text = item.info1
+                    } else if (item.type == "Toksoda"){
+                        val info5 = SpannableStringBuilder("댓글 수 : ${item.info5}")
+                        info5.applyingTextColor(
+                            "댓글 수 : ",
+                            "#6E7686"
+                        )
+
+                        val info4 = SpannableStringBuilder("선호작 수 : ${item.info4}")
+                        info4.applyingTextColor(
+                            "선호작 수 : ",
+                            "#6E7686"
+                        )
+
+                        val info3 = SpannableStringBuilder("장르 : ${item.info3}")
+                        info3.applyingTextColor(
+                            "장르 : ",
+                            "#6E7686"
+                        )
+
+                        tviewInfo.text = item.info2
+                        tviewInfo5.text = info5
+                        tviewInfo4.text = info4
+                        tviewInfo3.text = info3
+                        tviewIntro.text = item.info1
+                    }
+
+                    if (item.info1.isEmpty()) {
+                        tviewIntro.visibility = View.GONE
+                        tviewBar.visibility = View.GONE
+                    } else {
+                        tviewIntro.visibility = View.VISIBLE
+                        tviewBar.visibility = View.VISIBLE
+                    }
+
+                    if (item.info2.isEmpty()) {
+                        tviewInfo.visibility = View.GONE
+                    } else {
+                        tviewInfo.visibility = View.VISIBLE
+                    }
+
+                    if (item.info3.isEmpty()) {
+                        tviewInfo3.visibility = View.GONE
+                    } else {
+                        tviewInfo3.visibility = View.VISIBLE
+                    }
+
+                    if (item.info4.isEmpty()) {
+                        tviewInfo4.visibility = View.GONE
+                    } else {
+                        tviewInfo4.visibility = View.VISIBLE
+                    }
+
+                    if (item.info5.isEmpty()) {
+                        tviewInfo5.visibility = View.GONE
+                    } else {
+                        tviewInfo5.visibility = View.VISIBLE
+                    }
+                }
             }
 
         }

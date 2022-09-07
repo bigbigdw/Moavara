@@ -4,38 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/llayoutWrap"
     android:layout_width="match_parent"
-    android:layout_height="170dp"
-    android:layout_marginStart="0dp"
-    android:layout_marginEnd="0dp"
+    android:layout_height="wrap_content"
+    android:clipChildren="false"
     android:orientation="horizontal"
-    android:paddingStart="12dp"
-    android:paddingEnd="12dp"
+    android:paddingStart="16dp"
+    android:paddingTop="16dp"
+    android:paddingEnd="16dp"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 
-    <androidx.cardview.widget.CardView
+    <LinearLayout
+        android:id="@+id/llayoutBookImg"
         android:layout_width="92dp"
         android:layout_height="140dp"
-        android:layout_marginEnd="15dp"
-        app:cardCornerRadius="6dp">
+        android:layout_gravity="clip_horizontal"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="13dp"
+        android:layout_marginBottom="10dp"
+        android:clipChildren="false">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <androidx.cardview.widget.CardView
+            android:layout_width="92dp"
+            android:layout_height="140dp"
+            app:cardCornerRadius="4dp">
 
             <ImageView
-                android:id="@+id/iview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:id="@+id/iView"
+                android:layout_width="92dp"
+                android:layout_height="140dp"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/TODO"
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/booktest" />
 
-        </RelativeLayout>
+        </androidx.cardview.widget.CardView>
 
-    </androidx.cardview.widget.CardView>
-
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/BestWrap"
@@ -45,23 +49,21 @@
 
         <TextView
             android:id="@+id/tviewTitle"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
             android:breakStrategy="high_quality"
             android:ellipsize="end"
             android:fontFamily="@font/pretendardvariable"
-            android:maxLines="2"
-            android:text="@string/Common_BookTitle"
-            android:textAlignment="viewStart"
-            android:textColor="#EDE6FD"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textColor="#E2E3E7"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            tools:text="@string/Common_BookTitle" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="12dp"
             android:orientation="horizontal">
 
             <TextView
@@ -72,9 +74,9 @@
                 android:ellipsize="end"
                 android:fontFamily="@font/pretendardvariable"
                 android:maxLines="1"
-                android:text="@string/Common_BookWriter"
                 android:textColor="#6E7686"
-                android:textSize="11sp" />
+                android:textSize="11sp"
+                tools:text="@string/Common_BookWriter" />
 
             <TextView
                 android:id="@+id/tviewBar"
@@ -89,35 +91,20 @@
                 android:visibility="visible" />
 
             <TextView
-                android:id="@+id/tviewInfo1"
+                android:id="@+id/tviewInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:breakStrategy="high_quality"
                 android:ellipsize="end"
                 android:fontFamily="@font/pretendardvariable"
                 android:maxLines="3"
-                android:text="@string/Common_Count"
                 android:textColor="#6E7686"
-                android:textSize="11sp" />
-
+                android:textSize="11sp"
+                tools:text="@string/Common_Count" />
         </LinearLayout>
 
         <TextView
-            android:id="@+id/tviewInfo2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:fontFamily="@font/pretendardvariable"
-            android:maxLines="3"
-            android:textColor="#E2E3E7"
-            android:textSize="11sp"
-            android:visibility="visible"
-            tools:text="@string/Common_Count"
-            tools:visibility="visible" />
-
-        <TextView
             android:id="@+id/tviewInfo3"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:fontFamily="@font/pretendardvariable"
@@ -130,9 +117,8 @@
 
         <TextView
             android:id="@+id/tviewInfo4"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:ellipsize="end"
             android:fontFamily="@font/pretendardvariable"
             android:maxLines="3"
@@ -143,12 +129,26 @@
             tools:visibility="visible" />
 
         <TextView
-            android:id="@+id/tviewIntro"
-            android:layout_width="match_parent"
+            android:id="@+id/tviewInfo5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/pretendardvariable"
+            android:maxLines="3"
+            android:textColor="#E2E3E7"
+            android:textSize="11sp"
+            android:visibility="visible"
+            tools:text="@string/Common_Count"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tview_intro"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:fontFamily="@font/pretendardvariable"
-            android:maxLines="1"
+            android:maxLines="2"
             android:textColor="#6E7686"
             android:textSize="12sp"
             android:visibility="visible"
@@ -156,6 +156,5 @@
             tools:visibility="visible" />
 
     </LinearLayout>
-
 
 </LinearLayout>
