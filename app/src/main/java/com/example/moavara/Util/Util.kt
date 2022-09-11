@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import com.example.moavara.Search.BookListDataBestMonthNum
 import com.example.moavara.Search.TrophyInfo
+import com.google.firebase.database.DataSnapshot
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -14,6 +15,14 @@ object DBDate {
 
     fun DayInt(): Int {
         return Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
+    }
+
+    fun DayIntYesterDay(dataSnapshot : DataSnapshot): DataSnapshot {
+        if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 1) {
+            return dataSnapshot.child(Month()).child((Week().toInt() - 1).toString()).child("6")
+        } else {
+            return dataSnapshot.child(Month()).child(Week()).child((DayInt() - 1).toString())
+        }
     }
 
     fun Day(): String {
@@ -27,12 +36,6 @@ object DBDate {
     fun DateMMDDHHMM(): String {
         val currentTime: Date = Calendar.getInstance().time
         val format = SimpleDateFormat("YYYYMMddHHmm")
-        return format.format(currentTime).toString()
-    }
-
-    fun DateMMDDHHMMSS(): String {
-        val currentTime: Date = Calendar.getInstance().time
-        val format = SimpleDateFormat("YYYYMMddhhmmss")
         return format.format(currentTime).toString()
     }
 

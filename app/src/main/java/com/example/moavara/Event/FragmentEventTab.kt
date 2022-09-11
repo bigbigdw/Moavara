@@ -537,7 +537,7 @@ class FragmentEventTab : Fragment() {
                                 items.add(
                                     EventDataGroup(
                                         EventData(
-                                            data.resultList[2 * i].linkInfo,
+                                            data.resultList[2 * i].linkInfo.replace("https://www.tocsoda.co.kr/event/eventDetail?eventmngSeq=",""),
                                             "https:${data.resultList[2 * i].imgPath}",
                                             data.resultList[2 * i].bnnrNm,
                                             "",
@@ -547,7 +547,7 @@ class FragmentEventTab : Fragment() {
                                             ""
                                         ),
                                         EventData(
-                                            data.resultList[2 * i + 1].linkInfo,
+                                            data.resultList[2 * i + 1].linkInfo.replace("https://www.tocsoda.co.kr/event/eventDetail?eventmngSeq=",""),
                                             "https:${data.resultList[2 * i + 1].imgPath}",
                                             data.resultList[2 * i + 1].bnnrNm,
                                             "",

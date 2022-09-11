@@ -79,6 +79,7 @@ class BottomSheetDialogEvent(
 
         if(platform == "OneStore"){
             binding.llayoutBtnDetail.visibility = View.GONE
+            binding.llayoutPick.visibility = View.GONE
         }
 
         title = item.title

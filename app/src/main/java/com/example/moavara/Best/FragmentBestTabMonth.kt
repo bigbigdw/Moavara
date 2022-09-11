@@ -25,7 +25,6 @@ import com.example.moavara.databinding.FragmentBestMonthBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import java.io.File
 import java.io.IOException
 
 
@@ -237,11 +236,6 @@ class FragmentBestTabMonth(private val platform: String, private val UserInfo: D
         binding.rviewBestMonth.removeAllViews()
         itemMonth.clear()
         bestDao?.bestDao()?.initAll()
-
-        val file = File(File("/storage/self/primary/MOAVARA"), "Month_${platform}_${UserInfo.Genre}.json")
-        if (file.exists()) {
-            file.delete()
-        }
 
         try {
 

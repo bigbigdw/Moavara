@@ -40,10 +40,10 @@ class FragmentPickTabNovel : Fragment() {
         _binding = FragmentPickTabBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        UserInfo = (parentFragment as FragmentPick).UserInfo
         adapter = AdapterPickNovel(requireContext(), items, this@FragmentPickTabNovel, UserInfo)
 
         binding.blank.tviewblank.text = "마이픽을 한 작품이 없습니다."
-        UserInfo = (parentFragment as FragmentPick).UserInfo
 
         // 리사이클러뷰에 스와이프, 드래그 기능 달기
         val swipeHelperCallback = SwipeHelperCallback(adapter).apply {

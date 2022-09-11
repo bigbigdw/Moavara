@@ -24,6 +24,7 @@ import com.example.moavara.R
 import com.example.moavara.Search.EventData
 import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.ItemPickEventBinding
+import java.net.URLEncoder
 import java.util.*
 
 class AdapterPickEvent(private var context : Context, private var itemsList: ArrayList<EventData>, private var fragment: FragmentPickTabEvent, private var UserInfo : DataBaseUser) :
@@ -211,7 +212,12 @@ class AdapterPickEvent(private var context : Context, private var itemsList: Arr
                         { v: View? ->
 
                             if (adapterPosition != RecyclerView.NO_POSITION) {
-                                Event.child(getItem(adapterPosition).link).removeValue()
+                                if(getItem(adapterPosition).type == "Joara"){
+                                    Event.child(URLEncoder.encode(getItem(adapterPosition).link, "utf-8")).removeValue()
+                                } else {
+                                    Event.child(getItem(adapterPosition).link).removeValue()
+                                }
+
                                 removeData(adapterPosition)
                                 Toast.makeText(context, "삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show()
                                 dialogLogin?.dismiss()

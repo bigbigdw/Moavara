@@ -562,6 +562,7 @@ class ActivityBestDetail : AppCompatActivity() {
                             doc.select(".info_book .download").text().replace("다운로드", "")
                     } else {
                         inclueBestDetail.llayoutTab3.visibility = View.GONE
+                        inclueBestDetail.viewTab3.visibility = View.GONE
                     }
 
                     inclueBestDetail.llayoutTab4.visibility = View.GONE

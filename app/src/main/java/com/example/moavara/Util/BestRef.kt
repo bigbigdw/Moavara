@@ -175,9 +175,9 @@ object BestRef {
 
     fun getBestDataToday(platform: String, genre: String): DatabaseReference {
         return if(platform == "Munpia"){
-            setBestRefMunpia(platform).child("Data").child(DBDate.Month()).child(DBDate.Week()).child(DBDate.DayInt().toString())
+            setBestRefMunpia(platform).child("Data")
         } else {
-            setBestRef(platform, genre).child("Data").child(DBDate.Month()).child(DBDate.Week()).child(DBDate.DayInt().toString())
+            setBestRef(platform, genre).child("Data")
         }
     }
 
