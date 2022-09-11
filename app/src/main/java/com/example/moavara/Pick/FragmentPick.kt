@@ -13,7 +13,7 @@ import com.example.moavara.R
 import com.example.moavara.databinding.ActivityPickBinding
 import com.google.android.material.tabs.TabLayout
 
-class FragmentPick : Fragment() {
+class FragmentPick: Fragment() {
 
     private var _binding: ActivityPickBinding? = null
     private val binding get() = _binding!!
@@ -44,7 +44,9 @@ class FragmentPick : Fragment() {
             tabs.addTab(tabs.newTab().setText("작품"))
             tabs.addTab(tabs.newTab().setText("이벤트"))
 
-            mFragmentPickTabNovel = FragmentPickTabNovel(UserInfo)
+            mFragmentPickTabNovel = FragmentPickTabNovel()
+            mFragmentPickTabEvent = FragmentPickTabEvent()
+
             childFragmentManager.commit {
                 replace(R.id.view_pager, mFragmentPickTabNovel)
             }
@@ -53,13 +55,11 @@ class FragmentPick : Fragment() {
                 override fun onTabSelected(tab: TabLayout.Tab) {
                     when(tab.position){
                         0->{
-                            mFragmentPickTabNovel = FragmentPickTabNovel(UserInfo)
                             childFragmentManager.commit {
                                 replace(R.id.view_pager, mFragmentPickTabNovel)
                             }
                         }
                         1->{
-                            mFragmentPickTabEvent = FragmentPickTabEvent(UserInfo)
                             childFragmentManager.commit {
                                 replace(R.id.view_pager, mFragmentPickTabEvent)
                             }

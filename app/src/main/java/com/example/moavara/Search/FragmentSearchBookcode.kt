@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.bumptech.glide.Glide
+import com.example.moavara.Best.ActivityBestDetail
 import com.example.moavara.DataBase.DBUser
 import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Main.mRootRef
@@ -309,8 +310,13 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
         }
 
         binding.llayoutView.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getUrl(bookCode)))
-            startActivity(intent)
+            val bookDetailIntent =
+                Intent(requireContext(), ActivityBestDetail::class.java)
+            bookDetailIntent.putExtra("BookCode", bookCode)
+            bookDetailIntent.putExtra("Type", platform)
+            bookDetailIntent.putExtra("POSITION", 0)
+            bookDetailIntent.putExtra("HASDATA", true)
+            startActivity(bookDetailIntent)
         }
 
         return view

@@ -20,14 +20,15 @@ import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
 import java.net.URLEncoder
 
-class FragmentEventTab(private val tabType: String, private var UserInfo : DataBaseUser) : Fragment() {
+class FragmentEventTab : Fragment() {
 
     private lateinit var adapter: AdapterEvent
     private val items = ArrayList<EventDataGroup>()
 
     private var _binding: FragmentEventTabBinding? = null
     private val binding get() = _binding!!
-
+    private var UserInfo = DataBaseUser()
+    private var platform = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,9 +46,13 @@ class FragmentEventTab(private val tabType: String, private var UserInfo : DataB
             blank.tviewblank.text = "이벤트를 불러오는 중..."
         }
 
+        UserInfo = (parentFragment as FragmentEvent).UserInfo
+
+        platform = arguments?.getString("platform","") ?: ""
+
         items.clear()
 
-        when (tabType) {
+        when (platform) {
             "Joara" -> {
                 getEventJoara()
             }
@@ -92,7 +97,7 @@ class FragmentEventTab(private val tabType: String, private var UserInfo : DataB
                         Toast.makeText(requireContext(), "지원하지 않는 이벤트 형식입니다.", Toast.LENGTH_SHORT).show()
                     } else {
                         val mBottomSheetDialogEvent =
-                            BottomSheetDialogEvent(requireContext(), eventItem, tabType, UserInfo)
+                            BottomSheetDialogEvent(requireContext(), eventItem, platform, UserInfo)
                         fragmentManager?.let { mBottomSheetDialogEvent.show(it, null) }
                     }
                 }

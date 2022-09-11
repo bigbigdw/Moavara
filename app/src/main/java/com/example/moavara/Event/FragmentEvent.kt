@@ -28,6 +28,7 @@ class FragmentEvent: Fragment() {
     var userDao: DBUser? = null
     var UserInfo = DataBaseUser()
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
@@ -45,13 +46,17 @@ class FragmentEvent: Fragment() {
             UserInfo = userDao?.daoUser()?.get() ?: DataBaseUser()
         }
 
-        mFragmentEventTab = FragmentEventTab("Joara", UserInfo)
+        adapterType = AdapterType(items)
+        items.clear()
+
+        mFragmentEventTab = FragmentEventTab()
+        val bundle = Bundle()
+        bundle.putString("platform", "Joara")
+        mFragmentEventTab.arguments = bundle
+
         childFragmentManager.commit {
             replace(R.id.llayoutWrap, mFragmentEventTab)
         }
-
-        adapterType = AdapterType(items)
-        items.clear()
 
         with(binding){
             rviewType.layoutManager =
@@ -75,7 +80,11 @@ class FragmentEvent: Fragment() {
                 adapterType.setSelectedBtn(position)
                 adapterType.notifyDataSetChanged()
 
-                mFragmentEventTab = FragmentEventTab(item.type ?: "", UserInfo)
+                mFragmentEventTab = FragmentEventTab()
+                val adapterBundle = Bundle()
+                adapterBundle.putString("platform", item.type)
+                mFragmentEventTab.arguments = adapterBundle
+
                 childFragmentManager.commit {
                     replace(R.id.llayoutWrap, mFragmentEventTab)
                 }

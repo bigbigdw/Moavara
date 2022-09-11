@@ -14,7 +14,6 @@ class FragmentCommunity : Fragment() {
 
     private lateinit var fragmentBoard: FragmentBoard
     private lateinit var fragmentDC: FragmentDC
-    private lateinit var fragmentRuliweb: FragmentRuliweb
 
     private var _binding: FragmentCommunityBinding? = null
     private val binding get() = _binding!!
@@ -73,12 +72,6 @@ class FragmentCommunity : Fragment() {
                         fragmentDC = FragmentDC("https://gall.dcinside.com/board/lists?id=fantasy_new2")
                         childFragmentManager.commit {
                             replace(R.id.llayoutWrap, fragmentDC)
-                        }
-                    }
-                    5->{
-                        fragmentRuliweb = FragmentRuliweb("Best")
-                        childFragmentManager.commit {
-                            replace(R.id.llayoutWrap, fragmentRuliweb)
                         }
                     }
                 }

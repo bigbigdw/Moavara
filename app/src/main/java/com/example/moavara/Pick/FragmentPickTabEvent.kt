@@ -27,14 +27,14 @@ import java.net.URLEncoder
 import java.util.*
 
 
-class FragmentPickTabEvent(private var UserInfo: DataBaseUser) : Fragment() {
+class FragmentPickTabEvent : Fragment() {
 
     private lateinit var adapter: AdapterPickEvent
     private val items = ArrayList<EventData>()
 
     private var _binding: FragmentPickTabBinding? = null
     private val binding get() = _binding!!
-
+    private var UserInfo = DataBaseUser()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,6 +44,7 @@ class FragmentPickTabEvent(private var UserInfo: DataBaseUser) : Fragment() {
         val view = binding.root
 
         binding.blank.tviewblank.text = "마이픽을 한 이벤트가 없습니다."
+        UserInfo = (parentFragment as FragmentPick).UserInfo
 
         adapter = AdapterPickEvent(requireContext(), items, this@FragmentPickTabEvent, UserInfo)
 

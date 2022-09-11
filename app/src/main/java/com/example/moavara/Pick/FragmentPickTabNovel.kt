@@ -23,13 +23,14 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import java.util.*
 
-class FragmentPickTabNovel(private var UserInfo : DataBaseUser) : Fragment() {
+class FragmentPickTabNovel : Fragment() {
 
     private lateinit var adapter: AdapterPickNovel
     private val items = ArrayList<BookListDataBest>()
 
     private var _binding: FragmentPickTabBinding? = null
     private val binding get() = _binding!!
+    private var UserInfo = DataBaseUser()
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -42,6 +43,7 @@ class FragmentPickTabNovel(private var UserInfo : DataBaseUser) : Fragment() {
         adapter = AdapterPickNovel(requireContext(), items, this@FragmentPickTabNovel, UserInfo)
 
         binding.blank.tviewblank.text = "마이픽을 한 작품이 없습니다."
+        UserInfo = (parentFragment as FragmentPick).UserInfo
 
         // 리사이클러뷰에 스와이프, 드래그 기능 달기
         val swipeHelperCallback = SwipeHelperCallback(adapter).apply {

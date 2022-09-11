@@ -91,7 +91,7 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:visibility="gone"
-                    tools:visibility="gone">
+                    tools:visibility="visible">
 
                     <include
                         android:id="@+id/blank"
@@ -147,7 +147,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/pretendardvariable"
-                                android:text="@string/Best_BottomDialogBtn"
+                                android:text="작품 상세보기"
                                 android:textColor="#EDE6FD"
                                 android:textSize="20dp"
                                 tools:ignore="TextContrastCheck" />
@@ -162,7 +162,8 @@
                     android:layout_height="match_parent"
                     android:background="#3E424B"
                     android:gravity="center_horizontal"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    tools:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="match_parent"

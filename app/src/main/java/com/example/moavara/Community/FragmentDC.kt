@@ -76,7 +76,7 @@ class FragmentDC(
         adapterCommunity?.setOnItemClickListener(object : AdapterCommunity.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
                 val item: CommunityBoard? = adapterCommunity!!.getItem(position)
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(item?.nid ?: ""))
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(item?.link ?: ""))
                 activity?.startActivity(intent)
             }
         })

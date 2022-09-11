@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
@@ -68,7 +67,6 @@ class ActivityBestDetail : AppCompatActivity() {
     private var isPicked = false
     private var hasBookData = false
     private var fromPick = false
-    private var fromSearch = false
     private var isFirstPick = false
 
     var pickItem = BookListDataBest()
@@ -96,7 +94,6 @@ class ActivityBestDetail : AppCompatActivity() {
         pos = intent.getIntExtra("POSITION", 0)
         hasBookData = intent.getBooleanExtra("HASDATA", false)
         fromPick = intent.getBooleanExtra("FROMPICK", false)
-        fromSearch = intent.getBooleanExtra("FROMSEARCH", false)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)

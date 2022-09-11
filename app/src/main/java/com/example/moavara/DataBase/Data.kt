@@ -134,7 +134,7 @@ data class BestComment(
 
 data class CommunityBoard(
     var title: String = "",
-    var nid: String = "",
+    var link: String = "",
     var date: String = ""
 )
 

@@ -5,11 +5,9 @@
     android:id="@+id/llayout_Wrap"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="0dp"
-    android:layout_marginEnd="0dp"
-    android:layout_marginBottom="8dp"
     android:gravity="center_vertical"
     android:orientation="horizontal"
+    android:paddingBottom="8dp"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 
@@ -47,8 +45,6 @@
         android:id="@+id/llayoutBody"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="0dp"
         android:background="#0D0D0D"
         android:gravity="start|center_vertical"
         android:orientation="vertical">

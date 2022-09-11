@@ -79,8 +79,7 @@ class FragmentBoard :
                 val item: CommunityBoard? = adapterCommunity!!.getItem(position)
                 val intent = Intent(
                     Intent.ACTION_VIEW, Uri.parse(
-                        "https://www.joara.com/freeboard/" + (item?.nid
-                            ?: "")
+                        "https://www.joara.com/freeboard/" + (item?.link ?: "")
                     )
                 )
                 startActivity(intent)

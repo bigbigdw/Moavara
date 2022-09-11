@@ -53,6 +53,9 @@ class FragmentBest : Fragment() {
         }
 
         mFragmentBestTabToday = FragmentBestTabToday("Joara", UserInfo)
+        mFragmentBestTabWeekend = FragmentBestTabWeekend("Joara", UserInfo)
+        mFragmentBestTabMonth = FragmentBestTabMonth("Joara", UserInfo)
+
         childFragmentManager.commit {
             replace(R.id.llayoutWrap, mFragmentBestTabToday)
         }
@@ -67,21 +70,18 @@ class FragmentBest : Fragment() {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 when(tab.position){
                     0->{
-                        mFragmentBestTabToday = FragmentBestTabToday("Joara", UserInfo)
                         childFragmentManager.commit {
                             replace(R.id.llayoutWrap, mFragmentBestTabToday)
                         }
                         getType("Today")
                     }
                     1->{
-                        mFragmentBestTabWeekend = FragmentBestTabWeekend("Joara", UserInfo)
                         childFragmentManager.commit {
                             replace(R.id.llayoutWrap, mFragmentBestTabWeekend)
                         }
                         getType("Weekend")
                     }
                     2->{
-                        mFragmentBestTabMonth = FragmentBestTabMonth("Joara", UserInfo)
                         childFragmentManager.commit {
                             replace(R.id.llayoutWrap, mFragmentBestTabMonth)
                         }
