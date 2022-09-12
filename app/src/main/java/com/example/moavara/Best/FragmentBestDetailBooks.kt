@@ -1,8 +1,9 @@
 package com.example.moavara.Best
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.SpannableStringBuilder
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,6 +58,28 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
         } else if (platfrom == "Toksoda"){
             getBooksToksoda()
         }
+
+        adapterBestOthers?.setOnItemClickListener(object : AdapterBestOther.OnItemClickListener {
+            override fun onItemClick(v: View?, position: Int) {
+                val item: BookListDataBest? = adapterBestOthers?.getItem(position)
+
+                if(item?.type == "MrBlue"){
+                    val intent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse( "https://www.mrblue.com${item.bookCode}")
+                    )
+                    requireContext().startActivity(intent)
+                } else {
+
+                    val bookDetailIntent = Intent(requireContext(), ActivityBestDetail::class.java)
+                    bookDetailIntent.putExtra("BookCode", item?.bookCode)
+                    bookDetailIntent.putExtra("Type", item?.type)
+                    bookDetailIntent.putExtra("POSITION", position)
+                    bookDetailIntent.putExtra("HASDATA", true)
+                    requireContext().startActivity(bookDetailIntent)
+                }
+            }
+        })
 
         return view
     }

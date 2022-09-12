@@ -319,6 +319,9 @@ class ActivityGenre : AppCompatActivity() {
                     "ROMANCE" -> {
                         genre = "로맨스"
                     }
+                    "BL" -> {
+                        genre = "BL"
+                    }
                 }
 
                 // 안내 팝업

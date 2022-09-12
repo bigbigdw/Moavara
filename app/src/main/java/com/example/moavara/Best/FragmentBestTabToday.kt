@@ -106,9 +106,8 @@ class FragmentBestTabToday(private val platform: String, private val UserInfo: D
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 var result = dataSnapshot.child(DBDate.Month()).child(DBDate.Week()).child(DBDate.DayInt().toString())
 
-                 if(!dataSnapshot.exists()){
+                 if(!result.exists()){
                      result = DBDate.DayIntYesterDay(dataSnapshot)
-                } else {
                 }
 
                 for (postSnapshot in result.children) {

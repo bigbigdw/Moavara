@@ -20,12 +20,14 @@
             android:layout_height="wrap_content"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
-            <ImageView
-                android:id="@+id/HomeImg"
-                android:layout_width="110dp"
-                android:layout_height="22dp"
-                android:contentDescription="@string/TODO"
-                app:srcCompat="@drawable/moabara_logo" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="통합 검색"
+                android:textColor="#EDE6FD"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
