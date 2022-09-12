@@ -1,8 +1,6 @@
 package com.example.moavara.Best
 
 import android.os.Bundle
-import android.util.Half.toFloat
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -63,9 +61,9 @@ class InnerFragmentBestDetailLine(
                 dataList3.add(BookItem[i].info3.replace("추천 수 : ", ""))
             }
 
-            items.add(BestLineChart(dateList, entryList, "조회 수", "#20459e", dataList1))
-            items.add(BestLineChart(dateList, entryList2, "선호작 수", "#20459e", dataList2))
-            items.add(BestLineChart(dateList, entryList3, "추천 수", "#20459e", dataList3))
+            items.add(BestLineChart(dateList, entryList, "조회 수", "#621CEF", dataList1))
+            items.add(BestLineChart(dateList, entryList2, "선호작 수", "#621CEF", dataList2))
+            items.add(BestLineChart(dateList, entryList3, "추천 수", "#621CEF", dataList3))
             //TODO:
 //            items.add(BestLineChart(dateList, entryList4, "댓글 수", "#20459e"))
             adapterChart?.notifyDataSetChanged()
@@ -85,10 +83,10 @@ class InnerFragmentBestDetailLine(
 
             }
 
-            items.add(BestLineChart(dateList, entryList, "별점 수", "#00dc64", dataList1))
-            items.add(BestLineChart(dateList, entryList2, "조회 수", "#00dc64", dataList2))
+            items.add(BestLineChart(dateList, entryList, "별점 수", "#621CEF", dataList1))
+            items.add(BestLineChart(dateList, entryList2, "조회 수", "#621CEF", dataList2))
             if(BookItem[0].info3.isNotEmpty()){
-                items.add(BestLineChart(dateList, entryList3, "관심 수", "#00dc64", dataList3))
+                items.add(BestLineChart(dateList, entryList3, "관심 수", "#621CEF", dataList3))
             }
 
             adapterChart?.notifyDataSetChanged()
@@ -106,9 +104,9 @@ class InnerFragmentBestDetailLine(
                 dataList3.add(BookItem[i].info3.replace("평점 : ", ""))
             }
 
-            items.add(BestLineChart(dateList, entryList, "조회 수", "#ffd200", dataList1))
-            items.add(BestLineChart(dateList, entryList2, "추천 수", "#ffd200", dataList2))
-            items.add(BestLineChart(dateList, entryList3, "평점 수", "#ffd200", dataList3))
+            items.add(BestLineChart(dateList, entryList, "조회 수", "#621CEF", dataList1))
+            items.add(BestLineChart(dateList, entryList2, "추천 수", "#621CEF", dataList2))
+            items.add(BestLineChart(dateList, entryList3, "평점 수", "#621CEF", dataList3))
             //TODO:
 //            items.add(BestLineChart(dateList, entryList4, "댓글 수", "#20459e"))
             adapterChart?.notifyDataSetChanged()
@@ -126,10 +124,10 @@ class InnerFragmentBestDetailLine(
                 dataList4.add(BookItem[i].info4.replace("댓글 수 : ", ""))
             }
 
-            items.add(BestLineChart(dateList, entryList, "조회 수", "#ffd200", dataList1))
-            items.add(BestLineChart(dateList, entryList2, "추천 수", "#ffd200", dataList2))
-            items.add(BestLineChart(dateList, entryList3, "평점 수", "#ffd200", dataList3))
-            items.add(BestLineChart(dateList, entryList4, "댓글 수", "#ffd200", dataList4))
+            items.add(BestLineChart(dateList, entryList, "조회 수", "#621CEF", dataList1))
+            items.add(BestLineChart(dateList, entryList2, "추천 수", "#621CEF", dataList2))
+            items.add(BestLineChart(dateList, entryList3, "평점 수", "#621CEF", dataList3))
+            items.add(BestLineChart(dateList, entryList4, "댓글 수", "#621CEF", dataList4))
             adapterChart?.notifyDataSetChanged()
         } else if (platform == "Ridi") {
             for (i in BookItem.indices) {
@@ -155,9 +153,9 @@ class InnerFragmentBestDetailLine(
                 dataList3.add(BookItem[i].info3.replace("댓글 수 : ", ""))
             }
 
-            items.add(BestLineChart(dateList, entryList, "편당 댓글 수", "#fc6b05", dataList1))
-            items.add(BestLineChart(dateList, entryList2, "편당 조회 수", "#fc6b05", dataList2))
-            items.add(BestLineChart(dateList, entryList3, "편당 추천 수", "#fc6b05", dataList3))
+            items.add(BestLineChart(dateList, entryList, "편당 댓글 수", "#621CEF", dataList1))
+            items.add(BestLineChart(dateList, entryList2, "편당 조회 수", "#621CEF", dataList2))
+            items.add(BestLineChart(dateList, entryList3, "편당 추천 수", "#621CEF", dataList3))
             adapterChart?.notifyDataSetChanged()
         } else if (platform == "Munpia") {
             for (i in BookItem.indices) {
@@ -179,15 +177,15 @@ class InnerFragmentBestDetailLine(
                 dataList2.add(BookItem[i].info2.replace(",",""))
             }
 
-            items.add(BestLineChart(dateList, entryList, "히트 수", "#5f9bd1", dataList1))
-            items.add(BestLineChart(dateList, entryList2, "조회 수", "#5f9bd1", dataList2))
+            items.add(BestLineChart(dateList, entryList, "히트 수", "#621CEF", dataList1))
+            items.add(BestLineChart(dateList, entryList2, "조회 수", "#621CEF", dataList2))
 
             if(BookItem[0].info3.isNotEmpty()){
-                items.add(BestLineChart(dateList, entryList3, "선호 수", "#5f9bd1", dataList3))
+                items.add(BestLineChart(dateList, entryList3, "선호 수", "#621CEF", dataList3))
             }
 
             if(BookItem[0].info4.isNotEmpty()){
-                items.add(BestLineChart(dateList, entryList4, "베스트 시간", "#5f9bd1", dataList4))
+                items.add(BestLineChart(dateList, entryList4, "베스트 시간", "#621CEF", dataList4))
             }
 
             adapterChart?.notifyDataSetChanged()
@@ -203,9 +201,9 @@ class InnerFragmentBestDetailLine(
                 dataList3.add(BookItem[i].info3)
             }
 
-            items.add(BestLineChart(dateList, entryList, "찜 수", "#ff442c", dataList1))
-            items.add(BestLineChart(dateList, entryList2, "조회 수", "#ff442c", dataList2))
-            items.add(BestLineChart(dateList, entryList3, "선호작 수", "#ff442c", dataList3))
+            items.add(BestLineChart(dateList, entryList, "찜 수", "#621CEF", dataList1))
+            items.add(BestLineChart(dateList, entryList2, "조회 수", "#621CEF", dataList2))
+            items.add(BestLineChart(dateList, entryList3, "선호작 수", "#621CEF", dataList3))
             adapterChart?.notifyDataSetChanged()
         }
 

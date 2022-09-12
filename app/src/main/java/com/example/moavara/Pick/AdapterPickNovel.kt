@@ -393,6 +393,9 @@ class AdapterPickNovel(private var context: Context, private var itemsList: Arra
         getItem(fromPos).number = getItem(toPos).number
         getItem(toPos).number = getItem(fromPos).number
         notifyItemMoved(fromPos, toPos)
+        for(i in itemsList.indices){
+            mRootRef.child("User").child(UserInfo.UID).child("Novel").child("book").child(itemsList[i].bookCode).child("number").setValue((itemsList.size - i))
+        }
     }
 
     fun selectedItem(position: Int) {

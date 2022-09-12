@@ -175,6 +175,17 @@ class AdapterPickEvent(private var context : Context, private var itemsList: Arr
         getItem(fromPos).number = getItem(toPos).number
         getItem(toPos).number = getItem(fromPos).number
         notifyItemMoved(fromPos, toPos)
+
+        for (i in itemsList.indices) {
+            val link: String = if (itemsList[i].type == "Joara") {
+                URLEncoder.encode(itemsList[i].link, "utf-8")
+            } else {
+                itemsList[i].link
+            }
+
+            mRootRef.child("User").child(UserInfo.UID).child("Event").child(link).child("number")
+                .setValue((itemsList.size - i))
+        }
     }
 
     override fun getItemCount(): Int {

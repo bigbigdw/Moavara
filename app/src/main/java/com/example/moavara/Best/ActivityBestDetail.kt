@@ -881,8 +881,8 @@ class ActivityBestDetail : AppCompatActivity() {
                     )
 
                     pickBookCodeItem = BookListDataBestAnalyze(
-                        doc.select(".metadata_writer .author_detail_link").text(),
-                        doc.select(".header_info_wrap .StarRate_ParticipantCount").text(),
+                        doc.select(".header_info_wrap .StarRate_ParticipantCount").text().replace("명",""),
+                        ((doc.select(".header_info_wrap .StarRate_Score").text().replace("점","")).toFloat() * 10).toString().replace(".0",""),
                         "",
                         "",
                         999,

@@ -356,12 +356,13 @@ class FragmentEventTab : Fragment() {
                     if(i < onestoreKeyword.size / 3){
                         try {
                             requireActivity().runOnUiThread {
+
                                 items.add(
                                     EventDataGroup(
                                         EventData(
-                                            "",
+                                            "OneStore_${DBDate.DateMMDDHHMM()}",
                                             doc.select(".BannerSwiperItemPic")[2 * i].absUrl("src"),
-                                            "",
+                                            doc.select(".BannerSwiperItemPic")[2 * i].absUrl("alt").replace("https://onestory.co.kr/main/",""),
                                             "",
                                             DBDate.DateMMDD(),
                                             999,
@@ -369,9 +370,9 @@ class FragmentEventTab : Fragment() {
                                             ""
                                         ),
                                         EventData(
-                                            "",
+                                            "OneStore_${DBDate.DateMMDDHHMM()}",
                                             doc.select(".BannerSwiperItemPic")[2 * i + 1].absUrl("src"),
-                                            "",
+                                            doc.select(".BannerSwiperItemPic")[2 * i + 1].absUrl("alt").replace("https://onestory.co.kr/main/",""),
                                             "",
                                             DBDate.DateMMDD(),
                                             999,

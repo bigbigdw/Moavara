@@ -134,24 +134,26 @@ class FragmentBestTabToday(private val platform: String, private val UserInfo: D
                             group.memo
                         ))
 
-                        bestDao?.bestDao()?.insert(
-                            RoomBookListDataBest(
-                                group.writer,
-                                group.title,
-                                group.bookImg,
-                                group.bookCode,
-                                group.info1,
-                                group.info2,
-                                group.info3,
-                                group.info4,
-                                group.info5,
-                                group.info6,
-                                group.number,
-                                group.date,
-                                group.type,
-                                group.memo
+                        if(result.exists()){
+                            bestDao?.bestDao()?.insert(
+                                RoomBookListDataBest(
+                                    group.writer,
+                                    group.title,
+                                    group.bookImg,
+                                    group.bookCode,
+                                    group.info1,
+                                    group.info2,
+                                    group.info3,
+                                    group.info4,
+                                    group.info5,
+                                    group.info6,
+                                    group.number,
+                                    group.date,
+                                    group.type,
+                                    group.memo
+                                )
                             )
-                        )
+                        }
                     }
                 }
 
