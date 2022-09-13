@@ -14,8 +14,8 @@ android {
         applicationId "com.example.moavara"
         minSdkVersion 26
         targetSdkVersion 32
-        versionCode 1000400
-        versionName "1.0.4"
+        versionCode 100005
+        versionName "1.0.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
