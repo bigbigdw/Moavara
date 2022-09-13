@@ -14,21 +14,28 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
+import androidx.work.*
 import com.bumptech.glide.Glide
 import com.example.moavara.Best.ActivityBestDetail
 import com.example.moavara.DataBase.DBUser
 import com.example.moavara.DataBase.DataBaseUser
+import com.example.moavara.Firebase.FirebaseWorkManager
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
 import com.example.moavara.Retrofit.*
 import com.example.moavara.Util.*
 import com.example.moavara.databinding.FragmentSearchBookcodeBinding
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import org.jsoup.HttpStatusException
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import java.util.concurrent.TimeUnit
 
 class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment() {
 
@@ -45,6 +52,8 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
 
     var userDao: DBUser? = null
     var UserInfo = DataBaseUser()
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
+    private var isFirstPick = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,6 +67,8 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
         adapterType = AdapterSearchKeyword(typeItems)
         typeItems.clear()
         binding.sview.hint = "조아라 검색"
+
+        firebaseAnalytics = Firebase.analytics
 
         userDao = Room.databaseBuilder(
             requireContext(),
@@ -205,20 +216,44 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
             bookCode = binding.sview.text.toString()
 
             if (platform == "Joara") {
+                val bundle = Bundle()
+                bundle.putString("SEARCH_BOOKCODE_PLATFORM", "Joara")
+                firebaseAnalytics.logEvent("SEARCH_FragmentSearchBookcode", bundle)
                 setLayoutJoara()
             } else if (platform == "Kakao") {
+                val bundle = Bundle()
+                bundle.putString("SEARCH_BOOKCODE_PLATFORM", "Kakao")
+                firebaseAnalytics.logEvent("SEARCH_FragmentSearchBookcode", bundle)
                 setLayoutKaKao()
             } else if (platform == "Kakao_Stage") {
+                val bundle = Bundle()
+                bundle.putString("SEARCH_BOOKCODE_PLATFORM", "Kakao_Stage")
+                firebaseAnalytics.logEvent("SEARCH_FragmentSearchBookcode", bundle)
                 setLayoutKaKaoStage()
             } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver") {
+                val bundle = Bundle()
+                bundle.putString("SEARCH_BOOKCODE_PLATFORM", "Naver_Today")
+                firebaseAnalytics.logEvent("SEARCH_FragmentSearchBookcode", bundle)
                 setLayoutNaverToday()
             } else if (platform == "Ridi") {
+                val bundle = Bundle()
+                bundle.putString("SEARCH_BOOKCODE_PLATFORM", "Ridi")
+                firebaseAnalytics.logEvent("SEARCH_FragmentSearchBookcode", bundle)
                 setLayoutRidi()
             } else if (platform == "Munpia") {
+                val bundle = Bundle()
+                bundle.putString("SEARCH_BOOKCODE_PLATFORM", "Munpia")
+                firebaseAnalytics.logEvent("SEARCH_FragmentSearchBookcode", bundle)
                 setLayoutMunpia()
             } else if (platform == "OneStore") {
+                val bundle = Bundle()
+                bundle.putString("SEARCH_BOOKCODE_PLATFORM", "OneStore")
+                firebaseAnalytics.logEvent("SEARCH_FragmentSearchBookcode", bundle)
                 setLayoutOneStore()
             } else if (platform == "Toksoda") {
+                val bundle = Bundle()
+                bundle.putString("SEARCH_BOOKCODE_PLATFORM", "Toksoda")
+                firebaseAnalytics.logEvent("SEARCH_FragmentSearchBookcode", bundle)
                 setLayoutToksoda()
             }
             binding.sview.text = SpannableStringBuilder("")
@@ -229,6 +264,10 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
             .addListenerForSingleValueEvent(object :
                 ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                    if (!dataSnapshot.exists()) {
+                        isFirstPick = true
+                    }
 
                     for (pickedItem in dataSnapshot.children) {
 
@@ -274,6 +313,11 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
 
                 binding.tviewPick.text = "Pick"
 
+                val bundle = Bundle()
+                bundle.putString("PICK_PLATFORM", platform)
+                bundle.putString("PICK_STATUS", "DELETE")
+                firebaseAnalytics.logEvent("SEARCH_FragmentSearchBookcode", bundle)
+
                 Novel.child("book").child(bookCode).removeValue()
                 Novel.child("bookCode").child(bookCode).removeValue()
                 Toast.makeText(
@@ -292,6 +336,69 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
+
+                    if (isFirstPick) {
+                        isFirstPick = false
+
+                        val inputData = Data.Builder()
+                            .putString(FirebaseWorkManager.TYPE, "PICK")
+                            .putString(FirebaseWorkManager.UID, UserInfo.UID)
+                            .putString(FirebaseWorkManager.USER, UserInfo.Nickname)
+                            .build()
+
+                        /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
+                        val workRequest =
+                            PeriodicWorkRequestBuilder<FirebaseWorkManager>(6, TimeUnit.HOURS)
+                                .setBackoffCriteria(
+                                    BackoffPolicy.LINEAR,
+                                    PeriodicWorkRequest.MIN_BACKOFF_MILLIS,
+                                    TimeUnit.MILLISECONDS
+                                )
+                                .addTag("MoavaraPick")
+                                .setInputData(inputData)
+                                .build()
+
+                        val workManager =
+                            WorkManager.getInstance(requireContext().applicationContext)
+
+                        workManager.enqueueUniquePeriodicWork(
+                            "MoavaraPick",
+                            ExistingPeriodicWorkPolicy.KEEP,
+                            workRequest
+                        )
+                        FirebaseMessaging.getInstance().subscribeToTopic(UserInfo.UID)
+
+                        Novel.child("book").child(bookCode).setValue(pickItem)
+
+                        if (bookData.isEmpty()) {
+                            Novel.child("bookCode").child(bookCode).child(DBDate.DateMMDD())
+                                .setValue(pickBookCodeItem)
+                        } else {
+                            Novel.child("bookCode").child(bookCode).setValue(bookData)
+                        }
+                        mRootRef.child("User").child(UserInfo.UID).child("Mining").setValue(true)
+
+                        val bundle = Bundle()
+                        bundle.putString("PICK_PLATFORM", platform)
+                        bundle.putString("PICK_STATUS", "FIRST")
+                        firebaseAnalytics.logEvent("SEARCH_FragmentSearchBookcode", bundle)
+
+                    } else {
+                        Novel.child("book").child(bookCode).setValue(pickItem)
+
+                        if (bookData.isEmpty()) {
+                            Novel.child("bookCode").child(bookCode).child(DBDate.DateMMDD())
+                                .setValue(pickBookCodeItem)
+                        } else {
+                            Novel.child("bookCode").child(bookCode).setValue(bookData)
+                        }
+
+                        val bundle = Bundle()
+                        bundle.putString("PICK_PLATFORM", platform)
+                        bundle.putString("PICK_STATUS", "ADD")
+                        firebaseAnalytics.logEvent("SEARCH_FragmentSearchBookcode", bundle)
+                    }
+
                     binding.llayoutPick.background = GradientDrawable().apply {
                         setColor(Color.parseColor("#A7ACB7"))
                         shape = GradientDrawable.RECTANGLE
@@ -299,15 +406,6 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                     }
 
                     binding.tviewPick.text = "Pick 완료"
-
-                    Novel.child("book").child(bookCode).setValue(pickItem)
-
-                    if (bookData.isEmpty()) {
-                        Novel.child("bookCode").child(bookCode).child(DBDate.DateMMDD())
-                            .setValue(pickBookCodeItem)
-                    } else {
-                        Novel.child("bookCode").child(bookCode).setValue(bookData)
-                    }
 
                     Toast.makeText(
                         requireContext(),
@@ -319,6 +417,10 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
         }
 
         binding.llayoutView.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString("BEST_FROM", "search")
+            firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
+
             val bookDetailIntent =
                 Intent(requireContext(), ActivityBestDetail::class.java)
             bookDetailIntent.putExtra("BookCode", bookCode)

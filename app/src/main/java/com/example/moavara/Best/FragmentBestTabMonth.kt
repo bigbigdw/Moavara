@@ -22,9 +22,12 @@ import com.example.moavara.Search.BookListDataBestWeekend
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.DBDate
 import com.example.moavara.databinding.FragmentBestMonthBinding
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
 import java.io.IOException
 
 
@@ -43,6 +46,7 @@ class FragmentBestTabMonth(private val platform: String, private val UserInfo: D
     private var month = 0
     private var monthCount = 0
     var bestDao: DBBest? = null
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,6 +54,8 @@ class FragmentBestTabMonth(private val platform: String, private val UserInfo: D
     ): View {
         _binding = FragmentBestMonthBinding.inflate(inflater, container, false)
         val view = binding.root
+
+        firebaseAnalytics = Firebase.analytics
 
         bestDao = Room.databaseBuilder(
             requireContext(),
@@ -216,12 +222,18 @@ class FragmentBestTabMonth(private val platform: String, private val UserInfo: D
                     )
                     requireContext().startActivity(intent)
                 } else {
+                    val bundle = Bundle()
+                    bundle.putString("BEST_platform", item?.type)
+                    bundle.putString("BEST_bottomDialog_from", "Month")
+                    firebaseAnalytics.logEvent("BEST_bottomDialog", bundle)
+
                     val mBottomDialogBest = BottomDialogBest(
                         requireContext(),
                         item,
                         platform,
                         position,
-                        UserInfo
+                        UserInfo,
+                        firebaseAnalytics
                     )
                     childFragmentManager.let { mBottomDialogBest.show(it, null) }
                 }

@@ -15,6 +15,9 @@ import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Genre
 import com.example.moavara.Util.Param
 import com.example.moavara.databinding.FragmentEventTabBinding
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
@@ -29,6 +32,7 @@ class FragmentEventTab : Fragment() {
     private val binding get() = _binding!!
     private var UserInfo = DataBaseUser()
     private var platform = ""
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +41,8 @@ class FragmentEventTab : Fragment() {
         _binding = FragmentEventTabBinding.inflate(inflater, container, false)
         val view = binding.root
         adapter = AdapterEvent(items)
+
+        firebaseAnalytics = Firebase.analytics
 
         with(binding) {
             rview.layoutManager =
@@ -96,6 +102,10 @@ class FragmentEventTab : Fragment() {
                     if(eventItem.type == "Joara" && !eventItem.link.contains("joaralink://event?event_id=") && !eventItem.link.contains("joaralink://notice?notice_id=")){
                         Toast.makeText(requireContext(), "지원하지 않는 이벤트 형식입니다.", Toast.LENGTH_SHORT).show()
                     } else {
+                        val bundle = Bundle()
+                        bundle.putString("EVENT_platform", eventItem.type)
+                        firebaseAnalytics.logEvent("BottomSheetDialogEvent", bundle)
+
                         val mBottomSheetDialogEvent =
                             BottomSheetDialogEvent(requireContext(), eventItem, platform, UserInfo)
                         fragmentManager?.let { mBottomSheetDialogEvent.show(it, null) }

@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
+import android.os.Bundle
 import android.text.Editable
 import android.text.SpannableStringBuilder
 import android.text.TextWatcher
@@ -26,10 +27,11 @@ import com.example.moavara.Search.BookListDataBest
 import com.example.moavara.Util.applyingTextColor
 import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.ItemPickNovelBinding
+import com.google.firebase.analytics.FirebaseAnalytics
 import java.util.*
 
 
-class AdapterPickNovel(private var context: Context, private var itemsList: ArrayList<BookListDataBest>, private var fragment: FragmentPickTabNovel, private var UserInfo : DataBaseUser) :
+class AdapterPickNovel(private var context: Context, private var itemsList: ArrayList<BookListDataBest>, private var fragment: FragmentPickTabNovel, private var UserInfo : DataBaseUser, private var firebaseAnalytics: FirebaseAnalytics) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var memo = ""
 
@@ -385,6 +387,10 @@ class AdapterPickNovel(private var context: Context, private var itemsList: Arra
     fun removeData(position: Int) {
         itemsList.removeAt(position)
         notifyItemRemoved(position)
+
+        val bundle = Bundle()
+        bundle.putString("PICK_STATUS", "DELETE")
+        firebaseAnalytics.logEvent("PICK_FragmentPickTabNovel", bundle)
     }
 
     // 현재 선택된 데이터와 드래그한 위치에 있는 데이터를 교환
@@ -396,6 +402,10 @@ class AdapterPickNovel(private var context: Context, private var itemsList: Arra
         for(i in itemsList.indices){
             mRootRef.child("User").child(UserInfo.UID).child("Novel").child("book").child(itemsList[i].bookCode).child("number").setValue((itemsList.size - i))
         }
+
+        val bundle = Bundle()
+        bundle.putString("PICK_STATUS", "SWAP")
+        firebaseAnalytics.logEvent("PICK_FragmentPickTabNovel", bundle)
     }
 
     fun selectedItem(position: Int) {

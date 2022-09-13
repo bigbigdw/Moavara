@@ -18,9 +18,12 @@ import com.example.moavara.Search.BookListDataBest
 import com.example.moavara.Util.SwipeHelperCallback
 import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.FragmentPickTabBinding
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
 import java.util.*
 
 class FragmentPickTabNovel : Fragment() {
@@ -31,6 +34,7 @@ class FragmentPickTabNovel : Fragment() {
     private var _binding: FragmentPickTabBinding? = null
     private val binding get() = _binding!!
     private var UserInfo = DataBaseUser()
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -40,8 +44,10 @@ class FragmentPickTabNovel : Fragment() {
         _binding = FragmentPickTabBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        firebaseAnalytics = Firebase.analytics
+
         UserInfo = (parentFragment as FragmentPick).UserInfo
-        adapter = AdapterPickNovel(requireContext(), items, this@FragmentPickTabNovel, UserInfo)
+        adapter = AdapterPickNovel(requireContext(), items, this@FragmentPickTabNovel, UserInfo, firebaseAnalytics)
 
         binding.blank.tviewblank.text = "마이픽을 한 작품이 없습니다."
 
@@ -123,6 +129,10 @@ class FragmentPickTabNovel : Fragment() {
                         Toast.makeText(requireContext(), "수정되었습니다", Toast.LENGTH_SHORT).show()
                     }
                     "Item" -> {
+                        val bundle = Bundle()
+                        bundle.putString("BEST_FROM", "pick_novel")
+                        firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
+
                         val bookDetailIntent =
                             Intent(requireContext(), ActivityBestDetail::class.java)
                         bookDetailIntent.putExtra("BookCode", group.bookCode)

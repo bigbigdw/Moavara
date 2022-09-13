@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
+import android.os.Bundle
 import android.text.Editable
 import android.text.SpannableStringBuilder
 import android.text.TextWatcher
@@ -24,10 +25,11 @@ import com.example.moavara.R
 import com.example.moavara.Search.EventData
 import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.ItemPickEventBinding
+import com.google.firebase.analytics.FirebaseAnalytics
 import java.net.URLEncoder
 import java.util.*
 
-class AdapterPickEvent(private var context : Context, private var itemsList: ArrayList<EventData>, private var fragment: FragmentPickTabEvent, private var UserInfo : DataBaseUser) :
+class AdapterPickEvent(private var context : Context, private var itemsList: ArrayList<EventData>, private var fragment: FragmentPickTabEvent, private var UserInfo : DataBaseUser, private var firebaseAnalytics: FirebaseAnalytics) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var memo = ""
 
@@ -167,6 +169,10 @@ class AdapterPickEvent(private var context : Context, private var itemsList: Arr
     fun removeData(position: Int) {
         itemsList.removeAt(position)
         notifyItemRemoved(position)
+
+        val bundle = Bundle()
+        bundle.putString("PICK_STATUS", "DELETE")
+        firebaseAnalytics.logEvent("PICK_FragmentPickTabEvent", bundle)
     }
 
     // 현재 선택된 데이터와 드래그한 위치에 있는 데이터를 교환
@@ -186,6 +192,10 @@ class AdapterPickEvent(private var context : Context, private var itemsList: Arr
             mRootRef.child("User").child(UserInfo.UID).child("Event").child(link).child("number")
                 .setValue((itemsList.size - i))
         }
+
+        val bundle = Bundle()
+        bundle.putString("PICK_STATUS", "SWAP")
+        firebaseAnalytics.logEvent("PICK_FragmentPickTabEvent", bundle)
     }
 
     override fun getItemCount(): Int {

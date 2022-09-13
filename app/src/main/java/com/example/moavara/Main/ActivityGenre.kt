@@ -18,6 +18,9 @@ import com.example.moavara.User.ActivityGuide
 import com.example.moavara.Util.Genre
 import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.ActivityGenreBinding
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 
 
 class ActivityGenre : AppCompatActivity() {
@@ -30,11 +33,14 @@ class ActivityGenre : AppCompatActivity() {
     var userDao: DBUser? = null
     var UserInfo : DataBaseUser? = null
     var userGenre = ""
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityGenreBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        firebaseAnalytics = Firebase.analytics
 
         userDao = Room.databaseBuilder(
             this,
@@ -44,6 +50,9 @@ class ActivityGenre : AppCompatActivity() {
 
         if(userDao?.daoUser() != null){
             UserInfo = userDao?.daoUser()?.get()
+            val bundle = Bundle()
+            bundle.putString("USER_GENRE", UserInfo?.Genre)
+            firebaseAnalytics.logEvent("USER_ActivityGenre", bundle)
         }
 
         mode = intent.getStringExtra("MODE") ?: "USER"
@@ -163,6 +172,10 @@ class ActivityGenre : AppCompatActivity() {
                 llayoutBtn3.background = llayoutBtnBG
                 llayoutBtn4.background = llayoutBtnBG
 
+                val bundle = Bundle()
+                bundle.putString("USER_GENRE", "FANTASY")
+                firebaseAnalytics.logEvent("USER_ActivityGenre", bundle)
+
                 if(UserInfo?.Genre != "FANTASY"){
                     llayoutApplyGenre.visibility = View.VISIBLE
                     llayoutApplyGenre.setBackgroundColor(Color.parseColor("#844DF3"))
@@ -174,6 +187,10 @@ class ActivityGenre : AppCompatActivity() {
             llayoutBtn2.setOnClickListener {
                 savePreferences("GENRE","ROMANCE")
                 mRootRef.child("User").child(UID).child("Genre").setValue("ROMANCE")
+
+                val bundle = Bundle()
+                bundle.putString("USER_GENRE", "ROMANCE")
+                firebaseAnalytics.logEvent("USER_ActivityGenre", bundle)
 
                 if(mode == "USER"){
                     userGenre = "ROMANCE"
@@ -199,6 +216,10 @@ class ActivityGenre : AppCompatActivity() {
                 savePreferences("GENRE","ALL")
                 mRootRef.child("User").child(UID).child("Genre").setValue("ALL")
 
+                val bundle = Bundle()
+                bundle.putString("USER_GENRE", "ALL")
+                firebaseAnalytics.logEvent("USER_ActivityGenre", bundle)
+
                 if(mode == "USER"){
                     userGenre = "ALL"
                 } else {
@@ -220,6 +241,10 @@ class ActivityGenre : AppCompatActivity() {
             llayoutBtn4.setOnClickListener {
                 savePreferences("GENRE","BL")
                 mRootRef.child("User").child(UID).child("Genre").setValue("BL")
+
+                val bundle = Bundle()
+                bundle.putString("USER_GENRE", "BL")
+                firebaseAnalytics.logEvent("USER_ActivityGenre", bundle)
 
                 if(mode == "USER"){
                     userGenre = "BL"

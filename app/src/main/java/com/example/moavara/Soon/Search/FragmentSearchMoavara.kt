@@ -18,9 +18,12 @@ import com.example.moavara.Search.BookListDataBest
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.Genre
 import com.example.moavara.databinding.FragmentSearchmoavaraBinding
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -39,6 +42,7 @@ class FragmentSearchMoavara(private val UserInfo: DataBaseUser) : Fragment() {
     private val binding get() = _binding!!
     private var obj = JSONObject()
     val jsonArray = JSONArray()
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,6 +50,8 @@ class FragmentSearchMoavara(private val UserInfo: DataBaseUser) : Fragment() {
     ): View {
         _binding = FragmentSearchmoavaraBinding.inflate(inflater, container, false)
         val view = binding.root
+
+        firebaseAnalytics = Firebase.analytics
 
         genre = Genre.getGenre(requireContext()).toString()
 
@@ -83,12 +89,17 @@ class FragmentSearchMoavara(private val UserInfo: DataBaseUser) : Fragment() {
                         )
                         context?.startActivity(intent)
                     } else {
+                        val bundle = Bundle()
+                        bundle.putString("BEST_platform", item.type)
+                        firebaseAnalytics.logEvent("BEST_bottomDialog", bundle)
+
                         val mBottomDialogBest = BottomDialogBest(
                             requireContext(),
                             item,
                             item.type ?: "",
                             position,
-                            UserInfo
+                            UserInfo,
+                            firebaseAnalytics
                         )
 
                         fragmentManager?.let { mBottomDialogBest.show(it, null) }

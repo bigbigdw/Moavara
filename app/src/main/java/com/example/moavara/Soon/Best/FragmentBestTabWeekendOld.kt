@@ -338,15 +338,15 @@ class FragmentBestTabWeekendOld(private val tabType: String,private val UserInfo
     private fun findBook(item: BookListDataBest?) {
         if (item != null) {
             if (adapterWeek?.getSelectedBook() == item.title) {
-                val mBottomDialogBest = BottomDialogBest(
-                    requireContext(),
-                    item,
-                    tabType,
-                    item.number,
-                    UserInfo
-                )
-                fragmentManager?.let { mBottomDialogBest.show(it, null) }
-                adapterWeek?.setSelectedBook("")
+//                val mBottomDialogBest = BottomDialogBest(
+//                    requireContext(),
+//                    item,
+//                    tabType,
+//                    item.number,
+//                    UserInfo
+//                )
+//                fragmentManager?.let { mBottomDialogBest.show(it, null) }
+//                adapterWeek?.setSelectedBook("")
             } else {
                 adapterWeek?.setSelectedBook(item.title)
             }

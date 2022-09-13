@@ -23,9 +23,12 @@ import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.applyingTextColor
 import com.example.moavara.databinding.FragmentBestWeekendBinding
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
 import com.synnapps.carouselview.ViewListener
 import org.json.JSONException
 
@@ -42,6 +45,7 @@ class FragmentBestTabWeekend(private val platform: String, private val UserInfo:
     private var originalWeek = 0
     private var weekCount = 0
     val today = DBDate.getDateData(DBDate.DateMMDD())
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     var bestDao: DBBest? = null
 
@@ -52,6 +56,8 @@ class FragmentBestTabWeekend(private val platform: String, private val UserInfo:
         _binding = FragmentBestWeekendBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        firebaseAnalytics = Firebase.analytics
+
         bestDao = Room.databaseBuilder(
             requireContext(),
             DBBest::class.java,
@@ -60,7 +66,7 @@ class FragmentBestTabWeekend(private val platform: String, private val UserInfo:
 
         with(binding) {
 
-            adapter = AdapterBestWeekend(requireContext(), itemWeek, platform, UserInfo)
+            adapter = AdapterBestWeekend(requireContext(), itemWeek, platform, UserInfo, firebaseAnalytics)
 
             binding.rviewBest.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -79,6 +85,10 @@ class FragmentBestTabWeekend(private val platform: String, private val UserInfo:
 
             carousel.setViewListener(viewListenerBest)
             carousel.setImageClickListener { position ->
+                val bundle = Bundle()
+                bundle.putString("BEST_FROM", "week_carousel")
+                firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
+
                 val bookDetailIntent = Intent(requireContext(), ActivityBestDetail::class.java)
                 bookDetailIntent.putExtra("BookCode", arrayCarousel[position].bookCode)
                 bookDetailIntent.putExtra("Type", String.format("%s", platform))

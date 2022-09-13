@@ -26,6 +26,7 @@ import com.example.moavara.Util.applyingTextColor
 import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.BottomDialogBestBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -37,7 +38,8 @@ class BottomDialogBest(
     private val item: BookListDataBest?,
     private val platform: String,
     private val pos: Int,
-    private val UserInfo: DataBaseUser
+    private val UserInfo: DataBaseUser,
+    private val firebaseAnalytics: FirebaseAnalytics
 ) :
     BottomSheetDialogFragment() {
 
@@ -325,6 +327,10 @@ class BottomDialogBest(
             getRankList(item)
 
             llayoutBtnDetail.setOnClickListener {
+                val bundle = Bundle()
+                bundle.putString("BEST_FROM", "BEST")
+                firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
+
                 val bookDetailIntent = Intent(mContext, ActivityBestDetail::class.java)
                 bookDetailIntent.putExtra("BookCode",
                     item?.let { it1 -> String.format("%s", it1.bookCode) })
@@ -345,6 +351,11 @@ class BottomDialogBest(
                         setColor(Color.parseColor("#621CEF"))
                         shape = GradientDrawable.RECTANGLE
                     }
+
+                    val bundle = Bundle()
+                    bundle.putString("PICK_PLATFORM", item?.type)
+                    bundle.putString("PICK_STATUS", "DELETE")
+                    firebaseAnalytics.logEvent("BEST_bottomDialog", bundle)
 
                     binding.tviewPick.text = "Pick"
                     Toast.makeText(
@@ -415,6 +426,11 @@ class BottomDialogBest(
                         Novel.child("bookCode").child(item?.bookCode ?: "").setValue(bookCodeItems)
                         mRootRef.child("User").child(UserInfo.UID).child("Mining").setValue(true)
 
+                        val bundle = Bundle()
+                        bundle.putString("PICK_PLATFORM", item?.type)
+                        bundle.putString("PICK_STATUS", "FIRST")
+                        firebaseAnalytics.logEvent("BEST_bottomDialog", bundle)
+
                         Toast.makeText(
                             requireContext(),
                             "[${group?.title}]이(가) 마이픽에 등록되었습니다.",
@@ -424,6 +440,11 @@ class BottomDialogBest(
                     } else {
                         Novel.child("book").child(item?.bookCode ?: "").setValue(group)
                         Novel.child("bookCode").child(item?.bookCode ?: "").setValue(bookCodeItems)
+
+                        val bundle = Bundle()
+                        bundle.putString("PICK_PLATFORM", item?.type)
+                        bundle.putString("PICK_STATUS", "ADD")
+                        firebaseAnalytics.logEvent("BEST_bottomDialog", bundle)
 
                         Toast.makeText(
                             requireContext(),

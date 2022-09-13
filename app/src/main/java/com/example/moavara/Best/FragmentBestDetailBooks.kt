@@ -17,6 +17,9 @@ import com.example.moavara.Util.Param
 import com.example.moavara.Util.applyingTextColor
 import com.example.moavara.databinding.FragmentBestDetailTabsBinding
 import com.example.moavara.databinding.ItemBestDetailOtherBinding
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
@@ -32,6 +35,7 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
 
     var status = ""
     var cate = ""
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,6 +44,7 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
         _binding = FragmentBestDetailTabsBinding.inflate(inflater, container, false)
         val view = binding.root
         adapterBestOthers = AdapterBestOther(items)
+        firebaseAnalytics = Firebase.analytics
 
         binding.rview.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -70,6 +75,10 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
                     )
                     requireContext().startActivity(intent)
                 } else {
+
+                    val bundle = Bundle()
+                    bundle.putString("BEST_FROM", "Others")
+                    firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
 
                     val bookDetailIntent = Intent(requireContext(), ActivityBestDetail::class.java)
                     bookDetailIntent.putExtra("BookCode", item?.bookCode)

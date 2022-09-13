@@ -100,10 +100,6 @@ class ActivityBestDetail : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         genre = Genre.getGenre(this).toString()
 
-        val bundle = Bundle()
-        bundle.putString("test_test", "ActivityBestDetail")
-        firebaseAnalytics.logEvent("test", bundle)
-
         binding.llayoutBtnRight.background = GradientDrawable().apply {
             setColor(Color.parseColor("#621CEF"))
             shape = GradientDrawable.RECTANGLE
@@ -254,6 +250,11 @@ class ActivityBestDetail : AppCompatActivity() {
                 Novel.child("bookCode").child(bookCode).removeValue()
                 Toast.makeText(this, "[${bookTitle}]이(가) 마이픽에서 제거되었습니다.", Toast.LENGTH_SHORT).show()
 
+                val bundle = Bundle()
+                bundle.putString("PICK_PLATFORM", platform)
+                bundle.putString("PICK_STATUS", "DELETE")
+                firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
+
             } else {
                 isPicked = true
 
@@ -303,7 +304,17 @@ class ActivityBestDetail : AppCompatActivity() {
                     } else {
                         Novel.child("bookCode").child(bookCode).setValue(bookData)
                     }
+
+                    val bundle = Bundle()
+                    bundle.putString("PICK_PLATFORM", platform)
+                    bundle.putString("PICK_STATUS", "FIRST")
+                    firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
                 } else {
+                    val bundle = Bundle()
+                    bundle.putString("PICK_PLATFORM", platform)
+                    bundle.putString("PICK_STATUS", "ADD")
+                    firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
+
                     Novel.child("book").child(bookCode).setValue(pickItem)
 
                     if (bookData.isEmpty()) {
@@ -366,6 +377,11 @@ class ActivityBestDetail : AppCompatActivity() {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 when (tab.position) {
                     0 -> {
+                        val bundle = Bundle()
+                        bundle.putString("BEST_DETAIL_HASDATA", "TRUE")
+                        bundle.putString("BEST_DETAIL_TAB", "FragmentBestDetailAnalyze")
+                        firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
+
                         mFragmentBestDetailAnalyze =
                             FragmentBestDetailAnalyze(platform, bookData, hasBookData)
                         supportFragmentManager.commit {
@@ -374,12 +390,22 @@ class ActivityBestDetail : AppCompatActivity() {
                     }
                     1 -> {
                         if (platform == "Joara" || platform == "Joara_Nobless" || platform == "Joara_Premium" || platform == "Kakao" || platform == "Kakao_Stage" || platform == "OneStore" || platform == "Munpia" || platform == "Toksoda") {
+                            val bundle = Bundle()
+                            bundle.putString("BEST_DETAIL_HASDATA", "TRUE")
+                            bundle.putString("BEST_DETAIL_TAB", "FragmentBestDetailComment")
+                            firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
+
                             mFragmentBestDetailComment =
                                 FragmentBestDetailComment(platform, bookCode)
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailComment)
                             }
                         } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver" || platform == "Ridi") {
+                            val bundle = Bundle()
+                            bundle.putString("BEST_DETAIL_HASDATA", "TRUE")
+                            bundle.putString("BEST_DETAIL_TAB", "FragmentBestDetailBooks")
+                            firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
+
                             mFragmentBestDetailBooks =
                                 FragmentBestDetailBooks(platform, bookCode, bookWriter)
                             supportFragmentManager.commit {
@@ -389,12 +415,22 @@ class ActivityBestDetail : AppCompatActivity() {
                     }
                     2 -> {
                         if (platform == "Joara" || platform == "Joara_Nobless" || platform == "Joara_Premium" || platform == "Toksoda") {
+                            val bundle = Bundle()
+                            bundle.putString("BEST_DETAIL_HASDATA", "TRUE")
+                            bundle.putString("BEST_DETAIL_TAB", "FragmentBestDetailBooks")
+                            firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
+
                             mFragmentBestDetailBooks =
                                 FragmentBestDetailBooks(platform, bookCode, bookWriter)
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
                             }
                         } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver" || platform == "Kakao" || platform == "Kakao_Stage" || platform == "Ridi" || platform == "OneStore" || platform == "Munpia") {
+                            val bundle = Bundle()
+                            bundle.putString("BEST_DETAIL_HASDATA", "TRUE")
+                            bundle.putString("BEST_DETAIL_TAB", "FragmentBestDetailAnalyze")
+                            firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
+
                             mFragmentBestDetailAnalyze =
                                 FragmentBestDetailAnalyze(platform, bookData, hasBookData)
                             supportFragmentManager.commit {
@@ -508,6 +544,10 @@ class ActivityBestDetail : AppCompatActivity() {
                     }
 
                     if (hasBookData) {
+                        val bundle = Bundle()
+                        bundle.putString("BEST_DETAIL_TAB", "FragmentBestDetailAnalyze")
+                        firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
+
                         mFragmentBestDetailAnalyze = FragmentBestDetailAnalyze(
                             platform,
                             this@ActivityBestDetail.bookData, hasBookData
@@ -516,6 +556,10 @@ class ActivityBestDetail : AppCompatActivity() {
                             replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
                         }
                     } else {
+                        val bundle = Bundle()
+                        bundle.putString("BEST_DETAIL_TAB", "FragmentBestDetailComment")
+                        firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
+
                         mFragmentBestDetailComment =
                             FragmentBestDetailComment(platform, bookCode)
                         supportFragmentManager.commit {
@@ -606,12 +650,20 @@ class ActivityBestDetail : AppCompatActivity() {
 
 
                 if (hasBookData) {
+                    val bundle = Bundle()
+                    bundle.putString("BEST_DETAIL_TAB", "FragmentBestDetailAnalyze")
+                    firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
+
                     mFragmentBestDetailAnalyze =
                         FragmentBestDetailAnalyze(platform, bookData, hasBookData)
                     supportFragmentManager.commit {
                         replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
                     }
                 } else {
+                    val bundle = Bundle()
+                    bundle.putString("BEST_DETAIL_TAB", "FragmentBestDetailBooks")
+                    firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
+
                     mFragmentBestDetailBooks =
                         FragmentBestDetailBooks(platform, bookCode, bookWriter)
                     supportFragmentManager.commit {
@@ -805,12 +857,20 @@ class ActivityBestDetail : AppCompatActivity() {
             })
 
         if (hasBookData) {
+            val bundle = Bundle()
+            bundle.putString("BEST_DETAIL_TAB", "FragmentBestDetailAnalyze")
+            firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
+
             mFragmentBestDetailAnalyze =
                 FragmentBestDetailAnalyze(platform, bookData, hasBookData)
             supportFragmentManager.commit {
                 replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
             }
         } else {
+            val bundle = Bundle()
+            bundle.putString("BEST_DETAIL_TAB", "FragmentBestDetailComment")
+            firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
+
             mFragmentBestDetailComment =
                 FragmentBestDetailComment(platform, bookCode)
             supportFragmentManager.commit {
@@ -897,12 +957,20 @@ class ActivityBestDetail : AppCompatActivity() {
                 }
 
                 if (hasBookData) {
+                    val bundle = Bundle()
+                    bundle.putString("BEST_DETAIL_TAB", "FragmentBestDetailAnalyze")
+                    firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
+
                     mFragmentBestDetailAnalyze =
                         FragmentBestDetailAnalyze(platform, bookData, hasBookData)
                     supportFragmentManager.commit {
                         replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
                     }
                 } else {
+                    val bundle = Bundle()
+                    bundle.putString("BEST_DETAIL_TAB", "FragmentBestDetailBooks")
+                    firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
+
                     mFragmentBestDetailBooks =
                         FragmentBestDetailBooks(platform, bookCode, bookWriter)
                     supportFragmentManager.commit {
@@ -1010,12 +1078,20 @@ class ActivityBestDetail : AppCompatActivity() {
             })
 
         if (hasBookData) {
+            val bundle = Bundle()
+            bundle.putString("BEST_DETAIL_TAB", "FragmentBestDetailAnalyze")
+            firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
+
             mFragmentBestDetailAnalyze =
                 FragmentBestDetailAnalyze(platform, bookData, hasBookData)
             supportFragmentManager.commit {
                 replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
             }
         } else {
+            val bundle = Bundle()
+            bundle.putString("BEST_DETAIL_TAB", "FragmentBestDetailComment")
+            firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
+
             mFragmentBestDetailComment =
                 FragmentBestDetailComment(platform, bookCode)
             supportFragmentManager.commit {
@@ -1098,12 +1174,20 @@ class ActivityBestDetail : AppCompatActivity() {
                 }
 
                 if (hasBookData) {
+                    val bundle = Bundle()
+                    bundle.putString("BEST_DETAIL_TAB", "FragmentBestDetailAnalyze")
+                    firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
+
                     mFragmentBestDetailAnalyze =
                         FragmentBestDetailAnalyze(platform, bookData, hasBookData)
                     supportFragmentManager.commit {
                         replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
                     }
                 } else {
+                    val bundle = Bundle()
+                    bundle.putString("BEST_DETAIL_TAB", "FragmentBestDetailComment")
+                    firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
+
                     mFragmentBestDetailComment =
                         FragmentBestDetailComment(platform, bookCode)
                     supportFragmentManager.commit {
@@ -1213,12 +1297,20 @@ class ActivityBestDetail : AppCompatActivity() {
             })
 
         if (hasBookData) {
+            val bundle = Bundle()
+            bundle.putString("BEST_DETAIL_TAB", "FragmentBestDetailAnalyze")
+            firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
+
             mFragmentBestDetailAnalyze =
                 FragmentBestDetailAnalyze(platform, bookData, hasBookData)
             supportFragmentManager.commit {
                 replace(R.id.llayoutWrap, mFragmentBestDetailAnalyze)
             }
         } else {
+            val bundle = Bundle()
+            bundle.putString("BEST_DETAIL_TAB", "FragmentBestDetailComment")
+            firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
+
             mFragmentBestDetailComment =
                 FragmentBestDetailComment(platform, bookCode)
             supportFragmentManager.commit {
@@ -1263,12 +1355,22 @@ class ActivityBestDetail : AppCompatActivity() {
                 when (tab.position) {
                     0 -> {
                         if (platform == "Joara" || platform == "Joara_Nobless" || platform == "Joara_Premium" || platform == "Kakao" || platform == "Kakao_Stage" || platform == "OneStore" || platform == "Munpia" || platform == "Toksoda") {
+                            val bundle = Bundle()
+                            bundle.putString("BEST_DETAIL_HASDATA", "FALSE")
+                            bundle.putString("BEST_DETAIL_TAB", "FragmentBestDetailComment")
+                            firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
+
                             mFragmentBestDetailComment =
                                 FragmentBestDetailComment(platform, bookCode)
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailComment)
                             }
                         } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver" || platform == "Ridi") {
+                            val bundle = Bundle()
+                            bundle.putString("BEST_DETAIL_HASDATA", "FALSE")
+                            bundle.putString("BEST_DETAIL_TAB", "FragmentBestDetailBooks")
+                            firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
+
                             mFragmentBestDetailBooks =
                                 FragmentBestDetailBooks(platform, bookCode, bookWriter)
                             supportFragmentManager.commit {
@@ -1278,12 +1380,22 @@ class ActivityBestDetail : AppCompatActivity() {
                     }
                     1 -> {
                         if (platform == "Joara" || platform == "Joara_Nobless" || platform == "Joara_Premium" || platform == "Toksoda") {
+                            val bundle = Bundle()
+                            bundle.putString("BEST_DETAIL_HASDATA", "FALSE")
+                            bundle.putString("BEST_DETAIL_TAB", "FragmentBestDetailBooks")
+                            firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
+
                             mFragmentBestDetailBooks =
                                 FragmentBestDetailBooks(platform, bookCode, bookWriter)
                             supportFragmentManager.commit {
                                 replace(R.id.llayoutWrap, mFragmentBestDetailBooks)
                             }
                         } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver" || platform == "Kakao" || platform == "Kakao_Stage" || platform == "Ridi" || platform == "OneStore" || platform == "Munpia") {
+                            val bundle = Bundle()
+                            bundle.putString("BEST_DETAIL_HASDATA", "FALSE")
+                            bundle.putString("BEST_DETAIL_TAB", "FragmentBestDetailAnalyze")
+                            firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
+
                             mFragmentBestDetailAnalyze =
                                 FragmentBestDetailAnalyze(platform, bookData, hasBookData)
                             supportFragmentManager.commit {

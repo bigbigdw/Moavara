@@ -16,6 +16,9 @@ import com.example.moavara.Util.BestRef
 import com.example.moavara.databinding.FragmentBestBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 
 class FragmentBest : Fragment() {
 
@@ -27,6 +30,7 @@ class FragmentBest : Fragment() {
 
     var userDao: DBUser? = null
     var UserInfo = DataBaseUser()
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     private var _binding: FragmentBestBinding? = null
     private val binding get() = _binding!!
@@ -41,6 +45,8 @@ class FragmentBest : Fragment() {
         _binding = FragmentBestBinding.inflate(inflater, container, false)
         val view = binding.root
         val fragmentBestTab = binding.tabs
+
+        firebaseAnalytics = Firebase.analytics
 
         userDao = Room.databaseBuilder(
             requireContext(),
@@ -126,18 +132,33 @@ class FragmentBest : Fragment() {
 
                 when (type) {
                     "Today" -> {
+                        val bundle = Bundle()
+                        bundle.putString("BEST_platform", item.type)
+                        bundle.putString("BEST_Tab", "Today")
+                        firebaseAnalytics.logEvent("BEST_FragmentBest", bundle)
+
                         mFragmentBestTabToday = FragmentBestTabToday(item.type?: "", UserInfo)
                         childFragmentManager.commit {
                             replace(R.id.llayoutWrap, mFragmentBestTabToday)
                         }
                     }
                     "Weekend" -> {
+                        val bundle = Bundle()
+                        bundle.putString("BEST_platform", item.type)
+                        bundle.putString("BEST_Tab", "Weekend")
+                        firebaseAnalytics.logEvent("BEST_FragmentBest", bundle)
+
                         mFragmentBestTabWeekend = FragmentBestTabWeekend(item.type?: "", UserInfo)
                         childFragmentManager.commit {
                             replace(R.id.llayoutWrap, mFragmentBestTabWeekend)
                         }
                     }
                     "Month" -> {
+                        val bundle = Bundle()
+                        bundle.putString("BEST_platform", item.type)
+                        bundle.putString("BEST_Tab", "Month")
+                        firebaseAnalytics.logEvent("BEST_FragmentBest", bundle)
+
                         mFragmentBestTabMonth = FragmentBestTabMonth(item.type?: "", UserInfo)
                         childFragmentManager.commit {
                             replace(R.id.llayoutWrap, mFragmentBestTabMonth)

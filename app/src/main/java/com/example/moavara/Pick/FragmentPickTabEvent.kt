@@ -19,9 +19,12 @@ import com.example.moavara.Search.EventData
 import com.example.moavara.Util.SwipeEvent
 import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.FragmentPickTabBinding
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
 import java.net.URLDecoder
 import java.net.URLEncoder
 import java.util.*
@@ -35,6 +38,7 @@ class FragmentPickTabEvent : Fragment() {
     private var _binding: FragmentPickTabBinding? = null
     private val binding get() = _binding!!
     private var UserInfo = DataBaseUser()
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,7 +50,9 @@ class FragmentPickTabEvent : Fragment() {
         binding.blank.tviewblank.text = "마이픽을 한 이벤트가 없습니다."
         UserInfo = (parentFragment as FragmentPick).UserInfo
 
-        adapter = AdapterPickEvent(requireContext(), items, this@FragmentPickTabEvent, UserInfo)
+        firebaseAnalytics = Firebase.analytics
+
+        adapter = AdapterPickEvent(requireContext(), items, this@FragmentPickTabEvent, UserInfo, firebaseAnalytics)
 
         // 리사이클러뷰에 스와이프, 드래그 기능 달기
         val swipeHelperCallback = SwipeEvent(adapter).apply {

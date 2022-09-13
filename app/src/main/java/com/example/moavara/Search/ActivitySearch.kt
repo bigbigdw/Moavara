@@ -19,6 +19,9 @@ import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Param
 import com.example.moavara.databinding.ActivitySearchBinding
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
@@ -38,6 +41,7 @@ class ActivitySearch : AppCompatActivity() {
     private var kakaoStageOffset = 25
     var text = ""
     var type = "Keyword"
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +49,7 @@ class ActivitySearch : AppCompatActivity() {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.sview.hint = "통합 검색"
+        firebaseAnalytics = Firebase.analytics
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -76,9 +81,16 @@ class ActivitySearch : AppCompatActivity() {
                 llayoutResult.visibility = View.VISIBLE
             }
 
+            val bundle = Bundle()
+            bundle.putString("SEARCH_platform", "Keyword")
+            firebaseAnalytics.logEvent("SEARCH_ActivitySearch", bundle)
 
             when (type) {
                 "Keyword" -> {
+                    val bundle = Bundle()
+                    bundle.putString("SEARCH_platform", "Keyword")
+                    firebaseAnalytics.logEvent("SEARCH_ActivitySearch", bundle)
+
                     searchJoara(page, text)
                     searchKakaoStage(page - 1, text)
                     searchKakao(page - 1, text)
@@ -90,30 +102,66 @@ class ActivitySearch : AppCompatActivity() {
                     searchMrBlue(text)
                 }
                 "Joara" -> {
+                    val bundle = Bundle()
+                    bundle.putString("SEARCH_platform", "Joara")
+                    firebaseAnalytics.logEvent("SEARCH_ActivitySearch", bundle)
+
                     searchJoara(page, text)
                 }
                 "Naver_Today" -> {
+                    val bundle = Bundle()
+                    bundle.putString("SEARCH_platform", "Naver_Today")
+                    firebaseAnalytics.logEvent("SEARCH_ActivitySearch", bundle)
+
                     searchNaver(text, "Naver_Today")
                 }
                 "Naver_Challenge" -> {
+                    val bundle = Bundle()
+                    bundle.putString("SEARCH_platform", "Naver_Challenge")
+                    firebaseAnalytics.logEvent("SEARCH_ActivitySearch", bundle)
+
                     searchNaver(text, "Naver_Challenge")
                 }
                 "Naver" -> {
+                    val bundle = Bundle()
+                    bundle.putString("SEARCH_platform", "Naver")
+                    firebaseAnalytics.logEvent("SEARCH_ActivitySearch", bundle)
+
                     searchNaver(text, "Naver")
                 }
                 "Kakao" -> {
+                    val bundle = Bundle()
+                    bundle.putString("SEARCH_platform", "Kakao")
+                    firebaseAnalytics.logEvent("SEARCH_ActivitySearch", bundle)
+
                     searchKakao(page - 1, text)
                 }
                 "Kakao_Stage" -> {
+                    val bundle = Bundle()
+                    bundle.putString("SEARCH_platform", "Kakao_Stage")
+                    firebaseAnalytics.logEvent("SEARCH_ActivitySearch", bundle)
+
                     searchKakaoStage(page - 1, text)
                 }
                 "Munpia" -> {
+                    val bundle = Bundle()
+                    bundle.putString("SEARCH_platform", "Munpia")
+                    firebaseAnalytics.logEvent("SEARCH_ActivitySearch", bundle)
+
                     searchMunpia(text)
                 }
                 "Toksoda" -> {
+                    val bundle = Bundle()
+                    bundle.putString("SEARCH_platform", "Toksoda")
+                    firebaseAnalytics.logEvent("SEARCH_ActivitySearch", bundle)
+
                     searchToksoda(text)
                 }
                 "MrBlue" -> {
+                    val bundle = Bundle()
+                    bundle.putString("SEARCH_platform", "MrBlue")
+                    firebaseAnalytics.logEvent("SEARCH_ActivitySearch", bundle)
+
                     searchMrBlue(text)
                 }
             }
@@ -130,6 +178,9 @@ class ActivitySearch : AppCompatActivity() {
                         )
                         startActivity(intent)
                     } else {
+                        val bundle = Bundle()
+                        bundle.putString("BEST_FROM", "search")
+                        firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
 
                         val bookDetailIntent =
                             Intent(this@ActivitySearch, ActivityBestDetail::class.java)

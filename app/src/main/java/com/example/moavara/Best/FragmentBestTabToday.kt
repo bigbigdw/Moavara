@@ -80,6 +80,7 @@ class FragmentBestTabToday(private val platform: String, private val UserInfo: D
 
                 val bundle = Bundle()
                 bundle.putString("BEST_platform", item?.type)
+                bundle.putString("BEST_bottomDialog_from", "Today")
                 firebaseAnalytics.logEvent("BEST_bottomDialog", bundle)
 
                 val mBottomDialogBest = BottomDialogBest(
@@ -87,7 +88,8 @@ class FragmentBestTabToday(private val platform: String, private val UserInfo: D
                     item,
                     platform,
                     position,
-                    UserInfo
+                    UserInfo,
+                    firebaseAnalytics
                 )
 
                 fragmentManager?.let { mBottomDialogBest.show(it, null) }

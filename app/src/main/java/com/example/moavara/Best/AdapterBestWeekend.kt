@@ -3,6 +3,7 @@ package com.example.moavara.Best
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,13 +13,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Search.BookListDataBest
 import com.example.moavara.databinding.ItemBooklistBestWeekendBinding
+import com.google.firebase.analytics.FirebaseAnalytics
 
 
 class AdapterBestWeekend(
     private var context : Context,
     private var items: ArrayList<ArrayList<BookListDataBest>? >,
     private var platform : String,
-    private val UserInfo: DataBaseUser
+    private val UserInfo: DataBaseUser,
+    private val firebaseAnalytics: FirebaseAnalytics
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     interface OnItemClickListener {
@@ -63,12 +66,18 @@ class AdapterBestWeekend(
                             )
                             context.startActivity(intent)
                         } else {
+                            val bundle = Bundle()
+                            bundle.putString("BEST_platform", item?.type)
+                            bundle.putString("BEST_bottomDialog_from", "Weekend")
+                            firebaseAnalytics.logEvent("BEST_bottomDialog", bundle)
+
                             val mBottomDialogBest = BottomDialogBest(
                                 context,
                                 item,
                                 platform,
                                 item?.number ?: 0,
-                                UserInfo
+                                UserInfo,
+                                firebaseAnalytics
                             )
                             mBottomDialogBest.show((context as AppCompatActivity).supportFragmentManager, null)
                         }
