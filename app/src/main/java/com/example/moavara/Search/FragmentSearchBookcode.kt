@@ -284,28 +284,37 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
 
             } else {
                 isPicked = true
-                binding.llayoutPick.background = GradientDrawable().apply {
-                    setColor(Color.parseColor("#A7ACB7"))
-                    shape = GradientDrawable.RECTANGLE
-                    cornerRadius = 100f.dpToPx()
-                }
 
-                binding.tviewPick.text = "Pick 완료"
-
-                Novel.child("book").child(bookCode).setValue(pickItem)
-
-                if (bookData.isEmpty()) {
-                    Novel.child("bookCode").child(bookCode).child(DBDate.DateMMDD())
-                        .setValue(pickBookCodeItem)
+                if (bookTitle.isEmpty()) {
+                    Toast.makeText(
+                        requireContext(),
+                        "비정상적인 작품은 Pick을 할 수 없습니다.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 } else {
-                    Novel.child("bookCode").child(bookCode).setValue(bookData)
-                }
+                    binding.llayoutPick.background = GradientDrawable().apply {
+                        setColor(Color.parseColor("#A7ACB7"))
+                        shape = GradientDrawable.RECTANGLE
+                        cornerRadius = 100f.dpToPx()
+                    }
 
-                Toast.makeText(
-                    requireContext(),
-                    "[${bookTitle}]이(가) 마이픽에 등록되었습니다.",
-                    Toast.LENGTH_SHORT
-                ).show()
+                    binding.tviewPick.text = "Pick 완료"
+
+                    Novel.child("book").child(bookCode).setValue(pickItem)
+
+                    if (bookData.isEmpty()) {
+                        Novel.child("bookCode").child(bookCode).child(DBDate.DateMMDD())
+                            .setValue(pickBookCodeItem)
+                    } else {
+                        Novel.child("bookCode").child(bookCode).setValue(bookData)
+                    }
+
+                    Toast.makeText(
+                        requireContext(),
+                        "[${bookTitle}]이(가) 마이픽에 등록되었습니다.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
 
@@ -402,7 +411,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
             })
     }
 
-    fun setLayoutKaKao() {
+    private fun setLayoutKaKao() {
         val apiKakao = RetrofitKaKao()
         val param: MutableMap<String?, Any> = HashMap()
         param["seriesid"] = bookCode
@@ -482,7 +491,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
             })
     }
 
-    fun setLayoutKaKaoStage() {
+    private fun setLayoutKaKaoStage() {
         val apiKakaoStage = RetrofitKaKao()
         getBookData()
 
@@ -672,7 +681,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
         }.start()
     }
 
-    fun setLayoutRidi() {
+    private fun setLayoutRidi() {
         Thread {
             try {
                 val doc: Document = Jsoup.connect("https://ridibooks.com/books/${bookCode}").get()
@@ -756,7 +765,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
         }.start()
     }
 
-    fun setLayoutMunpia() {
+    private fun setLayoutMunpia() {
         Thread {
             try {
                 val doc: Document = Jsoup.connect("https://novel.munpia.com/${bookCode}").get()
@@ -1003,27 +1012,6 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                     }
                 }
             })
-    }
-
-    private fun getUrl(bookCode: String): String {
-
-        return if (platform == "MrBlue") {
-            "https://www.mrblue.com/novel/${bookCode}"
-        } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver" || platform == "Ridi") {
-            bookCode
-        } else if (platform == "Kakao_Stage") {
-            "https://pagestage.kakao.com/novels/${bookCode}"
-        } else if (platform == "Kakao") {
-            "https://page.kakao.com/home?seriesId=${bookCode}"
-        } else if (platform == "OneStore") {
-            "https://onestory.co.kr/detail/${bookCode}"
-        } else if (platform == "Joara" || platform == "Joara_Premium" || platform == "Joara_Nobless") {
-            "https://www.joara.com/book/${bookCode}"
-        } else if (platform == "Munpia") {
-            "https://novel.munpia.com/${bookCode}"
-        } else if (platform == "Toksoda") {
-            "https://www.tocsoda.co.kr/product/productView?brcd=${bookCode}"
-        } else ""
     }
 
     private fun getBookData() {
