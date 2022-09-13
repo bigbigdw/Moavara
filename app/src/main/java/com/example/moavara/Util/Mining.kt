@@ -22,6 +22,7 @@ import org.jsoup.select.Elements
 import java.io.File
 import java.net.SocketTimeoutException
 import java.util.*
+import kotlin.collections.ArrayList
 
 object Mining {
 
@@ -681,6 +682,7 @@ object Mining {
                         for (i in list.indices) {
                             val novel = list[i].novel
                             KakaoRef["genre"] = list[i].novel?.subGenre?.name ?: ""
+                            KakaoRef["keyword"] = ArrayList<String>()
 
                             KakaoRef["writerName"] = novel!!.nickname!!.name
                             KakaoRef["subject"] = novel.title
@@ -697,6 +699,12 @@ object Mining {
                             KakaoRef["type"] = "Kakao_Stage"
 
                             miningValue(KakaoRef, i, "Kakao_Stage", genre)
+
+                            miningDataValue(
+                                KakaoRef,
+                                "Kakao_Stage",
+                                genre
+                            )
 
                             miningDataValue(
                                 KakaoRef,
@@ -768,6 +776,7 @@ object Mining {
                     if (list != null) {
                         for (i in list.indices) {
                             KakaoRef["genre"] = list[i].sub_category_title
+                            KakaoRef["keyword"] = ArrayList<String>()
 
                             KakaoRef["writerName"] = list[i].author
                             KakaoRef["subject"] = list[i].title
@@ -1132,6 +1141,7 @@ object Mining {
                         if (it != null) {
                             for (i in it.indices) {
                                 MoonpiaRef["genre"] = it[i].nvGnMainTitle
+                                MoonpiaRef["keyword"] = ArrayList<String>()
 
                                 MoonpiaRef["writerName"] = it[i].author
                                 MoonpiaRef["subject"] = it[i].nvTitle
@@ -1223,6 +1233,7 @@ object Mining {
                     data.resultList?.let { it ->
                         for (i in it.indices) {
                             ToksodaRef["genre"] = it[i].lgctgrNm
+                            ToksodaRef["keyword"] = ArrayList<String>()
 
                             ToksodaRef["writerName"] = it[i].athrnm
                             ToksodaRef["subject"] = it[i].wrknm
