@@ -223,9 +223,9 @@ class FragmentBestTabMonth(private val platform: String, private val UserInfo: D
                     requireContext().startActivity(intent)
                 } else {
                     val bundle = Bundle()
-                    bundle.putString("BEST_platform", item?.type)
-                    bundle.putString("BEST_bottomDialog_from", "Month")
-                    firebaseAnalytics.logEvent("BEST_bottomDialog", bundle)
+                    bundle.putString("BEST_PLATFORM", item?.type)
+                    bundle.putString("BEST_BOTTOM_DIALOG_FROM", "Month")
+                    firebaseAnalytics.logEvent("BEST_BottomDialogBest", bundle)
 
                     val mBottomDialogBest = BottomDialogBest(
                         requireContext(),

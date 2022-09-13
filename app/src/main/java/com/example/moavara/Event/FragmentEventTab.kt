@@ -103,8 +103,8 @@ class FragmentEventTab : Fragment() {
                         Toast.makeText(requireContext(), "지원하지 않는 이벤트 형식입니다.", Toast.LENGTH_SHORT).show()
                     } else {
                         val bundle = Bundle()
-                        bundle.putString("EVENT_platform", eventItem.type)
-                        firebaseAnalytics.logEvent("BottomSheetDialogEvent", bundle)
+                        bundle.putString("EVENT_PLATFORM", eventItem.type)
+                        firebaseAnalytics.logEvent("EVENT_BottomSheetDialogEvent", bundle)
 
                         val mBottomSheetDialogEvent =
                             BottomSheetDialogEvent(requireContext(), eventItem, platform, UserInfo, firebaseAnalytics)

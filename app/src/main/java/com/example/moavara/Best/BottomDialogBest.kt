@@ -353,9 +353,9 @@ class BottomDialogBest(
                     }
 
                     val bundle = Bundle()
-                    bundle.putString("PICK_PLATFORM", item?.type)
-                    bundle.putString("PICK_STATUS", "DELETE")
-                    firebaseAnalytics.logEvent("BEST_bottomDialog", bundle)
+                    bundle.putString("PICK_NOVEL_PLATFORM", item?.type)
+                    bundle.putString("PICK_NOVEL_STATUS", "DELETE")
+                    firebaseAnalytics.logEvent("BEST_BottomDialogBest", bundle)
 
                     binding.tviewPick.text = "Pick"
                     Toast.makeText(
@@ -427,9 +427,9 @@ class BottomDialogBest(
                         mRootRef.child("User").child(UserInfo.UID).child("Mining").setValue(true)
 
                         val bundle = Bundle()
-                        bundle.putString("PICK_PLATFORM", item?.type)
-                        bundle.putString("PICK_STATUS", "FIRST")
-                        firebaseAnalytics.logEvent("BEST_bottomDialog", bundle)
+                        bundle.putString("PICK_NOVEL_PLATFORM", item?.type)
+                        bundle.putString("PICK_NOVEL_STATUS", "FIRST")
+                        firebaseAnalytics.logEvent("BEST_BottomDialogBest", bundle)
 
                         Toast.makeText(
                             requireContext(),
@@ -442,9 +442,9 @@ class BottomDialogBest(
                         Novel.child("bookCode").child(item?.bookCode ?: "").setValue(bookCodeItems)
 
                         val bundle = Bundle()
-                        bundle.putString("PICK_PLATFORM", item?.type)
-                        bundle.putString("PICK_STATUS", "ADD")
-                        firebaseAnalytics.logEvent("BEST_bottomDialog", bundle)
+                        bundle.putString("PICK_NOVEL_PLATFORM", item?.type)
+                        bundle.putString("PICK_NOVEL_STATUS", "ADD")
+                        firebaseAnalytics.logEvent("BEST_BottomDialogBest", bundle)
 
                         Toast.makeText(
                             requireContext(),

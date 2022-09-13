@@ -389,7 +389,7 @@ class AdapterPickNovel(private var context: Context, private var itemsList: Arra
         notifyItemRemoved(position)
 
         val bundle = Bundle()
-        bundle.putString("PICK_STATUS", "DELETE")
+        bundle.putString("PICK_NOVEL_STATUS", "DELETE")
         firebaseAnalytics.logEvent("PICK_FragmentPickTabNovel", bundle)
     }
 
@@ -404,7 +404,7 @@ class AdapterPickNovel(private var context: Context, private var itemsList: Arra
         }
 
         val bundle = Bundle()
-        bundle.putString("PICK_STATUS", "SWAP")
+        bundle.putString("PICK_NOVEL_STATUS", "SWAP")
         firebaseAnalytics.logEvent("PICK_FragmentPickTabNovel", bundle)
     }
 

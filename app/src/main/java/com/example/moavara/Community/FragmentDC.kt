@@ -82,7 +82,7 @@ class FragmentDC(
             override fun onItemClick(v: View?, position: Int) {
                 val gaBundle = Bundle()
                 gaBundle.putString("COMMUNITY_GO_DETAIL", "DC")
-                firebaseAnalytics.logEvent("COMMUNITY_FragmentBoard", gaBundle)
+                firebaseAnalytics.logEvent("COMMUNITY_FragmentCommunity", gaBundle)
 
                 val item: CommunityBoard? = adapterCommunity!!.getItem(position)
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(item?.link ?: ""))

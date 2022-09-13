@@ -133,7 +133,7 @@ class FragmentBest : Fragment() {
                 when (type) {
                     "Today" -> {
                         val bundle = Bundle()
-                        bundle.putString("BEST_platform", item.type)
+                        bundle.putString("BEST_PLATFORM", item.type)
                         bundle.putString("BEST_Tab", "Today")
                         firebaseAnalytics.logEvent("BEST_FragmentBest", bundle)
 
@@ -144,7 +144,7 @@ class FragmentBest : Fragment() {
                     }
                     "Weekend" -> {
                         val bundle = Bundle()
-                        bundle.putString("BEST_platform", item.type)
+                        bundle.putString("BEST_PLATFORM", item.type)
                         bundle.putString("BEST_Tab", "Weekend")
                         firebaseAnalytics.logEvent("BEST_FragmentBest", bundle)
 
@@ -155,7 +155,7 @@ class FragmentBest : Fragment() {
                     }
                     "Month" -> {
                         val bundle = Bundle()
-                        bundle.putString("BEST_platform", item.type)
+                        bundle.putString("BEST_PLATFORM", item.type)
                         bundle.putString("BEST_Tab", "Month")
                         firebaseAnalytics.logEvent("BEST_FragmentBest", bundle)
 

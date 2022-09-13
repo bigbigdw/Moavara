@@ -314,8 +314,8 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                 binding.tviewPick.text = "Pick"
 
                 val bundle = Bundle()
-                bundle.putString("PICK_PLATFORM", platform)
-                bundle.putString("PICK_STATUS", "DELETE")
+                bundle.putString("PICK_NOVEL_PLATFORM", platform)
+                bundle.putString("PICK_NOVEL_STATUS", "DELETE")
                 firebaseAnalytics.logEvent("SEARCH_FragmentSearchBookcode", bundle)
 
                 Novel.child("book").child(bookCode).removeValue()
@@ -379,8 +379,8 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                         mRootRef.child("User").child(UserInfo.UID).child("Mining").setValue(true)
 
                         val bundle = Bundle()
-                        bundle.putString("PICK_PLATFORM", platform)
-                        bundle.putString("PICK_STATUS", "FIRST")
+                        bundle.putString("PICK_NOVEL_PLATFORM", platform)
+                        bundle.putString("PICK_NOVEL_STATUS", "FIRST")
                         firebaseAnalytics.logEvent("SEARCH_FragmentSearchBookcode", bundle)
 
                     } else {
@@ -394,8 +394,8 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                         }
 
                         val bundle = Bundle()
-                        bundle.putString("PICK_PLATFORM", platform)
-                        bundle.putString("PICK_STATUS", "ADD")
+                        bundle.putString("PICK_NOVEL_PLATFORM", platform)
+                        bundle.putString("PICK_NOVEL_STATUS", "ADD")
                         firebaseAnalytics.logEvent("SEARCH_FragmentSearchBookcode", bundle)
                     }
 

@@ -90,8 +90,8 @@ class FragmentSearchMoavara(private val UserInfo: DataBaseUser) : Fragment() {
                         context?.startActivity(intent)
                     } else {
                         val bundle = Bundle()
-                        bundle.putString("BEST_platform", item.type)
-                        firebaseAnalytics.logEvent("BEST_bottomDialog", bundle)
+                        bundle.putString("BEST_PLATFORM", item.type)
+                        firebaseAnalytics.logEvent("BEST_BottomDialogBest", bundle)
 
                         val mBottomDialogBest = BottomDialogBest(
                             requireContext(),

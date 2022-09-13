@@ -162,9 +162,9 @@ class BottomSheetDialogEvent(
                     }
 
                     val bundle = Bundle()
-                    bundle.putString("EVENT_PICK", item.type)
-                    bundle.putString("EVENT_PICK_STATUS", "DELETE")
-                    firebaseAnalytics.logEvent("BottomSheetDialogEvent", bundle)
+                    bundle.putString("PICK_EVENT_PLATFORM", item.type)
+                    bundle.putString("PICK_EVENT_STATUS", "DELETE")
+                    firebaseAnalytics.logEvent("EVENT_BottomSheetDialogEvent", bundle)
 
                     Toast.makeText(requireContext(), "선택한 이벤트가 마이픽에 제거되었습니다", Toast.LENGTH_SHORT).show()
                     dismiss()
@@ -189,9 +189,9 @@ class BottomSheetDialogEvent(
                     }
 
                     val bundle = Bundle()
-                    bundle.putString("EVENT_PICK", item.type)
-                    bundle.putString("EVENT_PICK_STATUS", "ADD")
-                    firebaseAnalytics.logEvent("BottomSheetDialogEvent", bundle)
+                    bundle.putString("PICK_EVENT_PLATFORM", item.type)
+                    bundle.putString("PICK_EVENT_STATUS", "ADD")
+                    firebaseAnalytics.logEvent("EVENT_BottomSheetDialogEvent", bundle)
 
                     Toast.makeText(requireContext(), "선택한 이벤트가 마이픽에 등록되었습니다", Toast.LENGTH_SHORT).show()
                     dismiss()
@@ -203,7 +203,7 @@ class BottomSheetDialogEvent(
 
                 val bundle = Bundle()
                 bundle.putString("EVENT_GO_DETAIL", item.type)
-                firebaseAnalytics.logEvent("BottomSheetDialogEvent", bundle)
+                firebaseAnalytics.logEvent("EVENT_BottomSheetDialogEvent", bundle)
 
                 if(item.type == "Kakao"){
                     getEventKakao()

@@ -251,8 +251,8 @@ class ActivityBestDetail : AppCompatActivity() {
                 Toast.makeText(this, "[${bookTitle}]이(가) 마이픽에서 제거되었습니다.", Toast.LENGTH_SHORT).show()
 
                 val bundle = Bundle()
-                bundle.putString("PICK_PLATFORM", platform)
-                bundle.putString("PICK_STATUS", "DELETE")
+                bundle.putString("PICK_NOVEL_PLATFORM", platform)
+                bundle.putString("PICK_NOVEL_STATUS", "DELETE")
                 firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
 
             } else {
@@ -306,13 +306,13 @@ class ActivityBestDetail : AppCompatActivity() {
                     }
 
                     val bundle = Bundle()
-                    bundle.putString("PICK_PLATFORM", platform)
-                    bundle.putString("PICK_STATUS", "FIRST")
+                    bundle.putString("PICK_NOVEL_PLATFORM", platform)
+                    bundle.putString("PICK_NOVEL_STATUS", "FIRST")
                     firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
                 } else {
                     val bundle = Bundle()
-                    bundle.putString("PICK_PLATFORM", platform)
-                    bundle.putString("PICK_STATUS", "ADD")
+                    bundle.putString("PICK_NOVEL_PLATFORM", platform)
+                    bundle.putString("PICK_NOVEL_STATUS", "ADD")
                     firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
 
                     Novel.child("book").child(bookCode).setValue(pickItem)

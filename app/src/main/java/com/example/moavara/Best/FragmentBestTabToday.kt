@@ -79,9 +79,9 @@ class FragmentBestTabToday(private val platform: String, private val UserInfo: D
                 val item: BookListDataBest? = adapterToday?.getItem(position)
 
                 val bundle = Bundle()
-                bundle.putString("BEST_platform", item?.type)
-                bundle.putString("BEST_bottomDialog_from", "Today")
-                firebaseAnalytics.logEvent("BEST_bottomDialog", bundle)
+                bundle.putString("BEST_PLATFORM", item?.type)
+                bundle.putString("BEST_BOTTOM_DIALOG_FROM", "Today")
+                firebaseAnalytics.logEvent("BEST_BottomDialogBest", bundle)
 
                 val mBottomDialogBest = BottomDialogBest(
                     requireContext(),
