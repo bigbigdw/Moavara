@@ -331,6 +331,10 @@ class ActivityBestDetail : AppCompatActivity() {
         }
 
         binding.lviewDetail.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString("BEST_GO_DETAIL", platform)
+            firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
+
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getUrl(bookLink)))
             startActivity(intent)
         }

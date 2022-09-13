@@ -10,6 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moavara.Search.CommunityBoard
 import com.example.moavara.databinding.FragmentCommunityTabBinding
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
@@ -28,6 +31,7 @@ class FragmentDC(
     var status = ""
     var cate = ""
     var page = 1
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,6 +40,7 @@ class FragmentDC(
         _binding = FragmentCommunityTabBinding.inflate(inflater, container, false)
         val view = binding.root
         adapterCommunity = AdapterCommunity(items)
+        firebaseAnalytics = Firebase.analytics
 
         binding.rview.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -75,6 +80,10 @@ class FragmentDC(
 
         adapterCommunity?.setOnItemClickListener(object : AdapterCommunity.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
+                val gaBundle = Bundle()
+                gaBundle.putString("COMMUNITY_GO_DETAIL", "DC")
+                firebaseAnalytics.logEvent("COMMUNITY_FragmentBoard", gaBundle)
+
                 val item: CommunityBoard? = adapterCommunity!!.getItem(position)
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(item?.link ?: ""))
                 activity?.startActivity(intent)

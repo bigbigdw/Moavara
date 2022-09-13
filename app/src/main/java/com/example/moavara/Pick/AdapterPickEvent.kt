@@ -171,7 +171,7 @@ class AdapterPickEvent(private var context : Context, private var itemsList: Arr
         notifyItemRemoved(position)
 
         val bundle = Bundle()
-        bundle.putString("PICK_STATUS", "DELETE")
+        bundle.putString("EVENT_PICK_STATUS", "DELETE")
         firebaseAnalytics.logEvent("PICK_FragmentPickTabEvent", bundle)
     }
 
@@ -194,7 +194,7 @@ class AdapterPickEvent(private var context : Context, private var itemsList: Arr
         }
 
         val bundle = Bundle()
-        bundle.putString("PICK_STATUS", "SWAP")
+        bundle.putString("EVENT_PICK_STATUS", "SWAP")
         firebaseAnalytics.logEvent("PICK_FragmentPickTabEvent", bundle)
     }
 

@@ -15,6 +15,9 @@ import com.example.moavara.R
 import com.example.moavara.Search.BestType
 import com.example.moavara.Util.BestRef
 import com.example.moavara.databinding.FragmentEventBinding
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 
 class FragmentEvent: Fragment() {
 
@@ -27,7 +30,7 @@ class FragmentEvent: Fragment() {
 
     var userDao: DBUser? = null
     var UserInfo = DataBaseUser()
-
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,6 +48,8 @@ class FragmentEvent: Fragment() {
         if(userDao?.daoUser()?.get() != null){
             UserInfo = userDao?.daoUser()?.get() ?: DataBaseUser()
         }
+
+        firebaseAnalytics = Firebase.analytics
 
         adapterType = AdapterType(items)
         items.clear()
@@ -79,6 +84,10 @@ class FragmentEvent: Fragment() {
                 val item: BestType = adapterType.getItem(position)
                 adapterType.setSelectedBtn(position)
                 adapterType.notifyDataSetChanged()
+
+                val gaBundle = Bundle()
+                gaBundle.putString("EVENT_PLATFORM", item.type)
+                firebaseAnalytics.logEvent("EVENT_FragmentEvent", gaBundle)
 
                 mFragmentEventTab = FragmentEventTab()
                 val adapterBundle = Bundle()

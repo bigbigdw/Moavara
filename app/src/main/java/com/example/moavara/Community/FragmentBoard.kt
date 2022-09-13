@@ -15,6 +15,9 @@ import com.example.moavara.Retrofit.RetrofitJoara
 import com.example.moavara.Search.CommunityBoard
 import com.example.moavara.Util.Param
 import com.example.moavara.databinding.FragmentCommunityTabBinding
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 
 class FragmentBoard :
     Fragment() {
@@ -28,6 +31,7 @@ class FragmentBoard :
     var status = ""
     var cate = ""
     var page = 1
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,6 +40,7 @@ class FragmentBoard :
         _binding = FragmentCommunityTabBinding.inflate(inflater, container, false)
         val view = binding.root
         adapterCommunity = AdapterCommunity(items)
+        firebaseAnalytics = Firebase.analytics
 
         binding.rview.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -76,6 +81,10 @@ class FragmentBoard :
 
         adapterCommunity?.setOnItemClickListener(object : AdapterCommunity.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
+                val gaBundle = Bundle()
+                gaBundle.putString("COMMUNITY_GO_DETAIL", "자유게시판")
+                firebaseAnalytics.logEvent("COMMUNITY_FragmentBoard", gaBundle)
+
                 val item: CommunityBoard? = adapterCommunity!!.getItem(position)
                 val intent = Intent(
                     Intent.ACTION_VIEW, Uri.parse(

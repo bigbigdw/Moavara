@@ -128,7 +128,7 @@ class FragmentPickTabEvent : Fragment() {
                             .show()
                     } else {
                         val mBottomSheetDialogEvent =
-                            BottomSheetDialogEvent(requireContext(), item, "PICK", UserInfo)
+                            BottomSheetDialogEvent(requireContext(), item, "PICK", UserInfo, firebaseAnalytics)
                         fragmentManager?.let { mBottomSheetDialogEvent.show(it, null) }
                     }
 

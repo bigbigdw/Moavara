@@ -107,7 +107,7 @@ class FragmentEventTab : Fragment() {
                         firebaseAnalytics.logEvent("BottomSheetDialogEvent", bundle)
 
                         val mBottomSheetDialogEvent =
-                            BottomSheetDialogEvent(requireContext(), eventItem, platform, UserInfo)
+                            BottomSheetDialogEvent(requireContext(), eventItem, platform, UserInfo, firebaseAnalytics)
                         fragmentManager?.let { mBottomSheetDialogEvent.show(it, null) }
                     }
                 }
@@ -586,8 +586,4 @@ class FragmentEventTab : Fragment() {
             })
     }
 
-    private fun onClickEvent(item: EventDataGroup, type: String) {
-
-
-    }
 }

@@ -28,6 +28,7 @@ import com.example.moavara.Util.Param
 import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.BottomDialogEventBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -40,7 +41,8 @@ class BottomSheetDialogEvent(
     private val mContext: Context,
     private val item: EventData,
     private val platform: String = "조아라 이벤트",
-    private var UserInfo : DataBaseUser
+    private var UserInfo : DataBaseUser,
+    private var firebaseAnalytics: FirebaseAnalytics
 ) :
     BottomSheetDialogFragment() {
 
@@ -159,6 +161,11 @@ class BottomSheetDialogEvent(
                         mRootRef.child("User").child(UserInfo.UID).child("Event").child(item.link).removeValue()
                     }
 
+                    val bundle = Bundle()
+                    bundle.putString("EVENT_PICK", item.type)
+                    bundle.putString("EVENT_PICK_STATUS", "DELETE")
+                    firebaseAnalytics.logEvent("BottomSheetDialogEvent", bundle)
+
                     Toast.makeText(requireContext(), "선택한 이벤트가 마이픽에 제거되었습니다", Toast.LENGTH_SHORT).show()
                     dismiss()
 
@@ -181,6 +188,11 @@ class BottomSheetDialogEvent(
                         mRootRef.child("User").child(UserInfo.UID).child("Event").child(item.link).setValue(group)
                     }
 
+                    val bundle = Bundle()
+                    bundle.putString("EVENT_PICK", item.type)
+                    bundle.putString("EVENT_PICK_STATUS", "ADD")
+                    firebaseAnalytics.logEvent("BottomSheetDialogEvent", bundle)
+
                     Toast.makeText(requireContext(), "선택한 이벤트가 마이픽에 등록되었습니다", Toast.LENGTH_SHORT).show()
                     dismiss()
 
@@ -188,6 +200,10 @@ class BottomSheetDialogEvent(
             }
 
             llayoutBtnDetail.setOnClickListener {
+
+                val bundle = Bundle()
+                bundle.putString("EVENT_GO_DETAIL", item.type)
+                firebaseAnalytics.logEvent("BottomSheetDialogEvent", bundle)
 
                 if(item.type == "Kakao"){
                     getEventKakao()
