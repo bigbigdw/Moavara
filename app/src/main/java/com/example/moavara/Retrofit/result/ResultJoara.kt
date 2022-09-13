@@ -208,6 +208,10 @@ class JoaraBestListValue {
     @Expose
     var writerName: String = ""
 
+    @SerializedName("category_ko_name")
+    @Expose
+    var category_ko_name: String = ""
+
     @SerializedName("subject")
     @Expose
     var subject: String = ""
@@ -347,6 +351,10 @@ class JoaraKeyWordCntValue {
 
 //북 Values
 class JoaraBooksValue {
+    @SerializedName("category_ko_name")
+    @Expose
+    var category_ko_name: String = ""
+
     @SerializedName("writer_name")
     @Expose
     var writer_name: String = ""

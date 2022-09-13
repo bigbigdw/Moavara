@@ -45,10 +45,7 @@ data class RoomBookListDataBestAnalyze (
     var info3: String = "",
     var info4: String = "",
     var number: Int = 0,
-    var numInfo1: Int = 0,
-    var numInfo2: Int = 0,
-    var numInfo3: Int = 0,
-    var numInfo4: Int = 0,
+
     var date: String = "",
     var numberDiff: Int = 0,
     var trophyCount: Int = 0,

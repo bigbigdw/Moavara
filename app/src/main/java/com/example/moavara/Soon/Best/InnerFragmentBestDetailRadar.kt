@@ -27,10 +27,10 @@ class InnerFragmentBestDetailRadar(
     val entryAverage = ArrayList<RadarEntry>()
     val entriesCurrent = ArrayList<RadarEntry>()
     var labels = arrayOf("조회 수", "선호작 수", "추천 수", "트로피" ,"댓글 수")
-    val valCur1 = itemCount - BookItem[BookItem.size-1].numInfo1
-    val valCur2 = itemCount - BookItem[BookItem.size-1].numInfo2
-    val valCur3 = itemCount - BookItem[BookItem.size-1].numInfo3
-    val valCur4 = itemCount - BookItem[BookItem.size-1].numInfo4
+//    val valCur1 = itemCount - BookItem[BookItem.size-1].numInfo1
+//    val valCur2 = itemCount - BookItem[BookItem.size-1].numInfo2
+//    val valCur3 = itemCount - BookItem[BookItem.size-1].numInfo3
+//    val valCur4 = itemCount - BookItem[BookItem.size-1].numInfo4
     val numberAvg = itemCount - BookItem[BookItem.size-1].number
 
 
@@ -53,9 +53,9 @@ class InnerFragmentBestDetailRadar(
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
 
-            entriesCurrent.add(RadarEntry(valCur1.toFloat()))
-            entriesCurrent.add(RadarEntry(valCur2.toFloat()))
-            entriesCurrent.add(RadarEntry(valCur3.toFloat()))
+//            entriesCurrent.add(RadarEntry(valCur1.toFloat()))
+//            entriesCurrent.add(RadarEntry(valCur2.toFloat()))
+//            entriesCurrent.add(RadarEntry(valCur3.toFloat()))
             entriesCurrent.add(RadarEntry(numberAvg.toFloat()))
         } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver") {
             labels = arrayOf("별점", "조회", "관심", "순위")
@@ -64,9 +64,9 @@ class InnerFragmentBestDetailRadar(
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
 
-            entriesCurrent.add(RadarEntry(valCur1.toFloat()))
-            entriesCurrent.add(RadarEntry(valCur2.toFloat()))
-            entriesCurrent.add(RadarEntry(valCur3.toFloat()))
+//            entriesCurrent.add(RadarEntry(valCur1.toFloat()))
+//            entriesCurrent.add(RadarEntry(valCur2.toFloat()))
+//            entriesCurrent.add(RadarEntry(valCur3.toFloat()))
             entriesCurrent.add(RadarEntry(numberAvg.toFloat()))
         } else if (platform == "Kakao") {
             labels = arrayOf("조회 수", "선호작 수", "별점" ,"댓글 수" , "순위")
@@ -76,10 +76,10 @@ class InnerFragmentBestDetailRadar(
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
 
-            entriesCurrent.add(RadarEntry(valCur1.toFloat()))
-            entriesCurrent.add(RadarEntry(valCur2.toFloat()))
-            entriesCurrent.add(RadarEntry(valCur3.toFloat()))
-            entriesCurrent.add(RadarEntry(valCur4.toFloat()))
+//            entriesCurrent.add(RadarEntry(valCur1.toFloat()))
+//            entriesCurrent.add(RadarEntry(valCur2.toFloat()))
+//            entriesCurrent.add(RadarEntry(valCur3.toFloat()))
+//            entriesCurrent.add(RadarEntry(valCur4.toFloat()))
             entriesCurrent.add(RadarEntry(numberAvg.toFloat()))
         } else if (platform == "Kakao_Stage") {
             labels = arrayOf("조회 수", "선호작 수", "추천 수", "트로피" ,"댓글 수")
@@ -89,10 +89,10 @@ class InnerFragmentBestDetailRadar(
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
 
-            entriesCurrent.add(RadarEntry(valCur1.toFloat()))
-            entriesCurrent.add(RadarEntry(valCur2.toFloat()))
-            entriesCurrent.add(RadarEntry(valCur3.toFloat()))
-            entriesCurrent.add(RadarEntry(valCur4.toFloat()))
+//            entriesCurrent.add(RadarEntry(valCur1.toFloat()))
+//            entriesCurrent.add(RadarEntry(valCur2.toFloat()))
+//            entriesCurrent.add(RadarEntry(valCur3.toFloat()))
+//            entriesCurrent.add(RadarEntry(valCur4.toFloat()))
             entriesCurrent.add(RadarEntry(numberAvg.toFloat()))
         } else if (platform == "Ridi") {
             labels = arrayOf("추천", "평점", "순위")
@@ -100,8 +100,8 @@ class InnerFragmentBestDetailRadar(
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
 
-            entriesCurrent.add(RadarEntry(valCur1.toFloat()))
-            entriesCurrent.add(RadarEntry(valCur2.toFloat()))
+//            entriesCurrent.add(RadarEntry(valCur1.toFloat()))
+//            entriesCurrent.add(RadarEntry(valCur2.toFloat()))
             entriesCurrent.add(RadarEntry(numberAvg.toFloat()))
         } else if (platform == "OneStore") {
             labels = arrayOf("조회 수", "선호작 수", "추천 수", "트로피")
@@ -110,9 +110,9 @@ class InnerFragmentBestDetailRadar(
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
 
-            entriesCurrent.add(RadarEntry(valCur1.toFloat()))
-            entriesCurrent.add(RadarEntry(valCur2.toFloat()))
-            entriesCurrent.add(RadarEntry(valCur3.toFloat()))
+//            entriesCurrent.add(RadarEntry(valCur1.toFloat()))
+//            entriesCurrent.add(RadarEntry(valCur2.toFloat()))
+//            entriesCurrent.add(RadarEntry(valCur3.toFloat()))
             entriesCurrent.add(RadarEntry(numberAvg.toFloat()))
         } else if (platform == "Munpia") {
             labels = arrayOf("히트", "조회", "선호", "베스트 시간" ,"순위")
@@ -122,10 +122,10 @@ class InnerFragmentBestDetailRadar(
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
 
-            entriesCurrent.add(RadarEntry(valCur1.toFloat()))
-            entriesCurrent.add(RadarEntry(valCur2.toFloat()))
-            entriesCurrent.add(RadarEntry(valCur3.toFloat()))
-            entriesCurrent.add(RadarEntry(valCur4.toFloat()))
+//            entriesCurrent.add(RadarEntry(valCur1.toFloat()))
+//            entriesCurrent.add(RadarEntry(valCur2.toFloat()))
+//            entriesCurrent.add(RadarEntry(valCur3.toFloat()))
+//            entriesCurrent.add(RadarEntry(valCur4.toFloat()))
             entriesCurrent.add(RadarEntry(numberAvg.toFloat()))
         } else if (platform == "Toksoda") {
             labels = arrayOf("찜", "조회", "선호작", "순위")
@@ -134,9 +134,9 @@ class InnerFragmentBestDetailRadar(
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
             entryAverage.add(RadarEntry((itemCount / 2).toFloat()))
 
-            entriesCurrent.add(RadarEntry(valCur1.toFloat()))
-            entriesCurrent.add(RadarEntry(valCur2.toFloat()))
-            entriesCurrent.add(RadarEntry(valCur3.toFloat()))
+//            entriesCurrent.add(RadarEntry(valCur1.toFloat()))
+//            entriesCurrent.add(RadarEntry(valCur2.toFloat()))
+//            entriesCurrent.add(RadarEntry(valCur3.toFloat()))
             entriesCurrent.add(RadarEntry(numberAvg.toFloat()))
         }
 

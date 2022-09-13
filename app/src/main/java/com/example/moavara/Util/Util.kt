@@ -7,6 +7,7 @@ import com.example.moavara.Search.TrophyInfo
 import com.google.firebase.database.DataSnapshot
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 object DBDate {
@@ -448,10 +449,10 @@ object Genre {
 }
 
 fun miningValue(ref: MutableMap<String?, Any>, num: Int, platform: String, genre: String) {
-
     BestRef.setBookCode(platform, genre, ref["bookCode"] as String).setValue(BestRef.setBookListDataBestAnalyze(ref))
-
     BestRef.setBestData(platform, num, genre).setValue(BestRef.setBookListDataBest(ref))
-
 }
 
+fun miningDataValue(ref: MutableMap<String?, Any>, platform: String, genre: String) {
+    BestRef.setBookInfo(platform, genre, ref["bookCode"] as String).setValue(BestRef.setBookListDataBestInfo(ref))
+}

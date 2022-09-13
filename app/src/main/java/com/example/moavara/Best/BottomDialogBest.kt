@@ -369,7 +369,7 @@ class BottomDialogBest(
 
                     val group = item?.let { it1 ->
                         BookListDataBest(
-                            it1.writer,
+                            item.writer,
                             item.title,
                             item.bookImg,
                             item.bookCode,

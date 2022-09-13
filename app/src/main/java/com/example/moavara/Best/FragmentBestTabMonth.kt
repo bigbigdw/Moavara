@@ -555,10 +555,6 @@ class FragmentBestTabMonth(private val platform: String, private val UserInfo: D
                                         group.info3,
                                         group.info4,
                                         group.number,
-                                        group.numInfo1,
-                                        group.numInfo2,
-                                        group.numInfo3,
-                                        group.numInfo4,
                                         group.date,
                                     )
                                 )
@@ -575,10 +571,6 @@ class FragmentBestTabMonth(private val platform: String, private val UserInfo: D
                                 lastItem.info3,
                                 lastItem.info4,
                                 lastItem.number,
-                                lastItem.numInfo1,
-                                lastItem.numInfo2,
-                                lastItem.numInfo3,
-                                lastItem.numInfo4,
                                 lastItem.date,
                                 moreLastItem.number - lastItem.number,
                                 bookCodes.size
@@ -599,10 +591,6 @@ class FragmentBestTabMonth(private val platform: String, private val UserInfo: D
                                     group.info3,
                                     group.info4,
                                     group.number,
-                                    group.numInfo1,
-                                    group.numInfo2,
-                                    group.numInfo3,
-                                    group.numInfo4,
                                     group.date,
                                     0,
                                     1

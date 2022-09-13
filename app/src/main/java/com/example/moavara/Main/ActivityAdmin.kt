@@ -100,10 +100,11 @@ class ActivityAdmin : AppCompatActivity() {
             }
 
             llayoutBtn3.setOnClickListener {
-                Mining.runMining(applicationContext, "FANTASY")
-                Mining.runMining(applicationContext, "ALL")
-                Mining.runMining(applicationContext, "ROMANCE")
-                Mining.runMining(applicationContext, "BL")
+//                Mining.runMining(applicationContext, "FANTASY")
+//                Mining.runMining(applicationContext, "ALL")
+//                Mining.runMining(applicationContext, "ROMANCE")
+//                Mining.runMining(applicationContext, "BL")
+                Mining.getJoaraBest(applicationContext, "ALL")
                 Toast.makeText(applicationContext, "데이터 갱신 완료", Toast.LENGTH_SHORT).show()
             }
 

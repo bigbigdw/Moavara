@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
@@ -136,10 +137,6 @@ class ActivityBestDetail : AppCompatActivity() {
                                             group.info3,
                                             group.info4,
                                             group.number,
-                                            group.numInfo1,
-                                            group.numInfo2,
-                                            group.numInfo3,
-                                            group.numInfo4,
                                             group.date,
                                             group.numberDiff,
                                             group.trophyCount,
@@ -172,10 +169,6 @@ class ActivityBestDetail : AppCompatActivity() {
                                                 group.info3,
                                                 group.info4,
                                                 group.number,
-                                                group.numInfo1,
-                                                group.numInfo2,
-                                                group.numInfo3,
-                                                group.numInfo4,
                                                 group.date,
                                                 group.numberDiff,
                                                 group.trophyCount,
@@ -518,10 +511,6 @@ class ActivityBestDetail : AppCompatActivity() {
                                 data.book.cntRecom,
                                 data.book.cntTotalComment,
                                 999,
-                                0,
-                                0,
-                                0,
-                                0,
                                 DBDate.DateMMDD(),
                                 0,
                                 0,
@@ -641,10 +630,6 @@ class ActivityBestDetail : AppCompatActivity() {
                         doc.select(".info_book .download").text().replace("다운로드", ""),
                         "",
                         999,
-                        0,
-                        0,
-                        0,
-                        0,
                         DBDate.DateMMDD(),
                         0,
                         0,
@@ -740,10 +725,6 @@ class ActivityBestDetail : AppCompatActivity() {
                                 it.page_rating_summary.replace(".0", ""),
                                 it.page_comment_count,
                                 999,
-                                0,
-                                0,
-                                0,
-                                0,
                                 DBDate.DateMMDD(),
                                 0,
                                 0,
@@ -847,10 +828,6 @@ class ActivityBestDetail : AppCompatActivity() {
                                 it.favoriteCount,
                                 it.episodeLikeCount,
                                 999,
-                                0,
-                                0,
-                                0,
-                                0,
                                 DBDate.DateMMDD(),
                                 0,
                                 0,
@@ -927,6 +904,8 @@ class ActivityBestDetail : AppCompatActivity() {
 
                     tviewIntro.text = doc.select(".introduce_book .introduce_paragraph").text()
 
+                    Log.d("####", doc.select(".info_category_wrap").first()?.text() ?: "")
+
                     pickItem = BookListDataBest(
                         doc.select(".metadata_writer .author_detail_link").text(),
                         bookTitle,
@@ -950,10 +929,6 @@ class ActivityBestDetail : AppCompatActivity() {
                         "",
                         "",
                         999,
-                        0,
-                        0,
-                        0,
-                        0,
                         DBDate.DateMMDD(),
                         0,
                         0,
@@ -1044,10 +1019,6 @@ class ActivityBestDetail : AppCompatActivity() {
                                 it?.commentCount ?: "",
                                 it?.favoriteCount ?: "",
                                 999,
-                                0,
-                                0,
-                                0,
-                                0,
                                 DBDate.DateMMDD(),
                                 0,
                                 0,
@@ -1167,10 +1138,6 @@ class ActivityBestDetail : AppCompatActivity() {
                         "",
                         "",
                         999,
-                        0,
-                        0,
-                        0,
-                        0,
                         DBDate.DateMMDD(),
                         0,
                         0,
@@ -1266,10 +1233,6 @@ class ActivityBestDetail : AppCompatActivity() {
                                 it.intrstCnt,
                                 "",
                                 999,
-                                0,
-                                0,
-                                0,
-                                0,
                                 DBDate.DateMMDD(),
                                 0,
                                 0,

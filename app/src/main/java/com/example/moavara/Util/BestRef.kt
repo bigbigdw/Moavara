@@ -3,6 +3,7 @@ package com.example.moavara.Util
 import android.icu.text.DecimalFormat
 import com.example.moavara.Search.BookListDataBest
 import com.example.moavara.Search.BookListDataBestAnalyze
+import com.example.moavara.Search.BookListDataBestInfo
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import org.json.JSONObject
@@ -17,6 +18,7 @@ object BestRef {
     private fun setBestRefMunpia(type: String): DatabaseReference {
         return mRootRef.child("Best").child(type)
     }
+
 
     fun typeListTitle(): List<String> {
         return listOf(
@@ -149,6 +151,14 @@ object BestRef {
         }
     }
 
+    fun setBookInfo(type: String, genre: String, bookCode: String): DatabaseReference {
+        return if(type == "Munpia"){
+            setBestRefMunpia(type).child("BookInfo").child(bookCode)
+        } else {
+            setBestRef(type, genre).child("BookInfo").child(bookCode)
+        }
+    }
+
     fun getBookCode(platform: String, genre: String): DatabaseReference {
         return if(platform == "Munpia"){
             setBestRefMunpia(platform).child("BookCode")
@@ -213,6 +223,26 @@ object BestRef {
         }
     }
 
+    fun setBookListDataBestInfo(ref: MutableMap<String?, Any>): BookListDataBestInfo {
+        return BookListDataBestInfo(
+            ref["keyword"] as ArrayList<*>,
+            ref["genre"] as String,
+            ref["writerName"] as String,
+            ref["subject"] as String,
+            ref["bookImg"] as String,
+            ref["bookCode"] as String,
+            ref["info1"] as String,
+            ref["info2"] as String,
+            ref["info3"] as String,
+            ref["info4"] as String,
+            ref["info5"] as String,
+            ref["info6"] as String,
+            ref["number"] as Int,
+            ref["date"] as String,
+            ref["type"] as String
+        )
+    }
+
     fun setBookListDataBest(ref: MutableMap<String?, Any>): BookListDataBest {
         return BookListDataBest(
             ref["writerName"] as String,
@@ -238,10 +268,6 @@ object BestRef {
             ref["info5"] as String,
             ref["info6"] as String,
             ref["number"] as Int,
-            0,
-            0,
-            0,
-            0,
             ref["date"] as String,
             0,
             0

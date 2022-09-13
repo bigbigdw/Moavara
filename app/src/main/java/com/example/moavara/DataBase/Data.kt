@@ -1,5 +1,6 @@
 package com.example.moavara.Search
 
+import com.example.moavara.Retrofit.JoaraBestChapter
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
 
@@ -16,8 +17,7 @@ class BestRankListWeekend(
     var wed: BookListDataBestAnalyze? = null,
     var thur: BookListDataBestAnalyze? = null,
     var fri: BookListDataBestAnalyze? = null,
-    var sat: BookListDataBestAnalyze? = null,
-    var mode: String = ""
+    var sat: BookListDataBestAnalyze? = null
 )
 
 data class BestTodayAverage (
@@ -33,10 +33,6 @@ data class BookListDataBestAnalyze (
     var info3: String = "",
     var info4: String = "",
     var number: Int = 0,
-    var numInfo1: Int = 0,
-    var numInfo2: Int = 0,
-    var numInfo3: Int = 0,
-    var numInfo4: Int = 0,
     var date: String = "",
     var numberDiff: Int = 0,
     var trophyCount: Int = 0,
@@ -57,6 +53,24 @@ data class FCMAlert (
     var date: String = "",
     var title: String = "",
     var body: String = "",
+)
+
+data class BookListDataBestInfo(
+    var keyword: ArrayList<*>,
+    var genre: String = "",
+    var writer: String = "",
+    var title: String = "",
+    var bookImg: String = "",
+    var bookCode: String = "",
+    var info1: String = "",
+    var info2: String = "",
+    var info3: String = "",
+    var info4: String = "",
+    var info5: String = "",
+    var info6: String = "",
+    var number: Int = 0,
+    var date: String = "",
+    var type: String = "",
 )
 
 data class BookListDataBest (
