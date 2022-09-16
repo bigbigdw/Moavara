@@ -14,7 +14,6 @@ import com.example.moavara.DataBase.DBUser
 import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.R
 import com.example.moavara.Search.UserInfo
-import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.ActivityLoginBinding
 import com.facebook.CallbackManager
@@ -77,10 +76,8 @@ class ActivityLogin : AppCompatActivity() {
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
+
         googleSignInClient = GoogleSignIn.getClient(this, gso)
-
-        savePreferences("TODAY", DBDate.DateMMDD())
-
 
     }
 
@@ -119,13 +116,10 @@ class ActivityLogin : AppCompatActivity() {
                                                 DataBaseUser(
                                                     group?.Nickname ?: "",
                                                     group?.Genre ?: "",
-                                                    task.result?.user?.uid ?: ""
+                                                    task.result?.user?.uid ?: "",
+                                                    task.result?.user?.email ?: ""
                                                 )
                                             )
-
-                                            savePreferences("NICKNAME", group?.Nickname ?: "")
-                                            savePreferences("GENRE", group?.Genre ?: "")
-                                            savePreferences("UID", task.result?.user?.uid.toString())
 
                                             startActivity(Intent(context, ActivityMain::class.java))
                                             finish()
@@ -143,15 +137,15 @@ class ActivityLogin : AppCompatActivity() {
                                                 DataBaseUser(
                                                     group?.Nickname ?: "",
                                                     group?.Genre ?: "",
-                                                    task.result?.user?.uid ?: ""
+                                                    task.result?.user?.uid ?: "",
+                                                    task.result?.user?.email ?: ""
                                                 )
                                             )
-
-                                            savePreferences("UID", task.result?.user?.uid.toString())
 
                                             val intent = Intent(context, ActivityGenre::class.java)
                                             intent.putExtra("MODE", "NEWBIE")
                                             intent.putExtra("UID", task.result?.user?.uid.toString())
+                                            intent.putExtra("EMAIL", task.result?.user?.email.toString())
                                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                                             startActivity(intent)
@@ -235,29 +229,28 @@ class ActivityLogin : AppCompatActivity() {
                                 DataBaseUser(
                                     group?.Nickname ?: "",
                                     group?.Genre ?: "",
-                                    user.uid
+                                    user.uid,
+                                    user.email ?: ""
                                 )
                             )
-
-                            savePreferences("NICKNAME", group?.Nickname ?: "")
-                            savePreferences("GENRE", group?.Genre ?: "")
-                            savePreferences("UID", user.uid)
 
                             startActivity(Intent(context, ActivityMain::class.java))
                             binding.loading.root.visibility = View.GONE
                             window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                            finish()
+                        } else {
+                            val intent = Intent(context, ActivityGenre::class.java)
+                            intent.putExtra("MODE", "NEWBIE")
+                            intent.putExtra("UID", user.uid)
+                            intent.putExtra("EMAIL", user.email)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            startActivity(intent)
                             finish()
                         }
                     }
                     override fun onCancelled(databaseError: DatabaseError) {}
                 })
         }
-    }
-
-    private fun savePreferences(key : String, value: String) {
-        val pref = getSharedPreferences("pref", MODE_PRIVATE)
-        val editor = pref.edit()
-        editor.putString(key, value)
-        editor.apply()
     }
 }

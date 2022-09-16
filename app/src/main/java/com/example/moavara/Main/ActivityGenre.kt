@@ -18,6 +18,8 @@ import com.example.moavara.User.ActivityGuide
 import com.example.moavara.Util.Genre
 import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.ActivityGenreBinding
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
@@ -29,6 +31,7 @@ class ActivityGenre : AppCompatActivity() {
     var mode = ""
     var genre = ""
     var UID = ""
+    var Email = ""
 
     var userDao: DBUser? = null
     var UserInfo : DataBaseUser? = null
@@ -57,6 +60,7 @@ class ActivityGenre : AppCompatActivity() {
 
         mode = intent.getStringExtra("MODE") ?: "USER"
         UID = intent.getStringExtra("UID") ?: ""
+        Email = intent.getStringExtra("EMAIL") ?: ""
 
         with(binding){
 
@@ -162,6 +166,12 @@ class ActivityGenre : AppCompatActivity() {
 
                 if(mode == "USER"){
                     userGenre = "FANTASY"
+                    if(UserInfo?.Genre != "FANTASY"){
+                        llayoutApplyGenre.visibility = View.VISIBLE
+                        llayoutApplyGenre.setBackgroundColor(Color.parseColor("#844DF3"))
+                    } else {
+                        llayoutApplyGenre.visibility = View.GONE
+                    }
                 } else {
                     genre = "FANTASY"
                     mRootRef.child("User").child(UID).child("Genre").setValue("FANTASY")
@@ -176,12 +186,6 @@ class ActivityGenre : AppCompatActivity() {
                 bundle.putString("USER_GENRE", "FANTASY")
                 firebaseAnalytics.logEvent("USER_ActivityGenre", bundle)
 
-                if(UserInfo?.Genre != "FANTASY"){
-                    llayoutApplyGenre.visibility = View.VISIBLE
-                    llayoutApplyGenre.setBackgroundColor(Color.parseColor("#844DF3"))
-                } else {
-                    llayoutApplyGenre.visibility = View.GONE
-                }
             }
 
             llayoutBtn2.setOnClickListener {
@@ -194,22 +198,22 @@ class ActivityGenre : AppCompatActivity() {
 
                 if(mode == "USER"){
                     userGenre = "ROMANCE"
+                    if(UserInfo?.Genre != "ROMANCE"){
+                        llayoutApplyGenre.visibility = View.VISIBLE
+                        llayoutApplyGenre.setBackgroundColor(Color.parseColor("#844DF3"))
+                    } else {
+                        llayoutApplyGenre.visibility = View.GONE
+                    }
                 } else {
                     genre = "ROMANCE"
                     mRootRef.child("User").child(UID).child("Genre").setValue("ROMANCE")
                     llayoutBtnGenre.setBackgroundColor(Color.parseColor("#844DF3"))
+                    llayoutBtnGenre.visibility = View.VISIBLE
                 }
                 llayoutBtn1.background = llayoutBtnBG
                 llayoutBtn2.background = llayoutBtnOnBG
                 llayoutBtn3.background = llayoutBtnBG
                 llayoutBtn4.background = llayoutBtnBG
-
-                if(UserInfo?.Genre != "ROMANCE"){
-                    llayoutApplyGenre.visibility = View.VISIBLE
-                    llayoutApplyGenre.setBackgroundColor(Color.parseColor("#844DF3"))
-                } else {
-                    llayoutApplyGenre.visibility = View.GONE
-                }
             }
 
             llayoutBtn3.setOnClickListener {
@@ -222,20 +226,22 @@ class ActivityGenre : AppCompatActivity() {
 
                 if(mode == "USER"){
                     userGenre = "ALL"
+                    if(UserInfo?.Genre != "ALL"){
+                        llayoutApplyGenre.visibility = View.VISIBLE
+                        llayoutApplyGenre.setBackgroundColor(Color.parseColor("#844DF3"))
+                    } else {
+                        llayoutApplyGenre.visibility = View.GONE
+                    }
                 } else {
                     genre = "ALL"
+                    mRootRef.child("User").child(UID).child("Genre").setValue("ALL")
                     llayoutBtnGenre.setBackgroundColor(Color.parseColor("#844DF3"))
+                    llayoutBtnGenre.visibility = View.VISIBLE
                 }
                 llayoutBtn1.background = llayoutBtnBG
                 llayoutBtn2.background = llayoutBtnBG
                 llayoutBtn3.background = llayoutBtnOnBG
                 llayoutBtn4.background = llayoutBtnBG
-                if(UserInfo?.Genre != "ALL"){
-                    llayoutApplyGenre.visibility = View.VISIBLE
-                    llayoutApplyGenre.setBackgroundColor(Color.parseColor("#844DF3"))
-                } else {
-                    llayoutApplyGenre.visibility = View.GONE
-                }
             }
 
             llayoutBtn4.setOnClickListener {
@@ -248,20 +254,22 @@ class ActivityGenre : AppCompatActivity() {
 
                 if(mode == "USER"){
                     userGenre = "BL"
+                    if(UserInfo?.Genre != "BL"){
+                        llayoutApplyGenre.visibility = View.VISIBLE
+                        llayoutApplyGenre.setBackgroundColor(Color.parseColor("#844DF3"))
+                    } else {
+                        llayoutApplyGenre.visibility = View.GONE
+                    }
                 } else {
                     genre = "BL"
+                    mRootRef.child("User").child(UID).child("Genre").setValue("BL")
                     llayoutBtnGenre.setBackgroundColor(Color.parseColor("#844DF3"))
+                    llayoutBtnGenre.visibility = View.VISIBLE
                 }
                 llayoutBtn1.background = llayoutBtnBG
                 llayoutBtn2.background = llayoutBtnBG
                 llayoutBtn3.background = llayoutBtnBG
                 llayoutBtn4.background = llayoutBtnOnBG
-                if(UserInfo?.Genre != "BL"){
-                    llayoutApplyGenre.visibility = View.VISIBLE
-                    llayoutApplyGenre.setBackgroundColor(Color.parseColor("#844DF3"))
-                } else {
-                    llayoutApplyGenre.visibility = View.GONE
-                }
             }
 
             llayoutBtnGenre.setOnClickListener {
@@ -270,6 +278,22 @@ class ActivityGenre : AppCompatActivity() {
                         Toast.makeText(this@ActivityGenre, "장르를 선택해 주세요", Toast.LENGTH_SHORT).show()
                     } else {
                         mRootRef.child("User").child(UID).child("Nickname").setValue(etviewNickname.text.toString())
+                        mRootRef.child("User").child(UID).child("Email").setValue(etviewNickname.text.toString())
+
+                        when (genre) {
+                            "ALL" -> {
+                                genre = "장르 무관"
+                            }
+                            "FANTASY" -> {
+                                genre = "판타지"
+                            }
+                            "ROMANCE" -> {
+                                genre = "로맨스"
+                            }
+                            "BL" -> {
+                                genre = "BL"
+                            }
+                        }
 
                         var dialogLogin: DialogConfirm? = null
 
@@ -388,6 +412,10 @@ class ActivityGenre : AppCompatActivity() {
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     startActivity(intent)
+
+                    val opt = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
+                    val client = GoogleSignIn.getClient(this, opt)
+                    client.revokeAccess()
                 }
 
                 // 안내 팝업
@@ -397,8 +425,8 @@ class ActivityGenre : AppCompatActivity() {
                     "가입을 그만두고 로그인 화면으로 돌아가시겠습니까?",
                     leftListener,
                     rightListener,
-                    "",
-                    ""
+                    "취소",
+                    "확인"
                 )
 
                 dialogLogin.window?.setBackgroundDrawable(

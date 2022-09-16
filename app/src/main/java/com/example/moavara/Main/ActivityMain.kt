@@ -9,7 +9,6 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -54,13 +53,6 @@ class ActivityMain : AppCompatActivity() {
         if(userDao?.daoUser() != null){
             UserInfo = userDao?.daoUser()?.get()
         }
-
-        /** 외부 저장소에에 저장하기 위 권한 설정 **/
-        ActivityCompat.requestPermissions(
-            this,
-            arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE),
-            MODE_PRIVATE
-        )
 
         val toolbar = findViewById<Toolbar>(com.example.moavara.R.id.toolbar)
         setSupportActionBar(toolbar)

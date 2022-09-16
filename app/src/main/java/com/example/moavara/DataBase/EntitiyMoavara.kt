@@ -58,6 +58,7 @@ data class DataBaseUser (
     var Nickname: String = "",
     var Genre: String = "",
     var UID: String = "",
+    var Email: String = "",
 ){
     @PrimaryKey(autoGenerate = true) var id: Int = 0
 }
