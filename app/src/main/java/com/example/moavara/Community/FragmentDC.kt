@@ -17,10 +17,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
 
-class FragmentDC(
-    private var Url : String
-) :
-    Fragment() {
+class FragmentDC : Fragment() {
 
     private var adapterCommunity: AdapterCommunity? = null
     private val items = ArrayList<CommunityBoard?>()
@@ -28,9 +25,6 @@ class FragmentDC(
     private var _binding: FragmentCommunityTabBinding? = null
     private val binding get() = _binding!!
 
-    var status = ""
-    var cate = ""
-    var page = 1
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreateView(
@@ -46,34 +40,40 @@ class FragmentDC(
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rview.adapter = adapterCommunity
 
-        getBoard(page)
+        getBoard("https://gall.dcinside.com/mgallery/board/lists/?id=tgijjdd")
+        getBoard("https://gall.dcinside.com/mgallery/board/lists/?id=genrenovel")
+        getBoard("https://gall.dcinside.com/mgallery/board/lists?id=lovestory")
+        getBoard("https://gall.dcinside.com/board/lists?id=fantasy_new2")
 
         return view
     }
 
-    private fun getBoard(page : Int) {
+    private fun getBoard(Url : String) {
 
         Thread {
-            val doc: Document = Jsoup.connect("${Url}&page=${page}&search_pos=&s_type=search_subject_memo&s_keyword=조아라").post()
+            val doc: Document = Jsoup.connect("${Url}&page=1&search_pos=&s_type=search_subject_memo&s_keyword=조아라").post()
             val DC: Elements = doc.select(".ub-content")
+            requireActivity().runOnUiThread {
+                try{
+                    for (i in DC.indices) {
+                        if(i > 0){
+                            val title = doc.select(".ub-content .gall_tit")[i].text()
+                            val date = doc.select(".ub-content .gall_date")[i].text()
+                            val link = doc.select(".gall_tit a")[i].absUrl("href")
 
-            for (i in DC.indices) {
-                if(i > 0){
-                    val title = doc.select(".ub-content .gall_tit")[i].text()
-                    val date = doc.select(".ub-content .gall_date")[i].text()
-                    val link = doc.select(".gall_tit a")[i].absUrl("href")
-
-                    requireActivity().runOnUiThread {
-                        items.add(
-                            CommunityBoard(
-                                title,
-                                link,
-                                date,
+                            items.add(
+                                CommunityBoard(
+                                    title,
+                                    link,
+                                    date,
+                                )
                             )
-                        )
-                        adapterCommunity!!.notifyDataSetChanged()
+
+
+                        }
                     }
-                }
+                    adapterCommunity?.notifyDataSetChanged()
+                }catch (e : IllegalStateException){ }
             }
         }.start()
 
@@ -89,6 +89,5 @@ class FragmentDC(
                 activity?.startActivity(intent)
             }
         })
-
     }
 }

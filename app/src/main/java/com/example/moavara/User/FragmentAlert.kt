@@ -19,7 +19,6 @@ class FragmentAlert : Fragment() {
 
     private var _binding: FragmentNoticesBinding? = null
     private val binding get() = _binding!!
-    var bookCode = ""
     private var adapter: AdapterNotice? = null
     private val items = ArrayList<FCMAlert>()
     val ref = FirebaseDatabase.getInstance().reference.child("Message")
@@ -58,7 +57,7 @@ class FragmentAlert : Fragment() {
                         }
                     }
 
-                    val cmpAsc: java.util.Comparator<FCMAlert> =
+                    val cmpAsc: Comparator<FCMAlert> =
                         Comparator { o1, o2 -> o2.date.compareTo(o1.date) }
                     Collections.sort(items, cmpAsc)
 

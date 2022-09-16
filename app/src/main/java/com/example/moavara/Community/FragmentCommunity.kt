@@ -45,18 +45,17 @@ class FragmentCommunity : Fragment() {
         firebaseAnalytics.logEvent("COMMUNITY_FragmentCommunity", gaBundle)
 
         fragmentBestTab.addTab(fragmentBestTab.newTab().setText("자유게시판"))
-        fragmentBestTab.addTab(fragmentBestTab.newTab().setText("DC 장르 소설"))
-        fragmentBestTab.addTab(fragmentBestTab.newTab().setText("DC 웹소설 연재"))
-        fragmentBestTab.addTab(fragmentBestTab.newTab().setText("DC 로맨스 소설"))
-        fragmentBestTab.addTab(fragmentBestTab.newTab().setText("DC 판타지"))
+        fragmentBestTab.addTab(fragmentBestTab.newTab().setText("DC 갤러리"))
+
+        val gaTabBundle = Bundle()
 
         fragmentBestTab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 when(tab.position){
                     0->{
-                        val gaBundle = Bundle()
-                        gaBundle.putString("COMMUNITY_TAB", "자유게시판")
-                        firebaseAnalytics.logEvent("COMMUNITY_FragmentCommunity", gaBundle)
+
+                        gaTabBundle.putString("COMMUNITY_TAB", "자유게시판")
+                        firebaseAnalytics.logEvent("COMMUNITY_FragmentCommunity", gaTabBundle)
 
                         fragmentBoard = FragmentBoard()
                         childFragmentManager.commit {
@@ -64,41 +63,10 @@ class FragmentCommunity : Fragment() {
                         }
                     }
                     1->{
-                        val gaBundle = Bundle()
-                        gaBundle.putString("COMMUNITY_TAB", "DC 장르 소설")
-                        firebaseAnalytics.logEvent("COMMUNITY_FragmentCommunity", gaBundle)
+                        gaTabBundle.putString("COMMUNITY_TAB", "DC 장르 소설")
+                        firebaseAnalytics.logEvent("COMMUNITY_FragmentCommunity", gaTabBundle)
 
-                        fragmentDC = FragmentDC("https://gall.dcinside.com/mgallery/board/lists/?id=tgijjdd")
-                        childFragmentManager.commit {
-                            replace(R.id.llayoutWrap, fragmentDC)
-                        }
-                    }
-                    2->{
-                        val gaBundle = Bundle()
-                        gaBundle.putString("COMMUNITY_TAB", "DC 웹소설 연재")
-                        firebaseAnalytics.logEvent("COMMUNITY_FragmentCommunity", gaBundle)
-
-                        fragmentDC = FragmentDC("https://gall.dcinside.com/mgallery/board/lists/?id=genrenovel")
-                        childFragmentManager.commit {
-                            replace(R.id.llayoutWrap, fragmentDC)
-                        }
-                    }
-                    3->{
-                        val gaBundle = Bundle()
-                        gaBundle.putString("COMMUNITY_TAB", "DC 로맨스 소설")
-                        firebaseAnalytics.logEvent("COMMUNITY_FragmentCommunity", gaBundle)
-
-                        fragmentDC = FragmentDC("https://gall.dcinside.com/mgallery/board/lists?id=lovestory")
-                        childFragmentManager.commit {
-                            replace(R.id.llayoutWrap, fragmentDC)
-                        }
-                    }
-                    4->{
-                        val gaBundle = Bundle()
-                        gaBundle.putString("COMMUNITY_TAB", "DC 판타지")
-                        firebaseAnalytics.logEvent("COMMUNITY_FragmentCommunity", gaBundle)
-
-                        fragmentDC = FragmentDC("https://gall.dcinside.com/board/lists?id=fantasy_new2")
+                        fragmentDC = FragmentDC()
                         childFragmentManager.commit {
                             replace(R.id.llayoutWrap, fragmentDC)
                         }
