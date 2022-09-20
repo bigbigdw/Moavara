@@ -3,7 +3,6 @@ package com.example.moavara.Search
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
-import android.net.Uri
 import android.os.Bundle
 import android.text.InputType
 import android.text.SpannableStringBuilder
@@ -100,24 +99,6 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                 cornerRadius = 100f.dpToPx()
             }
 
-            btnText.background = GradientDrawable().apply {
-                setColor(Color.parseColor("#04F5ED"))
-                shape = GradientDrawable.RECTANGLE
-                cornerRadius = 2f.dpToPx()
-            }
-
-            tviewSearchNum1.background = GradientDrawable().apply {
-                setColor(Color.parseColor("#26292E"))
-                shape = GradientDrawable.RECTANGLE
-                cornerRadius = 100f.dpToPx()
-            }
-
-            tviewSearchNum2.background = GradientDrawable().apply {
-                setColor(Color.parseColor("#26292E"))
-                shape = GradientDrawable.RECTANGLE
-                cornerRadius = 100f.dpToPx()
-            }
-
             val tviewSearch1Text = SpannableStringBuilder("각 플랫폼 사이트 작품상세페이지\n주소에 북코드가 숨어있어요~")
             tviewSearch1Text.applyingTextColor(
                 "북코드가 숨어있어요~",
@@ -171,7 +152,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                         tviewSearch.text = "74312919"
                         binding.sview.hint = "카카오스테이지 검색"
                         sview.inputType = InputType.TYPE_CLASS_NUMBER
-                        iviewSearch.setImageResource(R.drawable.quick_search_kakao_img)
+                        iviewSearch.setImageResource(R.drawable.quick_search_kakao2_img)
                     } else if (platform == "Naver") {
                         tviewSearch.text = "252934"
                         sview.inputType = InputType.TYPE_CLASS_NUMBER
@@ -181,12 +162,12 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                         tviewSearch.text = "75595"
                         sview.inputType = InputType.TYPE_CLASS_NUMBER
                         binding.sview.hint = "챌린지리그 검색"
-                        iviewSearch.setImageResource(R.drawable.quick_search_naver_img)
+                        iviewSearch.setImageResource(R.drawable.quick_search_naver2_img)
                     } else if (platform == "Naver_Today") {
                         tviewSearch.text = "268129"
                         sview.inputType = InputType.TYPE_CLASS_NUMBER
                         binding.sview.hint = "베스트리그 검색"
-                        iviewSearch.setImageResource(R.drawable.quick_search_naver_img)
+                        iviewSearch.setImageResource(R.drawable.quick_search_naver3_img)
                     } else if (platform == "Ridi") {
                         tviewSearch.text = "425295076"
                         sview.inputType = InputType.TYPE_CLASS_NUMBER

@@ -234,7 +234,7 @@
                     android:layout_marginBottom="5dp"
                     android:contentDescription="@string/TODO"
                     android:scaleType="fitXY"
-                    android:src="@drawable/ic_launcher_gray" />
+                    android:src="@drawable/ic_comment_wt_24px" />
 
                 <TextView
                     android:id="@+id/tviewInfo4"

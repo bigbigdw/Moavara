@@ -91,7 +91,7 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:visibility="gone"
-                    tools:visibility="visible">
+                    tools:visibility="gone">
 
                     <include
                         android:id="@+id/blank"
@@ -163,7 +163,7 @@
                     android:background="#3E424B"
                     android:gravity="center_horizontal"
                     android:orientation="vertical"
-                    tools:visibility="gone">
+                    tools:visibility="visible">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -172,18 +172,13 @@
                         android:gravity="center"
                         android:orientation="horizontal">
 
-                        <TextView
+                        <ImageView
                             android:id="@+id/btnText"
                             android:layout_width="24dp"
                             android:layout_height="16dp"
                             android:layout_marginRight="6dp"
-                            android:background="#04F5ED"
-                            android:fontFamily="@font/pretendardvariable"
-                            android:text="Tip!"
-                            android:textAlignment="center"
-                            android:textColor="#000000"
-                            android:textSize="11sp"
-                            android:textStyle="bold" />
+                            android:contentDescription="@string/TODO"
+                            android:src="@drawable/label_tip_gr_24px" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -196,20 +191,13 @@
 
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/tviewSearchNum1"
+                    <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_marginTop="26dp"
                         android:layout_marginBottom="8dp"
-                        android:background="#26292E"
-                        android:fontFamily="@font/pretendardvariable"
-                        android:paddingTop="4dp"
-                        android:text="1"
-                        android:textAlignment="center"
-                        android:textColor="#EDE6FD"
-                        android:textSize="10sp"
-                        android:textStyle="bold" />
+                        android:contentDescription="@string/TODO"
+                        android:src="@drawable/ic_01_20px" />
 
                     <TextView
                         android:id="@+id/tviewSearch1"
@@ -231,20 +219,13 @@
                         android:paddingRight="64dp"
                         app:srcCompat="@drawable/quick_search_joara_img" />
 
-                    <TextView
-                        android:id="@+id/tviewSearchNum2"
+                    <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginBottom="8dp"
-                        android:background="#26292E"
-                        android:fontFamily="@font/pretendardvariable"
-                        android:paddingTop="4dp"
-                        android:text="2"
-                        android:textAlignment="center"
-                        android:textColor="#EDE6FD"
-                        android:textSize="10sp"
-                        android:textStyle="bold" />
+                        android:contentDescription="@string/TODO"
+                        android:src="@drawable/ic_02_20px" />
 
                     <TextView
                         android:id="@+id/tviewSearch2"
