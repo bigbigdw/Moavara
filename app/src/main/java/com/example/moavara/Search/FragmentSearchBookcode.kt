@@ -157,7 +157,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                         tviewSearch.text = "252934"
                         sview.inputType = InputType.TYPE_CLASS_NUMBER
                         binding.sview.hint = "시리즈 검색"
-                        iviewSearch.setImageResource(R.drawable.quick_search_naver_img)
+                        iviewSearch.setImageResource(R.drawable.quick_search_naver3_img)
                     } else if (platform == "Naver_Challenge") {
                         tviewSearch.text = "75595"
                         sview.inputType = InputType.TYPE_CLASS_NUMBER
@@ -167,7 +167,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                         tviewSearch.text = "268129"
                         sview.inputType = InputType.TYPE_CLASS_NUMBER
                         binding.sview.hint = "베스트리그 검색"
-                        iviewSearch.setImageResource(R.drawable.quick_search_naver3_img)
+                        iviewSearch.setImageResource(R.drawable.quick_search_naver_img)
                     } else if (platform == "Ridi") {
                         tviewSearch.text = "425295076"
                         sview.inputType = InputType.TYPE_CLASS_NUMBER
