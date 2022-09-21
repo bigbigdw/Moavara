@@ -147,13 +147,6 @@ class FragmentPickTabNovel : Fragment() {
         })
     }
 
-    override fun onDetach() {
-        for(i in items.indices){
-            mRootRef.child("User").child(UserInfo.UID).child("Novel").child("book").child(items[i].bookCode).child("number").setValue((items.size - i))
-        }
-        super.onDetach()
-    }
-
     fun initScreen(itemCount : Int){
         if(itemCount == 0){
             val workManager = WorkManager.getInstance(requireContext().applicationContext)

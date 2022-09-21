@@ -58,6 +58,11 @@ class FragmentBestTabWeekend(private val platform: String, private val UserInfo:
 
         firebaseAnalytics = Firebase.analytics
 
+        val currentDate = DBDate.getDateData(DBDate.DateMMDD())
+
+        originalMonth = DBDate.Month().toInt()
+        originalWeek = (currentDate?.week ?: 0).toInt()
+
         bestDao = Room.databaseBuilder(
             requireContext(),
             DBBest::class.java,
@@ -72,10 +77,6 @@ class FragmentBestTabWeekend(private val platform: String, private val UserInfo:
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             binding.rviewBest.adapter = adapter
 
-            val currentDate = DBDate.getDateData(DBDate.DateMMDD())
-
-            originalMonth = DBDate.Month().toInt()
-            originalWeek = (currentDate?.week ?: 0).toInt()
 
             if(bestDao?.bestDao()?.getAll()?.size == 0){
                 getBestWeekList()
@@ -98,18 +99,20 @@ class FragmentBestTabWeekend(private val platform: String, private val UserInfo:
         }
 
         with(binding) {
-            tviewWeek.text = "${originalMonth + 1}월 ${originalWeek - weekCount}주차"
+
             llayoutAfter.visibility = View.INVISIBLE
 
             if (originalWeek - weekCount == 1) {
                 llayoutBefore.visibility = View.INVISIBLE
+            } else {
+                llayoutBefore.visibility = View.VISIBLE
             }
 
             llayoutBefore.setOnClickListener {
                 binding.blank.root.visibility = View.VISIBLE
                 binding.llayoutWrap.visibility = View.GONE
 
-                if(originalMonth == DBDate.Month().toInt() -2 && originalWeek - weekCount == 2){
+                if(originalMonth == DBDate.Month().toInt() -2){
                     binding.llayoutBefore.visibility = View.INVISIBLE
                 }
 
@@ -117,7 +120,7 @@ class FragmentBestTabWeekend(private val platform: String, private val UserInfo:
 
                 if (originalWeek - weekCount == 0) {
                     originalMonth -= 1
-                    weekCount = -2
+                    weekCount = -1
                 }
 
                 llayoutAfter.visibility = View.VISIBLE
@@ -130,14 +133,16 @@ class FragmentBestTabWeekend(private val platform: String, private val UserInfo:
 
                 weekCount -= 1
 
-                if (weekCount == -1) {
-                    originalMonth += 1
-                    originalWeek = 2
-                    weekCount = 1
-                }
+//                if (weekCount == -1) {
+//                    originalMonth += 1
+//                    originalWeek = 2
+//                    weekCount = 1
+//                }
 
                 getBestWeekListBefore(originalMonth, originalWeek, weekCount)
             }
+
+            tviewWeek.text = "${originalMonth + 1}월 ${originalWeek - weekCount}주차"
         }
 
         return view
@@ -156,14 +161,15 @@ class FragmentBestTabWeekend(private val platform: String, private val UserInfo:
                 .addListenerForSingleValueEvent(object :
                     ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        dataWeek = week - count
 
-                        if (weekCount == -2) {
-                            dataWeek = dataSnapshot.childrenCount.toInt()
-                            originalWeek = dataSnapshot.childrenCount.toInt()
-                            weekCount = 1
-                        } else {
-                            dataWeek = week - count
-                        }
+//                        if (weekCount == -2) {
+//                            dataWeek = dataSnapshot.childrenCount.toInt()
+//                            originalWeek = dataSnapshot.childrenCount.toInt()
+//                            weekCount = 1
+//                        } else {
+//                            dataWeek = week - count
+//                        }
 
                         binding.tviewWeek.text = "${month + 1}월 ${dataWeek}주차"
 
@@ -352,7 +358,7 @@ class FragmentBestTabWeekend(private val platform: String, private val UserInfo:
             Glide.with(requireContext()).load(arrayCarousel[position].bookImg)
                 .into(iviewBookBest)
 
-            when (position) {
+            when (arrayCarousel[position].number) {
                 0 -> {
                     iviewRank.setImageResource(R.drawable.icon_best_1)
                 }

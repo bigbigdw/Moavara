@@ -175,7 +175,7 @@
         <entry key="app/src/main/res/ETC/layout/loading.xml" value="0.22" />
         <entry key="app/src/main/res/Event/layout/bottom_dialog_event.xml" value="0.1" />
         <entry key="app/src/main/res/Event/layout/fragment_event.xml" value="0.25" />
-        <entry key="app/src/main/res/Event/layout/item_event.xml" value="0.1" />
+        <entry key="app/src/main/res/Event/layout/item_event.xml" value="0.22" />
         <entry key="app/src/main/res/Event/layout/item_search.xml" value="0.1" />
         <entry key="app/src/main/res/Main/layout/activity_admin.xml" value="0.1" />
         <entry key="app/src/main/res/Main/layout/activity_guide.xml" value="0.1" />
@@ -289,7 +289,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_16" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

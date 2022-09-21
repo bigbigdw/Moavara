@@ -196,20 +196,6 @@ class FragmentPickTabEvent : Fragment() {
         }
     }
 
-    override fun onDetach() {
-        for (i in items.indices) {
-            val link: String = if (items[i].type == "Joara") {
-                URLEncoder.encode(items[i].link, "utf-8")
-            } else {
-                items[i].link
-            }
-
-            mRootRef.child("User").child(UserInfo.UID).child("Event").child(link).child("number")
-                .setValue((items.size - i))
-        }
-        super.onDetach()
-    }
-
     fun initScreen(itemCount: Int) {
         if (itemCount == 0) {
             binding.blank.root.visibility = View.VISIBLE

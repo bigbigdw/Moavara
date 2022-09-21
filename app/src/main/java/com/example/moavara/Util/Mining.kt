@@ -536,7 +536,7 @@ object Mining {
 
                     miningValue(
                         RidiRef,
-                        i,
+                        i -1,
                         "Ridi",
                         genre
                     )

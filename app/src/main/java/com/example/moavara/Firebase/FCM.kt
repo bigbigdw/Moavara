@@ -46,14 +46,10 @@ class FCM : FirebaseMessagingService() {
     private fun showNotification(title: String, message: String) {
 
         if(message.contains("베스트 리스트가 갱신되었습니다")){
-            for(plaform in BestRef.typeList()){
-                File(File("/storage/self/primary/MOAVARA"), "Today_${plaform}.json").delete()
-            }
             FirebaseMessaging.getInstance().subscribeToTopic("all")
             miningAlert(title, message, "Alert")
         } else if(message.contains("마이픽 리스트가 최신화 되었습니다.")) {
         } else {
-            Log.d("####","${title} ${message}")
             miningAlert(title, message, "Notice")
         }
 

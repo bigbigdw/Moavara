@@ -98,7 +98,6 @@ class FragmentEventDetail(private val type: String) : Fragment() {
                             )
                         }
                     }
-                    Log.d("####",items[0].toString())
                     adapter.notifyDataSetChanged()
                 }
             })

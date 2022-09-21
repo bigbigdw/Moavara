@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -63,6 +64,11 @@ class FragmentBestTabMonth(private val platform: String, private val UserInfo: D
             "Month_${platform}_${UserInfo.Genre}"
         ).allowMainThreadQueries().build()
 
+        val currentDate = DBDate.getDateData(DBDate.DateMMDD())
+
+        year = DBDate.Year().substring(2,4).toInt()
+        month = (currentDate?.month ?: 0).toInt() + 1
+
         adapterMonth = AdapterBestMonth(itemMonth)
         adapterMonthDay = AdapterBestToday(ItemMonthDay, bookCodeItems)
 
@@ -93,7 +99,7 @@ class FragmentBestTabMonth(private val platform: String, private val UserInfo: D
                     binding.rviewBestMonthDay.visibility = View.GONE
 
                     if (value != null) {
-                        BestRef.getBestDataMonth(platform, UserInfo.Genre).child((position + 1).toString())
+                        BestRef.getBestDataMonth(platform, UserInfo.Genre).child((month - monthCount -1).toString()).child((position + 1).toString())
                             .child(value).addListenerForSingleValueEvent(object :
                                 ValueEventListener {
                                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -174,10 +180,6 @@ class FragmentBestTabMonth(private val platform: String, private val UserInfo: D
 
             })
 
-            val currentDate = DBDate.getDateData(DBDate.DateMMDD())
-
-            year = DBDate.Year().substring(2,4).toInt()
-            month = (currentDate?.month ?: 0).toInt() + 1
             llayoutAfter.visibility = View.INVISIBLE
 
             tviewMonth.text = "${year}년 ${month - monthCount}월"
@@ -256,13 +258,19 @@ class FragmentBestTabMonth(private val platform: String, private val UserInfo: D
                     ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                        for (week in 1..6) {
+                        var num = 5
+
+                        if(dataSnapshot.child((month - 1).toString()).childrenCount.toInt() >= 5){
+                            num = dataSnapshot.child((month - 1).toString()).childrenCount.toInt()
+                        }
+
+                        for (week in 1..num) {
                             val weekItem = BookListDataBestWeekend()
 
                             for (day in 1..7) {
                                 val item: BookListDataBest? =
-                                    dataSnapshot.child(week.toString()).child(day.toString())
-                                        .child("0")
+                                    dataSnapshot.child((month - monthCount -1).toString()).child(week.toString()).child(day.toString())
+                                        .child("1")
                                         .getValue(BookListDataBest::class.java)
 
                                 when (day) {
@@ -468,17 +476,23 @@ class FragmentBestTabMonth(private val platform: String, private val UserInfo: D
         binding.rviewBestMonth.removeAllViews()
         itemMonth.clear()
 
-        BestRef.getBestDataMonthBefore(platform, UserInfo.Genre).child((month - 1).toString())
+        BestRef.getBestDataMonthBefore(platform, UserInfo.Genre)
             .addListenerForSingleValueEvent(object :
                 ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                    for (week in 1..6) {
+                    var num = 5
+
+                    if(dataSnapshot.child((month - 1).toString()).childrenCount.toInt() >= 5){
+                        num = dataSnapshot.child((month - 1).toString()).childrenCount.toInt()
+                    }
+
+                    for (week in 1..num) {
                         val weekItem = BookListDataBestWeekend()
 
                         for (day in 1..7) {
                             val item: BookListDataBest? =
-                                dataSnapshot.child(week.toString()).child(day.toString())
+                                dataSnapshot.child((month - 1).toString()).child(week.toString()).child(day.toString())
                                     .child("0")
                                     .getValue(BookListDataBest::class.java)
 
@@ -613,7 +627,7 @@ class FragmentBestTabMonth(private val platform: String, private val UserInfo: D
 
     fun setRoomData(){
 
-        for (num in 1..6) {
+        for (num in 1..5) {
             val weekItem = BookListDataBestWeekend()
 
             for (day in 0..6) {

@@ -2,7 +2,7 @@ package com.example.moavara.Main
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -22,6 +22,8 @@ class ActivitySplash : Activity() {
         setContentView(R.layout.activity_splash)
 
         val fcm = Intent(applicationContext, FCM::class.java)
+
+
         startService(fcm)
 
         cate = Genre.getGenre(this).toString()

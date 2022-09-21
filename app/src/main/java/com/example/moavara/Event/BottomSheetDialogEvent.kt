@@ -177,7 +177,7 @@ class BottomSheetDialogEvent(
                         title,
                         item.data,
                         item.date,
-                        item.number,
+                        999,
                         item.type,
                         "",
                     )

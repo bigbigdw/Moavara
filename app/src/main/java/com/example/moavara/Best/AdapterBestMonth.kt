@@ -2,6 +2,7 @@ package com.example.moavara.Best
 
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -122,6 +123,7 @@ class AdapterBestMonth(
                     Glide.with(holder.itemView.context)
                         .load(items.sun?.bookImg?.replace("http://","https://"))
                         .into(iviewBookImg1)
+
                     isSelectBook(items.sun, llayoutCover1)
                     iviewBookImg1.visibility = View.VISIBLE
 

@@ -904,8 +904,6 @@ class ActivityBestDetail : AppCompatActivity() {
 
                     tviewIntro.text = doc.select(".introduce_book .introduce_paragraph").text()
 
-                    Log.d("####", doc.select(".info_category_wrap").first()?.text() ?: "")
-
                     pickItem = BookListDataBest(
                         doc.select(".metadata_writer .author_detail_link").text(),
                         bookTitle,
