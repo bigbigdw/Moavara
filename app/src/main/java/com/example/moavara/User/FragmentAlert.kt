@@ -19,9 +19,10 @@ class FragmentAlert : Fragment() {
 
     private var _binding: FragmentNoticesBinding? = null
     private val binding get() = _binding!!
-    private var adapter: AdapterNotice? = null
+    private var adapter: AdapterAlert? = null
     private val items = ArrayList<FCMAlert>()
     val ref = FirebaseDatabase.getInstance().reference.child("Message")
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,7 +33,7 @@ class FragmentAlert : Fragment() {
         _binding = FragmentNoticesBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        adapter = AdapterNotice(items)
+        adapter = AdapterAlert(items)
 
         binding.rviewBest.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

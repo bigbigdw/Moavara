@@ -67,9 +67,17 @@ class ActivityUser : AppCompatActivity() {
             DBUser::class.java,
             "UserInfo"
         ).allowMainThreadQueries().build()
-
+        
         if(userDao?.daoUser() != null){
             UserInfo = userDao?.daoUser()?.get()
+        }
+
+        Log.d("####", UserInfo?.UID.toString())
+
+        if(UserInfo?.UID == "BW2mZVCzMxeUDN5z65MX6ZZ2tgD3"){
+            binding.etviewTitle.visibility = View.VISIBLE
+            binding.etviewBody.visibility = View.VISIBLE
+            binding.llayoutPush.visibility = View.VISIBLE
         }
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

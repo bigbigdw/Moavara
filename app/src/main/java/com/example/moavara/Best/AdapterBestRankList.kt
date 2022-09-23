@@ -112,19 +112,13 @@ class AdapterBestRankList(
 
                     tview1.visibility = View.VISIBLE
 
-                    if(items.sun?.number == 999){
-                        iviewBookImg1.setImageResource(R.mipmap.ic_launcher)
-
-                        tview1.text = "PICK"
+                    if (items.sun?.date == DBDate.DateMMDD()) {
+                        iviewBookImg1.setImageResource(R.drawable.ic_best_gn_24px)
                     } else {
-                        if (items.sun?.date == DBDate.DateMMDD()) {
-                            iviewBookImg1.setImageResource(R.drawable.ic_best_gn_24px)
-                        } else {
-                            iviewBookImg1.setImageResource(R.drawable.ic_best_vt_24px)
-                        }
-
-                        tview1.text = "${(items.sun?.number ?: 0) + 1}등"
+                        iviewBookImg1.setImageResource(R.drawable.ic_best_vt_24px)
                     }
+
+                    tview1.text = "${(items.sun?.number ?: 0) + 1}등"
 
                 } else {
                     iviewBookImg1.setImageResource(R.drawable.ic_launcher_gray)
@@ -135,18 +129,13 @@ class AdapterBestRankList(
 
                     tview2.visibility = View.VISIBLE
 
-                    if(items.mon?.number == 999){
-                        iviewBookImg2.setImageResource(R.mipmap.ic_launcher)
-                        tview2.text = "PICK"
+                    if (items.mon?.date == DBDate.DateMMDD()) {
+                        iviewBookImg2.setImageResource(R.drawable.ic_best_gn_24px)
                     } else {
-                        if (items.mon?.date == DBDate.DateMMDD()) {
-                            iviewBookImg2.setImageResource(R.drawable.ic_best_gn_24px)
-                        } else {
-                            iviewBookImg2.setImageResource(R.drawable.ic_best_vt_24px)
-                        }
-
-                        tview2.text = "${(items.mon?.number ?: 0) + 1}등"
+                        iviewBookImg2.setImageResource(R.drawable.ic_best_vt_24px)
                     }
+
+                    tview2.text = "${(items.mon?.number ?: 0) + 1}등"
                 } else {
                     iviewBookImg2.setImageResource(R.drawable.ic_launcher_gray)
                     tview2.visibility = View.GONE
@@ -156,17 +145,12 @@ class AdapterBestRankList(
 
                     tview3.visibility = View.VISIBLE
 
-                    if(items.tue?.number == 999){
-                        iviewBookImg3.setImageResource(R.mipmap.ic_launcher)
-                        tview3.text = "PICK"
+                    if (items.tue?.date == DBDate.DateMMDD()) {
+                        iviewBookImg3.setImageResource(R.drawable.ic_best_gn_24px)
                     } else {
-                        if (items.tue?.date == DBDate.DateMMDD()) {
-                            iviewBookImg3.setImageResource(R.drawable.ic_best_gn_24px)
-                        } else {
-                            iviewBookImg3.setImageResource(R.drawable.ic_best_vt_24px)
-                        }
-                        tview3.text = "${(items.tue?.number ?: 0) + 1}등"
+                        iviewBookImg3.setImageResource(R.drawable.ic_best_vt_24px)
                     }
+                    tview3.text = "${(items.tue?.number ?: 0) + 1}등"
                 } else {
                     iviewBookImg3.setImageResource(R.drawable.ic_launcher_gray)
                     tview3.visibility = View.GONE
@@ -176,19 +160,13 @@ class AdapterBestRankList(
 
                     tview4.visibility = View.VISIBLE
 
-                    if(items.wed?.number == 999){
-                        iviewBookImg4.setImageResource(R.mipmap.ic_launcher)
-
-                        tview4.text = "PICK"
+                    if (items.wed?.date == DBDate.DateMMDD()) {
+                        iviewBookImg4.setImageResource(R.drawable.ic_best_gn_24px)
                     } else {
-                        if (items.wed?.date == DBDate.DateMMDD()) {
-                            iviewBookImg4.setImageResource(R.drawable.ic_best_gn_24px)
-                        } else {
-                            iviewBookImg4.setImageResource(R.drawable.ic_best_vt_24px)
-                        }
-
-                        tview4.text = "${(items.wed?.number ?: 0) + 1}등"
+                        iviewBookImg4.setImageResource(R.drawable.ic_best_vt_24px)
                     }
+
+                    tview4.text = "${(items.wed?.number ?: 0) + 1}등"
                 } else {
                     iviewBookImg4.setImageResource(R.drawable.ic_launcher_gray)
                     tview4.visibility = View.GONE
@@ -198,18 +176,12 @@ class AdapterBestRankList(
 
                     tview5.visibility = View.VISIBLE
 
-                    if(items.thur?.number == 999){
-                        iviewBookImg5.setImageResource(R.mipmap.ic_launcher)
-
-                        tview5.text = "PICK"
+                    if (items.thur?.date == DBDate.DateMMDD()) {
+                        iviewBookImg5.setImageResource(R.drawable.ic_best_gn_24px)
                     } else {
-                        if (items.thur?.date == DBDate.DateMMDD()) {
-                            iviewBookImg5.setImageResource(R.drawable.ic_best_gn_24px)
-                        } else {
-                            iviewBookImg5.setImageResource(R.drawable.ic_best_vt_24px)
-                        }
-                        tview5.text = "${(items.thur?.number ?: 0) + 1}등"
+                        iviewBookImg5.setImageResource(R.drawable.ic_best_vt_24px)
                     }
+                    tview5.text = "${(items.thur?.number ?: 0) + 1}등"
                 } else {
                     iviewBookImg5.setImageResource(R.drawable.ic_launcher_gray)
                     tview5.visibility = View.GONE
@@ -219,19 +191,13 @@ class AdapterBestRankList(
 
                     tview6.visibility = View.VISIBLE
 
-                    if(items.fri?.number == 999){
-                        iviewBookImg6.setImageResource(R.mipmap.ic_launcher)
-
-                        tview6.text = "PICK"
+                    if (items.fri?.date == DBDate.DateMMDD()) {
+                        iviewBookImg6.setImageResource(R.drawable.ic_best_gn_24px)
                     } else {
-                        if (items.fri?.date == DBDate.DateMMDD()) {
-                            iviewBookImg6.setImageResource(R.drawable.ic_best_gn_24px)
-                        } else {
-                            iviewBookImg6.setImageResource(R.drawable.ic_best_vt_24px)
-                        }
-
-                        tview6.text = "${(items.fri?.number ?: 0) + 1}등"
+                        iviewBookImg6.setImageResource(R.drawable.ic_best_vt_24px)
                     }
+
+                    tview6.text = "${(items.fri?.number ?: 0) + 1}등"
                 } else {
                     iviewBookImg6.setImageResource(R.drawable.ic_launcher_gray)
                     tview6.visibility = View.GONE
@@ -241,19 +207,13 @@ class AdapterBestRankList(
 
                     tview7.visibility = View.VISIBLE
 
-                    if(items.sat?.number == 999){
-                        iviewBookImg7.setImageResource(R.mipmap.ic_launcher)
-
-                        tview7.text = "PICK"
+                    if (items.sat?.date == DBDate.DateMMDD()) {
+                        iviewBookImg7.setImageResource(R.drawable.ic_best_gn_24px)
                     } else {
-                        if (items.sat?.date == DBDate.DateMMDD()) {
-                            iviewBookImg7.setImageResource(R.drawable.ic_best_gn_24px)
-                        } else {
-                            iviewBookImg7.setImageResource(R.drawable.ic_best_vt_24px)
-                        }
-
-                        tview7.text = "${(items.sat?.number ?: 0) + 1}등"
+                        iviewBookImg7.setImageResource(R.drawable.ic_best_vt_24px)
                     }
+
+                    tview7.text = "${(items.sat?.number ?: 0) + 1}등"
                 } else {
                     iviewBookImg7.setImageResource(R.drawable.ic_launcher_gray)
                     tview7.visibility = View.GONE

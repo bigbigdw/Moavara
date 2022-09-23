@@ -3,6 +3,7 @@ package com.example.moavara.Pick
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -70,6 +71,9 @@ class FragmentPickTabNovel : Fragment() {
     }
 
     private fun getEventTab() {
+
+        binding.rviewPick.removeAllViews()
+        items.clear()
 
         binding.rviewPick.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

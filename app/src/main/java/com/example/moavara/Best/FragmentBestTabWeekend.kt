@@ -165,6 +165,7 @@ class FragmentBestTabWeekend(private val platform: String, private val UserInfo:
                 } else if(currentMonth == DBDate.Month().toInt() - 2){
                     currentWeek = secondMonthWeek
                 }
+                weekChildNum = currentWeek
             }
         }
 
@@ -173,10 +174,7 @@ class FragmentBestTabWeekend(private val platform: String, private val UserInfo:
 
             currentWeek += 1
 
-            if(currentWeek > weekChildNum){
-                currentMonth += 1
-                currentWeek = 1
-
+            if(currentWeek == weekChildNum){
                 if(currentMonth == DBDate.Month().toInt()){
                     weekChildNum = (DBDate.getDateData(DBDate.DateMMDD())?.week ?: 0).toInt()
                 } else if(currentMonth == DBDate.Month().toInt() - 1){
@@ -185,9 +183,14 @@ class FragmentBestTabWeekend(private val platform: String, private val UserInfo:
                     weekChildNum = secondMonthWeek
                 }
             }
-        }
 
-        Log.d("####", "$currentWeek $weekChildNum")
+            if(currentWeek > weekChildNum){
+
+                currentMonth += 1
+                currentWeek = 1
+
+            }
+        }
 
 
         try {

@@ -4,16 +4,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moavara.R
 import com.example.moavara.Search.FCMAlert
+import com.example.moavara.databinding.ItemAlertBinding
 import com.example.moavara.databinding.ItemNoticesBinding
 
-class AdapterNotice(
+class AdapterAlert(
     private var holder: List<FCMAlert>,
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    var selectedPos = -1
 
     interface OnItemClickListener {
         fun onItemClick(v: View?, position: Int)
@@ -26,7 +24,7 @@ class AdapterNotice(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = ItemNoticesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val view = ItemAlertBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MainBookViewHolder(view)
     }
 
@@ -43,15 +41,8 @@ class AdapterNotice(
                 tviewDate.text = "${year}년 ${month}월 ${day}일"
                 tviewTitle.text = item.title
                 tviewBody.text = item.body
-
-                if(selectedPos == position){
-                    tviewBody.visibility = View.VISIBLE
-                    ivewBookImg.setImageResource(R.drawable.ic_best_gn_24px)
-                } else {
-                    tviewBody.visibility = View.GONE
-                    ivewBookImg.setImageResource(R.drawable.ic_best_gr_24px)
-                }
             }
+
         }
     }
 
@@ -59,22 +50,8 @@ class AdapterNotice(
         return holder.size
     }
 
-    inner class MainBookViewHolder internal constructor(val binding: ItemNoticesBinding) :
+    inner class MainBookViewHolder internal constructor(val binding: ItemAlertBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        init {
-            with(binding) {
-
-                llayoutWrap.setOnClickListener { v: View? ->
-                    val pos = adapterPosition
-                    if (pos != RecyclerView.NO_POSITION) {
-                        listener?.onItemClick(v, pos)
-                        selectedPos = pos
-                        notifyDataSetChanged()
-                        notifyItemChanged(selectedPos)
-                    }
-                }
-            }
-        }
     }
 
     fun getItem(position: Int): FCMAlert {

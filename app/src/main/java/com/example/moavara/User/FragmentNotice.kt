@@ -1,11 +1,16 @@
 package com.example.moavara.User
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.moavara.Best.ActivityBestDetail
+import com.example.moavara.Search.AdapterBookSearch
+import com.example.moavara.Search.BookListDataBest
 import com.example.moavara.Search.FCMAlert
 import com.example.moavara.databinding.FragmentNoticesBinding
 import com.google.firebase.database.DataSnapshot
@@ -40,6 +45,13 @@ class FragmentNotice : Fragment() {
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rviewBest.adapter = adapter
 
+        adapter?.setOnItemClickListener(object : AdapterNotice.OnItemClickListener {
+            override fun onItemClick(v: View?, position: Int) {
+                val item: FCMAlert? = adapter?.getItem(position)
+
+            }
+        })
+
         ref.child("Notice").addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -59,7 +71,7 @@ class FragmentNotice : Fragment() {
                         }
                     }
 
-                    val cmpAsc: java.util.Comparator<FCMAlert> =
+                    val cmpAsc: Comparator<FCMAlert> =
                         Comparator { o1, o2 -> o2.date.compareTo(o1.date) }
                     Collections.sort(items, cmpAsc)
 

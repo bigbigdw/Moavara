@@ -67,7 +67,6 @@ class ActivityBestDetail : AppCompatActivity() {
 
     private var isPicked = false
     private var hasBookData = false
-    private var fromPick = false
     private var isFirstPick = false
 
     var pickItem = BookListDataBest()
@@ -94,7 +93,6 @@ class ActivityBestDetail : AppCompatActivity() {
         platform = intent.getStringExtra("Type") ?: ""
         pos = intent.getIntExtra("POSITION", 0)
         hasBookData = intent.getBooleanExtra("HASDATA", false)
-        fromPick = intent.getBooleanExtra("FROMPICK", false)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -114,17 +112,12 @@ class ActivityBestDetail : AppCompatActivity() {
         setUserPick()
 
         if (hasBookData) {
-            if (fromPick) {
-                mRootRef.child("User").child(UserInfo.UID).child("Novel").child("bookCode")
-                    .child(bookCode)
-                    .addListenerForSingleValueEvent(object :
-                        ValueEventListener {
-                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            BestRef.getBookCode(platform, genre).child(bookCode)
+                .addListenerForSingleValueEvent(object :
+                    ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                            if (!dataSnapshot.exists()) {
-                                isFirstPick = true
-                            }
-
+                        if (dataSnapshot.exists()) {
                             for (item in dataSnapshot.children) {
                                 val group: BookListDataBestAnalyze? =
                                     item.getValue(BookListDataBestAnalyze::class.java)
@@ -146,47 +139,14 @@ class ActivityBestDetail : AppCompatActivity() {
                             }
 
                             setLayout()
+                        } else {
+                            hasBookData = false
+                            setLayoutWithoutBookData()
                         }
+                    }
 
-                        override fun onCancelled(databaseError: DatabaseError) {}
-                    })
-            } else {
-                BestRef.getBookCode(platform, genre).child(bookCode)
-                    .addListenerForSingleValueEvent(object :
-                        ValueEventListener {
-                        override fun onDataChange(dataSnapshot: DataSnapshot) {
-
-                            if (dataSnapshot.exists()) {
-                                for (item in dataSnapshot.children) {
-                                    val group: BookListDataBestAnalyze? =
-                                        item.getValue(BookListDataBestAnalyze::class.java)
-
-                                    if (group != null) {
-                                        bookData.add(
-                                            BookListDataBestAnalyze(
-                                                group.info1,
-                                                group.info2,
-                                                group.info3,
-                                                group.info4,
-                                                group.number,
-                                                group.date,
-                                                group.numberDiff,
-                                                group.trophyCount,
-                                            )
-                                        )
-                                    }
-                                }
-
-                                setLayout()
-                            } else {
-                                hasBookData = false
-                                setLayoutWithoutBookData()
-                            }
-                        }
-
-                        override fun onCancelled(databaseError: DatabaseError) {}
-                    })
-            }
+                    override fun onCancelled(databaseError: DatabaseError) {}
+                })
         } else {
             setLayoutWithoutBookData()
         }

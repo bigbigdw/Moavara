@@ -68,6 +68,9 @@ class FragmentPickTabEvent : Fragment() {
 
     private fun getEventTab() {
 
+        binding.rviewPick.removeAllViews()
+        items.clear()
+
         binding.rviewPick.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rviewPick.adapter = adapter
