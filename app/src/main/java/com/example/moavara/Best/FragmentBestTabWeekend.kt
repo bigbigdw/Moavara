@@ -21,6 +21,7 @@ import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBest
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.DBDate
+import com.example.moavara.Util.DBDate.status
 import com.example.moavara.Util.applyingTextColor
 import com.example.moavara.databinding.FragmentBestWeekendBinding
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -41,13 +42,16 @@ class FragmentBestTabWeekend(private val platform: String, private val UserInfo:
     private var adapter: AdapterBestWeekend? = null
     var arrayCarousel = ArrayList<BookListDataBest>()
     private val itemWeek = ArrayList<ArrayList<BookListDataBest>?>()
-    private var originalMonth = 0
-    private var originalWeek = 0
-    private var weekCount = 0
     val today = DBDate.getDateData(DBDate.DateMMDD())
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     var bestDao: DBBest? = null
+    var currentWeek = 0
+    var currentMonth = 0
+
+    var firstMonthWeek = 0
+    var secondMonthWeek = 0
+    var weekChildNum = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,9 +63,49 @@ class FragmentBestTabWeekend(private val platform: String, private val UserInfo:
         firebaseAnalytics = Firebase.analytics
 
         val currentDate = DBDate.getDateData(DBDate.DateMMDD())
+        currentMonth = DBDate.Month().toInt()
+        currentWeek = (currentDate?.week ?: 0).toInt()
+        weekChildNum = (DBDate.getDateData(DBDate.DateMMDD())?.week ?: 0).toInt()
 
-        originalMonth = DBDate.Month().toInt()
-        originalWeek = (currentDate?.week ?: 0).toInt()
+        binding.llayoutAfter.visibility = View.INVISIBLE
+        binding.tviewWeek.text = "${currentMonth + 1}월 ${currentWeek}주차"
+
+        BestRef.getBestDataWeekBefore(platform, UserInfo.Genre)
+            .addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                    firstMonthWeek =
+                        dataSnapshot.child((currentMonth - 1).toString()).childrenCount.toInt()
+                    secondMonthWeek =
+                        dataSnapshot.child((currentMonth - 2).toString()).childrenCount.toInt()
+
+                    with(binding) {
+
+                        llayoutBefore.setOnClickListener {
+                            binding.blank.root.visibility = View.VISIBLE
+                            binding.llayoutWrap.visibility = View.GONE
+
+                            llayoutAfter.visibility = View.VISIBLE
+
+
+                            getBestWeekListBefore("BEFORE")
+                        }
+
+                        llayoutAfter.setOnClickListener {
+                            binding.blank.root.visibility = View.VISIBLE
+                            binding.llayoutWrap.visibility = View.GONE
+
+                            getBestWeekListBefore("AFTER")
+                        }
+
+
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {}
+            })
+
 
         bestDao = Room.databaseBuilder(
             requireContext(),
@@ -98,84 +142,63 @@ class FragmentBestTabWeekend(private val platform: String, private val UserInfo:
             }
         }
 
-        with(binding) {
-
-            llayoutAfter.visibility = View.INVISIBLE
-
-            if (originalWeek - weekCount == 1) {
-                llayoutBefore.visibility = View.INVISIBLE
-            } else {
-                llayoutBefore.visibility = View.VISIBLE
-            }
-
-            llayoutBefore.setOnClickListener {
-                binding.blank.root.visibility = View.VISIBLE
-                binding.llayoutWrap.visibility = View.GONE
-
-                if(originalMonth == DBDate.Month().toInt() -2){
-                    binding.llayoutBefore.visibility = View.INVISIBLE
-                }
-
-                weekCount += 1
-
-                if (originalWeek - weekCount == 0) {
-                    originalMonth -= 1
-                    weekCount = -1
-                }
-
-                llayoutAfter.visibility = View.VISIBLE
-                getBestWeekListBefore(originalMonth, originalWeek, weekCount)
-            }
-
-            llayoutAfter.setOnClickListener {
-                binding.blank.root.visibility = View.VISIBLE
-                binding.llayoutWrap.visibility = View.GONE
-
-                weekCount -= 1
-
-//                if (weekCount == -1) {
-//                    originalMonth += 1
-//                    originalWeek = 2
-//                    weekCount = 1
-//                }
-
-                getBestWeekListBefore(originalMonth, originalWeek, weekCount)
-            }
-
-            tviewWeek.text = "${originalMonth + 1}월 ${originalWeek - weekCount}주차"
-        }
-
         return view
     }
 
-    private fun getBestWeekListBefore(month: Int, week: Int , count: Int) {
+    private fun getBestWeekListBefore(status : String) {
 
         binding.rviewBest.removeAllViews()
         itemWeek.clear()
         arrayCarousel.clear()
 
-        var dataWeek: Int
+        if (status == "BEFORE") {
+
+            currentWeek -= 1
+
+            if (currentWeek == 0) {
+                currentMonth -= 1
+
+                if(currentMonth == DBDate.Month().toInt()){
+                    currentWeek = (DBDate.getDateData(DBDate.DateMMDD())?.week ?: 0).toInt()
+                } else if(currentMonth == DBDate.Month().toInt() - 1){
+                    currentWeek = firstMonthWeek
+                } else if(currentMonth == DBDate.Month().toInt() - 2){
+                    currentWeek = secondMonthWeek
+                }
+            }
+        }
+
+        if (status == "AFTER") {
+
+
+            currentWeek += 1
+
+            if(currentWeek > weekChildNum){
+                currentMonth += 1
+                currentWeek = 1
+
+                if(currentMonth == DBDate.Month().toInt()){
+                    weekChildNum = (DBDate.getDateData(DBDate.DateMMDD())?.week ?: 0).toInt()
+                } else if(currentMonth == DBDate.Month().toInt() - 1){
+                    weekChildNum = firstMonthWeek
+                } else if(currentMonth == DBDate.Month().toInt() - 2){
+                    weekChildNum = secondMonthWeek
+                }
+            }
+        }
+
+        Log.d("####", "$currentWeek $weekChildNum")
+
 
         try {
-            BestRef.getBestDataWeekBefore(platform, UserInfo.Genre).child(month.toString())
+            BestRef.getBestDataWeekBefore(platform, UserInfo.Genre).child(currentMonth.toString()).child(currentWeek.toString())
                 .addListenerForSingleValueEvent(object :
                     ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        dataWeek = week - count
-
-//                        if (weekCount == -2) {
-//                            dataWeek = dataSnapshot.childrenCount.toInt()
-//                            originalWeek = dataSnapshot.childrenCount.toInt()
-//                            weekCount = 1
-//                        } else {
-//                            dataWeek = week - count
-//                        }
-
-                        binding.tviewWeek.text = "${month + 1}월 ${dataWeek}주차"
 
                         for (day in 1..7) {
                             val itemResult =
-                                dataSnapshot.child(dataWeek.toString()).child(day.toString())
+                                dataSnapshot.child(day.toString())
                             val itemList = ArrayList<BookListDataBest>()
 
                             if (itemResult.value == null) {
@@ -196,9 +219,9 @@ class FragmentBestTabWeekend(private val platform: String, private val UserInfo:
                                 itemWeek.add(itemList)
                             }
 
-                            if (month == DBDate.Month().toInt()
-                                && dataSnapshot.child(dataWeek.toString()).childrenCount.toString() == day.toString()
-                                && DBDate.Week().toInt() == dataWeek
+                            if (currentMonth == DBDate.Month().toInt()
+                                && dataSnapshot.childrenCount.toString() == day.toString()
+                                && DBDate.Week().toInt() == currentWeek
                             ) {
                                 binding.llayoutAfter.visibility = View.INVISIBLE
 
@@ -207,7 +230,7 @@ class FragmentBestTabWeekend(private val platform: String, private val UserInfo:
                                 for (numCarousel in 0..8) {
 
                                     val item: BookListDataBest? =
-                                        dataSnapshot.child(dataWeek.toString()).child(day.toString())
+                                        dataSnapshot.child(day.toString())
                                             .child(numCarousel.toString())
                                             .getValue(BookListDataBest::class.java)
 
@@ -234,10 +257,26 @@ class FragmentBestTabWeekend(private val platform: String, private val UserInfo:
                         } else {
                             binding.llayoutCarousel.visibility = View.GONE
                         }
+
+                        if (currentMonth == DBDate.Month().toInt() -2 && currentWeek == 1) {
+                            binding.llayoutBefore.visibility = View.INVISIBLE
+                        } else {
+                            binding.llayoutBefore.visibility = View.VISIBLE
+                        }
+
+                        if (currentMonth == DBDate.Month().toInt() && currentWeek == (DBDate.getDateData(DBDate.DateMMDD())?.week ?: 0).toInt()) {
+                            binding.llayoutAfter.visibility = View.INVISIBLE
+                        } else {
+                            binding.llayoutAfter.visibility = View.VISIBLE
+                        }
+
+
                     }
 
                     override fun onCancelled(databaseError: DatabaseError) {}
                 })
+
+            binding.tviewWeek.text = "${currentMonth + 1}월 ${currentWeek}주차"
 
         } catch (e: JSONException) {
             e.printStackTrace()

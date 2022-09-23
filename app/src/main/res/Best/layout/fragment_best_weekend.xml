@@ -20,13 +20,20 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <ImageView
+            <LinearLayout
                 android:id="@+id/llayoutBefore"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginLeft="18dp"
-                android:contentDescription="@string/TODO"
-                app:srcCompat="@drawable/ico_prev" />
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginLeft="18dp"
+                    android:contentDescription="@string/TODO"
+                    app:srcCompat="@drawable/ico_prev" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tviewWeek"
@@ -41,13 +48,21 @@
                 android:textColor="#EDE6FD"
                 android:textSize="17sp" />
 
-            <ImageView
+            <LinearLayout
                 android:id="@+id/llayoutAfter"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginRight="18dp"
-                android:contentDescription="@string/TODO"
-                app:srcCompat="@drawable/icon_next" />
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginRight="18dp"
+                    android:contentDescription="@string/TODO"
+                    app:srcCompat="@drawable/icon_next" />
+            </LinearLayout>
+
         </LinearLayout>
 
 
