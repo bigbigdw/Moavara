@@ -72,8 +72,6 @@ class ActivityUser : AppCompatActivity() {
             UserInfo = userDao?.daoUser()?.get()
         }
 
-        Log.d("####", UserInfo?.UID.toString())
-
         if(UserInfo?.UID == "BW2mZVCzMxeUDN5z65MX6ZZ2tgD3"){
             binding.etviewTitle.visibility = View.VISIBLE
             binding.etviewBody.visibility = View.VISIBLE

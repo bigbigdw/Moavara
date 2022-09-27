@@ -1,16 +1,12 @@
 package com.example.moavara.User
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.moavara.Best.ActivityBestDetail
-import com.example.moavara.Search.AdapterBookSearch
-import com.example.moavara.Search.BookListDataBest
 import com.example.moavara.Search.FCMAlert
 import com.example.moavara.databinding.FragmentNoticesBinding
 import com.google.firebase.database.DataSnapshot
@@ -47,8 +43,7 @@ class FragmentNotice : Fragment() {
 
         adapter?.setOnItemClickListener(object : AdapterNotice.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
-                val item: FCMAlert? = adapter?.getItem(position)
-
+                
             }
         })
 

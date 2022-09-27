@@ -45,11 +45,16 @@ class AdapterNotice(
                 tviewBody.text = item.body
 
                 if(selectedPos == position){
-                    tviewBody.visibility = View.VISIBLE
-                    ivewBookImg.setImageResource(R.drawable.ic_best_gn_24px)
+                    if(tviewBody.visibility == View.VISIBLE){
+                        tviewBody.visibility = View.GONE
+                        ivewBookImg.setImageResource(R.drawable.ic_down_24px)
+                    } else {
+                        tviewBody.visibility = View.VISIBLE
+                        ivewBookImg.setImageResource(R.drawable.ic_up_24px)
+                    }
                 } else {
                     tviewBody.visibility = View.GONE
-                    ivewBookImg.setImageResource(R.drawable.ic_best_gr_24px)
+                    ivewBookImg.setImageResource(R.drawable.ic_down_24px)
                 }
             }
         }
@@ -68,9 +73,14 @@ class AdapterNotice(
                     val pos = adapterPosition
                     if (pos != RecyclerView.NO_POSITION) {
                         listener?.onItemClick(v, pos)
-                        selectedPos = pos
+
+                        if(selectedPos == pos){
+                            selectedPos = -1
+                        } else {
+                            selectedPos = pos
+                        }
                         notifyDataSetChanged()
-                        notifyItemChanged(selectedPos)
+
                     }
                 }
             }

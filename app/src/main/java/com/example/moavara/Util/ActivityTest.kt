@@ -120,7 +120,7 @@ class ActivityTest : AppCompatActivity() {
         } else if(it == textButton) { // BigTextStyle Notification
             val bigTextStyle = NotificationCompat.BigTextStyle(notificationBuilder)
             bigTextStyle.setSummaryText("BigText 요약")
-            bigTextStyle.bigText("resources.getString(R.string.big_text)")
+            bigTextStyle.bigText("resources.getString(R.string.big_text) \n resources.getString(R.string.big_text)")
             notificationBuilder?.setStyle(bigTextStyle)
         } else if(it == inboxButton) { // InboxStyle Notification
             val inboxStyle = NotificationCompat.InboxStyle(notificationBuilder)
