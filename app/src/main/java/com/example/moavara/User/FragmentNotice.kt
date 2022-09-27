@@ -43,7 +43,7 @@ class FragmentNotice : Fragment() {
 
         adapter?.setOnItemClickListener(object : AdapterNotice.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
-                
+
             }
         })
 

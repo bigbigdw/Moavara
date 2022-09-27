@@ -75,7 +75,7 @@ class FragmentDC : Fragment() {
                     for (i in DC.indices) {
                         val title = DC.select(".gall_tit")[i].text()
                         val date = DC.select(".gall_date")[i].text()
-                        val link = "https://gall.dcinside.com/mgallery/board/view/?id=${ID}&no=${DC[i].absUrl("data-no").replace("https://gall.dcinside.com/board/","")}"
+                        val link = "https://gall.dcinside.com/mgallery/board/view/?id=${ID}&no=${DC[i].absUrl("data-no").replace("https://gall.dcinside.com/mgallery/board/","").replace("https://gall.dcinside.com/board/","").replace("https://gall.dcinside.com/mgallery/board/lists/","").replace("lists/","")}"
 
                         if (doc.select(".gall_tit a")[i].absUrl("href").contains("https://gall.dcinside.com/mgallery/board/view/?id=")) {
 
