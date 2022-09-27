@@ -41,8 +41,8 @@
 
                     <ImageView
                         android:id="@+id/iviewInfo"
-                        android:layout_width="14dp"
-                        android:layout_height="18dp"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:layout_marginBottom="5dp"
                         android:contentDescription="@string/TODO"
                         android:scaleType="fitXY"
