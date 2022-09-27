@@ -2,10 +2,10 @@ package com.example.moavara.Best
 
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
@@ -20,12 +20,14 @@ import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.DBUser
 import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Firebase.FirebaseWorkManager
+import com.example.moavara.Main.DialogConfirm
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
 import com.example.moavara.Retrofit.*
 import com.example.moavara.Search.BestType
 import com.example.moavara.Search.BookListDataBest
 import com.example.moavara.Search.BookListDataBestAnalyze
+import com.example.moavara.User.ActivityGuide
 import com.example.moavara.Util.*
 import com.example.moavara.databinding.ActivityBestDetailBinding
 import com.google.android.material.tabs.TabLayout
@@ -48,6 +50,7 @@ class ActivityBestDetail : AppCompatActivity() {
     var bookTitle = ""
     var bookWriter = ""
     var bookLink = ""
+    var bookImg = ""
     var chapter: List<JoaraBestChapter>? = null
     var pos = 0
 
@@ -68,6 +71,7 @@ class ActivityBestDetail : AppCompatActivity() {
     private var isPicked = false
     private var hasBookData = false
     private var isFirstPick = false
+    private var fromPick = false
 
     var pickItem = BookListDataBest()
     var pickBookCodeItem = BookListDataBestAnalyze()
@@ -93,6 +97,7 @@ class ActivityBestDetail : AppCompatActivity() {
         platform = intent.getStringExtra("Type") ?: ""
         pos = intent.getIntExtra("POSITION", 0)
         hasBookData = intent.getBooleanExtra("HASDATA", false)
+        fromPick = intent.getBooleanExtra("FROMPICK", false)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -112,43 +117,100 @@ class ActivityBestDetail : AppCompatActivity() {
         setUserPick()
 
         if (hasBookData) {
-            BestRef.getBookCode(platform, genre).child(bookCode)
-                .addListenerForSingleValueEvent(object :
-                    ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                        if (dataSnapshot.exists()) {
-                            for (item in dataSnapshot.children) {
-                                val group: BookListDataBestAnalyze? =
-                                    item.getValue(BookListDataBestAnalyze::class.java)
+            if (fromPick) {
+                mRootRef.child("User").child(UserInfo.UID).child("Novel").child("bookCode").child(bookCode)
+                    .addListenerForSingleValueEvent(object :
+                        ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                                if (group != null) {
-                                    bookData.add(
-                                        BookListDataBestAnalyze(
-                                            group.info1,
-                                            group.info2,
-                                            group.info3,
-                                            group.info4,
-                                            group.number,
-                                            group.date,
-                                            group.numberDiff,
-                                            group.trophyCount,
+                            if (dataSnapshot.exists()) {
+                                for (item in dataSnapshot.children) {
+                                    val group: BookListDataBestAnalyze? =
+                                        item.getValue(BookListDataBestAnalyze::class.java)
+
+                                    if (group != null) {
+                                        bookData.add(
+                                            BookListDataBestAnalyze(
+                                                group.info1,
+                                                group.info2,
+                                                group.info3,
+                                                group.info4,
+                                                group.number,
+                                                group.date,
+                                                group.numberDiff,
+                                                group.trophyCount,
+                                            )
                                         )
-                                    )
+                                    }
                                 }
+
+                                setLayout()
+                            } else {
+                                hasBookData = false
+                                setLayoutWithoutBookData()
                             }
-
-                            setLayout()
-                        } else {
-                            hasBookData = false
-                            setLayoutWithoutBookData()
                         }
-                    }
 
-                    override fun onCancelled(databaseError: DatabaseError) {}
-                })
+                        override fun onCancelled(databaseError: DatabaseError) {}
+                    })
+            } else {
+                BestRef.getBookCode(platform, genre).child(bookCode)
+                    .addListenerForSingleValueEvent(object :
+                        ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                            if (dataSnapshot.exists()) {
+                                for (item in dataSnapshot.children) {
+                                    val group: BookListDataBestAnalyze? =
+                                        item.getValue(BookListDataBestAnalyze::class.java)
+
+                                    if (group != null) {
+                                        bookData.add(
+                                            BookListDataBestAnalyze(
+                                                group.info1,
+                                                group.info2,
+                                                group.info3,
+                                                group.info4,
+                                                group.number,
+                                                group.date,
+                                                group.numberDiff,
+                                                group.trophyCount,
+                                            )
+                                        )
+                                    }
+                                }
+
+                                setLayout()
+                            } else {
+                                hasBookData = false
+                                setLayoutWithoutBookData()
+                            }
+                        }
+
+                        override fun onCancelled(databaseError: DatabaseError) {}
+                    })
+            }
+
         } else {
             setLayoutWithoutBookData()
+        }
+
+        binding.inclueBestDetail.iviewBookCover.setOnClickListener {
+
+            val dialog: DialogBestBookCover?
+
+            // 안내 팝업
+            dialog = DialogBestBookCover(
+                this,
+                bookImg
+            )
+
+            dialog.window?.setBackgroundDrawable(
+                ColorDrawable(
+                    Color.TRANSPARENT)
+            )
+            dialog.show()
         }
     }
 
@@ -425,6 +487,7 @@ class ActivityBestDetail : AppCompatActivity() {
 
                             Glide.with(this@ActivityBestDetail)
                                 .load(data.book.bookImg.replace("http://", "https://"))
+                                .centerCrop()
                                 .into(inclueBestDetail.iviewBookCover)
 
                             bookTitle = data.book.subject
@@ -447,11 +510,12 @@ class ActivityBestDetail : AppCompatActivity() {
                                 BestRef.decimalToString(data.book.cntTotalComment.toInt())
 
                             tviewIntro.text = data.book.intro
+                            bookImg = data.book.bookImg.replace("http://", "https://")
 
                             pickItem = BookListDataBest(
                                 data.book.writerName,
                                 data.book.subject,
-                                data.book.bookImg.replace("http://", "https://"),
+                                bookImg,
                                 data.book.bookCode,
                                 data.book.intro,
                                 "총 ${data.book.cntChapter}화",
@@ -459,7 +523,7 @@ class ActivityBestDetail : AppCompatActivity() {
                                 data.book.cntFavorite,
                                 data.book.cntRecom,
                                 data.book.cntTotalComment,
-                                pos,
+                                DBDate.DateMMDDHHMMSS().toInt(),
                                 DBDate.DateMMDD(),
                                 platform,
                                 "",
@@ -470,7 +534,7 @@ class ActivityBestDetail : AppCompatActivity() {
                                 data.book.cntFavorite,
                                 data.book.cntRecom,
                                 data.book.cntTotalComment,
-                                999,
+                                DBDate.DateMMDDHHMMSS().toInt(),
                                 DBDate.DateMMDD(),
                                 0,
                                 0,
@@ -538,6 +602,7 @@ class ActivityBestDetail : AppCompatActivity() {
 
                     Glide.with(this@ActivityBestDetail)
                         .load(doc.select(".section_area_info .pic img").attr("src"))
+                        .centerCrop()
                         .into(inclueBestDetail.iviewBookCover)
 
                     bookTitle = doc.select(".book_title").text()
@@ -567,10 +632,12 @@ class ActivityBestDetail : AppCompatActivity() {
 
                     tviewIntro.text = doc.select(".section_area_info .dsc").text()
 
+                    bookImg = doc.select(".section_area_info .pic img").attr("src")
+
                     pickItem = BookListDataBest(
                         doc.select(".writer").text(),
                         bookTitle,
-                        doc.select(".section_area_info .pic img").attr("src"),
+                        bookImg,
                         bookCode,
                         "장르 : ${doc.select(".info_book .genre").text()}",
                         doc.select(".section_area_info .dsc").text(),
@@ -578,7 +645,7 @@ class ActivityBestDetail : AppCompatActivity() {
                         doc.select(".grade_area em").text(),
                         doc.select(".info_book .download").text().replace("다운로드", ""),
                         "",
-                        999,
+                        DBDate.DateMMDDHHMMSS().toInt(),
                         DBDate.DateMMDD(),
                         platform,
                         "",
@@ -589,7 +656,7 @@ class ActivityBestDetail : AppCompatActivity() {
                         doc.select(".grade_area em").text(),
                         doc.select(".info_book .download").text().replace("다운로드", ""),
                         "",
-                        999,
+                        DBDate.DateMMDDHHMMSS().toInt(),
                         DBDate.DateMMDD(),
                         0,
                         0,
@@ -643,6 +710,7 @@ class ActivityBestDetail : AppCompatActivity() {
                         data.home?.let { it ->
                             Glide.with(this@ActivityBestDetail)
                                 .load("https://dn-img-page.kakao.com/download/resource?kid=${it.land_thumbnail_url}")
+                                .centerCrop()
                                 .into(inclueBestDetail.iviewBookCover)
 
                             bookTitle = it.title
@@ -662,10 +730,12 @@ class ActivityBestDetail : AppCompatActivity() {
 
                             tviewIntro.text = it.description
 
+                            bookImg = "https://dn-img-page.kakao.com/download/resource?kid=${it.land_thumbnail_url}"
+
                             pickItem = BookListDataBest(
                                 it.author_name,
                                 bookTitle,
-                                "https://dn-img-page.kakao.com/download/resource?kid=${it.land_thumbnail_url}",
+                                bookImg,
                                 bookCode,
                                 it.description,
                                 "총 ${it.open_counts}화",
@@ -673,7 +743,7 @@ class ActivityBestDetail : AppCompatActivity() {
                                 it.page_rating_count,
                                 it.page_rating_summary.replace(".0", ""),
                                 it.page_comment_count,
-                                999,
+                                DBDate.DateMMDDHHMMSS().toInt(),
                                 DBDate.DateMMDD(),
                                 platform,
                                 "",
@@ -684,7 +754,7 @@ class ActivityBestDetail : AppCompatActivity() {
                                 it.page_rating_count,
                                 it.page_rating_summary.replace(".0", ""),
                                 it.page_comment_count,
-                                999,
+                                DBDate.DateMMDDHHMMSS().toInt(),
                                 DBDate.DateMMDD(),
                                 0,
                                 0,
@@ -745,6 +815,7 @@ class ActivityBestDetail : AppCompatActivity() {
                         data.let {
                             Glide.with(this@ActivityBestDetail)
                                 .load(data.thumbnail.url)
+                                .centerCrop()
                                 .into(inclueBestDetail.iviewBookCover)
 
                             bookTitle = it.title
@@ -765,10 +836,12 @@ class ActivityBestDetail : AppCompatActivity() {
 
                             tviewIntro.text = it.synopsis
 
+                            bookImg = data.thumbnail.url
+
                             pickItem = BookListDataBest(
                                 it.nickname.name,
                                 bookTitle,
-                                data.thumbnail.url,
+                                bookImg,
                                 bookCode,
                                 it.synopsis,
                                 "총 ${it.publishedEpisodeCount}화",
@@ -776,7 +849,7 @@ class ActivityBestDetail : AppCompatActivity() {
                                 it.visitorCount,
                                 it.favoriteCount,
                                 it.episodeLikeCount,
-                                999,
+                                DBDate.DateMMDDHHMMSS().toInt(),
                                 DBDate.DateMMDD(),
                                 platform,
                                 "",
@@ -787,7 +860,7 @@ class ActivityBestDetail : AppCompatActivity() {
                                 it.visitorCount,
                                 it.favoriteCount,
                                 it.episodeLikeCount,
-                                999,
+                                DBDate.DateMMDDHHMMSS().toInt(),
                                 DBDate.DateMMDD(),
                                 0,
                                 0,
@@ -843,6 +916,7 @@ class ActivityBestDetail : AppCompatActivity() {
 
                     Glide.with(this@ActivityBestDetail)
                         .load("https:${doc.select(".thumbnail_image img").attr("src")}")
+                        .centerCrop()
                         .into(inclueBestDetail.iviewBookCover)
 
                     bookTitle = doc.select(".header_info_wrap .info_title_wrap h3").text()
@@ -864,29 +938,35 @@ class ActivityBestDetail : AppCompatActivity() {
 
                     tviewIntro.text = doc.select(".introduce_book .introduce_paragraph").text()
 
+                    bookImg = "https:${doc.select(".thumbnail_image img").attr("src")}"
+
                     pickItem = BookListDataBest(
                         doc.select(".metadata_writer .author_detail_link").text(),
                         bookTitle,
-                        "https:${doc.select(".thumbnail_image img").attr("src")}",
+                        bookImg,
                         bookCode,
                         doc.select(".book_count").text(),
                         "",
-                        doc.select(".header_info_wrap .StarRate_ParticipantCount").text().replace("명",""),
-                        ((doc.select(".header_info_wrap .StarRate_Score").text().replace("점","")).toFloat() * 10).toString().replace(".0",""),
+                        doc.select(".header_info_wrap .StarRate_ParticipantCount").text()
+                            .replace("명", ""),
+                        ((doc.select(".header_info_wrap .StarRate_Score").text()
+                            .replace("점", "")).toFloat() * 10).toString().replace(".0", ""),
                         "",
                         "",
-                        999,
+                        DBDate.DateMMDDHHMMSS().toInt(),
                         DBDate.DateMMDD(),
                         platform,
                         "",
                     )
 
                     pickBookCodeItem = BookListDataBestAnalyze(
-                        doc.select(".header_info_wrap .StarRate_ParticipantCount").text().replace("명",""),
-                        ((doc.select(".header_info_wrap .StarRate_Score").text().replace("점","")).toFloat() * 10).toString().replace(".0",""),
+                        doc.select(".header_info_wrap .StarRate_ParticipantCount").text()
+                            .replace("명", ""),
+                        ((doc.select(".header_info_wrap .StarRate_Score").text()
+                            .replace("점", "")).toFloat() * 10).toString().replace(".0", ""),
                         "",
                         "",
-                        999,
+                        DBDate.DateMMDDHHMMSS().toInt(),
                         DBDate.DateMMDD(),
                         0,
                         0,
@@ -940,6 +1020,7 @@ class ActivityBestDetail : AppCompatActivity() {
                         data.params.let {
                             Glide.with(this@ActivityBestDetail)
                                 .load(it?.orgFilePos)
+                                .centerCrop()
                                 .into(inclueBestDetail.iviewBookCover)
 
                             bookTitle = it?.prodNm ?: ""
@@ -954,10 +1035,12 @@ class ActivityBestDetail : AppCompatActivity() {
                             inclueBestDetail.tviewInfo4.text = it?.commentCount
                             tviewIntro.visibility = View.GONE
 
+                            bookImg = it?.orgFilePos ?: ""
+
                             pickItem = BookListDataBest(
                                 it?.artistNm ?: "",
                                 bookTitle,
-                                it?.orgFilePos ?: "",
+                                bookImg,
                                 bookCode,
                                 "",
                                 it?.menuNm ?: "",
@@ -965,7 +1048,7 @@ class ActivityBestDetail : AppCompatActivity() {
                                 it?.ratingAvgScore ?: "",
                                 it?.commentCount ?: "",
                                 it?.favoriteCount ?: "",
-                                999,
+                                DBDate.DateMMDDHHMMSS().toInt(),
                                 DBDate.DateMMDD(),
                                 platform,
                                 "",
@@ -976,7 +1059,7 @@ class ActivityBestDetail : AppCompatActivity() {
                                 it?.ratingAvgScore ?: "",
                                 it?.commentCount ?: "",
                                 it?.favoriteCount ?: "",
-                                999,
+                                DBDate.DateMMDDHHMMSS().toInt(),
                                 DBDate.DateMMDD(),
                                 0,
                                 0,
@@ -1046,6 +1129,7 @@ class ActivityBestDetail : AppCompatActivity() {
 
                     Glide.with(this@ActivityBestDetail)
                         .load("https:${doc.select(".cover-box img").attr("src")}")
+                        .centerCrop()
                         .into(inclueBestDetail.iviewBookCover)
 
                     bookTitle = doc.select(".detail-box h2 a").text()
@@ -1073,10 +1157,12 @@ class ActivityBestDetail : AppCompatActivity() {
 
                     tviewIntro.text = doc.select(".story").text()
 
+                    bookImg = "https:${doc.select(".cover-box img").attr("src")}"
+
                     pickItem = BookListDataBest(
                         doc.select(".member-trigger strong").text(),
                         bookTitle,
-                        "https:${doc.select(".cover-box img").attr("src")}",
+                        bookImg,
                         bookCode,
                         doc.select(".story").text(),
                         doc.select(".meta-path strong").text(),
@@ -1084,7 +1170,7 @@ class ActivityBestDetail : AppCompatActivity() {
                         doc.select(".meta-etc dd").next().next()[2]?.text() ?: "",
                         "",
                         "",
-                        999,
+                        DBDate.DateMMDDHHMMSS().toInt(),
                         DBDate.DateMMDD(),
                         platform,
                         "",
@@ -1095,7 +1181,7 @@ class ActivityBestDetail : AppCompatActivity() {
                         doc.select(".meta-etc dd").next().next()[2]?.text() ?: "",
                         "",
                         "",
-                        999,
+                        DBDate.DateMMDDHHMMSS().toInt(),
                         DBDate.DateMMDD(),
                         0,
                         0,
@@ -1148,6 +1234,7 @@ class ActivityBestDetail : AppCompatActivity() {
                         data.result?.let {
                             Glide.with(this@ActivityBestDetail)
                                 .load("https:${it.imgPath}")
+                                .centerCrop()
                                 .into(inclueBestDetail.iviewBookCover)
 
                             bookTitle = it.wrknm
@@ -1168,10 +1255,12 @@ class ActivityBestDetail : AppCompatActivity() {
 
                             tviewIntro.text = it.lnIntro
 
+                            bookImg = "https:${it.imgPath}"
+
                             pickItem = BookListDataBest(
                                 it.athrnm,
                                 it.wrknm,
-                                "https:${it.imgPath}",
+                                bookImg,
                                 bookCode,
                                 it.lnIntro,
                                 "장르 :  ${it.lgctgrNm}",
@@ -1179,7 +1268,7 @@ class ActivityBestDetail : AppCompatActivity() {
                                 it.goodCnt,
                                 it.intrstCnt,
                                 "",
-                                999,
+                                DBDate.DateMMDDHHMMSS().toInt(),
                                 DBDate.DateMMDD(),
                                 platform,
                                 "",
@@ -1190,7 +1279,7 @@ class ActivityBestDetail : AppCompatActivity() {
                                 it.goodCnt,
                                 it.intrstCnt,
                                 "",
-                                999,
+                                DBDate.DateMMDDHHMMSS().toInt(),
                                 DBDate.DateMMDD(),
                                 0,
                                 0,

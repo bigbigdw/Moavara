@@ -21,7 +21,6 @@ import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBest
 import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.DBDate
-import com.example.moavara.Util.DBDate.status
 import com.example.moavara.Util.applyingTextColor
 import com.example.moavara.databinding.FragmentBestWeekendBinding
 import com.google.firebase.analytics.FirebaseAnalytics

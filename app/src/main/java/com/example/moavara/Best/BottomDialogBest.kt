@@ -4,10 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
-import android.os.Build.VERSION_CODES.P
 import android.os.Bundle
 import android.text.SpannableStringBuilder
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -379,7 +377,7 @@ class BottomDialogBest(
                             item.info4,
                             item.info5,
                             item.info6,
-                            999,
+                            DBDate.DateMMDDHHMMSS().toInt(),
                             item.date,
                             platform,
                             ""

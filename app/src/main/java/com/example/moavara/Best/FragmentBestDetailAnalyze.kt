@@ -40,9 +40,20 @@ class FragmentBestDetailAnalyze(
         }
 
         if(hasBookData){
-            mInnerFragmentBestDetailRank = InnerFragmentBestDetailRank(BookItem)
-            childFragmentManager.commit {
-                replace(R.id.InnerFragmentBestDetailRank, mInnerFragmentBestDetailRank)
+            var isOnlyPick = false
+
+            for(i in BookItem){
+                if(i.number > 100){
+                    isOnlyPick = true
+                    break
+                }
+            }
+
+            if(!isOnlyPick){
+                mInnerFragmentBestDetailRank = InnerFragmentBestDetailRank(BookItem)
+                childFragmentManager.commit {
+                    replace(R.id.InnerFragmentBestDetailRank, mInnerFragmentBestDetailRank)
+                }
             }
         }
 

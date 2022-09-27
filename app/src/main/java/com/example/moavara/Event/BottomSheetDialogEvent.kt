@@ -24,6 +24,7 @@ import com.example.moavara.Retrofit.JoaraNoticeDetailResult
 import com.example.moavara.Retrofit.RetrofitDataListener
 import com.example.moavara.Retrofit.RetrofitJoara
 import com.example.moavara.Search.EventData
+import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Param
 import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.BottomDialogEventBinding
@@ -177,7 +178,7 @@ class BottomSheetDialogEvent(
                         title,
                         item.data,
                         item.date,
-                        999,
+                        DBDate.DateMMDDHHMMSS().toInt(),
                         item.type,
                         "",
                     )

@@ -156,7 +156,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                     } else if (platform == "Naver") {
                         tviewSearch.text = "252934"
                         sview.inputType = InputType.TYPE_CLASS_NUMBER
-                        binding.sview.hint = "시리즈 검색"
+                        binding.sview.hint = "베스트리그 검색"
                         iviewSearch.setImageResource(R.drawable.quick_search_naver3_img)
                     } else if (platform == "Naver_Challenge") {
                         tviewSearch.text = "75595"
@@ -166,7 +166,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                     } else if (platform == "Naver_Today") {
                         tviewSearch.text = "268129"
                         sview.inputType = InputType.TYPE_CLASS_NUMBER
-                        binding.sview.hint = "베스트리그 검색"
+                        binding.sview.hint = "시리즈 검색"
                         iviewSearch.setImageResource(R.drawable.quick_search_naver_img)
                     } else if (platform == "Ridi") {
                         tviewSearch.text = "425295076"
@@ -177,6 +177,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                         tviewSearch.text = "H042820022"
                         sview.inputType = InputType.TYPE_CLASS_TEXT
                         iviewSearch.setImageResource(R.drawable.quick_search_onestory_img)
+                        binding.sview.hint = "원스토리 검색"
                     } else if (platform == "Munpia") {
                         tviewSearch.text = "284801"
                         sview.inputType = InputType.TYPE_CLASS_NUMBER
@@ -463,7 +464,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                                 data.book.cntFavorite,
                                 data.book.cntRecom,
                                 data.book.cntTotalComment,
-                                0,
+                                DBDate.DateMMDDHHMMSS().toInt(),
                                 DBDate.DateMMDD(),
                                 platform,
                                 "",
@@ -474,7 +475,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                                 data.book.cntFavorite,
                                 data.book.cntRecom,
                                 data.book.cntTotalComment,
-                                999,
+                                DBDate.DateMMDDHHMMSS().toInt(),
                                 DBDate.DateMMDD(),
                                 0,
                                 0,
@@ -538,7 +539,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                                     it.page_rating_summary.replace(".0", ""),
                                     it.read_count,
                                     it.page_comment_count,
-                                    999,
+                                    DBDate.DateMMDDHHMMSS().toInt(),
                                     DBDate.DateMMDD(),
                                     platform,
                                     "",
@@ -549,7 +550,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                                     it.page_rating_summary.replace(".0", ""),
                                     it.read_count,
                                     it.page_comment_count,
-                                    999,
+                                    DBDate.DateMMDDHHMMSS().toInt(),
                                     DBDate.DateMMDD(),
                                     0,
                                     0,
@@ -613,7 +614,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                                     it.viewCount,
                                     it.visitorCount,
                                     it.episodeLikeCount,
-                                    999,
+                                    DBDate.DateMMDDHHMMSS().toInt(),
                                     DBDate.DateMMDD(),
                                     platform,
                                     "",
@@ -624,7 +625,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                                     it.viewCount,
                                     it.visitorCount,
                                     it.episodeLikeCount,
-                                    999,
+                                    DBDate.DateMMDDHHMMSS().toInt(),
                                     DBDate.DateMMDD(),
                                     0,
                                     0,
@@ -711,7 +712,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                                 doc.select(".grade_area em").text(),
                                 doc.select(".info_book .download").text().replace("다운로드", ""),
                                 "",
-                                999,
+                                DBDate.DateMMDDHHMMSS().toInt(),
                                 DBDate.DateMMDD(),
                                 platform,
                                 "",
@@ -723,7 +724,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                                 doc.select(".grade_area em").text(),
                                 doc.select(".info_book .download").text().replace("다운로드", ""),
                                 "",
-                                999,
+                                DBDate.DateMMDDHHMMSS().toInt(),
                                 DBDate.DateMMDD(),
                                 0,
                                 0,
@@ -794,7 +795,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                             doc.select(".header_info_wrap .StarRate_ParticipantCount").text(),
                             "",
                             "",
-                            999,
+                            DBDate.DateMMDDHHMMSS().toInt(),
                             DBDate.DateMMDD(),
                             platform,
                             "",
@@ -877,7 +878,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                             doc.select(".meta-etc dd").next().next()[2]?.text() ?: "",
                             "",
                             "",
-                            999,
+                            DBDate.DateMMDDHHMMSS().toInt(),
                             DBDate.DateMMDD(),
                             platform,
                             "",
@@ -888,7 +889,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                             doc.select(".meta-etc dd").next().next()[2]?.text() ?: "",
                             "",
                             "",
-                            999,
+                            DBDate.DateMMDDHHMMSS().toInt(),
                             DBDate.DateMMDD(),
                             0,
                             0,
@@ -909,7 +910,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
         }.start()
     }
 
-    fun setLayoutToksoda() {
+    private fun setLayoutToksoda() {
         val apiToksoda = RetrofitToksoda()
         val param: MutableMap<String?, Any> = HashMap()
 
@@ -958,7 +959,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                                     it.goodCnt,
                                     it.intrstCnt,
                                     "",
-                                    999,
+                                    DBDate.DateMMDDHHMMSS().toInt(),
                                     DBDate.DateMMDD(),
                                     platform,
                                     "",
@@ -969,7 +970,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                                     it.goodCnt,
                                     it.intrstCnt,
                                     "",
-                                    999,
+                                    DBDate.DateMMDDHHMMSS().toInt(),
                                     DBDate.DateMMDD(),
                                     0,
                                     0,
@@ -988,7 +989,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
             })
     }
 
-    fun setLayoutOneStore() {
+    private fun setLayoutOneStore() {
         val apiOnestory = RetrofitOnestore()
         val param: MutableMap<String?, Any> = HashMap()
 
@@ -1034,7 +1035,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                                     it?.favoriteCount ?: "",
                                     it?.pageViewTotal ?: "",
                                     it?.commentCount ?: "",
-                                    999,
+                                    DBDate.DateMMDDHHMMSS().toInt(),
                                     DBDate.DateMMDD(),
                                     platform,
                                     "",
@@ -1045,7 +1046,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                                     it?.favoriteCount ?: "",
                                     it?.pageViewTotal ?: "",
                                     it?.commentCount ?: "",
-                                    999,
+                                    DBDate.DateMMDDHHMMSS().toInt(),
                                     DBDate.DateMMDD(),
                                     0,
                                     0,
