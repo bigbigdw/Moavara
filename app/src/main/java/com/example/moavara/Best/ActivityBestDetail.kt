@@ -33,9 +33,11 @@ import com.example.moavara.databinding.ActivityBestDetailBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.firestore.auth.User
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import org.jsoup.Jsoup
@@ -75,6 +77,7 @@ class ActivityBestDetail : AppCompatActivity() {
 
     var pickItem = BookListDataBest()
     var pickBookCodeItem = BookListDataBestAnalyze()
+    val crashlytics = Firebase.crashlytics
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,6 +95,9 @@ class ActivityBestDetail : AppCompatActivity() {
         if (userDao?.daoUser()?.get() != null) {
             UserInfo = userDao?.daoUser()?.get() ?: DataBaseUser()
         }
+
+        crashlytics.setCustomKey("ActivityBestDetail_PLATFORM", platform)
+        crashlytics.setCustomKey("ActivityBestDetail_GENRE", UserInfo.Genre)
 
         bookCode = intent.getStringExtra("BookCode") ?: ""
         platform = intent.getStringExtra("Type") ?: ""
@@ -491,6 +497,8 @@ class ActivityBestDetail : AppCompatActivity() {
                                 .into(inclueBestDetail.iviewBookCover)
 
                             bookTitle = data.book.subject
+                            crashlytics.setCustomKey("ActivityBestDetail_TITLE", bookTitle)
+
                             chapter = data.book.chapter
                             bookLink = data.book.bookCode
 
@@ -606,6 +614,8 @@ class ActivityBestDetail : AppCompatActivity() {
                         .into(inclueBestDetail.iviewBookCover)
 
                     bookTitle = doc.select(".book_title").text()
+                    crashlytics.setCustomKey("ActivityBestDetail_TITLE", bookTitle)
+
                     tviewToolbar.text = bookTitle
                     inclueBestDetail.tviewTitle.text = bookTitle
                     inclueBestDetail.tviewWriter.text = doc.select(".writer").text()
@@ -714,6 +724,8 @@ class ActivityBestDetail : AppCompatActivity() {
                                 .into(inclueBestDetail.iviewBookCover)
 
                             bookTitle = it.title
+                            crashlytics.setCustomKey("ActivityBestDetail_TITLE", bookTitle)
+
                             tviewToolbar.text = bookTitle
                             inclueBestDetail.tviewTitle.text = bookTitle
                             inclueBestDetail.tviewWriter.text = it.author_name
@@ -819,6 +831,8 @@ class ActivityBestDetail : AppCompatActivity() {
                                 .into(inclueBestDetail.iviewBookCover)
 
                             bookTitle = it.title
+                            crashlytics.setCustomKey("ActivityBestDetail_TITLE", bookTitle)
+
                             tviewToolbar.text = bookTitle
 
                             inclueBestDetail.tviewTitle.text = bookTitle
@@ -920,6 +934,7 @@ class ActivityBestDetail : AppCompatActivity() {
                         .into(inclueBestDetail.iviewBookCover)
 
                     bookTitle = doc.select(".header_info_wrap .info_title_wrap h3").text()
+                    crashlytics.setCustomKey("ActivityBestDetail_TITLE", bookTitle)
 
                     tviewToolbar.text = bookTitle
                     inclueBestDetail.tviewTitle.text = bookTitle
@@ -1024,6 +1039,8 @@ class ActivityBestDetail : AppCompatActivity() {
                                 .into(inclueBestDetail.iviewBookCover)
 
                             bookTitle = it?.prodNm ?: ""
+                            crashlytics.setCustomKey("ActivityBestDetail_TITLE", bookTitle)
+
                             tviewToolbar.text = bookTitle
                             inclueBestDetail.tviewTitle.text = bookTitle
                             inclueBestDetail.tviewWriter.text = it?.artistNm
@@ -1134,6 +1151,8 @@ class ActivityBestDetail : AppCompatActivity() {
 
                     bookTitle = doc.select(".detail-box h2 a").text()
                         .replace(doc.select(".detail-box h2 a span").text() + " ", "")
+                    crashlytics.setCustomKey("ActivityBestDetail_TITLE", bookTitle)
+
                     tviewToolbar.text = bookTitle
                     inclueBestDetail.tviewTitle.text = bookTitle
                     inclueBestDetail.tviewWriter.text = doc.select(".member-trigger strong").text()
@@ -1238,6 +1257,8 @@ class ActivityBestDetail : AppCompatActivity() {
                                 .into(inclueBestDetail.iviewBookCover)
 
                             bookTitle = it.wrknm
+                            crashlytics.setCustomKey("ActivityBestDetail_TITLE", bookTitle)
+
                             bookWriter = it.athrnm
 
                             inclueBestDetail.tviewTitle.text = bookTitle

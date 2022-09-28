@@ -14,8 +14,8 @@ android {
         applicationId "com.example.moavara"
         minSdkVersion 26
         targetSdkVersion 32
-        versionCode 100006
-        versionName "1.0.6"
+        versionCode 100007
+        versionName "1.0.7"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -117,6 +117,8 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-dynamic-links-ktx'
 
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
 
     // Add the dependencies for any other desired Firebase products
     // https://firebase.google.com/docs/android/setup#available-libraries

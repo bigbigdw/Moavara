@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.SpannableStringBuilder
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,10 +20,13 @@ import com.example.moavara.databinding.FragmentBestDetailTabsBinding
 import com.example.moavara.databinding.ItemBestDetailOtherBinding
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
+import retrofit2.http.Url
+import java.net.URL
 
 class FragmentBestDetailBooks(private val platfrom: String, private val bookCode: String, private val bookWriter: String) :
     Fragment() {
@@ -36,6 +40,7 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
     var status = ""
     var cate = ""
     private lateinit var firebaseAnalytics: FirebaseAnalytics
+    val crashlytics = Firebase.crashlytics
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -79,6 +84,9 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
                     val bundle = Bundle()
                     bundle.putString("BEST_FROM", "Others")
                     firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
+
+                    crashlytics.setCustomKey("FragmentBestDetailBooks_BOOKCODE", item?.bookCode ?: "")
+                    crashlytics.setCustomKey("FragmentBestDetailBooks_TITLE", item?.title ?: "")
 
                     val bookDetailIntent = Intent(requireContext(), ActivityBestDetail::class.java)
                     bookDetailIntent.putExtra("BookCode", item?.bookCode)
@@ -176,6 +184,7 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
 
     private fun getOthersRidi() {
         Thread {
+
             val doc: Document = Jsoup.connect(bookWriter).get()
 
             val other = doc.select(".book_macro_landscape")
@@ -189,12 +198,14 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
                         img = "https:${img}"
                     }
 
+                    val url = URL("https://ridibooks.com/books${other[i].select(".thumbnail_btn").attr("href")}")
+
                     items.add(
                         BookListDataBest(
                             other[i].select(".author_detail_link").text(),
                             other[i].select(".title_text").text(),
                             img,
-                            "https://ridibooks.com/books${other[i].select(".thumbnail_btn").attr("href")}",
+                            url.path.replace("/books/books/",""),
                             other[i].select(".book_metadata_wrapper .meta_description").text(),
                             other[i].select(".genre").text(),
                             other[i].select(".StarRate_Score").text(),
