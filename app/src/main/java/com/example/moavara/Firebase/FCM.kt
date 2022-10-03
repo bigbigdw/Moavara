@@ -7,21 +7,18 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.SystemClock
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.Person
 import androidx.core.graphics.drawable.IconCompat
 import com.example.moavara.Main.ActivitySplash
 import com.example.moavara.R
 import com.example.moavara.Search.FCMAlert
-import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.BootReceiver
 import com.example.moavara.Util.DBDate
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import java.io.File
 
 class FCM : FirebaseMessagingService() {
 
@@ -32,7 +29,10 @@ class FCM : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
 
         if (remoteMessage.data.isNotEmpty()) {
-            showNotification(remoteMessage.data["title"] as String, remoteMessage.data["message"] as String)
+            showNotification(
+                remoteMessage.data["title"] as String,
+                remoteMessage.data["message"] as String
+            )
         }
 
         if (remoteMessage.notification != null) {
@@ -45,10 +45,11 @@ class FCM : FirebaseMessagingService() {
 
     private fun showNotification(title: String, message: String) {
 
-        if(message.contains("베스트 리스트가 갱신되었습니다")){
+        if (message.contains("베스트 리스트가 갱신되었습니다")) {
             FirebaseMessaging.getInstance().subscribeToTopic("all")
             miningAlert(title, message, "Alert")
-        } else if(message.contains("마이픽 리스트가 최신화 되었습니다.")) {
+
+        } else if (message.contains("마이픽 리스트가 최신화 되었습니다.")) {
         } else {
             miningAlert(title, message, "Notice")
         }
@@ -57,7 +58,7 @@ class FCM : FirebaseMessagingService() {
         notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
         // API Level 26 버전 이상부터는 NotificationChannel을 사용하여 NotificationCompat.Builder를 생성하기에 분기
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channelId = "모아바라 Best"
             val channelName = "모아바라 Best"
             val channelDescription = "Channel One Description"
@@ -65,7 +66,8 @@ class FCM : FirebaseMessagingService() {
             val notificationChannel: NotificationChannel?
             // HeadsUp은 Importance를 High로 설정해야하기에 분기
             // NotificationChannel 객체 생성
-            notificationChannel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
+            notificationChannel =
+                NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
 
             notificationChannel.description = channelDescription
             // NotificationChannel이 등록된 Builder
@@ -75,7 +77,7 @@ class FCM : FirebaseMessagingService() {
         }
 
         // API Level 26 버전 이상부터는 NotificationChannel을 사용하여 NotificationCompat.Builder를 생성하기에 분기
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channelId = "모아바라 Best"
             notificationBuilder = NotificationCompat.Builder(this, channelId)
         } else {
@@ -96,19 +98,21 @@ class FCM : FirebaseMessagingService() {
         }
 
         // 시스템에게 의뢰할 Intent를 담는 클래스
-        val activityPendingIntent = PendingIntent.getActivity(this, 10, mainIntent, PendingIntent.FLAG_IMMUTABLE)
+        val activityPendingIntent =
+            PendingIntent.getActivity(this, 10, mainIntent, PendingIntent.FLAG_IMMUTABLE)
         // 사용자가 알림을 클릭 시 이동할 PendingIntent
         notificationBuilder?.setContentIntent(activityPendingIntent)
 
         // BroadCastReceiver Intent
         val broadIntent = Intent(this, BootReceiver::class.java)
-        val broadcastPendingIntent = PendingIntent.getBroadcast(this, 0, broadIntent, PendingIntent.FLAG_IMMUTABLE)
+        val broadcastPendingIntent =
+            PendingIntent.getBroadcast(this, 0, broadIntent, PendingIntent.FLAG_IMMUTABLE)
 
         // ActionButton을 추가하여 클릭 시 PendingIntent 설정
 //        notificationBuilder?.addAction(NotificationCompat.Action.Builder(R.mipmap.ic_launcher, "모아바라 열기", broadcastPendingIntent).build())
 
         // BigPictureStyle Notification
-        if(it == "pictureButton") {
+        if (it == "pictureButton") {
             // Bitmap 생성
             val bigPicture = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
             val bigStyle = NotificationCompat.BigPictureStyle(notificationBuilder)
@@ -116,12 +120,12 @@ class FCM : FirebaseMessagingService() {
             bigStyle.bigPicture(bigPicture)
             // Builder에 Style 설정
             notificationBuilder?.setStyle(bigStyle)
-        } else if(it == "textButton") { // BigTextStyle Notification
+        } else if (it == "textButton") { // BigTextStyle Notification
             val bigTextStyle = NotificationCompat.BigTextStyle(notificationBuilder)
             bigTextStyle.setSummaryText("BigText 요약")
             bigTextStyle.bigText("HELLO")
             notificationBuilder?.setStyle(bigTextStyle)
-        } else if(it == "inboxButton") { // InboxStyle Notification
+        } else if (it == "inboxButton") { // InboxStyle Notification
             val inboxStyle = NotificationCompat.InboxStyle(notificationBuilder)
             inboxStyle.addLine("Activity")
             inboxStyle.addLine("BroadcastReceiver")
@@ -129,9 +133,9 @@ class FCM : FirebaseMessagingService() {
             inboxStyle.addLine("ContentProvider")
             inboxStyle.setSummaryText("Android Component")
             notificationBuilder?.setStyle(inboxStyle)
-        } else if(it == "progressButton") { // Progress Notification
+        } else if (it == "progressButton") { // Progress Notification
             val runnable = Runnable {
-                for(i in 1..10) {
+                for (i in 1..10) {
                     // 터치해도 꺼지지않게 설정
                     notificationBuilder?.setAutoCancel(false)
                     // 알림을 밀어서 삭제하지 못하게
@@ -147,9 +151,9 @@ class FCM : FirebaseMessagingService() {
 
             val thread = Thread(runnable)
             thread.start()
-        } else if(it == "headsUpButton") { // HeadsUp Notification
+        } else if (it == "headsUpButton") { // HeadsUp Notification
             notificationBuilder?.setFullScreenIntent(activityPendingIntent, true)
-        } else if(it == "messageButton") { // Message Style Notification
+        } else if (it == "messageButton") { // Message Style Notification
             val sender1 = Person.Builder()
                 .setName("Lee")
                 .setIcon(IconCompat.createWithResource(this, R.mipmap.ic_launcher))
@@ -178,11 +182,13 @@ class FCM : FirebaseMessagingService() {
         notificationManager?.notify(0, notificationBuilder?.build())
     }
 
-    private fun miningAlert(title: String, message: String, child : String) {
-        FirebaseDatabase.getInstance().reference.child("Message").child(child).child(DBDate.DateMMDDHHMM()).setValue(
-            FCMAlert(DBDate.DateMMDDHHMM(),
-            title, message
-        )
+    private fun miningAlert(title: String, message: String, child: String) {
+        FirebaseDatabase.getInstance().reference.child("Message").child(child)
+            .child(DBDate.DateMMDDHHMM()).setValue(
+            FCMAlert(
+                DBDate.DateMMDDHHMM(),
+                title, message
+            )
         )
     }
 }

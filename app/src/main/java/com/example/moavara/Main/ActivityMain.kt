@@ -15,7 +15,6 @@ import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import androidx.room.Room
 import androidx.work.*
-import com.example.moavara.DataBase.DBBest
 import com.example.moavara.DataBase.DBUser
 import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Firebase.FCM
@@ -23,7 +22,6 @@ import com.example.moavara.Firebase.FirebaseWorkManager
 import com.example.moavara.R
 import com.example.moavara.Search.ActivitySearch
 import com.example.moavara.User.ActivityUser
-import com.example.moavara.Util.BestRef
 import com.example.moavara.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.messaging.FirebaseMessaging
@@ -62,33 +60,14 @@ class ActivityMain : AppCompatActivity() {
         navController = Navigation.findNavController(this, R.id.navHostFragmentMain)
 
         toolbar.setOnClickListener {
+//            if(UserInfo?.UID == "BW2mZVCzMxeUDN5z65MX6ZZ2tgD3"){
+//                val intent = Intent(this@ActivityMain, ActivityAdmin::class.java)
+//                startActivity(intent)
+//            }
+
             val intent = Intent(this@ActivityMain, ActivityAdmin::class.java)
             startActivity(intent)
         }
-
-//        for(platform in BestRef.typeList()){
-//            val bestDaoToday = Room.databaseBuilder(
-//                this@ActivityMain,
-//                DBBest::class.java,
-//                "Today_${platform}_${UserInfo?.Genre}"
-//            ).allowMainThreadQueries().build()
-//
-//            val bestDaoWeek = Room.databaseBuilder(
-//                this@ActivityMain,
-//                DBBest::class.java,
-//                "Week_${platform}_${UserInfo?.Genre}"
-//            ).allowMainThreadQueries().build()
-//
-//            val bestDaoMonth = Room.databaseBuilder(
-//                this@ActivityMain,
-//                DBBest::class.java,
-//                "Month_${platform}_${UserInfo?.Genre}"
-//            ).allowMainThreadQueries().build()
-//
-//            bestDaoToday.bestDao().initAll()
-//            bestDaoWeek.bestDao().initAll()
-//            bestDaoMonth.bestDao().initAll()
-//        }
 
         val navView = findViewById<BottomNavigationView>(R.id.nav_bottom)
         NavigationUI.setupWithNavController(navView, navController!!)

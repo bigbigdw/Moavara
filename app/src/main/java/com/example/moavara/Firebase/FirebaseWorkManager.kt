@@ -2,10 +2,16 @@ package com.example.moavara.Firebase
 
 import android.content.Context
 import android.util.Log
+import androidx.room.Room
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import com.example.moavara.DataBase.DBUser
+import com.example.moavara.DataBase.DataBaseUser
+import com.example.moavara.Main.mRootRef
+import com.example.moavara.Search.FCMAlert
 import com.example.moavara.Util.DBDate
 import com.example.moavara.Util.Mining
+import com.google.firebase.database.FirebaseDatabase
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Retrofit
@@ -14,6 +20,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
     Worker(context, workerParams) {
+
+    var userDao: DBUser? = null
+    var UserInfo : DataBaseUser? = null
 
     companion object {
         const val TYPE = "type"
@@ -52,6 +61,21 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
             DataFCMBodyNotification("모아바라", "${year}.${month}.${day} ${hour}:${min} 베스트 리스트가 갱신되었습니다", "default", "ic_stat_ic_notification", "best"),
         )
 
+        miningAlert("모아바라", "${year}.${month}.${day} ${hour}:${min} 베스트 리스트가 갱신되었습니다", "Alert")
+
+
+        userDao = Room.databaseBuilder(
+            applicationContext,
+            DBUser::class.java,
+            "UserInfo"
+        ).allowMainThreadQueries().build()
+
+        if(userDao?.daoUser() != null){
+            UserInfo = userDao?.daoUser()?.get()
+        }
+
+        mRootRef.child("User").child(UserInfo?.UID ?: "").child("isInit").setValue(true)
+
         val call = Retrofit.Builder()
             .baseUrl("https://fcm.googleapis.com")
             .addConverterFactory(GsonConverterFactory.create()).build()
@@ -82,6 +106,18 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
 
     private fun postFCMPick(UID : String, User : String) {
 
+        userDao = Room.databaseBuilder(
+            applicationContext,
+            DBUser::class.java,
+            "UserInfo"
+        ).allowMainThreadQueries().build()
+
+        if(userDao?.daoUser() != null){
+            UserInfo = userDao?.daoUser()?.get()
+        }
+
+        mRootRef.child("User").child(UID).child("isInit").setValue(true)
+
         val fcmBody = DataFCMBody(
             "/topics/${UID}",
             "high",
@@ -111,4 +147,13 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
         })
     }
 
+    private fun miningAlert(title: String, message: String, child: String) {
+        FirebaseDatabase.getInstance().reference.child("Message").child(child)
+            .child(DBDate.DateMMDDHHMM()).setValue(
+                FCMAlert(
+                    DBDate.DateMMDDHHMM(),
+                    title, message
+                )
+            )
+    }
 }
