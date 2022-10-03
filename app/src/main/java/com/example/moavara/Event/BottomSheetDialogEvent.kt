@@ -43,7 +43,8 @@ class BottomSheetDialogEvent(
     private val item: EventData,
     private val platform: String = "조아라 이벤트",
     private var UserInfo : DataBaseUser,
-    private var firebaseAnalytics: FirebaseAnalytics
+    private var firebaseAnalytics: FirebaseAnalytics,
+    private var fromPick : Boolean = false,
 ) :
     BottomSheetDialogFragment() {
 
@@ -76,7 +77,7 @@ class BottomSheetDialogEvent(
             )
         }
 
-        if(platform == "PICK"){
+        if(fromPick){
             binding.llayoutPick.visibility = View.GONE
         }
 

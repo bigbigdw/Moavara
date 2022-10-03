@@ -107,7 +107,7 @@ class FragmentEventTab : Fragment() {
                         firebaseAnalytics.logEvent("EVENT_BottomSheetDialogEvent", bundle)
 
                         val mBottomSheetDialogEvent =
-                            BottomSheetDialogEvent(requireContext(), eventItem, platform, UserInfo, firebaseAnalytics)
+                            BottomSheetDialogEvent(requireContext(), eventItem, platform, UserInfo, firebaseAnalytics, false)
                         fragmentManager?.let { mBottomSheetDialogEvent.show(it, null) }
                     }
                 }

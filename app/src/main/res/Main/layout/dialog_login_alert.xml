@@ -45,7 +45,7 @@
                         android:layout_marginEnd="20dp"
                         android:breakStrategy="simple"
                         android:fontFamily="@font/pretendardvariable"
-                        android:text="모아바라는 (주)조아라의 사내 스터디에서 개발한 어플리케이션으로 \n(주)조아라의 임직원만 사용이 가능합니다.모아바라의 데이터는 사내 자산으로 \n외부 유출이 불가능하며, \n유출 시 법적 책임을 질 수 있습니다. "
+                        android:text="모아바라는 (주)조아라의 사내 스터디에서 개발한 어플리케이션으로 (주)조아라의 임직원만 사용이 가능합니다. 모아바라의 데이터는 사내 자산으로 외부 유출이 불가능하며, 유출 시 법적 책임을 질 수 있습니다."
                         android:textAlignment="textStart"
                         android:textColor="#EDE6FD"
                         android:textSize="13sp"

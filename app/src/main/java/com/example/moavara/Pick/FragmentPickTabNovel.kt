@@ -132,18 +132,22 @@ class FragmentPickTabNovel : Fragment() {
                         Toast.makeText(requireContext(), "수정되었습니다", Toast.LENGTH_SHORT).show()
                     }
                     "Item" -> {
-                        val bundle = Bundle()
-                        bundle.putString("BEST_FROM", "pick_novel")
-                        firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
+                        if(group.type == "MrBlue"){
+                            Toast.makeText(requireContext(), "미스터 블루는 지원하지 않습니다.", Toast.LENGTH_SHORT).show()
+                        } else {
+                            val bundle = Bundle()
+                            bundle.putString("BEST_FROM", "pick_novel")
+                            firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
 
-                        val bookDetailIntent =
-                            Intent(requireContext(), ActivityBestDetail::class.java)
-                        bookDetailIntent.putExtra("BookCode", group.bookCode)
-                        bookDetailIntent.putExtra("Type", String.format("%s", group.type))
-                        bookDetailIntent.putExtra("POSITION", position)
-                        bookDetailIntent.putExtra("HASDATA", true)
-                        bookDetailIntent.putExtra("FROMPICK", true)
-                        startActivity(bookDetailIntent)
+                            val bookDetailIntent =
+                                Intent(requireContext(), ActivityBestDetail::class.java)
+                            bookDetailIntent.putExtra("BookCode", group.bookCode)
+                            bookDetailIntent.putExtra("Type", String.format("%s", group.type))
+                            bookDetailIntent.putExtra("POSITION", position)
+                            bookDetailIntent.putExtra("HASDATA", true)
+                            bookDetailIntent.putExtra("FROMPICK", true)
+                            startActivity(bookDetailIntent)
+                        }
                     }
                 }
             }

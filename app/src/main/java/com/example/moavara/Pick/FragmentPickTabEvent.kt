@@ -26,7 +26,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import java.net.URLDecoder
-import java.net.URLEncoder
 import java.util.*
 
 
@@ -131,7 +130,7 @@ class FragmentPickTabEvent : Fragment() {
                             .show()
                     } else {
                         val mBottomSheetDialogEvent =
-                            BottomSheetDialogEvent(requireContext(), item, "PICK", UserInfo, firebaseAnalytics)
+                            BottomSheetDialogEvent(requireContext(), item, item.type, UserInfo, firebaseAnalytics ,true)
                         fragmentManager?.let { mBottomSheetDialogEvent.show(it, null) }
                     }
 

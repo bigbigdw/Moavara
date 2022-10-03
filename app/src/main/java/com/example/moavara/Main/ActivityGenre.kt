@@ -278,7 +278,7 @@ class ActivityGenre : AppCompatActivity() {
                         Toast.makeText(this@ActivityGenre, "장르를 선택해 주세요", Toast.LENGTH_SHORT).show()
                     } else {
                         mRootRef.child("User").child(UID).child("Nickname").setValue(etviewNickname.text.toString())
-                        mRootRef.child("User").child(UID).child("Email").setValue(etviewNickname.text.toString())
+                        mRootRef.child("User").child(UID).child("Email").setValue(Email)
 
                         when (genre) {
                             "ALL" -> {

@@ -421,7 +421,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
         JoaraRef["book_code"] = bookCode
         JoaraRef["category"] = "1"
 
-        getBookData()
+         getBookData()
 
         apiJoara.getBookDetailJoa(
             JoaraRef,
@@ -433,6 +433,8 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                             llayoutSearch.visibility = View.GONE
                             llayoutResult.visibility = View.VISIBLE
                             llayoutBtn.visibility = View.VISIBLE
+                            blank.root.visibility = View.GONE
+                            searchResult.root.visibility = View.VISIBLE
 
                             Glide.with(requireContext())
                                 .load(data.book.bookImg.replace("http://", "https://"))
@@ -508,6 +510,8 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                             llayoutSearch.visibility = View.GONE
                             llayoutResult.visibility = View.VISIBLE
                             llayoutBtn.visibility = View.VISIBLE
+                            blank.root.visibility = View.GONE
+                            searchResult.root.visibility = View.VISIBLE
 
                             data.home.let {
                                 Glide.with(requireContext())
@@ -582,6 +586,8 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                             llayoutSearch.visibility = View.GONE
                             llayoutResult.visibility = View.VISIBLE
                             llayoutBtn.visibility = View.VISIBLE
+                            blank.root.visibility = View.GONE
+                            searchResult.root.visibility = View.VISIBLE
 
                             data.let {
                                 Glide.with(requireContext())
@@ -675,6 +681,8 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                         llayoutBtn.visibility = View.VISIBLE
                         llayoutSearch.visibility = View.GONE
                         llayoutResult.visibility = View.VISIBLE
+                        blank.root.visibility = View.GONE
+                        searchResult.root.visibility = View.VISIBLE
 
                         if (doc != null) {
                             Glide.with(requireContext())
@@ -759,6 +767,8 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                         llayoutBtn.visibility = View.VISIBLE
                         llayoutSearch.visibility = View.GONE
                         llayoutResult.visibility = View.VISIBLE
+                        blank.root.visibility = View.GONE
+                        searchResult.root.visibility = View.VISIBLE
 
                         Glide.with(requireContext())
                             .load("https:${doc.select(".thumbnail_image img").attr("src")}")
@@ -839,6 +849,8 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                         llayoutBtn.visibility = View.VISIBLE
                         llayoutSearch.visibility = View.GONE
                         llayoutResult.visibility = View.VISIBLE
+                        blank.root.visibility = View.GONE
+                        searchResult.root.visibility = View.VISIBLE
 
                         Glide.with(requireContext())
                             .load("https:${doc.select(".cover-box img").attr("src")}")
@@ -928,6 +940,8 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                             llayoutBtn.visibility = View.VISIBLE
                             llayoutSearch.visibility = View.GONE
                             llayoutResult.visibility = View.VISIBLE
+                            blank.root.visibility = View.GONE
+                            searchResult.root.visibility = View.VISIBLE
 
                             data.result.let {
                                 Glide.with(requireContext())
@@ -1008,6 +1022,8 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                             llayoutBtn.visibility = View.VISIBLE
                             llayoutSearch.visibility = View.GONE
                             llayoutResult.visibility = View.VISIBLE
+                            blank.root.visibility = View.GONE
+                            searchResult.root.visibility = View.VISIBLE
 
                             data.params.let {
                                 Glide.with(requireContext())

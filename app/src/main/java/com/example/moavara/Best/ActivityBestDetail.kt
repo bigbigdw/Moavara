@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
@@ -20,14 +21,12 @@ import com.bumptech.glide.Glide
 import com.example.moavara.DataBase.DBUser
 import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Firebase.FirebaseWorkManager
-import com.example.moavara.Main.DialogConfirm
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
 import com.example.moavara.Retrofit.*
 import com.example.moavara.Search.BestType
 import com.example.moavara.Search.BookListDataBest
 import com.example.moavara.Search.BookListDataBestAnalyze
-import com.example.moavara.User.ActivityGuide
 import com.example.moavara.Util.*
 import com.example.moavara.databinding.ActivityBestDetailBinding
 import com.google.android.material.tabs.TabLayout
@@ -37,7 +36,6 @@ import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.firestore.auth.User
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import org.jsoup.Jsoup
@@ -51,7 +49,6 @@ class ActivityBestDetail : AppCompatActivity() {
     var platform = ""
     var bookTitle = ""
     var bookWriter = ""
-    var bookLink = ""
     var bookImg = ""
     var chapter: List<JoaraBestChapter>? = null
     var pos = 0
@@ -356,7 +353,8 @@ class ActivityBestDetail : AppCompatActivity() {
             bundle.putString("BEST_GO_DETAIL", platform)
             firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
 
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getUrl(bookLink)))
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getUrl(bookCode)))
+            Log.d("####", "${bookCode} ${getUrl(bookCode)}")
             startActivity(intent)
         }
 
@@ -500,7 +498,7 @@ class ActivityBestDetail : AppCompatActivity() {
                             crashlytics.setCustomKey("ActivityBestDetail_TITLE", bookTitle)
 
                             chapter = data.book.chapter
-                            bookLink = data.book.bookCode
+                            bookCode = data.book.bookCode
 
                             tviewToolbar.text = data.book.subject
 
@@ -1450,8 +1448,10 @@ class ActivityBestDetail : AppCompatActivity() {
 
         return if (platform == "MrBlue") {
             "https://www.mrblue.com/novel/${bookCode}"
-        } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver" || platform == "Ridi") {
-            bookCode
+        } else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver") {
+           "https://novel.naver.com/webnovel/list?novelId=${bookCode}"
+        } else if (platform == "Ridi") {
+            "https://ridibooks.com/books/${bookCode}"
         } else if (platform == "Kakao_Stage") {
             "https://pagestage.kakao.com/novels/${bookCode}"
         } else if (platform == "Kakao") {
