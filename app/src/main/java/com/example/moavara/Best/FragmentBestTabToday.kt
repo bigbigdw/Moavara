@@ -106,13 +106,8 @@ class FragmentBestTabToday(private val platform: String, private val UserInfo: D
         BestRef.getBestDataToday(platform, UserInfo.Genre).addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                var result = dataSnapshot.child(DBDate.Month()).child(DBDate.Week()).child(DBDate.DayInt().toString())
 
-                 if(!result.exists()){
-                     result = DBDate.DayIntYesterDay(dataSnapshot)
-                }
-
-                for (postSnapshot in result.children) {
+                for (postSnapshot in dataSnapshot.children) {
 
                     val group: BookListDataBest? =
                         postSnapshot.getValue(BookListDataBest::class.java)
@@ -136,7 +131,7 @@ class FragmentBestTabToday(private val platform: String, private val UserInfo: D
                             group.memo
                         ))
 
-                        if(result.exists()){
+                        if(dataSnapshot.exists()){
                             bestDao?.bestDao()?.insert(
                                 RoomBookListDataBest(
                                     group.writer,

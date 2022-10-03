@@ -6,8 +6,11 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import androidx.room.Room
+import com.example.moavara.DataBase.DBBest
 import com.example.moavara.Firebase.FCM
 import com.example.moavara.R
+import com.example.moavara.Util.BestRef
 import com.example.moavara.Util.Genre
 import com.google.firebase.database.FirebaseDatabase
 
@@ -27,6 +30,31 @@ class ActivitySplash : Activity() {
         startService(fcm)
 
         cate = Genre.getGenre(this).toString()
+
+
+        for(platform in BestRef.typeList()){
+            val bestDaoToday = Room.databaseBuilder(
+                this@ActivitySplash,
+                DBBest::class.java,
+                "Today_${platform}_${cate}"
+            ).allowMainThreadQueries().build()
+
+            val bestDaoWeek = Room.databaseBuilder(
+                this@ActivitySplash,
+                DBBest::class.java,
+                "Week_${platform}_${cate}"
+            ).allowMainThreadQueries().build()
+
+            val bestDaoMonth = Room.databaseBuilder(
+                this@ActivitySplash,
+                DBBest::class.java,
+                "Month_${platform}_${cate}"
+            ).allowMainThreadQueries().build()
+
+            bestDaoToday.bestDao().initAll()
+            bestDaoWeek.bestDao().initAll()
+            bestDaoMonth.bestDao().initAll()
+        }
 
         Looper.myLooper()?.let {
             Handler(it).postDelayed(
