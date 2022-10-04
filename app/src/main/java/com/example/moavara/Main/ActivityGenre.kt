@@ -164,8 +164,9 @@ class ActivityGenre : AppCompatActivity() {
                 savePreferences("GENRE","FANTASY")
                 mRootRef.child("User").child(UID).child("Genre").setValue("FANTASY")
 
+                userGenre = "FANTASY"
+
                 if(mode == "USER"){
-                    userGenre = "FANTASY"
                     if(UserInfo?.Genre != "FANTASY"){
                         llayoutApplyGenre.visibility = View.VISIBLE
                         llayoutApplyGenre.setBackgroundColor(Color.parseColor("#844DF3"))
@@ -196,8 +197,9 @@ class ActivityGenre : AppCompatActivity() {
                 bundle.putString("USER_GENRE", "ROMANCE")
                 firebaseAnalytics.logEvent("USER_ActivityGenre", bundle)
 
+                userGenre = "ROMANCE"
+
                 if(mode == "USER"){
-                    userGenre = "ROMANCE"
                     if(UserInfo?.Genre != "ROMANCE"){
                         llayoutApplyGenre.visibility = View.VISIBLE
                         llayoutApplyGenre.setBackgroundColor(Color.parseColor("#844DF3"))
@@ -224,8 +226,9 @@ class ActivityGenre : AppCompatActivity() {
                 bundle.putString("USER_GENRE", "ALL")
                 firebaseAnalytics.logEvent("USER_ActivityGenre", bundle)
 
+                userGenre = "ALL"
+
                 if(mode == "USER"){
-                    userGenre = "ALL"
                     if(UserInfo?.Genre != "ALL"){
                         llayoutApplyGenre.visibility = View.VISIBLE
                         llayoutApplyGenre.setBackgroundColor(Color.parseColor("#844DF3"))
@@ -252,8 +255,10 @@ class ActivityGenre : AppCompatActivity() {
                 bundle.putString("USER_GENRE", "BL")
                 firebaseAnalytics.logEvent("USER_ActivityGenre", bundle)
 
+                userGenre = "BL"
+
                 if(mode == "USER"){
-                    userGenre = "BL"
+
                     if(UserInfo?.Genre != "BL"){
                         llayoutApplyGenre.visibility = View.VISIBLE
                         llayoutApplyGenre.setBackgroundColor(Color.parseColor("#844DF3"))
@@ -279,6 +284,15 @@ class ActivityGenre : AppCompatActivity() {
                     } else {
                         mRootRef.child("User").child(UID).child("Nickname").setValue(etviewNickname.text.toString())
                         mRootRef.child("User").child(UID).child("Email").setValue(Email)
+                        mRootRef.child("User").child(UID).child("isInit").setValue(true)
+
+                        userDao?.daoUser()?.insert(
+                            DataBaseUser(
+                                etviewNickname.text.toString() ?: "",
+                                userGenre,
+                                UID
+                            )
+                        )
 
                         when (genre) {
                             "ALL" -> {

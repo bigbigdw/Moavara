@@ -40,7 +40,7 @@ class ActivitySplash : Activity() {
         }
 
         mRootRef.child("User").child(UserInfo?.UID ?: "").child("isInit").get().addOnSuccessListener {
-            if (it.value == true) {
+            if (it.value == true && !it.exists()) {
                 Toast.makeText(this@ActivitySplash, "데이터를 새로 받아오고 있습니다.", Toast.LENGTH_SHORT)
                     .show()
 
