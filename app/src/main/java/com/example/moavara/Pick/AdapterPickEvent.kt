@@ -266,7 +266,6 @@ class AdapterPickEvent(private var context : Context, private var itemsList: Arr
                             EditorInfo.IME_ACTION_DONE -> {
                                 val pos = adapterPosition
                                 if (pos != RecyclerView.NO_POSITION) {
-                                    Event.child(getItem(adapterPosition).link).child("memo").setValue(getMemoEdit())
                                     listener?.onItemClick(textView, pos, "Confirm")
                                 }
                             }

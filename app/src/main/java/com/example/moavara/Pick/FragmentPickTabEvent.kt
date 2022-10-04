@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Event.BottomSheetDialogEvent
 import com.example.moavara.Main.mRootRef
+import com.example.moavara.Search.BookListDataBest
 import com.example.moavara.Search.EventData
 import com.example.moavara.Util.SwipeEvent
 import com.example.moavara.Util.dpToPx
@@ -23,9 +24,11 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import java.net.URLDecoder
+import java.net.URLEncoder
 import java.util.*
 
 
@@ -137,6 +140,27 @@ class FragmentPickTabEvent : Fragment() {
                 } else if (type == "Confirm") {
                     adapter.editItem(position)
                     Toast.makeText(requireContext(), "수정되었습니다", Toast.LENGTH_SHORT).show()
+
+                    val ref: DatabaseReference
+
+                    if(item.type == "Joara"){
+                        ref = mRootRef.child("User").child(UserInfo.UID).child("Event").child(URLEncoder.encode(item.link, "utf-8"))
+                    } else {
+                        ref = mRootRef.child("User").child(UserInfo.UID).child("Event").child(item.link)
+                    }
+
+                    ref.setValue(
+                        EventData(
+                            item.link,
+                            item.imgfile,
+                            item.title,
+                            item.data,
+                            item.date,
+                            item.number,
+                            item.type,
+                            adapter.getItem(position).memo
+                        )
+                    )
                 }
             }
         })

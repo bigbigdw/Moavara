@@ -49,7 +49,7 @@ class FragmentBestDetailAnalyze(
                 }
             }
 
-            if(!isOnlyPick){
+            if(!isOnlyPick && BookItem.size < 1){
                 mInnerFragmentBestDetailRank = InnerFragmentBestDetailRank(BookItem)
                 childFragmentManager.commit {
                     replace(R.id.InnerFragmentBestDetailRank, mInnerFragmentBestDetailRank)

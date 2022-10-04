@@ -130,6 +130,24 @@ class FragmentPickTabNovel : Fragment() {
                     "Confirm" -> {
                         adapter.editItem(position)
                         Toast.makeText(requireContext(), "수정되었습니다", Toast.LENGTH_SHORT).show()
+                        mRootRef.child("User").child(UserInfo.UID).child("Novel").child("book").child(group.bookCode).setValue(
+                            BookListDataBest(
+                                group.writer,
+                                group.title,
+                                group.bookImg,
+                                group.bookCode,
+                                group.info1,
+                                group.info2,
+                                group.info3,
+                                group.info4,
+                                group.info5,
+                                group.info6,
+                                group.number,
+                                group.date,
+                                group.type,
+                                adapter.getItem(position).memo
+                            )
+                        )
                     }
                     "Item" -> {
                         if(group.type == "MrBlue"){
