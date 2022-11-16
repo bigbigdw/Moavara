@@ -164,10 +164,8 @@ class ActivityAdmin : AppCompatActivity() {
             llayoutBtn13.setOnClickListener {
                 Toast.makeText(applicationContext, "테스트 완료", Toast.LENGTH_SHORT).show()
                 Thread {
-                    Mining.getNaverToday(this@ActivityAdmin, "ALL")
-                    Mining.getNaverBest(this@ActivityAdmin, "ALL")
-                    Mining.getNaverChallenge(this@ActivityAdmin, "ALL")
-                    Log.d("NAVER-MINING", "NAVER MINING")
+                    Mining.getRidiBest(this@ActivityAdmin, "ALL")
+                    Log.d("RIDI-MINING", "RIDI MINING")
                 }.start()
             }
 

@@ -20,8 +20,6 @@ import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
 import java.io.File
 import java.net.SocketTimeoutException
-import java.util.*
-import kotlin.collections.ArrayList
 
 object Mining {
 
@@ -296,22 +294,6 @@ object Mining {
 
             for (i in Naver.indices) {
 
-                Log.d("Naver_Challenge 21", Genre.setNaverChallengeGenre(genre))
-                Log.d("Naver_Challenge 22", "Naver_Challenge")
-                Log.d("Naver_Challenge 23", "Naver_Challenge")
-
-                Log.d("Naver_Challenge 30", Naver[i].toString())
-
-                Log.d("Naver_Challenge 31", Naver.select(".info_group .author")[i].text())
-                Log.d("Naver_Challenge 32", Naver.select(".title_group .title")[i].text())
-                Log.d("Naver_Challenge 33", Naver.select("div img")[i].absUrl("src"))
-                Log.d("Naver_Challenge 34", Naver.select("a")[i].absUrl("href").replace("https://novel.naver.com/challenge/list?novelId=", "").replace("https://novel.naver.com/webnovel/list?novelId=", ""))
-                Log.d("Naver_Challenge 35", Naver[i].select(".info_group .count").first()!!.text().replace("총", "").replace("회", ""))
-                Log.d("Naver_Challenge 36", "")
-                Log.d("Naver_Challenge 37", "")
-                Log.d("Naver_Challenge 38", "")
-                Log.d("Naver_Challenge 39", "")
-
                 val info3 = Naver.select(".score_area")[i].text().replace("별점", "")
                 val info4 = Naver[i].select(".info_group .count").next().first()!!.text().replace("조회", "").replace("만","0000")
                 val info5 = Naver.select(".meta_data_group .count")[i].text().replace("관심", "").replace("만","0000")
@@ -514,51 +496,60 @@ object Mining {
         }
     }
 
-    private fun getRidiBest(context : Context, genre: String) {
+    fun getRidiBest(context : Context, genre: String) {
         try {
             val doc: Document =
                 Jsoup.connect(Genre.setRidiGenre(genre)).post()
-            val Ridi: Elements = doc.select(".book_thumbnail_wrapper")
+            val Ridi: Elements = doc.select(".fig-1nfc3co .fig-j79xmj")
             val RidiRef: MutableMap<String?, Any> = HashMap()
 
             val books = ArrayList<BookListDataBest>()
 
+            Log.d("Ridi 11", Genre.setNaverChallengeGenre(genre))
+//            Log.d("Ridi 12", Ridi.toString())
+
             for (i in Ridi.indices) {
-                if (i > 0) {
-                    val uri: Uri =
-                        Uri.parse(Ridi.select("a")[i].absUrl("href"))
+                val uri: Uri =
+                    Uri.parse(Ridi.select("a")[i].absUrl("href"))
 
-                    val info3 = doc.select("span .StarRate_ParticipantCount")[i].text()
-                        .replace(",", "").replace("명", "")
+                Log.d("Ridi 31", Ridi.select("h3")[i].text())
+                Log.d("Ridi 32", Ridi.select(".fig-kn13hs a")[i].text())
+                Log.d("Ridi 33", Ridi.select(".fig-z0kceb img")[i].absUrl("src"))
+                Log.d("Ridi 34", uri.path?.replace("/books/", "") ?: "")
+                Log.d("Ridi 35", Ridi.select(".fig-1uif0qw")[i].text())
+                Log.d("Ridi 36", Ridi.select(".fig-kn13hs a")[i].absUrl("href"))
+                Log.d("Ridi 37", doc.select(".fig-hm7n2o .fig-hn9uxh")[i].text().replace("(", "").replace(")", "").replace(",",""))
+                Log.d("Ridi 38", doc.select(".fig-hm7n2o")[i].text().replace( doc.select(".fig-hm7n2o .fig-hn9uxh")[i].text(),""))
+                Log.d("Ridi 39", Ridi.select(".fig-xpukdh")[i].text())
 
-                    val info4 = doc.select("span .StarRate_Score")[i].text().replace("점", "")
-                        .replace(".", "")
+                val info3 =  doc.select(".fig-hm7n2o .fig-hn9uxh")[i].text().replace("(", "").replace(")", "").replace(",","")
 
-                    RidiRef["writerName"] =
-                        doc.select("div .author_detail_link")[i].text()
-                    RidiRef["subject"] = doc.select("div .title_link")[i].text()
-                    RidiRef["bookImg"] =
-                        Ridi.select(".thumbnail_image .thumbnail")[i].absUrl("data-src")
-                    RidiRef["bookCode"] = uri.path?.replace("/books/", "") ?: ""
-                    RidiRef["info1"] = doc.select(".count_num")[i].text()
-                    RidiRef["info2"] = ""
-                    RidiRef["info3"] = info3
-                    RidiRef["info4"] = info4
-                    RidiRef["info5"] = ""
-                    RidiRef["info6"] = ""
-                    RidiRef["number"] = i
-                    RidiRef["date"] = DBDate.DateMMDD()
-                    RidiRef["type"] = "Ridi"
+                val info4 = doc.select(".fig-hm7n2o")[i].text().replace(doc.select(".fig-hm7n2o .fig-hn9uxh")[i].text(),"")
 
-                    books.add(BestRef.setBookListDataBest(RidiRef))
+                val info5 = Ridi.select(".fig-xpukdh")[i].text()
 
-                    miningValue(
-                        RidiRef,
-                        i -1,
-                        "Ridi",
-                        genre
-                    )
-                }
+                RidiRef["writerName"] = Ridi.select(".fig-kn13hs a")[i].text()
+                RidiRef["subject"] = Ridi.select("h3")[i].text()
+                RidiRef["bookImg"] = Ridi.select(".fig-z0kceb img")[i].absUrl("src")
+                RidiRef["bookCode"] = uri.path?.replace("/books/", "") ?: ""
+                RidiRef["info1"] = Ridi.select(".fig-1uif0qw")[i].text()
+                RidiRef["info2"] = Ridi.select(".fig-kn13hs a")[i].absUrl("href")
+                RidiRef["info3"] = info3
+                RidiRef["info4"] = info4
+                RidiRef["info5"] = info5
+                RidiRef["info6"] = ""
+                RidiRef["number"] = i
+                RidiRef["date"] = DBDate.DateMMDD()
+                RidiRef["type"] = "Ridi"
+
+                books.add(BestRef.setBookListDataBest(RidiRef))
+
+                miningValue(
+                    RidiRef,
+                    i -1,
+                    "Ridi",
+                    genre
+                )
             }
 
             val bestDaoToday = Room.databaseBuilder(
@@ -587,7 +578,7 @@ object Mining {
             File(File("/storage/self/primary/MOAVARA"), "Week_Ridi_${genre}.json").delete()
             File(File("/storage/self/primary/MOAVARA"), "Month_Ridi_${genre}.json").delete()
 
-        } catch (exception: SocketTimeoutException) {
+        } catch (exception: Exception) {
             Log.d("EXCEPTION", "RIDI")
         }
     }
