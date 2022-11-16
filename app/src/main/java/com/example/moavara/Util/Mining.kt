@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.room.Room
 import com.example.moavara.DataBase.DBBest
 import com.example.moavara.Main.mRootRef
@@ -286,29 +285,43 @@ object Mining {
 
     }
 
-    private fun getNaverToday(context : Context, genre: String) {
+    fun getNaverToday(context : Context, genre: String) {
         try {
             val doc: Document =
                 Jsoup.connect(Genre.setNaverTodayGenre(genre)).post()
-            val Naver: Elements = doc.select(".ranking_wrap_left .list_ranking li")
+            val Naver: Elements = doc.select(".ranking_wrap_left .ranking_list li")
             val NaverRef: MutableMap<String?, Any> = HashMap()
 
             val books = ArrayList<BookListDataBest>()
 
             for (i in Naver.indices) {
 
-                val info3 = Naver.select(".score_area")[i].text().replace("별점", "")
-                val info4 = Naver[i].select(".num_total").next().first()!!.text().replace("조회 ", "")
-                val info5 = Naver.select(".count")[i].text().replace("관심", "")
+                Log.d("Naver_Challenge 21", Genre.setNaverChallengeGenre(genre))
+                Log.d("Naver_Challenge 22", "Naver_Challenge")
+                Log.d("Naver_Challenge 23", "Naver_Challenge")
 
-                val title = Naver.select(".tit")[i].text()
-                NaverRef["writerName"] = Naver.select(".author")[i].text()
-                NaverRef["subject"] = title
+                Log.d("Naver_Challenge 30", Naver[i].toString())
+
+                Log.d("Naver_Challenge 31", Naver.select(".info_group .author")[i].text())
+                Log.d("Naver_Challenge 32", Naver.select(".title_group .title")[i].text())
+                Log.d("Naver_Challenge 33", Naver.select("div img")[i].absUrl("src"))
+                Log.d("Naver_Challenge 34", Naver.select("a")[i].absUrl("href").replace("https://novel.naver.com/challenge/list?novelId=", "").replace("https://novel.naver.com/webnovel/list?novelId=", ""))
+                Log.d("Naver_Challenge 35", Naver[i].select(".info_group .count").first()!!.text().replace("총", "").replace("회", ""))
+                Log.d("Naver_Challenge 36", "")
+                Log.d("Naver_Challenge 37", "")
+                Log.d("Naver_Challenge 38", "")
+                Log.d("Naver_Challenge 39", "")
+
+                val info3 = Naver.select(".score_area")[i].text().replace("별점", "")
+                val info4 = Naver[i].select(".info_group .count").next().first()!!.text().replace("조회", "").replace("만","0000")
+                val info5 = Naver.select(".meta_data_group .count")[i].text().replace("관심", "").replace("만","0000")
+
+                NaverRef["writerName"] = Naver.select(".info_group .author")[i].text()
+                NaverRef["subject"] = Naver.select(".title_group .title")[i].text()
                 NaverRef["bookImg"] = Naver.select("div img")[i].absUrl("src")
-                NaverRef["bookCode"] = Naver.select("a")[i].absUrl("href")
-                    .replace("https://novel.naver.com/webnovel/list?novelId=", "")
-                NaverRef["info1"] = Naver[i].select(".num_total").first()!!.text()
-                NaverRef["info2"] = ""
+                NaverRef["bookCode"] = Naver.select("a")[i].absUrl("href").replace("https://novel.naver.com/best/list?novelId=", "").replace("https://novel.naver.com/webnovel/list?novelId=", "")
+                NaverRef["info1"] = ""
+                NaverRef["info2"] = Naver[i].select(".info_group .count").first()!!.text().replace("총", "").replace("회", "")
                 NaverRef["info3"] = info3
                 NaverRef["info4"] = info4
                 NaverRef["info5"] = info5
@@ -320,6 +333,8 @@ object Mining {
 
                 books.add(BestRef.setBookListDataBest(NaverRef))
                 miningValue(NaverRef, i, "Naver_Today", genre)
+
+                Log.d("@@@@", "NAVER")
             }
 
             val bestDaoToday = Room.databaseBuilder(
@@ -349,33 +364,35 @@ object Mining {
             File(File("/storage/self/primary/MOAVARA"), "Month_Naver_Today_${genre}.json").delete()
 
 
-        } catch (exception: SocketTimeoutException) {
+        } catch (exception: Exception) {
             Log.d("EXCEPTION", "NAVER TODAY")
         }
 
     }
 
-    private fun getNaverChallenge(context : Context, genre: String) {
+    fun getNaverChallenge(context : Context, genre: String) {
+
+        Log.d("Naver_Challenge", "Naver_Challenge")
+
         try {
             val doc: Document =
                 Jsoup.connect(Genre.setNaverChallengeGenre(genre)).post()
-            val Naver: Elements = doc.select(".ranking_wrap_left .list_ranking li")
+            val Naver: Elements = doc.select(".ranking_wrap_left .ranking_list li")
             val NaverRef: MutableMap<String?, Any> = HashMap()
 
             val books = ArrayList<BookListDataBest>()
             for (i in Naver.indices) {
 
                 val info3 = Naver.select(".score_area")[i].text().replace("별점", "")
-                val info4 = Naver[i].select(".num_total").next().first()!!.text().replace("조회 ", "")
-                val info5 = Naver.select(".count")[i].text().replace("관심", "")
+                val info4 = Naver[i].select(".info_group .count").next().first()!!.text().replace("조회", "").replace("만","0000")
+                val info5 = Naver.select(".meta_data_group .count")[i].text().replace("관심", "").replace("만","0000")
 
-                NaverRef["writerName"] = Naver.select(".author")[i].text()
-                NaverRef["subject"] = Naver.select(".tit")[i].text()
+                NaverRef["writerName"] = Naver.select(".info_group .author")[i].text()
+                NaverRef["subject"] = Naver.select(".title_group .title")[i].text()
                 NaverRef["bookImg"] = Naver.select("div img")[i].absUrl("src")
-                NaverRef["bookCode"] = Naver.select("a")[i].absUrl("href")
-                    .replace("https://novel.naver.com/challenge/list?novelId=", "")
-                NaverRef["info1"] = Naver[i].select(".num_total").first()!!.text()
-                NaverRef["info2"] = ""
+                NaverRef["bookCode"] = Naver.select("a")[i].absUrl("href").replace("https://novel.naver.com/challenge/list?novelId=", "")
+                NaverRef["info1"] = ""
+                NaverRef["info2"] = Naver[i].select(".info_group .count").first()!!.text().replace("총", "").replace("회", "")
                 NaverRef["info3"] = info3
                 NaverRef["info4"] = info4
                 NaverRef["info5"] = info5
@@ -429,12 +446,14 @@ object Mining {
         }
     }
 
-    private fun getNaverBest(context: Context, genre: String) {
+    fun getNaverBest(context: Context, genre: String) {
+
         try {
 
             val doc: Document =
                 Jsoup.connect(Genre.setNaverGenre(genre)).post()
-            val Naver: Elements = doc.select(".ranking_wrap_left .list_ranking li")
+
+            val Naver: Elements = doc.select(".ranking_wrap_left .ranking_list li")
             val NaverRef: MutableMap<String?, Any> = HashMap()
 
             val books = ArrayList<BookListDataBest>()
@@ -442,16 +461,15 @@ object Mining {
             for (i in Naver.indices) {
 
                 val info3 = Naver.select(".score_area")[i].text().replace("별점", "")
-                val info4 = Naver[i].select(".num_total").next().first()!!.text().replace("조회 ", "")
-                val info5 = Naver.select(".count")[i].text().replace("관심", "")
+                val info4 = Naver[i].select(".info_group .count").next().first()!!.text().replace("조회", "").replace("만","0000")
+                val info5 = Naver.select(".meta_data_group .count")[i].text().replace("관심", "").replace("만","0000")
 
-                NaverRef["writerName"] = Naver.select(".author")[i].text()
-                NaverRef["subject"] = Naver.select(".tit")[i].text()
+                NaverRef["writerName"] = Naver.select(".info_group .author")[i].text()
+                NaverRef["subject"] = Naver.select(".title_group .title")[i].text()
                 NaverRef["bookImg"] = Naver.select("div img")[i].absUrl("src")
-                NaverRef["bookCode"] = Naver.select("a")[i].absUrl("href")
-                    .replace("https://novel.naver.com/best/list?novelId=", "")
+                NaverRef["bookCode"] = Naver.select("a")[i].absUrl("href").replace("https://novel.naver.com/best/list?novelId=", "")
                 NaverRef["info1"] = ""
-                NaverRef["info2"] = Naver[i].select(".num_total").first()!!.text()
+                NaverRef["info2"] = Naver[i].select(".info_group .count").first()!!.text().replace("총", "").replace("회", "")
                 NaverRef["info3"] = info3
                 NaverRef["info4"] = info4
                 NaverRef["info5"] = info5
@@ -491,8 +509,8 @@ object Mining {
             File(File("/storage/self/primary/MOAVARA"), "Month_Naver_${genre}.json").delete()
 
 
-        } catch (exception: SocketTimeoutException) {
-            Log.d("EXCEPTION", "NAVER CHALLANGE")
+        } catch (exception: Exception) {
+            Log.d("NAVER-EXCEPTION", "NAVER-EXCEPTION--${exception.message}--${exception.stackTrace}")
         }
     }
 
