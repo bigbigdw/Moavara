@@ -36,10 +36,16 @@ object Retrofit {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
+    private val retrofitRidi = Retrofit.Builder()
+        .baseUrl("https://ridibooks.com")
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
     val apiJoara: ApiJoara = retrofit.create(ApiJoara::class.java)
     val apiKakaoStage: ApiKakaoStage = retrofitKakaoStage.create(ApiKakaoStage::class.java)
     val apiKakao: ApiKakao = retrofitKakao.create(ApiKakao::class.java)
     val apiOneStory: ApiOneStory = retrofitOneStory.create(ApiOneStory::class.java)
+    val apiRidi: ApiRidi = retrofitRidi.create(ApiRidi::class.java)
     val apiMoonPia: ApiMoonPia = retrofitMoonPia.create(ApiMoonPia::class.java)
     val apiToksoda: ApiToksoda = retrofitToksoda.create(ApiToksoda::class.java)
 }
