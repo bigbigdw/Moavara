@@ -164,7 +164,7 @@ class ActivityAdmin : AppCompatActivity() {
             llayoutBtn13.setOnClickListener {
                 Toast.makeText(applicationContext, "테스트 완료", Toast.LENGTH_SHORT).show()
                 Thread {
-                    Mining.getRidiBest(this@ActivityAdmin, "ALL")
+                    Mining.getKakaoBest(this@ActivityAdmin, "ALL")
                     Log.d("RIDI-MINING", "RIDI MINING")
                 }.start()
             }

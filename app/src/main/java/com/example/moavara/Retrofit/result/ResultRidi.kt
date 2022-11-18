@@ -45,7 +45,7 @@ class RidiBestsellers{
     val items: List<RidiBestItems>? = null
 }
 
-class RidiBestItems{
+class RidiBestItemsBooks{
     @SerializedName("authors")
     @Expose
     val authors: List<RidiBestItemsAuthors>? = null
@@ -71,6 +71,13 @@ class RidiBestItems{
     val series : RidiBestItemSeries? = null
 }
 
+class RidiBestItems{
+    @SerializedName("book")
+    @Expose
+    val book: RidiBestItemsBooks? = null
+
+}
+
 class RidiBestItemSeries{
     @SerializedName("title")
     @Expose
@@ -78,7 +85,7 @@ class RidiBestItemSeries{
 
     @SerializedName("totalEpisodeCount")
     @Expose
-    val totalEpisodeCount = 0
+    val totalEpisodeCount = "0"
 
     @SerializedName("thumbnail")
     @Expose

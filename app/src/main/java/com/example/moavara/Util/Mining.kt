@@ -1,14 +1,12 @@
 package com.example.moavara.Util
 
 import android.content.Context
-import android.net.Uri
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import com.example.moavara.DataBase.DBBest
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.Retrofit.*
-import com.example.moavara.Retrofit.Retrofit.apiOneStory
 import com.example.moavara.Retrofit.result.RidiBestResult
 import com.example.moavara.Search.BookListDataBest
 import com.example.moavara.Search.BookListDataBestAnalyze
@@ -112,7 +110,7 @@ object Mining {
         }
 
         val Ridi = Thread {
-            getRidiBest2(context, genre)
+            getRidiBest(context, genre)
         }
 
         val OneStore = Thread {
@@ -317,8 +315,6 @@ object Mining {
 
                 books.add(BestRef.setBookListDataBest(NaverRef))
                 miningValue(NaverRef, i, "Naver_Today", genre)
-
-                Log.d("@@@@", "NAVER")
             }
 
             val bestDaoToday = Room.databaseBuilder(
@@ -498,15 +494,12 @@ object Mining {
         }
     }
 
-    fun getRidiBest2(context : Context, genre: String) {
+    fun getRidiBest(context : Context, genre: String) {
         try {
             val RidiRef: MutableMap<String?, Any> = HashMap()
 
             val apiRidi = RetrofitRidi()
             val param: MutableMap<String?, Any> = HashMap()
-            param["rent"] = "n"
-            param["adult"] = "n"
-            param["adult_exclude"] = "y"
             param["order"] = "daily"
             param["page"] = "1"
             param["genre"] = "romance_serial"
@@ -521,23 +514,23 @@ object Mining {
                         if (productList != null) {
                             for (i in productList.indices) {
 
-                                Log.d("Ridi 31", productList[i].authors?.get(0)?.name ?: "")
-                                Log.d("Ridi 32", productList[i].series?.title ?: "")
-                                Log.d("Ridi 33", productList[i].series?.thumbnail?.large ?: "")
-                                Log.d("Ridi 34",  productList[i].id)
-                                Log.d("Ridi 35", productList[i].introduction?.description ?: "")
-                                Log.d("Ridi 36", productList[i].categories?.get(0)?.name ?: "")
-                                Log.d("Ridi 37", (productList[i].series?.totalEpisodeCount ?: 0).toString())
+                                Log.d("Ridi 31", productList[i].book?.authors?.get(0)?.name ?: "")
+                                Log.d("Ridi 32", productList[i].book?.series?.title ?: "")
+                                Log.d("Ridi 33", productList[i].book?.series?.thumbnail?.large ?: "")
+                                Log.d("Ridi 34",  productList[i].book?.id ?: "")
+                                Log.d("Ridi 35", productList[i].book?.introduction?.description ?: "")
+                                Log.d("Ridi 36", productList[i].book?.categories?.get(0)?.name ?: "")
+                                Log.d("Ridi 37", (productList[i].book?.series?.totalEpisodeCount ?: 0).toString())
                                 Log.d("Ridi 38", "----")
                                 Log.d("Ridi 39", "----")
 
-                                RidiRef["writerName"] = productList[i].authors?.get(0)?.name ?: ""
-                                RidiRef["subject"] = productList[i].series?.title ?: ""
-                                RidiRef["bookImg"] = productList[i].series?.thumbnail?.large ?: ""
-                                RidiRef["bookCode"] = productList[i].id
-                                RidiRef["info1"] = productList[i].introduction?.description ?: ""
-                                RidiRef["info2"] = productList[i].categories?.get(0)?.name ?: ""
-                                RidiRef["info3"] = productList[i].series?.totalEpisodeCount ?: 0
+                                RidiRef["writerName"] = productList[i].book?.authors?.get(0)?.name ?: ""
+                                RidiRef["subject"] = productList[i].book?.series?.title ?: ""
+                                RidiRef["bookImg"] = productList[i].book?.series?.thumbnail?.large ?: ""
+                                RidiRef["bookCode"] = productList[i].book?.id ?: ""
+                                RidiRef["info1"] = productList[i].book?.introduction?.description ?: ""
+                                RidiRef["info2"] = productList[i].book?.categories?.get(0)?.name ?: ""
+                                RidiRef["info3"] = productList[i].book?.series?.totalEpisodeCount ?: ""
                                 RidiRef["info4"] = ""
                                 RidiRef["info5"] = ""
                                 RidiRef["info6"] = ""
@@ -581,83 +574,6 @@ object Mining {
                 })
         } catch (exception: Exception) {
             Log.d("RIDI EXCEPTION", "RIDI")
-        }
-    }
-
-    fun getRidiBest(context : Context, genre: String) {
-        try {
-            val doc: Document =
-                Jsoup.connect(Genre.setRidiGenre(genre)).post()
-            val Ridi: Elements = doc.select(".fig-1nfc3co .fig-j79xmj")
-            val RidiRef: MutableMap<String?, Any> = HashMap()
-
-            val books = ArrayList<BookListDataBest>()
-
-            Log.d("Ridi 11", Genre.setRidiGenre(genre))
-//            Log.d("Ridi 12", Ridi.toString())
-
-            for (i in Ridi.indices) {
-                if(i > 0){
-                    val uri: Uri =
-                        Uri.parse(Ridi.select("a")[i].absUrl("href"))
-
-
-
-                    val info3 =  doc.select(".fig-hm7n2o .fig-hn9uxh")[i].text().replace("(", "").replace(")", "").replace(",","")
-
-                    val info4 = doc.select(".fig-hm7n2o")[i].text().replace(doc.select(".fig-hm7n2o .fig-hn9uxh")[i].text(),"")
-
-                    val info5 = Ridi.select(".fig-xpukdh")[i].text()
-
-                    RidiRef["writerName"] = Ridi.select(".fig-kn13hs a")[i].text()
-                    RidiRef["subject"] = Ridi.select("h3")[i].text()
-                    RidiRef["bookImg"] = Ridi.select(".fig-z0kceb img")[i].absUrl("src")
-                    RidiRef["bookCode"] = uri.path?.replace("/books/", "") ?: ""
-                    RidiRef["info1"] = Ridi.select(".fig-1uif0qw")[i].text()
-                    RidiRef["info2"] = Ridi.select(".fig-kn13hs a")[i].absUrl("href")
-                    RidiRef["info3"] = info3
-                    RidiRef["info4"] = info4
-                    RidiRef["info5"] = info5
-                    RidiRef["info6"] = ""
-                    RidiRef["number"] = i
-                    RidiRef["date"] = DBDate.DateMMDD()
-                    RidiRef["type"] = "Ridi"
-
-                    books.add(BestRef.setBookListDataBest(RidiRef))
-
-                    miningValue(
-                        RidiRef,
-                        i -1,
-                        "Ridi",
-                        genre
-                    )
-                }
-            }
-
-            val bestDaoToday = Room.databaseBuilder(
-                context,
-                DBBest::class.java,
-                "Today_Ridi_${genre}"
-            ).allowMainThreadQueries().build()
-
-            val bestDaoWeek = Room.databaseBuilder(
-                context,
-                DBBest::class.java,
-                "Week_Ridi_${genre}"
-            ).allowMainThreadQueries().build()
-
-            val bestDaoMonth = Room.databaseBuilder(
-                context,
-                DBBest::class.java,
-                "Month_Ridi_${genre}"
-            ).allowMainThreadQueries().build()
-
-            bestDaoToday.bestDao().initAll()
-            bestDaoWeek.bestDao().initAll()
-            bestDaoMonth.bestDao().initAll()
-
-        } catch (exception: Exception) {
-            Log.d("EXCEPTION", "RIDI")
         }
     }
 
@@ -824,25 +740,13 @@ object Mining {
                         bestDaoWeek.bestDao().initAll()
                         bestDaoMonth.bestDao().initAll()
 
-                        File(
-                            File("/storage/self/primary/MOAVARA"),
-                            "Today_Kakao_Stage_${genre}.json"
-                        ).delete()
-                        File(
-                            File("/storage/self/primary/MOAVARA"),
-                            "Week_Kakao_Stage_${genre}.json"
-                        ).delete()
-                        File(
-                            File("/storage/self/primary/MOAVARA"),
-                            "Month_Kakao_Stage_${genre}.json"
-                        ).delete()
                     }
 
                 }
             })
     }
 
-    private fun getKakaoBest(context : Context, genre: String) {
+    fun getKakaoBest(context : Context, genre: String) {
         val apiKakao = RetrofitKaKao()
         val param: MutableMap<String?, Any> = HashMap()
         val KakaoRef: MutableMap<String?, Any> = HashMap()
@@ -917,16 +821,6 @@ object Mining {
                     bestDaoWeek.bestDao().initAll()
                     bestDaoMonth.bestDao().initAll()
 
-
-                    File(
-                        File("/storage/self/primary/MOAVARA"),
-                        "Today_Kakao_${genre}.json"
-                    ).delete()
-                    File(File("/storage/self/primary/MOAVARA"), "Week_Kakao_${genre}.json").delete()
-                    File(
-                        File("/storage/self/primary/MOAVARA"),
-                        "Month_Kakao_${genre}.json"
-                    ).delete()
                 }
             })
     }
