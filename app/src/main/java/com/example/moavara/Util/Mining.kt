@@ -15,11 +15,13 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import org.json.JSONArray
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
 import java.io.File
 import java.net.SocketTimeoutException
+
 
 object Mining {
 
@@ -44,10 +46,10 @@ object Mining {
             object : RetrofitDataListener<JoaraNoticeResult> {
                 override fun onSuccess(data: JoaraNoticeResult) {
 
-                    val data = data.notices
+                    val res = data.notices
 
-                    if (data != null) {
-                        for (item in data) {
+                    if (res != null) {
+                        for (item in res) {
                             EventRef.child(DBDate.Week() + ((DBDate.DayInt() * 1000) + num).toString())
                                 .setValue(
                                     EventDetailDataMining(
@@ -494,7 +496,7 @@ object Mining {
         }
     }
 
-    fun getRidiBest(context : Context, genre: String) {
+    private fun getRidiBest(context : Context, genre: String) {
         try {
             val RidiRef: MutableMap<String?, Any> = HashMap()
 
@@ -502,7 +504,7 @@ object Mining {
             val param: MutableMap<String?, Any> = HashMap()
             param["order"] = "daily"
             param["page"] = "1"
-            param["genre"] = "romance_serial"
+            param["genre"] = Genre.setRidiGenre(genre)
 
             apiRidi.getBestRidi(
                 param,
@@ -513,16 +515,6 @@ object Mining {
 
                         if (productList != null) {
                             for (i in productList.indices) {
-
-                                Log.d("Ridi 31", productList[i].book?.authors?.get(0)?.name ?: "")
-                                Log.d("Ridi 32", productList[i].book?.series?.title ?: "")
-                                Log.d("Ridi 33", productList[i].book?.series?.thumbnail?.large ?: "")
-                                Log.d("Ridi 34",  productList[i].book?.id ?: "")
-                                Log.d("Ridi 35", productList[i].book?.introduction?.description ?: "")
-                                Log.d("Ridi 36", productList[i].book?.categories?.get(0)?.name ?: "")
-                                Log.d("Ridi 37", (productList[i].book?.series?.totalEpisodeCount ?: 0).toString())
-                                Log.d("Ridi 38", "----")
-                                Log.d("Ridi 39", "----")
 
                                 RidiRef["writerName"] = productList[i].book?.authors?.get(0)?.name ?: ""
                                 RidiRef["subject"] = productList[i].book?.series?.title ?: ""
@@ -751,52 +743,55 @@ object Mining {
         val param: MutableMap<String?, Any> = HashMap()
         val KakaoRef: MutableMap<String?, Any> = HashMap()
 
-        param["category"] = "11"
-        param["subcategory"] = "0"
-        param["page"] = 1
-        param["day"] = "2"
-        param["bm"] = "A"
+        Log.d("KAKAO 0", "KAKAO")
 
-        apiKakao.getKakaoBest(
+        param["subcategory_uid"] = Genre.setKakaoPage(genre)
+
+        apiKakao.getBestKakao2(
             param,
-            object : RetrofitDataListener<BestResultKakao> {
-                override fun onSuccess(data: BestResultKakao) {
+            object : RetrofitDataListener<BestKakao2Result> {
+                override fun onSuccess(data: BestKakao2Result) {
 
-                    val list = data.list
+                    val list = data.pageProps?.initialState?.json?.pagewebLayout?.entities?.items
+                    val array = JSONArray()
 
-                    if (list != null) {
-                        for (i in list.indices) {
-                            KakaoRef["genre"] = list[i].sub_category_title
-                            KakaoRef["keyword"] = ArrayList<String>()
+                    for (item in list!!.keySet()) {
+                        array.put(item)
+                    }
 
-                            KakaoRef["writerName"] = list[i].author
-                            KakaoRef["subject"] = list[i].title
-                            KakaoRef["bookImg"] =
-                                "https://dn-img-page.kakao.com/download/resource?kid=" + list[i].image
-                            KakaoRef["bookCode"] = list[i].series_id
-                            KakaoRef["info1"] = list[i].description
-                            KakaoRef["info2"] = list[i].caption
-                            KakaoRef["info3"] = list[i].read_count
-                            KakaoRef["info4"] = list[i].like_count
-                            KakaoRef["info5"] = list[i].rating
-                            KakaoRef["info6"] = list[i].comment_count
-                            KakaoRef["number"] = i
-                            KakaoRef["date"] = DBDate.DateMMDD()
-                            KakaoRef["type"] = "Kakao"
+                    for (i in 0 until array.length()) {
 
-                            miningValue(
-                                KakaoRef,
-                                i,
-                                "Kakao",
-                                genre
-                            )
+                        val res = list.getAsJsonObject(array[i].toString())
 
-                            miningDataValue(
-                                KakaoRef,
-                                "Kakao",
-                                genre
-                            )
-                        }
+                        KakaoRef["genre"] = res.get("row2").asJsonArray[0].asString
+                        KakaoRef["keyword"] = ArrayList<String>()
+
+                        KakaoRef["writerName"] = res.get("row2").asJsonArray[2].asString
+                        KakaoRef["subject"] = res.get("row1").asString
+                        KakaoRef["bookImg"] = "https:${res.get("thumbnail").asString}"
+                        KakaoRef["bookCode"] = res.get("scheme").toString().replace("kakaopage://open/content?series_id=","")
+                        KakaoRef["info1"] = res.get("row2").asJsonArray[0].asString
+                        KakaoRef["info2"] = StrToInt(res.get("row2").asJsonArray[1].asString)
+                        KakaoRef["info3"] = ""
+                        KakaoRef["info4"] = ""
+                        KakaoRef["info5"] = ""
+                        KakaoRef["info6"] = ""
+                        KakaoRef["number"] = i
+                        KakaoRef["date"] = DBDate.DateMMDD()
+                        KakaoRef["type"] = "Kakao"
+
+                        miningValue(
+                            KakaoRef,
+                            i,
+                            "Kakao",
+                            genre
+                        )
+
+                        miningDataValue(
+                            KakaoRef,
+                            "Kakao",
+                            genre
+                        )
                     }
 
                     val bestDaoToday = Room.databaseBuilder(

@@ -1,5 +1,6 @@
 package com.example.moavara.Retrofit
 
+import com.google.gson.JsonObject
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
@@ -440,4 +441,65 @@ class KakaoStageEventListDesktopDetailImage{
     @SerializedName("image")
     @Expose
     var image: KakaoStageEventListDesktopListImageImage? = null
+}
+
+class BestKakao2Result {
+    @SerializedName("pageProps")
+    @Expose
+    val pageProps: BestKakaoPageProps? = null
+}
+
+class BestKakaoPageProps {
+    @SerializedName("initialState")
+    @Expose
+    val initialState: BestKakaoInitialState? = null
+}
+
+class BestKakaoInitialState {
+    @SerializedName("json")
+    @Expose
+    val json: BestKakaoJson? = null
+}
+
+class BestKakaoJson {
+    @SerializedName("pagewebLayout")
+    @Expose
+    val pagewebLayout: BestKakaoPagewebLayout? = null
+}
+
+class BestKakaoPagewebLayout {
+    @SerializedName("entities")
+    @Expose
+    val entities: BestKakaoEntities? = null
+}
+
+class BestKakaoEntities {
+    @SerializedName("items")
+    @Expose
+    val items = JsonObject()
+}
+
+class BestKakaoItemsProps {
+    @SerializedName("NormalList-RankingItemSeriesDto-47050646-8")
+    @Expose
+    val items8: BestKakaoItems? = null
+}
+
+
+class BestKakaoItems {
+    @SerializedName("thumbnail")
+    @Expose
+    val thumbnail = ""
+
+    @SerializedName("row1")
+    @Expose
+    val row1 = ""
+
+    @SerializedName("row2")
+    @Expose
+    val row2 : ArrayList<String>? = null
+
+    @SerializedName("scheme")
+    @Expose
+    val scheme = ""
 }

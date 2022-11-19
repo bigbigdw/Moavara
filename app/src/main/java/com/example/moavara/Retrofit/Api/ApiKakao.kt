@@ -20,6 +20,10 @@ interface ApiKakao {
     @FormUrlEncoded
     @POST("api/v5/store/search")
     fun postKakaoSearch(@FieldMap queryMap: MutableMap<String?, Any>): Call<SearchResultKakao>
+
+    //    _next/data/2.2.0/menu/11/screen/16.json?pathParams=11&pathParams=screen&pathParams=16
+    @GET("_next/data/2.2.0/menu/11/screen/16.json")
+    fun getBestKakao2(@QueryMap queryMap: MutableMap<String?, Any>): Call<BestKakao2Result>
 }
 
 interface ApiKakaoStage {

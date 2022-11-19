@@ -7,7 +7,6 @@ import com.example.moavara.Search.TrophyInfo
 import com.google.firebase.database.DataSnapshot
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 object DBDate {
@@ -344,24 +343,6 @@ object Genre {
         }
     }
 
-    fun setRidiGenre(str: String): String {
-        return when {
-            str == "BL" -> {
-                "https://ridibooks.com/bestsellers/bl-webnovel?order=daily&rent=n&adult=n&adult_exclude=y&page=1"
-            }
-            str == "FANTASY" -> {
-                "https://ridibooks.com/bestsellers/fantasy_serial?order=daily&page=1"
-            }
-            str == "ROMANCE" -> {
-                "https://ridibooks.com/bestsellers/romance_serial?rent=n&adult=n&adult_exclude=y&order=daily&page=1"
-            }
-            else -> {
-                //로맨스
-                "https://ridibooks.com/bestsellers/romance_serial?rent=n&adult=n&adult_exclude=y&order=daily&page=1"
-            }
-        }
-    }
-
     fun setOneStoreGenre(str: String): String {
         return when {
             str == "BL" -> {
@@ -395,6 +376,41 @@ object Genre {
             else -> {
                 //무협
                 "https://novel.naver.com/webnovel/ranking?genre=103&periodType=DAILY"
+            }
+        }
+    }
+
+    fun setKakaoPage(str: String): String {
+        return when {
+            str == "BL" -> {
+                "117"
+            }
+            str == "FANTASY" -> {
+                "86"
+            }
+            str == "ROMANCE" -> {
+                "89"
+            }
+            else -> {
+                "0"
+            }
+        }
+    }
+
+    fun setRidiGenre(str: String): String {
+        return when {
+            str == "BL" -> {
+                "bl"
+            }
+            str == "FANTASY" -> {
+                "fantasy"
+            }
+            str == "ROMANCE" -> {
+                "romance_serial"
+            }
+            else -> {
+                //로맨스
+                "romance"
             }
         }
     }
@@ -451,6 +467,31 @@ object Genre {
                 "6,7,1,2,3,4,5"
             }
         }
+    }
+}
+
+fun StrToInt(str : String) : String{
+
+    val num = str.replace(",", "").replace(".","")
+
+    if(num.contains("만")){
+
+        if(str.contains(".")){
+            return (num.replace("만", "0000").toInt() / 10).toString()
+        } else {
+            return num.replace("만", "0000")
+        }
+
+    } else if(num.contains("억")){
+
+
+        if(str.contains(".")){
+            return (num.replace("억", "00000").toInt() / 10).toString()
+        } else {
+            return num.replace("억", "00000")
+        }
+    } else {
+        return num
     }
 }
 

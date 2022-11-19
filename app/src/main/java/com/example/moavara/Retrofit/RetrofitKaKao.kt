@@ -3,6 +3,7 @@ package com.example.moavara.Retrofit
 class RetrofitKaKao {
     private val apiKakaoStage = com.example.moavara.Retrofit.Retrofit.apiKakaoStage
     private val apiKakao = com.example.moavara.Retrofit.Retrofit.apiKakao
+    private val apiKakao2 = com.example.moavara.Retrofit.Retrofit.apiKakao2
 
     //카카오 스테이지 베스트
     fun getKakaoBest(map: MutableMap<String?, Any>, dataListener: RetrofitDataListener<BestResultKakao>) {
@@ -25,6 +26,10 @@ class RetrofitKaKao {
 
     fun getSearchKakaoStage(map: MutableMap<String?, Any>, dataListener: RetrofitDataListener<KakaoStageSearchResult>) {
         apiKakaoStage.getSearchKakaoStage(map).enqueue(baseCallback(dataListener))
+    }
+
+    fun getBestKakao2(map: MutableMap<String?, Any>, dataListener: RetrofitDataListener<BestKakao2Result>) {
+        apiKakao2.getBestKakao2(map).enqueue(baseCallback(dataListener))
     }
 
     fun getBestKakaoStageDetailComment(
