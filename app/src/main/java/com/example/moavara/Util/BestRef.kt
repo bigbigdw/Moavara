@@ -28,13 +28,13 @@ object BestRef {
             "네이버시리즈",
             "챌린지리그",
             "베스트리그",
-            "카카오페이지",
+//            "카카오페이지",
             "스테이지",
-            "리디북스",
+//            "리디북스",
             "원스토리",
             "문피아",
             "톡소다",
-            "미스터블루"
+//            "미스터블루"
         )
     }
 
@@ -46,13 +46,13 @@ object BestRef {
             "Naver_Today",
             "Naver_Challenge",
             "Naver",
-            "Kakao",
+//            "Kakao",
             "Kakao_Stage",
-            "Ridi",
+//            "Ridi",
             "OneStore",
             "Munpia",
             "Toksoda",
-            "MrBlue"
+//            "MrBlue"
         )
     }
 

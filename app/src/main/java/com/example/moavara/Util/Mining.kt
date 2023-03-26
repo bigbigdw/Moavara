@@ -111,17 +111,17 @@ object Mining {
             file.delete()
         }
 
-        val Ridi = Thread {
-            getRidiBest(context, genre)
-        }
+//        val Ridi = Thread {
+//            getRidiBest(context, genre)
+//        }
 
         val OneStore = Thread {
             getOneStoreBest(context, genre)
         }
 
-        val Kakao = Thread {
-            getKakaoBest(context, genre)
-        }
+//        val Kakao = Thread {
+//            getKakaoBest(context, genre)
+//        }
 
         val KakaoStage = Thread {
             getKakaoStageBest(context, genre)
@@ -159,22 +159,22 @@ object Mining {
             getToksodaBest(context, genre)
         }
 
-        val MrBlue = Thread {
-            getMrBlueBest(context, genre)
-        }
+//        val MrBlue = Thread {
+//            getMrBlueBest(context, genre)
+//        }
 
         try {
-            Ridi.start()
-            Log.d("MINING", "리디 완료")
-            Ridi.join()
+//            Ridi.start()
+//            Log.d("MINING", "리디 완료")
+//            Ridi.join()
 
             OneStore.start()
             OneStore.join()
             Log.d("MINING", "원스토어 완료")
 
-            Kakao.start()
-            Kakao.join()
-            Log.d("MINING", "카카오 완료")
+//            Kakao.start()
+//            Kakao.join()
+//            Log.d("MINING", "카카오 완료")
 
             KakaoStage.start()
             KakaoStage.join()
@@ -212,9 +212,9 @@ object Mining {
             Toksoda.join()
             Log.d("MINING", "톡소다 완료")
 
-            MrBlue.start()
-            MrBlue.join()
-            Log.d("MINING", "미스터 블루 완료")
+//            MrBlue.start()
+//            MrBlue.join()
+//            Log.d("MINING", "미스터 블루 완료")
 
         } catch (e: InterruptedException) {
             e.printStackTrace()
