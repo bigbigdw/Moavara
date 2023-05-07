@@ -1,6 +1,8 @@
 package com.example.moavara.Util
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.icu.text.SimpleDateFormat
 import androidx.appcompat.app.AppCompatActivity
 import com.example.moavara.Search.BookListDataBestMonthNum
 import com.example.moavara.Search.TrophyInfo
@@ -32,25 +34,25 @@ object DBDate {
         return Calendar.getInstance().get(Calendar.WEEK_OF_MONTH).toString()
     }
 
+    @SuppressLint("SimpleDateFormat")
     fun DateMMDDHHMMSS(): String {
         val currentTime: Date = Calendar.getInstance().time
-//        val format = SimpleDateFormat("MMddHHmmss")
-//        return format.format(currentTime).toString()
-        return currentTime.toString()
+        val format = SimpleDateFormat("MMddHHmmss")
+        return format.format(currentTime).toString()
     }
 
+    @SuppressLint("SimpleDateFormat")
     fun DateMMDDHHMM(): String {
         val currentTime: Date = Calendar.getInstance().time
-//        val format = SimpleDateFormat("YYYYMMddHHmm")
-//        return format.format(currentTime).toString()
-        return currentTime.toString()
+        val format = SimpleDateFormat("YYYYMMddHHmm")
+        return format.format(currentTime).toString()
     }
 
+    @SuppressLint("SimpleDateFormat")
     fun DateMMDD(): String {
         val currentTime: Date = Calendar.getInstance().time
-//        val format = SimpleDateFormat("YYYYMMdd")
-//        return format.format(currentTime).toString()
-        return currentTime.toString()
+        val format = SimpleDateFormat("YYYYMMdd")
+        return format.format(currentTime).toString()
     }
 
     fun Month(): String {
@@ -61,51 +63,53 @@ object DBDate {
         return Calendar.getInstance().get(Calendar.YEAR).toString()
     }
 
+    @SuppressLint("SimpleDateFormat")
     fun getDayInt(date : String) : Int?{
-//        val parse_date: Date?
-//        val dateFormat1 = SimpleDateFormat("yyyyMMdd")
-//
-//        try {
-//            parse_date = dateFormat1.parse(date)
-//
-//            val cal = Calendar.getInstance()
-//            if (parse_date != null) {
-//                cal.time = parse_date
-//            }
-//
-//            return cal[Calendar.DAY_OF_WEEK]
-//
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//        }
+        val parse_date: Date?
+        val dateFormat1 = SimpleDateFormat("yyyyMMdd")
+
+        try {
+            parse_date = dateFormat1.parse(date)
+
+            val cal = Calendar.getInstance()
+            if (parse_date != null) {
+                cal.time = parse_date
+            }
+
+            return cal[Calendar.DAY_OF_WEEK]
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
 
         return null
     }
 
+    @SuppressLint("SimpleDateFormat")
     fun getDateData(date : String) : TrophyInfo?{
-//        val parse_date: Date?
-//        val dateFormat1 = SimpleDateFormat("yyyyMMdd")
-//
-//        try {
-//            parse_date = dateFormat1.parse(date)
-//
-//            val cal = Calendar.getInstance()
-//            cal.time = parse_date
-//            val month = cal[Calendar.MONTH]
-//
-//            val weekmonth = cal[Calendar.WEEK_OF_MONTH]
-//
-//            val day = cal[Calendar.DAY_OF_WEEK]
-//
-//            return TrophyInfo(
-//                month,
-//                weekmonth,
-//                day
-//            )
-//
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//        }
+        val parse_date: Date?
+        val dateFormat1 = SimpleDateFormat("yyyyMMdd")
+
+        try {
+            parse_date = dateFormat1.parse(date)
+
+            val cal = Calendar.getInstance()
+            cal.time = parse_date
+            val month = cal[Calendar.MONTH]
+
+            val weekmonth = cal[Calendar.WEEK_OF_MONTH]
+
+            val day = cal[Calendar.DAY_OF_WEEK]
+
+            return TrophyInfo(
+                month,
+                weekmonth,
+                day
+            )
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
 
         return null
     }
