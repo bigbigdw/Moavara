@@ -76,13 +76,21 @@ fun LoginScreen() {
         Box(
             modifier = Modifier
                 .weight(1f)
-                .background(color = backgroundType2),
-            contentAlignment = Alignment.BottomEnd
+                .background(color = backgroundType1),
+            contentAlignment = Alignment.BottomEnd,
         ) {
+            Card(modifier = Modifier
+                .fillMaxSize(),
+                backgroundColor = backgroundType2,
+                shape = RoundedCornerShape(0.dp, 0.dp, 25.dp, 25.dp)
+            ){
+
+            }
             Column(
                 verticalArrangement = Arrangement.Bottom,
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
+
                 Image(
                     painter = painterResource(id = R.mipmap.ic_launcher),
                     contentDescription = null,
@@ -108,7 +116,8 @@ fun LoginScreen() {
                     onClick = {},
                     modifier = Modifier
                         .width(260.dp)
-                        .height(56.dp)
+                        .height(56.dp),
+                    shape = RoundedCornerShape(50.dp)
 
                 ) {
                     Text(text = "Google로 로그인", textAlign = TextAlign.Center, color = textColorType3, fontSize = 16.sp, fontFamily = pretendardvariable)
