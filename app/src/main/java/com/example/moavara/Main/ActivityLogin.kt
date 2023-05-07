@@ -84,7 +84,9 @@ class ActivityLogin : AppCompatActivity() {
     // 구글 로그인 함수
     private fun googleLogin() {
         val signInIntent = googleSignInClient?.signInIntent
-        startActivityForResult(signInIntent, GOOGLE_LOGIN_CODE)
+        if (signInIntent != null) {
+            startActivityForResult(signInIntent, GOOGLE_LOGIN_CODE)
+        }
     }
 
     private fun firebaseAuthWithGoogle(account: GoogleSignInAccount?) {

@@ -333,7 +333,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                             PeriodicWorkRequestBuilder<FirebaseWorkManager>(6, TimeUnit.HOURS)
                                 .setBackoffCriteria(
                                     BackoffPolicy.LINEAR,
-                                    PeriodicWorkRequest.MIN_BACKOFF_MILLIS,
+                                    PeriodicWorkRequest.MIN_PERIODIC_FLEX_MILLIS,
                                     TimeUnit.MILLISECONDS
                                 )
                                 .addTag("MoavaraPick")

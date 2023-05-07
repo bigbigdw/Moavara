@@ -85,7 +85,9 @@ class ActivityUser : AppCompatActivity() {
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         val signInIntent = googleSignInClient?.signInIntent
-        startActivityForResult(signInIntent, GOOGLE_LOGIN_CODE)
+        if (signInIntent != null) {
+            startActivityForResult(signInIntent, GOOGLE_LOGIN_CODE)
+        }
 
         with(binding){
 

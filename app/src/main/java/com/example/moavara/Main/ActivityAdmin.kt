@@ -60,7 +60,7 @@ class ActivityAdmin : AppCompatActivity() {
         val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(3, TimeUnit.HOURS)
             .setBackoffCriteria(
                 BackoffPolicy.LINEAR,
-                PeriodicWorkRequest.MIN_BACKOFF_MILLIS,
+                PeriodicWorkRequest.MIN_PERIODIC_FLEX_MILLIS,
                 TimeUnit.MILLISECONDS
             )
             .addTag("MoavaraBest")
@@ -189,7 +189,7 @@ class ActivityAdmin : AppCompatActivity() {
                 val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(6, TimeUnit.HOURS)
                     .setBackoffCriteria(
                         BackoffPolicy.LINEAR,
-                        PeriodicWorkRequest.MIN_BACKOFF_MILLIS,
+                        PeriodicWorkRequest.MIN_PERIODIC_FLEX_MILLIS,
                         TimeUnit.MILLISECONDS
                     )
                     .addTag("MoavaraPick")

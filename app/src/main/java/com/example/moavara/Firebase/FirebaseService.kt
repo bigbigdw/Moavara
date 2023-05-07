@@ -4,7 +4,7 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface FirebaseService {
-    @Headers("Content-Type: application/json", "Authorization: key=AAAAjynPAw4:APA91bF_cLM10IX7pogyaaqQmJ7gIS2xzDP5WJOKLQylQiWax28s2mjnanzkan24O_TQPVuR4-d2osATG9MwGYCkfK-HUM6SQPR1f7P3udGj6YsCUz_1rxJsesLX3fuF2-AFJIt7qUkY")
+    @Headers("Content-Type: application/json", "Authorization: key=AAAAjynPAw4:APA91bH7kxmeRDe2zm02KhUrySYvnclJMB9G3rTkxWJpnezJvx3_SUdNIQ2oYDCd8hhD_yUzNUMaMY6WBkoqC7UnkB5OLYHVws_Up4quLZ0NI81LdMhUtAPwUYXaf7dMlbXHrYA8ZZlV")
     @POST("/fcm/send")
     fun postRetrofit(
         @Body body : DataFCMBody
