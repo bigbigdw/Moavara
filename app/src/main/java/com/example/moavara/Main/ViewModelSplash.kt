@@ -3,7 +3,6 @@ package com.example.moavara.Main
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.ViewModel
@@ -20,7 +19,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 //@HiltViewModel
-class MainViewModel @Inject constructor() : ViewModel() {
+class ViewModelSplash @Inject constructor() : ViewModel() {
 
     private val events = Channel<SpalshEvent>()
 
@@ -48,18 +47,16 @@ class MainViewModel @Inject constructor() : ViewModel() {
             events.send(SpalshEvent.Loading)
             loadingSplash(activity) { isFinish ->
                 if(isFinish){
-                    Log.d("MOAVARA!!!!!", "TRUE??")
 //                    events.send(MainEvent.Loaded)
                 }
             }
-            Log.d("MOAVARA!!!!!", "TRUE!!")
             events.send(SpalshEvent.Loaded)
             _sideEffects.send("로딩 완료")
-            loadingSplash(activity)
+            finishSplash(activity)
         }
     }
 
-    private fun loadingSplash(activity: ComponentActivity, callback : (Boolean) -> Unit){
+    fun loadingSplash(activity: ComponentActivity, callback : (Boolean) -> Unit){
 
         val userDao: DBUser?
         val UserInfo: DataBaseUser?
@@ -107,10 +104,13 @@ class MainViewModel @Inject constructor() : ViewModel() {
                     callback.invoke(true)
                 }
             }
-        }.addOnFailureListener {}
+            callback.invoke(true)
+        }.addOnFailureListener {
+            callback.invoke(false)
+        }
     }
 
-    fun loadingSplash(activity: ComponentActivity){
+    fun finishSplash(activity: ComponentActivity){
         Looper.myLooper()?.let {
             Handler(it).postDelayed(
                 {
