@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide
 import com.example.moavara.Main.ActivityMain
 import com.example.moavara.R
 import com.example.moavara.databinding.ActivityGuideBinding
-import com.synnapps.carouselview.ViewListener
+//import com.synnapps.carouselview.ViewListener
 
 
 class ActivityGuide : AppCompatActivity() {
@@ -44,38 +44,38 @@ class ActivityGuide : AppCompatActivity() {
         setContentView(binding.root)
 
         with(binding){
-            cview.pageCount = imgList.size
-            cview.setViewListener(viewListenerNew)
-
-            cview.stopCarousel()
-            cview.indicatorMarginHorizontal
+//            cview.pageCount = imgList.size
+//            cview.setViewListener(viewListenerNew)
+//
+//            cview.stopCarousel()
+//            cview.indicatorMarginHorizontal
         }
 
-        setLayout()
+//        setLayout()
     }
 
-    private val viewListenerNew =
-        ViewListener { position ->
-            val itemView: View = layoutInflater.inflate(R.layout.item_guide_carousel, null)
+//    private val viewListenerNew =
+//        ViewListener { position ->
+//            val itemView: View = layoutInflater.inflate(R.layout.item_guide_carousel, null)
+//
+//            val tview: TextView = itemView.findViewById(R.id.tview)
+//            val iview: ImageView = itemView.findViewById(R.id.iview)
+//
+//            tview.text = textList[position]
+//            Glide.with(applicationContext).load(imgList[position])
+//                .into(iview)
+//
+//            binding.cview.indicatorGravity = Gravity.CENTER_HORIZONTAL or Gravity.TOP
+//            itemView
+//        }
 
-            val tview: TextView = itemView.findViewById(R.id.tview)
-            val iview: ImageView = itemView.findViewById(R.id.iview)
-
-            tview.text = textList[position]
-            Glide.with(applicationContext).load(imgList[position])
-                .into(iview)
-
-            binding.cview.indicatorGravity = Gravity.CENTER_HORIZONTAL or Gravity.TOP
-            itemView
-        }
-
-    private fun setLayout() {
-        binding.buttonNext.setOnClickListener {
-            val intent = Intent(this@ActivityGuide, ActivityMain::class.java)
-            Toast.makeText(this@ActivityGuide, "모아바라에 오신것을 환영합니다", Toast.LENGTH_SHORT).show()
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent)
-        }
-    }
+//    private fun setLayout() {
+//        binding.buttonNext.setOnClickListener {
+//            val intent = Intent(this@ActivityGuide, ActivityMain::class.java)
+//            Toast.makeText(this@ActivityGuide, "모아바라에 오신것을 환영합니다", Toast.LENGTH_SHORT).show()
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//            startActivity(intent)
+//        }
+//    }
 }

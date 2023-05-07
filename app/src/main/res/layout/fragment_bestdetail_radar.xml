@@ -6,9 +6,9 @@
     android:background="#1E1E20"
     android:orientation="vertical">
 
-    <com.github.mikephil.charting.charts.RadarChart
-        android:id="@+id/radarChart"
-        android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:layout_marginTop="16dp" />
+<!--    <com.github.mikephil.charting.charts.RadarChart-->
+<!--        android:id="@+id/radarChart"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="350dp"-->
+<!--        android:layout_marginTop="16dp" />-->
 </LinearLayout>

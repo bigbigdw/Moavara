@@ -31,21 +31,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <com.synnapps.carouselview.CarouselView
-                    android:id="@+id/cview"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#000000"
-                    android:visibility="visible"
-                    app:disableAutoPlayOnUserInteraction="false"
-                    app:fillColor="#FFFFFFFF"
-                    app:indicatorMarginVertical="158dp"
-                    app:pageColor="#00000000"
-                    app:radius="4dp"
-                    app:slideInterval="3000"
-                    app:strokeColor="#FF777777"
-                    app:strokeWidth="1dp"
-                    tools:visibility="visible" />
+<!--                <com.synnapps.carouselview.CarouselView-->
+<!--                    android:id="@+id/cview"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:background="#000000"-->
+<!--                    android:visibility="visible"-->
+<!--                    app:disableAutoPlayOnUserInteraction="false"-->
+<!--                    app:fillColor="#FFFFFFFF"-->
+<!--                    app:indicatorMarginVertical="158dp"-->
+<!--                    app:pageColor="#00000000"-->
+<!--                    app:radius="4dp"-->
+<!--                    app:slideInterval="3000"-->
+<!--                    app:strokeColor="#FF777777"-->
+<!--                    app:strokeWidth="1dp"-->
+<!--                    tools:visibility="visible" />-->
 
             </LinearLayout>
 

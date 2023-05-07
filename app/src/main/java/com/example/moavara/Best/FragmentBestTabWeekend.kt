@@ -29,7 +29,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
-import com.synnapps.carouselview.ViewListener
+//import com.synnapps.carouselview.ViewListener
 import org.json.JSONException
 
 class FragmentBestTabWeekend(private val platform: String, private val UserInfo: DataBaseUser) : Fragment() {
@@ -124,21 +124,21 @@ class FragmentBestTabWeekend(private val platform: String, private val UserInfo:
             if(bestDao?.bestDao()?.getAll()?.size == 0){
                 getBestWeekList()
             } else {
-                setRoomData()
+//                setRoomData()
             }
 
-            carousel.setViewListener(viewListenerBest)
-            carousel.setImageClickListener { position ->
-                val bundle = Bundle()
-                bundle.putString("BEST_FROM", "week_carousel")
-                firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
-
-                val bookDetailIntent = Intent(requireContext(), ActivityBestDetail::class.java)
-                bookDetailIntent.putExtra("BookCode", arrayCarousel[position].bookCode)
-                bookDetailIntent.putExtra("Type", String.format("%s", platform))
-                bookDetailIntent.putExtra("POSITION", position)
-                startActivity(bookDetailIntent)
-            }
+//            carousel.setViewListener(viewListenerBest)
+//            carousel.setImageClickListener { position ->
+//                val bundle = Bundle()
+//                bundle.putString("BEST_FROM", "week_carousel")
+//                firebaseAnalytics.logEvent("BEST_ActivityBestDetail", bundle)
+//
+//                val bookDetailIntent = Intent(requireContext(), ActivityBestDetail::class.java)
+//                bookDetailIntent.putExtra("BookCode", arrayCarousel[position].bookCode)
+//                bookDetailIntent.putExtra("Type", String.format("%s", platform))
+//                bookDetailIntent.putExtra("POSITION", position)
+//                startActivity(bookDetailIntent)
+//            }
         }
 
         return view
@@ -252,8 +252,8 @@ class FragmentBestTabWeekend(private val platform: String, private val UserInfo:
 
                         if (arrayCarousel.size > 0) {
                             with(binding) {
-                                carousel.pageCount = arrayCarousel.size
-                                carousel.slideInterval = 4000
+//                                carousel.pageCount = arrayCarousel.size
+//                                carousel.slideInterval = 4000
                                 binding.llayoutCarousel.visibility = View.VISIBLE
                             }
                         } else {
@@ -363,8 +363,8 @@ class FragmentBestTabWeekend(private val platform: String, private val UserInfo:
 
                     if (arrayCarousel.size > 0) {
                         with(binding) {
-                            carousel.pageCount = arrayCarousel.size
-                            carousel.slideInterval = 4000
+//                            carousel.pageCount = arrayCarousel.size
+//                            carousel.slideInterval = 4000
                             binding.llayoutCarousel.visibility = View.VISIBLE
                         }
                     } else {
@@ -381,358 +381,358 @@ class FragmentBestTabWeekend(private val platform: String, private val UserInfo:
         }
     }
 
-    private val viewListenerBest =
-        ViewListener { position ->
-            val customView: View = layoutInflater.inflate(R.layout.item_best_weekend_carousel, null)
+//    private val viewListenerBest =
+//        ViewListener { position ->
+//            val customView: View = layoutInflater.inflate(R.layout.item_best_weekend_carousel, null)
+//
+//            val iviewBookBest: ImageView = customView.findViewById(R.id.iviewBookBest)
+//            val iviewRank: ImageView = customView.findViewById(R.id.iviewRank)
+//            val tviewTitle: TextView = customView.findViewById(R.id.tviewTitle)
+//            val tviewWriter: TextView = customView.findViewById(R.id.tviewWriter)
+//            val tviewInfo1: TextView = customView.findViewById(R.id.tviewInfo1)
+//            val tviewInfo2: TextView = customView.findViewById(R.id.tviewInfo2)
+//            val tviewInfo3: TextView = customView.findViewById(R.id.tviewInfo3)
+//            val tviewInfo4: TextView = customView.findViewById(R.id.tviewInfo4)
+//            val tviewInfo5: TextView = customView.findViewById(R.id.tviewInfo5)
+//            val tviewBar : TextView = customView.findViewById(R.id.tviewBar)
+//
+//            Glide.with(requireContext()).load(arrayCarousel[position].bookImg)
+//                .into(iviewBookBest)
+//
+//            when (arrayCarousel[position].number) {
+//                0 -> {
+//                    iviewRank.setImageResource(R.drawable.icon_best_1)
+//                }
+//                1 -> {
+//                    iviewRank.setImageResource(R.drawable.icon_best_2)
+//                }
+//                2 -> {
+//                    iviewRank.setImageResource(R.drawable.icon_best_3)
+//                }
+//                3 -> {
+//                    iviewRank.setImageResource(R.drawable.icon_best_4)
+//                }
+//                4 -> {
+//                    iviewRank.setImageResource(R.drawable.icon_best_5)
+//                }
+//                5 -> {
+//                    iviewRank.setImageResource(R.drawable.icon_best_6)
+//                }
+//                6 -> {
+//                    iviewRank.setImageResource(R.drawable.icon_best_7)
+//                }
+//                7 -> {
+//                    iviewRank.setImageResource(R.drawable.icon_best_8)
+//                }
+//                8 -> {
+//                    iviewRank.setImageResource(R.drawable.icon_best_9)
+//                }
+//                else -> {
+//                    Log.d("bestRankImage", "NO_IMAGE")
+//                }
+//            }
+//
+//            tviewTitle.text = arrayCarousel[position].title
+//            tviewWriter.text = arrayCarousel[position].writer
+//
+//            if (platform == "Toksoda") {
+//
+//                tviewInfo1.text = arrayCarousel[position].info2
+//
+//                val info3 = SpannableStringBuilder("조회 수 : ${arrayCarousel[position].info3}" )
+//                info3.applyingTextColor(
+//                    "조회 수 : ",
+//                    "#6E7686"
+//                )
+//
+//                val info5 = SpannableStringBuilder("선호작 수 : ${arrayCarousel[position].info5}")
+//                info5.applyingTextColor(
+//                    "선호작 수 : ",
+//                    "#6E7686"
+//                )
+//
+//                tviewInfo3.text = info3
+//                tviewInfo4.text = info5
+//                tviewInfo5.text = arrayCarousel[position].info1
+//            } else if (platform == "Naver" || platform == "Naver_Today" || platform == "Naver_Challenge") {
+//                tviewInfo1.text = arrayCarousel[position].info1
+//
+//                val info3 = SpannableStringBuilder("별점 수 : ${arrayCarousel[position].info3.replace("별점", "별점 : ")}")
+//                info3.applyingTextColor(
+//                    "별점 수 : ",
+//                    "#6E7686"
+//                )
+//
+//                val info4 = SpannableStringBuilder("조회 수 : ${arrayCarousel[position].info4.replace("조회", "조회 수 : ")}" )
+//                info4.applyingTextColor(
+//                    "조회 수 : ",
+//                    "#6E7686"
+//                )
+//
+//                val info5 = SpannableStringBuilder("관심 : ${arrayCarousel[position].info5.replace("관심", "관심 : ")}")
+//                info5.applyingTextColor(
+//                    "관심 : ",
+//                    "#6E7686"
+//                )
+//
+//                tviewInfo2.text = info3
+//                tviewInfo3.text = info4
+//                tviewInfo4.text = info5
+//            } else if (platform == "Kakao_Stage") {
+//                tviewInfo1.text = arrayCarousel[position].info2
+//
+//                val info3 = SpannableStringBuilder("조회 수 : ${arrayCarousel[position].info3.replace("별점", "별점 : ")}" )
+//                info3.applyingTextColor(
+//                    "조회 수 : ",
+//                    "#6E7686"
+//                )
+//
+//                val info4 = SpannableStringBuilder("선호작 수 : ${arrayCarousel[position].info4.replace("조회", "조회 수 : ")}" )
+//                info4.applyingTextColor(
+//                    "선호작 수 : ",
+//                    "#6E7686"
+//                )
+//
+//                tviewInfo3.text = info3
+//                tviewInfo4.text = info4
+//                tviewInfo5.text = arrayCarousel[position].info1
+//            } else if (platform == "Ridi") {
+//                tviewInfo1.text = arrayCarousel[position].info1
+//
+//                val info3 = SpannableStringBuilder("추천 수 : ${arrayCarousel[position].info3}" )
+//                info3.applyingTextColor(
+//                    "추천 수 : ",
+//                    "#6E7686"
+//                )
+//
+//                val info4 = SpannableStringBuilder("평점 : ${arrayCarousel[position].info4}")
+//                info4.applyingTextColor(
+//                    "평점 : ",
+//                    "#6E7686"
+//                )
+//
+//                tviewInfo3.text = info3
+//                tviewInfo4.text = info4
+//            } else if (platform == "OneStore") {
+//
+//                val info3 = SpannableStringBuilder("조회 수 : ${arrayCarousel[position].info3.replace("별점", "별점 : ")}" )
+//                info3.applyingTextColor(
+//                    "조회 수 : ",
+//                    "#6E7686"
+//                )
+//
+//                val info4 = SpannableStringBuilder("평점 : ${arrayCarousel[position].info4.replace("조회", "조회 수 : ")}" )
+//                info4.applyingTextColor(
+//                    "평점 : ",
+//                    "#6E7686"
+//                )
+//
+//                val info5 = SpannableStringBuilder("댓글 수 : ${arrayCarousel[position].info5.replace("관심", "관심 : ")}" )
+//                info5.applyingTextColor(
+//                    "댓글 수 : ",
+//                    "#6E7686"
+//                )
+//
+//
+//                tviewInfo2.text = info3
+//                tviewInfo3.text = info4
+//                tviewInfo4.text = info5
+//            } else if (platform == "Kakao" || platform == "Munpia" || platform == "Toksoda" || platform == "Joara" || platform == "Joara_Premium" || platform == "Joara_Nobless" || platform == "Munpia") {
+//
+//                if (platform == "Joara" || platform == "Joara_Premium" || platform == "Joara_Nobless") {
+//                    tviewInfo1.text = arrayCarousel[position].info2
+//
+//                    val info3 = SpannableStringBuilder("조회 수 : ${arrayCarousel[position].info3}")
+//                    info3.applyingTextColor(
+//                        "조회 수 : ",
+//                        "#6E7686"
+//                    )
+//
+//                    val info4 = SpannableStringBuilder("선호작 수 : ${arrayCarousel[position].info4}")
+//                    info4.applyingTextColor(
+//                        "선호작 수 : ",
+//                        "#6E7686"
+//                    )
+//
+//                    val info5 = SpannableStringBuilder("추천 수 : ${arrayCarousel[position].info5}")
+//                    info5.applyingTextColor(
+//                        "추천 수 : ",
+//                        "#6E7686"
+//                    )
+//
+//                    tviewInfo2.text = info3
+//                    tviewInfo3.text = info4
+//                    tviewInfo4.text = info5
+//
+//                    tviewInfo5.text = arrayCarousel[position].info1
+//                } else if (platform == "Kakao") {
+//                    tviewInfo1.text = arrayCarousel[position].info2
+//
+//                    val info3 = SpannableStringBuilder("조회 수 : ${arrayCarousel[position].info3}")
+//                    info3.applyingTextColor(
+//                        "조회 수 : ",
+//                        "#6E7686"
+//                    )
+//
+//                    val info4 = SpannableStringBuilder("추천 수 : ${arrayCarousel[position].info4}")
+//                    info4.applyingTextColor(
+//                        "추천 수 : ",
+//                        "#6E7686"
+//                    )
+//
+//                    val info5 = SpannableStringBuilder("평점 : ${arrayCarousel[position].info5}")
+//                    info5.applyingTextColor(
+//                        "평점 : ",
+//                        "#6E7686"
+//                    )
+//
+//                    tviewInfo2.text = info3
+//                    tviewInfo3.text = info4
+//                    tviewInfo4.text = info5
+//                    tviewInfo5.text = arrayCarousel[position].info1
+//                } else if (platform == "Munpia") {
+//                    tviewInfo1.text = arrayCarousel[position].info2
+//
+//                    val info3 = SpannableStringBuilder("조회 수 : ${arrayCarousel[position].info3}")
+//                    info3.applyingTextColor(
+//                        "조회 수 : ",
+//                        "#6E7686"
+//                    )
+//
+//                    val info4 = SpannableStringBuilder("방문 수 : ${arrayCarousel[position].info4}")
+//                    info4.applyingTextColor(
+//                        "방문 수 : ",
+//                        "#6E7686"
+//                    )
+//
+//                    val info5 = SpannableStringBuilder("선호작 수 : ${arrayCarousel[position].info5}")
+//                    info5.applyingTextColor(
+//                        "선호작 수 : ",
+//                        "#6E7686"
+//                    )
+//
+//                    tviewInfo2.text = info3
+//                    tviewInfo3.text = info4
+//                    tviewInfo4.text = info5
+//                    tviewInfo5.text = arrayCarousel[position].info1
+//                } else {
+//                    tviewInfo1.text = arrayCarousel[position].info2
+//                    tviewInfo2.text = arrayCarousel[position].info3
+//                    tviewInfo3.text = arrayCarousel[position].info4
+//                    tviewInfo4.text = arrayCarousel[position].info5
+//                    tviewInfo5.text = arrayCarousel[position].info1
+//                }
+//
+//                if (tviewInfo1.text.isNotEmpty()) {
+//                    tviewInfo1.visibility = View.VISIBLE
+//                    tviewBar.visibility = View.VISIBLE
+//                }
+//                if (tviewInfo2.text.isNotEmpty()) {
+//                    tviewInfo2.visibility = View.VISIBLE
+//                }
+//                if (tviewInfo3.text.isNotEmpty()) {
+//                    tviewInfo3.visibility = View.VISIBLE
+//                }
+//                if (tviewInfo4.text.isNotEmpty()) {
+//                    tviewInfo4.visibility = View.VISIBLE
+//                }
+//                if (tviewInfo5.text.isNotEmpty()) {
+//                    tviewInfo5.visibility = View.VISIBLE
+//                }
+//
+//            }
+//
+////            binding.carousel.indicatorGravity = Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM
+//            customView
+//        }
 
-            val iviewBookBest: ImageView = customView.findViewById(R.id.iviewBookBest)
-            val iviewRank: ImageView = customView.findViewById(R.id.iviewRank)
-            val tviewTitle: TextView = customView.findViewById(R.id.tviewTitle)
-            val tviewWriter: TextView = customView.findViewById(R.id.tviewWriter)
-            val tviewInfo1: TextView = customView.findViewById(R.id.tviewInfo1)
-            val tviewInfo2: TextView = customView.findViewById(R.id.tviewInfo2)
-            val tviewInfo3: TextView = customView.findViewById(R.id.tviewInfo3)
-            val tviewInfo4: TextView = customView.findViewById(R.id.tviewInfo4)
-            val tviewInfo5: TextView = customView.findViewById(R.id.tviewInfo5)
-            val tviewBar : TextView = customView.findViewById(R.id.tviewBar)
-
-            Glide.with(requireContext()).load(arrayCarousel[position].bookImg)
-                .into(iviewBookBest)
-
-            when (arrayCarousel[position].number) {
-                0 -> {
-                    iviewRank.setImageResource(R.drawable.icon_best_1)
-                }
-                1 -> {
-                    iviewRank.setImageResource(R.drawable.icon_best_2)
-                }
-                2 -> {
-                    iviewRank.setImageResource(R.drawable.icon_best_3)
-                }
-                3 -> {
-                    iviewRank.setImageResource(R.drawable.icon_best_4)
-                }
-                4 -> {
-                    iviewRank.setImageResource(R.drawable.icon_best_5)
-                }
-                5 -> {
-                    iviewRank.setImageResource(R.drawable.icon_best_6)
-                }
-                6 -> {
-                    iviewRank.setImageResource(R.drawable.icon_best_7)
-                }
-                7 -> {
-                    iviewRank.setImageResource(R.drawable.icon_best_8)
-                }
-                8 -> {
-                    iviewRank.setImageResource(R.drawable.icon_best_9)
-                }
-                else -> {
-                    Log.d("bestRankImage", "NO_IMAGE")
-                }
-            }
-
-            tviewTitle.text = arrayCarousel[position].title
-            tviewWriter.text = arrayCarousel[position].writer
-
-            if (platform == "Toksoda") {
-
-                tviewInfo1.text = arrayCarousel[position].info2
-
-                val info3 = SpannableStringBuilder("조회 수 : ${arrayCarousel[position].info3}" )
-                info3.applyingTextColor(
-                    "조회 수 : ",
-                    "#6E7686"
-                )
-
-                val info5 = SpannableStringBuilder("선호작 수 : ${arrayCarousel[position].info5}")
-                info5.applyingTextColor(
-                    "선호작 수 : ",
-                    "#6E7686"
-                )
-
-                tviewInfo3.text = info3
-                tviewInfo4.text = info5
-                tviewInfo5.text = arrayCarousel[position].info1
-            } else if (platform == "Naver" || platform == "Naver_Today" || platform == "Naver_Challenge") {
-                tviewInfo1.text = arrayCarousel[position].info1
-
-                val info3 = SpannableStringBuilder("별점 수 : ${arrayCarousel[position].info3.replace("별점", "별점 : ")}")
-                info3.applyingTextColor(
-                    "별점 수 : ",
-                    "#6E7686"
-                )
-
-                val info4 = SpannableStringBuilder("조회 수 : ${arrayCarousel[position].info4.replace("조회", "조회 수 : ")}" )
-                info4.applyingTextColor(
-                    "조회 수 : ",
-                    "#6E7686"
-                )
-
-                val info5 = SpannableStringBuilder("관심 : ${arrayCarousel[position].info5.replace("관심", "관심 : ")}")
-                info5.applyingTextColor(
-                    "관심 : ",
-                    "#6E7686"
-                )
-
-                tviewInfo2.text = info3
-                tviewInfo3.text = info4
-                tviewInfo4.text = info5
-            } else if (platform == "Kakao_Stage") {
-                tviewInfo1.text = arrayCarousel[position].info2
-
-                val info3 = SpannableStringBuilder("조회 수 : ${arrayCarousel[position].info3.replace("별점", "별점 : ")}" )
-                info3.applyingTextColor(
-                    "조회 수 : ",
-                    "#6E7686"
-                )
-
-                val info4 = SpannableStringBuilder("선호작 수 : ${arrayCarousel[position].info4.replace("조회", "조회 수 : ")}" )
-                info4.applyingTextColor(
-                    "선호작 수 : ",
-                    "#6E7686"
-                )
-
-                tviewInfo3.text = info3
-                tviewInfo4.text = info4
-                tviewInfo5.text = arrayCarousel[position].info1
-            } else if (platform == "Ridi") {
-                tviewInfo1.text = arrayCarousel[position].info1
-
-                val info3 = SpannableStringBuilder("추천 수 : ${arrayCarousel[position].info3}" )
-                info3.applyingTextColor(
-                    "추천 수 : ",
-                    "#6E7686"
-                )
-
-                val info4 = SpannableStringBuilder("평점 : ${arrayCarousel[position].info4}")
-                info4.applyingTextColor(
-                    "평점 : ",
-                    "#6E7686"
-                )
-
-                tviewInfo3.text = info3
-                tviewInfo4.text = info4
-            } else if (platform == "OneStore") {
-
-                val info3 = SpannableStringBuilder("조회 수 : ${arrayCarousel[position].info3.replace("별점", "별점 : ")}" )
-                info3.applyingTextColor(
-                    "조회 수 : ",
-                    "#6E7686"
-                )
-
-                val info4 = SpannableStringBuilder("평점 : ${arrayCarousel[position].info4.replace("조회", "조회 수 : ")}" )
-                info4.applyingTextColor(
-                    "평점 : ",
-                    "#6E7686"
-                )
-
-                val info5 = SpannableStringBuilder("댓글 수 : ${arrayCarousel[position].info5.replace("관심", "관심 : ")}" )
-                info5.applyingTextColor(
-                    "댓글 수 : ",
-                    "#6E7686"
-                )
-
-
-                tviewInfo2.text = info3
-                tviewInfo3.text = info4
-                tviewInfo4.text = info5
-            } else if (platform == "Kakao" || platform == "Munpia" || platform == "Toksoda" || platform == "Joara" || platform == "Joara_Premium" || platform == "Joara_Nobless" || platform == "Munpia") {
-
-                if (platform == "Joara" || platform == "Joara_Premium" || platform == "Joara_Nobless") {
-                    tviewInfo1.text = arrayCarousel[position].info2
-
-                    val info3 = SpannableStringBuilder("조회 수 : ${arrayCarousel[position].info3}")
-                    info3.applyingTextColor(
-                        "조회 수 : ",
-                        "#6E7686"
-                    )
-
-                    val info4 = SpannableStringBuilder("선호작 수 : ${arrayCarousel[position].info4}")
-                    info4.applyingTextColor(
-                        "선호작 수 : ",
-                        "#6E7686"
-                    )
-
-                    val info5 = SpannableStringBuilder("추천 수 : ${arrayCarousel[position].info5}")
-                    info5.applyingTextColor(
-                        "추천 수 : ",
-                        "#6E7686"
-                    )
-
-                    tviewInfo2.text = info3
-                    tviewInfo3.text = info4
-                    tviewInfo4.text = info5
-
-                    tviewInfo5.text = arrayCarousel[position].info1
-                } else if (platform == "Kakao") {
-                    tviewInfo1.text = arrayCarousel[position].info2
-
-                    val info3 = SpannableStringBuilder("조회 수 : ${arrayCarousel[position].info3}")
-                    info3.applyingTextColor(
-                        "조회 수 : ",
-                        "#6E7686"
-                    )
-
-                    val info4 = SpannableStringBuilder("추천 수 : ${arrayCarousel[position].info4}")
-                    info4.applyingTextColor(
-                        "추천 수 : ",
-                        "#6E7686"
-                    )
-
-                    val info5 = SpannableStringBuilder("평점 : ${arrayCarousel[position].info5}")
-                    info5.applyingTextColor(
-                        "평점 : ",
-                        "#6E7686"
-                    )
-
-                    tviewInfo2.text = info3
-                    tviewInfo3.text = info4
-                    tviewInfo4.text = info5
-                    tviewInfo5.text = arrayCarousel[position].info1
-                } else if (platform == "Munpia") {
-                    tviewInfo1.text = arrayCarousel[position].info2
-
-                    val info3 = SpannableStringBuilder("조회 수 : ${arrayCarousel[position].info3}")
-                    info3.applyingTextColor(
-                        "조회 수 : ",
-                        "#6E7686"
-                    )
-
-                    val info4 = SpannableStringBuilder("방문 수 : ${arrayCarousel[position].info4}")
-                    info4.applyingTextColor(
-                        "방문 수 : ",
-                        "#6E7686"
-                    )
-
-                    val info5 = SpannableStringBuilder("선호작 수 : ${arrayCarousel[position].info5}")
-                    info5.applyingTextColor(
-                        "선호작 수 : ",
-                        "#6E7686"
-                    )
-
-                    tviewInfo2.text = info3
-                    tviewInfo3.text = info4
-                    tviewInfo4.text = info5
-                    tviewInfo5.text = arrayCarousel[position].info1
-                } else {
-                    tviewInfo1.text = arrayCarousel[position].info2
-                    tviewInfo2.text = arrayCarousel[position].info3
-                    tviewInfo3.text = arrayCarousel[position].info4
-                    tviewInfo4.text = arrayCarousel[position].info5
-                    tviewInfo5.text = arrayCarousel[position].info1
-                }
-
-                if (tviewInfo1.text.isNotEmpty()) {
-                    tviewInfo1.visibility = View.VISIBLE
-                    tviewBar.visibility = View.VISIBLE
-                }
-                if (tviewInfo2.text.isNotEmpty()) {
-                    tviewInfo2.visibility = View.VISIBLE
-                }
-                if (tviewInfo3.text.isNotEmpty()) {
-                    tviewInfo3.visibility = View.VISIBLE
-                }
-                if (tviewInfo4.text.isNotEmpty()) {
-                    tviewInfo4.visibility = View.VISIBLE
-                }
-                if (tviewInfo5.text.isNotEmpty()) {
-                    tviewInfo5.visibility = View.VISIBLE
-                }
-
-            }
-
-            binding.carousel.indicatorGravity = Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM
-            customView
-        }
-
-    private fun setRoomData(){
-
-        for (day in 1..7) {
-            val itemList = ArrayList<BookListDataBest>()
-            val itemResult = bestDao?.bestDao()?.getWeek(day.toString())
-
-            if (itemResult?.size == 0) {
-                for (num in 0..19) {
-                    itemList.add(BookListDataBest())
-                }
-                itemWeek.add(itemList)
-            } else {
-                for (num in 0..19) {
-                    if(itemResult != null){
-                        itemList.add(BookListDataBest(
-                            itemResult[num].writer,
-                            itemResult[num].title,
-                            itemResult[num].bookImg,
-                            itemResult[num].bookCode,
-                            itemResult[num].info1,
-                            itemResult[num].info2,
-                            itemResult[num].info3,
-                            itemResult[num].info4,
-                            itemResult[num].info5,
-                            itemResult[num].info6,
-                            itemResult[num].number,
-                            itemResult[num].date,
-                            itemResult[num].type,
-                            itemResult[num].memo
-                        ))
-                    }
-                }
-
-                if (today?.date == day) {
-
-                    val itemListCarousel = ArrayList<BookListDataBest>()
-                    val itemResultCarousel = bestDao?.bestDao()?.getWeek(day.toString())
-
-                    for (numCarousel in 0..8) {
-
-                        if(itemResultCarousel != null){
-                            itemListCarousel.add(BookListDataBest(
-                                itemResultCarousel[numCarousel].writer,
-                                itemResultCarousel[numCarousel].title,
-                                itemResultCarousel[numCarousel].bookImg,
-                                itemResultCarousel[numCarousel].bookCode,
-                                itemResultCarousel[numCarousel].info1,
-                                itemResultCarousel[numCarousel].info2,
-                                itemResultCarousel[numCarousel].info3,
-                                itemResultCarousel[numCarousel].info4,
-                                itemResultCarousel[numCarousel].info5,
-                                itemResultCarousel[numCarousel].info6,
-                                itemResultCarousel[numCarousel].number,
-                                itemResultCarousel[numCarousel].date,
-                                itemResultCarousel[numCarousel].type,
-                                itemResultCarousel[numCarousel].memo
-                            ))
-                        }
-
-                        if (itemResultCarousel != null) {
-                            binding.llayoutCarousel.visibility = View.VISIBLE
-                        }
-                    }
-
-                    arrayCarousel.addAll(itemListCarousel)
-                }
-
-                itemWeek.add(itemList)
-            }
-        }
-
-        binding.blank.root.visibility = View.GONE
-        binding.rviewBest.visibility = View.VISIBLE
-        adapter?.notifyDataSetChanged()
-
-        if (arrayCarousel.size > 0) {
-            with(binding) {
-                carousel.pageCount = arrayCarousel.size
-                carousel.slideInterval = 4000
-                binding.llayoutCarousel.visibility = View.VISIBLE
-            }
-        } else {
-            binding.llayoutCarousel.visibility = View.GONE
-        }
-
-        binding.blank.root.visibility = View.GONE
-        binding.llayoutWrap.visibility = View.VISIBLE
-        adapter?.notifyDataSetChanged()
-    }
+//    private fun setRoomData(){
+//
+//        for (day in 1..7) {
+//            val itemList = ArrayList<BookListDataBest>()
+//            val itemResult = bestDao?.bestDao()?.getWeek(day.toString())
+//
+//            if (itemResult?.size == 0) {
+//                for (num in 0..19) {
+//                    itemList.add(BookListDataBest())
+//                }
+//                itemWeek.add(itemList)
+//            } else {
+//                for (num in 0..19) {
+//                    if(itemResult != null){
+//                        itemList.add(BookListDataBest(
+//                            itemResult[num].writer,
+//                            itemResult[num].title,
+//                            itemResult[num].bookImg,
+//                            itemResult[num].bookCode,
+//                            itemResult[num].info1,
+//                            itemResult[num].info2,
+//                            itemResult[num].info3,
+//                            itemResult[num].info4,
+//                            itemResult[num].info5,
+//                            itemResult[num].info6,
+//                            itemResult[num].number,
+//                            itemResult[num].date,
+//                            itemResult[num].type,
+//                            itemResult[num].memo
+//                        ))
+//                    }
+//                }
+//
+//                if (today?.date == day) {
+//
+//                    val itemListCarousel = ArrayList<BookListDataBest>()
+//                    val itemResultCarousel = bestDao?.bestDao()?.getWeek(day.toString())
+//
+//                    for (numCarousel in 0..8) {
+//
+//                        if(itemResultCarousel != null){
+//                            itemListCarousel.add(BookListDataBest(
+//                                itemResultCarousel[numCarousel].writer,
+//                                itemResultCarousel[numCarousel].title,
+//                                itemResultCarousel[numCarousel].bookImg,
+//                                itemResultCarousel[numCarousel].bookCode,
+//                                itemResultCarousel[numCarousel].info1,
+//                                itemResultCarousel[numCarousel].info2,
+//                                itemResultCarousel[numCarousel].info3,
+//                                itemResultCarousel[numCarousel].info4,
+//                                itemResultCarousel[numCarousel].info5,
+//                                itemResultCarousel[numCarousel].info6,
+//                                itemResultCarousel[numCarousel].number,
+//                                itemResultCarousel[numCarousel].date,
+//                                itemResultCarousel[numCarousel].type,
+//                                itemResultCarousel[numCarousel].memo
+//                            ))
+//                        }
+//
+//                        if (itemResultCarousel != null) {
+//                            binding.llayoutCarousel.visibility = View.VISIBLE
+//                        }
+//                    }
+//
+//                    arrayCarousel.addAll(itemListCarousel)
+//                }
+//
+//                itemWeek.add(itemList)
+//            }
+//        }
+//
+//        binding.blank.root.visibility = View.GONE
+//        binding.rviewBest.visibility = View.VISIBLE
+//        adapter?.notifyDataSetChanged()
+//
+//        if (arrayCarousel.size > 0) {
+//            with(binding) {
+////                carousel.pageCount = arrayCarousel.size
+////                carousel.slideInterval = 4000
+//                binding.llayoutCarousel.visibility = View.VISIBLE
+//            }
+//        } else {
+//            binding.llayoutCarousel.visibility = View.GONE
+//        }
+//
+//        binding.blank.root.visibility = View.GONE
+//        binding.llayoutWrap.visibility = View.VISIBLE
+//        adapter?.notifyDataSetChanged()
+//    }
 }

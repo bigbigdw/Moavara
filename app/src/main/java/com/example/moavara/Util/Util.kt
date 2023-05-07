@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.moavara.Search.BookListDataBestMonthNum
 import com.example.moavara.Search.TrophyInfo
 import com.google.firebase.database.DataSnapshot
-import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -35,20 +34,23 @@ object DBDate {
 
     fun DateMMDDHHMMSS(): String {
         val currentTime: Date = Calendar.getInstance().time
-        val format = SimpleDateFormat("MMddHHmmss")
-        return format.format(currentTime).toString()
+//        val format = SimpleDateFormat("MMddHHmmss")
+//        return format.format(currentTime).toString()
+        return currentTime.toString()
     }
 
     fun DateMMDDHHMM(): String {
         val currentTime: Date = Calendar.getInstance().time
-        val format = SimpleDateFormat("YYYYMMddHHmm")
-        return format.format(currentTime).toString()
+//        val format = SimpleDateFormat("YYYYMMddHHmm")
+//        return format.format(currentTime).toString()
+        return currentTime.toString()
     }
 
     fun DateMMDD(): String {
         val currentTime: Date = Calendar.getInstance().time
-        val format = SimpleDateFormat("YYYYMMdd")
-        return format.format(currentTime).toString()
+//        val format = SimpleDateFormat("YYYYMMdd")
+//        return format.format(currentTime).toString()
+        return currentTime.toString()
     }
 
     fun Month(): String {
@@ -60,50 +62,50 @@ object DBDate {
     }
 
     fun getDayInt(date : String) : Int?{
-        val parse_date: Date?
-        val dateFormat1 = SimpleDateFormat("yyyyMMdd")
-
-        try {
-            parse_date = dateFormat1.parse(date)
-
-            val cal = Calendar.getInstance()
-            if (parse_date != null) {
-                cal.time = parse_date
-            }
-
-            return cal[Calendar.DAY_OF_WEEK]
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+//        val parse_date: Date?
+//        val dateFormat1 = SimpleDateFormat("yyyyMMdd")
+//
+//        try {
+//            parse_date = dateFormat1.parse(date)
+//
+//            val cal = Calendar.getInstance()
+//            if (parse_date != null) {
+//                cal.time = parse_date
+//            }
+//
+//            return cal[Calendar.DAY_OF_WEEK]
+//
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
 
         return null
     }
 
     fun getDateData(date : String) : TrophyInfo?{
-        val parse_date: Date?
-        val dateFormat1 = SimpleDateFormat("yyyyMMdd")
-
-        try {
-            parse_date = dateFormat1.parse(date)
-
-            val cal = Calendar.getInstance()
-            cal.time = parse_date
-            val month = cal[Calendar.MONTH]
-
-            val weekmonth = cal[Calendar.WEEK_OF_MONTH]
-
-            val day = cal[Calendar.DAY_OF_WEEK]
-
-            return TrophyInfo(
-                month,
-                weekmonth,
-                day
-            )
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+//        val parse_date: Date?
+//        val dateFormat1 = SimpleDateFormat("yyyyMMdd")
+//
+//        try {
+//            parse_date = dateFormat1.parse(date)
+//
+//            val cal = Calendar.getInstance()
+//            cal.time = parse_date
+//            val month = cal[Calendar.MONTH]
+//
+//            val weekmonth = cal[Calendar.WEEK_OF_MONTH]
+//
+//            val day = cal[Calendar.DAY_OF_WEEK]
+//
+//            return TrophyInfo(
+//                month,
+//                weekmonth,
+//                day
+//            )
+//
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
 
         return null
     }

@@ -1,87 +1,44 @@
 package com.example.moavara.Main
 
-import android.app.Activity
-import android.content.Intent
+
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.widget.Toast
-import androidx.room.Room
-import com.example.moavara.DataBase.DBBest
-import com.example.moavara.DataBase.DBUser
-import com.example.moavara.DataBase.DataBaseUser
-import com.example.moavara.Firebase.FCM
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.lifecycleScope
 import com.example.moavara.R
-import com.example.moavara.Util.BestRef
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 
 val mRootRef = FirebaseDatabase.getInstance().reference
+//@AndroidEntryPoint
+class ActivitySplash : ComponentActivity() {
 
-class ActivitySplash : Activity() {
-    var userDao: DBUser? = null
-    var UserInfo : DataBaseUser? = null
+    private val mainViewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
+//        setContentView(R.layout.activity_splash)
 
-        val fcm = Intent(applicationContext, FCM::class.java)
-        startService(fcm)
+        mainViewModel.sideEffects
+            .onEach { Toast.makeText(this@ActivitySplash, it, Toast.LENGTH_SHORT).show() }
+            .launchIn(lifecycleScope)
 
-        userDao = Room.databaseBuilder(
-            this,
-            DBUser::class.java,
-            "UserInfo"
-        ).allowMainThreadQueries().build()
-
-        if(userDao?.daoUser() != null){
-            UserInfo = userDao?.daoUser()?.get()
-        }
-
-        mRootRef.child("User").child(UserInfo?.UID ?: "").child("isInit").get().addOnSuccessListener {
-            if (it.value == true && !it.exists()) {
-                Toast.makeText(this@ActivitySplash, "데이터를 새로 받아오고 있습니다.", Toast.LENGTH_SHORT)
-                    .show()
-
-                mRootRef.child("User").child(UserInfo?.UID ?: "").child("isInit").setValue(false)
-
-                for(platform in BestRef.typeList()){
-                    val bestDaoToday = Room.databaseBuilder(
-                        this@ActivitySplash,
-                        DBBest::class.java,
-                        "Today_${platform}_${UserInfo?.Genre}"
-                    ).allowMainThreadQueries().build()
-
-                    val bestDaoWeek = Room.databaseBuilder(
-                        this@ActivitySplash,
-                        DBBest::class.java,
-                        "Week_${platform}_${UserInfo?.Genre}"
-                    ).allowMainThreadQueries().build()
-
-                    val bestDaoMonth = Room.databaseBuilder(
-                        this@ActivitySplash,
-                        DBBest::class.java,
-                        "Month_${platform}_${UserInfo?.Genre}"
-                    ).allowMainThreadQueries().build()
-
-                    bestDaoToday.bestDao().initAll()
-                    bestDaoWeek.bestDao().initAll()
-                    bestDaoMonth.bestDao().initAll()
+        setContent {
+            MaterialTheme {
+                Surface {
+                    MainScreen(
+                        state = mainViewModel.state.collectAsState().value,
+                        onFetchClick = { mainViewModel.fetchSplash(this@ActivitySplash) }
+                    )
                 }
             }
-        }.addOnFailureListener {}
-
-        Looper.myLooper()?.let {
-            Handler(it).postDelayed(
-                {
-                    val intent = Intent(this, ActivityLogin::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
-                    startActivityIfNeeded(intent, 0)
-                    finish()
-                },
-                2000
-            )
         }
     }
 }

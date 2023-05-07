@@ -121,20 +121,20 @@
                                 tools:text="HIHI" />
                         </LinearLayout>
 
-                        <com.synnapps.carouselview.CarouselView
-                            android:id="@+id/carousel"
-                            android:layout_width="match_parent"
-                            android:layout_height="180dp"
-                            android:background="#0D0E10"
-                            android:paddingStart="16dp"
+<!--                        <com.synnapps.carouselview.CarouselView-->
+<!--                            android:id="@+id/carousel"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="180dp"-->
+<!--                            android:background="#0D0E10"-->
+<!--                            android:paddingStart="16dp"-->
 
-                            android:paddingTop="16dp"
-                            android:paddingEnd="16dp"
-                            app:disableAutoPlayOnUserInteraction="false"
-                            app:indicatorGravity="left"
-                            app:indicatorVisibility="gone">
+<!--                            android:paddingTop="16dp"-->
+<!--                            android:paddingEnd="16dp"-->
+<!--                            app:disableAutoPlayOnUserInteraction="false"-->
+<!--                            app:indicatorGravity="left"-->
+<!--                            app:indicatorVisibility="gone">-->
 
-                        </com.synnapps.carouselview.CarouselView>
+<!--                        </com.synnapps.carouselview.CarouselView>-->
 
                     </LinearLayout>
 

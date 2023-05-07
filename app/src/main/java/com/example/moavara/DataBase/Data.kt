@@ -1,8 +1,8 @@
 package com.example.moavara.Search
 
 import com.example.moavara.Retrofit.JoaraBestChapter
-import com.github.mikephil.charting.data.BarEntry
-import com.github.mikephil.charting.data.Entry
+//import com.github.mikephil.charting.data.BarEntry
+//import com.github.mikephil.charting.data.Entry
 
 
 class BestType(
@@ -110,14 +110,14 @@ class BookListDataBestMonthNum(
     var sat: Int = 0,
 )
 
-class EventDetailData(
-    var title: String = "",
-    var imgFile: String = "",
-    var wDate: String = "",
-    var sDate: String = "",
-    var cntRead: String = "",
-    var chart: BestChart? = null
-)
+//class EventDetailData(
+//    var title: String = "",
+//    var imgFile: String = "",
+//    var wDate: String = "",
+//    var sDate: String = "",
+//    var cntRead: String = "",
+//    var chart: BestChart? = null
+//)
 
 class EventDetailDataMining(
     var date: String = "",
@@ -152,20 +152,20 @@ data class CommunityBoard(
     var date: String = ""
 )
 
-data class BestChart(
-    var dateList: MutableList<String>? = null,
-    var entryList: MutableList<BarEntry>? = null,
-    var title: String = "",
-    var color: String = ""
-)
+//data class BestChart(
+//    var dateList: MutableList<String>? = null,
+//    var entryList: MutableList<BarEntry>? = null,
+//    var title: String = "",
+//    var color: String = ""
+//)
 
-data class BestLineChart(
-    var dateList: MutableList<String>? = null,
-    var entryList: MutableList<Entry>? = null,
-    var title: String = "",
-    var color: String = "",
-    var data: ArrayList<String> = ArrayList()
-)
+//data class BestLineChart(
+//    var dateList: MutableList<String>? = null,
+//    var entryList: MutableList<Entry>? = null,
+//    var title: String = "",
+//    var color: String = "",
+//    var data: ArrayList<String> = ArrayList()
+//)
 
 data class UserInfo(
     var Nickname: String = "",

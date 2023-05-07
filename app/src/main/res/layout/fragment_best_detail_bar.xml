@@ -5,11 +5,11 @@
     android:background="#1E1E20"
     android:orientation="vertical">
 
-    <com.github.mikephil.charting.charts.HorizontalBarChart
-        android:id="@+id/barChart"
-        android:layout_marginTop="14dp"
-        android:layout_width="match_parent"
-        android:layout_height="200dp" />
+<!--    <com.github.mikephil.charting.charts.HorizontalBarChart-->
+<!--        android:id="@+id/barChart"-->
+<!--        android:layout_marginTop="14dp"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="200dp" />-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rViewChart"

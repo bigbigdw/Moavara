@@ -407,6 +407,7 @@ class ActivityGenre : AppCompatActivity() {
     }
 
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         if(mode != "USER") {
             if(binding.llayoutNickname.visibility == View.VISIBLE){
