@@ -83,42 +83,13 @@ class ActivityLogin : ComponentActivity() {
             }
 
             // 구글 로그인 버튼
-            btnLogin.setOnClickListener { googleLogin() }
+            btnLogin.setOnClickListener { viewModelLogin.googleLogin(activity = this@ActivityLogin, googleSignInClient = googleSignInClient) }
 
             // 로그인 버튼
             btnRegister.setOnClickListener {
-                auth?.signOut()
-                googleSignInClient?.signOut()
             }
         }
 
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
-
-    }
-
-    // 구글 로그인 함수
-    private fun googleLogin() {
-        val signInIntent = googleSignInClient?.signInIntent
-        if (signInIntent != null) {
-            startActivityForResult(signInIntent, RC_SIGN_IN)
-        }
-    }
-
-    private fun firebaseAuthWithGoogle(idToken: String) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        auth?.signInWithCredential(credential)
-            ?.addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithCredential:success")
-                    val user = auth?.currentUser
-                    viewModelLogin.loginSuccess(activity = this@ActivityLogin, task = task)
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w(TAG, "signInWithCredential:failure", task.exception)
-                    Toast.makeText(this, task.exception?.message, Toast.LENGTH_SHORT).show()
-                }
-            }
     }
 
     // 로그아웃하지 않을 시 자동 로그인 , 회원가입시 바로 로그인 됨
@@ -141,12 +112,17 @@ class ActivityLogin : ComponentActivity() {
                 // Google Sign In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)!!
                 Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
-                firebaseAuthWithGoogle(account.idToken!!)
+                viewModelLogin.firebaseAuthWithGoogle(auth, account.idToken!!, this@ActivityLogin)
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
                 Log.w(TAG, "Google sign in failed", e)
             }
         }
+    }
+
+    fun signOut(){
+        auth?.signOut()
+        googleSignInClient?.signOut()
     }
 
     companion object {

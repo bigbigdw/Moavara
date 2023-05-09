@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
@@ -18,9 +19,12 @@ import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Firebase.FCM
 import com.example.moavara.Search.UserInfo
 import com.example.moavara.Util.BestRef
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -33,6 +37,8 @@ import javax.inject.Inject
 class ViewModelLogin @Inject constructor() : ViewModel() {
 
     private val events = Channel<SpalshEvent>()
+    private val TAG = "GoogleActivity"
+    private val RC_SIGN_IN = 9001
 
     val state: StateFlow<SplashState> = events.receiveAsFlow()
         .runningFold(SplashState(), ::reduceState)
@@ -132,6 +138,29 @@ class ViewModelLogin @Inject constructor() : ViewModel() {
                 },
                 2000
             )
+        }
+    }
+
+    fun firebaseAuthWithGoogle(auth: FirebaseAuth?, idToken: String, activity: ComponentActivity) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        auth?.signInWithCredential(credential)
+            ?.addOnCompleteListener(activity) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    val user = auth.currentUser
+                    loginSuccess(activity = activity, task = task)
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Toast.makeText(activity, task.exception?.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
+
+    // 구글 로그인 함수
+    fun googleLogin(googleSignInClient: GoogleSignInClient?, activity: ComponentActivity) {
+        val signInIntent = googleSignInClient?.signInIntent
+        if (signInIntent != null) {
+            activity.startActivityForResult(signInIntent, RC_SIGN_IN)
         }
     }
 
