@@ -73,6 +73,12 @@
             android:noHistory="true" />
 
         <activity
+            android:name="com.example.moavara.Main.ActivityRegister"
+            android:exported="true"
+            android:label=""
+            android:noHistory="true" />
+
+        <activity
             android:name="com.example.moavara.Soon.Event.ActivityEventDetail"
             android:exported="true"
             android:label=""

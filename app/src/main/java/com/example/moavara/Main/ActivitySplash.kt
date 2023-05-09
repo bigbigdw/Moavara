@@ -39,7 +39,6 @@ class ActivitySplash : ComponentActivity() {
 
     private val viewModelSplash: ViewModelSplash by viewModels()
     private val viewModelLogin: ViewModelLogin by viewModels()
-    var task: Task<GoogleSignInAccount>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,62 +58,60 @@ class ActivitySplash : ComponentActivity() {
         setContent {
             MaterialTheme {
                 Surface {
-//                    MainScreen(
-//                        state = mainViewModel.state.collectAsState().value,
-//                        onFetchClick = { mainViewModel.fetchSplash(this@ActivitySplash) }
-//                    )
                     SplashScreen()
                 }
             }
         }
 
-        val userDao: DBUser?
-        val UserInfo: DataBaseUser?
-
-        userDao = Room.databaseBuilder(
-            this@ActivitySplash,
-            DBUser::class.java,
-            "UserInfo"
-        ).allowMainThreadQueries().build()
-
-        UserInfo = userDao.daoUser().get()
-
-        if(UserInfo != null){
-            viewModelLogin.googleLogin(googleSignInClient, this@ActivitySplash)
-        } else {
-            viewModelSplash.loadingSplash(this@ActivitySplash){ isFinish ->
-                if(isFinish){
-                    val intent = Intent(this@ActivitySplash, ActivityLogin::class.java)
-                    viewModelSplash.finishSplash(this@ActivitySplash, intent)
-                }
+        viewModelSplash.loadingSplash(this@ActivitySplash){ isFinish ->
+            if(isFinish){
+                val intent = Intent(this@ActivitySplash, ActivityLogin::class.java)
+                viewModelSplash.finishSplash(this@ActivitySplash, intent)
             }
         }
+
+//        val userDao: DBUser?
+//        val UserInfo: DataBaseUser?
+//
+//        userDao = Room.databaseBuilder(
+//            this@ActivitySplash,
+//            DBUser::class.java,
+//            "UserInfo"
+//        ).allowMainThreadQueries().build()
+//
+//        UserInfo = userDao.daoUser().get()
+//
+//        if(UserInfo != null){
+//            viewModelLogin.googleLogin(googleSignInClient, this@ActivitySplash)
+//        } else {
+//            viewModelSplash.loadingSplash(this@ActivitySplash){ isFinish ->
+//                if(isFinish){
+//                    val intent = Intent(this@ActivitySplash, ActivityLogin::class.java)
+//                    viewModelSplash.finishSplash(this@ActivitySplash, intent)
+//                }
+//            }
+//        }
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            try {
-                viewModelSplash.loadingSplash(this@ActivitySplash){ isFinish ->
-                    if(isFinish){
-                        // Google Sign In was successful, authenticate with Firebase
-                        val account = task?.getResult(ApiException::class.java)!!
-                        viewModelLogin.firebaseAuthWithGoogle(auth, account.idToken!!, this@ActivitySplash)
-                    }
-                }
-            } catch (e: ApiException) {
-                // Google Sign In failed, update UI appropriately
-                Log.w(TAG, "Google sign in failed", e)
-            }
-        }
-    }
-
-    companion object {
-        private const val TAG = "GoogleActivity"
-        private const val RC_SIGN_IN = 9001
-    }
+//    @Deprecated("Deprecated in Java")
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//
+//        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+//        if (requestCode == RC_SIGN_IN) {
+//            task = GoogleSignIn.getSignedInAccountFromIntent(data)
+//            try {
+//                viewModelSplash.loadingSplash(this@ActivitySplash){ isFinish ->
+//                    if(isFinish){
+//                        // Google Sign In was successful, authenticate with Firebase
+//                        val account = task?.getResult(ApiException::class.java)!!
+//                        viewModelLogin.firebaseAuthWithGoogle(auth, account.idToken!!, this@ActivitySplash)
+//                    }
+//                }
+//            } catch (e: ApiException) {
+//                // Google Sign In failed, update UI appropriately
+//                Log.w(TAG, "Google sign in failed", e)
+//            }
+//        }
+//    }
 }

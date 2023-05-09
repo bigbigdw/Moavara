@@ -13,6 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
@@ -35,24 +36,36 @@ fun LoginScreen(
     }
 }
 
+@Composable
+fun RegsisterScreen(
+    state: RegiserState,
+    onStep1Finish: () -> Unit,
+    onStep1Error: () -> Unit,
+    onStep2Finish: () -> Unit,
+    onStep2Error: () -> Unit,
+    getter: DataBaseUser,
+    setter: (DataBaseUser) -> Unit,
+) {
+    if(state.BeginRegister){
+        RegisterStep1(getter, setter, state, onStep1Finish, onStep1Error)
+    } else if(state.Step1Finish || state.Step2Finish){
+        RegisterStep2(getter, setter, state, onStep2Finish, onStep2Error)
+    }
+}
+
 @Preview
 @Composable
 fun PreviewEmptyScreen2(){
-    val (getter, setter) = remember { mutableStateOf(DataBaseUser()) }
-    var isStep1Finished by remember { mutableStateOf(false) }
 
-    if(isStep1Finished){
-        RegisterStep2(getter, setter, isStep1Finished)
-    } else {
-        RegisterStep1(getter, setter, isStep1Finished) { isStep1Finished = it }
-    }
 }
 
 @Composable
 fun RegisterStep2(
     getter: DataBaseUser,
     setter: (DataBaseUser) -> Unit,
-    isStep1Finished: Boolean,
+    state: RegiserState,
+    onStep2Finish: () -> Unit,
+    onStep2Error: () -> Unit,
 ) {
     Box(
         modifier = Modifier.fillMaxSize()
@@ -65,7 +78,7 @@ fun RegisterStep2(
                 .semantics { contentDescription = "Overview Screen" },
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            RegisterHead(isStep1Finished, getter)
+            RegisterHead(state, getter)
             Spacer(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -80,7 +93,8 @@ fun RegisterStep2(
                 Text(
                     text = "장르",
                     color = colorPrimary,
-                    fontSize = 18.sp
+                    fontSize = 18.sp,
+                    textDecoration = TextDecoration.Underline
                 )
                 Text(
                     text = "를 선택해주세요",
@@ -112,9 +126,9 @@ fun RegisterStep2(
                         ButtonDefaults.buttonColors(backgroundColor = colorPrimary)
                     },
                     onClick = if (getter.Genre.isEmpty()) {
-                        {  }
+                        onStep2Error
                     } else {
-                        {  }
+                        onStep2Finish
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -224,8 +238,9 @@ fun GenreButtons(
 fun RegisterStep1(
     getter: DataBaseUser,
     setter: (DataBaseUser) -> Unit,
-    isStep1Finished: Boolean,
-    isStep1FinishedCallback: (Boolean) -> Unit
+    state: RegiserState,
+    onStep1Finish: () -> Unit,
+    onStep1Error: () -> Unit
 ) {
     Box(
         modifier = Modifier.fillMaxSize()
@@ -238,7 +253,7 @@ fun RegisterStep1(
                 .semantics { contentDescription = "Overview Screen" },
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            RegisterHead(isStep1Finished, getter)
+            RegisterHead(state, getter)
             Spacer(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -279,9 +294,9 @@ fun RegisterStep1(
                         ButtonDefaults.buttonColors(backgroundColor = colorPrimary)
                     },
                     onClick = if (getter.Nickname.isEmpty()) {
-                        { }
+                        onStep1Error
                     } else {
-                        { isStep1FinishedCallback(true) }
+                        onStep1Finish
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -297,7 +312,7 @@ fun RegisterStep1(
 }
 
 @Composable
-fun RegisterHead(isStep1Finished: Boolean, getter: DataBaseUser) {
+fun RegisterHead(state: RegiserState, getter: DataBaseUser) {
     Spacer(modifier = Modifier
         .fillMaxWidth()
         .height(163.dp))
@@ -312,7 +327,7 @@ fun RegisterHead(isStep1Finished: Boolean, getter: DataBaseUser) {
         .fillMaxWidth()
         .height(8.dp))
 
-    if(!isStep1Finished){
+    if(!state.Step2Finish){
         Text(
             text = "모아바라에 오신것을 환영합니다.",
             fontSize = 14.sp,
@@ -333,7 +348,8 @@ fun RegisterHead(isStep1Finished: Boolean, getter: DataBaseUser) {
             Text(
                 text = getter.Nickname,
                 color = colorPrimary,
-                fontSize = 18.sp
+                fontSize = 18.sp,
+                textDecoration = TextDecoration.Underline
             )
             Text(
                 text = "님 환영합니다.",

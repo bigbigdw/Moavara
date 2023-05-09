@@ -146,8 +146,7 @@ class ViewModelLogin @Inject constructor() : ViewModel() {
                             )
                         )
 
-                        val intent = Intent(activity, ActivityGenre::class.java)
-                        intent.putExtra("MODE", "NEWBIE")
+                        val intent = Intent(activity, ActivityRegister::class.java)
                         intent.putExtra("UID", task.result?.user?.uid.toString())
                         intent.putExtra("EMAIL", task.result?.user?.email.toString())
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -165,7 +164,6 @@ class ViewModelLogin @Inject constructor() : ViewModel() {
                     dialogLogin.window?.setBackgroundDrawable(
                         ColorDrawable(Color.TRANSPARENT))
                     dialogLogin.show()
-
 
                 }
             }
@@ -206,8 +204,7 @@ class ViewModelLogin @Inject constructor() : ViewModel() {
                             activity.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                             activity.finish()
                         } else {
-                            val intent = Intent(activity, ActivityGenre::class.java)
-                            intent.putExtra("MODE", "NEWBIE")
+                            val intent = Intent(activity, ActivityRegister::class.java)
                             intent.putExtra("UID", user.uid)
                             intent.putExtra("EMAIL", user.email)
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
