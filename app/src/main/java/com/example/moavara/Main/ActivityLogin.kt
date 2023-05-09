@@ -1,36 +1,27 @@
 package com.example.moavara.Main
 
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.lifecycleScope
-import androidx.room.Room
 import com.example.moavara.DataBase.DBUser
-import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.R
-import com.example.moavara.Search.UserInfo
-import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.ActivityLoginBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -42,10 +33,6 @@ class ActivityLogin : ComponentActivity() {
     private var googleSignInClient: GoogleSignInClient? = null
 
     private val viewModelLogin: ViewModelLogin by viewModels()
-
-    private lateinit var binding: ActivityLoginBinding
-    var context = this
-    var userDao: DBUser? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,31 +49,17 @@ class ActivityLogin : ComponentActivity() {
             .onEach { Toast.makeText(this@ActivityLogin, it, Toast.LENGTH_SHORT).show() }
             .launchIn(lifecycleScope)
 
-        binding = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+//            loading.root.visibility = View.GONE
+//            window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
 
-        with(binding) {
-
-            loading.root.visibility = View.GONE
-            window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-
-            llayoutUpper.background = GradientDrawable().apply {
-                setColor(Color.parseColor("#121212"))
-                shape = GradientDrawable.RECTANGLE
-                cornerRadii = floatArrayOf(0f,0f,0f,0f, 50f.dpToPx(), 50f.dpToPx(), 50f.dpToPx(), 50f.dpToPx())
-            }
-
-            btnLogin.background = GradientDrawable().apply {
-                setColor(Color.parseColor("#844DF3"))
-                shape = GradientDrawable.RECTANGLE
-                cornerRadius = 100f.dpToPx()
-            }
-
-            // 구글 로그인 버튼
-            btnLogin.setOnClickListener { viewModelLogin.googleLogin(activity = this@ActivityLogin, googleSignInClient = googleSignInClient) }
-
-            // 로그인 버튼
-            btnRegister.setOnClickListener {
+        setContent {
+            MaterialTheme {
+                Surface {
+                    LoginScreen(
+                        state = viewModelLogin.state.collectAsState().value,
+                        onFetchClick = { viewModelLogin.fetchLogin( activity = this@ActivityLogin, googleSignInClient = googleSignInClient) }
+                    )
+                }
             }
         }
 

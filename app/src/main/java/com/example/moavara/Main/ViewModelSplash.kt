@@ -42,21 +42,6 @@ class ViewModelSplash @Inject constructor() : ViewModel() {
         }
     }
 
-    fun fetchSplash(activity : ComponentActivity) {
-        viewModelScope.launch {
-            events.send(SpalshEvent.Loading)
-            loadingSplash(activity) { isFinish ->
-                if(isFinish){
-//                    events.send(MainEvent.Loaded)
-                }
-            }
-            events.send(SpalshEvent.Loaded)
-            _sideEffects.send("로딩 완료")
-            val intent = Intent(activity, ActivityLogin::class.java)
-            finishSplash(activity, intent)
-        }
-    }
-
     fun loadingSplash(activity: ComponentActivity, callback : (Boolean) -> Unit){
 
         val userDao: DBUser?
