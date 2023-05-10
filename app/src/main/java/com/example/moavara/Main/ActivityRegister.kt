@@ -1,14 +1,6 @@
 package com.example.moavara.Main
 
-import android.content.Intent
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.View
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -19,15 +11,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.lifecycle.lifecycleScope
-import androidx.room.Room
-import com.example.moavara.DataBase.DBUser
 import com.example.moavara.DataBase.DataBaseUser
-import com.example.moavara.User.ActivityGuide
-import com.example.moavara.Util.Genre
-import com.example.moavara.Util.dpToPx
+import com.example.moavara.Main.Screen.RegsisterScreen
+import com.example.moavara.Main.ViewModel.ViewModelRegister
 import com.example.moavara.databinding.ActivityGenreBinding
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase

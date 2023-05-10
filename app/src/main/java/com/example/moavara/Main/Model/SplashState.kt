@@ -1,4 +1,4 @@
-package com.example.moavara.Main
+package com.example.moavara.Main.Model
 
 data class SplashState(
     val loading: Boolean = false,

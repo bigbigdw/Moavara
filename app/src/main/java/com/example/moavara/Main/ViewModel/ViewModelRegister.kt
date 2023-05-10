@@ -1,4 +1,4 @@
-package com.example.moavara.Main
+package com.example.moavara.Main.ViewModel
 
 import android.content.Intent
 import android.graphics.Color
@@ -11,6 +11,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.room.Room
 import com.example.moavara.DataBase.DBUser
 import com.example.moavara.DataBase.DataBaseUser
+import com.example.moavara.Main.*
+import com.example.moavara.Main.Model.RegiserState
 import com.example.moavara.User.ActivityGuide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -34,7 +36,7 @@ class ViewModelRegister @Inject constructor() : ViewModel() {
 
     val sideEffects = _sideEffects.receiveAsFlow()
 
-    private fun reduceState(current: RegiserState, event:RegierEvent):RegiserState{
+    private fun reduceState(current: RegiserState, event: RegierEvent): RegiserState {
         return when(event){
             RegierEvent.BeginRegister -> {
                 current.copy(BeginRegister = true, Step1Finish = false, Step2Finish = false)
@@ -206,7 +208,7 @@ class ViewModelRegister @Inject constructor() : ViewModel() {
         dialogLogin.show()
     }
 
-    fun RegisterOnbackPressed(activity: ComponentActivity, getter: DataBaseUser){
+    private fun RegisterOnbackPressed(activity: ComponentActivity, getter: DataBaseUser){
         var dialogLogin: DialogConfirm? = null
 
         val leftListener = View.OnClickListener { v: View? ->

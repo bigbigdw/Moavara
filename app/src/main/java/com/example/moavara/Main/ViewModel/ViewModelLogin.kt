@@ -1,11 +1,8 @@
-package com.example.moavara.Main
+package com.example.moavara.Main.ViewModel
 
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
@@ -13,12 +10,11 @@ import androidx.activity.ComponentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.room.Room
-import com.example.moavara.DataBase.DBBest
 import com.example.moavara.DataBase.DBUser
 import com.example.moavara.DataBase.DataBaseUser
-import com.example.moavara.Firebase.FCM
+import com.example.moavara.Main.*
+import com.example.moavara.Main.Model.LoginState
 import com.example.moavara.Search.UserInfo
-import com.example.moavara.Util.BestRef
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
@@ -36,33 +32,35 @@ import javax.inject.Inject
 
 class ViewModelLogin @Inject constructor() : ViewModel() {
 
-    private val events = Channel<SpalshEvent>()
+    private val events = Channel<LoginEvent>()
     private val RC_SIGN_IN = 9001
 
-    val state: StateFlow<SplashState> = events.receiveAsFlow()
-        .runningFold(SplashState(), ::reduceState)
-        .stateIn(viewModelScope, SharingStarted.Eagerly, SplashState())
+    val state: StateFlow<LoginState> = events.receiveAsFlow()
+        .runningFold(LoginState(), ::reduceState)
+        .stateIn(viewModelScope, SharingStarted.Eagerly, LoginState())
 
     private val _sideEffects = Channel<String>()
 
     val sideEffects = _sideEffects.receiveAsFlow()
 
-    private fun reduceState(current: SplashState, event:SpalshEvent):SplashState{
+    private fun reduceState(current: LoginState, event: LoginEvent): LoginState {
         return when(event){
-            SpalshEvent.Loading -> {
-                current.copy(loading = true)
+            LoginEvent.Loaded -> {
+                current.copy(Loaded = true)
             }
-            is SpalshEvent.Loaded -> {
-                current.copy(loading = false, init = true)
+            is LoginEvent.Register -> {
+                current.copy(Loaded = false, Register = true, MoveMain = true)
+            }
+            is LoginEvent.MoveMain -> {
+                current.copy(Loaded = false, Register = false, MoveMain = true)
             }
         }
     }
 
     fun fetchLogin(googleSignInClient: GoogleSignInClient?, activity: ComponentActivity) {
         viewModelScope.launch {
-            events.send(SpalshEvent.Loading)
+            events.send(LoginEvent.Loaded)
             googleLogin(googleSignInClient, activity)
-            events.send(SpalshEvent.Loaded)
             _sideEffects.send("로딩 완료")
         }
     }
@@ -84,7 +82,7 @@ class ViewModelLogin @Inject constructor() : ViewModel() {
     }
 
     // 구글 로그인 함수
-    fun googleLogin(googleSignInClient: GoogleSignInClient?, activity: ComponentActivity) {
+    private fun googleLogin(googleSignInClient: GoogleSignInClient?, activity: ComponentActivity) {
         val signInIntent = googleSignInClient?.signInIntent
         if (signInIntent != null) {
             activity.startActivityForResult(signInIntent, RC_SIGN_IN)
@@ -94,7 +92,7 @@ class ViewModelLogin @Inject constructor() : ViewModel() {
     private fun loginSuccess(activity: ComponentActivity, task: Task<AuthResult>){
         val user =  mRootRef.child("User").child(task.result?.user?.uid.toString())
 
-        var userDao = Room.databaseBuilder(
+        val userDao = Room.databaseBuilder(
             activity,
             DBUser::class.java,
             "UserInfo"
@@ -108,67 +106,77 @@ class ViewModelLogin @Inject constructor() : ViewModel() {
                 if (dataSnapshot.exists()) {
                     if(dataSnapshot.getValue(UserInfo::class.java) != null){
 
-                        userDao = Room.databaseBuilder(
-                            activity,
-                            DBUser::class.java,
-                            "UserInfo"
-                        ).allowMainThreadQueries().build()
-
-                        userDao.daoUser().init()
-
-                        userDao.daoUser().insert(
-                            DataBaseUser(
-                                group?.Nickname ?: "",
-                                group?.Genre ?: "",
-                                task.result?.user?.uid ?: "",
-                                task.result?.user?.email ?: ""
-                            )
-                        )
-
-                        activity.startActivity(Intent(activity, ActivityMain::class.java))
-                        activity.finish()
+                        viewModelScope.launch {
+                            events.send(LoginEvent.MoveMain)
+                            goToMain(activity, userDao, group, task)
+                            _sideEffects.send("로딩 완료")
+                        }
                     }
 
                 } else {
-
-                    val dialogLogin: DialogLogin?
-
-                    val doLogin = View.OnClickListener {
-
-                        userDao.daoUser().init()
-
-                        userDao.daoUser().insert(
-                            DataBaseUser(
-                                group?.Nickname ?: "",
-                                group?.Genre ?: "",
-                                task.result?.user?.uid ?: "",
-                                task.result?.user?.email ?: ""
-                            )
-                        )
-
-                        val intent = Intent(activity, ActivityRegister::class.java)
-                        intent.putExtra("UID", task.result?.user?.uid.toString())
-                        intent.putExtra("EMAIL", task.result?.user?.email.toString())
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        activity.startActivity(intent)
-                        activity.finish()
+                    viewModelScope.launch {
+                        events.send(LoginEvent.Register)
+                        showDialogLogin(activity, userDao, group, task)
+                        _sideEffects.send("로딩 완료")
                     }
-
-                    // 안내 팝업
-                    dialogLogin = DialogLogin(
-                        activity,
-                        doLogin
-                    )
-
-                    dialogLogin.window?.setBackgroundDrawable(
-                        ColorDrawable(Color.TRANSPARENT))
-                    dialogLogin.show()
 
                 }
             }
             override fun onCancelled(databaseError: DatabaseError) {}
         })
+    }
+
+    fun goToMain(activity: ComponentActivity, userDao: DBUser, group: UserInfo?, task: Task<AuthResult>){
+        userDao.daoUser().init()
+
+        userDao.daoUser().insert(
+            DataBaseUser(
+                group?.Nickname ?: "",
+                group?.Genre ?: "",
+                task.result?.user?.uid ?: "",
+                task.result?.user?.email ?: ""
+            )
+        )
+
+        activity.startActivity(Intent(activity, ActivityMain::class.java))
+        activity.finish()
+    }
+
+    fun showDialogLogin(activity: ComponentActivity, userDao: DBUser, group: UserInfo?, task: Task<AuthResult>){
+        val dialogLogin: DialogLogin?
+
+        val doLogin = View.OnClickListener {
+
+            userDao.daoUser().init()
+
+            userDao.daoUser().insert(
+                DataBaseUser(
+                    group?.Nickname ?: "",
+                    group?.Genre ?: "",
+                    task.result?.user?.uid ?: "",
+                    task.result?.user?.email ?: ""
+                )
+            )
+
+            val intent = Intent(activity, ActivityRegister::class.java)
+            intent.putExtra("UID", task.result?.user?.uid.toString())
+            intent.putExtra("EMAIL", task.result?.user?.email.toString())
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            activity.startActivity(intent)
+            activity.finish()
+        }
+
+        // 안내 팝업
+        dialogLogin = DialogLogin(
+            activity,
+            doLogin
+        )
+
+        dialogLogin.window?.setBackgroundDrawable(
+            ColorDrawable(Color.TRANSPARENT))
+        dialogLogin.show()
+
     }
 
     // 유저정보 넘겨주고 메인 액티비티 호출

@@ -3,33 +3,24 @@ package com.example.moavara.Main
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
-import androidx.room.Room
-import com.example.moavara.DataBase.DBUser
-import com.example.moavara.DataBase.DataBaseUser
-import com.example.moavara.Firebase.FCM
+import com.example.moavara.Main.ViewModel.ViewModelLogin
+import com.example.moavara.Main.ViewModel.ViewModelSplash
 import com.example.moavara.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 
 val mRootRef = FirebaseDatabase.getInstance().reference
 @AndroidEntryPoint
@@ -51,9 +42,9 @@ class ActivitySplash : ComponentActivity() {
         googleSignInClient = GoogleSignIn.getClient(this, gso)
         auth = Firebase.auth
 
-        viewModelSplash.sideEffects.launchIn(lifecycleScope)
-
-        viewModelLogin.sideEffects.launchIn(lifecycleScope)
+//        viewModelSplash.sideEffects.launchIn(lifecycleScope)
+//
+//        viewModelLogin.sideEffects.launchIn(lifecycleScope)
 
         setContent {
             MaterialTheme {

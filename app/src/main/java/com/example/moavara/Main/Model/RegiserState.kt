@@ -1,4 +1,4 @@
-package com.example.moavara.Main
+package com.example.moavara.Main.Model
 
 data class RegiserState(
     val BeginRegister: Boolean = true,

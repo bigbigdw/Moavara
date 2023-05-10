@@ -1,4 +1,4 @@
-package com.example.moavara.Main
+package com.example.moavara.Main.ViewModel
 
 import android.content.Intent
 import android.os.Handler
@@ -12,10 +12,11 @@ import com.example.moavara.DataBase.DBBest
 import com.example.moavara.DataBase.DBUser
 import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Firebase.FCM
+import com.example.moavara.Main.Model.SplashState
+import com.example.moavara.Main.mRootRef
 import com.example.moavara.Util.BestRef
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 //@HiltViewModel
@@ -31,7 +32,7 @@ class ViewModelSplash @Inject constructor() : ViewModel() {
 
     val sideEffects = _sideEffects.receiveAsFlow()
 
-    private fun reduceState(current: SplashState, event:SpalshEvent):SplashState{
+    private fun reduceState(current: SplashState, event: SpalshEvent): SplashState {
         return when(event){
             SpalshEvent.Loading -> {
                 current.copy(loading = true)
