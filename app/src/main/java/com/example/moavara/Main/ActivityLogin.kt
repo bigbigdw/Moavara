@@ -50,12 +50,15 @@ class ActivityLogin : ComponentActivity() {
 //            window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
 
         setContent {
-            MaterialTheme {
-                Surface {
-                    LoginScreen(
-                        state = viewModelLogin.state.collectAsState().value,
-                        onFetchClick = { viewModelLogin.fetchLogin( activity = this@ActivityLogin, googleSignInClient = googleSignInClient) }
-                    )
+            setContent {
+                MaterialTheme {
+                    Surface {
+                        CheckLoginScreen(
+                            state = viewModelLogin.state.collectAsState().value,
+                            onFetchClick = { viewModelLogin.fetchLogin(activity = this@ActivityLogin, googleSignInClient = googleSignInClient) },
+                            onFetchRegister = { viewModelLogin.moveRegiseterPage(activity = this@ActivityLogin) }
+                        )
+                    }
                 }
             }
         }
@@ -66,10 +69,9 @@ class ActivityLogin : ComponentActivity() {
     public override fun onStart() {
         super.onStart()
         if((intent.getStringExtra("MODE") ?: "GO") == "GO"){
-            viewModelLogin.moveMainPage(auth?.currentUser, this@ActivityLogin)
+//            viewModelLogin.moveMainPage(auth?.currentUser, this@ActivityLogin)
         }
     }
-
 
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

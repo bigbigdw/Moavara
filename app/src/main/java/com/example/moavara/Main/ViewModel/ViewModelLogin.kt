@@ -1,9 +1,6 @@
 package com.example.moavara.Main.ViewModel
 
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -34,6 +31,7 @@ class ViewModelLogin @Inject constructor() : ViewModel() {
 
     private val events = Channel<LoginEvent>()
     private val RC_SIGN_IN = 9001
+    private var taskValue: Task<AuthResult>? = null
 
     val state: StateFlow<LoginState> = events.receiveAsFlow()
         .runningFold(LoginState(), ::reduceState)
@@ -59,8 +57,8 @@ class ViewModelLogin @Inject constructor() : ViewModel() {
 
     fun fetchLogin(googleSignInClient: GoogleSignInClient?, activity: ComponentActivity) {
         viewModelScope.launch {
-            events.send(LoginEvent.Loaded)
             googleLogin(googleSignInClient, activity)
+            events.send(LoginEvent.Loaded)
             _sideEffects.send("로딩 완료")
         }
     }
@@ -70,6 +68,9 @@ class ViewModelLogin @Inject constructor() : ViewModel() {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth?.signInWithCredential(credential)
             ?.addOnCompleteListener(activity) { task ->
+
+                taskValue = task
+
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     val user = auth.currentUser
@@ -107,8 +108,8 @@ class ViewModelLogin @Inject constructor() : ViewModel() {
                     if(dataSnapshot.getValue(UserInfo::class.java) != null){
 
                         viewModelScope.launch {
+                            saveUserDataMovePage(activity = activity, group = group, task = task)
                             events.send(LoginEvent.MoveMain)
-                            goToMain(activity, userDao, group, task)
                             _sideEffects.send("로딩 완료")
                         }
                     }
@@ -116,7 +117,6 @@ class ViewModelLogin @Inject constructor() : ViewModel() {
                 } else {
                     viewModelScope.launch {
                         events.send(LoginEvent.Register)
-                        showDialogLogin(activity, userDao, group, task)
                         _sideEffects.send("로딩 완료")
                     }
 
@@ -126,7 +126,18 @@ class ViewModelLogin @Inject constructor() : ViewModel() {
         })
     }
 
-    fun goToMain(activity: ComponentActivity, userDao: DBUser, group: UserInfo?, task: Task<AuthResult>){
+    fun saveUserDataMovePage(
+        activity: ComponentActivity,
+        group: UserInfo?,
+        task: Task<AuthResult>
+    ){
+
+        val userDao = Room.databaseBuilder(
+            activity,
+            DBUser::class.java,
+            "UserInfo"
+        ).allowMainThreadQueries().build()
+
         userDao.daoUser().init()
 
         userDao.daoUser().insert(
@@ -142,41 +153,24 @@ class ViewModelLogin @Inject constructor() : ViewModel() {
         activity.finish()
     }
 
-    fun showDialogLogin(activity: ComponentActivity, userDao: DBUser, group: UserInfo?, task: Task<AuthResult>){
-        val dialogLogin: DialogLogin?
+    fun moveRegiseterPage(activity: ComponentActivity){
 
-        val doLogin = View.OnClickListener {
-
-            userDao.daoUser().init()
-
-            userDao.daoUser().insert(
-                DataBaseUser(
-                    group?.Nickname ?: "",
-                    group?.Genre ?: "",
-                    task.result?.user?.uid ?: "",
-                    task.result?.user?.email ?: ""
-                )
-            )
-
-            val intent = Intent(activity, ActivityRegister::class.java)
-            intent.putExtra("UID", task.result?.user?.uid.toString())
-            intent.putExtra("EMAIL", task.result?.user?.email.toString())
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            activity.startActivity(intent)
-            activity.finish()
-        }
-
-        // 안내 팝업
-        dialogLogin = DialogLogin(
+        val userDao = Room.databaseBuilder(
             activity,
-            doLogin
-        )
+            DBUser::class.java,
+            "UserInfo"
+        ).allowMainThreadQueries().build()
 
-        dialogLogin.window?.setBackgroundDrawable(
-            ColorDrawable(Color.TRANSPARENT))
-        dialogLogin.show()
+        userDao.daoUser().init()
 
+        val intent = Intent(activity, ActivityRegister::class.java)
+        intent.putExtra("MODE", "NEWBIE")
+        intent.putExtra("UID", taskValue?.result?.user?.uid.toString())
+        intent.putExtra("EMAIL", taskValue?.result?.user?.email.toString())
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        activity.startActivity(intent)
+        activity.finish()
     }
 
     // 유저정보 넘겨주고 메인 액티비티 호출

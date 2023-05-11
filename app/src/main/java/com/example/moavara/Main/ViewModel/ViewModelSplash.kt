@@ -12,6 +12,7 @@ import com.example.moavara.DataBase.DBBest
 import com.example.moavara.DataBase.DBUser
 import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Firebase.FCM
+import com.example.moavara.Main.ActivityLogin
 import com.example.moavara.Main.Model.SplashState
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.Util.BestRef
@@ -102,10 +103,11 @@ class ViewModelSplash @Inject constructor() : ViewModel() {
 
     }
 
-    fun finishSplash(activity: ComponentActivity, intent : Intent){
+    fun finishSplash(activity: ComponentActivity){
         Looper.myLooper()?.let {
             Handler(it).postDelayed(
                 {
+                    val intent = Intent(activity, ActivityLogin::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
                     activity.startActivityIfNeeded(intent, 0)
                     activity.finish()

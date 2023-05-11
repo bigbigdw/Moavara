@@ -8,7 +8,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -24,15 +23,12 @@ import com.example.moavara.theme.*
 
 
 @Composable
-fun LoginScreen(
+fun CheckLoginScreen(
     state: LoginState,
-    onFetchClick: () -> Unit
+    onFetchClick: () -> Unit,
+    onFetchRegister: () -> Unit
 ) {
-    if (!state.Loaded) {
-        LoginScreen(onFetchClick)
-    } else {
-        LoadingProgressBar()
-    }
+    LoginScreen(state, onFetchClick, onFetchRegister)
 }
 
 
@@ -40,7 +36,7 @@ fun LoginScreen(
 @Preview()
 @Composable
 fun PreviewEmptyScreen2(){
-    LoginScreen({  })
+    LoginScreen(LoginState(), {  }, { })
 }
 
 @Composable
@@ -185,15 +181,17 @@ fun EmptyScreen(onFetchClick: () -> Unit) {
 }
 
 @Composable
-fun LoginScreen(onFetchClick: () -> Unit) {
+fun LoginScreen(state: LoginState, onFetchClick: () -> Unit, onFetchRegister: () -> Unit) {
 
-    var isShow by remember { mutableStateOf(false) }
+    var isShow by remember { mutableStateOf(true) }
 
-    if (isShow) {
-        Dialog(
-            onDismissRequest = { isShow = false },
-        ) {
-            DialogLoginScreen({ isShow = false }, onFetchClick)
+    if(state.Register) {
+        if (isShow) {
+            Dialog(
+                onDismissRequest = { isShow = false },
+            ) {
+                DialogLoginScreen({ isShow = false }, onFetchRegister)
+            }
         }
     }
 
@@ -245,7 +243,7 @@ fun LoginScreen(onFetchClick: () -> Unit) {
                     .height(42.dp))
                 Button(
                     colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary),
-                    onClick = { isShow = true },
+                    onClick = onFetchClick,
                     modifier = Modifier
                         .width(260.dp)
                         .height(56.dp),
