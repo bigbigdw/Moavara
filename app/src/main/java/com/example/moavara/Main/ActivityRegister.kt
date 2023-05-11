@@ -1,18 +1,21 @@
 package com.example.moavara.Main
 
 import android.os.Bundle
+import android.os.ProxyFileDescriptorCallback
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.lifecycle.lifecycleScope
 import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Main.Screen.RegsisterScreen
+import com.example.moavara.Main.ViewModel.RegierEvent
 import com.example.moavara.Main.ViewModel.ViewModelRegister
 import com.example.moavara.databinding.ActivityGenreBinding
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -68,21 +71,6 @@ class ActivityRegister : ComponentActivity() {
             }
         }
     }
-
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        super.onBackPressed()
-//        setContent {
-//            val baseUser = DataBaseUser()
-//            baseUser.UID = UID
-//            baseUser.Email = Email
-//
-//            val (getter, _) = remember { mutableStateOf(baseUser) }
-//
-//            viewModelRegister.fetchonBackPressed(this@ActivityRegister, getter)
-//        }
-    }
-
     override fun onPause() {
         super.onPause()
 

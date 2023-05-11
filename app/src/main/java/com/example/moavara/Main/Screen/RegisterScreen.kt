@@ -24,6 +24,7 @@ import com.example.moavara.Main.DialogLoginScreen
 import com.example.moavara.Main.LoadingScreen
 import com.example.moavara.Main.Model.RegisterState
 import com.example.moavara.R
+import com.example.moavara.Util.Genre
 import com.example.moavara.theme.*
 
 @Composable
@@ -115,7 +116,7 @@ fun RegisterStep2(
         Dialog(
             onDismissRequest = { isShow = false },
         ) {
-            MoavaraAlert({ isShow = false }, onStep2Finish, getter ,"취소", "확인")
+            MoavaraAlert({ isShow = false }, onStep2Finish ,"취소", "확인", { RegisterAlert(getter) })
         }
     }
 
@@ -245,7 +246,7 @@ fun GenreButtons(
 ) {
     OutlinedButton(
         colors = ButtonDefaults.buttonColors(backgroundColor = backgroundType4),
-        onClick = { setter(DataBaseUser().copy(Nickname = getter.Nickname, Genre = "FANTASY")) },
+        onClick = { setter(DataBaseUser().copy(Nickname = getter.Nickname, Genre = "FANTASY", UID = getter.UID, Email = getter.Email))},
         modifier = Modifier
             .fillMaxWidth()
             .padding(24.dp, 0.dp)
@@ -268,7 +269,7 @@ fun GenreButtons(
 
     OutlinedButton(
         colors = ButtonDefaults.buttonColors(backgroundColor = backgroundType4),
-        onClick = { setter(DataBaseUser().copy(Nickname = getter.Nickname, Genre = "ROMANCE")) },
+        onClick = { setter(DataBaseUser().copy(Nickname = getter.Nickname, Genre = "ROMANCE", UID = getter.UID, Email = getter.Email))},
         modifier = Modifier
             .fillMaxWidth()
             .padding(24.dp, 0.dp)
@@ -291,7 +292,7 @@ fun GenreButtons(
 
     OutlinedButton(
         colors = ButtonDefaults.buttonColors(backgroundColor = backgroundType4),
-        onClick = { setter(DataBaseUser().copy(Nickname = getter.Nickname, Genre = "ALL")) },
+        onClick = { setter(DataBaseUser().copy(Nickname = getter.Nickname, Genre = "ALL", UID = getter.UID, Email = getter.Email))},
         modifier = Modifier
             .fillMaxWidth()
             .padding(24.dp, 0.dp)
@@ -314,7 +315,7 @@ fun GenreButtons(
 
     OutlinedButton(
         colors = ButtonDefaults.buttonColors(backgroundColor = backgroundType4),
-        onClick = { setter(DataBaseUser().copy(Nickname = getter.Nickname, Genre = "BL")) },
+        onClick = { setter(DataBaseUser().copy(Nickname = getter.Nickname, Genre = "BL", UID = getter.UID, Email = getter.Email))},
         modifier = Modifier
             .fillMaxWidth()
             .padding(24.dp, 0.dp)
@@ -343,7 +344,7 @@ fun RegisterStep1(
         Dialog(
             onDismissRequest = { isShow = false },
         ) {
-            MoavaraAlert({ isShow = false }, onStep1Finish, getter ,"뒤로가기", "확인")
+            MoavaraAlert({ isShow = false }, onStep1Finish, "뒤로가기", "확인", { RegisterAlert(getter) })
         }
     }
 
@@ -399,7 +400,7 @@ fun RegisterStep1(
                         .fillMaxWidth()
                         .padding(24.dp, 0.dp),
                     value = getter.Nickname,
-                    onValueChange = { setter(DataBaseUser().copy(Nickname = it)) },
+                    onValueChange = { setter(DataBaseUser().copy(Nickname = it, Genre = getter.Genre, UID = getter.UID, Email = getter.Email))},
                     label = {
                         Text(
                             text = "닉네임을 입력해 주세요",
@@ -461,7 +462,7 @@ fun RegisterStep1(
 }
 
 @Composable
-fun MoavaraAlert(isShow: () -> Unit, onFetchClick: () -> Unit, getter: DataBaseUser, btnLeft : String, btnRight : String) {
+fun MoavaraAlert(isShow: () -> Unit, onFetchClick: () -> Unit, btnLeft : String, btnRight : String, contents : @Composable ()-> Unit) {
 
     Box(
         modifier = Modifier
@@ -506,92 +507,7 @@ fun MoavaraAlert(isShow: () -> Unit, onFetchClick: () -> Unit, getter: DataBaseU
                             .fillMaxWidth()
                             .height(48.dp))
 
-                        Row(
-                            Modifier
-                                .padding(20.dp, 0.dp)
-                                .fillMaxWidth(),
-                            horizontalArrangement = Arrangement.Center,
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            Text(
-                                text = "회원정보",
-                                color = colorPrimary,
-                                fontSize = 16.sp,
-                                textDecoration = TextDecoration.Underline
-                            )
-                            Text(
-                                text = "를 확인해 주세요.",
-                                color = textColorType3,
-                                fontSize = 16.sp
-                            )
-                        }
-
-                        Spacer(modifier = Modifier
-                            .fillMaxWidth()
-                            .height(24.dp))
-
-                        Row(
-                            Modifier
-                                .padding(20.dp, 0.dp)
-                                .wrapContentSize(),
-                            horizontalArrangement = Arrangement.Start,
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            Text(
-                                text = "닉네임 : ",
-                                color = textColorType3,
-                                fontSize = 14.sp
-                            )
-                            Text(
-                                text = getter.Nickname,
-                                color = textColorType3,
-                                fontSize = 14.sp
-                            )
-                        }
-
-                        Spacer(modifier = Modifier
-                            .fillMaxWidth()
-                            .height(8.dp))
-
-                        var genre = ""
-
-                        when (getter.Genre) {
-                            "ALL" -> {
-                                genre = "장르 무관"
-                            }
-                            "FANTASY" -> {
-                                genre = "판타지"
-                            }
-                            "ROMANCE" -> {
-                                genre = "로맨스"
-                            }
-                            "BL" -> {
-                                genre = "BL"
-                            }
-                        }
-
-                        Row(
-                            Modifier
-                                .padding(20.dp, 0.dp)
-                                .wrapContentSize(),
-                            horizontalArrangement = Arrangement.Start,
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            Text(
-                                text = "선호장르 : ",
-                                color = textColorType3,
-                                fontSize = 14.sp
-                            )
-                            Text(
-                                text = genre,
-                                color = textColorType3,
-                                fontSize = 14.sp
-                            )
-                        }
-
-                        Spacer(modifier = Modifier
-                            .fillMaxWidth()
-                            .height(32.dp))
+                        contents()
 
                         Row(
                             Modifier
@@ -646,11 +562,101 @@ fun MoavaraAlert(isShow: () -> Unit, onFetchClick: () -> Unit, getter: DataBaseU
     }
 }
 
+@Composable
+fun RegisterAlert(getter: DataBaseUser){
+    Row(
+        Modifier
+            .padding(20.dp, 0.dp)
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = "회원정보",
+            color = colorPrimary,
+            fontSize = 16.sp,
+            textDecoration = TextDecoration.Underline
+        )
+        Text(
+            text = "를 확인해 주세요.",
+            color = textColorType3,
+            fontSize = 16.sp
+        )
+    }
+
+    Spacer(modifier = Modifier
+        .fillMaxWidth()
+        .height(24.dp))
+
+    Row(
+        Modifier
+            .padding(20.dp, 0.dp)
+            .wrapContentSize(),
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = "닉네임 : ",
+            color = textColorType3,
+            fontSize = 14.sp
+        )
+        Text(
+            text = getter.Nickname,
+            color = textColorType3,
+            fontSize = 14.sp
+        )
+    }
+
+    Spacer(modifier = Modifier
+        .fillMaxWidth()
+        .height(8.dp))
+
+    var genre = ""
+
+    when (getter.Genre) {
+        "ALL" -> {
+            genre = "장르 무관"
+        }
+        "FANTASY" -> {
+            genre = "판타지"
+        }
+        "ROMANCE" -> {
+            genre = "로맨스"
+        }
+        "BL" -> {
+            genre = "BL"
+        }
+    }
+
+    Row(
+        Modifier
+            .padding(20.dp, 0.dp)
+            .wrapContentSize(),
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = "선호장르 : ",
+            color = textColorType3,
+            fontSize = 14.sp
+        )
+        Text(
+            text = genre,
+            color = textColorType3,
+            fontSize = 14.sp
+        )
+    }
+
+    Spacer(modifier = Modifier
+        .fillMaxWidth()
+        .height(32.dp))
+}
+
 @Preview()
 @Composable
 fun PreviewEmptyScreen2(){
 
     val (getter, setter) = remember { mutableStateOf(DataBaseUser()) }
 
-    MoavaraAlert({  }, { }, getter,"뒤로가기", "확인")
+    MoavaraAlert({  }, { }, "뒤로가기", "확인",{})
 }

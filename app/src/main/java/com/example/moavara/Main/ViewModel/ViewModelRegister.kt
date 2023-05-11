@@ -47,6 +47,9 @@ class ViewModelRegister @Inject constructor() : ViewModel() {
             is RegierEvent.Step2Finish -> {
                 current.copy(BeginRegister = false, Step1Finish = false, Step2Finish = true)
             }
+            is RegierEvent.OnBackPressed -> {
+                current.copy(BeginRegister = false, Step1Finish = current.Step1Finish, Step2Finish = current.Step1Finish, OnBackPressed = true)
+            }
             else -> {
                 current.copy(Error = "에러!")
             }

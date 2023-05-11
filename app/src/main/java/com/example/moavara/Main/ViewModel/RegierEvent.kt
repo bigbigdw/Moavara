@@ -5,4 +5,5 @@ sealed interface RegierEvent{
     object Step1Finish: RegierEvent
     object Step2Finish: RegierEvent
     object Step1Error: RegierEvent
+    object OnBackPressed: RegierEvent
 }

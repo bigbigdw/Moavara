@@ -164,7 +164,6 @@ class ViewModelLogin @Inject constructor() : ViewModel() {
         userDao.daoUser().init()
 
         val intent = Intent(activity, ActivityRegister::class.java)
-        intent.putExtra("MODE", "NEWBIE")
         intent.putExtra("UID", taskValue?.result?.user?.uid.toString())
         intent.putExtra("EMAIL", taskValue?.result?.user?.email.toString())
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
