@@ -214,47 +214,46 @@ fun LoginScreen(state: LoginState, onFetchClick: () -> Unit, onFetchRegister: ()
                 backgroundColor = backgroundType2,
                 shape = RoundedCornerShape(0.dp, 0.dp, 25.dp, 25.dp)
             ){
-
-            }
-            Column(
-                verticalArrangement = Arrangement.Bottom,
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-
-                Image(
-                    painter = painterResource(id = R.mipmap.ic_launcher),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(72.dp)
-                        .height(72.dp)
-                )
-                Spacer(modifier = Modifier
-                    .fillMaxWidth()
-                    .height(8.dp))
-                Image(
-                    painter = painterResource(id = R.drawable.moabara_logo),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(110.dp)
-                        .height(24.dp)
-                )
-                Spacer(modifier = Modifier
-                    .fillMaxWidth()
-                    .height(42.dp))
-                Button(
-                    colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary),
-                    onClick = onFetchClick,
-                    modifier = Modifier
-                        .width(260.dp)
-                        .height(56.dp),
-                    shape = RoundedCornerShape(50.dp)
-
+                Column(
+                    verticalArrangement = Arrangement.Bottom,
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    Text(text = "Google로 로그인", textAlign = TextAlign.Center, color = textColorType3, fontSize = 16.sp, fontFamily = pretendardvariable)
+
+                    Image(
+                        painter = painterResource(id = R.mipmap.ic_launcher),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .width(72.dp)
+                            .height(72.dp)
+                    )
+                    Spacer(modifier = Modifier
+                        .fillMaxWidth()
+                        .height(8.dp))
+                    Image(
+                        painter = painterResource(id = R.drawable.moabara_logo),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .width(110.dp)
+                            .height(24.dp)
+                    )
+                    Spacer(modifier = Modifier
+                        .fillMaxWidth()
+                        .height(42.dp))
+                    Button(
+                        colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary),
+                        onClick = onFetchClick,
+                        modifier = Modifier
+                            .width(260.dp)
+                            .height(56.dp),
+                        shape = RoundedCornerShape(50.dp)
+
+                    ) {
+                        Text(text = "Google로 로그인", textAlign = TextAlign.Center, color = textColorType3, fontSize = 16.sp, fontFamily = pretendardvariable)
+                    }
+                    Spacer(modifier = Modifier
+                        .fillMaxWidth()
+                        .height(36.dp))
                 }
-                Spacer(modifier = Modifier
-                    .fillMaxWidth()
-                    .height(36.dp))
             }
         }
 

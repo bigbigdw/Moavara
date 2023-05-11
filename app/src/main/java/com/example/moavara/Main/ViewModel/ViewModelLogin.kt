@@ -202,7 +202,10 @@ class ViewModelLogin @Inject constructor() : ViewModel() {
                                 )
                             )
 
-                            activity.startActivity(Intent(activity, ActivityMain::class.java))
+                            val intent = Intent(activity, ActivityMain::class.java)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            activity.startActivity(intent)
                             activity.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                             activity.finish()
                         } else {

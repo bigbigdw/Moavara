@@ -71,15 +71,16 @@ class ActivityRegister : ComponentActivity() {
 
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
-        setContent {
-            val baseUser = DataBaseUser()
-            baseUser.UID = UID
-            baseUser.Email = Email
-
-            val (getter, _) = remember { mutableStateOf(baseUser) }
-
-            viewModelRegister.fetchonBackPressed(this@ActivityRegister, getter)
-        }
+        super.onBackPressed()
+//        setContent {
+//            val baseUser = DataBaseUser()
+//            baseUser.UID = UID
+//            baseUser.Email = Email
+//
+//            val (getter, _) = remember { mutableStateOf(baseUser) }
+//
+//            viewModelRegister.fetchonBackPressed(this@ActivityRegister, getter)
+//        }
     }
 
     override fun onPause() {

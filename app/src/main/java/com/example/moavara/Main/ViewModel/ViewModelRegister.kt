@@ -12,7 +12,7 @@ import androidx.room.Room
 import com.example.moavara.DataBase.DBUser
 import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Main.*
-import com.example.moavara.Main.Model.RegiserState
+import com.example.moavara.Main.Model.RegisterState
 import com.example.moavara.User.ActivityGuide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -28,15 +28,15 @@ class ViewModelRegister @Inject constructor() : ViewModel() {
 
     private val events = Channel<RegierEvent>()
 
-    val state: StateFlow<RegiserState> = events.receiveAsFlow()
-        .runningFold(RegiserState(), ::reduceState)
-        .stateIn(viewModelScope, SharingStarted.Eagerly, RegiserState())
+    val state: StateFlow<RegisterState> = events.receiveAsFlow()
+        .runningFold(RegisterState(), ::reduceState)
+        .stateIn(viewModelScope, SharingStarted.Eagerly, RegisterState())
 
     private val _sideEffects = Channel<String>()
 
     val sideEffects = _sideEffects.receiveAsFlow()
 
-    private fun reduceState(current: RegiserState, event: RegierEvent): RegiserState {
+    private fun reduceState(current: RegisterState, event: RegierEvent): RegisterState {
         return when(event){
             RegierEvent.BeginRegister -> {
                 current.copy(BeginRegister = true, Step1Finish = false, Step2Finish = false)
@@ -61,7 +61,9 @@ class ViewModelRegister @Inject constructor() : ViewModel() {
     }
 
     fun fetchStep1(activity: ComponentActivity, getter: DataBaseUser) {
-        nicknameConfirm(activity, getter = getter)
+        viewModelScope.launch {
+            events.send(RegierEvent.Step1Finish)
+        }
     }
 
     fun fetchonBackPressed(activity: ComponentActivity, getter: DataBaseUser) {
@@ -106,38 +108,6 @@ class ViewModelRegister @Inject constructor() : ViewModel() {
     }
 
 
-    private fun nicknameConfirm(activity: ComponentActivity, getter: DataBaseUser){
-        var dialogLogin: DialogConfirm? = null
-
-        val leftListener = View.OnClickListener {
-            dialogLogin?.dismiss()
-        }
-
-        val rightListener = View.OnClickListener {
-
-            dialogLogin?.dismiss()
-
-            viewModelScope.launch {
-                events.send(RegierEvent.Step1Finish)
-            }
-        }
-
-        // 안내 팝업
-        dialogLogin = DialogConfirm(
-            activity,
-            "",
-            "닉네임 : ${getter.Nickname}",
-            leftListener,
-            rightListener,
-            "취소",
-            "확인"
-        )
-
-        dialogLogin.window?.setBackgroundDrawable(
-            ColorDrawable(Color.TRANSPARENT))
-        dialogLogin.show()
-    }
-
     private fun genreConfirm(activity: ComponentActivity, getter: DataBaseUser){
 
         var genre = ""
@@ -160,52 +130,9 @@ class ViewModelRegister @Inject constructor() : ViewModel() {
             )
         )
 
-        when (getter.Genre) {
-            "ALL" -> {
-                genre = "장르 무관"
-            }
-            "FANTASY" -> {
-                genre = "판타지"
-            }
-            "ROMANCE" -> {
-                genre = "로맨스"
-            }
-            "BL" -> {
-                genre = "BL"
-            }
-        }
+        savePreferences(activity,"NICKNAME", getter.Nickname)
 
-        var dialogLogin: DialogConfirm? = null
-
-        val leftListener = View.OnClickListener {
-            dialogLogin?.dismiss()
-        }
-
-        val rightListener = View.OnClickListener {
-
-            savePreferences(activity,"NICKNAME", getter.Nickname)
-            val intent = Intent(activity, ActivityGuide::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            activity.startActivity(intent)
-        }
-
-        // 안내 팝업
-        dialogLogin = DialogConfirm(
-            activity,
-            "",
-            "닉네임 : " + getter.Nickname + "\n선호장르 : $genre",
-            leftListener,
-            rightListener,
-            "",
-            ""
-        )
-
-        dialogLogin.window?.setBackgroundDrawable(
-            ColorDrawable(
-                Color.TRANSPARENT)
-        )
-        dialogLogin.show()
+        gotoGuidePage(activity)
     }
 
     private fun RegisterOnbackPressed(activity: ComponentActivity, getter: DataBaseUser){
@@ -245,5 +172,13 @@ class ViewModelRegister @Inject constructor() : ViewModel() {
                 Color.TRANSPARENT)
         )
         dialogLogin.show()
+    }
+
+    private fun gotoGuidePage(activity: ComponentActivity) {
+
+        val intent = Intent(activity, ActivityGuide::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        activity.startActivity(intent)
     }
 }

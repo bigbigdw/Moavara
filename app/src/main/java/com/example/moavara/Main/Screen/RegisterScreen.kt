@@ -18,17 +18,17 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import com.example.moavara.DataBase.DataBaseUser
+import com.example.moavara.Main.DialogLoginScreen
 import com.example.moavara.Main.LoadingScreen
-import com.example.moavara.Main.LoginScreen
-import com.example.moavara.Main.Model.LoginState
-import com.example.moavara.Main.Model.RegiserState
+import com.example.moavara.Main.Model.RegisterState
 import com.example.moavara.R
 import com.example.moavara.theme.*
 
 @Composable
 fun RegsisterScreen(
-    state: RegiserState,
+    state: RegisterState,
     onStep1Finish: () -> Unit,
     onStep1Error: () -> Unit,
     onStep2Finish: () -> Unit,
@@ -45,8 +45,18 @@ fun RegsisterScreen(
     }
 }
 
+@Preview()
 @Composable
-fun RegisterHead(state: RegiserState, getter: DataBaseUser) {
+fun PreviewEmptyScreen(){
+
+    val (getter, setter) = remember { mutableStateOf(DataBaseUser()) }
+
+    RegisterStep2(getter, setter, RegisterState(), {  }, {  })
+}
+
+
+@Composable
+fun RegisterHead(state: RegisterState, getter: DataBaseUser) {
     Spacer(modifier = Modifier
         .fillMaxWidth()
         .height(163.dp))
@@ -69,10 +79,6 @@ fun RegisterHead(state: RegiserState, getter: DataBaseUser) {
             color = textColorType3,
             fontFamily = pretendardvariable
         )
-
-        Spacer(modifier = Modifier
-            .fillMaxWidth()
-            .height(8.dp))
     } else {
         Row(
             Modifier.fillMaxWidth(),
@@ -91,10 +97,6 @@ fun RegisterHead(state: RegiserState, getter: DataBaseUser) {
                 fontSize = 18.sp
             )
         }
-
-        Spacer(modifier = Modifier
-            .fillMaxWidth()
-            .height(4.dp))
     }
 }
 
@@ -102,62 +104,116 @@ fun RegisterHead(state: RegiserState, getter: DataBaseUser) {
 fun RegisterStep2(
     getter: DataBaseUser,
     setter: (DataBaseUser) -> Unit,
-    state: RegiserState,
+    state: RegisterState,
     onStep2Finish: () -> Unit,
     onStep2Error: () -> Unit,
 ) {
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Column(
-            modifier = Modifier
-                .background(color = backgroundType2)
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .semantics { contentDescription = "Overview Screen" },
-            horizontalAlignment = Alignment.CenterHorizontally
+
+    var isShow by remember { mutableStateOf(false) }
+
+    if (isShow) {
+        Dialog(
+            onDismissRequest = { isShow = false },
         ) {
-            RegisterHead(state, getter)
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(16.dp)
-            )
-            Row(
-                Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.Bottom,
-            ) {
-                Text(
-                    text = "장르",
-                    color = colorPrimary,
-                    fontSize = 18.sp,
-                    textDecoration = TextDecoration.Underline
-                )
-                Text(
-                    text = "를 선택해주세요",
-                    color = textColorType3,
-                    fontSize = 18.sp
-                )
+            MoavaraAlert({ isShow = false }, onStep2Finish, getter ,"취소", "확인")
+        }
+    }
 
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = backgroundType1)
+            .verticalScroll(rememberScrollState())
+            .semantics { contentDescription = "Overview Screen" },
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Box(
+            modifier = Modifier
+                .weight(1f),
+            contentAlignment = Alignment.BottomEnd,
+        ) {
+            Card(modifier = Modifier
+                .fillMaxSize(),
+                backgroundColor = backgroundType2,
+                shape = RoundedCornerShape(0.dp, 0.dp, 25.dp, 25.dp)
+            ){
+                Column(
+                    verticalArrangement = Arrangement.Bottom,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    RegisterHead(state, getter)
+
+                    Spacer(modifier = Modifier
+                        .fillMaxWidth()
+                        .height(16.dp))
+
+                    Row(
+                        Modifier
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.Bottom,
+                    ) {
+                        Text(
+                            text = "장르",
+                            color = colorPrimary,
+                            fontSize = 18.sp,
+                            textDecoration = TextDecoration.Underline
+                        )
+                        Text(
+                            text = "를 선택해주세요",
+                            color = textColorType3,
+                            fontSize = 18.sp
+                        )
+
+                    }
+
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(16.dp)
+                    )
+                }
             }
-
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(72.dp)
-            )
-
-            GenreButtons(getter, setter)
-
         }
 
-        Box(modifier = Modifier.fillMaxSize()) {
-            Column(modifier = Modifier
+        Box(
+            modifier = Modifier
                 .fillMaxWidth()
-                .background(color = backgroundType1)
-                .align(Alignment.BottomStart)) {
+                .background(color = backgroundType1),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                verticalArrangement = Arrangement.Bottom,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(32.dp)
+                )
+
+                GenreButtons(getter, setter)
+
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(32.dp)
+                )
+            }
+        }
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(color = backgroundType1),
+            contentAlignment = Alignment.BottomEnd
+
+        ) {
+            Column(
+                verticalArrangement = Arrangement.Bottom,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Button(
                     colors = if (getter.Genre.isEmpty()) {
                         ButtonDefaults.buttonColors(backgroundColor = backgroundType3)
@@ -167,7 +223,7 @@ fun RegisterStep2(
                     onClick = if (getter.Genre.isEmpty()) {
                         onStep2Error
                     } else {
-                        onStep2Finish
+                        {isShow = true}
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -189,12 +245,12 @@ fun GenreButtons(
 ) {
     OutlinedButton(
         colors = ButtonDefaults.buttonColors(backgroundColor = backgroundType4),
-        onClick = { setter(DataBaseUser().copy(Nickname = getter.Nickname, Genre = "FANTAGY")) },
+        onClick = { setter(DataBaseUser().copy(Nickname = getter.Nickname, Genre = "FANTASY")) },
         modifier = Modifier
             .fillMaxWidth()
             .padding(24.dp, 0.dp)
             .height(48.dp),
-        border = if(getter.Genre == "FANTAGY"){
+        border = if(getter.Genre == "FANTASY"){
             BorderStroke(width = 1.dp, color = colorPrimary)
         } else {
             null
@@ -277,55 +333,109 @@ fun GenreButtons(
 fun RegisterStep1(
     getter: DataBaseUser,
     setter: (DataBaseUser) -> Unit,
-    state: RegiserState,
+    state: RegisterState,
     onStep1Finish: () -> Unit,
     onStep1Error: () -> Unit
 ) {
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Column(
-            modifier = Modifier
-                .background(color = backgroundType2)
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .semantics { contentDescription = "Overview Screen" },
-            horizontalAlignment = Alignment.CenterHorizontally
+    var isShow by remember { mutableStateOf(false) }
+
+    if (isShow) {
+        Dialog(
+            onDismissRequest = { isShow = false },
         ) {
-            RegisterHead(state, getter)
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(57.dp)
-            )
-            TextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(24.dp, 0.dp),
-                value = getter.Nickname,
-                onValueChange = { setter(DataBaseUser().copy(Nickname = it)) },
-                label = {
-                    Text(
-                        text = "닉네임을 입력해 주세요",
-                        fontSize = 14.sp,
-                        textAlign = TextAlign.Center,
-                        color = textColorType3,
-                        fontFamily = pretendardvariable
-                    )
-                },
-                singleLine = true,
-                colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color(0),
-                    textColor = textColorType1
-                )
-            )
+            MoavaraAlert({ isShow = false }, onStep1Finish, getter ,"뒤로가기", "확인")
+        }
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = backgroundType1)
+            .verticalScroll(rememberScrollState())
+            .semantics { contentDescription = "Overview Screen" },
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Box(
+            modifier = Modifier
+                .weight(1f),
+            contentAlignment = Alignment.BottomEnd,
+        ) {
+            Card(modifier = Modifier
+                .fillMaxSize(),
+                backgroundColor = backgroundType2,
+                shape = RoundedCornerShape(0.dp, 0.dp, 25.dp, 25.dp)
+            ){
+                Column(
+                    verticalArrangement = Arrangement.Bottom,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    RegisterHead(state, getter)
+
+                    Spacer(modifier = Modifier
+                        .fillMaxWidth()
+                        .height(32.dp))
+                }
+            }
         }
 
-        Box(modifier = Modifier.fillMaxSize()) {
-            Column(modifier = Modifier
+        Box(
+            modifier = Modifier
                 .fillMaxWidth()
-                .background(color = backgroundType1)
-                .align(Alignment.BottomStart)) {
+                .background(color = backgroundType1),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                verticalArrangement = Arrangement.Bottom,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(32.dp)
+                )
+                TextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(24.dp, 0.dp),
+                    value = getter.Nickname,
+                    onValueChange = { setter(DataBaseUser().copy(Nickname = it)) },
+                    label = {
+                        Text(
+                            text = "닉네임을 입력해 주세요",
+                            fontSize = 14.sp,
+                            textAlign = TextAlign.Center,
+                            color = textColorType3,
+                            fontFamily = pretendardvariable
+                        )
+                    },
+                    singleLine = true,
+                    colors = TextFieldDefaults.textFieldColors(
+                        backgroundColor = Color(0),
+                        textColor = textColorType1
+                    )
+                )
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(32.dp)
+                )
+            }
+        }
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .background(color = backgroundType1),
+            contentAlignment = Alignment.BottomEnd
+
+        ) {
+            Column(
+                verticalArrangement = Arrangement.Bottom,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
                 Button(
                     colors = if (getter.Nickname.isEmpty()) {
                         ButtonDefaults.buttonColors(backgroundColor = backgroundType3)
@@ -335,7 +445,7 @@ fun RegisterStep1(
                     onClick = if (getter.Nickname.isEmpty()) {
                         onStep1Error
                     } else {
-                        onStep1Finish
+                        { isShow = true }
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -351,12 +461,12 @@ fun RegisterStep1(
 }
 
 @Composable
-fun MoavaraAlert(isShow: () -> Unit, onFetchClick: () -> Unit) {
-
-    var checked by remember { mutableStateOf(false) }
+fun MoavaraAlert(isShow: () -> Unit, onFetchClick: () -> Unit, getter: DataBaseUser, btnLeft : String, btnRight : String) {
 
     Box(
-        modifier = Modifier.fillMaxSize().clickable { isShow() },
+        modifier = Modifier
+            .fillMaxSize()
+            .clickable { isShow() },
         contentAlignment = Alignment.Center
     ) {
         Box(
@@ -396,55 +506,124 @@ fun MoavaraAlert(isShow: () -> Unit, onFetchClick: () -> Unit) {
                             .fillMaxWidth()
                             .height(48.dp))
 
-                        Text(
-                            modifier = Modifier.padding(20.dp, 0.dp),
-                            text = "모아바라는 (주)조아라의 사내 스터디에서 개발한 어플리케이션으로 (주)조아라의 임직원만 사용이 가능합니다. 모아바라의 데이터는 사내 자산으로 외부 유출이 불가능하며, 유출 시 법적 책임을 질 수 있습니다.",
-                            fontSize = 13.sp,
-                            textAlign = TextAlign.Left,
-                            color = textColorType3,
-                            fontFamily = pretendardvariable
-                        )
+                        Row(
+                            Modifier
+                                .padding(20.dp, 0.dp)
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Text(
+                                text = "회원정보",
+                                color = colorPrimary,
+                                fontSize = 16.sp,
+                                textDecoration = TextDecoration.Underline
+                            )
+                            Text(
+                                text = "를 확인해 주세요.",
+                                color = textColorType3,
+                                fontSize = 16.sp
+                            )
+                        }
 
+                        Spacer(modifier = Modifier
+                            .fillMaxWidth()
+                            .height(24.dp))
 
                         Row(
                             Modifier
                                 .padding(20.dp, 0.dp)
-                                .wrapContentSize()
-                                .toggleable(
-                                    value = checked,
-                                    role = Role.Checkbox,
-                                    onValueChange = { checked = !checked }
-                                ),
+                                .wrapContentSize(),
                             horizontalArrangement = Arrangement.Start,
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
-                            Checkbox(colors = CheckboxDefaults.colors(
-                                checkedColor = colorPrimary,
-                                uncheckedColor = textColorType3
-                            ), checked = checked, onCheckedChange = { checked = !checked })
-
                             Text(
-                                text = "확인했습니다",
+                                text = "닉네임 : ",
                                 color = textColorType3,
-                                fontSize = 12.sp
+                                fontSize = 14.sp
+                            )
+                            Text(
+                                text = getter.Nickname,
+                                color = textColorType3,
+                                fontSize = 14.sp
                             )
                         }
 
-                        if(!checked){
-                            Spacer(modifier = Modifier
-                                .fillMaxWidth()
-                                .height(48.dp))
-                        } else {
+                        Spacer(modifier = Modifier
+                            .fillMaxWidth()
+                            .height(8.dp))
+
+                        var genre = ""
+
+                        when (getter.Genre) {
+                            "ALL" -> {
+                                genre = "장르 무관"
+                            }
+                            "FANTASY" -> {
+                                genre = "판타지"
+                            }
+                            "ROMANCE" -> {
+                                genre = "로맨스"
+                            }
+                            "BL" -> {
+                                genre = "BL"
+                            }
+                        }
+
+                        Row(
+                            Modifier
+                                .padding(20.dp, 0.dp)
+                                .wrapContentSize(),
+                            horizontalArrangement = Arrangement.Start,
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Text(
+                                text = "선호장르 : ",
+                                color = textColorType3,
+                                fontSize = 14.sp
+                            )
+                            Text(
+                                text = genre,
+                                color = textColorType3,
+                                fontSize = 14.sp
+                            )
+                        }
+
+                        Spacer(modifier = Modifier
+                            .fillMaxWidth()
+                            .height(32.dp))
+
+                        Row(
+                            Modifier
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
                             Button(
-                                colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary),
-                                onClick = onFetchClick,
+                                colors = ButtonDefaults.buttonColors(backgroundColor = backgroundType6),
+                                onClick = { isShow() },
                                 modifier = Modifier
-                                    .fillMaxWidth()
+                                    .weight(1f)
                                     .height(48.dp),
-                                shape = RoundedCornerShape(0.dp, 0.dp, 10.dp, 10.dp)
+                                shape = RoundedCornerShape(0.dp, 0.dp, 0.dp, 10.dp)
 
                             ) {
-                                Text(text = "다음으로", textAlign = TextAlign.Center, color = textColorType3, fontSize = 16.sp, fontFamily = pretendardvariable)
+                                Text(text = btnLeft, textAlign = TextAlign.Center, color = textColorType3, fontSize = 14.sp, fontFamily = pretendardvariable)
+                            }
+
+                            Button(
+                                colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary),
+                                onClick = {
+                                    onFetchClick()
+                                    isShow()
+                                },
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .height(48.dp),
+                                shape = RoundedCornerShape(0.dp, 0.dp, 10.dp, 0.dp)
+
+                            ) {
+                                Text(text = btnRight, textAlign = TextAlign.Center, color = textColorType3, fontSize = 14.sp, fontFamily = pretendardvariable)
                             }
                         }
                     }
@@ -470,5 +649,8 @@ fun MoavaraAlert(isShow: () -> Unit, onFetchClick: () -> Unit) {
 @Preview()
 @Composable
 fun PreviewEmptyScreen2(){
-    MoavaraAlert({  }, { })
+
+    val (getter, setter) = remember { mutableStateOf(DataBaseUser()) }
+
+    MoavaraAlert({  }, { }, getter,"뒤로가기", "확인")
 }
