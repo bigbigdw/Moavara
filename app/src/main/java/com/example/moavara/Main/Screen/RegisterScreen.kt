@@ -2,21 +2,26 @@ package com.example.moavara.Main.Screen
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Main.LoadingScreen
+import com.example.moavara.Main.LoginScreen
+import com.example.moavara.Main.Model.LoginState
 import com.example.moavara.Main.Model.RegiserState
 import com.example.moavara.R
 import com.example.moavara.theme.*
@@ -343,4 +348,127 @@ fun RegisterStep1(
             }
         }
     }
+}
+
+@Composable
+fun MoavaraAlert(isShow: () -> Unit, onFetchClick: () -> Unit) {
+
+    var checked by remember { mutableStateOf(false) }
+
+    Box(
+        modifier = Modifier.fillMaxSize().clickable { isShow() },
+        contentAlignment = Alignment.Center
+    ) {
+        Box(
+            modifier = Modifier
+                .width(260.dp),
+        ) {
+            Column(
+                modifier = Modifier
+                    .width(260.dp)
+                    .wrapContentHeight(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                Spacer(modifier = Modifier
+                    .fillMaxWidth()
+                    .height(36.dp))
+
+                Card(modifier = Modifier
+                    .wrapContentSize(),
+                    backgroundColor = backgroundType5,
+                    shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp)
+                ){
+
+                    Spacer(modifier = Modifier
+                        .fillMaxWidth()
+                        .height(72.dp))
+
+                    Column(
+                        modifier = Modifier
+                            .semantics { contentDescription = "Overview Screen" },
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.Start
+                    ) {
+
+                        Spacer(modifier = Modifier
+                            .fillMaxWidth()
+                            .height(48.dp))
+
+                        Text(
+                            modifier = Modifier.padding(20.dp, 0.dp),
+                            text = "모아바라는 (주)조아라의 사내 스터디에서 개발한 어플리케이션으로 (주)조아라의 임직원만 사용이 가능합니다. 모아바라의 데이터는 사내 자산으로 외부 유출이 불가능하며, 유출 시 법적 책임을 질 수 있습니다.",
+                            fontSize = 13.sp,
+                            textAlign = TextAlign.Left,
+                            color = textColorType3,
+                            fontFamily = pretendardvariable
+                        )
+
+
+                        Row(
+                            Modifier
+                                .padding(20.dp, 0.dp)
+                                .wrapContentSize()
+                                .toggleable(
+                                    value = checked,
+                                    role = Role.Checkbox,
+                                    onValueChange = { checked = !checked }
+                                ),
+                            horizontalArrangement = Arrangement.Start,
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Checkbox(colors = CheckboxDefaults.colors(
+                                checkedColor = colorPrimary,
+                                uncheckedColor = textColorType3
+                            ), checked = checked, onCheckedChange = { checked = !checked })
+
+                            Text(
+                                text = "확인했습니다",
+                                color = textColorType3,
+                                fontSize = 12.sp
+                            )
+                        }
+
+                        if(!checked){
+                            Spacer(modifier = Modifier
+                                .fillMaxWidth()
+                                .height(48.dp))
+                        } else {
+                            Button(
+                                colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary),
+                                onClick = onFetchClick,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(48.dp),
+                                shape = RoundedCornerShape(0.dp, 0.dp, 10.dp, 10.dp)
+
+                            ) {
+                                Text(text = "다음으로", textAlign = TextAlign.Center, color = textColorType3, fontSize = 16.sp, fontFamily = pretendardvariable)
+                            }
+                        }
+                    }
+                }
+            }
+
+            Column(
+                modifier = Modifier.width(260.dp),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.moavara_logo_dialog),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .height(70.dp)
+                )
+            }
+        }
+    }
+}
+
+@Preview()
+@Composable
+fun PreviewEmptyScreen2(){
+    MoavaraAlert({  }, { })
 }

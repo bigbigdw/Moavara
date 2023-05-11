@@ -46,9 +46,6 @@ class ActivityLogin : ComponentActivity() {
             .onEach { Toast.makeText(this@ActivityLogin, it, Toast.LENGTH_SHORT).show() }
             .launchIn(lifecycleScope)
 
-//            loading.root.visibility = View.GONE
-//            window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-
         setContent {
             setContent {
                 MaterialTheme {
@@ -62,14 +59,13 @@ class ActivityLogin : ComponentActivity() {
                 }
             }
         }
-
     }
 
     // 로그아웃하지 않을 시 자동 로그인 , 회원가입시 바로 로그인 됨
     public override fun onStart() {
         super.onStart()
         if((intent.getStringExtra("MODE") ?: "GO") == "GO"){
-//            viewModelLogin.moveMainPage(auth?.currentUser, this@ActivityLogin)
+            viewModelLogin.moveMainPage(auth?.currentUser, this@ActivityLogin)
         }
     }
 
