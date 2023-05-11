@@ -16,6 +16,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.moavara.DataBase.DataBaseUser
+import com.example.moavara.Main.LoadingScreen
 import com.example.moavara.Main.Model.RegiserState
 import com.example.moavara.R
 import com.example.moavara.theme.*
@@ -34,6 +35,8 @@ fun RegsisterScreen(
         RegisterStep1(getter, setter, state, onStep1Finish, onStep1Error)
     } else if(state.Step1Finish || state.Step2Finish){
         RegisterStep2(getter, setter, state, onStep2Finish, onStep2Error)
+    } else {
+        LoadingScreen()
     }
 }
 

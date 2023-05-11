@@ -110,14 +110,14 @@ class ViewModelLogin @Inject constructor() : ViewModel() {
                         viewModelScope.launch {
                             saveUserDataMovePage(activity = activity, group = group, task = task)
                             events.send(LoginEvent.MoveMain)
-                            _sideEffects.send("로딩 완료")
+                            _sideEffects.send("LoginEvent.MoveMain")
                         }
                     }
 
                 } else {
                     viewModelScope.launch {
                         events.send(LoginEvent.Register)
-                        _sideEffects.send("로딩 완료")
+                        _sideEffects.send("LoginEvent.Register")
                     }
 
                 }
