@@ -67,7 +67,7 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name="com.example.moavara.Main.ActivityGenre"
+            android:name="com.example.moavara.User.ActivityGenre"
             android:exported="true"
             android:label=""
             android:noHistory="true" />
@@ -130,7 +130,7 @@
             android:label="" />
 
         <activity
-            android:name="com.example.moavara.Main.ActivityAdmin"
+            android:name="com.example.moavara.User.ActivityAdmin"
             android:exported="true"
             android:label=""
             android:noHistory="true" />
@@ -141,7 +141,7 @@
             android:label="" />
 
         <activity
-            android:name="com.example.moavara.User.ActivityGuide"
+            android:name="com.example.moavara.Main.ActivityGuide"
             android:exported="true"
             android:label=""
             android:noHistory="true" />

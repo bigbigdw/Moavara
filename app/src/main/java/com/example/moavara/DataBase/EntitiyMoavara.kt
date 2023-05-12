@@ -63,3 +63,8 @@ data class DataBaseUser (
 ){
     @PrimaryKey(autoGenerate = true) var id: Int = 0
 }
+
+data class GuideComponent(
+    val Img : Int = 0,
+    val Comment : String = ""
+)

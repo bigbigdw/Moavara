@@ -21,6 +21,7 @@ import com.example.moavara.Best.BottomDialogMain
 import com.example.moavara.DataBase.DBUser
 import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Firebase.*
+import com.example.moavara.Main.ActivityGuide
 import com.example.moavara.Main.ActivityLogin
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.R

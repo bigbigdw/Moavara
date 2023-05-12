@@ -1,13 +1,17 @@
 package com.example.moavara.Main
 
+import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.toggleable
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -17,9 +21,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import coil.compose.rememberAsyncImagePainter
+import com.example.moavara.DataBase.GuideComponent
 import com.example.moavara.Main.Model.LoginState
 import com.example.moavara.R
 import com.example.moavara.theme.*
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.PagerState
+import com.google.accompanist.pager.rememberPagerState
 
 
 @Composable
@@ -36,7 +46,34 @@ fun CheckLoginScreen(
 @Preview()
 @Composable
 fun PreviewEmptyScreen2(){
-    LoginScreen(LoginState(), {  }, { })
+    var guideComponent = ArrayList<GuideComponent>()
+
+    val imgList = intArrayOf(
+        R.drawable.coach_mark_img_011,
+        R.drawable.coach_mark_img_02,
+        R.drawable.coach_mark_img_03,
+        R.drawable.coach_mark_img_04,
+        R.drawable.coach_mark_img_051,
+        R.drawable.coach_mark_img_06,
+    )
+
+    val textList = arrayListOf(
+        "각 플랫폼 별로 매일 업데이트 되는 이벤트를 확인할 수 있습니다.",
+        "각 플랫폼 별로 매일의 작품 순위를 확인할 수 있습니다.",
+        "각 플랫폼 별로 매일 업데이트 되는 이벤트를 확인할 수 있습니다.",
+        "베스트/이벤트 탭에서 마이픽!한 작품, 이벤트를 확인할 수 있습니다.",
+        "플랫폼과 작품코드를 알면 원하는 작품을 빠르게 찾을 수 있어요.",
+        "각 플랫폼 별로 업데이트 되는 <조아라> 게시글을 확인해 보세요.",
+    )
+
+    for (i in 0..5) {
+        guideComponent.add(GuideComponent(
+            Img = imgList[i],
+            Comment = textList[i],
+        ))
+    }
+
+    QuesViewPagerDiagnosticResult(guideComponent, {})
 }
 
 @Composable
@@ -45,7 +82,9 @@ fun DialogLoginScreen(isShow: () -> Unit, onFetchClick: () -> Unit) {
     var checked by remember { mutableStateOf(false) }
 
     Box(
-        modifier = Modifier.fillMaxSize().clickable { isShow() },
+        modifier = Modifier
+            .fillMaxSize()
+            .clickable { isShow() },
         contentAlignment = Alignment.Center
     ) {
         Box(
@@ -354,7 +393,6 @@ fun SplashScreen() {
     ) {
         Column(
             modifier = Modifier
-                .background(color = backgroundType1)
                 .fillMaxSize()
                 .background(color = backgroundType1)
                 .verticalScroll(rememberScrollState())
@@ -416,6 +454,128 @@ fun SplashScreen() {
             Spacer(modifier = Modifier
                 .fillMaxWidth()
                 .height(60.dp))
+        }
+    }
+}
+
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+fun QuesViewPagerDiagnosticResult(data: ArrayList<GuideComponent>, moveToResult: () -> Unit) {
+
+    val pageCount = data.size
+    val pagerState = rememberPagerState()
+
+    var isEndofTest by remember { mutableStateOf(true) }
+
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = backgroundType1),
+            verticalArrangement = Arrangement.Bottom,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            HorizontalPager(count = pageCount, state = pagerState) { page ->
+
+                val (getter, setter) = remember { mutableStateOf(data.get(page)) }
+
+                Column(
+                    verticalArrangement = Arrangement.Bottom,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Box(
+                        modifier = Modifier.fillMaxWidth().padding(24.dp,0.dp),
+                        contentAlignment = Alignment.TopStart
+                    ) {
+                        Column(
+                            verticalArrangement = Arrangement.Bottom,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+
+                            Spacer(modifier = Modifier
+                                .fillMaxWidth()
+                                .height(72.dp))
+
+                            Text(
+                                text = getter.Comment,
+                                fontSize = 16.sp,
+                                textAlign = TextAlign.Center,
+                                color = textColorType3,
+                                fontFamily = pretendardvariable
+                            )
+
+                            Spacer(modifier = Modifier
+                                .fillMaxWidth()
+                                .height(16.dp))
+
+                            viewPagerIndicator(pageCount, pagerState)
+
+                        }
+                    }
+
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.BottomEnd,
+                    ) {
+                        Column(
+                            verticalArrangement = Arrangement.Bottom,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+
+                            Image(
+                                painter = painterResource(id = getter.Img),
+                                contentDescription = null,
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Bottom,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Button(
+                colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary),
+                onClick = moveToResult,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(62.dp),
+                shape = RoundedCornerShape(0.dp)
+
+            ) {
+                Text(text = "모아바라 시작하기", textAlign = TextAlign.Center, color = textColorType3, fontSize = 20.sp, fontFamily = pretendardvariable)
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+fun viewPagerIndicator(pageCount : Int, pagerState : PagerState){
+    Row(
+        Modifier
+            .height(15.dp)
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.Bottom,
+    ) {
+        repeat(pageCount) { iteration ->
+            val color = if (pagerState.currentPage == iteration) textColorType3 else Color.Transparent
+
+            Box(
+                modifier = Modifier
+                    .padding(2.dp)
+                    .clip(CircleShape)
+                    .background(color)
+                    .size(10.dp)
+                    .border(1.dp, textColorType3,  CircleShape)
+
+            )
         }
     }
 }

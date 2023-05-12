@@ -13,7 +13,7 @@ import com.example.moavara.DataBase.DBUser
 import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Main.*
 import com.example.moavara.Main.Model.RegisterState
-import com.example.moavara.User.ActivityGuide
+import com.example.moavara.Main.ActivityGuide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.analytics.ktx.analytics

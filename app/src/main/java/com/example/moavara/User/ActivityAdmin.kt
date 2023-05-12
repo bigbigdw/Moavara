@@ -1,4 +1,4 @@
-package com.example.moavara.Main
+package com.example.moavara.User
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,9 +13,9 @@ import androidx.work.*
 import com.example.moavara.DataBase.DBUser
 import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Firebase.*
+import com.example.moavara.Main.mRootRef
 import com.example.moavara.R
 import com.example.moavara.Search.ActivitySearch
-import com.example.moavara.User.ActivityUser
 import com.example.moavara.Util.ActivityTest
 import com.example.moavara.Util.Mining
 import com.example.moavara.databinding.ActivityAdminBinding

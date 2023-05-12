@@ -13,11 +13,13 @@ import com.example.moavara.DataBase.DBUser
 import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Firebase.FCM
 import com.example.moavara.Main.ActivityLogin
+import com.example.moavara.Main.ActivityMain
 import com.example.moavara.Main.Model.SplashState
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.Util.BestRef
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 //@HiltViewModel
@@ -101,6 +103,22 @@ class ViewModelSplash @Inject constructor() : ViewModel() {
             callback.invoke(true)
         }
 
+    }
+
+
+    fun fetchGuide(activity: ComponentActivity) {
+        viewModelScope.launch {
+            moveToGuide(activity = activity)
+            _sideEffects.send("LoginEvent.Loaded")
+        }
+    }
+
+    fun moveToGuide(activity: ComponentActivity){
+        val intent = Intent(activity, ActivityMain::class.java)
+        Toast.makeText(activity, "모아바라에 오신것을 환영합니다", Toast.LENGTH_SHORT).show()
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        activity.startActivity(intent)
     }
 
     fun finishSplash(activity: ComponentActivity){

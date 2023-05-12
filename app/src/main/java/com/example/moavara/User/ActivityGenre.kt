@@ -1,4 +1,4 @@
-package com.example.moavara.Main
+package com.example.moavara.User
 
 import android.content.Intent
 import android.graphics.Color
@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import com.example.moavara.DataBase.DBUser
 import com.example.moavara.DataBase.DataBaseUser
-import com.example.moavara.User.ActivityGuide
+import com.example.moavara.Main.*
 import com.example.moavara.Util.Genre
 import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.ActivityGenreBinding

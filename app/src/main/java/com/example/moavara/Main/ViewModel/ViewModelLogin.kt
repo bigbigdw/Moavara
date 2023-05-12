@@ -4,6 +4,7 @@ import android.content.Intent
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.room.Room
@@ -63,7 +64,6 @@ class ViewModelLogin @Inject constructor() : ViewModel() {
         }
     }
 
-
     fun firebaseAuthWithGoogle(auth: FirebaseAuth?, idToken: String, activity: ComponentActivity) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth?.signInWithCredential(credential)
@@ -83,7 +83,7 @@ class ViewModelLogin @Inject constructor() : ViewModel() {
     }
 
     // 구글 로그인 함수
-    private fun googleLogin(googleSignInClient: GoogleSignInClient?, activity: ComponentActivity) {
+    fun googleLogin(googleSignInClient: GoogleSignInClient?, activity: ComponentActivity) {
         val signInIntent = googleSignInClient?.signInIntent
         if (signInIntent != null) {
             activity.startActivityForResult(signInIntent, RC_SIGN_IN)

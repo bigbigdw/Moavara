@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.moavara.DataBase.DataBaseUser
-import com.example.moavara.Main.ActivityGenre
+import com.example.moavara.User.ActivityGenre
 import com.example.moavara.Util.Genre
 import com.example.moavara.Util.dpToPx
 import com.example.moavara.databinding.BottomDialogMainBinding
