@@ -5,43 +5,22 @@ import android.app.NotificationManager
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.navigation.ui.NavigationUI
 import androidx.room.Room
 import androidx.work.*
+import com.example.moavara.Best.ViewModel.ViewModelBestList
 import com.example.moavara.DataBase.DBUser
 import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Firebase.FCM
 import com.example.moavara.Firebase.FirebaseWorkManager
-import com.example.moavara.Firebase.FirebaseWorkManager.Companion.UID
-import com.example.moavara.Main.Screen.BackOnPressedRegister
 import com.example.moavara.Main.Screen.MainScreenView
-import com.example.moavara.Main.Screen.RegsisterScreen
 import com.example.moavara.Main.ViewModel.ViewModelMain
-import com.example.moavara.Main.ViewModel.ViewModelRegister
-import com.example.moavara.R
-import com.example.moavara.Search.ActivitySearch
-import com.example.moavara.User.ActivityAdmin
-import com.example.moavara.User.ActivityUser
 import com.example.moavara.Util.BackOnPressed
-import com.example.moavara.databinding.ActivityMainBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -51,6 +30,7 @@ import java.util.concurrent.TimeUnit
 class ActivityMain : ComponentActivity() {
 
     private val viewModelMain: ViewModelMain by viewModels()
+    private val viewModelBestList: ViewModelBestList by viewModels()
 
     var notificationManager: NotificationManager? = null
     var notificationBuilder: NotificationCompat.Builder? = null
@@ -65,6 +45,10 @@ class ActivityMain : ComponentActivity() {
             .onEach { Toast.makeText(this@ActivityMain, it, Toast.LENGTH_SHORT).show() }
             .launchIn(lifecycleScope)
 
+        viewModelBestList.sideEffects
+            .onEach { Toast.makeText(this@ActivityMain, it, Toast.LENGTH_SHORT).show() }
+            .launchIn(lifecycleScope)
+
         userDao = Room.databaseBuilder(
             this,
             DBUser::class.java,
@@ -76,7 +60,12 @@ class ActivityMain : ComponentActivity() {
         }
 
         setContent {
-            MainScreenView()
+            MainScreenView(
+                callbackAdmin = { viewModelMain.goToActivityAdmin(this@ActivityMain) },
+                callbackOption = { viewModelMain.goToActivityUser(this@ActivityMain) },
+                callbackSearch = { viewModelMain.goToActivitySearch(this@ActivityMain) },
+                viewModelBestList = viewModelBestList
+            )
             BackOnPressed()
         }
 

@@ -1,10 +1,15 @@
 package com.example.moavara.Main.ViewModel
 
+import android.content.Intent
 import androidx.activity.ComponentActivity
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Main.Model.StateMain
+import com.example.moavara.Search.ActivitySearch
+import com.example.moavara.User.ActivityAdmin
+import com.example.moavara.User.ActivityUser
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -47,5 +52,20 @@ class ViewModelMain @Inject constructor() : ViewModel() {
         viewModelScope.launch {
             events.send(EventMain.Best)
         }
+    }
+
+    fun goToActivityAdmin(activity: ComponentActivity){
+        val intent = Intent(activity, ActivityAdmin::class.java)
+        activity.startActivity(intent)
+    }
+
+    fun goToActivitySearch(activity: ComponentActivity){
+        val intent = Intent(activity, ActivitySearch::class.java)
+        activity.startActivity(intent)
+    }
+
+    fun goToActivityUser(activity: ComponentActivity){
+        val intent = Intent(activity, ActivityUser::class.java)
+        activity.startActivity(intent)
     }
 }

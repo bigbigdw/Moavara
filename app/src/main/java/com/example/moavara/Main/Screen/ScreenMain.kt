@@ -11,9 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -22,6 +19,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.moavara.Best.Screen.BestListScreen
+import com.example.moavara.Best.ViewModel.ViewModelBestList
 import com.example.moavara.R
 import com.example.moavara.Util.AnalysisScreen
 import com.example.moavara.Util.CalendarScreen
@@ -30,14 +29,19 @@ import com.example.moavara.Util.TimelineScreen
 import com.example.moavara.theme.*
 
 @Composable
-fun MainScreenView() {
+fun MainScreenView(
+    callbackAdmin: () -> Unit,
+    callbackOption: () -> Unit,
+    callbackSearch: () -> Unit,
+    viewModelBestList: ViewModelBestList
+) {
     val navController = rememberNavController()
     Scaffold(
-        topBar = { MainTopBar({}, {}, {}) },
+        topBar = { MainTopBar(callbackAdmin, callbackOption, callbackSearch) },
         bottomBar = { BottomNavigation(navController = navController) }
     ) {
         Box(Modifier.padding(it)){
-            NavigationGraph(navController = navController)
+            NavigationGraph(navController = navController, viewModelBestList)
         }
     }
 }
@@ -45,7 +49,10 @@ fun MainScreenView() {
 @Composable
 fun MainTopBar(callbackAdmin : () -> Unit, callbackOption : () -> Unit, callbackSearch : () -> Unit) {
     Row(
-        Modifier.fillMaxWidth().background(color = backgroundType4).padding(16.dp),
+        Modifier
+            .fillMaxWidth()
+            .background(color = backgroundType4)
+            .padding(16.dp),
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -147,10 +154,10 @@ sealed class BottomNavItem(val title: String, val iconOn: Int, val iconOff: Int,
 }
 
 @Composable
-fun NavigationGraph(navController: NavHostController) {
+fun NavigationGraph(navController: NavHostController, viewModelBestList : ViewModelBestList) {
     NavHost(navController = navController, startDestination = BottomNavItem.BEST.screenRoute) {
         composable(BottomNavItem.BEST.screenRoute) {
-            CalendarScreen()
+            BestListScreen(viewModelBestList)
         }
         composable(BottomNavItem.EVENT.screenRoute) {
             TimelineScreen()
@@ -176,7 +183,7 @@ fun DefaultPreview() {
         bottomBar = { BottomNavigation(navController = navController) }
     ) {
         Box(Modifier.padding(it)){
-            NavigationGraph(navController = navController)
+            NavigationGraph(navController = navController, ViewModelBestList())
         }
     }
 }
