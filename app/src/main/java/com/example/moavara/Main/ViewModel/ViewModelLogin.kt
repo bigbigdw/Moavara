@@ -59,7 +59,7 @@ class ViewModelLogin @Inject constructor() : ViewModel() {
         viewModelScope.launch {
             googleLogin(googleSignInClient, activity)
             events.send(LoginEvent.Loaded)
-            _sideEffects.send("로딩 완료")
+            _sideEffects.send("LoginEvent.Loaded")
         }
     }
 

@@ -1,5 +1,8 @@
 package com.example.moavara.Main.Screen
 
+import android.app.Activity
+import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.toggleable
@@ -9,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -72,7 +76,7 @@ fun RegisterHead(state: RegisterState, getter: DataBaseUser) {
         .fillMaxWidth()
         .height(8.dp))
 
-    if(!state.Step2Finish){
+    if(!state.Step1Finish){
         Text(
             text = "모아바라에 오신것을 환영합니다.",
             fontSize = 14.sp,
@@ -652,11 +656,79 @@ fun RegisterAlert(getter: DataBaseUser){
         .height(32.dp))
 }
 
+@Composable
+fun FinishAlert(){
+    Text(
+        modifier = Modifier
+            .padding(20.dp, 0.dp)
+            .fillMaxWidth(),
+        text = "안내",
+        color = colorPrimary,
+        fontSize = 16.sp,
+        textAlign = TextAlign.Center
+    )
+
+    Spacer(modifier = Modifier
+        .fillMaxWidth()
+        .height(12.dp))
+
+    Text(
+        modifier = Modifier.padding(20.dp, 0.dp),
+        text = "가입을 그만두고 로그인 화면으로 돌아가시겠습니까?",
+        color = textColorType3,
+        fontSize = 14.sp,
+        textAlign = TextAlign.Center
+    )
+    Spacer(modifier = Modifier
+        .fillMaxWidth()
+        .height(8.dp))
+
+    Spacer(modifier = Modifier
+        .fillMaxWidth()
+        .height(32.dp))
+}
+
+// 뒤로 가기 두 번 눌렀을 때 앱 종료
+@Composable
+fun BackOnPressedRegister() {
+    val context = LocalContext.current
+    var backPressedState by remember { mutableStateOf(true) }
+
+    var isShow by remember { mutableStateOf(false) }
+
+    if (isShow) {
+        MoavaraAlert({ isShow = false }, { (context as Activity).finish() }, "취소", "확인",{ FinishAlert() })
+    }
+
+    BackHandler(enabled = backPressedState) {
+        if(!backPressedState) {
+            (context as Activity).finish()
+        } else {
+            isShow = true
+        }
+    }
+}
+
+@Composable
+fun BackOnPressed() {
+    val context = LocalContext.current
+    var backPressedState by remember { mutableStateOf(true) }
+    var backPressedTime = 0L
+
+    BackHandler(enabled = backPressedState) {
+        if(System.currentTimeMillis() - backPressedTime <= 400L) {
+            // 앱 종료
+            (context as Activity).finish()
+        } else {
+            backPressedState = true
+            Toast.makeText(context, "한 번 더 누르시면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show()
+        }
+        backPressedTime = System.currentTimeMillis()
+    }
+}
+
 @Preview()
 @Composable
 fun PreviewEmptyScreen2(){
-
-    val (getter, setter) = remember { mutableStateOf(DataBaseUser()) }
-
-    MoavaraAlert({  }, { }, "뒤로가기", "확인",{})
+    MoavaraAlert({ }, { }, "뒤로가기", "확인", { FinishAlert() })
 }

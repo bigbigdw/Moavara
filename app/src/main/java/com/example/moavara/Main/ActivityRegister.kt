@@ -14,6 +14,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.lifecycle.lifecycleScope
 import com.example.moavara.DataBase.DataBaseUser
+import com.example.moavara.Main.Screen.BackOnPressed
+import com.example.moavara.Main.Screen.BackOnPressedRegister
 import com.example.moavara.Main.Screen.RegsisterScreen
 import com.example.moavara.Main.ViewModel.RegierEvent
 import com.example.moavara.Main.ViewModel.ViewModelRegister
@@ -69,6 +71,8 @@ class ActivityRegister : ComponentActivity() {
                     )
                 }
             }
+
+            BackOnPressedRegister()
         }
     }
     override fun onPause() {
