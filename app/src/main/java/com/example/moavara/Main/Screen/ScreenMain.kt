@@ -1,6 +1,8 @@
 package com.example.moavara.Main.Screen
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -11,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -20,16 +23,67 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.moavara.R
+import com.example.moavara.Util.AnalysisScreen
+import com.example.moavara.Util.CalendarScreen
+import com.example.moavara.Util.SettingsScreen
+import com.example.moavara.Util.TimelineScreen
+import com.example.moavara.theme.*
 
 @Composable
 fun MainScreenView() {
     val navController = rememberNavController()
     Scaffold(
+        topBar = { MainTopBar({}, {}, {}) },
         bottomBar = { BottomNavigation(navController = navController) }
     ) {
         Box(Modifier.padding(it)){
             NavigationGraph(navController = navController)
         }
+    }
+}
+
+@Composable
+fun MainTopBar(callbackAdmin : () -> Unit, callbackOption : () -> Unit, callbackSearch : () -> Unit) {
+    Row(
+        Modifier.fillMaxWidth().background(color = backgroundType4).padding(16.dp),
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+
+        Box(
+            modifier = Modifier.weight(1f)
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.moabara_logo),
+                contentDescription = null,
+                modifier = Modifier
+                    .width(110.dp)
+                    .height(22.dp)
+                    .clickable { callbackAdmin() }
+            )
+        }
+
+        Image(
+            painter = painterResource(id = R.drawable.ic_search_24px),
+            contentDescription = null,
+            modifier = Modifier
+                .width(22.dp)
+                .height(22.dp)
+                .clickable { callbackSearch() }
+        )
+
+        Spacer(modifier = Modifier
+            .wrapContentWidth()
+            .width(16.dp))
+
+        Image(
+            painter = painterResource(id = R.drawable.ic_settings_wt_24px),
+            contentDescription = null,
+            modifier = Modifier
+                .width(22.dp)
+                .height(22.dp)
+                .clickable { callbackOption() }
+        )
     }
 }
 
@@ -44,8 +98,8 @@ fun BottomNavigation(navController: NavHostController) {
     )
 
     BottomNavigation(
-        backgroundColor = Color.White,
-        contentColor = Color(0xFF3F414E)
+        backgroundColor = backgroundType4,
+        contentColor = backgroundType2
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
@@ -65,7 +119,7 @@ fun BottomNavigation(navController: NavHostController) {
                             .height(26.dp)
                     )
                 },
-                label = { Text( text = item.title, fontSize = 9.sp) },
+                label = { Text( text = item.title, fontSize = 13.sp, fontFamily = pretendardvariable) },
                 selected = currentRoute == item.screenRoute,
                 selectedContentColor = MaterialTheme.colors.primary,
                 unselectedContentColor = Color.Gray,
@@ -113,78 +167,16 @@ fun NavigationGraph(navController: NavHostController) {
     }
 }
 
-
-@Composable
-fun CalendarScreen() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colors.primary)
-    ) {
-        Text(
-            text = stringResource(id = R.string.text_calendar),
-            style = MaterialTheme.typography.h1,
-            textAlign = TextAlign.Center,
-            color = Color.White,
-            modifier = Modifier.align(Alignment.Center)
-        )
-    }
-}
-
-@Composable
-fun TimelineScreen() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colors.primaryVariant)
-    ) {
-        Text(
-            text = stringResource(id = R.string.text_timeline),
-            style = MaterialTheme.typography.h1,
-            textAlign = TextAlign.Center,
-            color = Color.White,
-            modifier = Modifier.align(Alignment.Center)
-        )
-    }
-}
-
-@Composable
-fun AnalysisScreen() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colors.secondary)
-    ) {
-        Text(
-            text = stringResource(id = R.string.text_analysis),
-            style = MaterialTheme.typography.h1,
-            textAlign = TextAlign.Center,
-            color = Color.White,
-            modifier = Modifier.align(Alignment.Center)
-        )
-    }
-}
-
-@Composable
-fun SettingsScreen() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colors.secondaryVariant)
-    ) {
-        Text(
-            text = stringResource(id = R.string.text_settings),
-            style = MaterialTheme.typography.h1,
-            textAlign = TextAlign.Center,
-            color = Color.White,
-            modifier = Modifier.align(Alignment.Center)
-        )
-    }
-}
-
-
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    CalendarScreen()
+    val navController = rememberNavController()
+    Scaffold(
+        topBar = { MainTopBar({}, {}, {}) },
+        bottomBar = { BottomNavigation(navController = navController) }
+    ) {
+        Box(Modifier.padding(it)){
+            NavigationGraph(navController = navController)
+        }
+    }
 }

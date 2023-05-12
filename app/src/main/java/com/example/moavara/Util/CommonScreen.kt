@@ -9,10 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Card
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,6 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
@@ -30,6 +28,73 @@ import com.example.moavara.theme.*
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 
+@Composable
+fun CalendarScreen() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colors.primary)
+    ) {
+        Text(
+            text = stringResource(id = R.string.text_calendar),
+            style = MaterialTheme.typography.h1,
+            textAlign = TextAlign.Center,
+            color = Color.White,
+            modifier = Modifier.align(Alignment.Center)
+        )
+    }
+}
+
+@Composable
+fun TimelineScreen() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colors.primaryVariant)
+    ) {
+        Text(
+            text = stringResource(id = R.string.text_timeline),
+            style = MaterialTheme.typography.h1,
+            textAlign = TextAlign.Center,
+            color = Color.White,
+            modifier = Modifier.align(Alignment.Center)
+        )
+    }
+}
+
+@Composable
+fun AnalysisScreen() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colors.secondary)
+    ) {
+        Text(
+            text = stringResource(id = R.string.text_analysis),
+            style = MaterialTheme.typography.h1,
+            textAlign = TextAlign.Center,
+            color = Color.White,
+            modifier = Modifier.align(Alignment.Center)
+        )
+    }
+}
+
+@Composable
+fun SettingsScreen() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colors.secondaryVariant)
+    ) {
+        Text(
+            text = stringResource(id = R.string.text_settings),
+            style = MaterialTheme.typography.h1,
+            textAlign = TextAlign.Center,
+            color = Color.White,
+            modifier = Modifier.align(Alignment.Center)
+        )
+    }
+}
 @Composable
 fun MoavaraAlert(isShow: () -> Unit, onFetchClick: () -> Unit, btnLeft : String, btnRight : String, contents : @Composable ()-> Unit) {
 
