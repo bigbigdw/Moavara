@@ -19,4 +19,9 @@
     <string name="Best_Weekend4">4주차</string>
     <string name="Best_Weekend5">5주차</string>
 
+    <string name="text_calendar">캘린더</string>
+    <string name="text_timeline">타임라인</string>
+    <string name="text_analysis">분석보고서</string>
+    <string name="text_settings">설정</string>
+
 </resources>

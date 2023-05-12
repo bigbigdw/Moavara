@@ -7,9 +7,19 @@ import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.core.app.NotificationCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
@@ -19,21 +29,29 @@ import com.example.moavara.DataBase.DBUser
 import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Firebase.FCM
 import com.example.moavara.Firebase.FirebaseWorkManager
+import com.example.moavara.Firebase.FirebaseWorkManager.Companion.UID
+import com.example.moavara.Main.Screen.BackOnPressedRegister
+import com.example.moavara.Main.Screen.MainScreenView
+import com.example.moavara.Main.Screen.RegsisterScreen
+import com.example.moavara.Main.ViewModel.ViewModelMain
+import com.example.moavara.Main.ViewModel.ViewModelRegister
 import com.example.moavara.R
 import com.example.moavara.Search.ActivitySearch
 import com.example.moavara.User.ActivityAdmin
 import com.example.moavara.User.ActivityUser
+import com.example.moavara.Util.BackOnPressed
 import com.example.moavara.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.messaging.FirebaseMessaging
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import java.util.concurrent.TimeUnit
 
 
-class ActivityMain : AppCompatActivity() {
-    var navController: NavController? = null
+class ActivityMain : ComponentActivity() {
 
-    var status = ""
-    private lateinit var binding: ActivityMainBinding
+    private val viewModelMain: ViewModelMain by viewModels()
+
     var notificationManager: NotificationManager? = null
     var notificationBuilder: NotificationCompat.Builder? = null
 
@@ -42,8 +60,10 @@ class ActivityMain : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+
+        viewModelMain.sideEffects
+            .onEach { Toast.makeText(this@ActivityMain, it, Toast.LENGTH_SHORT).show() }
+            .launchIn(lifecycleScope)
 
         userDao = Room.databaseBuilder(
             this,
@@ -55,25 +75,10 @@ class ActivityMain : AppCompatActivity() {
             UserInfo = userDao?.daoUser()?.get()
         }
 
-        val toolbar = findViewById<Toolbar>(com.example.moavara.R.id.toolbar)
-        setSupportActionBar(toolbar)
-
-        navController = Navigation.findNavController(this, R.id.navHostFragmentMain)
-
-        toolbar.setOnClickListener {
-//            if(UserInfo?.UID == "BW2mZVCzMxeUDN5z65MX6ZZ2tgD3"){
-//                val intent = Intent(this@ActivityMain, ActivityAdmin::class.java)
-//                startActivity(intent)
-//            }
-
-            val intent = Intent(this@ActivityMain, ActivityAdmin::class.java)
-            startActivity(intent)
+        setContent {
+            MainScreenView()
+            BackOnPressed()
         }
-
-        val navView = findViewById<BottomNavigationView>(R.id.nav_bottom)
-        NavigationUI.setupWithNavController(navView, navController!!)
-
-        navView.itemIconTintList = null
 
         setPersonalFCM()
         registNotification()
@@ -169,29 +174,4 @@ class ActivityMain : AppCompatActivity() {
 
         }.addOnFailureListener {}
     }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // 클릭된 메뉴 아이템의 아이디 마다 when 구절로 클릭시 동작을 설정한다.
-        when (item.itemId) {
-            R.id.ActivitySearch -> {
-                val intent = Intent(this, ActivitySearch::class.java)
-                startActivity(intent)
-            }
-            R.id.ActivityUser -> {
-                val intent = Intent(this, ActivityUser::class.java)
-                startActivity(intent)
-            }
-            android.R.id.home -> {
-                finish()
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
 }

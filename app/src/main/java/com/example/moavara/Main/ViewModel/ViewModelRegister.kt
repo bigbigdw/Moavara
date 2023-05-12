@@ -12,7 +12,7 @@ import androidx.room.Room
 import com.example.moavara.DataBase.DBUser
 import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Main.*
-import com.example.moavara.Main.Model.RegisterState
+import com.example.moavara.Main.Model.StateRegister
 import com.example.moavara.Main.ActivityGuide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -26,28 +26,28 @@ import javax.inject.Inject
 
 class ViewModelRegister @Inject constructor() : ViewModel() {
 
-    private val events = Channel<RegierEvent>()
+    private val events = Channel<EventRegier>()
 
-    val state: StateFlow<RegisterState> = events.receiveAsFlow()
-        .runningFold(RegisterState(), ::reduceState)
-        .stateIn(viewModelScope, SharingStarted.Eagerly, RegisterState())
+    val state: StateFlow<StateRegister> = events.receiveAsFlow()
+        .runningFold(StateRegister(), ::reduceState)
+        .stateIn(viewModelScope, SharingStarted.Eagerly, StateRegister())
 
     private val _sideEffects = Channel<String>()
 
     val sideEffects = _sideEffects.receiveAsFlow()
 
-    private fun reduceState(current: RegisterState, event: RegierEvent): RegisterState {
+    private fun reduceState(current: StateRegister, event: EventRegier): StateRegister {
         return when(event){
-            RegierEvent.BeginRegister -> {
+            EventRegier.BeginRegister -> {
                 current.copy(BeginRegister = true, Step1Finish = false, Step2Finish = false)
             }
-            RegierEvent.Step1Finish -> {
+            EventRegier.Step1Finish -> {
                 current.copy(BeginRegister = false, Step1Finish = true, Step2Finish = false)
             }
-            is RegierEvent.Step2Finish -> {
+            is EventRegier.Step2Finish -> {
                 current.copy(BeginRegister = false, Step1Finish = false, Step2Finish = true)
             }
-            is RegierEvent.OnBackPressed -> {
+            is EventRegier.OnBackPressed -> {
                 current.copy(BeginRegister = false, Step1Finish = current.Step1Finish, Step2Finish = current.Step1Finish, OnBackPressed = true)
             }
             else -> {
@@ -65,31 +65,31 @@ class ViewModelRegister @Inject constructor() : ViewModel() {
 
     fun fetchStep1(activity: ComponentActivity, getter: DataBaseUser) {
         viewModelScope.launch {
-            events.send(RegierEvent.Step1Finish)
+            events.send(EventRegier.Step1Finish)
         }
     }
 
     fun fetchonBackPressed(activity: ComponentActivity, getter: DataBaseUser) {
         viewModelScope.launch {
             if(state.value.Step2Finish){
-                events.send(RegierEvent.Step1Finish)
+                events.send(EventRegier.Step1Finish)
             } else if(state.value.Step1Finish){
                 RegisterOnbackPressed(activity,getter)
-                events.send(RegierEvent.BeginRegister)
+                events.send(EventRegier.BeginRegister)
             }
         }
     }
 
     fun fetchStep1Error() {
         viewModelScope.launch {
-            events.send(RegierEvent.Step1Error)
+            events.send(EventRegier.Step1Error)
             _sideEffects.send("닉네임을 설정해 주세요")
         }
     }
 
     fun fetchStep2Error() {
         viewModelScope.launch {
-            events.send(RegierEvent.Step1Error)
+            events.send(EventRegier.Step1Error)
             _sideEffects.send("장르를 선택해 주세요")
         }
     }
@@ -105,7 +105,7 @@ class ViewModelRegister @Inject constructor() : ViewModel() {
             val bundle = Bundle()
             bundle.putString("USER_GENRE", "FANTASY")
             firebaseAnalytics.logEvent("USER_ActivityRegister", bundle)
-            events.send(RegierEvent.Step2Finish)
+            events.send(EventRegier.Step2Finish)
             genreConfirm(activity, getter = getter)
         }
     }

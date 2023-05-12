@@ -31,13 +31,9 @@ class ActivityRegister : ComponentActivity() {
 
     private lateinit var firebaseAnalytics: FirebaseAnalytics
     private val viewModelRegister: ViewModelRegister by viewModels()
-    private lateinit var binding: ActivityGenreBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        binding = ActivityGenreBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
         firebaseAnalytics = Firebase.analytics
 

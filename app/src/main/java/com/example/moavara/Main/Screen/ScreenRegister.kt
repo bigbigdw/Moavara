@@ -22,14 +22,14 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Main.LoadingScreen
-import com.example.moavara.Main.Model.RegisterState
+import com.example.moavara.Main.Model.StateRegister
 import com.example.moavara.R
 import com.example.moavara.Util.MoavaraAlert
 import com.example.moavara.theme.*
 
 @Composable
 fun RegsisterScreen(
-    state: RegisterState,
+    state: StateRegister,
     onStep1Finish: () -> Unit,
     onStep1Error: () -> Unit,
     onStep2Finish: () -> Unit,
@@ -52,12 +52,12 @@ fun PreviewEmptyScreen(){
 
     val (getter, setter) = remember { mutableStateOf(DataBaseUser()) }
 
-    RegisterStep2(getter, setter, RegisterState(), {  }, {  })
+    RegisterStep2(getter, setter, StateRegister(), {  }, {  })
 }
 
 
 @Composable
-fun RegisterHead(state: RegisterState, getter: DataBaseUser) {
+fun RegisterHead(state: StateRegister, getter: DataBaseUser) {
     Spacer(modifier = Modifier
         .fillMaxWidth()
         .height(163.dp))
@@ -105,7 +105,7 @@ fun RegisterHead(state: RegisterState, getter: DataBaseUser) {
 fun RegisterStep2(
     getter: DataBaseUser,
     setter: (DataBaseUser) -> Unit,
-    state: RegisterState,
+    state: StateRegister,
     onStep2Finish: () -> Unit,
     onStep2Error: () -> Unit,
 ) {
@@ -334,7 +334,7 @@ fun GenreButtons(
 fun RegisterStep1(
     getter: DataBaseUser,
     setter: (DataBaseUser) -> Unit,
-    state: RegisterState,
+    state: StateRegister,
     onStep1Finish: () -> Unit,
     onStep1Error: () -> Unit
 ) {

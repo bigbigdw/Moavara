@@ -4,14 +4,13 @@ import android.content.Intent
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.room.Room
 import com.example.moavara.DataBase.DBUser
 import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Main.*
-import com.example.moavara.Main.Model.LoginState
+import com.example.moavara.Main.Model.StateLogin
 import com.example.moavara.Search.UserInfo
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.tasks.Task
@@ -30,27 +29,27 @@ import javax.inject.Inject
 
 class ViewModelLogin @Inject constructor() : ViewModel() {
 
-    private val events = Channel<LoginEvent>()
+    private val events = Channel<EventLogin>()
     private val RC_SIGN_IN = 9001
     private var taskValue: Task<AuthResult>? = null
 
-    val state: StateFlow<LoginState> = events.receiveAsFlow()
-        .runningFold(LoginState(), ::reduceState)
-        .stateIn(viewModelScope, SharingStarted.Eagerly, LoginState())
+    val state: StateFlow<StateLogin> = events.receiveAsFlow()
+        .runningFold(StateLogin(), ::reduceState)
+        .stateIn(viewModelScope, SharingStarted.Eagerly, StateLogin())
 
     private val _sideEffects = Channel<String>()
 
     val sideEffects = _sideEffects.receiveAsFlow()
 
-    private fun reduceState(current: LoginState, event: LoginEvent): LoginState {
+    private fun reduceState(current: StateLogin, event: EventLogin): StateLogin {
         return when(event){
-            LoginEvent.Loaded -> {
+            EventLogin.Loaded -> {
                 current.copy(Loaded = true)
             }
-            is LoginEvent.Register -> {
+            is EventLogin.Register -> {
                 current.copy(Loaded = false, Register = true, MoveMain = true)
             }
-            is LoginEvent.MoveMain -> {
+            is EventLogin.MoveMain -> {
                 current.copy(Loaded = false, Register = false, MoveMain = true)
             }
         }
@@ -59,7 +58,7 @@ class ViewModelLogin @Inject constructor() : ViewModel() {
     fun fetchLogin(googleSignInClient: GoogleSignInClient?, activity: ComponentActivity) {
         viewModelScope.launch {
             googleLogin(googleSignInClient, activity)
-            events.send(LoginEvent.Loaded)
+            events.send(EventLogin.Loaded)
             _sideEffects.send("LoginEvent.Loaded")
         }
     }
@@ -109,14 +108,14 @@ class ViewModelLogin @Inject constructor() : ViewModel() {
 
                         viewModelScope.launch {
                             saveUserDataMovePage(activity = activity, group = group, task = task)
-                            events.send(LoginEvent.MoveMain)
+                            events.send(EventLogin.MoveMain)
                             _sideEffects.send("LoginEvent.MoveMain")
                         }
                     }
 
                 } else {
                     viewModelScope.launch {
-                        events.send(LoginEvent.Register)
+                        events.send(EventLogin.Register)
                         _sideEffects.send("LoginEvent.Register")
                     }
 

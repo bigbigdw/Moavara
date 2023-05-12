@@ -19,7 +19,6 @@ import com.example.moavara.DataBase.GuideComponent
 import com.example.moavara.Main.ActivityMain
 import com.example.moavara.Main.ViewModel.ViewModelSplash
 import com.example.moavara.R
-import com.example.moavara.databinding.ActivityGuideBinding
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 

@@ -14,7 +14,7 @@ import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Firebase.FCM
 import com.example.moavara.Main.ActivityLogin
 import com.example.moavara.Main.ActivityMain
-import com.example.moavara.Main.Model.SplashState
+import com.example.moavara.Main.Model.StateSplash
 import com.example.moavara.Main.mRootRef
 import com.example.moavara.Util.BestRef
 import kotlinx.coroutines.channels.Channel
@@ -25,22 +25,22 @@ import javax.inject.Inject
 //@HiltViewModel
 class ViewModelSplash @Inject constructor() : ViewModel() {
 
-    private val events = Channel<SpalshEvent>()
+    private val events = Channel<EventSpalsh>()
 
-    val state: StateFlow<SplashState> = events.receiveAsFlow()
-        .runningFold(SplashState(), ::reduceState)
-        .stateIn(viewModelScope, SharingStarted.Eagerly, SplashState())
+    val state: StateFlow<StateSplash> = events.receiveAsFlow()
+        .runningFold(StateSplash(), ::reduceState)
+        .stateIn(viewModelScope, SharingStarted.Eagerly, StateSplash())
 
     private val _sideEffects = Channel<String>()
 
     val sideEffects = _sideEffects.receiveAsFlow()
 
-    private fun reduceState(current: SplashState, event: SpalshEvent): SplashState {
+    private fun reduceState(current: StateSplash, event: EventSpalsh): StateSplash {
         return when(event){
-            SpalshEvent.Loading -> {
+            EventSpalsh.Loading -> {
                 current.copy(loading = true)
             }
-            is SpalshEvent.Loaded -> {
+            is EventSpalsh.Loaded -> {
                 current.copy(loading = false, init = true)
             }
         }

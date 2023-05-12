@@ -3,6 +3,7 @@ package com.example.moavara.Util
 import android.annotation.SuppressLint
 import android.content.Context
 import android.icu.text.SimpleDateFormat
+import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
 import com.example.moavara.Search.BookListDataBestMonthNum
 import com.example.moavara.Search.TrophyInfo
@@ -508,4 +509,11 @@ fun miningValue(ref: MutableMap<String?, Any>, num: Int, platform: String, genre
 
 fun miningDataValue(ref: MutableMap<String?, Any>, platform: String, genre: String) {
     BestRef.setBookInfo(platform, genre, ref["bookCode"] as String).setValue(BestRef.setBookListDataBestInfo(ref))
+}
+
+fun savePreferences(activity: ComponentActivity, key : String, value: String) {
+    val pref = activity.getSharedPreferences("pref", ComponentActivity.MODE_PRIVATE)
+    val editor = pref.edit()
+    editor.putString(key, value)
+    editor.apply()
 }
