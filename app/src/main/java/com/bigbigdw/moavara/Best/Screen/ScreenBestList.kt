@@ -20,7 +20,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
@@ -44,6 +43,12 @@ fun BestListScreen(viewModelBestList: ViewModelBestList) {
 
     val state = viewModelBestList.state.collectAsState().value
 
+    if(state.TodayInit){
+        viewModelBestList.fetchBestList(LocalContext.current)
+        viewModelBestList.fetchBestListToday("Joara", LocalContext.current)
+        viewModelBestList.fetchBestTodayDone()
+    }
+
     val tabData = listOf(
         "투데이",
         "주간",
@@ -65,12 +70,6 @@ fun BestListScreen(viewModelBestList: ViewModelBestList) {
             HorizontalPager(userScrollEnabled = false, count = tabData.size, state = pagerState, verticalAlignment = Alignment.Top) { page ->
                 Box(modifier = Modifier.fillMaxSize()){
                     if (pagerState.currentPage == 0) {
-
-                        if(state.BestTodayItem.size == 0){
-                            viewModelBestList.fetchBestList(LocalContext.current)
-                            viewModelBestList.fetchBestListToday("Joara", LocalContext.current)
-                        }
-
                         BestTodayScreen(viewModelBestList, state)
                     } else if (pagerState.currentPage == 1) {
                         LoadingScreen()
@@ -275,10 +274,4 @@ fun ItemKeyword(
             )
         }
     }
-}
-
-@Preview
-@Composable
-fun previewBest() {
-    BestListScreen(ViewModelBestList())
 }

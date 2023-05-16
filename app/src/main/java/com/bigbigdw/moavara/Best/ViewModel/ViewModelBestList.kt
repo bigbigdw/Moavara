@@ -33,8 +33,10 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
     private fun reduceState(current: StateBestList, event: EventBestList): StateBestList {
         return when(event){
             EventBestList.Today -> {
-            current.copy(Today = true)
-            } is EventBestList.Month -> {
+            current.copy(TodayInit = true)
+            } is EventBestList.TodayDone -> {
+                current.copy(TodayInit = false)
+            }  is EventBestList.Month -> {
                 current.copy(Month = true)
             } is EventBestList.Week -> {
                 current.copy(Week = true)
@@ -49,6 +51,12 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
             } else -> {
                 current.copy(Loading = true)
             }
+        }
+    }
+
+    fun fetchBestTodayDone() {
+        viewModelScope.launch {
+            events.send(EventBestList.TodayDone)
         }
     }
 
@@ -68,6 +76,7 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
     }
 
     fun fetchBestListToday(type: String, context: Context) {
+
         val bestDao = Room.databaseBuilder(
             context,
             DBBest::class.java,
@@ -84,7 +93,7 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
             events.send(EventBestList.Loading)
         }
 
-        if(bestDao.bestDao().getAll().isNullOrEmpty()){
+        if(bestDao.bestDao().getAll().isEmpty()){
             getBookListToday(bestDao, type){item, result ->
                 if(result){
                     getBestTodayList(item, bestDaoBookCode, type)
@@ -93,6 +102,7 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
         } else {
             setRoomData(bestDao, bestDaoBookCode)
         }
+
     }
 
     private fun getBookListToday(

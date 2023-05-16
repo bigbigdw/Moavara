@@ -6,6 +6,7 @@ import com.bigbigdw.moavara.Search.BookListDataBestAnalyze
 
 interface EventBestList {
     object Today : EventBestList
+    object TodayDone : EventBestList
     object Week : EventBestList
     object Month : EventBestList
     class InitBest(val initBest: DataBaseUser) : EventBestList

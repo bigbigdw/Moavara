@@ -8,7 +8,7 @@ data class StateBestList(
     val InitBest: DataBaseUser = DataBaseUser(),
     val BestTodayItem: ArrayList<BookListDataBest> = ArrayList<BookListDataBest>(),
     val BestTodayItemBookCode: ArrayList<BookListDataBestAnalyze> = ArrayList<BookListDataBestAnalyze>(),
-    val Today: Boolean = false,
+    val TodayInit: Boolean = true,
     val Week: Boolean = false,
     val Month: Boolean = false,
     val Loading: Boolean = true
