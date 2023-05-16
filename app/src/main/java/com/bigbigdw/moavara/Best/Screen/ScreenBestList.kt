@@ -5,21 +5,20 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
@@ -43,9 +42,17 @@ fun BestListScreen(viewModelBestList: ViewModelBestList) {
 
     val state = viewModelBestList.state.collectAsState().value
 
+    val (getType, setType) = remember { mutableStateOf("") }
+
     if(state.TodayInit){
         viewModelBestList.fetchBestList(LocalContext.current)
-        viewModelBestList.fetchBestListToday("Joara", LocalContext.current)
+        if(getType == ""){
+            setType("Joara")
+            viewModelBestList.fetchBestListToday("Joara", LocalContext.current)
+        } else {
+            viewModelBestList.fetchBestListToday(getType, LocalContext.current)
+        }
+
         viewModelBestList.fetchBestTodayDone()
     }
 
@@ -70,7 +77,7 @@ fun BestListScreen(viewModelBestList: ViewModelBestList) {
             HorizontalPager(userScrollEnabled = false, count = tabData.size, state = pagerState, verticalAlignment = Alignment.Top) { page ->
                 Box(modifier = Modifier.fillMaxSize()){
                     if (pagerState.currentPage == 0) {
-                        BestTodayScreen(viewModelBestList, state)
+                        BestTodayScreen(viewModelBestList, state, getType, setType)
                     } else if (pagerState.currentPage == 1) {
                         LoadingScreen()
                     } else {
@@ -83,13 +90,18 @@ fun BestListScreen(viewModelBestList: ViewModelBestList) {
 }
 
 @Composable
-fun BestTodayScreen(viewModelBestList: ViewModelBestList, state: StateBestList) {
+fun BestTodayScreen(
+    viewModelBestList: ViewModelBestList,
+    state: StateBestList,
+    getType: String,
+    setType: (String) -> Unit
+) {
 
-    val (getType, setType) = remember { mutableStateOf("Joara") }
+    val listState = rememberLazyListState()
 
     Column {
-        ListKeyword(getType, setType, viewModelBestList)
-        LazyColumn {
+        ListKeyword(getType, setType, viewModelBestList, listState)
+        LazyColumn(state = listState) {
             if (state.Loading) {
                 item { LoadingScreen() }
             } else {
@@ -109,7 +121,6 @@ fun ListBestToday(bookListDataBest: BookListDataBest, index: Int) {
         Modifier
             .fillMaxWidth()
             .padding(12.dp, 8.dp),
-        horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
 
@@ -117,22 +128,43 @@ fun ListBestToday(bookListDataBest: BookListDataBest, index: Int) {
             painter = rememberAsyncImagePainter(bookListDataBest.bookImg),
             contentDescription = null,
             contentScale = ContentScale.Crop,
-            modifier = Modifier.size(23.dp)
+            modifier = Modifier
+                .size(56.dp)
+                .clip(CircleShape)
         )
-        Spacer(modifier = Modifier.width(2.dp))
-        Text(
-            text = "${bookListDataBest.title} ${index}",
-            fontSize = 17.sp,
-            textAlign = TextAlign.Left,
-            color = textColorType3,
-            fontFamily = pretendardvariable,
-            fontWeight = FontWeight.Bold
-        )
+        Spacer(modifier = Modifier.width(4.dp))
+
+        Card(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(4.dp, 0.dp, 0.dp, 0.dp)
+                .fillMaxWidth()
+                .height(56.dp),
+            backgroundColor = backgroundType9,
+            shape = RoundedCornerShape(25.dp)
+        ) {
+
+            Text(
+                text = "${index + 1} ${bookListDataBest.title}",
+                modifier = Modifier.wrapContentHeight().padding(16.dp, 0.dp).align(Alignment.CenterVertically),
+                fontSize = 24.sp,
+                textAlign = TextAlign.Left,
+                color = textColorType6,
+                fontFamily = pretendardvariable,
+                fontWeight = FontWeight.Bold,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
     }
 }
 
 @Composable
-fun ListKeyword(getType: String, setType: (String) -> Unit, viewModelBestList: ViewModelBestList) {
+fun ListKeyword(
+    getType: String,
+    setType: (String) -> Unit,
+    viewModelBestList: ViewModelBestList,
+    listState: LazyListState
+) {
 
     val typeItems = ArrayList<BestKeyword>()
 
@@ -151,7 +183,7 @@ fun ListKeyword(getType: String, setType: (String) -> Unit, viewModelBestList: V
     ) {
         items(typeItems) { item ->
             Box(modifier = Modifier.padding(0.dp, 0.dp, 8.dp, 0.dp)){
-                ItemKeyword(getType, setType, item, viewModelBestList)
+                ItemKeyword(getType, setType, item, viewModelBestList, listState)
             }
         }
     }
@@ -231,10 +263,13 @@ fun ItemKeyword(
     getter: String,
     setter: (String) -> Unit,
     item: BestKeyword,
-    viewModelBestList: ViewModelBestList
+    viewModelBestList: ViewModelBestList,
+    listState: LazyListState
 ) {
 
     val context = LocalContext.current
+
+    val coroutineScope = rememberCoroutineScope()
 
     Card(
         modifier = if (getter == item.type) {
@@ -252,6 +287,9 @@ fun ItemKeyword(
                 .clickable {
                     setter(item.type)
                     viewModelBestList.fetchBestListToday(item.type, context)
+                    coroutineScope.launch {
+                        listState.scrollToItem(index = 0)
+                    }
                 },
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
