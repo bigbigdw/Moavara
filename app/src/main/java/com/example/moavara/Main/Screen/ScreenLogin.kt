@@ -463,8 +463,6 @@ fun QuesViewPagerDiagnosticResult(data: ArrayList<GuideComponent>, moveToResult:
     val pageCount = data.size
     val pagerState = rememberPagerState()
 
-    var isEndofTest by remember { mutableStateOf(true) }
-
     Box(
         modifier = Modifier.fillMaxSize()
     ) {

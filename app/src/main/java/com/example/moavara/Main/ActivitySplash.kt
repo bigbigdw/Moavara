@@ -81,7 +81,6 @@ class ActivitySplash : ComponentActivity() {
         } else {
             viewModelSplash.loadingSplash(this@ActivitySplash){ isFinish ->
                 if(isFinish){
-                    val intent = Intent(this@ActivitySplash, ActivityLogin::class.java)
                     viewModelSplash.finishSplash(this@ActivitySplash)
                 }
             }

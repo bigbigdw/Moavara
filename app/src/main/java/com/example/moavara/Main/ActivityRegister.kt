@@ -1,14 +1,12 @@
 package com.example.moavara.Main
 
 import android.os.Bundle
-import android.os.ProxyFileDescriptorCallback
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -17,7 +15,6 @@ import com.example.moavara.DataBase.DataBaseUser
 import com.example.moavara.Main.Screen.BackOnPressedRegister
 import com.example.moavara.Main.Screen.RegsisterScreen
 import com.example.moavara.Main.ViewModel.ViewModelRegister
-import com.example.moavara.databinding.ActivityGenreBinding
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
@@ -56,7 +53,7 @@ class ActivityRegister : ComponentActivity() {
                 Surface {
                     RegsisterScreen(
                         state = viewModelRegister.state.collectAsState().value,
-                        onStep1Finish = { viewModelRegister.fetchStep1(this@ActivityRegister, getter)  },
+                        onStep1Finish = { viewModelRegister.fetchStep1() },
                         onStep1Error = { viewModelRegister.fetchStep1Error() },
                         onStep2Finish = { viewModelRegister.fetchStep2(this@ActivityRegister, getter) },
                         onStep2Error = { viewModelRegister.fetchStep2Error()},

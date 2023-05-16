@@ -36,6 +36,7 @@ fun MainScreenView(
     viewModelBestList: ViewModelBestList
 ) {
     val navController = rememberNavController()
+
     Scaffold(
         topBar = { MainTopBar(callbackAdmin, callbackOption, callbackSearch) },
         bottomBar = { BottomNavigation(navController = navController) }
@@ -96,7 +97,7 @@ fun MainTopBar(callbackAdmin : () -> Unit, callbackOption : () -> Unit, callback
 
 @Composable
 fun BottomNavigation(navController: NavHostController) {
-    val items = listOf<BottomNavItem>(
+    val items = listOf(
         BottomNavItem.BEST,
         BottomNavItem.EVENT,
         BottomNavItem.PICK,

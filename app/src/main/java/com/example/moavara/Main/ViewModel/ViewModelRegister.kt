@@ -63,20 +63,9 @@ class ViewModelRegister @Inject constructor() : ViewModel() {
         editor.apply()
     }
 
-    fun fetchStep1(activity: ComponentActivity, getter: DataBaseUser) {
+    fun fetchStep1() {
         viewModelScope.launch {
             events.send(EventRegier.Step1Finish)
-        }
-    }
-
-    fun fetchonBackPressed(activity: ComponentActivity, getter: DataBaseUser) {
-        viewModelScope.launch {
-            if(state.value.Step2Finish){
-                events.send(EventRegier.Step1Finish)
-            } else if(state.value.Step1Finish){
-                RegisterOnbackPressed(activity,getter)
-                events.send(EventRegier.BeginRegister)
-            }
         }
     }
 
