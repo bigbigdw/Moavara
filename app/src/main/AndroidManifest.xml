@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TakeALook.NoActionBar">
         <activity
-            android:name="com.example.moavara.Main.ActivityMain"
+            android:name="com.bigbigdw.moavara.Main.ActivityMain"
             android:exported="true"
             android:label=""
             android:windowSoftInputMode="adjustResize">
@@ -26,7 +26,7 @@
         </activity>
 
         <activity
-            android:name="com.example.moavara.Util.ActivityTest"
+            android:name="com.bigbigdw.moavara.Util.ActivityTest"
             android:exported="true">
 
         </activity>
@@ -61,41 +61,41 @@
             android:noHistory="true" />
 
         <activity
-            android:name="com.example.moavara.Search.ActivitySearch"
+            android:name="com.bigbigdw.moavara.Search.ActivitySearch"
             android:exported="true"
             android:label=""
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name="com.example.moavara.User.ActivityGenre"
+            android:name="com.bigbigdw.moavara.User.ActivityGenre"
             android:exported="true"
             android:label=""
             android:noHistory="true" />
 
         <activity
-            android:name="com.example.moavara.Main.ActivityRegister"
+            android:name="com.bigbigdw.moavara.Main.ActivityRegister"
             android:exported="true"
             android:label=""
             android:noHistory="true" />
 
         <activity
-            android:name="com.example.moavara.Soon.Event.ActivityEventDetail"
+            android:name="com.bigbigdw.moavara.Soon.Event.ActivityEventDetail"
             android:exported="true"
             android:label=""
             android:noHistory="true" />
 
         <activity
-            android:name="com.example.moavara.Soon.News.ActivityNews"
+            android:name="com.bigbigdw.moavara.Soon.News.ActivityNews"
             android:exported="true"
             android:label="" />
 
         <activity
-            android:name="com.example.moavara.Soon.News.ActivityNewsWrite"
+            android:name="com.bigbigdw.moavara.Soon.News.ActivityNewsWrite"
             android:exported="true"
             android:label="" />
 
         <activity
-            android:name="com.example.moavara.Main.ActivitySplash"
+            android:name="com.bigbigdw.moavara.Main.ActivitySplash"
             android:exported="true"
             android:noHistory="true">
             <intent-filter>
@@ -125,29 +125,29 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity
-            android:name="com.example.moavara.Best.ActivityBestDetail"
+            android:name="com.bigbigdw.moavara.Best.ActivityBestDetail"
             android:exported="true"
             android:label="" />
 
         <activity
-            android:name="com.example.moavara.User.ActivityAdmin"
+            android:name="com.bigbigdw.moavara.User.ActivityAdmin"
             android:exported="true"
             android:label=""
             android:noHistory="true" />
 
         <activity
-            android:name="com.example.moavara.User.ActivityNotice"
+            android:name="com.bigbigdw.moavara.User.ActivityNotice"
             android:exported="true"
             android:label="" />
 
         <activity
-            android:name="com.example.moavara.Main.ActivityGuide"
+            android:name="com.bigbigdw.moavara.Main.ActivityGuide"
             android:exported="true"
             android:label=""
             android:noHistory="true" />
 
         <activity
-            android:name="com.example.moavara.User.ActivityUser"
+            android:name="com.bigbigdw.moavara.User.ActivityUser"
             android:exported="true"
             android:label="" />
 

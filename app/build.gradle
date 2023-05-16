@@ -12,7 +12,7 @@ android {
     compileSdkVersion 33
 
     defaultConfig {
-        applicationId "com.example.moavara"
+        applicationId "com.bigbigdw.moavara"
         minSdkVersion 26
         targetSdkVersion 33
         versionCode 100009
@@ -51,7 +51,7 @@ android {
             }
         }
     }
-    namespace 'com.example.moavara'
+    namespace 'com.bigbigdw.moavara'
 }
 
 dependencies {

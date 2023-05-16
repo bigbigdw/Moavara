@@ -7,25 +7,25 @@
 
     <fragment
         android:id="@+id/Fragment_Best"
-        android:name="com.example.moavara.Best.FragmentBest"
+        android:name="com.bigbigdw.moavara.Best.FragmentBest"
         android:label=""
         tools:layout="@layout/fragment_best" />
 
     <fragment
         android:id="@+id/Fragment_Search"
-        android:name="com.example.moavara.Search.FragmentSearchBookcode"
+        android:name="com.bigbigdw.moavara.Search.FragmentSearchBookcode"
         android:label=""
         tools:layout="@layout/fragment_search_bookcode" />
 
     <fragment
         android:id="@+id/Fragment_Pick"
-        android:name="com.example.moavara.Pick.FragmentPick"
+        android:name="com.bigbigdw.moavara.Pick.FragmentPick"
         android:label=""
         tools:layout="@layout/activity_pick" />
 
     <fragment
         android:id="@+id/Fragment_Community"
-        android:name="com.example.moavara.Community.FragmentCommunity"
+        android:name="com.bigbigdw.moavara.Community.FragmentCommunity"
         android:label=""
         tools:layout="@layout/fragment_best_tab_today" />
 
@@ -37,7 +37,7 @@
 
     <fragment
         android:id="@+id/Fragment_Event"
-        android:name="com.example.moavara.Event.FragmentEvent"
+        android:name="com.bigbigdw.moavara.Event.FragmentEvent"
         android:label=""
         tools:layout="@layout/fragment_event" />
 
