@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -22,10 +23,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberAsyncImagePainter
 import com.bigbigdw.moavara.Best.ViewModel.ViewModelBestList
 import com.bigbigdw.moavara.Best.intent.StateBestList
-import com.bigbigdw.moavara.R
 import com.bigbigdw.moavara.Search.BestKeyword
+import com.bigbigdw.moavara.Search.BookListDataBest
 import com.bigbigdw.moavara.Util.BestRef
 import com.bigbigdw.moavara.Util.LoadingScreen
 import com.bigbigdw.moavara.theme.*
@@ -54,12 +56,17 @@ fun BestListScreen(viewModelBestList: ViewModelBestList) {
     Scaffold(
         topBar = { BestHeader(tabData, pagerState, tabIndex, coroutineScope) },
     ) {
-        Box(Modifier.padding(it).fillMaxSize().background(color = backgroundType1), contentAlignment = Alignment.TopStart) {
-            HorizontalPager(count = tabData.size, state = pagerState, verticalAlignment = Alignment.Top) { page ->
+        Box(
+            Modifier
+                .padding(it)
+                .fillMaxSize()
+                .background(color = backgroundType1), contentAlignment = Alignment.TopStart) {
+
+            HorizontalPager(userScrollEnabled = false, count = tabData.size, state = pagerState, verticalAlignment = Alignment.Top) { page ->
                 Box(modifier = Modifier.fillMaxSize()){
                     if (pagerState.currentPage == 0) {
 
-                        if(state.Loading){
+                        if(state.BestTodayItem.size == 0){
                             viewModelBestList.fetchBestList(LocalContext.current)
                             viewModelBestList.fetchBestListToday("Joara", LocalContext.current)
                         }
@@ -81,21 +88,23 @@ fun BestTodayScreen(viewModelBestList: ViewModelBestList, state: StateBestList) 
 
     val (getType, setType) = remember { mutableStateOf("Joara") }
 
-    LazyColumn() {
-        item { ListKeyword(getType, setType, viewModelBestList) }
-        if (state.Loading) {
-            item { LoadingScreen() }
-        } else {
-            items(items = state.BestTodayItem){
-                ListBestToday(getType, setType, state)
+    Column {
+        ListKeyword(getType, setType, viewModelBestList)
+        LazyColumn {
+            if (state.Loading) {
+                item { LoadingScreen() }
+            } else {
+                itemsIndexed(items = state.BestTodayItem) { index, item ->
+                    ListBestToday(item, index)
+                }
             }
-        }
 
+        }
     }
 }
 
 @Composable
-fun ListBestToday(getType: String, setType: (String) -> Unit, state: StateBestList) {
+fun ListBestToday(bookListDataBest: BookListDataBest, index: Int) {
 
     Row(
         Modifier
@@ -106,14 +115,14 @@ fun ListBestToday(getType: String, setType: (String) -> Unit, state: StateBestLi
     ) {
 
         Image(
-            painter = painterResource(id = R.drawable.moabara_logo),
+            painter = rememberAsyncImagePainter(bookListDataBest.bookImg),
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier.size(23.dp)
         )
         Spacer(modifier = Modifier.width(2.dp))
         Text(
-            text = "HIHIHI",
+            text = "${bookListDataBest.title} ${index}",
             fontSize = 17.sp,
             textAlign = TextAlign.Left,
             color = textColorType3,

@@ -84,7 +84,7 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
             events.send(EventBestList.Loading)
         }
 
-        if(bestDao.bestDao().getAll().size == 0){
+        if(bestDao.bestDao().getAll().isNullOrEmpty()){
             getBookListToday(bestDao, type){item, result ->
                 if(result){
                     getBestTodayList(item, bestDaoBookCode, type)
