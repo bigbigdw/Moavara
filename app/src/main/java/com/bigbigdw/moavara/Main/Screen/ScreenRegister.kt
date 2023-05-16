@@ -21,9 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.bigbigdw.moavara.DataBase.DataBaseUser
-import com.bigbigdw.moavara.Main.LoadingScreen
 import com.bigbigdw.moavara.Main.Model.StateRegister
 import com.bigbigdw.moavara.R
+import com.bigbigdw.moavara.Util.LoadingScreen
 import com.bigbigdw.moavara.Util.MoavaraAlert
 import com.bigbigdw.moavara.theme.*
 

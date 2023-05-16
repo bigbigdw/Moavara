@@ -36,12 +36,14 @@ fun MainScreenView(
     viewModelBestList: ViewModelBestList
 ) {
     val navController = rememberNavController()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
 
     Scaffold(
         topBar = { MainTopBar(callbackAdmin, callbackOption, callbackSearch) },
-        bottomBar = { BottomNavigation(navController = navController) }
+        bottomBar = { BottomNavigation(navController = navController, currentRoute = currentRoute) }
     ) {
-        Box(Modifier.padding(it)){
+        Box(Modifier.padding(it).background(color = backgroundType1).fillMaxSize()){
             NavigationGraph(navController = navController, viewModelBestList)
         }
     }
@@ -96,7 +98,7 @@ fun MainTopBar(callbackAdmin : () -> Unit, callbackOption : () -> Unit, callback
 }
 
 @Composable
-fun BottomNavigation(navController: NavHostController) {
+fun BottomNavigation(navController: NavHostController, currentRoute: String?) {
     val items = listOf(
         BottomNavItem.BEST,
         BottomNavItem.EVENT,
@@ -109,8 +111,6 @@ fun BottomNavigation(navController: NavHostController) {
         backgroundColor = backgroundType4,
         contentColor = backgroundType2
     ) {
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentRoute = navBackStackEntry?.destination?.route
 
         items.forEach { item ->
             BottomNavigationItem(
@@ -179,9 +179,12 @@ fun NavigationGraph(navController: NavHostController, viewModelBestList : ViewMo
 @Composable
 fun DefaultPreview() {
     val navController = rememberNavController()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
     Scaffold(
         topBar = { MainTopBar({}, {}, {}) },
-        bottomBar = { BottomNavigation(navController = navController) }
+        bottomBar = { BottomNavigation(navController = navController, currentRoute = currentRoute) }
     ) {
         Box(Modifier.padding(it)){
             NavigationGraph(navController = navController, ViewModelBestList())

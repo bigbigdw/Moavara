@@ -343,46 +343,6 @@ fun LoginScreen(state: StateLogin, onFetchClick: () -> Unit, onFetchRegister: ()
         }
     }
 }
-@Composable
-fun LoadingScreen() {
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Column(
-            modifier = Modifier
-                .background(color = backgroundType1)
-                .fillMaxSize()
-                .background(color = backgroundType1)
-                .verticalScroll(rememberScrollState())
-                .semantics { contentDescription = "Overview Screen" },
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Image(
-                painter = painterResource(id = R.mipmap.ic_launcher),
-                contentDescription = null,
-                modifier = Modifier
-                    .width(72.dp)
-                    .height(72.dp)
-            )
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(8.dp))
-            Text(
-                text = "로딩 중...",
-                fontSize = 15.sp,
-                textAlign = TextAlign.Center,
-                color = textColorType1,
-                fontFamily = pretendardvariable
-            )
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(8.dp))
-            CircularProgressIndicator()
-        }
-
-    }
-}
 
 @Composable
 fun SplashScreen() {

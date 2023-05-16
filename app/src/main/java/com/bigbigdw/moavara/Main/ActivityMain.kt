@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.runtime.collectAsState
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
@@ -60,6 +61,9 @@ class ActivityMain : ComponentActivity() {
         }
 
         setContent {
+
+            val state = viewModelMain.state.collectAsState().value
+
             MainScreenView(
                 callbackAdmin = { viewModelMain.goToActivityAdmin(this@ActivityMain) },
                 callbackOption = { viewModelMain.goToActivityUser(this@ActivityMain) },

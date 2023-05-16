@@ -159,8 +159,6 @@ class FragmentBestTabToday(private val platform: String, private val UserInfo: D
 
             override fun onCancelled(databaseError: DatabaseError) {}
         })
-
-
     }
 
     override fun getBestTodayList(items: ArrayList<BookListDataBest>, status: Boolean) {

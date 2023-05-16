@@ -5,6 +5,10 @@ import android.content.Context
 import android.icu.text.SimpleDateFormat
 import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
+import com.bigbigdw.moavara.DataBase.RoomBookListDataBest
+import com.bigbigdw.moavara.DataBase.RoomBookListDataBestAnalyze
+import com.bigbigdw.moavara.Search.BookListDataBest
+import com.bigbigdw.moavara.Search.BookListDataBestAnalyze
 import com.bigbigdw.moavara.Search.BookListDataBestMonthNum
 import com.bigbigdw.moavara.Search.TrophyInfo
 import com.google.firebase.database.DataSnapshot
@@ -14,7 +18,6 @@ import java.util.*
 object DBDate {
 
     var status = ""
-
     fun DayInt(): Int {
         return Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
     }
@@ -516,4 +519,80 @@ fun savePreferences(activity: ComponentActivity, key : String, value: String) {
     val editor = pref.edit()
     editor.putString(key, value)
     editor.apply()
+}
+
+fun convertBookListDataBestToRoomBookListDataBest(group: BookListDataBest) : RoomBookListDataBest{
+
+    val result = RoomBookListDataBest(
+        group.writer,
+        group.title,
+        group.bookImg,
+        group.bookCode,
+        group.info1,
+        group.info2,
+        group.info3,
+        group.info4,
+        group.info5,
+        group.info6,
+        group.number,
+        group.date,
+        group.type,
+        group.memo
+    )
+    
+    return result
+}
+
+fun convertRoomBookListDataBestToBookListDataBest (group: RoomBookListDataBest) : BookListDataBest{
+
+    val result = BookListDataBest(
+        group.writer,
+        group.title,
+        group.bookImg,
+        group.bookCode,
+        group.info1,
+        group.info2,
+        group.info3,
+        group.info4,
+        group.info5,
+        group.info6,
+        group.number,
+        group.date,
+        group.type,
+        group.memo
+    )
+
+    return result
+}
+
+fun convertBookListDataBestAnalyzeToRoomBookListDataBestAnalyze(group: BookListDataBestAnalyze) : RoomBookListDataBestAnalyze {
+
+    val result = RoomBookListDataBestAnalyze(
+        group.info1,
+        group.info2,
+        group.info3,
+        group.info4,
+        group.number,
+        group.date,
+        group.numberDiff,
+        group.trophyCount
+    )
+
+    return result
+}
+
+fun convertRoomBookListDataBestAnalyzeToBookListDataBestAnalyze(group: RoomBookListDataBestAnalyze) : BookListDataBestAnalyze {
+
+    val result = BookListDataBestAnalyze(
+        group.info1,
+        group.info2,
+        group.info3,
+        group.info4,
+        group.number,
+        group.date,
+        group.numberDiff,
+        group.trophyCount
+    )
+
+    return result
 }

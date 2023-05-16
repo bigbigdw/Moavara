@@ -6,4 +6,8 @@ sealed interface EventMain{
     object Pick: EventMain
     object QuckSearch: EventMain
     object Community: EventMain
+
+    object Loading: EventMain
+
+    object Loaded: EventMain
 }

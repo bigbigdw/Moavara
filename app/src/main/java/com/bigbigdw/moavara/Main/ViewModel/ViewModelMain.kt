@@ -44,12 +44,18 @@ class ViewModelMain @Inject constructor() : ViewModel() {
             is EventMain.Community -> {
                 current.copy(Community = true)
             }
+            is EventMain.Loading -> {
+                current.copy(Loading = true)
+            }
+            is EventMain.Loaded -> {
+                current.copy(Loading = false)
+            }
         }
     }
 
     fun fetchMain(activity: ComponentActivity, getter: DataBaseUser) {
         viewModelScope.launch {
-            events.send(EventMain.Best)
+            events.send(EventMain.Loaded)
         }
     }
 
