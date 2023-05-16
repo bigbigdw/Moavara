@@ -12,7 +12,7 @@ val backgroundType6 = Color(android.graphics.Color.parseColor("#6E7686"))
 val textColorType1 = Color(android.graphics.Color.parseColor("#A7ACB7"))
 val textColorType2 = Color(android.graphics.Color.parseColor("#898989"))
 val textColorType3 = Color(android.graphics.Color.parseColor("#EDE6FD"))
-
+val textColorType4 = Color(android.graphics.Color.parseColor("#565C69"))
 
 
 val colorPrimary = Color(android.graphics.Color.parseColor("#844DF3"))
