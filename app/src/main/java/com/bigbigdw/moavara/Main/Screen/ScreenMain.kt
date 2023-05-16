@@ -128,7 +128,7 @@ fun BottomNavigation(navController: NavHostController, currentRoute: String?) {
                             .height(26.dp)
                     )
                 },
-                label = { Text( text = item.title, fontSize = 13.sp, fontFamily = pretendardvariable) },
+                label = { Text( text = item.title, fontSize = 13.sp, fontFamily = pretendardvariable, color = textColorType5 ) },
                 selected = currentRoute == item.screenRoute,
                 selectedContentColor = MaterialTheme.colors.primary,
                 unselectedContentColor = Color.Gray,
