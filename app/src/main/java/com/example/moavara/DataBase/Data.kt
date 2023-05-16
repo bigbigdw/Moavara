@@ -6,8 +6,14 @@ import com.example.moavara.Retrofit.JoaraBestChapter
 
 
 class BestType(
-    var title: String? = null,
-    var type: String? = null,
+    var title: String = "",
+    var type: String = "",
+)
+
+class BestKeyword(
+    var title: String = "",
+    var type: String = "",
+    var img: Int = 0,
 )
 
 class BestRankListWeekend(

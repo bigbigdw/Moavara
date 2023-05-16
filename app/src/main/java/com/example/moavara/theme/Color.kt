@@ -8,6 +8,8 @@ val backgroundType3 = Color(android.graphics.Color.parseColor("#26292E"))
 val backgroundType4 = Color(android.graphics.Color.parseColor("#0D0E10"))
 val backgroundType5 = Color(android.graphics.Color.parseColor("#3E424B"))
 val backgroundType6 = Color(android.graphics.Color.parseColor("#6E7686"))
+val backgroundType7 = Color(android.graphics.Color.parseColor("#621CEF"))
+val backgroundType8 = Color(android.graphics.Color.parseColor("#3E424B"))
 
 val textColorType1 = Color(android.graphics.Color.parseColor("#A7ACB7"))
 val textColorType2 = Color(android.graphics.Color.parseColor("#898989"))

@@ -1,6 +1,7 @@
 package com.example.moavara.Util
 
 import android.icu.text.DecimalFormat
+import com.example.moavara.R
 import com.example.moavara.Search.BookListDataBest
 import com.example.moavara.Search.BookListDataBestAnalyze
 import com.example.moavara.Search.BookListDataBestInfo
@@ -35,6 +36,21 @@ object BestRef {
             "문피아",
             "톡소다",
 //            "미스터블루"
+        )
+    }
+
+    fun typeImg(): List<Int> {
+        return listOf(
+            R.drawable.logo_joara,
+            R.drawable.logo_joara_nobless,
+            R.drawable.logo_joara_premium,
+            R.drawable.logo_naver,
+            R.drawable.logo_naver_challenge,
+            R.drawable.logo_naver_challenge,
+            R.drawable.logo_kakaostage,
+            R.drawable.logo_onestore,
+            R.drawable.logo_munpia,
+            R.drawable.logo_toksoda,
         )
     }
 
