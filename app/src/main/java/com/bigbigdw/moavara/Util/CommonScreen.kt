@@ -45,11 +45,11 @@ fun CalendarScreen() {
 fun TimelineScreen() {
     Box(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth().height(500.dp)
             .background(MaterialTheme.colors.primaryVariant)
     ) {
         Text(
-            text = stringResource(id = R.string.text_timeline),
+            text =  "테스트",
             style = MaterialTheme.typography.h1,
             textAlign = TextAlign.Center,
             color = Color.White,

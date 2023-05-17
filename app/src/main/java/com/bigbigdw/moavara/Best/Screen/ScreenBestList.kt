@@ -13,7 +13,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -39,9 +38,9 @@ import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
 @Composable
-fun BestListScreen(viewModelBestList: ViewModelBestList) {
+fun BestListScreen(viewModelBestList: ViewModelBestList, modalSheetState: ModalBottomSheetState) {
 
     val state = viewModelBestList.state.collectAsState().value
 
@@ -80,7 +79,7 @@ fun BestListScreen(viewModelBestList: ViewModelBestList) {
             HorizontalPager(userScrollEnabled = false, count = tabData.size, state = pagerState, verticalAlignment = Alignment.Top) { page ->
                 Box(modifier = Modifier.fillMaxSize()){
                     if (pagerState.currentPage == 0) {
-                        BestTodayScreen(viewModelBestList, state, getType, setType)
+                        BestTodayScreen(viewModelBestList, state, getType, setType, modalSheetState)
                     } else if (pagerState.currentPage == 1) {
                         LoadingScreen()
                     } else {
@@ -92,12 +91,14 @@ fun BestListScreen(viewModelBestList: ViewModelBestList) {
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun BestTodayScreen(
     viewModelBestList: ViewModelBestList,
     state: StateBestList,
     getType: String,
-    setType: (String) -> Unit
+    setType: (String) -> Unit,
+    modalSheetState: ModalBottomSheetState
 ) {
 
     val listState = rememberLazyListState()
@@ -109,7 +110,7 @@ fun BestTodayScreen(
                 item { LoadingScreen() }
             } else {
                 itemsIndexed(items = state.BestTodayItem) { index, item ->
-                    ListBestToday(item, state.BestTodayItemBookCode[index], index)
+                    ListBestToday(item, state.BestTodayItemBookCode[index], index, modalSheetState)
                 }
             }
 
@@ -117,13 +118,16 @@ fun BestTodayScreen(
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ListBestToday(
     bookListDataBest: BookListDataBest,
     bookCodeItems: BookListDataBestAnalyze,
-    index: Int
+    index: Int,
+    modalSheetState: ModalBottomSheetState
 ) {
 
+    val coroutineScope = rememberCoroutineScope()
 
     Row(
         Modifier
@@ -147,7 +151,12 @@ fun ListBestToday(
                 .fillMaxSize()
                 .padding(4.dp, 0.dp, 0.dp, 0.dp)
                 .fillMaxWidth()
-                .height(56.dp),
+                .height(56.dp)
+                .clickable {
+                    coroutineScope.launch {
+                        modalSheetState.show()
+                    }
+                },
             backgroundColor = backgroundType9,
             shape = RoundedCornerShape(25.dp)
         ) {
@@ -309,7 +318,9 @@ fun BestHeader(
                 .height(60.dp),
         ) {
             Text(
-                modifier = Modifier.padding(16.dp, 8.dp).wrapContentSize(),
+                modifier = Modifier
+                    .padding(16.dp, 8.dp)
+                    .wrapContentSize(),
                 text = "베스트",
                 fontSize = 27.sp,
                 textAlign = TextAlign.Left,
@@ -320,12 +331,16 @@ fun BestHeader(
         }
         Box(
             modifier = Modifier
-                .wrapContentSize().height(60.dp).width(270.dp),
+                .wrapContentSize()
+                .height(60.dp)
+                .width(270.dp),
             contentAlignment = Alignment.BottomEnd
         ) {
             TabRow(
                 selectedTabIndex = tabIndex,
-                modifier = Modifier.padding(top = 20.dp).wrapContentSize(),
+                modifier = Modifier
+                    .padding(top = 20.dp)
+                    .wrapContentSize(),
                 contentColor = colorPrimary
             ) {
                 tabData.forEachIndexed { index, text ->

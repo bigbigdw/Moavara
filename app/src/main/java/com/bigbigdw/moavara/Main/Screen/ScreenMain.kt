@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -29,6 +30,7 @@ import com.bigbigdw.moavara.Util.SettingsScreen
 import com.bigbigdw.moavara.Util.TimelineScreen
 import com.bigbigdw.moavara.theme.*
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MainScreenView(
     callbackAdmin: () -> Unit,
@@ -40,13 +42,43 @@ fun MainScreenView(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
+    val modalSheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Expanded,
+        confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded },
+        skipHalfExpanded = true
+    )
+
     Scaffold(
         topBar = { MainTopBar(callbackAdmin, callbackOption, callbackSearch) },
         bottomBar = { BottomNavigation(navController = navController, currentRoute = currentRoute) }
     ) {
-        Box(Modifier.padding(it).background(color = backgroundType1).fillMaxSize()){
-            NavigationGraph(navController = navController, viewModelBestList)
+        Box(
+            Modifier
+                .padding(it)
+                .background(color = backgroundType1)
+                .fillMaxSize()){
+            NavigationGraph(navController = navController, viewModelBestList, modalSheetState)
         }
+    }
+
+    Log.d("HIHIHIHIHI", "currentRoute == ${currentRoute}")
+
+    ModalBottomSheetLayout(
+        sheetState = modalSheetState,
+        sheetElevation = 50.dp,
+        sheetShape = RoundedCornerShape(
+            topStart = 50.dp,
+            topEnd = 50.dp
+        ),
+        sheetContent = {
+            if (currentRoute == "BEST") {
+                TimelineScreen()
+            } else {
+                AnalysisScreen()
+            }
+        },
+    ) {
+
     }
 }
 
@@ -155,11 +187,16 @@ sealed class BottomNavItem(val title: String, val iconOn: Int, val iconOff: Int,
     object COMMUNITY : BottomNavItem("커뮤니티", R.drawable.ic_community_vt_24px, R.drawable.ic_community_gr_24px, "COMMUNITY")
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun NavigationGraph(navController: NavHostController, viewModelBestList : ViewModelBestList) {
+fun NavigationGraph(
+    navController: NavHostController,
+    viewModelBestList: ViewModelBestList,
+    modalSheetState: ModalBottomSheetState
+) {
     NavHost(navController = navController, startDestination = BottomNavItem.BEST.screenRoute) {
         composable(BottomNavItem.BEST.screenRoute) {
-            BestListScreen(viewModelBestList)
+            BestListScreen(viewModelBestList, modalSheetState)
         }
         composable(BottomNavItem.EVENT.screenRoute) {
             TimelineScreen()
@@ -176,6 +213,7 @@ fun NavigationGraph(navController: NavHostController, viewModelBestList : ViewMo
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
@@ -183,12 +221,18 @@ fun DefaultPreview() {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
+    val modalSheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Expanded,
+        confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded },
+        skipHalfExpanded = true
+    )
+
     Scaffold(
         topBar = { MainTopBar({}, {}, {}) },
         bottomBar = { BottomNavigation(navController = navController, currentRoute = currentRoute) }
     ) {
         Box(Modifier.padding(it)){
-            NavigationGraph(navController = navController, ViewModelBestList())
+            NavigationGraph(navController = navController, ViewModelBestList(), modalSheetState)
         }
     }
 }
