@@ -1,5 +1,7 @@
 package com.bigbigdw.moavara.Search
 
+import java.util.*
+
 //import com.github.mikephil.charting.data.BarEntry
 //import com.github.mikephil.charting.data.Entry
 
@@ -41,6 +43,13 @@ data class BookListDataBestAnalyze (
     var date: String = "",
     var numberDiff: Int = 0,
     var trophyCount: Int = 0,
+)
+
+data class BookBestAnalyzeWeek (
+    var isVisible: Boolean = false,
+    var trophyImage : Int = 0,
+    var number : Int = 0,
+    var date : Int = 0
 )
 
 data class AnayzeData(

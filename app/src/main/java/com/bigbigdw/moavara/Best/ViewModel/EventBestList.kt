@@ -1,6 +1,7 @@
 package com.bigbigdw.moavara.Best.ViewModel
 
 import com.bigbigdw.moavara.DataBase.DataBaseUser
+import com.bigbigdw.moavara.Search.BookBestAnalyzeWeek
 import com.bigbigdw.moavara.Search.BookListDataBest
 import com.bigbigdw.moavara.Search.BookListDataBestAnalyze
 
@@ -16,6 +17,7 @@ interface EventBestList {
     ) : EventBestList
 
     object Loading : EventBestList
-
     object Loaded : EventBestList
+    class isFirstPick(val isFirstPick : Boolean, val isPicked : Boolean) : EventBestList
+    class bookBestAnalyzeWeek(val bookBestAnalyzeWeek: ArrayList<BookBestAnalyzeWeek>) : EventBestList
 }
