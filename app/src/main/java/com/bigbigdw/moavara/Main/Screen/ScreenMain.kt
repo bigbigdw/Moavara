@@ -22,6 +22,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.bigbigdw.moavara.Best.Screen.BestListScreen
+import com.bigbigdw.moavara.Best.Screen.BottomDialogBest
 import com.bigbigdw.moavara.Best.ViewModel.ViewModelBestList
 import com.bigbigdw.moavara.R
 import com.bigbigdw.moavara.Util.AnalysisScreen
@@ -67,12 +68,12 @@ fun MainScreenView(
         sheetState = modalSheetState,
         sheetElevation = 50.dp,
         sheetShape = RoundedCornerShape(
-            topStart = 50.dp,
-            topEnd = 50.dp
+            topStart = 25.dp,
+            topEnd = 25.dp
         ),
         sheetContent = {
             if (currentRoute == "BEST") {
-                TimelineScreen()
+                BottomDialogBest()
             } else {
                 AnalysisScreen()
             }

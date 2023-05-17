@@ -1,4 +1,4 @@
-package com.bigbigdw.moavara.Best
+package com.bigbigdw.moavara.User
 
 import android.content.Intent
 import android.graphics.Color
@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bigbigdw.moavara.DataBase.DataBaseUser
-import com.bigbigdw.moavara.User.ActivityGenre
 import com.bigbigdw.moavara.Util.Genre
 import com.bigbigdw.moavara.Util.dpToPx
 import com.bigbigdw.moavara.databinding.BottomDialogMainBinding
