@@ -18,5 +18,8 @@ val textColorType3 = Color(android.graphics.Color.parseColor("#EDE6FD"))
 val textColorType4 = Color(android.graphics.Color.parseColor("#565C69"))
 val textColorType5 = Color(android.graphics.Color.parseColor("#844DF3"))
 val textColorType6 = Color(android.graphics.Color.parseColor("#F6F6F8"))
+val textColorType7 = Color(android.graphics.Color.parseColor("#02BC77"))
+val textColorType8 = Color(android.graphics.Color.parseColor("#FF2366"))
+val textColorType9 = Color(android.graphics.Color.parseColor("#ffffff"))
 
 val colorPrimary = Color(android.graphics.Color.parseColor("#844DF3"))

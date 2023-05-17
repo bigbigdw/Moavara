@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -24,8 +25,10 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.bigbigdw.moavara.Best.ViewModel.ViewModelBestList
 import com.bigbigdw.moavara.Best.intent.StateBestList
+import com.bigbigdw.moavara.R
 import com.bigbigdw.moavara.Search.BestKeyword
 import com.bigbigdw.moavara.Search.BookListDataBest
+import com.bigbigdw.moavara.Search.BookListDataBestAnalyze
 import com.bigbigdw.moavara.Util.BestRef
 import com.bigbigdw.moavara.Util.LoadingScreen
 import com.bigbigdw.moavara.theme.*
@@ -106,7 +109,7 @@ fun BestTodayScreen(
                 item { LoadingScreen() }
             } else {
                 itemsIndexed(items = state.BestTodayItem) { index, item ->
-                    ListBestToday(item, index)
+                    ListBestToday(item, state.BestTodayItemBookCode[index], index)
                 }
             }
 
@@ -115,7 +118,12 @@ fun BestTodayScreen(
 }
 
 @Composable
-fun ListBestToday(bookListDataBest: BookListDataBest, index: Int) {
+fun ListBestToday(
+    bookListDataBest: BookListDataBest,
+    bookCodeItems: BookListDataBestAnalyze,
+    index: Int
+) {
+
 
     Row(
         Modifier
@@ -143,17 +151,108 @@ fun ListBestToday(bookListDataBest: BookListDataBest, index: Int) {
             backgroundColor = backgroundType9,
             shape = RoundedCornerShape(25.dp)
         ) {
+            Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically){
+                Text(
+                    text = "${index + 1} ",
+                    modifier = Modifier
+                        .wrapContentHeight()
+                        .padding(16.dp, 0.dp, 0.dp, 0.dp),
+                    fontSize = 24.sp,
+                    textAlign = TextAlign.Left,
+                    color = textColorType6,
+                    fontFamily = pretendardvariable,
+                    fontWeight = FontWeight.Bold,
+                )
+                Text(
+                    maxLines = 1,
+                    text = "${bookListDataBest.title}",
+                    modifier = Modifier
+                        .wrapContentHeight()
+                        .weight(1f),
+                    fontSize = 18.sp,
+                    textAlign = TextAlign.Left,
+                    color = textColorType6,
+                    fontFamily = pretendardvariable,
+                    fontWeight = FontWeight.Bold,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Spacer(modifier = Modifier.width(16.dp))
 
-            Text(
-                text = "${index + 1} ${bookListDataBest.title}",
-                modifier = Modifier.wrapContentHeight().padding(16.dp, 0.dp).align(Alignment.CenterVertically),
-                fontSize = 24.sp,
-                textAlign = TextAlign.Left,
-                color = textColorType6,
-                fontFamily = pretendardvariable,
-                fontWeight = FontWeight.Bold,
-                overflow = TextOverflow.Ellipsis
-            )
+                if(bookCodeItems.trophyCount > 1){
+
+                    if(bookCodeItems.numberDiff > 0){
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_arrow_drop_up_24px),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.size(24.dp)
+                        )
+
+                        Text(
+                            text = bookCodeItems.numberDiff.toString(),
+                            modifier = Modifier
+                                .wrapContentHeight()
+                                .padding(0.dp, 0.dp, 16.dp, 0.dp)
+                                .wrapContentSize(),
+                            fontSize = 12.sp,
+                            textAlign = TextAlign.Left,
+                            color = textColorType7,
+                            fontFamily = pretendardvariable,
+                            fontWeight = FontWeight.Bold,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    } else if(bookCodeItems.numberDiff < 0){
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_arrow_drop_down_24px),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.size(24.dp)
+                        )
+
+                        Text(
+                            text = bookCodeItems.numberDiff.toString(),
+                            modifier = Modifier
+                                .wrapContentHeight()
+                                .padding(0.dp, 0.dp, 16.dp, 0.dp)
+                                .wrapContentSize(),
+                            fontSize = 12.sp,
+                            textAlign = TextAlign.Left,
+                            color = textColorType8,
+                            fontFamily = pretendardvariable,
+                            fontWeight = FontWeight.Bold,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    } else if(bookCodeItems.numberDiff == 0){
+                        Text(
+                            text = "-",
+                            modifier = Modifier
+                                .wrapContentHeight()
+                                .padding(0.dp, 0.dp, 16.dp, 0.dp)
+                                .wrapContentSize(),
+                            fontSize = 12.sp,
+                            textAlign = TextAlign.Left,
+                            color = textColorType9,
+                            fontFamily = pretendardvariable,
+                            fontWeight = FontWeight.Bold,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                } else {
+                    Text(
+                        text = "NEW",
+                        modifier = Modifier
+                            .wrapContentHeight()
+                            .padding(0.dp, 0.dp, 16.dp, 0.dp)
+                            .wrapContentSize(),
+                        fontSize = 12.sp,
+                        textAlign = TextAlign.Left,
+                        color = textColorType6,
+                        fontFamily = pretendardvariable,
+                        fontWeight = FontWeight.Bold,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+            }
         }
     }
 }
@@ -201,15 +300,16 @@ fun BestHeader(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .wrapContentHeight()
             .background(color = backgroundType4),
         verticalAlignment = Alignment.Bottom
     ) {
         Box(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .weight(1f)
+                .height(60.dp),
         ) {
             Text(
-                modifier = Modifier.padding(16.dp, 8.dp),
+                modifier = Modifier.padding(16.dp, 8.dp).wrapContentSize(),
                 text = "베스트",
                 fontSize = 27.sp,
                 textAlign = TextAlign.Left,
@@ -219,12 +319,13 @@ fun BestHeader(
             )
         }
         Box(
-            modifier = Modifier.width(250.dp),
+            modifier = Modifier
+                .wrapContentSize().height(60.dp).width(270.dp),
             contentAlignment = Alignment.BottomEnd
         ) {
             TabRow(
                 selectedTabIndex = tabIndex,
-                modifier = Modifier.padding(top = 20.dp),
+                modifier = Modifier.padding(top = 20.dp).wrapContentSize(),
                 contentColor = colorPrimary
             ) {
                 tabData.forEachIndexed { index, text ->
