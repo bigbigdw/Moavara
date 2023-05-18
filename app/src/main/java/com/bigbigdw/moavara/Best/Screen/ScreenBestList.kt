@@ -13,13 +13,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -27,9 +29,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.bigbigdw.moavara.Best.ViewModel.ViewModelBestList
 import com.bigbigdw.moavara.Best.intent.StateBestList
 import com.bigbigdw.moavara.R
-import com.bigbigdw.moavara.Search.BestKeyword
-import com.bigbigdw.moavara.Search.BookListDataBest
-import com.bigbigdw.moavara.Search.BookListDataBestAnalyze
+import com.bigbigdw.moavara.Search.*
 import com.bigbigdw.moavara.Util.BestRef
 import com.bigbigdw.moavara.Util.LoadingScreen
 import com.bigbigdw.moavara.theme.*
@@ -48,7 +48,7 @@ fun BestListScreen(viewModelBestList: ViewModelBestList, modalSheetState: ModalB
 
     val (getType, setType) = remember { mutableStateOf("") }
 
-    if(state.TodayInit){
+    if(state.todayInit){
         viewModelBestList.fetchBestList(LocalContext.current)
         if(getType == ""){
             setType("Joara")
@@ -76,7 +76,7 @@ fun BestListScreen(viewModelBestList: ViewModelBestList, modalSheetState: ModalB
             Modifier
                 .padding(it)
                 .fillMaxSize()
-                .background(color = backgroundType1), contentAlignment = Alignment.TopStart) {
+                .background(color = color1E1E20), contentAlignment = Alignment.TopStart) {
 
             HorizontalPager(userScrollEnabled = false, count = tabData.size, state = pagerState, verticalAlignment = Alignment.Top) { page ->
                 Box(modifier = Modifier.fillMaxSize()){
@@ -108,11 +108,11 @@ fun BestTodayScreen(
     Column {
         ListKeyword(getType, setType, viewModelBestList, listState)
         LazyColumn(state = listState) {
-            if (state.Loading) {
+            if (state.loading) {
                 item { LoadingScreen() }
             } else {
-                itemsIndexed(items = state.BestTodayItem) { index, item ->
-                    ListBestToday(item, state.BestTodayItemBookCode[index], index, modalSheetState)
+                itemsIndexed(items = state.bestTodayItem) { index, item ->
+                    ListBestToday(item, state.bestTodayItemBookCode[index], index, modalSheetState)
                 }
             }
 
@@ -123,8 +123,8 @@ fun BestTodayScreen(
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ListBestToday(
-    bookListDataBest: BookListDataBest,
-    bookCodeItems: BookListDataBestAnalyze,
+    bestItemData: BestItemData,
+    bookCodeItems: BestListAnalyze,
     index: Int,
     modalSheetState: ModalBottomSheetState
 ) {
@@ -139,7 +139,7 @@ fun ListBestToday(
     ) {
 
         Image(
-            painter = rememberAsyncImagePainter(bookListDataBest.bookImg),
+            painter = rememberAsyncImagePainter(bestItemData.bookImg),
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier
@@ -176,7 +176,7 @@ fun ListBestToday(
                 )
                 Text(
                     maxLines = 1,
-                    text = "${bookListDataBest.title}",
+                    text = "${bestItemData.title}",
                     modifier = Modifier
                         .wrapContentHeight()
                         .weight(1f),
@@ -391,11 +391,11 @@ fun ItemKeyword(
 
     Card(
         modifier = if (getter == item.type) {
-            Modifier.border(2.dp, backgroundType7, CircleShape)
+            Modifier.border(2.dp, color621CEF, CircleShape)
         } else {
-            Modifier.border(2.dp, backgroundType8, CircleShape)
+            Modifier.border(2.dp, color3E424B, CircleShape)
         },
-        backgroundColor = backgroundType1,
+        backgroundColor = color1E1E20,
         shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp)
     ){
         Row(
@@ -433,9 +433,10 @@ fun ItemKeyword(
 }
 
 @Composable
-fun BottomDialogBest() {
+fun BottomDialogBest(contents : @Composable ()-> Unit) {
 
-    val (getType, setType) = remember { mutableStateOf(BookListDataBest()) }
+    val weekItem = ArrayList<BestListAnalyzeWeek>()
+    val item = BottomBestItemData()
 
     Column(
         modifier = Modifier
@@ -448,7 +449,7 @@ fun BottomDialogBest() {
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentSize()
-                .padding(0.dp, 10.dp, 0.dp, 18.dp),
+                .padding(0.dp, 10.dp, 0.dp, 0.dp),
             contentAlignment = Alignment.Center
         ) {
             Box(
@@ -464,7 +465,7 @@ fun BottomDialogBest() {
             .padding(16.dp)
             ){
             Image(
-                painter = painterResource(id = R.drawable.booktest),
+                painter = rememberAsyncImagePainter(item.bookImg),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -477,10 +478,10 @@ fun BottomDialogBest() {
 
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    text = "item.title",
+                    text = item.title,
                     fontSize = 15.sp,
                     textAlign = TextAlign.Left,
-                    color = textColorType10,
+                    color = colorE2E3E7,
                     fontFamily = pretendardvariable,
                     fontWeight = FontWeight.Bold
                 )
@@ -489,10 +490,10 @@ fun BottomDialogBest() {
 
                 Row(){
                     Text(
-                        text = "item.title",
+                        text = item.info1,
                         fontSize = 12.sp,
                         textAlign = TextAlign.Left,
-                        color = textColorType11,
+                        color = color6E7686,
                         fontFamily = pretendardvariable,
                         fontWeight = FontWeight.Bold
                     )
@@ -500,33 +501,54 @@ fun BottomDialogBest() {
 
                 Spacer(modifier = Modifier.size(16.dp))
 
+                val info2 = buildAnnotatedString {
+                    append(item.info2Title)
+                    withStyle(style = SpanStyle(color6E7686)) {
+                        append(" ${item.info2}")
+                    }
+                }
+
                 Text(
-                    text = "item.title",
+                    text = info2,
                     fontSize = 12.sp,
                     textAlign = TextAlign.Left,
-                    color = textColorType10,
+                    color = colorE2E3E7,
                     fontFamily = pretendardvariable,
                     fontWeight = FontWeight.Bold,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 3
                 )
 
+                val info3 = buildAnnotatedString {
+                    append(item.info3Title)
+                    withStyle(style = SpanStyle(color6E7686)) {
+                        append(" ${item.info3}")
+                    }
+                }
+
                 Text(
-                    text = "item.title",
+                    text = info3,
                     fontSize = 12.sp,
                     textAlign = TextAlign.Left,
-                    color = textColorType10,
+                    color = colorE2E3E7,
                     fontFamily = pretendardvariable,
                     fontWeight = FontWeight.Bold,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 3
                 )
 
+                val info4 = buildAnnotatedString {
+                    append(item.info4Title)
+                    withStyle(style = SpanStyle(color6E7686)) {
+                        append(" ${item.info4}")
+                    }
+                }
+
                 Text(
-                    text = "item.title",
+                    text = info4,
                     fontSize = 12.sp,
                     textAlign = TextAlign.Left,
-                    color = textColorType10,
+                    color = colorE2E3E7,
                     fontFamily = pretendardvariable,
                     fontWeight = FontWeight.Bold,
                     overflow = TextOverflow.Ellipsis,
@@ -536,12 +558,119 @@ fun BottomDialogBest() {
                 Spacer(modifier = Modifier.size(12.dp))
 
                 Text(
-                    text = "item.title",
+                    text = item.info5,
                     fontSize = 12.sp,
                     textAlign = TextAlign.Left,
-                    color = textColorType11,
+                    color = color6E7686,
                     fontFamily = pretendardvariable,
                     fontWeight = FontWeight.Bold
+                )
+            }
+        }
+
+        Row {
+            weekItem.forEach { item ->
+                Column(
+                    modifier = Modifier.padding(16.dp, 0.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "item.dateString",
+                        fontSize = 14.sp,
+                        textAlign = TextAlign.Left,
+                        color = textColorType12,
+                        fontFamily = pretendardvariable,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Box(contentAlignment = Alignment.Center) {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_best_gr_24px),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .size(40.dp)
+                        )
+
+                        Text(
+                            text = "100",
+                            fontSize = 14.sp,
+                            textAlign = TextAlign.Left,
+                            color = textColorType12,
+                            fontFamily = pretendardvariable,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+            }
+        }
+
+        Column(
+            modifier = Modifier.padding(16.dp, 0.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "item.dateString",
+                fontSize = 14.sp,
+                textAlign = TextAlign.Left,
+                color = textColorType12,
+                fontFamily = pretendardvariable,
+                fontWeight = FontWeight.Bold
+            )
+
+            Box(contentAlignment = Alignment.Center) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_best_gr_24px),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(40.dp)
+                )
+
+                Text(
+                    text = "100",
+                    fontSize = 14.sp,
+                    textAlign = TextAlign.Left,
+                    color = textColorType12,
+                    fontFamily = pretendardvariable,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.size(12.dp))
+
+        Row(){
+            Button(
+                colors = ButtonDefaults.buttonColors(backgroundColor = color3E424B),
+                onClick = { },
+                modifier = Modifier
+                    .weight(1f)
+                    .height(48.dp),
+                shape = RoundedCornerShape(0.dp)
+            ) {
+                Text(
+                    text = "상세 보기",
+                    textAlign = TextAlign.Center,
+                    color = textColorType3,
+                    fontSize = 14.sp,
+                    fontFamily = pretendardvariable
+                )
+            }
+            Button(
+                colors = ButtonDefaults.buttonColors(backgroundColor = color621CEF),
+                onClick = { },
+                modifier = Modifier
+                    .weight(1f)
+                    .height(48.dp),
+                shape = RoundedCornerShape(0.dp)
+            ) {
+                Text(
+                    text = "Pick하기",
+                    textAlign = TextAlign.Center,
+                    color = textColorType3,
+                    fontSize = 14.sp,
+                    fontFamily = pretendardvariable
                 )
             }
         }
@@ -551,5 +680,51 @@ fun BottomDialogBest() {
 @Preview
 @Composable
 fun previewBottomDialog(){
-    BottomDialogBest()
+    BottomDialogBest({})
+}
+
+@Composable
+fun BottomDialogBestBtn(state: StateBestList){
+    Row(){
+        Button(
+            colors = ButtonDefaults.buttonColors(backgroundColor = color3E424B),
+            onClick = { },
+            modifier = Modifier
+                .weight(1f)
+                .height(48.dp),
+            shape = RoundedCornerShape(0.dp)
+        ) {
+            Text(
+                text = "상세 보기",
+                textAlign = TextAlign.Center,
+                color = textColorType3,
+                fontSize = 14.sp,
+                fontFamily = pretendardvariable
+            )
+        }
+        Button(
+            colors = if (state.isPicked) {
+                ButtonDefaults.buttonColors(backgroundColor = colorA7ACB7)
+            } else {
+                ButtonDefaults.buttonColors(backgroundColor = color621CEF)
+            },
+            onClick = { },
+            modifier = Modifier
+                .weight(1f)
+                .height(48.dp),
+            shape = RoundedCornerShape(0.dp)
+        ) {
+            Text(
+                text = if (state.isPicked) {
+                    "Pick 완료"
+                } else {
+                    "Pick하기"
+                },
+                textAlign = TextAlign.Center,
+                color = textColorType3,
+                fontSize = 14.sp,
+                fontFamily = pretendardvariable
+            )
+        }
+    }
 }

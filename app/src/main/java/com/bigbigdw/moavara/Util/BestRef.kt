@@ -2,8 +2,8 @@ package com.bigbigdw.moavara.Util
 
 import android.icu.text.DecimalFormat
 import com.bigbigdw.moavara.R
-import com.bigbigdw.moavara.Search.BookListDataBest
-import com.bigbigdw.moavara.Search.BookListDataBestAnalyze
+import com.bigbigdw.moavara.Search.BestItemData
+import com.bigbigdw.moavara.Search.BestListAnalyze
 import com.bigbigdw.moavara.Search.BookListDataBestInfo
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -259,8 +259,8 @@ object BestRef {
         )
     }
 
-    fun setBookListDataBest(ref: MutableMap<String?, Any>): BookListDataBest {
-        return BookListDataBest(
+    fun setBookListDataBest(ref: MutableMap<String?, Any>): BestItemData {
+        return BestItemData(
             ref["writerName"] as String,
             ref["subject"] as String,
             ref["bookImg"] as String,
@@ -277,8 +277,8 @@ object BestRef {
         )
     }
 
-    fun setBookListDataBestAnalyze(ref: MutableMap<String?, Any>): BookListDataBestAnalyze {
-        return BookListDataBestAnalyze(
+    fun setBookListDataBestAnalyze(ref: MutableMap<String?, Any>): BestListAnalyze {
+        return BestListAnalyze(
             ref["info3"] as String,
             ref["info4"] as String,
             ref["info5"] as String,
@@ -290,7 +290,7 @@ object BestRef {
         )
     }
 
-    fun putItem(jsonObject: JSONObject, item: BookListDataBest): JSONObject {
+    fun putItem(jsonObject: JSONObject, item: BestItemData): JSONObject {
 
         jsonObject.put("writer", item.writer)
         jsonObject.put("title", item.title)
@@ -309,9 +309,9 @@ object BestRef {
         return jsonObject
     }
 
-    fun getItem(jsonObject: JSONObject): BookListDataBest {
+    fun getItem(jsonObject: JSONObject): BestItemData {
 
-        return BookListDataBest(
+        return BestItemData(
             jsonObject.optString("writer"),
             jsonObject.optString("title"),
             jsonObject.optString("bookImg"),

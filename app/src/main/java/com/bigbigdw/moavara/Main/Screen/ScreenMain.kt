@@ -44,7 +44,7 @@ fun MainScreenView(
     val currentRoute = navBackStackEntry?.destination?.route
 
     val modalSheetState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Expanded,
+        initialValue = ModalBottomSheetValue.Hidden,
         confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded },
         skipHalfExpanded = true
     )
@@ -56,13 +56,11 @@ fun MainScreenView(
         Box(
             Modifier
                 .padding(it)
-                .background(color = backgroundType1)
+                .background(color = color1E1E20)
                 .fillMaxSize()){
             NavigationGraph(navController = navController, viewModelBestList, modalSheetState)
         }
     }
-
-    Log.d("HIHIHIHIHI", "currentRoute == ${currentRoute}")
 
     ModalBottomSheetLayout(
         sheetState = modalSheetState,
@@ -73,7 +71,7 @@ fun MainScreenView(
         ),
         sheetContent = {
             if (currentRoute == "BEST") {
-                BottomDialogBest()
+                BottomDialogBest({})
             } else {
                 AnalysisScreen()
             }
@@ -143,7 +141,7 @@ fun BottomNavigation(navController: NavHostController, currentRoute: String?) {
 
     BottomNavigation(
         backgroundColor = backgroundType4,
-        contentColor = backgroundType2
+        contentColor = color121212
     ) {
 
         items.forEach { item ->

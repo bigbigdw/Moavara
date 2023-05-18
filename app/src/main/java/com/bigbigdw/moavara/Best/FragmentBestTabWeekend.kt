@@ -10,7 +10,7 @@ import androidx.room.Room
 import com.bigbigdw.moavara.DataBase.DBBest
 import com.bigbigdw.moavara.DataBase.DataBaseUser
 import com.bigbigdw.moavara.DataBase.RoomBookListDataBest
-import com.bigbigdw.moavara.Search.BookListDataBest
+import com.bigbigdw.moavara.Search.BestItemData
 import com.bigbigdw.moavara.Util.BestRef
 import com.bigbigdw.moavara.Util.DBDate
 import com.bigbigdw.moavara.databinding.FragmentBestWeekendBinding
@@ -30,8 +30,8 @@ class FragmentBestTabWeekend(private val platform: String, private val UserInfo:
     private val binding get() = _binding!!
 
     private var adapter: AdapterBestWeekend? = null
-    var arrayCarousel = ArrayList<BookListDataBest>()
-    private val itemWeek = ArrayList<ArrayList<BookListDataBest>?>()
+    var arrayCarousel = ArrayList<BestItemData>()
+    private val itemWeek = ArrayList<ArrayList<BestItemData>?>()
     val today = DBDate.getDateData(DBDate.DateMMDD())
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
@@ -192,18 +192,18 @@ class FragmentBestTabWeekend(private val platform: String, private val UserInfo:
                         for (day in 1..7) {
                             val itemResult =
                                 dataSnapshot.child(day.toString())
-                            val itemList = ArrayList<BookListDataBest>()
+                            val itemList = ArrayList<BestItemData>()
 
                             if (itemResult.value == null) {
                                 for (num in 0..19) {
-                                    itemList.add(BookListDataBest())
+                                    itemList.add(BestItemData())
                                 }
                                 itemWeek.add(itemList)
                             } else {
                                 for (num in 0..19) {
-                                    val item: BookListDataBest? =
+                                    val item: BestItemData? =
                                         itemResult.child(num.toString())
-                                            .getValue(BookListDataBest::class.java)
+                                            .getValue(BestItemData::class.java)
 
                                     if (item != null) {
                                         itemList.add(item)
@@ -218,14 +218,14 @@ class FragmentBestTabWeekend(private val platform: String, private val UserInfo:
                             ) {
                                 binding.llayoutAfter.visibility = View.INVISIBLE
 
-                                val itemListCarousel = ArrayList<BookListDataBest>()
+                                val itemListCarousel = ArrayList<BestItemData>()
 
                                 for (numCarousel in 0..8) {
 
-                                    val item: BookListDataBest? =
+                                    val item: BestItemData? =
                                         dataSnapshot.child(day.toString())
                                             .child(numCarousel.toString())
-                                            .getValue(BookListDataBest::class.java)
+                                            .getValue(BestItemData::class.java)
 
                                     if (item != null) {
                                         itemListCarousel.add(item)
@@ -290,20 +290,20 @@ class FragmentBestTabWeekend(private val platform: String, private val UserInfo:
 
                     for (day in 1..7) {
                         val itemResult = dataSnapshot.child(day.toString())
-                        val itemList = ArrayList<BookListDataBest>()
+                        val itemList = ArrayList<BestItemData>()
 
                         if (itemResult.value == null) {
                             for (num in 0..19) {
-                                itemList.add(BookListDataBest())
+                                itemList.add(BestItemData())
                                 bestDao?.bestDao()?.insert(RoomBookListDataBest())
                             }
                             itemWeek.add(itemList)
 
                         } else {
                             for (num in 0..19) {
-                                val item: BookListDataBest? =
+                                val item: BestItemData? =
                                     itemResult.child(num.toString())
-                                        .getValue(BookListDataBest::class.java)
+                                        .getValue(BestItemData::class.java)
 
                                 if (item != null) {
                                     itemList.add(item)
@@ -331,14 +331,14 @@ class FragmentBestTabWeekend(private val platform: String, private val UserInfo:
                             itemWeek.add(itemList)
                         }
 
-                        val itemListCarousel = ArrayList<BookListDataBest>()
+                        val itemListCarousel = ArrayList<BestItemData>()
 
                         for (numCarousel in 0..8) {
 
-                            val item: BookListDataBest? =
+                            val item: BestItemData? =
                                 dataSnapshot.child(today?.date.toString())
                                     .child(numCarousel.toString())
-                                    .getValue(BookListDataBest::class.java)
+                                    .getValue(BestItemData::class.java)
 
                             if (item != null) {
                                 itemListCarousel.add(item)

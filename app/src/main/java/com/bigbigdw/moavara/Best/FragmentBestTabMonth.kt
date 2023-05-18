@@ -16,8 +16,8 @@ import androidx.room.Room
 import com.bigbigdw.moavara.DataBase.DBBest
 import com.bigbigdw.moavara.DataBase.DataBaseUser
 import com.bigbigdw.moavara.DataBase.RoomBookListDataBest
-import com.bigbigdw.moavara.Search.BookListDataBest
-import com.bigbigdw.moavara.Search.BookListDataBestAnalyze
+import com.bigbigdw.moavara.Search.BestItemData
+import com.bigbigdw.moavara.Search.BestListAnalyze
 import com.bigbigdw.moavara.Search.BookListDataBestWeekend
 import com.bigbigdw.moavara.Util.BestRef
 import com.bigbigdw.moavara.Util.DBDate
@@ -35,9 +35,9 @@ class FragmentBestTabMonth(private val platform: String, private val UserInfo: D
 
     private lateinit var adapterMonth: AdapterBestMonth
     private val itemMonth = ArrayList<BookListDataBestWeekend>()
-    private val ItemMonthDay = ArrayList<BookListDataBest>()
+    private val ItemMonthDay = ArrayList<BestItemData>()
     private var adapterMonthDay: AdapterBestToday? = null
-    private val bookCodeItems = ArrayList<BookListDataBestAnalyze>()
+    private val bookCodeItems = ArrayList<BestListAnalyze>()
 
     private var _binding: FragmentBestMonthBinding? = null
     private val binding get() = _binding!!
@@ -121,12 +121,12 @@ class FragmentBestTabMonth(private val platform: String, private val UserInfo: D
                                     }
 
                                     for (postSnapshot in dataSnapshot.children) {
-                                        val group: BookListDataBest? =
-                                            postSnapshot.getValue(BookListDataBest::class.java)
+                                        val group: BestItemData? =
+                                            postSnapshot.getValue(BestItemData::class.java)
 
                                         if (group != null) {
                                             ItemMonthDay.add(
-                                                BookListDataBest(
+                                                BestItemData(
                                                     group.writer,
                                                     group.title,
                                                     group.bookImg.replace("http://","https://"),
@@ -214,7 +214,7 @@ class FragmentBestTabMonth(private val platform: String, private val UserInfo: D
 
         adapterMonthDay?.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
-                val item: BookListDataBest? = adapterMonthDay?.getItem(position)
+                val item: BestItemData? = adapterMonthDay?.getItem(position)
 
                 if(platform == "MrBlue"){
                     val intent = Intent(
@@ -267,10 +267,10 @@ class FragmentBestTabMonth(private val platform: String, private val UserInfo: D
                             val weekItem = BookListDataBestWeekend()
 
                             for (day in 1..7) {
-                                val item: BookListDataBest? =
+                                val item: BestItemData? =
                                     dataSnapshot.child((month - monthCount -1).toString()).child(week.toString()).child(day.toString())
                                         .child("1")
-                                        .getValue(BookListDataBest::class.java)
+                                        .getValue(BestItemData::class.java)
 
                                 when (day) {
                                     1 -> {
@@ -490,10 +490,10 @@ class FragmentBestTabMonth(private val platform: String, private val UserInfo: D
                         val weekItem = BookListDataBestWeekend()
 
                         for (day in 1..7) {
-                            val item: BookListDataBest? =
+                            val item: BestItemData? =
                                 dataSnapshot.child((month - 1).toString()).child(week.toString()).child(day.toString())
                                     .child("0")
-                                    .getValue(BookListDataBest::class.java)
+                                    .getValue(BestItemData::class.java)
 
                             when (day) {
                                 1 -> {
@@ -545,7 +545,7 @@ class FragmentBestTabMonth(private val platform: String, private val UserInfo: D
             })
     }
 
-    override fun getBestTodayList(items: ArrayList<BookListDataBest>, status: Boolean) {
+    override fun getBestTodayList(items: ArrayList<BestItemData>, status: Boolean) {
         BestRef.getBookCode(platform, UserInfo.Genre).addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -553,16 +553,16 @@ class FragmentBestTabMonth(private val platform: String, private val UserInfo: D
                     val bookCodeitems = dataSnapshot.child(bookCodeList.bookCode)
 
                     if (bookCodeitems.childrenCount > 1) {
-                        val bookCodes = ArrayList<BookListDataBestAnalyze>()
+                        val bookCodes = ArrayList<BestListAnalyze>()
 
                         for (item in bookCodeitems.children) {
 
-                            val group: BookListDataBestAnalyze? =
-                                item.getValue(BookListDataBestAnalyze::class.java)
+                            val group: BestListAnalyze? =
+                                item.getValue(BestListAnalyze::class.java)
 
                             if (group != null) {
                                 bookCodes.add(
-                                    BookListDataBestAnalyze(
+                                    BestListAnalyze(
                                         group.info1,
                                         group.info2,
                                         group.info3,
@@ -578,7 +578,7 @@ class FragmentBestTabMonth(private val platform: String, private val UserInfo: D
                         val moreLastItem = bookCodes[bookCodes.size - 2]
 
                         bookCodeItems.add(
-                            BookListDataBestAnalyze(
+                            BestListAnalyze(
                                 lastItem.info1,
                                 lastItem.info2,
                                 lastItem.info3,
@@ -592,13 +592,13 @@ class FragmentBestTabMonth(private val platform: String, private val UserInfo: D
 
                     } else if (bookCodeitems.childrenCount.toInt() == 1) {
 
-                        val group: BookListDataBestAnalyze? =
+                        val group: BestListAnalyze? =
                             dataSnapshot.child(bookCodeList.bookCode).child(DBDate.DateMMDD())
-                                .getValue(BookListDataBestAnalyze::class.java)
+                                .getValue(BestListAnalyze::class.java)
 
                         if (group != null) {
                             bookCodeItems.add(
-                                BookListDataBestAnalyze(
+                                BestListAnalyze(
                                     group.info1,
                                     group.info2,
                                     group.info3,
@@ -634,7 +634,7 @@ class FragmentBestTabMonth(private val platform: String, private val UserInfo: D
 
                 if (day == 0) {
                     if (item != null) {
-                        weekItem.sun = BookListDataBest(
+                        weekItem.sun = BestItemData(
                             item.writer,
                             item.title,
                             item.bookImg,
@@ -653,7 +653,7 @@ class FragmentBestTabMonth(private val platform: String, private val UserInfo: D
                     }
                 } else if (day == 1) {
                     if (item != null) {
-                        weekItem.mon = BookListDataBest(
+                        weekItem.mon = BestItemData(
                             item.writer,
                             item.title,
                             item.bookImg,
@@ -672,7 +672,7 @@ class FragmentBestTabMonth(private val platform: String, private val UserInfo: D
                     }
                 } else if (day == 2) {
                     if (item != null) {
-                        weekItem.tue = BookListDataBest(
+                        weekItem.tue = BestItemData(
                             item.writer,
                             item.title,
                             item.bookImg,
@@ -691,7 +691,7 @@ class FragmentBestTabMonth(private val platform: String, private val UserInfo: D
                     }
                 } else if (day == 3) {
                     if (item != null) {
-                        weekItem.wed = BookListDataBest(
+                        weekItem.wed = BestItemData(
                             item.writer,
                             item.title,
                             item.bookImg,
@@ -710,7 +710,7 @@ class FragmentBestTabMonth(private val platform: String, private val UserInfo: D
                     }
                 } else if (day == 4) {
                     if (item != null) {
-                        weekItem.thur = BookListDataBest(
+                        weekItem.thur = BestItemData(
                             item.writer,
                             item.title,
                             item.bookImg,
@@ -729,7 +729,7 @@ class FragmentBestTabMonth(private val platform: String, private val UserInfo: D
                     }
                 } else if (day == 5) {
                     if (item != null) {
-                        weekItem.fri = BookListDataBest(
+                        weekItem.fri = BestItemData(
                             item.writer,
                             item.title,
                             item.bookImg,
@@ -748,7 +748,7 @@ class FragmentBestTabMonth(private val platform: String, private val UserInfo: D
                     }
                 } else if (day == 6) {
                     if (item != null) {
-                        weekItem.sat = BookListDataBest(
+                        weekItem.sat = BestItemData(
                             item.writer,
                             item.title,
                             item.bookImg,

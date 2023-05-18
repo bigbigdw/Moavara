@@ -103,7 +103,7 @@ fun DialogLoginScreen(isShow: () -> Unit, onFetchClick: () -> Unit) {
 
                 Card(modifier = Modifier
                     .wrapContentSize(),
-                    backgroundColor = backgroundType5,
+                    backgroundColor = color3E424B,
                     shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp)
                 ){
 
@@ -243,12 +243,12 @@ fun LoginScreen(state: StateLogin, onFetchClick: () -> Unit, onFetchRegister: ()
         Box(
             modifier = Modifier
                 .weight(1f)
-                .background(color = backgroundType1),
+                .background(color = color1E1E20),
             contentAlignment = Alignment.BottomEnd,
         ) {
             Card(modifier = Modifier
                 .fillMaxSize(),
-                backgroundColor = backgroundType2,
+                backgroundColor = color121212,
                 shape = RoundedCornerShape(0.dp, 0.dp, 25.dp, 25.dp)
             ){
                 Column(
@@ -297,7 +297,7 @@ fun LoginScreen(state: StateLogin, onFetchClick: () -> Unit, onFetchRegister: ()
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(color = backgroundType1),
+                .background(color = color1E1E20),
             contentAlignment = Alignment.Center
         ) {
             Column(
@@ -322,7 +322,7 @@ fun LoginScreen(state: StateLogin, onFetchClick: () -> Unit, onFetchRegister: ()
             modifier = Modifier
                 .fillMaxWidth()
                 .height(200.dp)
-                .background(color = backgroundType1),
+                .background(color = color1E1E20),
             contentAlignment = Alignment.BottomEnd
         ) {
             Column(
@@ -352,7 +352,7 @@ fun SplashScreen() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = backgroundType1)
+                .background(color = color1E1E20)
                 .verticalScroll(rememberScrollState())
                 .semantics { contentDescription = "Overview Screen" },
             verticalArrangement = Arrangement.Center,
@@ -382,7 +382,7 @@ fun SplashScreen() {
                 text = "당신의 하루를 모아바라가 응원합니다.",
                 fontSize = 14.sp,
                 textAlign = TextAlign.Center,
-                color = textColorType1,
+                color = colorA7ACB7,
                 fontFamily = pretendardvariable
             )
         }
@@ -429,7 +429,7 @@ fun QuesViewPagerDiagnosticResult(data: ArrayList<GuideComponent>, moveToResult:
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = backgroundType1),
+                .background(color = color1E1E20),
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

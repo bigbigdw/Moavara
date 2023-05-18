@@ -45,9 +45,9 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
     private val typeItems = ArrayList<BestType>()
     private var isPicked = false
     var bookTitle = ""
-    var pickItem = BookListDataBest()
-    var pickBookCodeItem = BookListDataBestAnalyze()
-    val bookData = ArrayList<BookListDataBestAnalyze>()
+    var pickItem = BestItemData()
+    var pickBookCodeItem = BestListAnalyze()
+    val bookData = ArrayList<BestListAnalyze>()
 
     var userDao: DBUser? = null
     var UserInfo = DataBaseUser()
@@ -455,7 +455,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                             searchResult.tviewInfo4.text =
                                 BestRef.decimalToString(data.book.cntTotalComment.toInt())
 
-                            pickItem = BookListDataBest(
+                            pickItem = BestItemData(
                                 data.book.writerName,
                                 data.book.subject,
                                 data.book.bookImg.replace("http://", "https://"),
@@ -472,7 +472,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                                 "",
                             )
 
-                            pickBookCodeItem = BookListDataBestAnalyze(
+                            pickBookCodeItem = BestListAnalyze(
                                 data.book.cntPageRead,
                                 data.book.cntFavorite,
                                 data.book.cntRecom,
@@ -532,7 +532,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                                 searchResult.tviewInfo4.text =
                                     BestRef.decimalToString(it.page_comment_count.toInt())
 
-                                pickItem = BookListDataBest(
+                                pickItem = BestItemData(
                                     it.author_name,
                                     bookTitle,
                                     "https://dn-img-page.kakao.com/download/resource?kid=${it.land_thumbnail_url}",
@@ -549,7 +549,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                                     "",
                                 )
 
-                                pickBookCodeItem = BookListDataBestAnalyze(
+                                pickBookCodeItem = BestListAnalyze(
                                     it.page_rating_count,
                                     it.page_rating_summary.replace(".0", ""),
                                     it.read_count,
@@ -609,7 +609,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                                 searchResult.tviewInfo4.text =
                                     BestRef.decimalToString(it.episodeLikeCount.toInt())
 
-                                pickItem = BookListDataBest(
+                                pickItem = BestItemData(
                                     it.nickname.name,
                                     bookTitle,
                                     data.thumbnail.url,
@@ -626,7 +626,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                                     "",
                                 )
 
-                                pickBookCodeItem = BookListDataBestAnalyze(
+                                pickBookCodeItem = BestListAnalyze(
                                     it.favoriteCount,
                                     it.viewCount,
                                     it.visitorCount,
@@ -708,7 +708,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                             searchResult.llayoutTab4.visibility = View.GONE
                             searchResult.viewTab4.visibility = View.GONE
 
-                            pickItem = BookListDataBest(
+                            pickItem = BestItemData(
                                 doc.select(".writer").text(),
                                 bookTitle,
                                 doc.select(".section_area_info .pic img").attr("src"),
@@ -726,7 +726,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                                 "",
                             )
 
-                            pickBookCodeItem = BookListDataBestAnalyze(
+                            pickBookCodeItem = BestListAnalyze(
                                 doc.select(".info_book .like").text().replace("관심", "")
                                     .replace("명", ""),
                                 doc.select(".grade_area em").text(),
@@ -794,7 +794,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                         searchResult.tviewInfo3.text =
                             doc.select(".metadata_info_series_complete_wrap .metadata_item").text()
 
-                        pickItem = BookListDataBest(
+                        pickItem = BestItemData(
                             doc.select(".metadata_writer .author_detail_link").text(),
                             bookTitle,
                             "https:${doc.select(".thumbnail_image img").attr("src")}",
@@ -811,7 +811,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                             "",
                         )
 
-                        pickBookCodeItem = BookListDataBestAnalyze(
+                        pickBookCodeItem = BestListAnalyze(
                             doc.select(".metadata_writer .author_detail_link").text(),
                             doc.select(".header_info_wrap .StarRate_ParticipantCount").text(),
                             "",
@@ -879,7 +879,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                         searchResult.viewTab4.visibility = View.GONE
                         searchResult.viewTab3.visibility = View.GONE
 
-                        pickItem = BookListDataBest(
+                        pickItem = BestItemData(
                             doc.select(".member-trigger strong").text(),
                             bookTitle,
                             "https:${doc.select(".cover-box img").attr("src")}",
@@ -896,7 +896,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                             "",
                         )
 
-                        pickBookCodeItem = BookListDataBestAnalyze(
+                        pickBookCodeItem = BestListAnalyze(
                             doc.select(".meta-etc dd").next().next()[1]?.text() ?: "",
                             doc.select(".meta-etc dd").next().next()[2]?.text() ?: "",
                             "",
@@ -962,7 +962,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                                 searchResult.llayoutTab4.visibility = View.GONE
                                 searchResult.viewTab4.visibility = View.GONE
 
-                                pickItem = BookListDataBest(
+                                pickItem = BestItemData(
                                     it.athrnm,
                                     it.wrknm,
                                     "https:${it.imgPath}",
@@ -979,7 +979,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                                     "",
                                 )
 
-                                pickBookCodeItem = BookListDataBestAnalyze(
+                                pickBookCodeItem = BestListAnalyze(
                                     it.inqrCnt,
                                     it.goodCnt,
                                     it.intrstCnt,
@@ -1040,7 +1040,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                                 searchResult.tviewInfo3.text = it?.pageViewTotal
                                 searchResult.tviewInfo4.text = it?.commentCount
 
-                                pickItem = BookListDataBest(
+                                pickItem = BestItemData(
                                     it?.artistNm ?: "",
                                     bookTitle,
                                     it?.orgFilePos ?: "",
@@ -1057,7 +1057,7 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                                     "",
                                 )
 
-                                pickBookCodeItem = BookListDataBestAnalyze(
+                                pickBookCodeItem = BestListAnalyze(
                                     it?.ratingAvgScore ?: "",
                                     it?.favoriteCount ?: "",
                                     it?.pageViewTotal ?: "",
@@ -1089,12 +1089,12 @@ class FragmentSearchBookcode(private var platform: String = "Joara") : Fragment(
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                     for (item in dataSnapshot.children) {
-                        val group: BookListDataBestAnalyze? =
-                            item.getValue(BookListDataBestAnalyze::class.java)
+                        val group: BestListAnalyze? =
+                            item.getValue(BestListAnalyze::class.java)
 
                         if (group != null) {
                             bookData.add(
-                                BookListDataBestAnalyze(
+                                BestListAnalyze(
                                     group.info1,
                                     group.info2,
                                     group.info3,

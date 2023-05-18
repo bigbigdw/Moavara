@@ -8,14 +8,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bigbigdw.moavara.R
-import com.bigbigdw.moavara.Search.BookListDataBest
-import com.bigbigdw.moavara.Search.BookListDataBestAnalyze
+import com.bigbigdw.moavara.Search.BestItemData
+import com.bigbigdw.moavara.Search.BestListAnalyze
 import com.bigbigdw.moavara.Util.dpToPx
 import com.bigbigdw.moavara.databinding.ItemBooklistBestTodayBinding
 
 class AdapterBestToday(
-    private var holder: List<BookListDataBest>,
-    private var bookCodeItems: ArrayList<BookListDataBestAnalyze>
+    private var holder: List<BestItemData>,
+    private var bookCodeItems: ArrayList<BestListAnalyze>
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -110,7 +110,7 @@ class AdapterBestToday(
         }
     }
 
-    fun getItem(position: Int): BookListDataBest {
+    fun getItem(position: Int): BestItemData {
         return holder[position]
     }
 

@@ -16,8 +16,8 @@ import com.bigbigdw.moavara.DataBase.DataBaseUser
 import com.bigbigdw.moavara.Firebase.FirebaseWorkManager
 import com.bigbigdw.moavara.Main.mRootRef
 import com.bigbigdw.moavara.R
-import com.bigbigdw.moavara.Search.BookListDataBest
-import com.bigbigdw.moavara.Search.BookListDataBestAnalyze
+import com.bigbigdw.moavara.Search.BestItemData
+import com.bigbigdw.moavara.Search.BestListAnalyze
 import com.bigbigdw.moavara.Util.BestRef
 import com.bigbigdw.moavara.Util.DBDate
 import com.bigbigdw.moavara.Util.applyingTextColor
@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit
 
 class BottomDialogBest(
     private val mContext: Context,
-    private val item: BookListDataBest?,
+    private val item: BestItemData?,
     private val platform: String,
     private val pos: Int,
     private val UserInfo: DataBaseUser,
@@ -41,7 +41,7 @@ class BottomDialogBest(
 ) :
     BottomSheetDialogFragment() {
 
-    var bookCodeItems = ArrayList<BookListDataBestAnalyze>()
+    var bookCodeItems = ArrayList<BestListAnalyze>()
 
     private var _binding: BottomDialogBestBinding? = null
     private val binding get() = _binding!!
@@ -167,14 +167,14 @@ class BottomDialogBest(
             } else if (platform == "Kakao_Stage") {
                 tviewInfo1.text = item?.info2 ?: ""
 
-                val info3 = SpannableStringBuilder("조회 수 : ${item?.info3?.replace("별점", "별점 : ")}")
+                val info3 = SpannableStringBuilder("조회 수 : ${item?.info3?.replace("조회", "별점 : ")}")
                 info3.applyingTextColor(
                     "조회 수 : ",
                     "#6E7686"
                 )
 
                 val info4 =
-                    SpannableStringBuilder("선호작 수 : ${item?.info4?.replace("조회", "조회 수 : ")}")
+                    SpannableStringBuilder("선호작 수 : ${item?.info4?.replace("별점", "조회 수 : ")}")
                 info4.applyingTextColor(
                     "선호작 수 : ",
                     "#6E7686"
@@ -366,7 +366,7 @@ class BottomDialogBest(
                 } else {
 
                     val group = item?.let { it1 ->
-                        BookListDataBest(
+                        BestItemData(
                             item.writer,
                             item.title,
                             item.bookImg,
@@ -460,7 +460,7 @@ class BottomDialogBest(
 
     override fun getTheme() = R.style.CustomBottomSheetDialogTheme
 
-    private fun getRankList(item: BookListDataBest?) {
+    private fun getRankList(item: BestItemData?) {
 
         if (item != null) {
             BestRef.getBookCode(item.type, UserInfo.Genre).child(item.bookCode)
@@ -469,8 +469,8 @@ class BottomDialogBest(
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                         for (keyItem in dataSnapshot.children) {
-                            val group: BookListDataBestAnalyze? =
-                                keyItem.getValue(BookListDataBestAnalyze::class.java)
+                            val group: BestListAnalyze? =
+                                keyItem.getValue(BestListAnalyze::class.java)
 
                             if (group != null) {
                                 bookCodeItems.add(group)

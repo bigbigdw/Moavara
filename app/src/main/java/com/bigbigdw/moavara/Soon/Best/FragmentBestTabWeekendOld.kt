@@ -11,7 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bigbigdw.moavara.DataBase.DataBaseUser
-import com.bigbigdw.moavara.Search.BookListDataBest
+import com.bigbigdw.moavara.Search.BestItemData
 import com.bigbigdw.moavara.Search.BookListDataBestWeekend
 import com.bigbigdw.moavara.Util.BestRef
 import com.bigbigdw.moavara.Util.BestRef.getItem
@@ -201,9 +201,9 @@ class FragmentBestTabWeekendOld(private val tabType: String,private val UserInfo
 
                             val jsonObject = JSONObject()
 
-                            val item: BookListDataBest? =
+                            val item: BestItemData? =
                                 dataSnapshot.child(day.toString()).child(num.toString())
-                                    .getValue(BookListDataBest::class.java)
+                                    .getValue(BestItemData::class.java)
 
                             if (day == 1) {
                                 if (item != null) {
@@ -280,9 +280,9 @@ class FragmentBestTabWeekendOld(private val tabType: String,private val UserInfo
 
                         for (day in 1..7) {
 
-                            val item: BookListDataBest? =
+                            val item: BestItemData? =
                                 dataSnapshot.child(day.toString()).child(num.toString())
-                                    .getValue(BookListDataBest::class.java)
+                                    .getValue(BestItemData::class.java)
 
                             if (day == 1) {
                                 if (item != null) {
@@ -334,7 +334,7 @@ class FragmentBestTabWeekendOld(private val tabType: String,private val UserInfo
         }
     }
 
-    private fun findBook(item: BookListDataBest?) {
+    private fun findBook(item: BestItemData?) {
         if (item != null) {
             if (adapterWeek?.getSelectedBook() == item.title) {
 //                val mBottomDialogBest = BottomDialogBest(

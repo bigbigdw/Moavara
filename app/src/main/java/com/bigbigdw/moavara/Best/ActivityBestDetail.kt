@@ -25,8 +25,8 @@ import com.bigbigdw.moavara.Main.mRootRef
 import com.bigbigdw.moavara.R
 import com.bigbigdw.moavara.Retrofit.*
 import com.bigbigdw.moavara.Search.BestType
-import com.bigbigdw.moavara.Search.BookListDataBest
-import com.bigbigdw.moavara.Search.BookListDataBestAnalyze
+import com.bigbigdw.moavara.Search.BestItemData
+import com.bigbigdw.moavara.Search.BestListAnalyze
 import com.bigbigdw.moavara.Util.*
 import com.bigbigdw.moavara.databinding.ActivityBestDetailBinding
 import com.google.android.material.tabs.TabLayout
@@ -62,7 +62,7 @@ class ActivityBestDetail : AppCompatActivity() {
     private lateinit var adapterType: AdapterKeyword
     private val typeItems = ArrayList<BestType>()
 
-    val bookData = ArrayList<BookListDataBestAnalyze>()
+    val bookData = ArrayList<BestListAnalyze>()
     private lateinit var firebaseAnalytics: FirebaseAnalytics
     var userDao: DBUser? = null
     var UserInfo = DataBaseUser()
@@ -72,8 +72,8 @@ class ActivityBestDetail : AppCompatActivity() {
     private var isFirstPick = false
     private var fromPick = false
 
-    var pickItem = BookListDataBest()
-    var pickBookCodeItem = BookListDataBestAnalyze()
+    var pickItem = BestItemData()
+    var pickBookCodeItem = BestListAnalyze()
     val crashlytics = Firebase.crashlytics
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -129,12 +129,12 @@ class ActivityBestDetail : AppCompatActivity() {
 
                             if (dataSnapshot.exists()) {
                                 for (item in dataSnapshot.children) {
-                                    val group: BookListDataBestAnalyze? =
-                                        item.getValue(BookListDataBestAnalyze::class.java)
+                                    val group: BestListAnalyze? =
+                                        item.getValue(BestListAnalyze::class.java)
 
                                     if (group != null) {
                                         bookData.add(
-                                            BookListDataBestAnalyze(
+                                            BestListAnalyze(
                                                 group.info1,
                                                 group.info2,
                                                 group.info3,
@@ -165,12 +165,12 @@ class ActivityBestDetail : AppCompatActivity() {
 
                             if (dataSnapshot.exists()) {
                                 for (item in dataSnapshot.children) {
-                                    val group: BookListDataBestAnalyze? =
-                                        item.getValue(BookListDataBestAnalyze::class.java)
+                                    val group: BestListAnalyze? =
+                                        item.getValue(BestListAnalyze::class.java)
 
                                     if (group != null) {
                                         bookData.add(
-                                            BookListDataBestAnalyze(
+                                            BestListAnalyze(
                                                 group.info1,
                                                 group.info2,
                                                 group.info3,
@@ -518,7 +518,7 @@ class ActivityBestDetail : AppCompatActivity() {
                             tviewIntro.text = data.book.intro
                             bookImg = data.book.bookImg.replace("http://", "https://")
 
-                            pickItem = BookListDataBest(
+                            pickItem = BestItemData(
                                 data.book.writerName,
                                 data.book.subject,
                                 bookImg,
@@ -535,7 +535,7 @@ class ActivityBestDetail : AppCompatActivity() {
                                 "",
                             )
 
-                            pickBookCodeItem = BookListDataBestAnalyze(
+                            pickBookCodeItem = BestListAnalyze(
                                 data.book.cntPageRead,
                                 data.book.cntFavorite,
                                 data.book.cntRecom,
@@ -642,7 +642,7 @@ class ActivityBestDetail : AppCompatActivity() {
 
                     bookImg = doc.select(".section_area_info .pic img").attr("src")
 
-                    pickItem = BookListDataBest(
+                    pickItem = BestItemData(
                         doc.select(".writer").text(),
                         bookTitle,
                         bookImg,
@@ -659,7 +659,7 @@ class ActivityBestDetail : AppCompatActivity() {
                         "",
                     )
 
-                    pickBookCodeItem = BookListDataBestAnalyze(
+                    pickBookCodeItem = BestListAnalyze(
                         doc.select(".info_book .like").text().replace("관심", "").replace("명", ""),
                         doc.select(".grade_area em").text(),
                         doc.select(".info_book .download").text().replace("다운로드", ""),
@@ -742,7 +742,7 @@ class ActivityBestDetail : AppCompatActivity() {
 
                             bookImg = "https://dn-img-page.kakao.com/download/resource?kid=${it.land_thumbnail_url}"
 
-                            pickItem = BookListDataBest(
+                            pickItem = BestItemData(
                                 it.author_name,
                                 bookTitle,
                                 bookImg,
@@ -759,7 +759,7 @@ class ActivityBestDetail : AppCompatActivity() {
                                 "",
                             )
 
-                            pickBookCodeItem = BookListDataBestAnalyze(
+                            pickBookCodeItem = BestListAnalyze(
                                 it.read_count,
                                 it.page_rating_count,
                                 it.page_rating_summary.replace(".0", ""),
@@ -850,7 +850,7 @@ class ActivityBestDetail : AppCompatActivity() {
 
                             bookImg = data.thumbnail.url
 
-                            pickItem = BookListDataBest(
+                            pickItem = BestItemData(
                                 it.nickname.name,
                                 bookTitle,
                                 bookImg,
@@ -867,7 +867,7 @@ class ActivityBestDetail : AppCompatActivity() {
                                 "",
                             )
 
-                            pickBookCodeItem = BookListDataBestAnalyze(
+                            pickBookCodeItem = BestListAnalyze(
                                 it.viewCount,
                                 it.visitorCount,
                                 it.favoriteCount,
@@ -953,7 +953,7 @@ class ActivityBestDetail : AppCompatActivity() {
 
                     bookImg = "https:${doc.select(".thumbnail_image img").attr("src")}"
 
-                    pickItem = BookListDataBest(
+                    pickItem = BestItemData(
                         doc.select(".metadata_writer .author_detail_link").text(),
                         bookTitle,
                         bookImg,
@@ -972,7 +972,7 @@ class ActivityBestDetail : AppCompatActivity() {
                         "",
                     )
 
-                    pickBookCodeItem = BookListDataBestAnalyze(
+                    pickBookCodeItem = BestListAnalyze(
                         doc.select(".header_info_wrap .StarRate_ParticipantCount").text()
                             .replace("명", ""),
                         ((doc.select(".header_info_wrap .StarRate_Score").text()
@@ -1052,7 +1052,7 @@ class ActivityBestDetail : AppCompatActivity() {
 
                             bookImg = it?.orgFilePos ?: ""
 
-                            pickItem = BookListDataBest(
+                            pickItem = BestItemData(
                                 it?.artistNm ?: "",
                                 bookTitle,
                                 bookImg,
@@ -1069,7 +1069,7 @@ class ActivityBestDetail : AppCompatActivity() {
                                 "",
                             )
 
-                            pickBookCodeItem = BookListDataBestAnalyze(
+                            pickBookCodeItem = BestListAnalyze(
                                 it?.pageViewTotal ?: "",
                                 it?.ratingAvgScore ?: "",
                                 it?.commentCount ?: "",
@@ -1176,7 +1176,7 @@ class ActivityBestDetail : AppCompatActivity() {
 
                     bookImg = "https:${doc.select(".cover-box img").attr("src")}"
 
-                    pickItem = BookListDataBest(
+                    pickItem = BestItemData(
                         doc.select(".member-trigger strong").text(),
                         bookTitle,
                         bookImg,
@@ -1193,7 +1193,7 @@ class ActivityBestDetail : AppCompatActivity() {
                         "",
                     )
 
-                    pickBookCodeItem = BookListDataBestAnalyze(
+                    pickBookCodeItem = BestListAnalyze(
                         doc.select(".meta-etc dd").next().next()[1]?.text() ?: "",
                         doc.select(".meta-etc dd").next().next()[2]?.text() ?: "",
                         "",
@@ -1276,7 +1276,7 @@ class ActivityBestDetail : AppCompatActivity() {
 
                             bookImg = "https:${it.imgPath}"
 
-                            pickItem = BookListDataBest(
+                            pickItem = BestItemData(
                                 it.athrnm,
                                 it.wrknm,
                                 bookImg,
@@ -1293,7 +1293,7 @@ class ActivityBestDetail : AppCompatActivity() {
                                 "",
                             )
 
-                            pickBookCodeItem = BookListDataBestAnalyze(
+                            pickBookCodeItem = BestListAnalyze(
                                 it.inqrCnt,
                                 it.goodCnt,
                                 it.intrstCnt,

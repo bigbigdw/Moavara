@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bigbigdw.moavara.Best.BottomDialogBest
 import com.bigbigdw.moavara.DataBase.DataBaseUser
 import com.bigbigdw.moavara.Search.AdapterBestMoavara
-import com.bigbigdw.moavara.Search.BookListDataBest
+import com.bigbigdw.moavara.Search.BestItemData
 import com.bigbigdw.moavara.Util.BestRef
 import com.bigbigdw.moavara.Util.Genre
 import com.bigbigdw.moavara.databinding.FragmentSearchmoavaraBinding
@@ -33,8 +33,8 @@ class FragmentSearchMoavara(private val UserInfo: DataBaseUser) : Fragment() {
 
     private var adapterToday: AdapterBestMoavara? = null
 
-    private val items = ArrayList<BookListDataBest>()
-    private val searchItems = ArrayList<BookListDataBest>()
+    private val items = ArrayList<BestItemData>()
+    private val searchItems = ArrayList<BestItemData>()
     var status = ""
     lateinit var root: View
     var genre = ""
@@ -79,7 +79,7 @@ class FragmentSearchMoavara(private val UserInfo: DataBaseUser) : Fragment() {
 
         adapterToday?.setOnItemClickListener(object : AdapterBestMoavara.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
-                val item: BookListDataBest? = adapterToday?.getItem(position)
+                val item: BestItemData? = adapterToday?.getItem(position)
 
                 if (item != null) {
                     if(item.type == "MrBlue"){
@@ -126,8 +126,8 @@ class FragmentSearchMoavara(private val UserInfo: DataBaseUser) : Fragment() {
                     for (postSnapshot in dataSnapshot.children) {
                         val jsonObject = JSONObject() //배열 내에 들어갈 json
 
-                        val group: BookListDataBest? =
-                            postSnapshot.getValue(BookListDataBest::class.java)
+                        val group: BestItemData? =
+                            postSnapshot.getValue(BestItemData::class.java)
 
                         if (group != null) {
 
@@ -145,7 +145,7 @@ class FragmentSearchMoavara(private val UserInfo: DataBaseUser) : Fragment() {
                             jsonObject.put("type", group.type)
                             jsonObject.put("memo", group.memo)
 
-                            val item = BookListDataBest(
+                            val item = BestItemData(
                                 group.writer,
                                 group.title,
                                 group.bookImg,
@@ -223,7 +223,7 @@ class FragmentSearchMoavara(private val UserInfo: DataBaseUser) : Fragment() {
             for (i in 0 until itemsFlag.length()) {
                 val jo = itemsFlag.getJSONObject(i)
 
-                val item = BookListDataBest(
+                val item = BestItemData(
                     jo.optString("writer"),
                     jo.optString("title"),
                     jo.optString("bookImg"),

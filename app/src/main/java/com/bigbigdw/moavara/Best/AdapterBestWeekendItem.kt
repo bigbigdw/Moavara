@@ -6,11 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bigbigdw.moavara.R
-import com.bigbigdw.moavara.Search.BookListDataBest
+import com.bigbigdw.moavara.Search.BestItemData
 import com.bigbigdw.moavara.databinding.CuItemBestWeekendBinding
 
 class AdapterBestWeekendItem(
-    private var items: ArrayList<BookListDataBest>?,
+    private var items: ArrayList<BestItemData>?,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
@@ -105,7 +105,7 @@ class AdapterBestWeekendItem(
 
     }
 
-    fun getItem(position: Int): BookListDataBest? {
+    fun getItem(position: Int): BestItemData? {
         return items?.get(position)
     }
 

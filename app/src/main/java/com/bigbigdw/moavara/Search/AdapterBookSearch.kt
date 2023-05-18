@@ -11,7 +11,7 @@ import com.bigbigdw.moavara.Util.applyingTextColor
 import com.bigbigdw.moavara.databinding.ItemSearchBinding
 
 
-class AdapterBookSearch(private var holder: ArrayList<BookListDataBest>, private var query: String) :
+class AdapterBookSearch(private var holder: ArrayList<BestItemData>, private var query: String) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     interface OnItemClickListener {
@@ -348,7 +348,7 @@ class AdapterBookSearch(private var holder: ArrayList<BookListDataBest>, private
         }
     }
 
-    fun getItem(position: Int): BookListDataBest {
+    fun getItem(position: Int): BestItemData {
         return holder[position]
     }
 }

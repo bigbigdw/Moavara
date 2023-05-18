@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 //import com.example.moavara.Search.BestChart
 import com.bigbigdw.moavara.Search.BestTodayAverage
-import com.bigbigdw.moavara.Search.BookListDataBestAnalyze
+import com.bigbigdw.moavara.Search.BestListAnalyze
 import com.bigbigdw.moavara.Util.DBDate
 import com.bigbigdw.moavara.databinding.FragmentBestDetailBarBinding
 //import com.github.mikephil.charting.components.Legend
@@ -24,7 +24,7 @@ import com.google.firebase.database.ValueEventListener
 
 class InnerFragmentBestDetailBar(
     private val platform: String,
-    private val BookItem: ArrayList<BookListDataBestAnalyze>,
+    private val BookItem: ArrayList<BestListAnalyze>,
     private var genre: String,
     private var itemCount: Int,
 ) : Fragment() {

@@ -14,7 +14,7 @@ import androidx.work.WorkManager
 import com.bigbigdw.moavara.Best.ActivityBestDetail
 import com.bigbigdw.moavara.DataBase.DataBaseUser
 import com.bigbigdw.moavara.Main.mRootRef
-import com.bigbigdw.moavara.Search.BookListDataBest
+import com.bigbigdw.moavara.Search.BestItemData
 import com.bigbigdw.moavara.Util.SwipeHelperCallback
 import com.bigbigdw.moavara.Util.dpToPx
 import com.bigbigdw.moavara.databinding.FragmentPickTabBinding
@@ -29,7 +29,7 @@ import java.util.*
 class FragmentPickTabNovel : Fragment() {
 
     private lateinit var adapter: AdapterPickNovel
-    private val items = ArrayList<BookListDataBest>()
+    private val items = ArrayList<BestItemData>()
 
     private var _binding: FragmentPickTabBinding? = null
     private val binding get() = _binding!!
@@ -83,11 +83,11 @@ class FragmentPickTabNovel : Fragment() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                 for (postSnapshot in dataSnapshot.children) {
-                    val group: BookListDataBest? =
-                        postSnapshot.getValue(BookListDataBest::class.java)
+                    val group: BestItemData? =
+                        postSnapshot.getValue(BestItemData::class.java)
                     if (group != null) {
                         items.add(
-                            BookListDataBest(
+                            BestItemData(
                                 group.writer,
                                 group.title,
                                 group.bookImg,
@@ -112,7 +112,7 @@ class FragmentPickTabNovel : Fragment() {
                         binding.blank.root.visibility = View.GONE
                     }
 
-                    val cmpAsc: Comparator<BookListDataBest> =
+                    val cmpAsc: Comparator<BestItemData> =
                         Comparator { o1, o2 -> o2.number.compareTo(o1.number) }
                     Collections.sort(items, cmpAsc)
                     adapter?.notifyDataSetChanged()
@@ -124,14 +124,14 @@ class FragmentPickTabNovel : Fragment() {
 
         adapter.setOnItemClickListener(object : AdapterPickNovel.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int, type: String) {
-                val group: BookListDataBest = adapter.getItem(position)
+                val group: BestItemData = adapter.getItem(position)
 
                 when (type) {
                     "Confirm" -> {
                         adapter.editItem(position)
                         Toast.makeText(requireContext(), "수정되었습니다", Toast.LENGTH_SHORT).show()
                         mRootRef.child("User").child(UserInfo.UID).child("Novel").child("book").child(group.bookCode).setValue(
-                            BookListDataBest(
+                            BestItemData(
                                 group.writer,
                                 group.title,
                                 group.bookImg,

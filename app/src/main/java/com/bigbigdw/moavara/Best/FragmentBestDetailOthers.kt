@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bigbigdw.moavara.Retrofit.*
-import com.bigbigdw.moavara.Search.BookListDataBest
+import com.bigbigdw.moavara.Search.BestItemData
 import com.bigbigdw.moavara.Util.Param
 import com.bigbigdw.moavara.Util.applyingTextColor
 import com.bigbigdw.moavara.databinding.FragmentBestDetailTabsBinding
@@ -30,7 +30,7 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
     Fragment() {
 
     private var adapterBestOthers: AdapterBestOther? = null
-    private val items = ArrayList<BookListDataBest?>()
+    private val items = ArrayList<BestItemData?>()
 
     private var _binding: FragmentBestDetailTabsBinding? = null
     private val binding get() = _binding!!
@@ -69,7 +69,7 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
 
         adapterBestOthers?.setOnItemClickListener(object : AdapterBestOther.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
-                val item: BookListDataBest? = adapterBestOthers?.getItem(position)
+                val item: BestItemData? = adapterBestOthers?.getItem(position)
 
                 if(item?.type == "MrBlue"){
                     val intent = Intent(
@@ -121,7 +121,7 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
 
                         for(i in data.bookLists.indices){
                             items.add(
-                                BookListDataBest(
+                                BestItemData(
                                     data.bookLists[i].writerName,
                                     data.bookLists[i].subject,
                                     data.bookLists[i].bookImg.replace("http://", "https://"),
@@ -152,7 +152,7 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
             requireActivity().runOnUiThread {
                 for (i in Naver.indices) {
                     items.add(
-                        BookListDataBest(
+                        BestItemData(
                             Naver[i].select("strong").text(),
                             Naver[i].select("p .ellipsis").text(),
                             Naver.select("div img")[i].absUrl("src"),
@@ -199,7 +199,7 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
                     val url = URL("https://ridibooks.com/books${other[i].select(".thumbnail_btn").attr("href")}")
 
                     items.add(
-                        BookListDataBest(
+                        BestItemData(
                             other[i].select(".author_detail_link").text(),
                             other[i].select(".title_text").text(),
                             img,
@@ -259,7 +259,7 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
 
                             for (i in it.indices) {
                                 items.add(
-                                    BookListDataBest(
+                                    BestItemData(
                                         it[i].AUTHOR,
                                         it[i].BOOK_NM,
                                         "https:${it[i].IMG_PATH}",
@@ -290,9 +290,9 @@ class FragmentBestDetailBooks(private val platfrom: String, private val bookCode
     }
 }
 
-class AdapterBestOther(items: List<BookListDataBest?>?) :
+class AdapterBestOther(items: List<BestItemData?>?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var holder: ArrayList<BookListDataBest?>? = items as ArrayList<BookListDataBest?>?
+    var holder: ArrayList<BestItemData?>? = items as ArrayList<BestItemData?>?
 
     interface OnItemClickListener {
         fun onItemClick(v: View?, position: Int)
@@ -474,7 +474,7 @@ class AdapterBestOther(items: List<BookListDataBest?>?) :
         }
     }
 
-    fun getItem(position: Int): BookListDataBest? {
+    fun getItem(position: Int): BestItemData? {
         return holder?.get(position)
     }
 

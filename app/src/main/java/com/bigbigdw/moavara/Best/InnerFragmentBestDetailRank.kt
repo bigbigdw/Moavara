@@ -8,14 +8,14 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bigbigdw.moavara.R
 import com.bigbigdw.moavara.Search.BestRankListWeekend
-import com.bigbigdw.moavara.Search.BookListDataBestAnalyze
+import com.bigbigdw.moavara.Search.BestListAnalyze
 import com.bigbigdw.moavara.Search.TrophyInfo
 import com.bigbigdw.moavara.Util.DBDate
 import com.bigbigdw.moavara.databinding.FragmentBestDetailRankBinding
 import java.util.*
 
 class InnerFragmentBestDetailRank(
-    private val item: ArrayList<BookListDataBestAnalyze>,
+    private val item: ArrayList<BestListAnalyze>,
 ) : Fragment() {
 
     private lateinit var adapterMonth: AdapterBestRankList
@@ -93,7 +93,7 @@ class InnerFragmentBestDetailRank(
 
         itemMonth.clear()
 
-        val cmpAsc: Comparator<BookListDataBestAnalyze> =
+        val cmpAsc: Comparator<BestListAnalyze> =
             Comparator { o1, o2 -> o1.date.compareTo(o2.date) }
         Collections.sort(item, cmpAsc)
 
@@ -136,7 +136,7 @@ class InnerFragmentBestDetailRank(
 
     fun getItemMonthList(
         trophyInfo: TrophyInfo,
-        item: BookListDataBestAnalyze,
+        item: BestListAnalyze,
         itemMonthList: BestRankListWeekend
     ) {
 
@@ -158,7 +158,7 @@ class InnerFragmentBestDetailRank(
 
     }
 
-    private fun getRankList(data: ArrayList<BookListDataBestAnalyze>) {
+    private fun getRankList(data: ArrayList<BestListAnalyze>) {
         for (item in data) {
             val itemDate = DBDate.getDateData(item.date)
 

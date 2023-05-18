@@ -8,8 +8,8 @@ import com.bigbigdw.moavara.DataBase.DBBest
 import com.bigbigdw.moavara.Main.mRootRef
 import com.bigbigdw.moavara.Retrofit.*
 import com.bigbigdw.moavara.Retrofit.result.RidiBestResult
-import com.bigbigdw.moavara.Search.BookListDataBest
-import com.bigbigdw.moavara.Search.BookListDataBestAnalyze
+import com.bigbigdw.moavara.Search.BestItemData
+import com.bigbigdw.moavara.Search.BestListAnalyze
 import com.bigbigdw.moavara.Search.EventDetailDataMining
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -292,7 +292,7 @@ object Mining {
             val Naver: Elements = doc.select(".ranking_wrap_left .ranking_list li")
             val NaverRef: MutableMap<String?, Any> = HashMap()
 
-            val books = ArrayList<BookListDataBest>()
+            val books = ArrayList<BestItemData>()
 
             for (i in Naver.indices) {
 
@@ -362,7 +362,7 @@ object Mining {
             val Naver: Elements = doc.select(".ranking_wrap_left .ranking_list li")
             val NaverRef: MutableMap<String?, Any> = HashMap()
 
-            val books = ArrayList<BookListDataBest>()
+            val books = ArrayList<BestItemData>()
             for (i in Naver.indices) {
 
                 val info3 = Naver.select(".score_area")[i].text().replace("별점", "")
@@ -438,7 +438,7 @@ object Mining {
             val Naver: Elements = doc.select(".ranking_wrap_left .ranking_list li")
             val NaverRef: MutableMap<String?, Any> = HashMap()
 
-            val books = ArrayList<BookListDataBest>()
+            val books = ArrayList<BestItemData>()
 
             for (i in Naver.indices) {
 
@@ -672,7 +672,7 @@ object Mining {
                     data.let {
 
                         val list = it
-                        val books = ArrayList<BookListDataBest>()
+                        val books = ArrayList<BestItemData>()
 
                         for (i in list.indices) {
                             val novel = list[i].novel
@@ -1288,8 +1288,8 @@ object Mining {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                     for (pickedItem in dataSnapshot.children) {
-                        val group: BookListDataBest? =
-                            pickedItem.getValue(BookListDataBest::class.java)
+                        val group: BestItemData? =
+                            pickedItem.getValue(BestItemData::class.java)
 
                         if (group != null) {
                             when (group.type) {
@@ -1332,7 +1332,7 @@ object Mining {
         JoaraRef["book_code"] = bookCode
         JoaraRef["category"] = "1"
 
-        var pickBookCodeItem: BookListDataBestAnalyze
+        var pickBookCodeItem: BestListAnalyze
 
         apiJoara.getBookDetailJoa(
             JoaraRef,
@@ -1341,7 +1341,7 @@ object Mining {
 
                     if (data.status == "1" && data.book != null) {
 
-                        pickBookCodeItem = BookListDataBestAnalyze(
+                        pickBookCodeItem = BestListAnalyze(
                             data.book.cntPageRead,
                             data.book.cntFavorite,
                             data.book.cntRecom,
@@ -1361,12 +1361,12 @@ object Mining {
 
     fun getPickNaver(bookCode: String, UID: String) {
         Thread {
-            val pickBookCodeItem: BookListDataBestAnalyze
+            val pickBookCodeItem: BestListAnalyze
 
             val doc: Document =
                 Jsoup.connect("https://novel.naver.com/webnovel/list?novelId=${bookCode}").post()
 
-            pickBookCodeItem = BookListDataBestAnalyze(
+            pickBookCodeItem = BestListAnalyze(
                 doc.select(".info_book .like").text().replace("관심", "").replace("명", ""),
                 doc.select(".grade_area em").text(),
                 doc.select(".info_book .download").text().replace("다운로드", ""),
@@ -1385,7 +1385,7 @@ object Mining {
     fun getPickKakao(bookCode: String, UID: String) {
         val apiKakao = RetrofitKaKao()
         val param: MutableMap<String?, Any> = HashMap()
-        var pickBookCodeItem = BookListDataBestAnalyze()
+        var pickBookCodeItem = BestListAnalyze()
 
         param["seriesid"] = bookCode
 
@@ -1397,7 +1397,7 @@ object Mining {
 
                     data.home?.let { it ->
 
-                        pickBookCodeItem = BookListDataBestAnalyze(
+                        pickBookCodeItem = BestListAnalyze(
                             it.page_rating_count,
                             it.page_rating_summary.replace(".0", ""),
                             it.read_count,
@@ -1418,7 +1418,7 @@ object Mining {
 
     fun getPickKakaoStage(bookCode: String, UID: String) {
         val apiKakaoStage = RetrofitKaKao()
-        var pickBookCodeItem: BookListDataBestAnalyze
+        var pickBookCodeItem: BestListAnalyze
 
         apiKakaoStage.getBestKakaoStageDetail(
             bookCode,
@@ -1426,7 +1426,7 @@ object Mining {
                 override fun onSuccess(data: KakaoStageBestBookResult) {
 
                     data.let {
-                        pickBookCodeItem = BookListDataBestAnalyze(
+                        pickBookCodeItem = BestListAnalyze(
                             it.favoriteCount,
                             it.viewCount,
                             it.visitorCount,
@@ -1446,10 +1446,10 @@ object Mining {
 
     fun getPickRidi(bookCode: String, UID: String) {
         Thread {
-            val pickBookCodeItem: BookListDataBestAnalyze
+            val pickBookCodeItem: BestListAnalyze
             val doc: Document = Jsoup.connect("https://ridibooks.com/books/${bookCode}").get()
 
-            pickBookCodeItem = BookListDataBestAnalyze(
+            pickBookCodeItem = BestListAnalyze(
                 doc.select(".metadata_writer .author_detail_link").text(),
                 doc.select(".header_info_wrap .StarRate_ParticipantCount").text(),
                 "",
@@ -1469,7 +1469,7 @@ object Mining {
     fun getPickOneStory(bookCode: String, UID: String) {
         val apiOnestory = RetrofitOnestore()
         val param: MutableMap<String?, Any> = HashMap()
-        var pickBookCodeItem: BookListDataBestAnalyze
+        var pickBookCodeItem: BestListAnalyze
 
         param["channelId"] = bookCode
         param["bookpassYn"] = "N"
@@ -1482,7 +1482,7 @@ object Mining {
 
                     data.params.let {
 
-                        pickBookCodeItem = BookListDataBestAnalyze(
+                        pickBookCodeItem = BestListAnalyze(
                             it?.ratingAvgScore ?: "",
                             it?.favoriteCount ?: "",
                             it?.pageViewTotal ?: "",
@@ -1504,7 +1504,7 @@ object Mining {
         Thread {
             val doc: Document = Jsoup.connect("https://novel.munpia.com/${bookCode}").get()
 
-            val pickBookCodeItem = BookListDataBestAnalyze(
+            val pickBookCodeItem = BestListAnalyze(
                 doc.select(".meta-etc dd").next().next()[1]?.text() ?: "",
                 doc.select(".meta-etc dd").next().next()[2]?.text() ?: "",
                 "",
@@ -1528,7 +1528,7 @@ object Mining {
 
         param["brcd"] = bookCode
         param["_"] = "1657265744728"
-        var pickBookCodeItem: BookListDataBestAnalyze
+        var pickBookCodeItem: BestListAnalyze
 
         apiToksoda.getBestDetail(
             param,
@@ -1537,7 +1537,7 @@ object Mining {
 
                     data.result?.let {
 
-                        pickBookCodeItem = BookListDataBestAnalyze(
+                        pickBookCodeItem = BestListAnalyze(
                             it.inqrCnt,
                             it.goodCnt,
                             it.intrstCnt,

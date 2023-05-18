@@ -123,7 +123,7 @@ fun RegisterStep2(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = backgroundType1)
+            .background(color = color1E1E20)
             .verticalScroll(rememberScrollState())
             .semantics { contentDescription = "Overview Screen" },
         horizontalAlignment = Alignment.CenterHorizontally
@@ -136,7 +136,7 @@ fun RegisterStep2(
         ) {
             Card(modifier = Modifier
                 .fillMaxSize(),
-                backgroundColor = backgroundType2,
+                backgroundColor = color121212,
                 shape = RoundedCornerShape(0.dp, 0.dp, 25.dp, 25.dp)
             ){
                 Column(
@@ -181,7 +181,7 @@ fun RegisterStep2(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(color = backgroundType1),
+                .background(color = color1E1E20),
             contentAlignment = Alignment.Center
         ) {
             Column(
@@ -207,7 +207,7 @@ fun RegisterStep2(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(color = backgroundType1),
+                .background(color = color1E1E20),
             contentAlignment = Alignment.BottomEnd
 
         ) {
@@ -351,7 +351,7 @@ fun RegisterStep1(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = backgroundType1)
+            .background(color = color1E1E20)
             .verticalScroll(rememberScrollState())
             .semantics { contentDescription = "Overview Screen" },
         horizontalAlignment = Alignment.CenterHorizontally
@@ -364,7 +364,7 @@ fun RegisterStep1(
         ) {
             Card(modifier = Modifier
                 .fillMaxSize(),
-                backgroundColor = backgroundType2,
+                backgroundColor = color121212,
                 shape = RoundedCornerShape(0.dp, 0.dp, 25.dp, 25.dp)
             ){
                 Column(
@@ -383,7 +383,7 @@ fun RegisterStep1(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(color = backgroundType1),
+                .background(color = color1E1E20),
             contentAlignment = Alignment.Center
         ) {
             Column(
@@ -413,7 +413,7 @@ fun RegisterStep1(
                     singleLine = true,
                     colors = TextFieldDefaults.textFieldColors(
                         backgroundColor = Color(0),
-                        textColor = textColorType1
+                        textColor = colorA7ACB7
                     )
                 )
                 Spacer(
@@ -428,7 +428,7 @@ fun RegisterStep1(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(200.dp)
-                .background(color = backgroundType1),
+                .background(color = color1E1E20),
             contentAlignment = Alignment.BottomEnd
 
         ) {

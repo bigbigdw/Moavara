@@ -7,14 +7,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 //import com.example.moavara.Search.BestLineChart
-import com.bigbigdw.moavara.Search.BookListDataBestAnalyze
+import com.bigbigdw.moavara.Search.BestListAnalyze
 import com.bigbigdw.moavara.databinding.FragmentBestDetailLineBinding
 //import com.github.mikephil.charting.data.BarEntry
 //import com.github.mikephil.charting.data.Entry
 
 class InnerFragmentBestDetailLine(
     private val platform: String,
-    private val BookItem: ArrayList<BookListDataBestAnalyze>,
+    private val BookItem: ArrayList<BestListAnalyze>,
 ) : Fragment() {
     val dateList = mutableListOf<String>()
 //    val entryList: ArrayList<Entry> = ArrayList()

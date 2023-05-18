@@ -23,7 +23,7 @@ import com.bigbigdw.moavara.DataBase.DataBaseUser
 import com.bigbigdw.moavara.Main.DialogConfirm
 import com.bigbigdw.moavara.Main.mRootRef
 import com.bigbigdw.moavara.R
-import com.bigbigdw.moavara.Search.BookListDataBest
+import com.bigbigdw.moavara.Search.BestItemData
 import com.bigbigdw.moavara.Util.applyingTextColor
 import com.bigbigdw.moavara.Util.dpToPx
 import com.bigbigdw.moavara.databinding.ItemPickNovelBinding
@@ -31,7 +31,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import java.util.*
 
 
-class AdapterPickNovel(private var context: Context, private var itemsList: ArrayList<BookListDataBest>, private var fragment: FragmentPickTabNovel, private var UserInfo : DataBaseUser, private var firebaseAnalytics: FirebaseAnalytics) :
+class AdapterPickNovel(private var context: Context, private var itemsList: ArrayList<BestItemData>, private var fragment: FragmentPickTabNovel, private var UserInfo : DataBaseUser, private var firebaseAnalytics: FirebaseAnalytics) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var memo = ""
 
@@ -503,7 +503,7 @@ class AdapterPickNovel(private var context: Context, private var itemsList: Arra
         }
     }
 
-    fun getItem(position: Int): BookListDataBest {
+    fun getItem(position: Int): BestItemData {
         return itemsList[position]
     }
 

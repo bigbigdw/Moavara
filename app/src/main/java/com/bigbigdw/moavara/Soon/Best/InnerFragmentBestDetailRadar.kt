@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.bigbigdw.moavara.Search.BookListDataBestAnalyze
+import com.bigbigdw.moavara.Search.BestListAnalyze
 import com.bigbigdw.moavara.databinding.FragmentBestdetailRadarBinding
 //import com.github.mikephil.charting.animation.Easing
 //import com.github.mikephil.charting.components.Legend
@@ -18,7 +18,7 @@ import com.bigbigdw.moavara.databinding.FragmentBestdetailRadarBinding
 //import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet
 
 class InnerFragmentBestDetailRadar(
-    BookItem: ArrayList<BookListDataBestAnalyze>,
+    BookItem: ArrayList<BestListAnalyze>,
     private var itemCount: Int,
     private val platform: String,
 ) : Fragment() {

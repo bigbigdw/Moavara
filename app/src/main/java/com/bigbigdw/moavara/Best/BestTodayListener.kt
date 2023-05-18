@@ -1,8 +1,8 @@
 package com.bigbigdw.moavara.Best
 
-import com.bigbigdw.moavara.Search.BookListDataBest
+import com.bigbigdw.moavara.Search.BestItemData
 
 
 interface BestTodayListener {
-    fun getBestTodayList(items : ArrayList<BookListDataBest>, status : Boolean = false)
+    fun getBestTodayList(items : ArrayList<BestItemData>, status : Boolean = false)
 }

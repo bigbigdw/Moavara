@@ -11,14 +11,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bigbigdw.moavara.DataBase.DataBaseUser
-import com.bigbigdw.moavara.Search.BookListDataBest
+import com.bigbigdw.moavara.Search.BestItemData
 import com.bigbigdw.moavara.databinding.ItemBooklistBestWeekendBinding
 import com.google.firebase.analytics.FirebaseAnalytics
 
 
 class AdapterBestWeekend(
     private var context : Context,
-    private var items: ArrayList<ArrayList<BookListDataBest>? >,
+    private var items: ArrayList<ArrayList<BestItemData>? >,
     private var platform : String,
     private val UserInfo: DataBaseUser,
     private val firebaseAnalytics: FirebaseAnalytics
@@ -57,7 +57,7 @@ class AdapterBestWeekend(
 
                 adapter.setOnItemClickListener(object : AdapterBestWeekendItem.OnItemClickListener {
                     override fun onItemClick(v: View?, position: Int) {
-                        val item: BookListDataBest? = adapter.getItem(position)
+                        val item: BestItemData? = adapter.getItem(position)
 
                         if(platform == "MrBlue"){
                             val intent = Intent(
@@ -115,7 +115,7 @@ class AdapterBestWeekend(
 
     }
 
-    fun getItem(position: Int): java.util.ArrayList<BookListDataBest>? {
+    fun getItem(position: Int): java.util.ArrayList<BestItemData>? {
         return items[position]
     }
 

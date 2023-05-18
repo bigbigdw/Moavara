@@ -14,9 +14,10 @@ import com.bigbigdw.moavara.DataBase.*
 import com.bigbigdw.moavara.Firebase.FirebaseWorkManager
 import com.bigbigdw.moavara.Main.mRootRef
 import com.bigbigdw.moavara.R
-import com.bigbigdw.moavara.Search.BookBestAnalyzeWeek
-import com.bigbigdw.moavara.Search.BookListDataBest
-import com.bigbigdw.moavara.Search.BookListDataBestAnalyze
+import com.bigbigdw.moavara.Search.BestListAnalyzeWeek
+import com.bigbigdw.moavara.Search.BestItemData
+import com.bigbigdw.moavara.Search.BestListAnalyze
+import com.bigbigdw.moavara.Search.BottomBestItemData
 import com.bigbigdw.moavara.Util.*
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.database.DataSnapshot
@@ -47,27 +48,43 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
     private fun reduceState(current: StateBestList, event: EventBestList): StateBestList {
         return when(event){
             EventBestList.Today -> {
-            current.copy(TodayInit = true)
-            } is EventBestList.TodayDone -> {
-                current.copy(TodayInit = false)
-            }  is EventBestList.Month -> {
-                current.copy(Month = true)
-            } is EventBestList.Week -> {
-                current.copy(Week = true)
-            } is EventBestList.InitBest -> {
-                current.copy(InitBest = event.initBest)
-            }  is EventBestList.BestToday -> {
-                current.copy(BestTodayItem = event.BestTodayItem, BestTodayItemBookCode = event.BestTodayItemBookCode)
-            } is EventBestList.Loading -> {
-                current.copy(Loading = true)
-            } is EventBestList.Loaded -> {
-                current.copy(Loading = false)
-            }  is EventBestList.isFirstPick -> {
+                current.copy(todayInit = true)
+            }
+            is EventBestList.TodayDone -> {
+                current.copy(todayInit = false)
+            }
+            is EventBestList.Month -> {
+                current.copy(month = true)
+            }
+            is EventBestList.Week -> {
+                current.copy(week = true)
+            }
+            is EventBestList.InitBest -> {
+                current.copy(initBest = event.initBest)
+            }
+            is EventBestList.BestToday -> {
+                current.copy(
+                    bestTodayItem = event.BestTodayItem,
+                    bestTodayItemBookCode = event.BestTodayItemBookCode
+                )
+            }
+            is EventBestList.Loading -> {
+                current.copy(loading = true)
+            }
+            is EventBestList.Loaded -> {
+                current.copy(loading = false)
+            }
+            is EventBestList.isFirstPick -> {
                 current.copy(isFirstPick = event.isFirstPick, isPicked = event.isPicked)
-            }   is EventBestList.bookBestAnalyzeWeek -> {
-                current.copy(BookBestAnalyzeWeek = event.bookBestAnalyzeWeek)
-            } else -> {
-                current.copy(Loading = true)
+            }
+            is EventBestList.bestListAnalyzeWeek -> {
+                current.copy(bestListAnalyzeWeek = event.bestListAnalyzeWeek)
+            }
+            is EventBestList.bottomBestItemData -> {
+                current.copy(bottomBestItemData = event.bottomBestItemData)
+            }
+            else -> {
+                current.copy(loading = true)
             }
         }
     }
@@ -98,13 +115,13 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
         val bestDao = Room.databaseBuilder(
             context,
             DBBest::class.java,
-            "Today_${type}_${state.value.InitBest.Genre}"
+            "Today_${type}_${state.value.initBest.Genre}"
         ).allowMainThreadQueries().build()
 
         val bestDaoBookCode = Room.databaseBuilder(
             context,
             DBBestBookCode::class.java,
-            "Today_${type}_${state.value.InitBest.Genre}_BookCode"
+            "Today_${type}_${state.value.initBest.Genre}_BookCode"
         ).allowMainThreadQueries().build()
 
         viewModelScope.launch {
@@ -126,22 +143,22 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
     private fun getBookListToday(
         bestDao: DBBest,
         type: String,
-        callback: (ArrayList<BookListDataBest>, Boolean) -> Unit
+        callback: (ArrayList<BestItemData>, Boolean) -> Unit
     ) {
 
-        val items = ArrayList<BookListDataBest>()
+        val items = ArrayList<BestItemData>()
 
         bestDao.bestDao().initAll()
 
-        BestRef.getBestDataToday(type, state.value.InitBest.Genre)
+        BestRef.getBestDataToday(type, state.value.initBest.Genre)
             .addListenerForSingleValueEvent(object :
                 ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                     for (postSnapshot in dataSnapshot.children) {
 
-                        val group: BookListDataBest? =
-                            postSnapshot.getValue(BookListDataBest::class.java)
+                        val group: BestItemData? =
+                            postSnapshot.getValue(BestItemData::class.java)
 
                         if (group != null) {
 
@@ -161,16 +178,16 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
     }
 
     private fun getBestTodayList(
-        items: ArrayList<BookListDataBest>,
+        items: ArrayList<BestItemData>,
         bestDaoBookCode: DBBestBookCode,
         type: String
     ) {
 
-        val bookCodeItems = ArrayList<BookListDataBestAnalyze>()
+        val bookCodeItems = ArrayList<BestListAnalyze>()
 
         bestDaoBookCode.bestDaoBookCode().initAll()
 
-        BestRef.getBookCode(type, state.value.InitBest.Genre).addListenerForSingleValueEvent(object :
+        BestRef.getBookCode(type, state.value.initBest.Genre).addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (bookCodeList in items) {
@@ -179,12 +196,12 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
 
                     if (item.childrenCount > 1) {
 
-                        val bookCodes = ArrayList<BookListDataBestAnalyze>()
+                        val bookCodes = ArrayList<BestListAnalyze>()
 
                         for(childItem in item.children){
 
-                            val group: BookListDataBestAnalyze? = childItem.getValue(
-                                BookListDataBestAnalyze::class.java)
+                            val group: BestListAnalyze? = childItem.getValue(
+                                BestListAnalyze::class.java)
 
                             if (group != null) {
                                 bookCodes.add(group)
@@ -203,9 +220,9 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
 
                     } else if (item.childrenCount.toInt() == 1) {
 
-                        val group: BookListDataBestAnalyze? =
+                        val group: BestListAnalyze? =
                             dataSnapshot.child(bookCodeList.bookCode).child(DBDate.DateMMDD())
-                                .getValue(BookListDataBestAnalyze::class.java)
+                                .getValue(BestListAnalyze::class.java)
 
                         group?.numberDiff = 0
                         group?.trophyCount = 1
@@ -232,8 +249,8 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
         val bookItem = bestDao.bestDao().getAll()
         val bookCodeItem = bestDaoBookCode.bestDaoBookCode().get()
 
-        val items = ArrayList<BookListDataBest>()
-        val bookCodeItems = ArrayList<BookListDataBestAnalyze>()
+        val items = ArrayList<BestItemData>()
+        val bookCodeItems = ArrayList<BestListAnalyze>()
 
         for(item in bookItem){
             items.add(convertRoomBookListDataBestToBookListDataBest(item))
@@ -249,11 +266,104 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
         }
     }
 
-    fun getBottomBestData(){
+    fun getBottomBestData(bestItemData : BestItemData){
+        val item = BottomBestItemData()
 
+        if(bestItemData.type == "Toksoda"){
+            item.info1 = "${bestItemData.writer} | ${bestItemData.info2}"
+
+            item.info2Title = "조회 수 : "
+            item.info2 = bestItemData.info3
+
+            item.info3Title = "선호작 수 : "
+            item.info3 = bestItemData.info5
+        } else if (bestItemData.type == "Naver" || bestItemData.type == "Naver_Today" || bestItemData.type == "Naver_Challenge") {
+            item.info1 = "${bestItemData.writer} | ${bestItemData.info2}"
+
+            item.info2Title = "별점 수 : "
+            item.info2 = bestItemData.info3.replace("별점", "")
+
+            item.info3Title = "조회 수 : "
+            item.info3 = item.info4.replace("조회", "조회 수 : ")
+
+            item.info4Title = "관심 : "
+            item.info4 = item.info5.replace("관심", "관심 : ")
+        } else if(bestItemData.type == "Kakao_Stage"){
+            item.info1 = "${bestItemData.writer} | ${bestItemData.info2}"
+
+            item.info2Title = "조회 수 : "
+            item.info2 = bestItemData.info3.replace("조회", "별점 : ")
+
+            item.info3Title = "조회 수 : "
+            item.info3 = bestItemData.info4.replace("별점", "조회 수 : ")
+
+            item.info5 = bestItemData.info1
+        } else if(bestItemData.type == "Ridi"){
+            item.info1 = "${bestItemData.writer} | ${bestItemData.info2}"
+
+            item.info2Title = "추천 수 : "
+            item.info2 = bestItemData.info3
+
+            item.info3Title = "평점 : "
+            item.info3 = bestItemData.info4
+        } else if(bestItemData.type == "OneStore"){
+            item.info1 = bestItemData.writer
+
+            item.info2Title = "조회 수 : "
+            item.info2 = bestItemData.info3.replace("별점", "별점 : ")
+
+            item.info3Title = "평점 : "
+            item.info3 = bestItemData.info4.replace("조회", "조회 수 : ")
+
+            item.info4Title = "댓글 수 : "
+            item.info4 = item.info5.replace("관심", "관심 : ")
+        } else if(bestItemData.type == "Joara" || bestItemData.type == "Joara_Premium" || bestItemData.type == "Joara_Nobless"){
+            item.info1 = "${bestItemData.writer} | ${bestItemData.info2}"
+
+            item.info2Title = "조회 수 : "
+            item.info2 = bestItemData.info3
+
+            item.info3Title = "선호작 수 : "
+            item.info3 = bestItemData.info4
+
+            item.info4Title = "추천 수 : "
+            item.info4 = item.info5
+
+            item.info5 = item.info1 ?: ""
+        } else if(bestItemData.type == "Kakao"){
+            item.info1 = "${bestItemData.writer} | ${bestItemData.info2}"
+
+            item.info2Title = "조회 수 : "
+            item.info2 = bestItemData.info3
+
+            item.info3Title = "추천 수 : "
+            item.info3 = bestItemData.info4
+
+            item.info4Title = "평점 : "
+            item.info4 = item.info5
+
+            item.info5 = item.info1
+        } else if(bestItemData.type == "Munpia"){
+            item.info1 = "${bestItemData.writer} | ${bestItemData.info2}"
+
+            item.info2Title = "조회 수 : "
+            item.info2 = bestItemData.info3
+
+            item.info3Title = "방문 수 : "
+            item.info3 = bestItemData.info4
+
+            item.info4Title = "선호작 수 : "
+            item.info4 = item.info5
+
+            item.info5 = item.info1
+        }
+
+        viewModelScope.launch {
+            events.send(EventBestList.bottomBestItemData(bottomBestItemData = item))
+        }
     }
 
-    fun BottomDialogBestPick(isPicked : Boolean, UserInfo: DataBaseUser, item: BookListDataBest?, type : String, context: Context){
+    fun BottomDialogBestPick(isPicked : Boolean, UserInfo: DataBaseUser, item: BestItemData?, type : String, context: Context){
 
         val Novel = mRootRef.child("User").child(UserInfo.UID).child("Novel")
 
@@ -302,7 +412,7 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
                 FirebaseMessaging.getInstance().subscribeToTopic(UserInfo.UID)
 
                 Novel.child("book").child(item?.bookCode ?: "").setValue(group)
-                Novel.child("bookCode").child(item?.bookCode ?: "").setValue(state.value.BestTodayItemBookCode)
+                Novel.child("bookCode").child(item?.bookCode ?: "").setValue(state.value.bestTodayItemBookCode)
                 mRootRef.child("User").child(UserInfo.UID).child("Mining").setValue(true)
 
                 val bundle = Bundle()
@@ -312,7 +422,7 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
 
             } else {
                 Novel.child("book").child(item?.bookCode ?: "").setValue(group)
-                Novel.child("bookCode").child(item?.bookCode ?: "").setValue(state.value.BestTodayItemBookCode)
+                Novel.child("bookCode").child(item?.bookCode ?: "").setValue(state.value.bestTodayItemBookCode)
 
                 val bundle = Bundle()
                 bundle.putString("PICK_NOVEL_PLATFORM", item?.type)
@@ -323,10 +433,10 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
         }
     }
 
-    fun BottomDialogBestGetRank(UserInfo: DataBaseUser, item: BookListDataBest?,){
+    fun BottomDialogBestGetRank(UserInfo: DataBaseUser, item: BestItemData?,){
 
-        val bookCodeItems = ArrayList<BookListDataBestAnalyze>()
-        val ArrayWeekItem  = ArrayList<BookBestAnalyzeWeek>()
+        val bookCodeItems = ArrayList<BestListAnalyze>()
+        val ArrayWeekItem  = ArrayList<BestListAnalyzeWeek>()
 
         if (item != null) {
             BestRef.getBookCode(item.type, UserInfo.Genre).child(item.bookCode)
@@ -335,8 +445,8 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                         for (keyItem in dataSnapshot.children) {
-                            val group: BookListDataBestAnalyze? =
-                                keyItem.getValue(BookListDataBestAnalyze::class.java)
+                            val group: BestListAnalyze? =
+                                keyItem.getValue(BestListAnalyze::class.java)
 
                             if (group != null) {
                                 bookCodeItems.add(group)
@@ -346,7 +456,7 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
 
                                 if (itemDate != null) {
 
-                                    val WeekItem  = BookBestAnalyzeWeek(
+                                    val WeekItem  = BestListAnalyzeWeek(
                                         isVisible = true,
                                         trophyImage = if (itemDate.date == DBDate.DayInt()) {
                                             R.drawable.ic_best_gn_24px
@@ -361,30 +471,37 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
                                         when {
                                             itemDate.date == 1 -> {
                                                 WeekItem.date = 1
+                                                WeekItem.dateString = "일"
                                                 ArrayWeekItem.add(WeekItem)
                                             }
                                             itemDate.date == 2 -> {
                                                 WeekItem.date = 2
+                                                WeekItem.dateString = "월"
                                                 ArrayWeekItem.add(WeekItem)
                                             }
                                             itemDate.date == 3 -> {
                                                 WeekItem.date = 3
+                                                WeekItem.dateString = "화"
                                                 ArrayWeekItem.add(WeekItem)
                                             }
                                             itemDate.date == 4 -> {
                                                 WeekItem.date = 4
+                                                WeekItem.dateString = "수"
                                                 ArrayWeekItem.add(WeekItem)
                                             }
                                             itemDate.date == 5 -> {
                                                 WeekItem.date = 5
+                                                WeekItem.dateString = "목"
                                                 ArrayWeekItem.add(WeekItem)
                                             }
                                             itemDate.date == 6 -> {
                                                 WeekItem.date = 6
+                                                WeekItem.dateString = "금"
                                                 ArrayWeekItem.add(WeekItem)
                                             }
                                             itemDate.date == 7 -> {
                                                 WeekItem.date = 7
+                                                WeekItem.dateString = "토"
                                                 ArrayWeekItem.add(WeekItem)
                                             }
                                         }
@@ -398,11 +515,11 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
         }
 
         viewModelScope.launch {
-            events.send(EventBestList.bookBestAnalyzeWeek(bookBestAnalyzeWeek = ArrayWeekItem))
+            events.send(EventBestList.bestListAnalyzeWeek(bestListAnalyzeWeek = ArrayWeekItem))
         }
     }
 
-    fun BottomDialogToBestDetail(activity : ComponentActivity, item: BookListDataBest, platform : String, pos : Int){
+    fun BottomDialogToBestDetail(activity : ComponentActivity, item: BestItemData, platform : String, pos : Int){
         val bundle = Bundle()
         bundle.putString("BEST_FROM", "BEST")
         Firebase.analytics.logEvent("BEST_ActivityBestDetail", bundle)

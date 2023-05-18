@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.bigbigdw.moavara.DataBase.*
-import com.bigbigdw.moavara.Search.BookListDataBest
-import com.bigbigdw.moavara.Search.BookListDataBestAnalyze
+import com.bigbigdw.moavara.Search.BestItemData
+import com.bigbigdw.moavara.Search.BestListAnalyze
 import com.bigbigdw.moavara.Util.BestRef
 import com.bigbigdw.moavara.Util.DBDate
 import com.bigbigdw.moavara.databinding.FragmentBestTabTodayBinding
@@ -26,8 +26,8 @@ class FragmentBestTabToday(private val platform: String, private val UserInfo: D
 
     private var adapterToday: AdapterBestToday? = null
 
-    private val items = ArrayList<BookListDataBest>()
-    private val bookCodeItems = ArrayList<BookListDataBestAnalyze>()
+    private val items = ArrayList<BestItemData>()
+    private val bookCodeItems = ArrayList<BestListAnalyze>()
     var status = ""
     lateinit var root: View
     private var _binding: FragmentBestTabTodayBinding? = null
@@ -76,7 +76,7 @@ class FragmentBestTabToday(private val platform: String, private val UserInfo: D
 
         adapterToday?.setOnItemClickListener(object : AdapterBestToday.OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
-                val item: BookListDataBest? = adapterToday?.getItem(position)
+                val item: BestItemData? = adapterToday?.getItem(position)
 
                 val bundle = Bundle()
                 bundle.putString("BEST_PLATFORM", item?.type)
@@ -109,12 +109,12 @@ class FragmentBestTabToday(private val platform: String, private val UserInfo: D
 
                 for (postSnapshot in dataSnapshot.children) {
 
-                    val group: BookListDataBest? =
-                        postSnapshot.getValue(BookListDataBest::class.java)
+                    val group: BestItemData? =
+                        postSnapshot.getValue(BestItemData::class.java)
 
                     if (group != null) {
 
-                        items.add(BookListDataBest(
+                        items.add(BestItemData(
                             group.writer,
                             group.title,
                             group.bookImg,
@@ -161,7 +161,7 @@ class FragmentBestTabToday(private val platform: String, private val UserInfo: D
         })
     }
 
-    override fun getBestTodayList(items: ArrayList<BookListDataBest>, status: Boolean) {
+    override fun getBestTodayList(items: ArrayList<BestItemData>, status: Boolean) {
 
         bestDaoBookCode?.bestDaoBookCode()?.initAll()
 
@@ -174,15 +174,15 @@ class FragmentBestTabToday(private val platform: String, private val UserInfo: D
 
                     if (item.childrenCount > 1) {
 
-                        val bookCodes = ArrayList<BookListDataBestAnalyze>()
+                        val bookCodes = ArrayList<BestListAnalyze>()
 
                         for(childItem in item.children){
 
-                            val group: BookListDataBestAnalyze? = childItem.getValue(BookListDataBestAnalyze::class.java)
+                            val group: BestListAnalyze? = childItem.getValue(BestListAnalyze::class.java)
 
                             if (group != null) {
                                 bookCodes.add(
-                                    BookListDataBestAnalyze(
+                                    BestListAnalyze(
                                         group.info1,
                                         group.info2,
                                         group.info3,
@@ -199,7 +199,7 @@ class FragmentBestTabToday(private val platform: String, private val UserInfo: D
                         val moreLastItem = bookCodes[bookCodes.size - 2]
 
                         bookCodeItems.add(
-                            BookListDataBestAnalyze(
+                            BestListAnalyze(
                                 lastItem.info1,
                                 lastItem.info2,
                                 lastItem.info3,
@@ -226,13 +226,13 @@ class FragmentBestTabToday(private val platform: String, private val UserInfo: D
 
                     } else if (item.childrenCount.toInt() == 1) {
 
-                        val group: BookListDataBestAnalyze? =
+                        val group: BestListAnalyze? =
                             dataSnapshot.child(bookCodeList.bookCode).child(DBDate.DateMMDD())
-                                .getValue(BookListDataBestAnalyze::class.java)
+                                .getValue(BestListAnalyze::class.java)
 
                         if (group != null) {
                             bookCodeItems.add(
-                                BookListDataBestAnalyze(
+                                BestListAnalyze(
                                     group.info1,
                                     group.info2,
                                     group.info3,
@@ -279,7 +279,7 @@ class FragmentBestTabToday(private val platform: String, private val UserInfo: D
 
         if (bookItem != null) {
             for(item in bookItem){
-                items.add(BookListDataBest(
+                items.add(BestItemData(
                     item.writer,
                     item.title,
                     item.bookImg,
@@ -301,7 +301,7 @@ class FragmentBestTabToday(private val platform: String, private val UserInfo: D
         if (bookCodeItem != null) {
             for(item in bookCodeItem){
                 bookCodeItems.add(
-                    BookListDataBestAnalyze(
+                    BestListAnalyze(
                         item.info1,
                         item.info2,
                         item.info3,

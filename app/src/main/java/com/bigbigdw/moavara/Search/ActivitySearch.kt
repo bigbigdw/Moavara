@@ -34,7 +34,7 @@ class ActivitySearch : AppCompatActivity() {
     private lateinit var binding: ActivitySearchBinding
 
     private var adapter: AdapterBookSearch? = null
-    private val searchItems = ArrayList<BookListDataBest>()
+    private val searchItems = ArrayList<BestItemData>()
     var page = 1
     var linearLayoutManager: LinearLayoutManager? = null
     private var joaraOffset = 20
@@ -169,7 +169,7 @@ class ActivitySearch : AppCompatActivity() {
 
             adapter?.setOnItemClickListener(object : AdapterBookSearch.OnItemClickListener {
                 override fun onItemClick(v: View?, position: Int) {
-                    val item: BookListDataBest? = adapter?.getItem(position)
+                    val item: BestItemData? = adapter?.getItem(position)
 
                     if(item?.type == "MrBlue"){
                         val intent = Intent(
@@ -233,7 +233,7 @@ class ActivitySearch : AppCompatActivity() {
                     if (books != null) {
                         for (i in books.indices) {
                             searchItems.add(
-                                BookListDataBest(
+                                BestItemData(
                                     books[i].writer_name,
                                     books[i].subject,
                                     books[i].book_img.replace("http://","https://"),
@@ -253,7 +253,7 @@ class ActivitySearch : AppCompatActivity() {
                         }
 
                         if (type == "Keyword") {
-                            val cmpAsc: Comparator<BookListDataBest> =
+                            val cmpAsc: Comparator<BestItemData> =
                                 Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
                             Collections.sort(searchItems, cmpAsc)
                         }
@@ -303,7 +303,7 @@ class ActivitySearch : AppCompatActivity() {
                         if (items != null) {
                             for (j in items.indices) {
                                 searchItems.add(
-                                    BookListDataBest(
+                                    BestItemData(
                                         items[j].author,
                                         items[j].title,
                                         "https://dn-img-page.kakao.com/download/resource?kid=${items[j].image_url}",
@@ -325,7 +325,7 @@ class ActivitySearch : AppCompatActivity() {
                     }
 
                     if (type == "Keyword") {
-                        val cmpAsc: Comparator<BookListDataBest> =
+                        val cmpAsc: Comparator<BestItemData> =
                             Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
                         Collections.sort(searchItems, cmpAsc)
                     }
@@ -365,7 +365,7 @@ class ActivitySearch : AppCompatActivity() {
 
                     for (items in results) {
                         searchItems.add(
-                            BookListDataBest(
+                            BestItemData(
                                 items.nickname.name,
                                 items.title,
                                 items.thumbnail.url,
@@ -385,7 +385,7 @@ class ActivitySearch : AppCompatActivity() {
                     }
 
                     if (type == "Keyword") {
-                        val cmpAsc: Comparator<BookListDataBest> =
+                        val cmpAsc: Comparator<BestItemData> =
                             Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
                         Collections.sort(searchItems, cmpAsc)
                     }
@@ -437,7 +437,7 @@ class ActivitySearch : AppCompatActivity() {
 
                 for (items in Naver) {
                     searchItems.add(
-                        BookListDataBest(
+                        BestItemData(
                             items.select(".league").text(),
                             items.select(".ellipsis").text(),
                             items.select("div img").attr("src"),
@@ -457,7 +457,7 @@ class ActivitySearch : AppCompatActivity() {
                 }
 
                 if (type == "Keyword") {
-                    val cmpAsc: Comparator<BookListDataBest> =
+                    val cmpAsc: Comparator<BestItemData> =
                         Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
                     Collections.sort(searchItems, cmpAsc)
                 }
@@ -504,7 +504,7 @@ class ActivitySearch : AppCompatActivity() {
                     } catch (e : IndexOutOfBoundsException){}
 
                     searchItems.add(
-                        BookListDataBest(
+                        BestItemData(
                             items.select(".author").text(),
                             items.select(".detail a").text(),
                             "https://${items.select(".thumb img").attr("src")}",
@@ -524,7 +524,7 @@ class ActivitySearch : AppCompatActivity() {
                 }
 
                 if (type == "Keyword") {
-                    val cmpAsc: Comparator<BookListDataBest> =
+                    val cmpAsc: Comparator<BestItemData> =
                         Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
                     Collections.sort(searchItems, cmpAsc)
                 }
@@ -572,7 +572,7 @@ class ActivitySearch : AppCompatActivity() {
                             for (i in it.indices) {
 
                                 searchItems.add(
-                                    BookListDataBest(
+                                    BestItemData(
                                         it[i].AUTHOR,
                                         it[i].BOOK_NM,
                                         "https:${it[i].IMG_PATH}",
@@ -592,7 +592,7 @@ class ActivitySearch : AppCompatActivity() {
                             }
 
                             if (type == "Keyword") {
-                                val cmpAsc: Comparator<BookListDataBest> =
+                                val cmpAsc: Comparator<BestItemData> =
                                     Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
                                 Collections.sort(searchItems, cmpAsc)
                             }
@@ -643,7 +643,7 @@ class ActivitySearch : AppCompatActivity() {
                     }
 
                     searchItems.add(
-                        BookListDataBest(
+                        BestItemData(
                             items.select(".authorname").text(),
                             items.select(".tit").text(),
                             bookImg,
@@ -663,7 +663,7 @@ class ActivitySearch : AppCompatActivity() {
                 }
 
                 if (type == "Keyword") {
-                    val cmpAsc: Comparator<BookListDataBest> =
+                    val cmpAsc: Comparator<BestItemData> =
                         Comparator { o1, o2 -> o1.title.compareTo(o2.title) }
                     Collections.sort(searchItems, cmpAsc)
                 }

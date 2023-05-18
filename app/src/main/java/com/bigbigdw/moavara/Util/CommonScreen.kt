@@ -118,7 +118,7 @@ fun MoavaraAlert(isShow: () -> Unit, onFetchClick: () -> Unit, btnLeft : String,
 
                 Card(modifier = Modifier
                     .wrapContentSize(),
-                    backgroundColor = backgroundType5,
+                    backgroundColor = color3E424B,
                     shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp)
                 ){
 
@@ -146,7 +146,7 @@ fun MoavaraAlert(isShow: () -> Unit, onFetchClick: () -> Unit, btnLeft : String,
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
                             Button(
-                                colors = ButtonDefaults.buttonColors(backgroundColor = backgroundType6),
+                                colors = ButtonDefaults.buttonColors(backgroundColor = color6E7686),
                                 onClick = { isShow() },
                                 modifier = Modifier
                                     .weight(1f)
@@ -215,7 +215,7 @@ fun BackOnPressed() {
 @Composable
 fun LoadingScreen() {
     Box(
-        modifier = Modifier.background(color = backgroundType1).fillMaxSize()
+        modifier = Modifier.background(color = color1E1E20).fillMaxSize()
     ) {
         Column(
             modifier = Modifier
@@ -238,7 +238,7 @@ fun LoadingScreen() {
                 text = "로딩 중...",
                 fontSize = 15.sp,
                 textAlign = TextAlign.Center,
-                color = textColorType1,
+                color = colorA7ACB7,
                 fontFamily = pretendardvariable
             )
             Spacer(modifier = Modifier

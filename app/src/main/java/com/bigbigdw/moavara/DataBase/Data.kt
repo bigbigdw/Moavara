@@ -18,13 +18,13 @@ class BestKeyword(
 )
 
 class BestRankListWeekend(
-    var sun: BookListDataBestAnalyze? = null,
-    var mon: BookListDataBestAnalyze? = null,
-    var tue: BookListDataBestAnalyze? = null,
-    var wed: BookListDataBestAnalyze? = null,
-    var thur: BookListDataBestAnalyze? = null,
-    var fri: BookListDataBestAnalyze? = null,
-    var sat: BookListDataBestAnalyze? = null
+    var sun: BestListAnalyze? = null,
+    var mon: BestListAnalyze? = null,
+    var tue: BestListAnalyze? = null,
+    var wed: BestListAnalyze? = null,
+    var thur: BestListAnalyze? = null,
+    var fri: BestListAnalyze? = null,
+    var sat: BestListAnalyze? = null
 )
 
 data class BestTodayAverage (
@@ -34,7 +34,7 @@ data class BestTodayAverage (
     var info4: String = "",
 )
 
-data class BookListDataBestAnalyze (
+data class BestListAnalyze (
     var info1: String = "",
     var info2: String = "",
     var info3: String = "",
@@ -45,11 +45,12 @@ data class BookListDataBestAnalyze (
     var trophyCount: Int = 0,
 )
 
-data class BookBestAnalyzeWeek (
+data class BestListAnalyzeWeek (
     var isVisible: Boolean = false,
     var trophyImage : Int = 0,
     var number : Int = 0,
-    var date : Int = 0
+    var date : Int = 0,
+    var dateString : String = ""
 )
 
 data class AnayzeData(
@@ -87,7 +88,7 @@ data class BookListDataBestInfo(
     var type: String = "",
 )
 
-data class BookListDataBest (
+data class BestItemData (
     var writer: String = "",
     var title: String = "",
     var bookImg: String = "",
@@ -104,14 +105,30 @@ data class BookListDataBest (
     var memo: String = "",
 )
 
+data class BottomBestItemData (
+    var title: String = "작품명",
+    var bookImg: String = "",
+    var info1: String = "작품 설명1 | 작품 설명1",
+    var info2Title: String = "작품 설명2 : ",
+    var info2: String = "작품 설명2",
+    var info3Title: String = "작품 설명3 :",
+    var info3: String = "작품 설명3",
+    var info4Title: String = "작품 설명4 : ",
+    var info4: String = "작품 설명4",
+    var info5: String = "작품 설명5",
+    var bookCode: String = "",
+    var type: String = "",
+    var number: Int = 0,
+)
+
 class BookListDataBestWeekend(
-    var sun: BookListDataBest? = null,
-    var mon: BookListDataBest? = null,
-    var tue: BookListDataBest? = null,
-    var wed: BookListDataBest? = null,
-    var thur: BookListDataBest? = null,
-    var fri: BookListDataBest? = null,
-    var sat: BookListDataBest? = null,
+    var sun: BestItemData? = null,
+    var mon: BestItemData? = null,
+    var tue: BestItemData? = null,
+    var wed: BestItemData? = null,
+    var thur: BestItemData? = null,
+    var fri: BestItemData? = null,
+    var sat: BestItemData? = null,
 )
 
 class BookListDataBestMonthNum(

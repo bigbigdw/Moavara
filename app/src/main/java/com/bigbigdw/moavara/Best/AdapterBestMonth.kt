@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bigbigdw.moavara.Search.BookListDataBest
+import com.bigbigdw.moavara.Search.BestItemData
 import com.bigbigdw.moavara.Search.BookListDataBestMonthNum
 import com.bigbigdw.moavara.Search.BookListDataBestWeekend
 import com.bigbigdw.moavara.Util.DBDate
@@ -255,7 +255,7 @@ class AdapterBestMonth(
         notifyDataSetChanged()
     }
 
-    private fun isSelectBook(items: BookListDataBest?, llayout: LinearLayout) {
+    private fun isSelectBook(items: BestItemData?, llayout: LinearLayout) {
         if (selected != "" && getSelectedBook() != items?.bookCode) {
             llayout.visibility = View.VISIBLE
         } else {

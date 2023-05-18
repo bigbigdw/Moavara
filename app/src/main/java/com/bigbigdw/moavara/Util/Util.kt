@@ -7,8 +7,8 @@ import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
 import com.bigbigdw.moavara.DataBase.RoomBookListDataBest
 import com.bigbigdw.moavara.DataBase.RoomBookListDataBestAnalyze
-import com.bigbigdw.moavara.Search.BookListDataBest
-import com.bigbigdw.moavara.Search.BookListDataBestAnalyze
+import com.bigbigdw.moavara.Search.BestItemData
+import com.bigbigdw.moavara.Search.BestListAnalyze
 import com.bigbigdw.moavara.Search.BookListDataBestMonthNum
 import com.bigbigdw.moavara.Search.TrophyInfo
 import com.google.firebase.database.DataSnapshot
@@ -521,7 +521,7 @@ fun savePreferences(activity: ComponentActivity, key : String, value: String) {
     editor.apply()
 }
 
-fun convertBookListDataBestToRoomBookListDataBest(group: BookListDataBest) : RoomBookListDataBest{
+fun convertBookListDataBestToRoomBookListDataBest(group: BestItemData) : RoomBookListDataBest{
 
     val result = RoomBookListDataBest(
         group.writer,
@@ -543,9 +543,9 @@ fun convertBookListDataBestToRoomBookListDataBest(group: BookListDataBest) : Roo
     return result
 }
 
-fun convertRoomBookListDataBestToBookListDataBest (group: RoomBookListDataBest) : BookListDataBest{
+fun convertRoomBookListDataBestToBookListDataBest (group: RoomBookListDataBest) : BestItemData{
 
-    val result = BookListDataBest(
+    val result = BestItemData(
         group.writer,
         group.title,
         group.bookImg,
@@ -565,7 +565,7 @@ fun convertRoomBookListDataBestToBookListDataBest (group: RoomBookListDataBest) 
     return result
 }
 
-fun convertBookListDataBestAnalyzeToRoomBookListDataBestAnalyze(group: BookListDataBestAnalyze) : RoomBookListDataBestAnalyze {
+fun convertBookListDataBestAnalyzeToRoomBookListDataBestAnalyze(group: BestListAnalyze) : RoomBookListDataBestAnalyze {
 
     val result = RoomBookListDataBestAnalyze(
         group.info1,
@@ -581,9 +581,9 @@ fun convertBookListDataBestAnalyzeToRoomBookListDataBestAnalyze(group: BookListD
     return result
 }
 
-fun convertRoomBookListDataBestAnalyzeToBookListDataBestAnalyze(group: RoomBookListDataBestAnalyze) : BookListDataBestAnalyze {
+fun convertRoomBookListDataBestAnalyzeToBookListDataBestAnalyze(group: RoomBookListDataBestAnalyze) : BestListAnalyze {
 
-    val result = BookListDataBestAnalyze(
+    val result = BestListAnalyze(
         group.info1,
         group.info2,
         group.info3,

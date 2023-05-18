@@ -1,19 +1,21 @@
 package com.bigbigdw.moavara.Best.intent
 
 import com.bigbigdw.moavara.DataBase.DataBaseUser
-import com.bigbigdw.moavara.Search.BookBestAnalyzeWeek
-import com.bigbigdw.moavara.Search.BookListDataBest
-import com.bigbigdw.moavara.Search.BookListDataBestAnalyze
+import com.bigbigdw.moavara.Search.BestListAnalyzeWeek
+import com.bigbigdw.moavara.Search.BestItemData
+import com.bigbigdw.moavara.Search.BestListAnalyze
+import com.bigbigdw.moavara.Search.BottomBestItemData
 
 data class StateBestList(
-    val InitBest: DataBaseUser = DataBaseUser(),
-    val BestTodayItem: ArrayList<BookListDataBest> = ArrayList<BookListDataBest>(),
-    val BestTodayItemBookCode: ArrayList<BookListDataBestAnalyze> = ArrayList<BookListDataBestAnalyze>(),
-    val TodayInit: Boolean = true,
-    val Week: Boolean = false,
-    val Month: Boolean = false,
-    val Loading: Boolean = true,
+    val initBest: DataBaseUser = DataBaseUser(),
+    val bestTodayItem: ArrayList<BestItemData> = ArrayList(),
+    val bestTodayItemBookCode: ArrayList<BestListAnalyze> = ArrayList(),
+    val todayInit: Boolean = true,
+    val week: Boolean = false,
+    val month: Boolean = false,
+    val loading: Boolean = true,
     val isFirstPick: Boolean = false,
     val isPicked: Boolean = false,
-    val BookBestAnalyzeWeek: ArrayList<BookBestAnalyzeWeek> = ArrayList(),
+    val bestListAnalyzeWeek: ArrayList<BestListAnalyzeWeek> = ArrayList(),
+    val bottomBestItemData: BottomBestItemData = BottomBestItemData(),
 )

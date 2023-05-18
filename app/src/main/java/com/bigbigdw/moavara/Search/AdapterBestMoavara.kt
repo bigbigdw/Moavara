@@ -8,8 +8,8 @@ import com.bumptech.glide.Glide
 import com.bigbigdw.moavara.databinding.ItemSearchmoavaraBinding
 
 class AdapterBestMoavara(
-    private var holder: ArrayList<BookListDataBest>,
-    private var searchHolder: ArrayList<BookListDataBest>
+    private var holder: ArrayList<BestItemData>,
+    private var searchHolder: ArrayList<BestItemData>
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -57,7 +57,7 @@ class AdapterBestMoavara(
 
     fun search(keyword : String){
 
-        val newHolder = ArrayList<BookListDataBest>()
+        val newHolder = ArrayList<BestItemData>()
 
         for(item in holder){
             if(item.title.contains(keyword)){
@@ -88,7 +88,7 @@ class AdapterBestMoavara(
 
     }
 
-    fun getItem(position: Int): BookListDataBest {
+    fun getItem(position: Int): BestItemData {
         return searchHolder[position]
     }
 
