@@ -24,9 +24,9 @@ import com.bigbigdw.moavara.Firebase.FirebaseWorkManager
 import com.bigbigdw.moavara.Main.mRootRef
 import com.bigbigdw.moavara.R
 import com.bigbigdw.moavara.Retrofit.*
-import com.bigbigdw.moavara.Search.BestType
-import com.bigbigdw.moavara.Search.BestItemData
-import com.bigbigdw.moavara.Search.BestListAnalyze
+import com.bigbigdw.moavara.DataBase.BestType
+import com.bigbigdw.moavara.DataBase.BestItemData
+import com.bigbigdw.moavara.DataBase.BestListAnalyze
 import com.bigbigdw.moavara.Util.*
 import com.bigbigdw.moavara.databinding.ActivityBestDetailBinding
 import com.google.android.material.tabs.TabLayout

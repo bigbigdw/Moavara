@@ -11,7 +11,7 @@ import androidx.room.Room
 import com.bigbigdw.moavara.DataBase.DBUser
 import com.bigbigdw.moavara.DataBase.DataBaseUser
 import com.bigbigdw.moavara.R
-import com.bigbigdw.moavara.Search.BestType
+import com.bigbigdw.moavara.DataBase.BestType
 import com.bigbigdw.moavara.Util.BestRef
 import com.bigbigdw.moavara.databinding.FragmentBestBinding
 import com.google.android.material.tabs.TabLayout

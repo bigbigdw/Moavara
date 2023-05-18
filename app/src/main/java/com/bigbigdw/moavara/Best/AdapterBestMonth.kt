@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bigbigdw.moavara.Search.BestItemData
-import com.bigbigdw.moavara.Search.BookListDataBestMonthNum
-import com.bigbigdw.moavara.Search.BookListDataBestWeekend
+import com.bigbigdw.moavara.DataBase.BestItemData
+import com.bigbigdw.moavara.DataBase.BookListDataBestMonthNum
+import com.bigbigdw.moavara.DataBase.BookListDataBestWeekend
 import com.bigbigdw.moavara.Util.DBDate
 import com.bigbigdw.moavara.Util.DBDate.getMonthDates
 import com.bigbigdw.moavara.Util.dpToPx

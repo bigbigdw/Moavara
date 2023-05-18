@@ -11,7 +11,7 @@ import com.bigbigdw.moavara.DataBase.DBUser
 import com.bigbigdw.moavara.DataBase.DataBaseUser
 import com.bigbigdw.moavara.Main.*
 import com.bigbigdw.moavara.Main.Model.StateLogin
-import com.bigbigdw.moavara.Search.UserInfo
+import com.bigbigdw.moavara.DataBase.UserInfo
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult

@@ -77,7 +77,7 @@ fun RegisterHead(state: StateRegister, getter: DataBaseUser) {
             text = "모아바라에 오신것을 환영합니다.",
             fontSize = 14.sp,
             textAlign = TextAlign.Center,
-            color = textColorType3,
+            color = colorEDE6FD,
             fontFamily = pretendardvariable
         )
     } else {
@@ -88,13 +88,13 @@ fun RegisterHead(state: StateRegister, getter: DataBaseUser) {
         ) {
             Text(
                 text = getter.Nickname,
-                color = colorPrimary,
+                color = color844DF3,
                 fontSize = 18.sp,
                 textDecoration = TextDecoration.Underline
             )
             Text(
                 text = "님 환영합니다.",
-                color = textColorType3,
+                color = colorEDE6FD,
                 fontSize = 18.sp
             )
         }
@@ -157,13 +157,13 @@ fun RegisterStep2(
                     ) {
                         Text(
                             text = "장르",
-                            color = colorPrimary,
+                            color = color844DF3,
                             fontSize = 18.sp,
                             textDecoration = TextDecoration.Underline
                         )
                         Text(
                             text = "를 선택해주세요",
-                            color = textColorType3,
+                            color = colorEDE6FD,
                             fontSize = 18.sp
                         )
 
@@ -219,7 +219,7 @@ fun RegisterStep2(
                     colors = if (getter.Genre.isEmpty()) {
                         ButtonDefaults.buttonColors(backgroundColor = backgroundType3)
                     } else {
-                        ButtonDefaults.buttonColors(backgroundColor = colorPrimary)
+                        ButtonDefaults.buttonColors(backgroundColor = color844DF3)
                     },
                     onClick = if (getter.Genre.isEmpty()) {
                         onStep2Error
@@ -232,7 +232,7 @@ fun RegisterStep2(
                     shape = RoundedCornerShape(0.dp)
 
                 ) {
-                    Text(text = "다음으로", textAlign = TextAlign.Center, color = textColorType3, fontSize = 20.sp, fontFamily = pretendardvariable)
+                    Text(text = "다음으로", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 20.sp, fontFamily = pretendardvariable)
                 }
             }
         }
@@ -252,13 +252,13 @@ fun GenreButtons(
             .padding(24.dp, 0.dp)
             .height(48.dp),
         border = if(getter.Genre == "FANTASY"){
-            BorderStroke(width = 1.dp, color = colorPrimary)
+            BorderStroke(width = 1.dp, color = color844DF3)
         } else {
             null
         },
         shape = RoundedCornerShape(50.dp)
     ) {
-        Text(text = "판타지", textAlign = TextAlign.Center, color = textColorType3, fontSize = 16.sp, fontFamily = pretendardvariable)
+        Text(text = "판타지", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
     }
 
     Spacer(
@@ -275,13 +275,13 @@ fun GenreButtons(
             .padding(24.dp, 0.dp)
             .height(48.dp),
         border = if(getter.Genre == "ROMANCE"){
-            BorderStroke(width = 1.dp, color = colorPrimary)
+            BorderStroke(width = 1.dp, color = color844DF3)
         } else {
             null
         },
         shape = RoundedCornerShape(50.dp)
     ) {
-        Text(text = "로맨스", textAlign = TextAlign.Center, color = textColorType3, fontSize = 16.sp, fontFamily = pretendardvariable)
+        Text(text = "로맨스", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
     }
 
     Spacer(
@@ -298,13 +298,13 @@ fun GenreButtons(
             .padding(24.dp, 0.dp)
             .height(48.dp),
         border = if(getter.Genre == "ALL"){
-            BorderStroke(width = 1.dp, color = colorPrimary)
+            BorderStroke(width = 1.dp, color = color844DF3)
         } else {
             null
         },
         shape = RoundedCornerShape(50.dp)
     ) {
-        Text(text = "장르무관", textAlign = TextAlign.Center, color = textColorType3, fontSize = 16.sp, fontFamily = pretendardvariable)
+        Text(text = "장르무관", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
     }
 
     Spacer(
@@ -321,13 +321,13 @@ fun GenreButtons(
             .padding(24.dp, 0.dp)
             .height(48.dp),
         border = if(getter.Genre == "BL"){
-            BorderStroke(width = 1.dp, color = colorPrimary)
+            BorderStroke(width = 1.dp, color = color844DF3)
         } else {
             null
         },
         shape = RoundedCornerShape(50.dp)
     ) {
-        Text(text = "BL", textAlign = TextAlign.Center, color = textColorType3, fontSize = 16.sp, fontFamily = pretendardvariable)
+        Text(text = "BL", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
     }
 }
 @Composable
@@ -406,7 +406,7 @@ fun RegisterStep1(
                             text = "닉네임을 입력해 주세요",
                             fontSize = 14.sp,
                             textAlign = TextAlign.Center,
-                            color = textColorType3,
+                            color = colorEDE6FD,
                             fontFamily = pretendardvariable
                         )
                     },
@@ -441,7 +441,7 @@ fun RegisterStep1(
                     colors = if (getter.Nickname.isEmpty()) {
                         ButtonDefaults.buttonColors(backgroundColor = backgroundType3)
                     } else {
-                        ButtonDefaults.buttonColors(backgroundColor = colorPrimary)
+                        ButtonDefaults.buttonColors(backgroundColor = color844DF3)
                     },
                     onClick = if (getter.Nickname.isEmpty()) {
                         onStep1Error
@@ -454,7 +454,7 @@ fun RegisterStep1(
                     shape = RoundedCornerShape(0.dp)
 
                 ) {
-                    Text(text = "다음으로", textAlign = TextAlign.Center, color = textColorType3, fontSize = 20.sp, fontFamily = pretendardvariable)
+                    Text(text = "다음으로", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 20.sp, fontFamily = pretendardvariable)
                 }
             }
         }
@@ -472,13 +472,13 @@ fun RegisterAlert(getter: DataBaseUser){
     ) {
         Text(
             text = "회원정보",
-            color = colorPrimary,
+            color = color844DF3,
             fontSize = 16.sp,
             textDecoration = TextDecoration.Underline
         )
         Text(
             text = "를 확인해 주세요.",
-            color = textColorType3,
+            color = colorEDE6FD,
             fontSize = 16.sp
         )
     }
@@ -496,12 +496,12 @@ fun RegisterAlert(getter: DataBaseUser){
     ) {
         Text(
             text = "닉네임 : ",
-            color = textColorType3,
+            color = colorEDE6FD,
             fontSize = 14.sp
         )
         Text(
             text = getter.Nickname,
-            color = textColorType3,
+            color = colorEDE6FD,
             fontSize = 14.sp
         )
     }
@@ -536,12 +536,12 @@ fun RegisterAlert(getter: DataBaseUser){
     ) {
         Text(
             text = "선호장르 : ",
-            color = textColorType3,
+            color = colorEDE6FD,
             fontSize = 14.sp
         )
         Text(
             text = genre,
-            color = textColorType3,
+            color = colorEDE6FD,
             fontSize = 14.sp
         )
     }
@@ -558,7 +558,7 @@ fun FinishAlert(){
             .padding(20.dp, 0.dp)
             .fillMaxWidth(),
         text = "안내",
-        color = colorPrimary,
+        color = color844DF3,
         fontSize = 16.sp,
         textAlign = TextAlign.Center
     )
@@ -570,7 +570,7 @@ fun FinishAlert(){
     Text(
         modifier = Modifier.padding(20.dp, 0.dp),
         text = "가입을 그만두고 로그인 화면으로 돌아가시겠습니까?",
-        color = textColorType3,
+        color = colorEDE6FD,
         fontSize = 14.sp,
         textAlign = TextAlign.Center
     )

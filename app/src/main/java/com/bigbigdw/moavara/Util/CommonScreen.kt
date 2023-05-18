@@ -154,11 +154,11 @@ fun MoavaraAlert(isShow: () -> Unit, onFetchClick: () -> Unit, btnLeft : String,
                                 shape = RoundedCornerShape(0.dp, 0.dp, 0.dp, 10.dp)
 
                             ) {
-                                Text(text = btnLeft, textAlign = TextAlign.Center, color = textColorType3, fontSize = 14.sp, fontFamily = pretendardvariable)
+                                Text(text = btnLeft, textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 14.sp, fontFamily = pretendardvariable)
                             }
 
                             Button(
-                                colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary),
+                                colors = ButtonDefaults.buttonColors(backgroundColor = color844DF3),
                                 onClick = {
                                     onFetchClick()
                                     isShow()
@@ -169,7 +169,7 @@ fun MoavaraAlert(isShow: () -> Unit, onFetchClick: () -> Unit, btnLeft : String,
                                 shape = RoundedCornerShape(0.dp, 0.dp, 10.dp, 0.dp)
 
                             ) {
-                                Text(text = btnRight, textAlign = TextAlign.Center, color = textColorType3, fontSize = 14.sp, fontFamily = pretendardvariable)
+                                Text(text = btnRight, textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 14.sp, fontFamily = pretendardvariable)
                             }
                         }
                     }

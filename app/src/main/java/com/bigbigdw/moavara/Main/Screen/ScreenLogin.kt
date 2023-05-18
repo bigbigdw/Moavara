@@ -127,7 +127,7 @@ fun DialogLoginScreen(isShow: () -> Unit, onFetchClick: () -> Unit) {
                             text = "모아바라는 (주)조아라의 사내 스터디에서 개발한 어플리케이션으로 (주)조아라의 임직원만 사용이 가능합니다. 모아바라의 데이터는 사내 자산으로 외부 유출이 불가능하며, 유출 시 법적 책임을 질 수 있습니다.",
                             fontSize = 13.sp,
                             textAlign = TextAlign.Left,
-                            color = textColorType3,
+                            color = colorEDE6FD,
                             fontFamily = pretendardvariable
                         )
 
@@ -145,13 +145,13 @@ fun DialogLoginScreen(isShow: () -> Unit, onFetchClick: () -> Unit) {
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
                             Checkbox(colors = CheckboxDefaults.colors(
-                                checkedColor = colorPrimary,
-                                uncheckedColor = textColorType3
+                                checkedColor = color844DF3,
+                                uncheckedColor = colorEDE6FD
                             ), checked = checked, onCheckedChange = { checked = !checked })
 
                             Text(
                                 text = "확인했습니다",
-                                color = textColorType3,
+                                color = colorEDE6FD,
                                 fontSize = 12.sp
                             )
                         }
@@ -162,7 +162,7 @@ fun DialogLoginScreen(isShow: () -> Unit, onFetchClick: () -> Unit) {
                                 .height(48.dp))
                         } else {
                             Button(
-                                colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary),
+                                colors = ButtonDefaults.buttonColors(backgroundColor = color844DF3),
                                 onClick = onFetchClick,
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -170,7 +170,7 @@ fun DialogLoginScreen(isShow: () -> Unit, onFetchClick: () -> Unit) {
                                 shape = RoundedCornerShape(0.dp, 0.dp, 10.dp, 10.dp)
 
                             ) {
-                                Text(text = "다음으로", textAlign = TextAlign.Center, color = textColorType3, fontSize = 16.sp, fontFamily = pretendardvariable)
+                                Text(text = "다음으로", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
                             }
                         }
                     }
@@ -277,7 +277,7 @@ fun LoginScreen(state: StateLogin, onFetchClick: () -> Unit, onFetchRegister: ()
                         .fillMaxWidth()
                         .height(42.dp))
                     Button(
-                        colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary),
+                        colors = ButtonDefaults.buttonColors(backgroundColor = color844DF3),
                         onClick = onFetchClick,
                         modifier = Modifier
                             .width(260.dp)
@@ -285,7 +285,7 @@ fun LoginScreen(state: StateLogin, onFetchClick: () -> Unit, onFetchRegister: ()
                         shape = RoundedCornerShape(50.dp)
 
                     ) {
-                        Text(text = "Google로 로그인", textAlign = TextAlign.Center, color = textColorType3, fontSize = 16.sp, fontFamily = pretendardvariable)
+                        Text(text = "Google로 로그인", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
                     }
                     Spacer(modifier = Modifier
                         .fillMaxWidth()
@@ -458,7 +458,7 @@ fun QuesViewPagerDiagnosticResult(data: ArrayList<GuideComponent>, moveToResult:
                                 text = getter.Comment,
                                 fontSize = 16.sp,
                                 textAlign = TextAlign.Center,
-                                color = textColorType3,
+                                color = colorEDE6FD,
                                 fontFamily = pretendardvariable
                             )
 
@@ -497,7 +497,7 @@ fun QuesViewPagerDiagnosticResult(data: ArrayList<GuideComponent>, moveToResult:
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Button(
-                colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary),
+                colors = ButtonDefaults.buttonColors(backgroundColor = color844DF3),
                 onClick = moveToResult,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -505,7 +505,7 @@ fun QuesViewPagerDiagnosticResult(data: ArrayList<GuideComponent>, moveToResult:
                 shape = RoundedCornerShape(0.dp)
 
             ) {
-                Text(text = "모아바라 시작하기", textAlign = TextAlign.Center, color = textColorType3, fontSize = 20.sp, fontFamily = pretendardvariable)
+                Text(text = "모아바라 시작하기", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 20.sp, fontFamily = pretendardvariable)
             }
         }
     }
@@ -522,7 +522,7 @@ fun viewPagerIndicator(pageCount : Int, pagerState : PagerState){
         verticalAlignment = Alignment.Bottom,
     ) {
         repeat(pageCount) { iteration ->
-            val color = if (pagerState.currentPage == iteration) textColorType3 else Color.Transparent
+            val color = if (pagerState.currentPage == iteration) colorEDE6FD else Color.Transparent
 
             Box(
                 modifier = Modifier
@@ -530,7 +530,7 @@ fun viewPagerIndicator(pageCount : Int, pagerState : PagerState){
                     .clip(CircleShape)
                     .background(color)
                     .size(10.dp)
-                    .border(1.dp, textColorType3,  CircleShape)
+                    .border(1.dp, colorEDE6FD,  CircleShape)
 
             )
         }

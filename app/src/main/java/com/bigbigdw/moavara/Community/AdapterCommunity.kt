@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bigbigdw.moavara.R
-import com.bigbigdw.moavara.Search.CommunityBoard
+import com.bigbigdw.moavara.DataBase.CommunityBoard
 import com.bigbigdw.moavara.Util.dpToPx
 import com.bigbigdw.moavara.databinding.ItemCommunityBinding
 

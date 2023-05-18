@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.bigbigdw.moavara.Search.BestListAnalyze
+import com.bigbigdw.moavara.DataBase.BestListAnalyze
 import com.bigbigdw.moavara.databinding.FragmentBestdetailRadarBinding
 //import com.github.mikephil.charting.animation.Easing
 //import com.github.mikephil.charting.components.Legend

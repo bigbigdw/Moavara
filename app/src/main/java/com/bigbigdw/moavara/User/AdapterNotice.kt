@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bigbigdw.moavara.R
-import com.bigbigdw.moavara.Search.FCMAlert
+import com.bigbigdw.moavara.DataBase.FCMAlert
 import com.bigbigdw.moavara.databinding.ItemNoticesBinding
 
 class AdapterNotice(

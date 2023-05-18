@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bigbigdw.moavara.R
-import com.bigbigdw.moavara.Search.BestRankListWeekend
-import com.bigbigdw.moavara.Search.BestListAnalyze
-import com.bigbigdw.moavara.Search.TrophyInfo
+import com.bigbigdw.moavara.DataBase.BestRankListWeekend
+import com.bigbigdw.moavara.DataBase.BestListAnalyze
+import com.bigbigdw.moavara.DataBase.TrophyInfo
 import com.bigbigdw.moavara.Util.DBDate
 import com.bigbigdw.moavara.databinding.FragmentBestDetailRankBinding
 import java.util.*

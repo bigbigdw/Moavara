@@ -8,7 +8,7 @@ import androidx.work.WorkerParameters
 import com.bigbigdw.moavara.DataBase.DBUser
 import com.bigbigdw.moavara.DataBase.DataBaseUser
 import com.bigbigdw.moavara.Main.mRootRef
-import com.bigbigdw.moavara.Search.FCMAlert
+import com.bigbigdw.moavara.DataBase.FCMAlert
 import com.bigbigdw.moavara.Util.DBDate
 import com.bigbigdw.moavara.Util.Mining
 import com.google.firebase.database.FirebaseDatabase

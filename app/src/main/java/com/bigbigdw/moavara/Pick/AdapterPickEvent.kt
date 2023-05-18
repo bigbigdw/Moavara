@@ -22,7 +22,7 @@ import com.bigbigdw.moavara.DataBase.DataBaseUser
 import com.bigbigdw.moavara.Main.DialogConfirm
 import com.bigbigdw.moavara.Main.mRootRef
 import com.bigbigdw.moavara.R
-import com.bigbigdw.moavara.Search.EventData
+import com.bigbigdw.moavara.DataBase.EventData
 import com.bigbigdw.moavara.Util.dpToPx
 import com.bigbigdw.moavara.databinding.ItemPickEventBinding
 import com.google.firebase.analytics.FirebaseAnalytics

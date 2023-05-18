@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bigbigdw.moavara.R
-import com.bigbigdw.moavara.Search.BestItemData
+import com.bigbigdw.moavara.DataBase.BestItemData
 import com.bigbigdw.moavara.databinding.CuItemBestWeekendBinding
 
 class AdapterBestWeekendItem(

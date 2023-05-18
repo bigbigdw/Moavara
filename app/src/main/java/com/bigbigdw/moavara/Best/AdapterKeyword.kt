@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bigbigdw.moavara.Search.BestType
+import com.bigbigdw.moavara.DataBase.BestType
 import com.bigbigdw.moavara.Util.dpToPx
 import com.bigbigdw.moavara.databinding.ItemBestTypeBinding
 

@@ -1,6 +1,6 @@
 package com.bigbigdw.moavara.Best
 
-import com.bigbigdw.moavara.Search.BestItemData
+import com.bigbigdw.moavara.DataBase.BestItemData
 
 
 interface BestTodayListener {

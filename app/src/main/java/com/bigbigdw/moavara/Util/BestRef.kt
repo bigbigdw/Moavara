@@ -2,9 +2,9 @@ package com.bigbigdw.moavara.Util
 
 import android.icu.text.DecimalFormat
 import com.bigbigdw.moavara.R
-import com.bigbigdw.moavara.Search.BestItemData
-import com.bigbigdw.moavara.Search.BestListAnalyze
-import com.bigbigdw.moavara.Search.BookListDataBestInfo
+import com.bigbigdw.moavara.DataBase.BestItemData
+import com.bigbigdw.moavara.DataBase.BestListAnalyze
+import com.bigbigdw.moavara.DataBase.BookListDataBestInfo
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import org.json.JSONObject

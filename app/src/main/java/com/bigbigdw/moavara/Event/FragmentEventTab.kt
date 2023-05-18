@@ -9,8 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bigbigdw.moavara.DataBase.DataBaseUser
 import com.bigbigdw.moavara.Retrofit.*
-import com.bigbigdw.moavara.Search.EventData
-import com.bigbigdw.moavara.Search.EventDataGroup
+import com.bigbigdw.moavara.DataBase.EventData
+import com.bigbigdw.moavara.DataBase.EventDataGroup
 import com.bigbigdw.moavara.Util.DBDate
 import com.bigbigdw.moavara.Util.Genre
 import com.bigbigdw.moavara.Util.Param

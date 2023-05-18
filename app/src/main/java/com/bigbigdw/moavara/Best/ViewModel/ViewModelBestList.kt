@@ -14,10 +14,10 @@ import com.bigbigdw.moavara.DataBase.*
 import com.bigbigdw.moavara.Firebase.FirebaseWorkManager
 import com.bigbigdw.moavara.Main.mRootRef
 import com.bigbigdw.moavara.R
-import com.bigbigdw.moavara.Search.BestListAnalyzeWeek
-import com.bigbigdw.moavara.Search.BestItemData
-import com.bigbigdw.moavara.Search.BestListAnalyze
-import com.bigbigdw.moavara.Search.BottomBestItemData
+import com.bigbigdw.moavara.DataBase.BestListAnalyzeWeek
+import com.bigbigdw.moavara.DataBase.BestItemData
+import com.bigbigdw.moavara.DataBase.BestListAnalyze
+import com.bigbigdw.moavara.DataBase.BottomBestItemData
 import com.bigbigdw.moavara.Util.*
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.database.DataSnapshot
@@ -74,21 +74,29 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
             is EventBestList.Loaded -> {
                 current.copy(loading = false)
             }
-            is EventBestList.isFirstPick -> {
+            is EventBestList.IsFirstPick -> {
                 current.copy(isFirstPick = event.isFirstPick, isPicked = event.isPicked)
             }
             is EventBestList.bestListAnalyzeWeek -> {
                 current.copy(bestListAnalyzeWeek = event.bestListAnalyzeWeek)
             }
-            is EventBestList.bottomBestItemData -> {
+            is EventBestList.BottomItem -> {
                 current.copy(bottomBestItemData = event.bottomBestItemData)
+            }
+            is EventBestList.ItemData -> {
+                current.copy(bestItemData = event.bestItemData)
+            }
+            is EventBestList.Type -> {
+                current.copy(type = event.type)
+            }
+            is EventBestList.Position -> {
+                current.copy(position = event.position)
             }
             else -> {
                 current.copy(loading = true)
             }
         }
     }
-
     fun fetchBestTodayDone() {
         viewModelScope.launch {
             events.send(EventBestList.TodayDone)
@@ -126,6 +134,7 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
 
         viewModelScope.launch {
             events.send(EventBestList.Loading)
+            events.send(EventBestList.Type(type = type))
         }
 
         if(bestDao.bestDao().getAll().isEmpty()){
@@ -266,8 +275,19 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
         }
     }
 
-    fun getBottomBestData(bestItemData : BestItemData){
+    fun getBottomBestData(bestItemData: BestItemData, index: Int){
+
+        viewModelScope.launch {
+            events.send(EventBestList.ItemData(bestItemData = bestItemData))
+            events.send(EventBestList.Position(position = index))
+        }
+
         val item = BottomBestItemData()
+
+        item.title = bestItemData.title
+        item.bookImg = bestItemData.bookImg
+        item.number = bestItemData.number
+        item.type = bestItemData.type
 
         if(bestItemData.type == "Toksoda"){
             item.info1 = "${bestItemData.writer} | ${bestItemData.info2}"
@@ -278,16 +298,16 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
             item.info3Title = "선호작 수 : "
             item.info3 = bestItemData.info5
         } else if (bestItemData.type == "Naver" || bestItemData.type == "Naver_Today" || bestItemData.type == "Naver_Challenge") {
-            item.info1 = "${bestItemData.writer} | ${bestItemData.info2}"
+            item.info1 = bestItemData.writer
 
             item.info2Title = "별점 수 : "
             item.info2 = bestItemData.info3.replace("별점", "")
 
             item.info3Title = "조회 수 : "
-            item.info3 = item.info4.replace("조회", "조회 수 : ")
+            item.info3 = bestItemData.info4.replace("조회", "조회 수 : ")
 
             item.info4Title = "관심 : "
-            item.info4 = item.info5.replace("관심", "관심 : ")
+            item.info4 = bestItemData.info5.replace("관심", "관심 : ")
         } else if(bestItemData.type == "Kakao_Stage"){
             item.info1 = "${bestItemData.writer} | ${bestItemData.info2}"
 
@@ -316,7 +336,7 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
             item.info3 = bestItemData.info4.replace("조회", "조회 수 : ")
 
             item.info4Title = "댓글 수 : "
-            item.info4 = item.info5.replace("관심", "관심 : ")
+            item.info4 = bestItemData.info5.replace("관심", "관심 : ")
         } else if(bestItemData.type == "Joara" || bestItemData.type == "Joara_Premium" || bestItemData.type == "Joara_Nobless"){
             item.info1 = "${bestItemData.writer} | ${bestItemData.info2}"
 
@@ -327,9 +347,9 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
             item.info3 = bestItemData.info4
 
             item.info4Title = "추천 수 : "
-            item.info4 = item.info5
+            item.info4 = bestItemData.info5
 
-            item.info5 = item.info1 ?: ""
+            item.info5 = bestItemData.info1
         } else if(bestItemData.type == "Kakao"){
             item.info1 = "${bestItemData.writer} | ${bestItemData.info2}"
 
@@ -340,9 +360,9 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
             item.info3 = bestItemData.info4
 
             item.info4Title = "평점 : "
-            item.info4 = item.info5
+            item.info4 = bestItemData.info5
 
-            item.info5 = item.info1
+            item.info5 = bestItemData.info1
         } else if(bestItemData.type == "Munpia"){
             item.info1 = "${bestItemData.writer} | ${bestItemData.info2}"
 
@@ -353,41 +373,45 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
             item.info3 = bestItemData.info4
 
             item.info4Title = "선호작 수 : "
-            item.info4 = item.info5
+            item.info4 = bestItemData.info5
 
-            item.info5 = item.info1
+            item.info5 = bestItemData.info1
         }
 
         viewModelScope.launch {
-            events.send(EventBestList.bottomBestItemData(bottomBestItemData = item))
+            events.send(EventBestList.BottomItem(bottomBestItemData = item))
         }
     }
 
-    fun BottomDialogBestPick(isPicked : Boolean, UserInfo: DataBaseUser, item: BestItemData?, type : String, context: Context){
+    fun bottomDialogBestPick(
+        activity: ComponentActivity
+    ){
 
-        val Novel = mRootRef.child("User").child(UserInfo.UID).child("Novel")
+        val Novel = mRootRef.child("User").child(state.value.initBest.UID).child("Novel")
 
-        if (isPicked) {
-            Novel.child("book").child(item?.bookCode ?: "").removeValue()
+        if (state.value.isPicked) {
+            Novel.child("book").child(state.value.bestItemData.bookCode ?: "").removeValue()
 
             val bundle = Bundle()
-            bundle.putString("PICK_NOVEL_PLATFORM", item?.type)
+            bundle.putString("PICK_NOVEL_PLATFORM", state.value.type)
             bundle.putString("PICK_NOVEL_STATUS", "DELETE")
             Firebase.analytics.logEvent("BEST_BottomDialogBest", bundle)
 
+            viewModelScope.launch {
+                events.send(EventBestList.IsFirstPick(isFirstPick = state.value.isFirstPick, isPicked = false))
+                _sideEffects.send("[${state.value.bestItemData.title}]이(가) 마이픽에서 제거되었습니다.")
+            }
+
         } else {
 
-            val group = item?.let { it1 -> item }
+            val group = state.value.bestItemData.let { it1 -> state.value.bestItemData }
 
             if (state.value.isFirstPick) {
-                viewModelScope.launch {
-                    events.send(EventBestList.isFirstPick(isFirstPick = false, isPicked = state.value.isPicked))
-                }
 
                 val inputData = Data.Builder()
                     .putString(FirebaseWorkManager.TYPE, "PICK")
-                    .putString(FirebaseWorkManager.UID, UserInfo.UID)
-                    .putString(FirebaseWorkManager.USER, UserInfo.Nickname)
+                    .putString(FirebaseWorkManager.UID, state.value.initBest.UID)
+                    .putString(FirebaseWorkManager.USER, state.value.initBest.Nickname)
                     .build()
 
                 /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
@@ -402,124 +426,138 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
                         .setInputData(inputData)
                         .build()
 
-                val workManager = WorkManager.getInstance(context.applicationContext)
+                val workManager = WorkManager.getInstance(activity.applicationContext)
 
                 workManager.enqueueUniquePeriodicWork(
                     "MoavaraPick",
                     ExistingPeriodicWorkPolicy.KEEP,
                     workRequest
                 )
-                FirebaseMessaging.getInstance().subscribeToTopic(UserInfo.UID)
+                FirebaseMessaging.getInstance().subscribeToTopic(state.value.initBest.UID)
 
-                Novel.child("book").child(item?.bookCode ?: "").setValue(group)
-                Novel.child("bookCode").child(item?.bookCode ?: "").setValue(state.value.bestTodayItemBookCode)
-                mRootRef.child("User").child(UserInfo.UID).child("Mining").setValue(true)
+                Novel.child("book").child(state.value.bestItemData.bookCode).setValue(group)
+                Novel.child("bookCode").child(state.value.bestItemData.bookCode).setValue(state.value.bestTodayItemBookCode)
+                mRootRef.child("User").child(state.value.initBest.UID).child("Mining").setValue(true)
 
                 val bundle = Bundle()
-                bundle.putString("PICK_NOVEL_PLATFORM", item?.type)
+                bundle.putString("PICK_NOVEL_PLATFORM", state.value.bestItemData.type)
                 bundle.putString("PICK_NOVEL_STATUS", "FIRST")
                 Firebase.analytics.logEvent("BEST_BottomDialogBest", bundle)
 
+                viewModelScope.launch {
+                    events.send(EventBestList.IsFirstPick(isFirstPick = false, isPicked = true))
+                    _sideEffects.send("[${group.title}]이(가) 마이픽에 등록되었습니다.")
+                }
+
             } else {
-                Novel.child("book").child(item?.bookCode ?: "").setValue(group)
-                Novel.child("bookCode").child(item?.bookCode ?: "").setValue(state.value.bestTodayItemBookCode)
+                Novel.child("book").child(state.value.bestItemData.bookCode).setValue(group)
+                Novel.child("bookCode").child(state.value.bestItemData.bookCode).setValue(state.value.bestTodayItemBookCode)
 
                 val bundle = Bundle()
-                bundle.putString("PICK_NOVEL_PLATFORM", item?.type)
+                bundle.putString("PICK_NOVEL_PLATFORM", state.value.bestItemData.type)
                 bundle.putString("PICK_NOVEL_STATUS", "ADD")
                 Firebase.analytics.logEvent("BEST_BottomDialogBest", bundle)
 
+                viewModelScope.launch {
+                    events.send(EventBestList.IsFirstPick(isFirstPick = true, isPicked = true))
+                    _sideEffects.send("[${group.title}]이(가) 마이픽에 등록되었습니다.")
+                }
             }
         }
     }
 
-    fun BottomDialogBestGetRank(UserInfo: DataBaseUser, item: BestItemData?,){
+    fun bottomDialogBestGetRank(UserInfo: DataBaseUser, item: BestItemData){
 
         val bookCodeItems = ArrayList<BestListAnalyze>()
         val ArrayWeekItem  = ArrayList<BestListAnalyzeWeek>()
+        ArrayWeekItem.add(BestListAnalyzeWeek(dateString = "일"))
+        ArrayWeekItem.add(BestListAnalyzeWeek(dateString = "월"))
+        ArrayWeekItem.add(BestListAnalyzeWeek(dateString = "화"))
+        ArrayWeekItem.add(BestListAnalyzeWeek(dateString = "수"))
+        ArrayWeekItem.add(BestListAnalyzeWeek(dateString = "목"))
+        ArrayWeekItem.add(BestListAnalyzeWeek(dateString = "금"))
+        ArrayWeekItem.add(BestListAnalyzeWeek(dateString = "토"))
 
-        if (item != null) {
-            BestRef.getBookCode(item.type, UserInfo.Genre).child(item.bookCode)
-                .addListenerForSingleValueEvent(object :
-                    ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+        BestRef.getBookCode(item.type, UserInfo.Genre).child(item.bookCode)
+            .addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                        for (keyItem in dataSnapshot.children) {
-                            val group: BestListAnalyze? =
-                                keyItem.getValue(BestListAnalyze::class.java)
+                    for (keyItem in dataSnapshot.children) {
+                        val group: BestListAnalyze? =
+                            keyItem.getValue(BestListAnalyze::class.java)
 
-                            if (group != null) {
-                                bookCodeItems.add(group)
-                            }
+                        if (group != null) {
+                            bookCodeItems.add(group)
+                        }
 
-                            val itemDate = group?.let { DBDate.getDateData(it.date) }
+                        val itemDate = group?.let { DBDate.getDateData(it.date) }
 
-                                if (itemDate != null) {
+                            if (itemDate != null) {
 
-                                    val WeekItem  = BestListAnalyzeWeek(
-                                        isVisible = true,
-                                        trophyImage = if (itemDate.date == DBDate.DayInt()) {
-                                            R.drawable.ic_best_gn_24px
-                                        } else {
-                                            R.drawable.ic_best_vt_24px
-                                        },
-                                        number = group.number + 1,
-                                        date = 0
-                                    )
+                                val WeekItem  = BestListAnalyzeWeek(
+                                    isVisible = true,
+                                    trophyImage = if (itemDate.date == DBDate.DayInt()) {
+                                        R.drawable.ic_best_gn_24px
+                                    } else {
+                                        R.drawable.ic_best_vt_24px
+                                    },
+                                    number = group.number + 1,
+                                    date = 0
+                                )
 
-                                    if (itemDate.week.toString() == DBDate.Week() && (itemDate.month + 0).toString() == DBDate.Month()) {
-                                        when {
-                                            itemDate.date == 1 -> {
-                                                WeekItem.date = 1
-                                                WeekItem.dateString = "일"
-                                                ArrayWeekItem.add(WeekItem)
-                                            }
-                                            itemDate.date == 2 -> {
-                                                WeekItem.date = 2
-                                                WeekItem.dateString = "월"
-                                                ArrayWeekItem.add(WeekItem)
-                                            }
-                                            itemDate.date == 3 -> {
-                                                WeekItem.date = 3
-                                                WeekItem.dateString = "화"
-                                                ArrayWeekItem.add(WeekItem)
-                                            }
-                                            itemDate.date == 4 -> {
-                                                WeekItem.date = 4
-                                                WeekItem.dateString = "수"
-                                                ArrayWeekItem.add(WeekItem)
-                                            }
-                                            itemDate.date == 5 -> {
-                                                WeekItem.date = 5
-                                                WeekItem.dateString = "목"
-                                                ArrayWeekItem.add(WeekItem)
-                                            }
-                                            itemDate.date == 6 -> {
-                                                WeekItem.date = 6
-                                                WeekItem.dateString = "금"
-                                                ArrayWeekItem.add(WeekItem)
-                                            }
-                                            itemDate.date == 7 -> {
-                                                WeekItem.date = 7
-                                                WeekItem.dateString = "토"
-                                                ArrayWeekItem.add(WeekItem)
-                                            }
+                                if (itemDate.week.toString() == DBDate.Week() && (itemDate.month + 0).toString() == DBDate.Month()) {
+                                    when {
+                                        itemDate.date == 1 -> {
+                                            WeekItem.date = 1
+                                            WeekItem.dateString = "일"
+                                            ArrayWeekItem[0] = WeekItem
+                                        }
+                                        itemDate.date == 2 -> {
+                                            WeekItem.date = 2
+                                            WeekItem.dateString = "월"
+                                            ArrayWeekItem[1] = WeekItem
+                                        }
+                                        itemDate.date == 3 -> {
+                                            WeekItem.date = 3
+                                            WeekItem.dateString = "화"
+                                            ArrayWeekItem[2] = WeekItem
+                                        }
+                                        itemDate.date == 4 -> {
+                                            WeekItem.date = 4
+                                            WeekItem.dateString = "수"
+                                            ArrayWeekItem[3] = WeekItem
+                                        }
+                                        itemDate.date == 5 -> {
+                                            WeekItem.date = 5
+                                            WeekItem.dateString = "목"
+                                            ArrayWeekItem[4] = WeekItem
+                                        }
+                                        itemDate.date == 6 -> {
+                                            WeekItem.date = 6
+                                            WeekItem.dateString = "금"
+                                            ArrayWeekItem[5] = WeekItem
+                                        }
+                                        itemDate.date == 7 -> {
+                                            WeekItem.date = 7
+                                            WeekItem.dateString = "토"
+                                            ArrayWeekItem[6] = WeekItem
                                         }
                                     }
                                 }
-                        }
+                            }
                     }
 
-                    override fun onCancelled(databaseError: DatabaseError) {}
-                })
-        }
+                    viewModelScope.launch {
+                        events.send(EventBestList.bestListAnalyzeWeek(bestListAnalyzeWeek = ArrayWeekItem))
+                    }
+                }
 
-        viewModelScope.launch {
-            events.send(EventBestList.bestListAnalyzeWeek(bestListAnalyzeWeek = ArrayWeekItem))
-        }
+                override fun onCancelled(databaseError: DatabaseError) {}
+            })
     }
 
-    fun BottomDialogToBestDetail(activity : ComponentActivity, item: BestItemData, platform : String, pos : Int){
+    fun bottomDialogToBestDetail(activity : ComponentActivity, item: BestItemData, type : String, pos : Int){
         val bundle = Bundle()
         bundle.putString("BEST_FROM", "BEST")
         Firebase.analytics.logEvent("BEST_ActivityBestDetail", bundle)
@@ -527,22 +565,19 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
         val bookDetailIntent = Intent(activity, ActivityBestDetail::class.java)
         bookDetailIntent.putExtra("BookCode",
             item.let { it1 -> String.format("%s", it1.bookCode) })
-        bookDetailIntent.putExtra("Type", String.format("%s", platform))
+        bookDetailIntent.putExtra("Type", String.format("%s", type))
         bookDetailIntent.putExtra("POSITION", pos)
         item.let { it1 -> bookDetailIntent.putExtra("COUNT", it1.number) }
         bookDetailIntent.putExtra("HASDATA", true)
         activity.startActivity(bookDetailIntent)
     }
     
-    fun getIsFirstPick(
-        UserInfo: DataBaseUser,
-        bookCode : String,
-    ){
+    fun getIsFirstPick(){
 
         var isFirstPick = false
         var isPicked = false
 
-        FirebaseDatabase.getInstance().reference.child("User").child(UserInfo.UID).child("Novel").child("book")
+        FirebaseDatabase.getInstance().reference.child("User").child(state.value.initBest.UID).child("Novel").child("book")
             .addListenerForSingleValueEvent(object :
                 ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -553,7 +588,7 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
 
                     for (pickedItem in dataSnapshot.children) {
 
-                        if (pickedItem.key.toString() == bookCode) {
+                        if (pickedItem.key.toString() == state.value.bestItemData.bookCode) {
                             isPicked = true
                             break
                         } else {
@@ -562,7 +597,7 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
                     }
 
                     viewModelScope.launch {
-                        events.send(EventBestList.isFirstPick(isFirstPick = isFirstPick, isPicked = isPicked))
+                        events.send(EventBestList.IsFirstPick(isFirstPick = isFirstPick, isPicked = isPicked))
                     }
                 }
 

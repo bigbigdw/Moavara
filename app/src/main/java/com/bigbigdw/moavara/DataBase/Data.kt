@@ -1,5 +1,6 @@
-package com.bigbigdw.moavara.Search
+package com.bigbigdw.moavara.DataBase
 
+import com.bigbigdw.moavara.R
 import java.util.*
 
 //import com.github.mikephil.charting.data.BarEntry
@@ -47,7 +48,7 @@ data class BestListAnalyze (
 
 data class BestListAnalyzeWeek (
     var isVisible: Boolean = false,
-    var trophyImage : Int = 0,
+    var trophyImage : Int = R.drawable.ic_best_gr_24px,
     var number : Int = 0,
     var date : Int = 0,
     var dateString : String = ""
@@ -106,16 +107,16 @@ data class BestItemData (
 )
 
 data class BottomBestItemData (
-    var title: String = "작품명",
+    var title: String = "",
     var bookImg: String = "",
-    var info1: String = "작품 설명1 | 작품 설명1",
-    var info2Title: String = "작품 설명2 : ",
-    var info2: String = "작품 설명2",
-    var info3Title: String = "작품 설명3 :",
-    var info3: String = "작품 설명3",
-    var info4Title: String = "작품 설명4 : ",
-    var info4: String = "작품 설명4",
-    var info5: String = "작품 설명5",
+    var info1: String = "",
+    var info2Title: String = "",
+    var info2: String = "",
+    var info3Title: String = "",
+    var info3: String = "",
+    var info4Title: String = "",
+    var info4: String = "",
+    var info5: String = "",
     var bookCode: String = "",
     var type: String = "",
     var number: Int = 0,

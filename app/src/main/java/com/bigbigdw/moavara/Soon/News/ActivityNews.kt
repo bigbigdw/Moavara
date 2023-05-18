@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bigbigdw.moavara.R
 import com.bigbigdw.moavara.Search.ActivitySearch
-import com.bigbigdw.moavara.Search.NewsBX
+import com.bigbigdw.moavara.DataBase.NewsBX
 import com.bigbigdw.moavara.User.ActivityUser
 import com.bigbigdw.moavara.databinding.ActivityNewsBinding
 import com.bigbigdw.moavara.databinding.ItemNewsBinding

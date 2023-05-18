@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.bigbigdw.moavara.R
 import com.bigbigdw.moavara.Search.ActivitySearch
-import com.bigbigdw.moavara.Search.NewsBX
+import com.bigbigdw.moavara.DataBase.NewsBX
 import com.bigbigdw.moavara.User.ActivityUser
 import com.bigbigdw.moavara.Util.DBDate
 import com.bigbigdw.moavara.databinding.ActivityNewsWriteBinding

@@ -16,8 +16,7 @@ import androidx.room.Room
 import androidx.work.*
 import com.bumptech.glide.Glide
 import com.bigbigdw.moavara.Best.ActivityBestDetail
-import com.bigbigdw.moavara.DataBase.DBUser
-import com.bigbigdw.moavara.DataBase.DataBaseUser
+import com.bigbigdw.moavara.DataBase.*
 import com.bigbigdw.moavara.Firebase.FirebaseWorkManager
 import com.bigbigdw.moavara.Main.mRootRef
 import com.bigbigdw.moavara.R

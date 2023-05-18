@@ -16,8 +16,8 @@ import com.bigbigdw.moavara.DataBase.DataBaseUser
 import com.bigbigdw.moavara.Firebase.FirebaseWorkManager
 import com.bigbigdw.moavara.Main.mRootRef
 import com.bigbigdw.moavara.R
-import com.bigbigdw.moavara.Search.BestItemData
-import com.bigbigdw.moavara.Search.BestListAnalyze
+import com.bigbigdw.moavara.DataBase.BestItemData
+import com.bigbigdw.moavara.DataBase.BestListAnalyze
 import com.bigbigdw.moavara.Util.BestRef
 import com.bigbigdw.moavara.Util.DBDate
 import com.bigbigdw.moavara.Util.applyingTextColor

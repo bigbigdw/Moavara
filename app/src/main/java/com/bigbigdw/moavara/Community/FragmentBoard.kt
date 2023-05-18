@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bigbigdw.moavara.Retrofit.JoaraBoardResult
 import com.bigbigdw.moavara.Retrofit.RetrofitDataListener
 import com.bigbigdw.moavara.Retrofit.RetrofitJoara
-import com.bigbigdw.moavara.Search.CommunityBoard
+import com.bigbigdw.moavara.DataBase.CommunityBoard
 import com.bigbigdw.moavara.Util.Param
 import com.bigbigdw.moavara.databinding.FragmentCommunityTabBinding
 import com.google.firebase.analytics.FirebaseAnalytics

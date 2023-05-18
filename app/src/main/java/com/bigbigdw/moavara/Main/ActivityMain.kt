@@ -69,6 +69,7 @@ class ActivityMain : ComponentActivity() {
                 callbackOption = { viewModelMain.goToActivityUser(this@ActivityMain) },
                 callbackSearch = { viewModelMain.goToActivitySearch(this@ActivityMain) },
                 viewModelBestList = viewModelBestList,
+                activity = this@ActivityMain
             )
             BackOnPressed()
         }

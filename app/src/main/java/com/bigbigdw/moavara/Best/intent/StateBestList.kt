@@ -1,10 +1,10 @@
 package com.bigbigdw.moavara.Best.intent
 
 import com.bigbigdw.moavara.DataBase.DataBaseUser
-import com.bigbigdw.moavara.Search.BestListAnalyzeWeek
-import com.bigbigdw.moavara.Search.BestItemData
-import com.bigbigdw.moavara.Search.BestListAnalyze
-import com.bigbigdw.moavara.Search.BottomBestItemData
+import com.bigbigdw.moavara.DataBase.BestItemData
+import com.bigbigdw.moavara.DataBase.BestListAnalyze
+import com.bigbigdw.moavara.DataBase.BestListAnalyzeWeek
+import com.bigbigdw.moavara.DataBase.BottomBestItemData
 
 data class StateBestList(
     val initBest: DataBaseUser = DataBaseUser(),
@@ -18,4 +18,7 @@ data class StateBestList(
     val isPicked: Boolean = false,
     val bestListAnalyzeWeek: ArrayList<BestListAnalyzeWeek> = ArrayList(),
     val bottomBestItemData: BottomBestItemData = BottomBestItemData(),
+    val bestItemData: BestItemData = BestItemData(),
+    val type: String = "",
+    val position: Int = 0,
 )

@@ -1,5 +1,6 @@
 package com.bigbigdw.moavara.Best.Screen
 
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -28,9 +29,13 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.bigbigdw.moavara.Best.ViewModel.ViewModelBestList
 import com.bigbigdw.moavara.Best.intent.StateBestList
+import com.bigbigdw.moavara.DataBase.BestItemData
+import com.bigbigdw.moavara.DataBase.BestKeyword
+import com.bigbigdw.moavara.DataBase.BestListAnalyze
 import com.bigbigdw.moavara.R
 import com.bigbigdw.moavara.Search.*
 import com.bigbigdw.moavara.Util.BestRef
+import com.bigbigdw.moavara.Util.DBDate
 import com.bigbigdw.moavara.Util.LoadingScreen
 import com.bigbigdw.moavara.theme.*
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -106,13 +111,15 @@ fun BestTodayScreen(
     val listState = rememberLazyListState()
 
     Column {
+
         ListKeyword(getType, setType, viewModelBestList, listState)
+
         LazyColumn(state = listState) {
             if (state.loading) {
                 item { LoadingScreen() }
             } else {
                 itemsIndexed(items = state.bestTodayItem) { index, item ->
-                    ListBestToday(item, state.bestTodayItemBookCode[index], index, modalSheetState)
+                    ListBestToday(item, state.bestTodayItemBookCode[index], index, modalSheetState, viewModelBestList)
                 }
             }
 
@@ -126,10 +133,12 @@ fun ListBestToday(
     bestItemData: BestItemData,
     bookCodeItems: BestListAnalyze,
     index: Int,
-    modalSheetState: ModalBottomSheetState
+    modalSheetState: ModalBottomSheetState,
+    viewModelBestList: ViewModelBestList
 ) {
 
     val coroutineScope = rememberCoroutineScope()
+    val userInfo = viewModelBestList.state.collectAsState().value.initBest
 
     Row(
         Modifier
@@ -156,6 +165,8 @@ fun ListBestToday(
                 .height(56.dp)
                 .clickable {
                     coroutineScope.launch {
+                        viewModelBestList.getBottomBestData(bestItemData, index)
+                        viewModelBestList.bottomDialogBestGetRank(userInfo, bestItemData)
                         modalSheetState.show()
                     }
                 },
@@ -176,7 +187,7 @@ fun ListBestToday(
                 )
                 Text(
                     maxLines = 1,
-                    text = "${bestItemData.title}",
+                    text = bestItemData.title,
                     modifier = Modifier
                         .wrapContentHeight()
                         .weight(1f),
@@ -326,7 +337,7 @@ fun BestHeader(
                 text = "베스트",
                 fontSize = 27.sp,
                 textAlign = TextAlign.Left,
-                color = textColorType3,
+                color = colorEDE6FD,
                 fontFamily = pretendardvariable,
                 fontWeight = FontWeight.Bold
             )
@@ -343,7 +354,7 @@ fun BestHeader(
                 modifier = Modifier
                     .padding(top = 20.dp)
                     .wrapContentSize(),
-                contentColor = colorPrimary
+                contentColor = color844DF3
             ) {
                 tabData.forEachIndexed { index, text ->
                     Tab(
@@ -354,7 +365,7 @@ fun BestHeader(
                                 pagerState.scrollToPage(index)
                             }
                         },
-                        selectedContentColor = colorPrimary,
+                        selectedContentColor = color844DF3,
                         unselectedContentColor = textColorType4,
                         text = {
                             Text(
@@ -362,7 +373,7 @@ fun BestHeader(
                                 fontSize = 17.sp,
                                 textAlign = TextAlign.Left,
                                 color = if (tabIndex == index) {
-                                    colorPrimary
+                                    color844DF3
                                 } else {
                                     textColorType4
                                 },
@@ -424,7 +435,7 @@ fun ItemKeyword(
                 text = item.title,
                 fontSize = 17.sp,
                 textAlign = TextAlign.Left,
-                color = textColorType3,
+                color = colorEDE6FD,
                 fontFamily = pretendardvariable,
                 fontWeight = FontWeight.Bold
             )
@@ -433,10 +444,12 @@ fun ItemKeyword(
 }
 
 @Composable
-fun BottomDialogBest(contents : @Composable ()-> Unit) {
+fun BottomDialogBest(viewModelBestList: ViewModelBestList, contents : @Composable ()-> Unit) {
 
-    val weekItem = ArrayList<BestListAnalyzeWeek>()
-    val item = BottomBestItemData()
+    val weekItem = viewModelBestList.state.collectAsState().value.bestListAnalyzeWeek
+    val item = viewModelBestList.state.collectAsState().value.bottomBestItemData
+
+    viewModelBestList.getIsFirstPick()
 
     Column(
         modifier = Modifier
@@ -501,194 +514,155 @@ fun BottomDialogBest(contents : @Composable ()-> Unit) {
 
                 Spacer(modifier = Modifier.size(16.dp))
 
-                val info2 = buildAnnotatedString {
-                    append(item.info2Title)
-                    withStyle(style = SpanStyle(color6E7686)) {
-                        append(" ${item.info2}")
+                if(item.info2.isNotEmpty()){
+                    val info2 = buildAnnotatedString {
+                        append(item.info2Title)
+                        withStyle(style = SpanStyle(color6E7686)) {
+                            append(" ${item.info2}")
+                        }
                     }
+
+                    Text(
+                        text = info2,
+                        fontSize = 12.sp,
+                        textAlign = TextAlign.Left,
+                        color = colorE2E3E7,
+                        fontFamily = pretendardvariable,
+                        fontWeight = FontWeight.Bold,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 3
+                    )
                 }
 
-                Text(
-                    text = info2,
-                    fontSize = 12.sp,
-                    textAlign = TextAlign.Left,
-                    color = colorE2E3E7,
-                    fontFamily = pretendardvariable,
-                    fontWeight = FontWeight.Bold,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 3
-                )
-
-                val info3 = buildAnnotatedString {
-                    append(item.info3Title)
-                    withStyle(style = SpanStyle(color6E7686)) {
-                        append(" ${item.info3}")
+                if(item.info3.isNotEmpty()){
+                    val info3 = buildAnnotatedString {
+                        append(item.info3Title)
+                        withStyle(style = SpanStyle(color6E7686)) {
+                            append(" ${item.info3}")
+                        }
                     }
+
+                    Text(
+                        text = info3,
+                        fontSize = 12.sp,
+                        textAlign = TextAlign.Left,
+                        color = colorE2E3E7,
+                        fontFamily = pretendardvariable,
+                        fontWeight = FontWeight.Bold,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 3
+                    )
                 }
 
-                Text(
-                    text = info3,
-                    fontSize = 12.sp,
-                    textAlign = TextAlign.Left,
-                    color = colorE2E3E7,
-                    fontFamily = pretendardvariable,
-                    fontWeight = FontWeight.Bold,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 3
-                )
-
-                val info4 = buildAnnotatedString {
-                    append(item.info4Title)
-                    withStyle(style = SpanStyle(color6E7686)) {
-                        append(" ${item.info4}")
+                if(item.info4.isNotEmpty()){
+                    val info4 = buildAnnotatedString {
+                        append(item.info4Title)
+                        withStyle(style = SpanStyle(color6E7686)) {
+                            append(" ${item.info4}")
+                        }
                     }
-                }
 
-                Text(
-                    text = info4,
-                    fontSize = 12.sp,
-                    textAlign = TextAlign.Left,
-                    color = colorE2E3E7,
-                    fontFamily = pretendardvariable,
-                    fontWeight = FontWeight.Bold,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 3
-                )
+                    Text(
+                        text = info4,
+                        fontSize = 12.sp,
+                        textAlign = TextAlign.Left,
+                        color = colorE2E3E7,
+                        fontFamily = pretendardvariable,
+                        fontWeight = FontWeight.Bold,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 3
+                    )
+                }
 
                 Spacer(modifier = Modifier.size(12.dp))
 
-                Text(
-                    text = item.info5,
-                    fontSize = 12.sp,
-                    textAlign = TextAlign.Left,
-                    color = color6E7686,
-                    fontFamily = pretendardvariable,
-                    fontWeight = FontWeight.Bold
-                )
+                if(item.info5.isNotEmpty()){
+                    Text(
+                        text = item.info5,
+                        fontSize = 12.sp,
+                        textAlign = TextAlign.Left,
+                        color = color6E7686,
+                        fontFamily = pretendardvariable,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 3
+                    )
+                }
             }
         }
 
-        Row {
+        Row(modifier = Modifier.padding(16.dp, 0.dp)) {
             weekItem.forEach { item ->
                 Column(
-                    modifier = Modifier.padding(16.dp, 0.dp),
+                    modifier = Modifier.weight(1f),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "item.dateString",
+                        text = item.dateString,
                         fontSize = 14.sp,
                         textAlign = TextAlign.Left,
-                        color = textColorType12,
+                        color = colorFDFDFD,
                         fontFamily = pretendardvariable,
                         fontWeight = FontWeight.Bold
                     )
 
                     Box(contentAlignment = Alignment.Center) {
+
                         Image(
-                            painter = painterResource(id = R.drawable.ic_best_gr_24px),
+                            painter = painterResource(id = item.trophyImage),
                             contentDescription = null,
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
                                 .size(40.dp)
                         )
 
-                        Text(
-                            text = "100",
-                            fontSize = 14.sp,
-                            textAlign = TextAlign.Left,
-                            color = textColorType12,
-                            fontFamily = pretendardvariable,
-                            fontWeight = FontWeight.Bold
-                        )
+                        if(item.isVisible){
+                            Text(
+                                modifier = Modifier.offset(y = -5.dp),
+                                text = item.number.toString(),
+                                fontSize = 14.sp,
+                                textAlign = TextAlign.Left,
+                                color = if (item.date == DBDate.DayInt()) {
+                                    color844DF3
+                                } else {
+                                    colorFDFDFD
+                                },
+                                fontFamily = pretendardvariable,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
                     }
                 }
             }
         }
 
-        Column(
-            modifier = Modifier.padding(16.dp, 0.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = "item.dateString",
-                fontSize = 14.sp,
-                textAlign = TextAlign.Left,
-                color = textColorType12,
-                fontFamily = pretendardvariable,
-                fontWeight = FontWeight.Bold
-            )
-
-            Box(contentAlignment = Alignment.Center) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_best_gr_24px),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(40.dp)
-                )
-
-                Text(
-                    text = "100",
-                    fontSize = 14.sp,
-                    textAlign = TextAlign.Left,
-                    color = textColorType12,
-                    fontFamily = pretendardvariable,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-        }
-
         Spacer(modifier = Modifier.size(12.dp))
 
-        Row(){
-            Button(
-                colors = ButtonDefaults.buttonColors(backgroundColor = color3E424B),
-                onClick = { },
-                modifier = Modifier
-                    .weight(1f)
-                    .height(48.dp),
-                shape = RoundedCornerShape(0.dp)
-            ) {
-                Text(
-                    text = "상세 보기",
-                    textAlign = TextAlign.Center,
-                    color = textColorType3,
-                    fontSize = 14.sp,
-                    fontFamily = pretendardvariable
-                )
-            }
-            Button(
-                colors = ButtonDefaults.buttonColors(backgroundColor = color621CEF),
-                onClick = { },
-                modifier = Modifier
-                    .weight(1f)
-                    .height(48.dp),
-                shape = RoundedCornerShape(0.dp)
-            ) {
-                Text(
-                    text = "Pick하기",
-                    textAlign = TextAlign.Center,
-                    color = textColorType3,
-                    fontSize = 14.sp,
-                    fontFamily = pretendardvariable
-                )
-            }
-        }
+        contents()
     }
 }
 
 @Preview
 @Composable
 fun previewBottomDialog(){
-    BottomDialogBest({})
+    BottomDialogBest(viewModelBestList = ViewModelBestList(),{})
 }
 
 @Composable
-fun BottomDialogBestBtn(state: StateBestList){
+fun BottomDialogBestBtn(viewModelBestList: ViewModelBestList, activity: ComponentActivity){
+
+    val state = viewModelBestList.state.collectAsState().value
+
     Row(){
         Button(
             colors = ButtonDefaults.buttonColors(backgroundColor = color3E424B),
-            onClick = { },
+            onClick = {
+                viewModelBestList.bottomDialogToBestDetail(
+                    activity = activity,
+                    item = state.bestItemData,
+                    type = state.type,
+                    pos = state.position
+                )
+            },
             modifier = Modifier
                 .weight(1f)
                 .height(48.dp),
@@ -697,7 +671,7 @@ fun BottomDialogBestBtn(state: StateBestList){
             Text(
                 text = "상세 보기",
                 textAlign = TextAlign.Center,
-                color = textColorType3,
+                color = colorEDE6FD,
                 fontSize = 14.sp,
                 fontFamily = pretendardvariable
             )
@@ -708,7 +682,7 @@ fun BottomDialogBestBtn(state: StateBestList){
             } else {
                 ButtonDefaults.buttonColors(backgroundColor = color621CEF)
             },
-            onClick = { },
+            onClick = { viewModelBestList.bottomDialogBestPick(activity) },
             modifier = Modifier
                 .weight(1f)
                 .height(48.dp),
@@ -721,7 +695,7 @@ fun BottomDialogBestBtn(state: StateBestList){
                     "Pick하기"
                 },
                 textAlign = TextAlign.Center,
-                color = textColorType3,
+                color = colorEDE6FD,
                 fontSize = 14.sp,
                 fontFamily = pretendardvariable
             )

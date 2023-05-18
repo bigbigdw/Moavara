@@ -9,7 +9,7 @@ import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bigbigdw.moavara.Best.AdapterType
 import com.bigbigdw.moavara.R
-import com.bigbigdw.moavara.Search.BestType
+import com.bigbigdw.moavara.DataBase.BestType
 import com.bigbigdw.moavara.Search.FragmentSearchBookcode
 import com.bigbigdw.moavara.Util.BestRef
 import com.bigbigdw.moavara.databinding.FragmentSearchBinding

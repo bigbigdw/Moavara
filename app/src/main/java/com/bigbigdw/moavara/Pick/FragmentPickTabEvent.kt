@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bigbigdw.moavara.DataBase.DataBaseUser
 import com.bigbigdw.moavara.Event.BottomSheetDialogEvent
 import com.bigbigdw.moavara.Main.mRootRef
-import com.bigbigdw.moavara.Search.EventData
+import com.bigbigdw.moavara.DataBase.EventData
 import com.bigbigdw.moavara.Util.SwipeEvent
 import com.bigbigdw.moavara.Util.dpToPx
 import com.bigbigdw.moavara.databinding.FragmentPickTabBinding

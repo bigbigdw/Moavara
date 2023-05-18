@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import com.bigbigdw.moavara.Retrofit.*
 //import com.example.moavara.Search.BestChart
 //import com.example.moavara.Search.EventDetailData
-import com.bigbigdw.moavara.Search.EventDetailDataMining
+import com.bigbigdw.moavara.DataBase.EventDetailDataMining
 import com.bigbigdw.moavara.Util.Param
 import com.bigbigdw.moavara.databinding.FragmentEventDetailBinding
 //import com.github.mikephil.charting.data.BarEntry

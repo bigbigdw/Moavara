@@ -5,8 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bigbigdw.moavara.R
-import com.bigbigdw.moavara.Search.BestRankListWeekend
-import com.bigbigdw.moavara.Search.BookListDataBestMonthNum
+import com.bigbigdw.moavara.DataBase.BestRankListWeekend
+import com.bigbigdw.moavara.DataBase.BookListDataBestMonthNum
 import com.bigbigdw.moavara.Util.DBDate
 import com.bigbigdw.moavara.databinding.ItemBestRanklistBinding
 

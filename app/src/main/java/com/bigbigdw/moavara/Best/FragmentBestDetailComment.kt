@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bigbigdw.moavara.R
 import com.bigbigdw.moavara.Retrofit.*
-import com.bigbigdw.moavara.Search.BestComment
+import com.bigbigdw.moavara.DataBase.BestComment
 import com.bigbigdw.moavara.Util.Param
 import com.bigbigdw.moavara.Util.dpToPx
 import com.bigbigdw.moavara.databinding.FragmentBestDetailTabsBinding

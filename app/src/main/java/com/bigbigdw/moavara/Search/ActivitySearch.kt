@@ -13,6 +13,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bigbigdw.moavara.Best.ActivityBestDetail
+import com.bigbigdw.moavara.DataBase.BestItemData
+import com.bigbigdw.moavara.DataBase.BestType
 import com.bigbigdw.moavara.R
 import com.bigbigdw.moavara.Retrofit.*
 import com.bigbigdw.moavara.Util.BestRef

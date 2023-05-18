@@ -12,7 +12,7 @@ import com.bigbigdw.moavara.Best.AdapterType
 import com.bigbigdw.moavara.DataBase.DBUser
 import com.bigbigdw.moavara.DataBase.DataBaseUser
 import com.bigbigdw.moavara.R
-import com.bigbigdw.moavara.Search.BestType
+import com.bigbigdw.moavara.DataBase.BestType
 import com.bigbigdw.moavara.Util.BestRef
 import com.bigbigdw.moavara.databinding.FragmentEventBinding
 import com.google.firebase.analytics.FirebaseAnalytics

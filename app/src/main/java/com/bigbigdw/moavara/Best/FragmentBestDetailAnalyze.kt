@@ -9,7 +9,7 @@ import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bigbigdw.moavara.R
 //import com.example.moavara.Search.BestLineChart
-import com.bigbigdw.moavara.Search.BestListAnalyze
+import com.bigbigdw.moavara.DataBase.BestListAnalyze
 import com.bigbigdw.moavara.databinding.FragmentBestDetailAnalyzeBinding
 //import com.github.mikephil.charting.data.Entry
 

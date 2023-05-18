@@ -8,9 +8,9 @@ import com.bigbigdw.moavara.DataBase.DBBest
 import com.bigbigdw.moavara.Main.mRootRef
 import com.bigbigdw.moavara.Retrofit.*
 import com.bigbigdw.moavara.Retrofit.result.RidiBestResult
-import com.bigbigdw.moavara.Search.BestItemData
-import com.bigbigdw.moavara.Search.BestListAnalyze
-import com.bigbigdw.moavara.Search.EventDetailDataMining
+import com.bigbigdw.moavara.DataBase.BestItemData
+import com.bigbigdw.moavara.DataBase.BestListAnalyze
+import com.bigbigdw.moavara.DataBase.EventDetailDataMining
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase

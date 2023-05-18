@@ -11,8 +11,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bigbigdw.moavara.DataBase.DataBaseUser
-import com.bigbigdw.moavara.Search.BestItemData
-import com.bigbigdw.moavara.Search.BookListDataBestWeekend
+import com.bigbigdw.moavara.DataBase.BestItemData
+import com.bigbigdw.moavara.DataBase.BookListDataBestWeekend
 import com.bigbigdw.moavara.Util.BestRef
 import com.bigbigdw.moavara.Util.BestRef.getItem
 import com.bigbigdw.moavara.Util.BestRef.putItem

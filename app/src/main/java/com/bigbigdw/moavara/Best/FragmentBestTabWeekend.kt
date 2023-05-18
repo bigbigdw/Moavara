@@ -10,7 +10,7 @@ import androidx.room.Room
 import com.bigbigdw.moavara.DataBase.DBBest
 import com.bigbigdw.moavara.DataBase.DataBaseUser
 import com.bigbigdw.moavara.DataBase.RoomBookListDataBest
-import com.bigbigdw.moavara.Search.BestItemData
+import com.bigbigdw.moavara.DataBase.BestItemData
 import com.bigbigdw.moavara.Util.BestRef
 import com.bigbigdw.moavara.Util.DBDate
 import com.bigbigdw.moavara.databinding.FragmentBestWeekendBinding

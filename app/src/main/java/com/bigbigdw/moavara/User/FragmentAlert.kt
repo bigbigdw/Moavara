@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bigbigdw.moavara.Search.FCMAlert
+import com.bigbigdw.moavara.DataBase.FCMAlert
 import com.bigbigdw.moavara.databinding.FragmentNoticesBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -50,11 +50,13 @@ class FragmentAlert : Fragment() {
                             postSnapshot.getValue(FCMAlert::class.java)
 
                         if (group != null) {
-                            items.add(FCMAlert(
+                            items.add(
+                                FCMAlert(
                                 group.date,
                                 group.title,
                                 group.body,
-                            ))
+                            )
+                            )
                         }
                     }
 

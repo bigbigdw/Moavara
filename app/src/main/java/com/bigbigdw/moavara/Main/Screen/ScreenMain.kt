@@ -1,6 +1,5 @@
 package com.bigbigdw.moavara.Main.Screen
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,7 +22,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.bigbigdw.moavara.Best.Screen.BestListScreen
 import com.bigbigdw.moavara.Best.Screen.BottomDialogBest
+import com.bigbigdw.moavara.Best.Screen.BottomDialogBestBtn
 import com.bigbigdw.moavara.Best.ViewModel.ViewModelBestList
+import com.bigbigdw.moavara.Main.ActivityMain
 import com.bigbigdw.moavara.R
 import com.bigbigdw.moavara.Util.AnalysisScreen
 import com.bigbigdw.moavara.Util.CalendarScreen
@@ -37,7 +38,8 @@ fun MainScreenView(
     callbackAdmin: () -> Unit,
     callbackOption: () -> Unit,
     callbackSearch: () -> Unit,
-    viewModelBestList: ViewModelBestList
+    viewModelBestList: ViewModelBestList,
+    activity: ActivityMain
 ) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -71,7 +73,7 @@ fun MainScreenView(
         ),
         sheetContent = {
             if (currentRoute == "BEST") {
-                BottomDialogBest({})
+                BottomDialogBest(viewModelBestList) { BottomDialogBestBtn(viewModelBestList, activity) }
             } else {
                 AnalysisScreen()
             }

@@ -23,7 +23,7 @@ import com.bigbigdw.moavara.Retrofit.JoaraEventDetailResult
 import com.bigbigdw.moavara.Retrofit.JoaraNoticeDetailResult
 import com.bigbigdw.moavara.Retrofit.RetrofitDataListener
 import com.bigbigdw.moavara.Retrofit.RetrofitJoara
-import com.bigbigdw.moavara.Search.EventData
+import com.bigbigdw.moavara.DataBase.EventData
 import com.bigbigdw.moavara.Util.DBDate
 import com.bigbigdw.moavara.Util.Param
 import com.bigbigdw.moavara.Util.dpToPx

@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bigbigdw.moavara.Best.BottomDialogBest
 import com.bigbigdw.moavara.DataBase.DataBaseUser
 import com.bigbigdw.moavara.Search.AdapterBestMoavara
-import com.bigbigdw.moavara.Search.BestItemData
+import com.bigbigdw.moavara.DataBase.BestItemData
 import com.bigbigdw.moavara.Util.BestRef
 import com.bigbigdw.moavara.Util.Genre
 import com.bigbigdw.moavara.databinding.FragmentSearchmoavaraBinding

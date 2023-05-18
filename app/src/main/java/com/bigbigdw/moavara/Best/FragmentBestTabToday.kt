@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.bigbigdw.moavara.DataBase.*
-import com.bigbigdw.moavara.Search.BestItemData
-import com.bigbigdw.moavara.Search.BestListAnalyze
+import com.bigbigdw.moavara.DataBase.BestItemData
+import com.bigbigdw.moavara.DataBase.BestListAnalyze
 import com.bigbigdw.moavara.Util.BestRef
 import com.bigbigdw.moavara.Util.DBDate
 import com.bigbigdw.moavara.databinding.FragmentBestTabTodayBinding
@@ -114,7 +114,8 @@ class FragmentBestTabToday(private val platform: String, private val UserInfo: D
 
                     if (group != null) {
 
-                        items.add(BestItemData(
+                        items.add(
+                            BestItemData(
                             group.writer,
                             group.title,
                             group.bookImg,
@@ -129,7 +130,8 @@ class FragmentBestTabToday(private val platform: String, private val UserInfo: D
                             group.date,
                             group.type,
                             group.memo
-                        ))
+                        )
+                        )
 
                         if(dataSnapshot.exists()){
                             bestDao?.bestDao()?.insert(
@@ -279,7 +281,8 @@ class FragmentBestTabToday(private val platform: String, private val UserInfo: D
 
         if (bookItem != null) {
             for(item in bookItem){
-                items.add(BestItemData(
+                items.add(
+                    BestItemData(
                     item.writer,
                     item.title,
                     item.bookImg,
@@ -294,7 +297,8 @@ class FragmentBestTabToday(private val platform: String, private val UserInfo: D
                     item.date,
                     item.type,
                     item.memo
-                ))
+                )
+                )
             }
         }
 

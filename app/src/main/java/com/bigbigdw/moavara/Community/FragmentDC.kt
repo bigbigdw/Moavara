@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bigbigdw.moavara.Search.CommunityBoard
+import com.bigbigdw.moavara.DataBase.CommunityBoard
 import com.bigbigdw.moavara.databinding.FragmentCommunityTabBinding
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics

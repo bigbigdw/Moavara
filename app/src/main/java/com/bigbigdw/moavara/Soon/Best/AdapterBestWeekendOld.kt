@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bigbigdw.moavara.Search.BookListDataBestWeekend
+import com.bigbigdw.moavara.DataBase.BookListDataBestWeekend
 import com.bigbigdw.moavara.databinding.ItemBooklistBestWeekendOldBinding
 
 class AdapterBestWeekendOld(

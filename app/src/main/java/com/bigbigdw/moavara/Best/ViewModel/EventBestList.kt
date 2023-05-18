@@ -1,10 +1,10 @@
 package com.bigbigdw.moavara.Best.ViewModel
 
 import com.bigbigdw.moavara.DataBase.DataBaseUser
-import com.bigbigdw.moavara.Search.BestListAnalyzeWeek
-import com.bigbigdw.moavara.Search.BestItemData
-import com.bigbigdw.moavara.Search.BestListAnalyze
-import com.bigbigdw.moavara.Search.BottomBestItemData
+import com.bigbigdw.moavara.DataBase.BestItemData
+import com.bigbigdw.moavara.DataBase.BestListAnalyze
+import com.bigbigdw.moavara.DataBase.BestListAnalyzeWeek
+import com.bigbigdw.moavara.DataBase.BottomBestItemData
 
 interface EventBestList {
     object Today : EventBestList
@@ -19,7 +19,10 @@ interface EventBestList {
 
     object Loading : EventBestList
     object Loaded : EventBestList
-    class isFirstPick(val isFirstPick : Boolean, val isPicked : Boolean) : EventBestList
+    class IsFirstPick(val isFirstPick : Boolean, val isPicked : Boolean) : EventBestList
     class bestListAnalyzeWeek(val bestListAnalyzeWeek: ArrayList<BestListAnalyzeWeek>) : EventBestList
-    class bottomBestItemData(val bottomBestItemData: BottomBestItemData) : EventBestList
+    class BottomItem(val bottomBestItemData: BottomBestItemData) : EventBestList
+    class ItemData(val bestItemData: BestItemData) : EventBestList
+    class Type(val type: String) : EventBestList
+    class Position(val position: Int) : EventBestList
 }

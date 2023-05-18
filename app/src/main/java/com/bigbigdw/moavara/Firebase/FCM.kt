@@ -12,7 +12,7 @@ import androidx.core.app.Person
 import androidx.core.graphics.drawable.IconCompat
 import com.bigbigdw.moavara.Main.ActivitySplash
 import com.bigbigdw.moavara.R
-import com.bigbigdw.moavara.Search.FCMAlert
+import com.bigbigdw.moavara.DataBase.FCMAlert
 import com.bigbigdw.moavara.Util.BootReceiver
 import com.bigbigdw.moavara.Util.DBDate
 import com.google.firebase.database.FirebaseDatabase

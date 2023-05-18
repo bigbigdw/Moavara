@@ -7,10 +7,10 @@ import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
 import com.bigbigdw.moavara.DataBase.RoomBookListDataBest
 import com.bigbigdw.moavara.DataBase.RoomBookListDataBestAnalyze
-import com.bigbigdw.moavara.Search.BestItemData
-import com.bigbigdw.moavara.Search.BestListAnalyze
-import com.bigbigdw.moavara.Search.BookListDataBestMonthNum
-import com.bigbigdw.moavara.Search.TrophyInfo
+import com.bigbigdw.moavara.DataBase.BestItemData
+import com.bigbigdw.moavara.DataBase.BestListAnalyze
+import com.bigbigdw.moavara.DataBase.BookListDataBestMonthNum
+import com.bigbigdw.moavara.DataBase.TrophyInfo
 import com.google.firebase.database.DataSnapshot
 import java.util.*
 
@@ -543,7 +543,7 @@ fun convertBookListDataBestToRoomBookListDataBest(group: BestItemData) : RoomBoo
     return result
 }
 
-fun convertRoomBookListDataBestToBookListDataBest (group: RoomBookListDataBest) : BestItemData{
+fun convertRoomBookListDataBestToBookListDataBest (group: RoomBookListDataBest) : BestItemData {
 
     val result = BestItemData(
         group.writer,
