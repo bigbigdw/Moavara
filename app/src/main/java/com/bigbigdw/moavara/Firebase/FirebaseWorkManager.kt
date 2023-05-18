@@ -57,11 +57,11 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
         val fcmBody = DataFCMBody(
             "/topics/all",
             "high",
-            DataFCMBodyData("모아바라", "베스트 리스트가 갱신되었습니다"),
-            DataFCMBodyNotification("모아바라", "${year}.${month}.${day} ${hour}:${min} 베스트 리스트가 갱신되었습니다", "default", "ic_stat_ic_notification", "best"),
+            DataFCMBodyData("모아바라2", "베스트 리스트가 갱신되었습니다"),
+            DataFCMBodyNotification("모아바라2", "${year}.${month}.${day} ${hour}:${min} 베스트 리스트가 갱신되었습니다", "default", "ic_stat_ic_notification", "best"),
         )
 
-        miningAlert("모아바라", "${year}.${month}.${day} ${hour}:${min} 베스트 리스트가 갱신되었습니다", "Alert")
+        miningAlert("모아바라2", "${year}.${month}.${day} ${hour}:${min} 베스트 리스트가 갱신되었습니다", "Alert")
 
 
         userDao = Room.databaseBuilder(

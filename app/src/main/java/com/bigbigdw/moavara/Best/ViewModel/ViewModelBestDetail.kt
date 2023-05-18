@@ -3,7 +3,6 @@ package com.bigbigdw.moavara.Best.ViewModel
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,10 +12,7 @@ import com.bigbigdw.moavara.Best.intent.StateBestDetail
 import com.bigbigdw.moavara.DataBase.*
 import com.bigbigdw.moavara.Firebase.FirebaseWorkManager
 import com.bigbigdw.moavara.Main.mRootRef
-import com.bigbigdw.moavara.Retrofit.JoaraBestChapter
-import com.bigbigdw.moavara.Retrofit.JoaraBestDetailResult
-import com.bigbigdw.moavara.Retrofit.RetrofitDataListener
-import com.bigbigdw.moavara.Retrofit.RetrofitJoara
+import com.bigbigdw.moavara.Retrofit.*
 import com.bigbigdw.moavara.Util.BestRef
 import com.bigbigdw.moavara.Util.DBDate
 import com.bigbigdw.moavara.Util.Genre
@@ -32,6 +28,8 @@ import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -159,22 +157,21 @@ class ViewModelBestDetail @Inject constructor() : ViewModel() {
 
                         if (state.value.type == "Joara" || state.value.type == "Joara_Nobless" || state.value.type == "Joara_Premium") {
                             setLayoutJoara(activity)
+                        } else if (state.value.type == "Naver_Today" || state.value.type == "Naver_Challenge" || state.value.type == "Naver") {
+                            setLayoutNaverToday()
+                        } else if (state.value.type == "Kakao") {
+                            setLayoutKaKao()
+                        } else if (state.value.type == "Kakao_Stage") {
+                            setLayoutKaKaoStage()
+                        } else if (state.value.type == "Ridi") {
+                            setLayoutRidi()
+                        } else if (state.value.type == "OneStore") {
+                            setLayoutOneStory()
+                        } else if (state.value.type == "Munpia") {
+                            setLayoutMunpia()
+                        } else if (state.value.type == "Toksoda") {
+                            setLayoutToksoda()
                         }
-                        //        else if (platform == "Naver_Today" || platform == "Naver_Challenge" || platform == "Naver") {
-                        //            setLayoutNaverToday()
-                        //        } else if (platform == "Kakao") {
-                        //            setLayoutKaKao()
-                        //        } else if (platform == "Kakao_Stage") {
-                        //            setLayoutKaKaoStage()
-                        //        } else if (platform == "Ridi") {
-                        //            setLayoutRidi()
-                        //        } else if (platform == "OneStore") {
-                        //            setLayoutOneStory()
-                        //        } else if (platform == "Munpia") {
-                        //            setLayoutMunpia()
-                        //        } else if (platform == "Toksoda") {
-                        //            setLayoutToksoda()
-                        //        }
 
                         if (dataSnapshot.exists()) {
                             for (item in dataSnapshot.children) {
@@ -182,18 +179,7 @@ class ViewModelBestDetail @Inject constructor() : ViewModel() {
                                     item.getValue(BestListAnalyze::class.java)
 
                                 if (group != null) {
-                                    bookData.add(
-                                        BestListAnalyze(
-                                            group.info1,
-                                            group.info2,
-                                            group.info3,
-                                            group.info4,
-                                            group.number,
-                                            group.date,
-                                            group.numberDiff,
-                                            group.trophyCount,
-                                        )
-                                    )
+                                    bookData.add(group)
                                 }
                             }
 
@@ -226,18 +212,7 @@ class ViewModelBestDetail @Inject constructor() : ViewModel() {
                                     item.getValue(BestListAnalyze::class.java)
 
                                 if (group != null) {
-                                    bookData.add(
-                                        BestListAnalyze(
-                                            group.info1,
-                                            group.info2,
-                                            group.info3,
-                                            group.info4,
-                                            group.number,
-                                            group.date,
-                                            group.numberDiff,
-                                            group.trophyCount,
-                                        )
-                                    )
+                                    bookData.add(group)
                                 }
                             }
 
@@ -285,7 +260,7 @@ class ViewModelBestDetail @Inject constructor() : ViewModel() {
     fun setLayoutWithoutBookData(){
         if (state.value.type == "Naver_Today" || state.value.type == "Naver_Challenge" || state.value.type == "Naver") {
             viewModelScope.launch {
-                events.send(EventBestDetail.isTab(isTabAnalyze = true, isTabComment = false, isTabOther = true))
+                events.send(EventBestDetail.isTab(isTabAnalyze = false, isTabComment = false, isTabOther = true))
             }
         } else if (state.value.type == "Kakao" || state.value.type == "Kakao_Stage" || state.value.type == "OneStore" || state.value.type == "Munpia") {
             viewModelScope.launch {
@@ -409,8 +384,8 @@ class ViewModelBestDetail @Inject constructor() : ViewModel() {
 
         val bestItemData = BestDetailItemData()
         var bestListAnalyze = BestListAnalyze()
-        var joaraChapter: List<JoaraBestChapter>? = null
         val typeItems = ArrayList<BestType>()
+        var joaraChapter: List<JoaraBestChapter>? = null
 
         apiJoara.getBookDetailJoa(
             JoaraRef,
@@ -419,11 +394,13 @@ class ViewModelBestDetail @Inject constructor() : ViewModel() {
 
                     if (data.status == "1" && data.book != null) {
 
-                        activity.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                        viewModelScope.launch {
+                            events.send(EventBestDetail.Loaded)
+                        }
 
                         bestItemData.bookImg = data.book.bookImg.replace("http://", "https://")
                         bestItemData.title = data.book.subject
-                        bestItemData.bookCode = data.book.bookCode
+                        bestItemData.bookCode = state.value.bookCode
                         bestItemData.info = "${data.book.writerName} | 총 ${data.book.cntChapter}"
                         bestItemData.info1 = BestRef.decimalToString(data.book.cntPageRead.toInt())
                         bestItemData.info2 = BestRef.decimalToString(data.book.cntFavorite.toInt())
@@ -462,24 +439,403 @@ class ViewModelBestDetail @Inject constructor() : ViewModel() {
                         events.send(EventBestDetail.bestDetailData(bestItemData = bestItemData, bestListAnalyze = bestListAnalyze))
                         events.send(EventBestDetail.bestDetailKeywords(keywords = typeItems))
                     }
+                }
+            })
+    }
 
-                    if (state.value.hasBookData) {
-                        val bundle = Bundle()
-                        bundle.putString("BEST_DETAIL_TAB", "FragmentBestDetailAnalyze")
-                        Firebase.analytics.logEvent("BEST_ActivityBestDetail", bundle)
+    private fun setLayoutNaverToday() {
+
+        val bestItemData = BestDetailItemData()
+        var bestListAnalyze: BestListAnalyze
+
+        Thread {
+
+            val doc: Document =
+                Jsoup.connect("https://novel.naver.com/webnovel/list?novelId=${state.value.bookCode}").post()
+
+            viewModelScope.launch {
+                events.send(EventBestDetail.Loaded)
+            }
+
+            bestItemData.bookImg = doc.select(".section_area_info .pic img").attr("src")
+            bestItemData.title = doc.select(".book_title").text()
+            bestItemData.bookCode = state.value.bookCode
+            bestItemData.info = "${doc.select(".writer").text()} | 장르 : ${doc.select(".info_book .genre").text()}"
+            bestItemData.info1 = doc.select(".info_book .like").text().replace("관심", "").replace("명", "")
+            bestItemData.info2 = doc.select(".grade_area em").text()
+            bestItemData.intro = doc.select(".section_area_info .dsc").text()
+            bestItemData.number = DBDate.DateMMDDHHMMSS().toInt()
+            bestItemData.date = DBDate.DateMMDD()
+            bestItemData.type = state.value.type
+
+            Firebase.crashlytics.setCustomKey("ActivityBestDetail_TITLE", bestItemData.title)
+
+            if (state.value.type != "Naver") {
+                bestItemData.info3 = doc.select(".info_book .download").text().replace("다운로드", "")
+            }
+
+            bestListAnalyze = BestListAnalyze(
+                bestItemData.info1,
+                bestItemData.info2,
+                bestItemData.info3,
+                bestItemData.info4,
+                DBDate.DateMMDDHHMMSS().toInt(),
+                DBDate.DateMMDD(),
+                0,
+                0,
+            )
+
+            viewModelScope.launch {
+                events.send(EventBestDetail.bestDetailData(bestItemData = bestItemData, bestListAnalyze = bestListAnalyze))
+            }
+        }.start()
+    }
+
+    private fun setLayoutKaKao() {
+
+        val bestItemData = BestDetailItemData()
+        var bestListAnalyze = BestListAnalyze()
+        val typeItems = ArrayList<BestType>()
+
+        val apiKakao = RetrofitKaKao()
+        val param: MutableMap<String?, Any> = HashMap()
+
+        param["seriesid"] = state.value.bookCode
+
+        apiKakao.postKakaoBookDetail(
+            param,
+            object : RetrofitDataListener<BestKakaoBookDetail> {
+                override fun onSuccess(data: BestKakaoBookDetail) {
+
+                    viewModelScope.launch {
+                        events.send(EventBestDetail.Loaded)
+                    }
+
+                    data.home?.let { it ->
+
+                        bestItemData.bookImg = "https://dn-img-page.kakao.com/download/resource?kid=${it.land_thumbnail_url}"
+                        bestItemData.title = it.title
+                        bestItemData.bookCode = state.value.bookCode
+                        bestItemData.info = "${it.author_name} | 총 ${it.open_counts}화"
+                        bestItemData.info1 = BestRef.decimalToString(it.page_rating_count.toInt())
+                        bestItemData.info2 = it.page_rating_summary
+                        bestItemData.info3 = BestRef.decimalToString(it.read_count.toInt())
+                        bestItemData.info4 = BestRef.decimalToString(it.page_comment_count.toInt())
+                        bestItemData.intro = it.description
+                        bestItemData.number = DBDate.DateMMDDHHMMSS().toInt()
+                        bestItemData.date = DBDate.DateMMDD()
+                        bestItemData.type = state.value.type
+
+                        Firebase.crashlytics.setCustomKey("ActivityBestDetail_TITLE", bestItemData.title)
+
+                        bestListAnalyze = BestListAnalyze(
+                            bestItemData.info1,
+                            bestItemData.info2,
+                            bestItemData.info3,
+                            bestItemData.info4,
+                            DBDate.DateMMDDHHMMSS().toInt(),
+                            DBDate.DateMMDD(),
+                            0,
+                            0,
+                        )
+                    }
+
+                    val keyword = data.related_keytalk_list
+
+                    for (item in keyword) {
+                        typeItems.add(BestType("#${item.item_name}", ""))
+                    }
+
+                    viewModelScope.launch {
+                        events.send(EventBestDetail.bestDetailData(bestItemData = bestItemData, bestListAnalyze = bestListAnalyze))
+                        events.send(EventBestDetail.bestDetailKeywords(keywords = typeItems))
+                    }
+                }
+            })
+    }
+
+    private fun setLayoutKaKaoStage() {
+
+        val bestItemData = BestDetailItemData()
+        var bestListAnalyze = BestListAnalyze()
+
+        val apiKakaoStage = RetrofitKaKao()
+
+        apiKakaoStage.getBestKakaoStageDetail(
+            state.value.bookCode,
+            object : RetrofitDataListener<KakaoStageBestBookResult> {
+                override fun onSuccess(data: KakaoStageBestBookResult) {
+
+                    viewModelScope.launch {
+                        events.send(EventBestDetail.Loaded)
+                    }
+
+                    data.let {
+
+                        bestItemData.bookImg = data.thumbnail.url
+                        bestItemData.title = it.title
+                        bestItemData.bookCode = state.value.bookCode
+                        bestItemData.info = "${it.nickname.name} | 총 ${it.publishedEpisodeCount}화"
+                        bestItemData.info1 = BestRef.decimalToString(it.favoriteCount.toInt())
+                        bestItemData.info2 = BestRef.decimalToString(it.visitorCount.toInt())
+                        bestItemData.info3 = BestRef.decimalToString(it.viewCount.toInt())
+                        bestItemData.info4 = BestRef.decimalToString(it.episodeLikeCount.toInt())
+                        bestItemData.intro = it.synopsis
+                        bestItemData.number = DBDate.DateMMDDHHMMSS().toInt()
+                        bestItemData.date = DBDate.DateMMDD()
+                        bestItemData.type = state.value.type
+
+                        Firebase.crashlytics.setCustomKey("ActivityBestDetail_TITLE", bestItemData.title)
+
+                        bestListAnalyze = BestListAnalyze(
+                            bestItemData.info1,
+                            bestItemData.info2,
+                            bestItemData.info3,
+                            bestItemData.info4,
+                            DBDate.DateMMDDHHMMSS().toInt(),
+                            DBDate.DateMMDD(),
+                            0,
+                            0,
+                        )
 
                         viewModelScope.launch {
-                            events.send(EventBestDetail.isTab(isTabAnalyze = true, isTabComment = false, isTabOther = false))
-                        }
-                    } else {
-                        viewModelScope.launch {
-                            events.send(EventBestDetail.isTab(isTabAnalyze = false, isTabComment = true, isTabOther = false))
+                            events.send(EventBestDetail.bestDetailData(bestItemData = bestItemData, bestListAnalyze = bestListAnalyze))
                         }
                     }
                 }
             })
     }
 
+    private fun setLayoutRidi() {
+
+        val bestItemData = BestDetailItemData()
+        var bestListAnalyze = BestListAnalyze()
+
+        Thread {
+            val doc: Document = Jsoup.connect("https://ridibooks.com/books/${state.value.bookCode}").get()
+
+            var bookWriter = "https://ridibooks.com${
+                doc.select(".metadata_writer .author_detail_link").attr("href")
+            }"
+
+            viewModelScope.launch {
+                events.send(EventBestDetail.Loaded)
+            }
+
+            bestItemData.bookImg = "https:${doc.select(".thumbnail_image img").attr("src")}"
+            bestItemData.title = doc.select(".header_info_wrap .info_title_wrap h3").text()
+            bestItemData.bookCode = state.value.bookCode
+            bestItemData.info = "${doc.select(".metadata_writer .author_detail_link").text()} | ${doc.select(".header_info_wrap .info_category_wrap").text()}"
+            bestItemData.info1 = doc.select(".header_info_wrap .StarRate_Score").text()
+            bestItemData.info2 = doc.select(".header_info_wrap .StarRate_ParticipantCount").text().replace("명", "")
+            bestItemData.info3 = doc.select(".metadata_info_series_complete_wrap .metadata_item").text()
+            bestItemData.info4 = ((doc.select(".header_info_wrap .StarRate_Score").text().replace("점", "")).toFloat() * 10).toString().replace(".0", "")
+            bestItemData.intro = doc.select(".introduce_book .introduce_paragraph").text()
+            bestItemData.number = DBDate.DateMMDDHHMMSS().toInt()
+            bestItemData.date = DBDate.DateMMDD()
+            bestItemData.type = state.value.type
+
+            Firebase.crashlytics.setCustomKey("ActivityBestDetail_TITLE", bestItemData.title)
+
+            bestListAnalyze = BestListAnalyze(
+                bestItemData.info1,
+                bestItemData.info2,
+                bestItemData.info3,
+                bestItemData.info4,
+                DBDate.DateMMDDHHMMSS().toInt(),
+                DBDate.DateMMDD(),
+                0,
+                0,
+            )
+
+            viewModelScope.launch {
+                events.send(EventBestDetail.bestDetailData(bestItemData = bestItemData, bestListAnalyze = bestListAnalyze))
+            }
+
+        }.start()
+    }
+
+    private fun setLayoutOneStory() {
+        val bestItemData = BestDetailItemData()
+        var bestListAnalyze = BestListAnalyze()
+        val typeItems = ArrayList<BestType>()
+
+        val apiOnestory = RetrofitOnestore()
+        val param: MutableMap<String?, Any> = HashMap()
+
+        param["channelId"] = state.value.bookCode
+        param["bookpassYn"] = "N"
+
+        apiOnestory.getOneStoreDetail(
+            state.value.bookCode,
+            param,
+            object : RetrofitDataListener<OnestoreBookDetail> {
+                override fun onSuccess(data: OnestoreBookDetail) {
+
+                    viewModelScope.launch {
+                        events.send(EventBestDetail.Loaded)
+                    }
+
+                    data.params.let {
+
+                        bestItemData.bookImg = it?.orgFilePos ?: ""
+                        bestItemData.title = it?.prodNm ?: ""
+                        bestItemData.bookCode = state.value.bookCode
+                        bestItemData.info = "${it?.artistNm} | 총 ${it?.menuNm}"
+                        bestItemData.info1 = it?.ratingAvgScore?: ""
+                        bestItemData.info2 = it?.favoriteCount?: ""
+                        bestItemData.info3 = it?.pageViewTotal?: ""
+                        bestItemData.info4 = it?.commentCount?: ""
+                        bestItemData.number = DBDate.DateMMDDHHMMSS().toInt()
+                        bestItemData.date = DBDate.DateMMDD()
+                        bestItemData.type = state.value.type
+
+                        Firebase.crashlytics.setCustomKey("ActivityBestDetail_TITLE", bestItemData.title)
+
+                        bestListAnalyze = BestListAnalyze(
+                            bestItemData.info1,
+                            bestItemData.info2,
+                            bestItemData.info3,
+                            bestItemData.info4,
+                            DBDate.DateMMDDHHMMSS().toInt(),
+                            DBDate.DateMMDD(),
+                            0,
+                            0,
+                        )
+
+                        if (it != null) {
+                            val keyword = it.tagList
+
+                            if (keyword != null) {
+
+                                for (item in keyword) {
+                                    typeItems.add(BestType("#${item.tagNm}", ""))
+                                }
+
+                                viewModelScope.launch {
+                                    events.send(EventBestDetail.bestDetailData(bestItemData = bestItemData, bestListAnalyze = bestListAnalyze))
+                                    events.send(EventBestDetail.bestDetailKeywords(keywords = typeItems))
+                                }
+                            }
+                        }
+                    }
+                }
+            })
+    }
+
+    private fun setLayoutMunpia() {
+
+        val bestItemData = BestDetailItemData()
+        var bestListAnalyze = BestListAnalyze()
+
+        Thread {
+            val doc: Document = Jsoup.connect("https://novel.munpia.com/${state.value.bookCode}").get()
+
+            viewModelScope.launch {
+                events.send(EventBestDetail.Loaded)
+            }
+
+            bestItemData.bookImg = "https:${doc.select(".cover-box img").attr("src")}"
+            bestItemData.title = doc.select(".detail-box h2 a").text().replace(doc.select(".detail-box h2 a span").text() + " ", "")
+            bestItemData.bookCode = state.value.bookCode
+            bestItemData.info = "${doc.select(".member-trigger strong").text()} | ${doc.select(".meta-path strong").text()}"
+            bestItemData.info1 = doc.select(".header_info_wrap .StarRate_Score").text()
+            bestItemData.info2 = doc.select(".header_info_wrap .StarRate_ParticipantCount").text().replace("명", "")
+            bestItemData.info3 = doc.select(".meta-etc dd").next().next()[1]?.text() ?: ""
+            bestItemData.info4 = doc.select(".meta-etc dd").next().next()[2]?.text() ?: ""
+            bestItemData.intro = doc.select(".story").text()
+            bestItemData.number = DBDate.DateMMDDHHMMSS().toInt()
+            bestItemData.date = DBDate.DateMMDD()
+            bestItemData.type = state.value.type
+
+            Firebase.crashlytics.setCustomKey("ActivityBestDetail_TITLE", bestItemData.title)
+
+            try {
+                bestItemData.info1 = doc.select(".meta-etc dd").next().next()[1]?.text() ?: ""
+                bestItemData.info2 = doc.select(".meta-etc dd").next().next()[2]?.text() ?: ""
+            } catch (e: IndexOutOfBoundsException) { }
+
+
+            bestListAnalyze = BestListAnalyze(
+                bestItemData.info1,
+                bestItemData.info2,
+                bestItemData.info3,
+                bestItemData.info4,
+                DBDate.DateMMDDHHMMSS().toInt(),
+                DBDate.DateMMDD(),
+                0,
+                0,
+            )
+
+            viewModelScope.launch {
+                events.send(EventBestDetail.bestDetailData(bestItemData = bestItemData, bestListAnalyze = bestListAnalyze))
+            }
+
+        }.start()
+    }
+
+    private fun setLayoutToksoda() {
+
+        val bestItemData = BestDetailItemData()
+        var bestListAnalyze = BestListAnalyze()
+        val typeItems = ArrayList<BestType>()
+
+        val apiToksoda = RetrofitToksoda()
+        val param: MutableMap<String?, Any> = HashMap()
+
+        param["brcd"] = state.value.bookCode
+        param["_"] = "1657265744728"
+
+        apiToksoda.getBestDetail(
+            param,
+            object : RetrofitDataListener<BestToksodaDetailResult> {
+                override fun onSuccess(data: BestToksodaDetailResult) {
+
+                    data.result?.let {
+
+                        bestItemData.bookImg = "https:${it.imgPath}"
+                        bestItemData.title = it.wrknm
+                        bestItemData.bookCode = state.value.bookCode
+                        bestItemData.info = "${it.athrnm} | 장르 :  ${it.lgctgrNm}"
+                        bestItemData.info1 = it.inqrCnt
+                        bestItemData.info2 = it.goodCnt
+                        bestItemData.info3 = it.intrstCnt
+
+                        bestItemData.intro = it.lnIntro
+                        bestItemData.number = DBDate.DateMMDDHHMMSS().toInt()
+                        bestItemData.date = DBDate.DateMMDD()
+                        bestItemData.type = state.value.type
+
+                        Firebase.crashlytics.setCustomKey("ActivityBestDetail_TITLE", bestItemData.title)
+
+                        bestListAnalyze = BestListAnalyze(
+                            bestItemData.info1,
+                            bestItemData.info2,
+                            bestItemData.info3,
+                            bestItemData.info4,
+                            DBDate.DateMMDDHHMMSS().toInt(),
+                            DBDate.DateMMDD(),
+                            0,
+                            0,
+                        )
+
+                        val keyword = it.hashTagList
+
+                        if (keyword != null) {
+
+                            for (item in keyword) {
+                                typeItems.add(BestType("#${item.hashtagNm}", ""))
+                            }
+
+                            viewModelScope.launch {
+                                events.send(EventBestDetail.bestDetailData(bestItemData = bestItemData, bestListAnalyze = bestListAnalyze))
+                                events.send(EventBestDetail.bestDetailKeywords(keywords = typeItems))
+                            }
+                        }
+                    }
+                }
+            })
+    }
     fun goToViewDetail(activity: ComponentActivity){
         val bundle = Bundle()
         bundle.putString("BEST_GO_DETAIL", state.value.type)

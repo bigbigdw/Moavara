@@ -62,45 +62,41 @@ class ViewModelSplash @Inject constructor() : ViewModel() {
 
         UserInfo = userDao.daoUser().get()
 
-        if(UserInfo != null){
-            mRootRef.child("User").child(UserInfo.UID ?: "").child("isInit").get().addOnSuccessListener {
-                if (it.value == true && !it.exists()) {
-                    Toast.makeText(activity, "데이터를 새로 받아오고 있습니다.", Toast.LENGTH_SHORT)
-                        .show()
+        mRootRef.child("User").child(UserInfo.UID ?: "").child("isInit").get().addOnSuccessListener {
+            if (it.value == true && !it.exists()) {
+                Toast.makeText(activity, "데이터를 새로 받아오고 있습니다.", Toast.LENGTH_SHORT)
+                    .show()
 
-                    mRootRef.child("User").child(UserInfo.UID ?: "").child("isInit").setValue(false)
+                mRootRef.child("User").child(UserInfo.UID ?: "").child("isInit").setValue(false)
 
-                    for(platform in BestRef.typeList()){
-                        val bestDaoToday = Room.databaseBuilder(
-                            activity,
-                            DBBest::class.java,
-                            "Today_${platform}_${UserInfo.Genre}"
-                        ).allowMainThreadQueries().build()
+                for(platform in BestRef.typeList()){
+                    val bestDaoToday = Room.databaseBuilder(
+                        activity,
+                        DBBest::class.java,
+                        "Today_${platform}_${UserInfo.Genre}"
+                    ).allowMainThreadQueries().build()
 
-                        val bestDaoWeek = Room.databaseBuilder(
-                            activity,
-                            DBBest::class.java,
-                            "Week_${platform}_${UserInfo.Genre}"
-                        ).allowMainThreadQueries().build()
+                    val bestDaoWeek = Room.databaseBuilder(
+                        activity,
+                        DBBest::class.java,
+                        "Week_${platform}_${UserInfo.Genre}"
+                    ).allowMainThreadQueries().build()
 
-                        val bestDaoMonth = Room.databaseBuilder(
-                            activity,
-                            DBBest::class.java,
-                            "Month_${platform}_${UserInfo.Genre}"
-                        ).allowMainThreadQueries().build()
+                    val bestDaoMonth = Room.databaseBuilder(
+                        activity,
+                        DBBest::class.java,
+                        "Month_${platform}_${UserInfo.Genre}"
+                    ).allowMainThreadQueries().build()
 
-                        bestDaoToday.bestDao().initAll()
-                        bestDaoWeek.bestDao().initAll()
-                        bestDaoMonth.bestDao().initAll()
-                        callback.invoke(true)
-                    }
+                    bestDaoToday.bestDao().initAll()
+                    bestDaoWeek.bestDao().initAll()
+                    bestDaoMonth.bestDao().initAll()
+                    callback.invoke(true)
                 }
-                callback.invoke(true)
-            }.addOnFailureListener {
-                callback.invoke(false)
             }
-        } else {
             callback.invoke(true)
+        }.addOnFailureListener {
+            callback.invoke(false)
         }
 
     }

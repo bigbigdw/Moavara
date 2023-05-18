@@ -227,7 +227,7 @@ class ActivityAdmin : AppCompatActivity() {
             "/topics/all",
             "high",
             DataFCMBodyData("data", "body"),
-            DataFCMBodyNotification("모아바라", "예아 푸시푸시 베이베", "default", "ic_stat_ic_notification"),
+            DataFCMBodyNotification("모아바라2", "예아 푸시푸시 베이베", "default", "ic_stat_ic_notification"),
         )
 
         val call = Retrofit.Builder()
