@@ -89,6 +89,21 @@ data class BookListDataBestInfo(
     var type: String = "",
 )
 
+data class BestDetailItemData (
+    var title: String = "",
+    var bookImg: String = "",
+    var bookCode: String = "",
+    var info: String = "",
+    var info1: String = "",
+    var info2: String = "",
+    var info3: String = "",
+    var info4: String = "",
+    var intro: String = "",
+    var number: Int = 0,
+    var date: String = "",
+    var type: String = "",
+)
+
 data class BestItemData (
     var writer: String = "",
     var title: String = "",

@@ -20,5 +20,5 @@ data class StateBestList(
     val bottomBestItemData: BottomBestItemData = BottomBestItemData(),
     val bestItemData: BestItemData = BestItemData(),
     val type: String = "",
-    val position: Int = 0,
+    val position: Int = 0
 )
