@@ -97,6 +97,7 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
             }
         }
     }
+
     fun fetchBestTodayDone() {
         viewModelScope.launch {
             events.send(EventBestList.TodayDone)
@@ -276,6 +277,10 @@ class ViewModelBestList @Inject constructor() : ViewModel() {
     }
 
     fun getBottomBestData(bestItemData: BestItemData, index: Int){
+
+        viewModelScope.launch {
+            events.send(EventBestList.IsFirstPick(isFirstPick = state.value.isFirstPick, isPicked = false))
+        }
 
         viewModelScope.launch {
             events.send(EventBestList.ItemData(bestItemData = bestItemData))

@@ -23,19 +23,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.bigbigdw.moavara.Best.ViewModel.ViewModelBestList
 import com.bigbigdw.moavara.Best.intent.StateBestList
-import com.bigbigdw.moavara.DataBase.BestItemData
-import com.bigbigdw.moavara.DataBase.BestKeyword
-import com.bigbigdw.moavara.DataBase.BestListAnalyze
+import com.bigbigdw.moavara.DataBase.*
 import com.bigbigdw.moavara.R
 import com.bigbigdw.moavara.Search.*
 import com.bigbigdw.moavara.Util.BestRef
-import com.bigbigdw.moavara.Util.DBDate
 import com.bigbigdw.moavara.Util.LoadingScreen
 import com.bigbigdw.moavara.theme.*
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -211,18 +207,40 @@ fun ListBestToday(
                         )
 
                         Text(
-                            text = bookCodeItems.numberDiff.toString(),
+                            text = "${bookCodeItems.numberDiff}",
+                            modifier = Modifier
+                                .wrapContentHeight()
+                                .padding(0.dp, 0.dp, 4.dp, 0.dp)
+                                .wrapContentSize(),
+                            fontSize = 12.sp,
+                            textAlign = TextAlign.Left,
+                            color = color02BC77,
+                            fontFamily = pretendardvariable,
+                            fontWeight = FontWeight.Bold,
+                            overflow = TextOverflow.Ellipsis
+                        )
+
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_best_small_up),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.size(12.dp)
+                        )
+
+                        Text(
+                            text = "(${bookCodeItems.trophyCount})",
                             modifier = Modifier
                                 .wrapContentHeight()
                                 .padding(0.dp, 0.dp, 16.dp, 0.dp)
                                 .wrapContentSize(),
                             fontSize = 12.sp,
                             textAlign = TextAlign.Left,
-                            color = textColorType7,
+                            color = color02BC77,
                             fontFamily = pretendardvariable,
                             fontWeight = FontWeight.Bold,
                             overflow = TextOverflow.Ellipsis
                         )
+
                     } else if(bookCodeItems.numberDiff < 0){
                         Image(
                             painter = painterResource(id = R.drawable.ic_arrow_drop_down_24px),
@@ -232,28 +250,72 @@ fun ListBestToday(
                         )
 
                         Text(
-                            text = bookCodeItems.numberDiff.toString(),
+                            text = "${bookCodeItems.numberDiff}",
                             modifier = Modifier
+                                .padding(0.dp, 0.dp, 4.dp, 0.dp)
                                 .wrapContentHeight()
-                                .padding(0.dp, 0.dp, 16.dp, 0.dp)
                                 .wrapContentSize(),
                             fontSize = 12.sp,
                             textAlign = TextAlign.Left,
-                            color = textColorType8,
+                            color = colorFF2366,
                             fontFamily = pretendardvariable,
                             fontWeight = FontWeight.Bold,
                             overflow = TextOverflow.Ellipsis
                         )
-                    } else if(bookCodeItems.numberDiff == 0){
+
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_best_small_down),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.size(12.dp)
+                        )
+
                         Text(
-                            text = "-",
+                            text = "(${bookCodeItems.trophyCount})",
                             modifier = Modifier
                                 .wrapContentHeight()
                                 .padding(0.dp, 0.dp, 16.dp, 0.dp)
                                 .wrapContentSize(),
                             fontSize = 12.sp,
                             textAlign = TextAlign.Left,
-                            color = textColorType9,
+                            color = colorFF2366,
+                            fontFamily = pretendardvariable,
+                            fontWeight = FontWeight.Bold,
+                            overflow = TextOverflow.Ellipsis
+                        )
+
+                    } else if(bookCodeItems.numberDiff == 0){
+
+                        Text(
+                            text = " ",
+                            modifier = Modifier
+                                .wrapContentHeight()
+                                .padding(0.dp, 0.dp, 4.dp, 0.dp)
+                                .wrapContentSize(),
+                            fontSize = 12.sp,
+                            textAlign = TextAlign.Left,
+                            color = colorFFFFFF,
+                            fontFamily = pretendardvariable,
+                            fontWeight = FontWeight.Bold,
+                            overflow = TextOverflow.Ellipsis
+                        )
+
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_best_small),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.size(12.dp)
+                        )
+
+                        Text(
+                            text = "(${bookCodeItems.trophyCount})",
+                            modifier = Modifier
+                                .wrapContentHeight()
+                                .padding(0.dp, 0.dp, 16.dp, 0.dp)
+                                .wrapContentSize(),
+                            fontSize = 12.sp,
+                            textAlign = TextAlign.Left,
+                            color = colorFFFFFF,
                             fontFamily = pretendardvariable,
                             fontWeight = FontWeight.Bold,
                             overflow = TextOverflow.Ellipsis
@@ -366,7 +428,7 @@ fun BestHeader(
                             }
                         },
                         selectedContentColor = color844DF3,
-                        unselectedContentColor = textColorType4,
+                        unselectedContentColor = color565c69,
                         text = {
                             Text(
                                 text = text,
@@ -375,7 +437,7 @@ fun BestHeader(
                                 color = if (tabIndex == index) {
                                     color844DF3
                                 } else {
-                                    textColorType4
+                                    color565c69
                                 },
                                 fontFamily = pretendardvariable,
                                 fontWeight = FontWeight.Bold
@@ -444,9 +506,12 @@ fun ItemKeyword(
 }
 
 @Composable
-fun BottomDialogBest(viewModelBestList: ViewModelBestList, contents : @Composable ()-> Unit) {
+fun BottomDialogBest(
+    viewModelBestList: ViewModelBestList,
+    contents: @Composable () -> Unit
+) {
 
-    val weekItem = viewModelBestList.state.collectAsState().value.bestListAnalyzeWeek
+//    val weekItem = viewModelBestList.state.collectAsState().value.bestListAnalyzeWeek
     val item = viewModelBestList.state.collectAsState().value.bottomBestItemData
 
     viewModelBestList.getIsFirstPick()
@@ -590,61 +655,55 @@ fun BottomDialogBest(viewModelBestList: ViewModelBestList, contents : @Composabl
             }
         }
 
-        Row(modifier = Modifier.padding(16.dp, 0.dp)) {
-            weekItem.forEach { item ->
-                Column(
-                    modifier = Modifier.weight(1f),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = item.dateString,
-                        fontSize = 14.sp,
-                        textAlign = TextAlign.Left,
-                        color = colorFDFDFD,
-                        fontFamily = pretendardvariable,
-                        fontWeight = FontWeight.Bold
-                    )
-
-                    Box(contentAlignment = Alignment.Center) {
-
-                        Image(
-                            painter = painterResource(id = item.trophyImage),
-                            contentDescription = null,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .size(40.dp)
-                        )
-
-                        if(item.isVisible){
-                            Text(
-                                modifier = Modifier.offset(y = -5.dp),
-                                text = item.number.toString(),
-                                fontSize = 14.sp,
-                                textAlign = TextAlign.Left,
-                                color = if (item.date == DBDate.DayInt()) {
-                                    color844DF3
-                                } else {
-                                    colorFDFDFD
-                                },
-                                fontFamily = pretendardvariable,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-                    }
-                }
-            }
-        }
+//        Row(modifier = Modifier.padding(16.dp, 0.dp)) {
+//            weekItem.forEach { item ->
+//                Column(
+//                    modifier = Modifier.weight(1f),
+//                    horizontalAlignment = Alignment.CenterHorizontally
+//                ) {
+//                    Text(
+//                        text = item.dateString,
+//                        fontSize = 14.sp,
+//                        textAlign = TextAlign.Left,
+//                        color = colorFDFDFD,
+//                        fontFamily = pretendardvariable,
+//                        fontWeight = FontWeight.Bold
+//                    )
+//
+//                    Box(contentAlignment = Alignment.Center) {
+//
+//                        Image(
+//                            painter = painterResource(id = item.trophyImage),
+//                            contentDescription = null,
+//                            contentScale = ContentScale.Crop,
+//                            modifier = Modifier
+//                                .size(40.dp)
+//                        )
+//
+//                        if(item.isVisible){
+//                            Text(
+//                                modifier = Modifier.offset(y = -5.dp),
+//                                text = item.number.toString(),
+//                                fontSize = 14.sp,
+//                                textAlign = TextAlign.Left,
+//                                color = if (item.date == DBDate.DayInt()) {
+//                                    color844DF3
+//                                } else {
+//                                    colorFDFDFD
+//                                },
+//                                fontFamily = pretendardvariable,
+//                                fontWeight = FontWeight.Bold
+//                            )
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
         Spacer(modifier = Modifier.size(12.dp))
 
         contents()
     }
-}
-
-@Preview
-@Composable
-fun previewBottomDialog(){
-    BottomDialogBest(viewModelBestList = ViewModelBestList(),{})
 }
 
 @Composable
@@ -682,7 +741,9 @@ fun BottomDialogBestBtn(viewModelBestList: ViewModelBestList, activity: Componen
             } else {
                 ButtonDefaults.buttonColors(backgroundColor = color621CEF)
             },
-            onClick = { viewModelBestList.bottomDialogBestPick(activity) },
+            onClick = {
+                viewModelBestList.bottomDialogBestPick(activity)
+            },
             modifier = Modifier
                 .weight(1f)
                 .height(48.dp),
