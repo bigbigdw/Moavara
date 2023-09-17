@@ -54,6 +54,8 @@
             </intent-filter>
         </service>
 
+        <meta-data android:name="com.samsung.android.icon_container.has_icon_container" android:value="true"/>
+
         <activity
             android:name=".Main.ActivityLogin"
             android:exported="true"
